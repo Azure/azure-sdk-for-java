@@ -16,7 +16,7 @@ import java.util.List;
  * Vector Store IDs associated to the vector store to be passed to the helper.
  */
 @Fluent
-public final class  CreateFileSearchToolResourceVectorStoreIds
+public final class CreateFileSearchToolResourceVectorStoreIds
     implements JsonSerializable<CreateFileSearchToolResourceVectorStoreIds> {
 
     /**
@@ -43,14 +43,14 @@ public final class  CreateFileSearchToolResourceVectorStoreIds
         return this.vectorStoreIds;
     }
 
-
     /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("vector_store_ids", this.vectorStoreIds, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("vector_store_ids", this.vectorStoreIds,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

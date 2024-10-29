@@ -161,28 +161,20 @@ public final class QuotaCounterContractInner {
      */
     public void validate() {
         if (counterKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property counterKey in model QuotaCounterContractInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property counterKey in model QuotaCounterContractInner"));
         }
         if (periodKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property periodKey in model QuotaCounterContractInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property periodKey in model QuotaCounterContractInner"));
         }
         if (periodStartTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property periodStartTime in model QuotaCounterContractInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property periodStartTime in model QuotaCounterContractInner"));
         }
         if (periodEndTime() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property periodEndTime in model QuotaCounterContractInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property periodEndTime in model QuotaCounterContractInner"));
         }
         if (value() != null) {
             value().validate();

@@ -41,8 +41,8 @@ public final class ContentKeyPolicyFairPlayOfflineRentalConfiguration {
      * @param playbackDurationSeconds the playbackDurationSeconds value to set.
      * @return the ContentKeyPolicyFairPlayOfflineRentalConfiguration object itself.
      */
-    public ContentKeyPolicyFairPlayOfflineRentalConfiguration withPlaybackDurationSeconds(
-        long playbackDurationSeconds) {
+    public ContentKeyPolicyFairPlayOfflineRentalConfiguration
+        withPlaybackDurationSeconds(long playbackDurationSeconds) {
         this.playbackDurationSeconds = playbackDurationSeconds;
         return this;
     }

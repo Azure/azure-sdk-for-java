@@ -179,16 +179,12 @@ public final class NetworkTapProperties extends AnnotationResource {
     public void validate() {
         super.validate();
         if (networkPacketBrokerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkPacketBrokerId in model NetworkTapProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkPacketBrokerId in model NetworkTapProperties"));
         }
         if (destinations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destinations in model NetworkTapProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property destinations in model NetworkTapProperties"));
         } else {
             destinations().forEach(e -> e.validate());
         }

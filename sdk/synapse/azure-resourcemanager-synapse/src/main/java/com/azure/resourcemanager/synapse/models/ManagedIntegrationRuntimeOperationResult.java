@@ -56,7 +56,8 @@ public final class ManagedIntegrationRuntimeOperationResult {
     /*
      * Properties of managed integration runtime operation result.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of ManagedIntegrationRuntimeOperationResult class. */
     public ManagedIntegrationRuntimeOperationResult() {

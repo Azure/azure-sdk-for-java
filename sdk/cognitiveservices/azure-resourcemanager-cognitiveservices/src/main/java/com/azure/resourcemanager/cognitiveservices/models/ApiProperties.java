@@ -78,7 +78,8 @@ public final class ApiProperties {
     /*
      * The api properties for special APIs.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of ApiProperties class. */
     public ApiProperties() {

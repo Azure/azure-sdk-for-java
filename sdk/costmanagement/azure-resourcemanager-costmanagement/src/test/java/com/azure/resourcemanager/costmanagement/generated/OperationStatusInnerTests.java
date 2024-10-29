@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusInner model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Completed\",\"properties\":{\"reportUrl\":\"Kind\",\"validUntil\":\"2021-02-19T20:13:34Z\"}}")
-                .toObject(OperationStatusInner.class);
+        OperationStatusInner model = BinaryData.fromString(
+            "{\"status\":\"Completed\",\"properties\":{\"reportUrl\":\"Kind\",\"validUntil\":\"2021-02-19T20:13:34Z\"}}")
+            .toObject(OperationStatusInner.class);
         Assertions.assertEquals(OperationStatusType.COMPLETED, model.status());
         Assertions.assertEquals(ReservationReportSchema.KIND, model.reportUrl());
         Assertions.assertEquals(OffsetDateTime.parse("2021-02-19T20:13:34Z"), model.validUntil());
@@ -26,11 +24,9 @@ public final class OperationStatusInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationStatusInner model =
-            new OperationStatusInner()
-                .withStatus(OperationStatusType.COMPLETED)
-                .withReportUrl(ReservationReportSchema.KIND)
-                .withValidUntil(OffsetDateTime.parse("2021-02-19T20:13:34Z"));
+        OperationStatusInner model = new OperationStatusInner().withStatus(OperationStatusType.COMPLETED)
+            .withReportUrl(ReservationReportSchema.KIND)
+            .withValidUntil(OffsetDateTime.parse("2021-02-19T20:13:34Z"));
         model = BinaryData.fromObject(model).toObject(OperationStatusInner.class);
         Assertions.assertEquals(OperationStatusType.COMPLETED, model.status());
         Assertions.assertEquals(ReservationReportSchema.KIND, model.reportUrl());

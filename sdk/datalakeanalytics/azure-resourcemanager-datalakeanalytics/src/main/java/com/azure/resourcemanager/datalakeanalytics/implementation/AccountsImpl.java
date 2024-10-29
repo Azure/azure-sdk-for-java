@@ -26,8 +26,7 @@ public final class AccountsImpl implements Accounts {
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    public AccountsImpl(
-        AccountsClient innerClient,
+    public AccountsImpl(AccountsClient innerClient,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -35,47 +34,39 @@ public final class AccountsImpl implements Accounts {
 
     public PagedIterable<DataLakeAnalyticsAccountBasic> list() {
         PagedIterable<DataLakeAnalyticsAccountBasicInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DataLakeAnalyticsAccountBasicImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DataLakeAnalyticsAccountBasicImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DataLakeAnalyticsAccountBasic> list(
-        String filter, Integer top, Integer skip, String select, String orderby, Boolean count, Context context) {
-        PagedIterable<DataLakeAnalyticsAccountBasicInner> inner =
-            this.serviceClient().list(filter, top, skip, select, orderby, count, context);
-        return Utils.mapPage(inner, inner1 -> new DataLakeAnalyticsAccountBasicImpl(inner1, this.manager()));
+    public PagedIterable<DataLakeAnalyticsAccountBasic> list(String filter, Integer top, Integer skip, String select,
+        String orderby, Boolean count, Context context) {
+        PagedIterable<DataLakeAnalyticsAccountBasicInner> inner
+            = this.serviceClient().list(filter, top, skip, select, orderby, count, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DataLakeAnalyticsAccountBasicImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DataLakeAnalyticsAccountBasic> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<DataLakeAnalyticsAccountBasicInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DataLakeAnalyticsAccountBasicImpl(inner1, this.manager()));
+        PagedIterable<DataLakeAnalyticsAccountBasicInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DataLakeAnalyticsAccountBasicImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DataLakeAnalyticsAccountBasic> listByResourceGroup(
-        String resourceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String select,
-        String orderby,
-        Boolean count,
-        Context context) {
-        PagedIterable<DataLakeAnalyticsAccountBasicInner> inner =
-            this
-                .serviceClient()
-                .listByResourceGroup(resourceGroupName, filter, top, skip, select, orderby, count, context);
-        return Utils.mapPage(inner, inner1 -> new DataLakeAnalyticsAccountBasicImpl(inner1, this.manager()));
+    public PagedIterable<DataLakeAnalyticsAccountBasic> listByResourceGroup(String resourceGroupName, String filter,
+        Integer top, Integer skip, String select, String orderby, Boolean count, Context context) {
+        PagedIterable<DataLakeAnalyticsAccountBasicInner> inner = this.serviceClient()
+            .listByResourceGroup(resourceGroupName, filter, top, skip, select, orderby, count, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DataLakeAnalyticsAccountBasicImpl(inner1, this.manager()));
     }
 
-    public Response<DataLakeAnalyticsAccount> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        Response<DataLakeAnalyticsAccountInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
+    public Response<DataLakeAnalyticsAccount> getByResourceGroupWithResponse(String resourceGroupName,
+        String accountName, Context context) {
+        Response<DataLakeAnalyticsAccountInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DataLakeAnalyticsAccountImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -99,23 +90,20 @@ public final class AccountsImpl implements Accounts {
         this.serviceClient().delete(resourceGroupName, accountName, context);
     }
 
-    public Response<NameAvailabilityInformation> checkNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityParameters parameters, Context context) {
-        Response<NameAvailabilityInformationInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(location, parameters, context);
+    public Response<NameAvailabilityInformation> checkNameAvailabilityWithResponse(String location,
+        CheckNameAvailabilityParameters parameters, Context context) {
+        Response<NameAvailabilityInformationInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(location, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NameAvailabilityInformationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public NameAvailabilityInformation checkNameAvailability(
-        String location, CheckNameAvailabilityParameters parameters) {
+    public NameAvailabilityInformation checkNameAvailability(String location,
+        CheckNameAvailabilityParameters parameters) {
         NameAvailabilityInformationInner inner = this.serviceClient().checkNameAvailability(location, parameters);
         if (inner != null) {
             return new NameAvailabilityInformationImpl(inner, this.manager());
@@ -125,77 +113,57 @@ public final class AccountsImpl implements Accounts {
     }
 
     public DataLakeAnalyticsAccount getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     public Response<DataLakeAnalyticsAccount> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         this.delete(resourceGroupName, accountName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         this.delete(resourceGroupName, accountName, context);
     }

@@ -93,8 +93,8 @@ public final class GatewayHostnameConfigurationContractInner extends ProxyResour
      * @param negotiateClientCertificate the negotiateClientCertificate value to set.
      * @return the GatewayHostnameConfigurationContractInner object itself.
      */
-    public GatewayHostnameConfigurationContractInner withNegotiateClientCertificate(
-        Boolean negotiateClientCertificate) {
+    public GatewayHostnameConfigurationContractInner
+        withNegotiateClientCertificate(Boolean negotiateClientCertificate) {
         if (this.innerProperties() == null) {
             this.innerProperties = new GatewayHostnameConfigurationContractProperties();
         }

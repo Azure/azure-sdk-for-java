@@ -26,8 +26,8 @@ public interface WorkspaceAadAdminsClient {
      * @return a workspace active directory admin along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceAadAdminInfoInner> getWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
+    Response<WorkspaceAadAdminInfoInner> getWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Gets a workspace active directory admin.
@@ -54,8 +54,8 @@ public interface WorkspaceAadAdminsClient {
      * @return the {@link SyncPoller} for polling of workspace active directory administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo);
+    SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner>
+        beginCreateOrUpdate(String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo);
 
     /**
      * Creates or updates a workspace active directory admin.
@@ -85,8 +85,8 @@ public interface WorkspaceAadAdminsClient {
      * @return workspace active directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceAadAdminInfoInner createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo);
+    WorkspaceAadAdminInfoInner createOrUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo);
 
     /**
      * Creates or updates a workspace active directory admin.
@@ -101,8 +101,8 @@ public interface WorkspaceAadAdminsClient {
      * @return workspace active directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceAadAdminInfoInner createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context);
+    WorkspaceAadAdminInfoInner createOrUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo, Context context);
 
     /**
      * Deletes a workspace active directory admin.

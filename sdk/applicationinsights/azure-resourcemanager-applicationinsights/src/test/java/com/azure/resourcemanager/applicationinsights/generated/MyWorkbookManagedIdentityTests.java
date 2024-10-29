@@ -13,19 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class MyWorkbookManagedIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MyWorkbookManagedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"userAssignedIdentities\":{\"principalId\":\"smond\",\"tenantId\":\"quxvypomgkop\"},\"type\":\"None\"}")
-                .toObject(MyWorkbookManagedIdentity.class);
+        MyWorkbookManagedIdentity model = BinaryData.fromString(
+            "{\"userAssignedIdentities\":{\"principalId\":\"smond\",\"tenantId\":\"quxvypomgkop\"},\"type\":\"None\"}")
+            .toObject(MyWorkbookManagedIdentity.class);
         Assertions.assertEquals(MyWorkbookManagedIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MyWorkbookManagedIdentity model =
-            new MyWorkbookManagedIdentity()
-                .withUserAssignedIdentities(new MyWorkbookUserAssignedIdentities())
+        MyWorkbookManagedIdentity model
+            = new MyWorkbookManagedIdentity().withUserAssignedIdentities(new MyWorkbookUserAssignedIdentities())
                 .withType(MyWorkbookManagedIdentityType.NONE);
         model = BinaryData.fromObject(model).toObject(MyWorkbookManagedIdentity.class);
         Assertions.assertEquals(MyWorkbookManagedIdentityType.NONE, model.type());

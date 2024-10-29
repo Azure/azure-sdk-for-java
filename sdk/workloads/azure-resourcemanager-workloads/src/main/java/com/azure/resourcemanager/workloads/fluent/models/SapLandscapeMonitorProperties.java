@@ -82,8 +82,8 @@ public final class SapLandscapeMonitorProperties {
      * @param topMetricsThresholds the topMetricsThresholds value to set.
      * @return the SapLandscapeMonitorProperties object itself.
      */
-    public SapLandscapeMonitorProperties withTopMetricsThresholds(
-        List<SapLandscapeMonitorMetricThresholds> topMetricsThresholds) {
+    public SapLandscapeMonitorProperties
+        withTopMetricsThresholds(List<SapLandscapeMonitorMetricThresholds> topMetricsThresholds) {
         this.topMetricsThresholds = topMetricsThresholds;
         return this;
     }

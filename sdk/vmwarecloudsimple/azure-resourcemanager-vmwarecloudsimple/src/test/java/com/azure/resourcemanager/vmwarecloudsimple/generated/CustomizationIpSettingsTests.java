@@ -14,34 +14,29 @@ import org.junit.jupiter.api.Assertions;
 public final class CustomizationIpSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CustomizationIpSettings model =
-            BinaryData
-                .fromString(
-                    "{\"gateway\":[\"ewzsyyceuzsoib\",\"ud\"],\"ip\":{\"argument\":\"xtrthz\",\"ipAddress\":\"ytdw\",\"type\":\"DHCP_IP\"},\"subnetMask\":\"qu\"}")
-                .toObject(CustomizationIpSettings.class);
-        Assertions.assertEquals("ewzsyyceuzsoib", model.gateway().get(0));
-        Assertions.assertEquals("xtrthz", model.ip().argument());
-        Assertions.assertEquals("ytdw", model.ip().ipAddress());
+        CustomizationIpSettings model = BinaryData.fromString(
+            "{\"gateway\":[\"hmxtdr\",\"futacoebjvewzc\",\"znmwcp\"],\"ip\":{\"argument\":\"aadraufactkahz\",\"ipAddress\":\"ajjziuxxpshne\",\"type\":\"DHCP_IP\"},\"subnetMask\":\"fgslqubkwdl\"}")
+            .toObject(CustomizationIpSettings.class);
+        Assertions.assertEquals("hmxtdr", model.gateway().get(0));
+        Assertions.assertEquals("aadraufactkahz", model.ip().argument());
+        Assertions.assertEquals("ajjziuxxpshne", model.ip().ipAddress());
         Assertions.assertEquals(CustomizationIpAddressType.DHCP_IP, model.ip().type());
-        Assertions.assertEquals("qu", model.subnetMask());
+        Assertions.assertEquals("fgslqubkwdl", model.subnetMask());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CustomizationIpSettings model =
-            new CustomizationIpSettings()
-                .withGateway(Arrays.asList("ewzsyyceuzsoib", "ud"))
-                .withIp(
-                    new CustomizationIpAddress()
-                        .withArgument("xtrthz")
-                        .withIpAddress("ytdw")
-                        .withType(CustomizationIpAddressType.DHCP_IP))
-                .withSubnetMask("qu");
+        CustomizationIpSettings model
+            = new CustomizationIpSettings().withGateway(Arrays.asList("hmxtdr", "futacoebjvewzc", "znmwcp"))
+                .withIp(new CustomizationIpAddress().withArgument("aadraufactkahz")
+                    .withIpAddress("ajjziuxxpshne")
+                    .withType(CustomizationIpAddressType.DHCP_IP))
+                .withSubnetMask("fgslqubkwdl");
         model = BinaryData.fromObject(model).toObject(CustomizationIpSettings.class);
-        Assertions.assertEquals("ewzsyyceuzsoib", model.gateway().get(0));
-        Assertions.assertEquals("xtrthz", model.ip().argument());
-        Assertions.assertEquals("ytdw", model.ip().ipAddress());
+        Assertions.assertEquals("hmxtdr", model.gateway().get(0));
+        Assertions.assertEquals("aadraufactkahz", model.ip().argument());
+        Assertions.assertEquals("ajjziuxxpshne", model.ip().ipAddress());
         Assertions.assertEquals(CustomizationIpAddressType.DHCP_IP, model.ip().type());
-        Assertions.assertEquals("qu", model.subnetMask());
+        Assertions.assertEquals("fgslqubkwdl", model.subnetMask());
     }
 }

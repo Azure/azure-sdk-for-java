@@ -34,63 +34,43 @@ public final class SpacecraftsCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"noradId\":\"ngmtsavjcb\",\"titleLine\":\"wxqpsrknftguvri\",\"tleLine1\":\"hprwmdyv\",\"tleLine2\":\"qtayri\",\"links\":[]},\"location\":\"oyq\",\"tags\":{\"nojvknmefqsg\":\"rmcqiby\",\"pjyzhpv\":\"vah\",\"lmwlxkvugfhzo\":\"qzcjrvxdj\",\"nxipeil\":\"awjvzunluthnnp\"},\"id\":\"jzuaejxdultskzbb\",\"name\":\"dzumveekg\",\"type\":\"wozuhkf\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"noradId\":\"ngmtsavjcb\",\"titleLine\":\"wxqpsrknftguvri\",\"tleLine1\":\"hprwmdyv\",\"tleLine2\":\"qtayri\",\"links\":[]},\"location\":\"oyq\",\"tags\":{\"nojvknmefqsg\":\"rmcqiby\",\"pjyzhpv\":\"vah\",\"lmwlxkvugfhzo\":\"qzcjrvxdj\",\"nxipeil\":\"awjvzunluthnnp\"},\"id\":\"jzuaejxdultskzbb\",\"name\":\"dzumveekg\",\"type\":\"wozuhkf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        OrbitalManager manager =
-            OrbitalManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        OrbitalManager manager = OrbitalManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Spacecraft response =
-            manager
-                .spacecrafts()
-                .define("x")
-                .withRegion("tdhxujznbmpowuwp")
-                .withExistingResourceGroup("otwmcdyt")
-                .withTitleLine("hniskxfbkpyc")
-                .withTleLine1("klwndnhjdauwhv")
-                .withTleLine2("l")
-                .withLinks(Arrays.asList())
-                .withTags(
-                    mapOf(
-                        "alupjm",
-                        "lve",
-                        "iplrbpbewtghfgb",
-                        "hfxobbcswsrtj",
-                        "wxzvlvqhjkb",
-                        "c",
-                        "iebwwaloayqcgwrt",
-                        "gibtnm"))
-                .withProvisioningState(SpacecraftsPropertiesProvisioningState.UPDATING)
-                .withNoradId("nrjawgqwg")
-                .create();
+        Spacecraft response = manager.spacecrafts()
+            .define("x")
+            .withRegion("tdhxujznbmpowuwp")
+            .withExistingResourceGroup("otwmcdyt")
+            .withTitleLine("hniskxfbkpyc")
+            .withTleLine1("klwndnhjdauwhv")
+            .withTleLine2("l")
+            .withLinks(Arrays.asList())
+            .withTags(mapOf("alupjm", "lve", "iplrbpbewtghfgb", "hfxobbcswsrtj", "wxzvlvqhjkb", "c", "iebwwaloayqcgwrt",
+                "gibtnm"))
+            .withProvisioningState(SpacecraftsPropertiesProvisioningState.UPDATING)
+            .withNoradId("nrjawgqwg")
+            .create();
 
         Assertions.assertEquals("oyq", response.location());
         Assertions.assertEquals("rmcqiby", response.tags().get("nojvknmefqsg"));
-        Assertions
-            .assertEquals(SpacecraftsPropertiesProvisioningState.fromString("Succeeded"), response.provisioningState());
+        Assertions.assertEquals(SpacecraftsPropertiesProvisioningState.fromString("Succeeded"),
+            response.provisioningState());
         Assertions.assertEquals("ngmtsavjcb", response.noradId());
         Assertions.assertEquals("wxqpsrknftguvri", response.titleLine());
         Assertions.assertEquals("hprwmdyv", response.tleLine1());

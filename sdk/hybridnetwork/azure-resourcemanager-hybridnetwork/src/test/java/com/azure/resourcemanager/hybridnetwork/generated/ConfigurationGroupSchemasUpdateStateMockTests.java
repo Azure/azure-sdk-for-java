@@ -45,12 +45,13 @@ public final class ConfigurationGroupSchemasUpdateStateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ConfigurationGroupSchemaVersionUpdateState response
-            = manager.configurationGroupSchemas().updateState("qnyophzfyls", "crpfbcunez", "cez",
+        ConfigurationGroupSchemaVersionUpdateState response = manager.configurationGroupSchemas()
+            .updateState("qnyophzfyls", "crpfbcunez", "cez",
                 new ConfigurationGroupSchemaVersionUpdateStateInner().withVersionState(VersionState.DEPRECATED),
                 com.azure.core.util.Context.NONE);
 

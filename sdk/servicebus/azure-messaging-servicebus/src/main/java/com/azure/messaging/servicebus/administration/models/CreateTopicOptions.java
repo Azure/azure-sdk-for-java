@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.administration.models;
 
-
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
 

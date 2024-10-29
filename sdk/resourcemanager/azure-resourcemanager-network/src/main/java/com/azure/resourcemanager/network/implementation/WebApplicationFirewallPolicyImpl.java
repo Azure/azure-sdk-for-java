@@ -32,16 +32,15 @@ import java.util.stream.Collectors;
 /**
  * Implementation of the {@link WebApplicationFirewallPolicy} interface.
  */
-public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
-    WebApplicationFirewallPolicy, WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyImpl, NetworkManager>
-    implements WebApplicationFirewallPolicy,
-    WebApplicationFirewallPolicy.Definition,
-    WebApplicationFirewallPolicy.Update,
-    WebApplicationFirewallPolicy.UpdateStages.WithRequestBodyOrUpdate {
+public class WebApplicationFirewallPolicyImpl extends
+    GroupableResourceImpl<WebApplicationFirewallPolicy, WebApplicationFirewallPolicyInner, WebApplicationFirewallPolicyImpl, NetworkManager>
+    implements WebApplicationFirewallPolicy, WebApplicationFirewallPolicy.Definition,
+    WebApplicationFirewallPolicy.Update, WebApplicationFirewallPolicy.UpdateStages.WithRequestBodyOrUpdate {
     private static final String BOT_DETECTION_RULE_SET_TYPE = "Microsoft_BotManagerRuleSet";
     private static final String BOT_DETECTION_RULE_SET_VERSION_DEFAULT = "0.1";
 
-    protected WebApplicationFirewallPolicyImpl(String name, WebApplicationFirewallPolicyInner innerObject, NetworkManager manager) {
+    protected WebApplicationFirewallPolicyImpl(String name, WebApplicationFirewallPolicyInner innerObject,
+        NetworkManager manager) {
         super(name, innerObject, manager);
     }
 
@@ -88,7 +87,8 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
         if (CoreUtils.isNullOrEmpty(this.innerModel().applicationGateways())) {
             return Collections.emptyList();
         }
-        return Collections.unmodifiableList(this.innerModel().applicationGateways()
+        return Collections.unmodifiableList(this.innerModel()
+            .applicationGateways()
             .stream()
             .map(ApplicationGatewayInner::id)
             .collect(Collectors.toList()));
@@ -152,8 +152,7 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
     @Override
     public WebApplicationFirewallPolicyImpl withBotProtection(String version) {
         String versionOrDefault = CoreUtils.isNullOrEmpty(version) ? BOT_DETECTION_RULE_SET_VERSION_DEFAULT : version;
-        Optional<ManagedRuleSet> ruleSetOptional = ensureManagedRules()
-            .managedRuleSets()
+        Optional<ManagedRuleSet> ruleSetOptional = ensureManagedRules().managedRuleSets()
             .stream()
             .filter(ruleSet -> BOT_DETECTION_RULE_SET_TYPE.equals(ruleSet.ruleSetType()))
             .findFirst();
@@ -165,9 +164,8 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
                 ruleSet.withRuleSetVersion(version);
             }
         } else {
-            ensureManagedRules().managedRuleSets().add(
-                new ManagedRuleSet()
-                    .withRuleSetType(BOT_DETECTION_RULE_SET_TYPE)
+            ensureManagedRules().managedRuleSets()
+                .add(new ManagedRuleSet().withRuleSetType(BOT_DETECTION_RULE_SET_TYPE)
                     .withRuleSetVersion(versionOrDefault));
         }
         return this;
@@ -187,39 +185,39 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
 
     @Override
     public WebApplicationFirewallPolicyImpl withRequestBodySizeLimitInKb(int limitInKb) {
-        ensurePolicySettings()
-            .withRequestBodyInspectLimitInKB(limitInKb)
-            .withMaxRequestBodySizeInKb(limitInKb);
+        ensurePolicySettings().withRequestBodyInspectLimitInKB(limitInKb).withMaxRequestBodySizeInKb(limitInKb);
         return this;
     }
 
     @Override
     public WebApplicationFirewallPolicyImpl withFileUploadSizeLimitInMb(int limitInMb) {
-        ensurePolicySettings()
-            .withFileUploadLimitInMb(limitInMb);
+        ensurePolicySettings().withFileUploadLimitInMb(limitInMb);
         return this;
     }
 
     @Override
     public Mono<WebApplicationFirewallPolicy> createResourceAsync() {
-        return this.manager().serviceClient().getWebApplicationFirewallPolicies()
+        return this.manager()
+            .serviceClient()
+            .getWebApplicationFirewallPolicies()
             .createOrUpdateAsync(this.resourceGroupName(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     public WebApplicationFirewallPolicyImpl withManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet managedRuleSet,
-                                                               ManagedRuleGroupOverride... managedRuleGroupOverrides) {
+        ManagedRuleGroupOverride... managedRuleGroupOverrides) {
         Objects.requireNonNull(managedRuleSet);
         return withManagedRuleSet(managedRuleSet.type(), managedRuleSet.version(), managedRuleGroupOverrides);
     }
 
     @Override
     public WebApplicationFirewallPolicyImpl withManagedRuleSet(String type, String version,
-                                                               ManagedRuleGroupOverride... managedRuleGroupOverrides) {
+        ManagedRuleGroupOverride... managedRuleGroupOverrides) {
         ManagedRuleSet managedRuleSet = new ManagedRuleSet().withRuleSetType(type).withRuleSetVersion(version);
         if (managedRuleGroupOverrides != null) {
-            managedRuleSet.withRuleGroupOverrides(Arrays.stream(managedRuleGroupOverrides).collect(Collectors.toList()));
+            managedRuleSet
+                .withRuleGroupOverrides(Arrays.stream(managedRuleGroupOverrides).collect(Collectors.toList()));
         }
         return withManagedRuleSet(managedRuleSet);
     }
@@ -237,7 +235,8 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
     }
 
     @Override
-    public WebApplicationFirewallPolicyImpl withoutManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet managedRuleSet) {
+    public WebApplicationFirewallPolicyImpl
+        withoutManagedRuleSet(KnownWebApplicationGatewayManagedRuleSet managedRuleSet) {
         Objects.requireNonNull(managedRuleSet);
         return withoutManagedRuleSet(managedRuleSet.type(), managedRuleSet.version());
     }
@@ -245,15 +244,20 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
     @Override
     public WebApplicationFirewallPolicyImpl withoutManagedRuleSet(String type, String version) {
         if (this.innerModel().managedRules() != null && this.innerModel().managedRules().managedRuleSets() != null) {
-            this.innerModel().managedRules().managedRuleSets().removeIf(ruleSet -> Objects.equals(type, ruleSet.ruleSetType())
-                && Objects.equals(version, ruleSet.ruleSetVersion()));
+            this.innerModel()
+                .managedRules()
+                .managedRuleSets()
+                .removeIf(ruleSet -> Objects.equals(type, ruleSet.ruleSetType())
+                    && Objects.equals(version, ruleSet.ruleSetVersion()));
         }
         return this;
     }
 
     @Override
     protected Mono<WebApplicationFirewallPolicyInner> getInnerAsync() {
-        return this.manager().serviceClient().getWebApplicationFirewallPolicies()
+        return this.manager()
+            .serviceClient()
+            .getWebApplicationFirewallPolicies()
             .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 

@@ -22,8 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "PrometheusOS", value = PrometheusOSProviderInstanceProperties.class),
     @JsonSubTypes.Type(name = "Db2", value = DB2ProviderInstanceProperties.class),
     @JsonSubTypes.Type(name = "PrometheusHaCluster", value = PrometheusHaClusterProviderInstanceProperties.class),
-    @JsonSubTypes.Type(name = "MsSqlServer", value = MsSqlServerProviderInstanceProperties.class)
-})
+    @JsonSubTypes.Type(name = "MsSqlServer", value = MsSqlServerProviderInstanceProperties.class) })
 @Immutable
 public class ProviderSpecificProperties {
     /** Creates an instance of ProviderSpecificProperties class. */

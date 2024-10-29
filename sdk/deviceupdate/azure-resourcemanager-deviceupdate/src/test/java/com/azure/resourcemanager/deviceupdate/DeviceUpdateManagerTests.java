@@ -35,13 +35,11 @@ public class DeviceUpdateManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        deviceUpdateManager = DeviceUpdateManager
-            .configure()
+        deviceUpdateManager = DeviceUpdateManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -52,10 +50,7 @@ public class DeviceUpdateManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -72,17 +67,18 @@ public class DeviceUpdateManagerTests extends TestProxyTestBase {
         Account account = null;
         try {
             String accountName = "account" + randomPadding();
-            // @embedStart
+            // @embedmeStart
             account = deviceUpdateManager.accounts()
                 .define(accountName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             account.refresh();
             Assertions.assertEquals(account.name(), accountName);
             Assertions.assertEquals(account.name(), deviceUpdateManager.accounts().getById(account.id()).name());
-            Assertions.assertTrue(deviceUpdateManager.accounts().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertTrue(
+                deviceUpdateManager.accounts().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
         } finally {
             if (account != null) {
                 deviceUpdateManager.accounts().delete(resourceGroupName, account.name(), Context.NONE);

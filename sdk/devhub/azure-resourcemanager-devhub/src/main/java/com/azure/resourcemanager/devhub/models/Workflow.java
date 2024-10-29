@@ -293,17 +293,16 @@ public interface Workflow {
     WorkflowInner innerModel();
 
     /** The entirety of the Workflow definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
+
     /** The Workflow definition stages. */
     interface DefinitionStages {
         /** The first stage of the Workflow definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the Workflow definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -322,6 +321,7 @@ public interface Workflow {
              */
             WithResourceGroup withRegion(String location);
         }
+
         /** The stage of the Workflow definition allowing to specify parent resource. */
         interface WithResourceGroup {
             /**
@@ -332,36 +332,22 @@ public interface Workflow {
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Workflow definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithRepositoryOwner,
-                DefinitionStages.WithRepositoryName,
-                DefinitionStages.WithBranchName,
-                DefinitionStages.WithDockerfile,
-                DefinitionStages.WithDockerBuildContext,
-                DefinitionStages.WithDeploymentProperties,
-                DefinitionStages.WithNamespace,
-                DefinitionStages.WithAcr,
-                DefinitionStages.WithOidcCredentials,
-                DefinitionStages.WithAksResourceId,
-                DefinitionStages.WithLastWorkflowRun,
-                DefinitionStages.WithGenerationLanguage,
-                DefinitionStages.WithLanguageVersion,
-                DefinitionStages.WithBuilderVersion,
-                DefinitionStages.WithPort,
-                DefinitionStages.WithAppName,
-                DefinitionStages.WithDockerfileOutputDirectory,
-                DefinitionStages.WithManifestOutputDirectory,
-                DefinitionStages.WithDockerfileGenerationMode,
-                DefinitionStages.WithManifestGenerationMode,
-                DefinitionStages.WithManifestType,
-                DefinitionStages.WithImageName,
-                DefinitionStages.WithNamespaceArtifactGenerationPropertiesNamespace,
-                DefinitionStages.WithImageTag {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithRepositoryOwner,
+            DefinitionStages.WithRepositoryName, DefinitionStages.WithBranchName, DefinitionStages.WithDockerfile,
+            DefinitionStages.WithDockerBuildContext, DefinitionStages.WithDeploymentProperties,
+            DefinitionStages.WithNamespace, DefinitionStages.WithAcr, DefinitionStages.WithOidcCredentials,
+            DefinitionStages.WithAksResourceId, DefinitionStages.WithLastWorkflowRun,
+            DefinitionStages.WithGenerationLanguage, DefinitionStages.WithLanguageVersion,
+            DefinitionStages.WithBuilderVersion, DefinitionStages.WithPort, DefinitionStages.WithAppName,
+            DefinitionStages.WithDockerfileOutputDirectory, DefinitionStages.WithManifestOutputDirectory,
+            DefinitionStages.WithDockerfileGenerationMode, DefinitionStages.WithManifestGenerationMode,
+            DefinitionStages.WithManifestType, DefinitionStages.WithImageName,
+            DefinitionStages.WithNamespaceArtifactGenerationPropertiesNamespace, DefinitionStages.WithImageTag {
             /**
              * Executes the create request.
              *
@@ -377,6 +363,7 @@ public interface Workflow {
              */
             Workflow create(Context context);
         }
+
         /** The stage of the Workflow definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -387,6 +374,7 @@ public interface Workflow {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the Workflow definition allowing to specify repositoryOwner. */
         interface WithRepositoryOwner {
             /**
@@ -400,6 +388,7 @@ public interface Workflow {
              */
             WithCreate withRepositoryOwner(String repositoryOwner);
         }
+
         /** The stage of the Workflow definition allowing to specify repositoryName. */
         interface WithRepositoryName {
             /**
@@ -413,6 +402,7 @@ public interface Workflow {
              */
             WithCreate withRepositoryName(String repositoryName);
         }
+
         /** The stage of the Workflow definition allowing to specify branchName. */
         interface WithBranchName {
             /**
@@ -426,6 +416,7 @@ public interface Workflow {
              */
             WithCreate withBranchName(String branchName);
         }
+
         /** The stage of the Workflow definition allowing to specify dockerfile. */
         interface WithDockerfile {
             /**
@@ -439,6 +430,7 @@ public interface Workflow {
              */
             WithCreate withDockerfile(String dockerfile);
         }
+
         /** The stage of the Workflow definition allowing to specify dockerBuildContext. */
         interface WithDockerBuildContext {
             /**
@@ -449,6 +441,7 @@ public interface Workflow {
              */
             WithCreate withDockerBuildContext(String dockerBuildContext);
         }
+
         /** The stage of the Workflow definition allowing to specify deploymentProperties. */
         interface WithDeploymentProperties {
             /**
@@ -459,6 +452,7 @@ public interface Workflow {
              */
             WithCreate withDeploymentProperties(DeploymentProperties deploymentProperties);
         }
+
         /** The stage of the Workflow definition allowing to specify namespace. */
         interface WithNamespace {
             /**
@@ -472,6 +466,7 @@ public interface Workflow {
              */
             WithCreate withNamespace(String namespace);
         }
+
         /** The stage of the Workflow definition allowing to specify acr. */
         interface WithAcr {
             /**
@@ -482,6 +477,7 @@ public interface Workflow {
              */
             WithCreate withAcr(Acr acr);
         }
+
         /** The stage of the Workflow definition allowing to specify oidcCredentials. */
         interface WithOidcCredentials {
             /**
@@ -492,6 +488,7 @@ public interface Workflow {
              */
             WithCreate withOidcCredentials(GitHubWorkflowProfileOidcCredentials oidcCredentials);
         }
+
         /** The stage of the Workflow definition allowing to specify aksResourceId. */
         interface WithAksResourceId {
             /**
@@ -505,6 +502,7 @@ public interface Workflow {
              */
             WithCreate withAksResourceId(String aksResourceId);
         }
+
         /** The stage of the Workflow definition allowing to specify lastWorkflowRun. */
         interface WithLastWorkflowRun {
             /**
@@ -515,6 +513,7 @@ public interface Workflow {
              */
             WithCreate withLastWorkflowRun(WorkflowRun lastWorkflowRun);
         }
+
         /** The stage of the Workflow definition allowing to specify generationLanguage. */
         interface WithGenerationLanguage {
             /**
@@ -525,6 +524,7 @@ public interface Workflow {
              */
             WithCreate withGenerationLanguage(GenerationLanguage generationLanguage);
         }
+
         /** The stage of the Workflow definition allowing to specify languageVersion. */
         interface WithLanguageVersion {
             /**
@@ -536,6 +536,7 @@ public interface Workflow {
              */
             WithCreate withLanguageVersion(String languageVersion);
         }
+
         /** The stage of the Workflow definition allowing to specify builderVersion. */
         interface WithBuilderVersion {
             /**
@@ -548,6 +549,7 @@ public interface Workflow {
              */
             WithCreate withBuilderVersion(String builderVersion);
         }
+
         /** The stage of the Workflow definition allowing to specify port. */
         interface WithPort {
             /**
@@ -558,6 +560,7 @@ public interface Workflow {
              */
             WithCreate withPort(String port);
         }
+
         /** The stage of the Workflow definition allowing to specify appName. */
         interface WithAppName {
             /**
@@ -568,6 +571,7 @@ public interface Workflow {
              */
             WithCreate withAppName(String appName);
         }
+
         /** The stage of the Workflow definition allowing to specify dockerfileOutputDirectory. */
         interface WithDockerfileOutputDirectory {
             /**
@@ -578,6 +582,7 @@ public interface Workflow {
              */
             WithCreate withDockerfileOutputDirectory(String dockerfileOutputDirectory);
         }
+
         /** The stage of the Workflow definition allowing to specify manifestOutputDirectory. */
         interface WithManifestOutputDirectory {
             /**
@@ -588,6 +593,7 @@ public interface Workflow {
              */
             WithCreate withManifestOutputDirectory(String manifestOutputDirectory);
         }
+
         /** The stage of the Workflow definition allowing to specify dockerfileGenerationMode. */
         interface WithDockerfileGenerationMode {
             /**
@@ -599,6 +605,7 @@ public interface Workflow {
              */
             WithCreate withDockerfileGenerationMode(DockerfileGenerationMode dockerfileGenerationMode);
         }
+
         /** The stage of the Workflow definition allowing to specify manifestGenerationMode. */
         interface WithManifestGenerationMode {
             /**
@@ -610,6 +617,7 @@ public interface Workflow {
              */
             WithCreate withManifestGenerationMode(ManifestGenerationMode manifestGenerationMode);
         }
+
         /** The stage of the Workflow definition allowing to specify manifestType. */
         interface WithManifestType {
             /**
@@ -620,6 +628,7 @@ public interface Workflow {
              */
             WithCreate withManifestType(GenerationManifestType manifestType);
         }
+
         /** The stage of the Workflow definition allowing to specify imageName. */
         interface WithImageName {
             /**
@@ -630,6 +639,7 @@ public interface Workflow {
              */
             WithCreate withImageName(String imageName);
         }
+
         /** The stage of the Workflow definition allowing to specify namespaceArtifactGenerationPropertiesNamespace. */
         interface WithNamespaceArtifactGenerationPropertiesNamespace {
             /**
@@ -642,6 +652,7 @@ public interface Workflow {
             WithCreate withNamespaceArtifactGenerationPropertiesNamespace(
                 String namespaceArtifactGenerationPropertiesNamespace);
         }
+
         /** The stage of the Workflow definition allowing to specify imageTag. */
         interface WithImageTag {
             /**
@@ -653,6 +664,7 @@ public interface Workflow {
             WithCreate withImageTag(String imageTag);
         }
     }
+
     /**
      * Begins update for the Workflow resource.
      *
@@ -677,6 +689,7 @@ public interface Workflow {
          */
         Workflow apply(Context context);
     }
+
     /** The Workflow update stages. */
     interface UpdateStages {
         /** The stage of the Workflow update allowing to specify tags. */
@@ -690,6 +703,7 @@ public interface Workflow {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

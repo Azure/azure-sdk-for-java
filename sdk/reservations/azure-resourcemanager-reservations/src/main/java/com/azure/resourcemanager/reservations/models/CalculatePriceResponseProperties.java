@@ -98,8 +98,8 @@ public final class CalculatePriceResponseProperties {
      * @param billingCurrencyTotal the billingCurrencyTotal value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
-    public CalculatePriceResponseProperties withBillingCurrencyTotal(
-        CalculatePriceResponsePropertiesBillingCurrencyTotal billingCurrencyTotal) {
+    public CalculatePriceResponseProperties
+        withBillingCurrencyTotal(CalculatePriceResponsePropertiesBillingCurrencyTotal billingCurrencyTotal) {
         this.billingCurrencyTotal = billingCurrencyTotal;
         return this;
     }
@@ -285,8 +285,8 @@ public final class CalculatePriceResponseProperties {
      * @param pricingCurrencyTotal the pricingCurrencyTotal value to set.
      * @return the CalculatePriceResponseProperties object itself.
      */
-    public CalculatePriceResponseProperties withPricingCurrencyTotal(
-        CalculatePriceResponsePropertiesPricingCurrencyTotal pricingCurrencyTotal) {
+    public CalculatePriceResponseProperties
+        withPricingCurrencyTotal(CalculatePriceResponsePropertiesPricingCurrencyTotal pricingCurrencyTotal) {
         this.pricingCurrencyTotal = pricingCurrencyTotal;
         return this;
     }

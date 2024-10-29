@@ -23,16 +23,10 @@ import reactor.core.publisher.Mono;
  * Entry point to Cognitive Search service management API in Azure.
  */
 @Fluent
-public interface SearchServices extends
-    SupportsCreating<SearchService.DefinitionStages.Blank>,
-    SupportsListing<SearchService>,
-    SupportsListingByResourceGroup<SearchService>,
-    SupportsGettingByResourceGroup<SearchService>,
-    SupportsGettingById<SearchService>,
-    SupportsDeletingById,
-    SupportsDeletingByResourceGroup,
-    SupportsBatchCreation<SearchService>,
-    HasManager<SearchServiceManager> {
+public interface SearchServices extends SupportsCreating<SearchService.DefinitionStages.Blank>,
+    SupportsListing<SearchService>, SupportsListingByResourceGroup<SearchService>,
+    SupportsGettingByResourceGroup<SearchService>, SupportsGettingById<SearchService>, SupportsDeletingById,
+    SupportsDeletingByResourceGroup, SupportsBatchCreation<SearchService>, HasManager<SearchServiceManager> {
 
     /**
      * Checks if the specified Search service name is valid and available.

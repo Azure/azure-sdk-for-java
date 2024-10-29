@@ -21,22 +21,18 @@ public final class DeletedAccountsImpl implements DeletedAccounts {
 
     private final com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager;
 
-    public DeletedAccountsImpl(
-        DeletedAccountsClient innerClient,
+    public DeletedAccountsImpl(DeletedAccountsClient innerClient,
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Account> getWithResponse(
-        String location, String resourceGroupName, String accountName, Context context) {
-        Response<AccountInner> inner =
-            this.serviceClient().getWithResponse(location, resourceGroupName, accountName, context);
+    public Response<Account> getWithResponse(String location, String resourceGroupName, String accountName,
+        Context context) {
+        Response<AccountInner> inner
+            = this.serviceClient().getWithResponse(location, resourceGroupName, accountName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AccountImpl(inner.getValue(), this.manager()));
         } else {
             return null;

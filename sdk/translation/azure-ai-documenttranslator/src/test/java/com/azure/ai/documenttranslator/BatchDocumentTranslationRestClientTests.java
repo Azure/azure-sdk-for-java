@@ -17,9 +17,7 @@ public class BatchDocumentTranslationRestClientTests extends BatchDocumentTransl
     @Test
     public void testGetSupportedDocumentFormats() {
         BatchDocumentTranslationClient client = getClient();
-        String response = client.getSupportedDocumentFormatsWithResponse(null)
-            .getValue()
-            .toString();
+        String response = client.getSupportedDocumentFormatsWithResponse(null).getValue().toString();
 
         assertNotNull(response);
 
@@ -33,9 +31,7 @@ public class BatchDocumentTranslationRestClientTests extends BatchDocumentTransl
     @Test
     public void testGetSupportedGlossaryFormats() {
         BatchDocumentTranslationClient client = getClient();
-        String response = client.getSupportedGlossaryFormatsWithResponse(null)
-            .getValue()
-            .toString();
+        String response = client.getSupportedGlossaryFormatsWithResponse(null).getValue().toString();
 
         assertNotNull(response);
 

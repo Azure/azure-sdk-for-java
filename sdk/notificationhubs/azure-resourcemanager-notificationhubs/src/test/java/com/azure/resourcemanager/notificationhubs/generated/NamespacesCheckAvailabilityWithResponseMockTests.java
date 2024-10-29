@@ -49,16 +49,21 @@ public final class NamespacesCheckAvailabilityWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NotificationHubsManager manager = NotificationHubsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NotificationHubsManager manager = NotificationHubsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckAvailabilityResult response = manager.namespaces()
-            .checkAvailabilityWithResponse(
-                new CheckAvailabilityParameters()
-                    .withName("tllxdyhgsyocogj").withLocation("ocrkvcikh").withTags(mapOf("gxk", "amqgxqquezikyw"))
-                    .withIsAvailiable(false).withSku(new Sku().withName(SkuName.BASIC).withTier("elwuipi")
-                        .withSize("jzkzi").withFamily("vvcnayr").withCapacity(108895877)),
+            .checkAvailabilityWithResponse(new CheckAvailabilityParameters().withName("tllxdyhgsyocogj")
+                .withLocation("ocrkvcikh")
+                .withTags(mapOf("gxk", "amqgxqquezikyw"))
+                .withIsAvailiable(false)
+                .withSku(new Sku().withName(SkuName.BASIC)
+                    .withTier("elwuipi")
+                    .withSize("jzkzi")
+                    .withFamily("vvcnayr")
+                    .withCapacity(108895877)),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

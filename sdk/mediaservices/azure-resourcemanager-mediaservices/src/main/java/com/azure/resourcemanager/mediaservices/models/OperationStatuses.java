@@ -25,13 +25,8 @@ public interface OperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return asset track operation status along with {@link Response}.
      */
-    Response<AssetTrackOperationStatus> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        String operationId,
-        Context context);
+    Response<AssetTrackOperationStatus> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String trackName, String operationId, Context context);
 
     /**
      * Get operation status.
@@ -48,6 +43,6 @@ public interface OperationStatuses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return asset track operation status.
      */
-    AssetTrackOperationStatus get(
-        String resourceGroupName, String accountName, String assetName, String trackName, String operationId);
+    AssetTrackOperationStatus get(String resourceGroupName, String accountName, String assetName, String trackName,
+        String operationId);
 }

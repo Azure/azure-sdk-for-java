@@ -14,8 +14,8 @@ public final class LabelResourceImpl implements LabelResource {
 
     private final com.azure.resourcemanager.defendereasm.EasmManager serviceManager;
 
-    LabelResourceImpl(
-        LabelResourceInner innerObject, com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
+    LabelResourceImpl(LabelResourceInner innerObject,
+        com.azure.resourcemanager.defendereasm.EasmManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

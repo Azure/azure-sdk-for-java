@@ -12,31 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class KeyVaultKeyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KeyVaultKeyInner model =
-            BinaryData
-                .fromString(
-                    "{\"kid\":\"dcfhucqdpf\",\"attributes\":{\"enabled\":true,\"created\":3408443666181567274,\"updated\":1956794003061019493}}")
-                .toObject(KeyVaultKeyInner.class);
-        Assertions.assertEquals("dcfhucqdpf", model.kid());
+        KeyVaultKeyInner model = BinaryData.fromString(
+            "{\"kid\":\"xuuwhcj\",\"attributes\":{\"enabled\":true,\"created\":4402960897406815871,\"updated\":1876161227592944321}}")
+            .toObject(KeyVaultKeyInner.class);
+        Assertions.assertEquals("xuuwhcj", model.kid());
         Assertions.assertEquals(true, model.attributes().enabled());
-        Assertions.assertEquals(3408443666181567274L, model.attributes().created());
-        Assertions.assertEquals(1956794003061019493L, model.attributes().updated());
+        Assertions.assertEquals(4402960897406815871L, model.attributes().created());
+        Assertions.assertEquals(1876161227592944321L, model.attributes().updated());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KeyVaultKeyInner model =
-            new KeyVaultKeyInner()
-                .withKid("dcfhucqdpf")
-                .withAttributes(
-                    new KeyVaultKeyAttributes()
-                        .withEnabled(true)
-                        .withCreated(3408443666181567274L)
-                        .withUpdated(1956794003061019493L));
+        KeyVaultKeyInner model = new KeyVaultKeyInner().withKid("xuuwhcj")
+            .withAttributes(new KeyVaultKeyAttributes().withEnabled(true)
+                .withCreated(4402960897406815871L)
+                .withUpdated(1876161227592944321L));
         model = BinaryData.fromObject(model).toObject(KeyVaultKeyInner.class);
-        Assertions.assertEquals("dcfhucqdpf", model.kid());
+        Assertions.assertEquals("xuuwhcj", model.kid());
         Assertions.assertEquals(true, model.attributes().enabled());
-        Assertions.assertEquals(3408443666181567274L, model.attributes().created());
-        Assertions.assertEquals(1956794003061019493L, model.attributes().updated());
+        Assertions.assertEquals(4402960897406815871L, model.attributes().created());
+        Assertions.assertEquals(1876161227592944321L, model.attributes().updated());
     }
 }

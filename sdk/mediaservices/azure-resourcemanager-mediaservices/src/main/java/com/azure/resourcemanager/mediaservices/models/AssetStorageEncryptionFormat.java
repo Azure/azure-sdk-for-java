@@ -14,8 +14,8 @@ public final class AssetStorageEncryptionFormat extends ExpandableStringEnum<Ass
     public static final AssetStorageEncryptionFormat NONE = fromString("None");
 
     /** Static value MediaStorageClientEncryption for AssetStorageEncryptionFormat. */
-    public static final AssetStorageEncryptionFormat MEDIA_STORAGE_CLIENT_ENCRYPTION =
-        fromString("MediaStorageClientEncryption");
+    public static final AssetStorageEncryptionFormat MEDIA_STORAGE_CLIENT_ENCRYPTION
+        = fromString("MediaStorageClientEncryption");
 
     /**
      * Creates a new instance of AssetStorageEncryptionFormat value.

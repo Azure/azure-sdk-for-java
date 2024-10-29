@@ -30,36 +30,26 @@ public final class ConfigurationStoresListDeletedMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"id\":\"ni\",\"name\":\"x\",\"type\":\"kpycgklwndnhjd\",\"properties\":{\"configurationStoreId\":\"hvylwzbt\",\"location\":\"xujznbmpowu\",\"deletionDate\":\"2020-12-27T11:29:17Z\",\"scheduledPurgeDate\":\"2021-07-21T15:39:33Z\",\"tags\":{\"obbc\":\"eualupjmkhf\",\"tghfgblcgwxzvl\":\"wsrtjriplrbpbe\"},\"purgeProtectionEnabled\":true}}]}";
+        String responseStr
+            = "{\"value\":[{\"id\":\"ni\",\"name\":\"x\",\"type\":\"kpycgklwndnhjd\",\"properties\":{\"configurationStoreId\":\"hvylwzbt\",\"location\":\"xujznbmpowu\",\"deletionDate\":\"2020-12-27T11:29:17Z\",\"scheduledPurgeDate\":\"2021-07-21T15:39:33Z\",\"tags\":{\"obbc\":\"eualupjmkhf\",\"tghfgblcgwxzvl\":\"wsrtjriplrbpbe\"},\"purgeProtectionEnabled\":true}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        AppConfigurationManager manager =
-            AppConfigurationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        AppConfigurationManager manager = AppConfigurationManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DeletedConfigurationStore> response =
-            manager.configurationStores().listDeleted(com.azure.core.util.Context.NONE);
+        PagedIterable<DeletedConfigurationStore> response
+            = manager.configurationStores().listDeleted(com.azure.core.util.Context.NONE);
     }
 }

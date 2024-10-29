@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Auto pause properties. */
 @Fluent
 public final class AutoPauseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoPauseProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(AutoPauseProperties.class);
 
     /*
      * The delayInMinutes property.

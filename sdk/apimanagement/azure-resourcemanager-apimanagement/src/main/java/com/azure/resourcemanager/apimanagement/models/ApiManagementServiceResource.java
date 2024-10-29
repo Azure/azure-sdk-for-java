@@ -365,14 +365,9 @@ public interface ApiManagementServiceResource {
     ApiManagementServiceResourceInner innerModel();
 
     /** The entirety of the ApiManagementServiceResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithPublisherEmail,
-            DefinitionStages.WithPublisherName,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithSku, DefinitionStages.WithPublisherEmail,
+        DefinitionStages.WithPublisherName, DefinitionStages.WithCreate {
     }
 
     /** The ApiManagementServiceResource definition stages. */
@@ -448,25 +443,15 @@ public interface ApiManagementServiceResource {
          * The stage of the ApiManagementServiceResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithZones,
-                DefinitionStages.WithNotificationSenderEmail,
-                DefinitionStages.WithHostnameConfigurations,
-                DefinitionStages.WithPublicIpAddressId,
-                DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithVirtualNetworkConfiguration,
-                DefinitionStages.WithAdditionalLocations,
-                DefinitionStages.WithCustomProperties,
-                DefinitionStages.WithCertificates,
-                DefinitionStages.WithEnableClientCertificate,
-                DefinitionStages.WithNatGatewayState,
-                DefinitionStages.WithDisableGateway,
-                DefinitionStages.WithVirtualNetworkType,
-                DefinitionStages.WithApiVersionConstraint,
-                DefinitionStages.WithRestore,
-                DefinitionStages.WithPrivateEndpointConnections {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
+            DefinitionStages.WithZones, DefinitionStages.WithNotificationSenderEmail,
+            DefinitionStages.WithHostnameConfigurations, DefinitionStages.WithPublicIpAddressId,
+            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithVirtualNetworkConfiguration,
+            DefinitionStages.WithAdditionalLocations, DefinitionStages.WithCustomProperties,
+            DefinitionStages.WithCertificates, DefinitionStages.WithEnableClientCertificate,
+            DefinitionStages.WithNatGatewayState, DefinitionStages.WithDisableGateway,
+            DefinitionStages.WithVirtualNetworkType, DefinitionStages.WithApiVersionConstraint,
+            DefinitionStages.WithRestore, DefinitionStages.WithPrivateEndpointConnections {
             /**
              * Executes the create request.
              *
@@ -757,8 +742,8 @@ public interface ApiManagementServiceResource {
              * @param privateEndpointConnections List of Private Endpoint Connections of this service.
              * @return the next definition stage.
              */
-            WithCreate withPrivateEndpointConnections(
-                List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
+            WithCreate
+                withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
         }
     }
 
@@ -770,28 +755,14 @@ public interface ApiManagementServiceResource {
     ApiManagementServiceResource.Update update();
 
     /** The template for ApiManagementServiceResource update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithSku,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithZones,
-            UpdateStages.WithPublisherEmail,
-            UpdateStages.WithPublisherName,
-            UpdateStages.WithNotificationSenderEmail,
-            UpdateStages.WithHostnameConfigurations,
-            UpdateStages.WithPublicIpAddressId,
-            UpdateStages.WithPublicNetworkAccess,
-            UpdateStages.WithVirtualNetworkConfiguration,
-            UpdateStages.WithAdditionalLocations,
-            UpdateStages.WithCustomProperties,
-            UpdateStages.WithCertificates,
-            UpdateStages.WithEnableClientCertificate,
-            UpdateStages.WithNatGatewayState,
-            UpdateStages.WithDisableGateway,
-            UpdateStages.WithVirtualNetworkType,
-            UpdateStages.WithApiVersionConstraint,
-            UpdateStages.WithRestore,
-            UpdateStages.WithPrivateEndpointConnections {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity,
+        UpdateStages.WithZones, UpdateStages.WithPublisherEmail, UpdateStages.WithPublisherName,
+        UpdateStages.WithNotificationSenderEmail, UpdateStages.WithHostnameConfigurations,
+        UpdateStages.WithPublicIpAddressId, UpdateStages.WithPublicNetworkAccess,
+        UpdateStages.WithVirtualNetworkConfiguration, UpdateStages.WithAdditionalLocations,
+        UpdateStages.WithCustomProperties, UpdateStages.WithCertificates, UpdateStages.WithEnableClientCertificate,
+        UpdateStages.WithNatGatewayState, UpdateStages.WithDisableGateway, UpdateStages.WithVirtualNetworkType,
+        UpdateStages.WithApiVersionConstraint, UpdateStages.WithRestore, UpdateStages.WithPrivateEndpointConnections {
         /**
          * Executes the update request.
          *
@@ -1117,8 +1088,8 @@ public interface ApiManagementServiceResource {
              * @param privateEndpointConnections List of Private Endpoint Connections of this service.
              * @return the next definition stage.
              */
-            Update withPrivateEndpointConnections(
-                List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
+            Update
+                withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
         }
     }
 

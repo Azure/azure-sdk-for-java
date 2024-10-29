@@ -51,8 +51,8 @@ public interface OpenIdConnectProvidersClient {
      * @return paged OpenIdProviders list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<OpenidConnectProviderContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<OpenidConnectProviderContractInner> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
@@ -67,8 +67,8 @@ public interface OpenIdConnectProvidersClient {
      * @return the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenIdConnectProvidersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String opid, Context context);
+    OpenIdConnectProvidersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String opid, Context context);
 
     /**
      * Gets the entity state (Etag) version of the openIdConnectProvider specified by its identifier.
@@ -96,8 +96,8 @@ public interface OpenIdConnectProvidersClient {
      * @return specific OpenID Connect Provider without secrets.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenIdConnectProvidersGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String opid, Context context);
+    OpenIdConnectProvidersGetResponse getWithResponse(String resourceGroupName, String serviceName, String opid,
+        Context context);
 
     /**
      * Gets specific OpenID Connect Provider without secrets.
@@ -128,12 +128,8 @@ public interface OpenIdConnectProvidersClient {
      * @return openId Connect Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenIdConnectProvidersCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String opid,
-        OpenidConnectProviderContractInner parameters,
-        String ifMatch,
+    OpenIdConnectProvidersCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String serviceName, String opid, OpenidConnectProviderContractInner parameters, String ifMatch,
         Context context);
 
     /**
@@ -149,8 +145,8 @@ public interface OpenIdConnectProvidersClient {
      * @return openId Connect Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenidConnectProviderContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String opid, OpenidConnectProviderContractInner parameters);
+    OpenidConnectProviderContractInner createOrUpdate(String resourceGroupName, String serviceName, String opid,
+        OpenidConnectProviderContractInner parameters);
 
     /**
      * Updates the specific OpenID Connect Provider.
@@ -168,13 +164,8 @@ public interface OpenIdConnectProvidersClient {
      * @return openId Connect Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenIdConnectProvidersUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String opid,
-        String ifMatch,
-        OpenidConnectProviderUpdateContract parameters,
-        Context context);
+    OpenIdConnectProvidersUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String opid,
+        String ifMatch, OpenidConnectProviderUpdateContract parameters, Context context);
 
     /**
      * Updates the specific OpenID Connect Provider.
@@ -191,11 +182,7 @@ public interface OpenIdConnectProvidersClient {
      * @return openId Connect Provider details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenidConnectProviderContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String opid,
-        String ifMatch,
+    OpenidConnectProviderContractInner update(String resourceGroupName, String serviceName, String opid, String ifMatch,
         OpenidConnectProviderUpdateContract parameters);
 
     /**
@@ -213,8 +200,8 @@ public interface OpenIdConnectProvidersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String opid, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String opid, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific OpenID Connect Provider of the API Management service instance.
@@ -244,8 +231,8 @@ public interface OpenIdConnectProvidersClient {
      * @return the client secret details of the OpenID Connect Provider.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OpenIdConnectProvidersListSecretsResponse listSecretsWithResponse(
-        String resourceGroupName, String serviceName, String opid, Context context);
+    OpenIdConnectProvidersListSecretsResponse listSecretsWithResponse(String resourceGroupName, String serviceName,
+        String opid, Context context);
 
     /**
      * Gets the client secret details of the OpenID Connect Provider.

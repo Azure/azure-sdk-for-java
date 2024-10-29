@@ -22,8 +22,8 @@ public interface ProductWikis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Wiki for a Product specified by its identifier.
      */
-    ProductWikisGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
+    ProductWikisGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String productId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Wiki for a Product specified by its identifier.
@@ -49,8 +49,8 @@ public interface ProductWikis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Wiki for a Product specified by its identifier.
      */
-    Response<WikiContract> getWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
+    Response<WikiContract> getWithResponse(String resourceGroupName, String serviceName, String productId,
+        Context context);
 
     /**
      * Gets the details of the Wiki for a Product specified by its identifier.
@@ -79,13 +79,8 @@ public interface ProductWikis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wiki properties.
      */
-    Response<WikiContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        WikiContractInner parameters,
-        String ifMatch,
-        Context context);
+    Response<WikiContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName, String productId,
+        WikiContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates a new Wiki for a Product or updates an existing one.
@@ -99,8 +94,8 @@ public interface ProductWikis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wiki properties.
      */
-    WikiContract createOrUpdate(
-        String resourceGroupName, String serviceName, String productId, WikiContractInner parameters);
+    WikiContract createOrUpdate(String resourceGroupName, String serviceName, String productId,
+        WikiContractInner parameters);
 
     /**
      * Updates the details of the Wiki for a Product specified by its identifier.
@@ -117,13 +112,8 @@ public interface ProductWikis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wiki properties.
      */
-    Response<WikiContract> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String ifMatch,
-        WikiUpdateContract parameters,
-        Context context);
+    Response<WikiContract> updateWithResponse(String resourceGroupName, String serviceName, String productId,
+        String ifMatch, WikiUpdateContract parameters, Context context);
 
     /**
      * Updates the details of the Wiki for a Product specified by its identifier.
@@ -139,8 +129,8 @@ public interface ProductWikis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wiki properties.
      */
-    WikiContract update(
-        String resourceGroupName, String serviceName, String productId, String ifMatch, WikiUpdateContract parameters);
+    WikiContract update(String resourceGroupName, String serviceName, String productId, String ifMatch,
+        WikiUpdateContract parameters);
 
     /**
      * Deletes the specified Wiki from a Product.
@@ -156,8 +146,8 @@ public interface ProductWikis {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String productId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId, String ifMatch,
+        Context context);
 
     /**
      * Deletes the specified Wiki from a Product.

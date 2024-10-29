@@ -17,7 +17,7 @@ import com.azure.resourcemanager.networkfunction.fluent.models.AzureTrafficColle
 public interface AzureTrafficCollectorsByResourceGroupsClient {
     /**
      * Return list of Azure Traffic Collectors in a Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,7 +29,7 @@ public interface AzureTrafficCollectorsByResourceGroupsClient {
 
     /**
      * Return list of Azure Traffic Collectors in a Resource Group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

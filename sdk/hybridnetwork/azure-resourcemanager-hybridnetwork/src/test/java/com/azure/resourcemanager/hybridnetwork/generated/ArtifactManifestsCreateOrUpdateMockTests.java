@@ -50,18 +50,23 @@ public final class ArtifactManifestsCreateOrUpdateMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ArtifactManifest response = manager.artifactManifests().define("xhxknlc").withRegion("kzuqnwsith")
+        ArtifactManifest response = manager.artifactManifests()
+            .define("xhxknlc")
+            .withRegion("kzuqnwsith")
             .withExistingArtifactStore("vx", "cwxhmpej", "lkexaonwivkcqh")
             .withTags(mapOf("hluqwquls", "ly", "zvqqugdrftbcvexr", "trjbhxykfhyq", "agk", "uquowtljvfwhr",
                 "dgglmepjpfs", "yxvrqtvbczsul"))
             .withProperties(new ArtifactManifestPropertiesFormat().withArtifacts(Arrays.asList(
                 new ManifestArtifactFormat().withArtifactName("jubyqjfkakfq")
-                    .withArtifactType(ArtifactType.VHD_IMAGE_FILE).withArtifactVersion("myildudxjasc"),
-                new ManifestArtifactFormat().withArtifactName("vfdjkpdxp").withArtifactType(ArtifactType.VHD_IMAGE_FILE)
+                    .withArtifactType(ArtifactType.VHD_IMAGE_FILE)
+                    .withArtifactVersion("myildudxjasc"),
+                new ManifestArtifactFormat().withArtifactName("vfdjkpdxp")
+                    .withArtifactType(ArtifactType.VHD_IMAGE_FILE)
                     .withArtifactVersion("snmgzvyfi"))))
             .create();
 

@@ -297,8 +297,8 @@ public final class AuthorizationServerContractInner extends ProxyResource {
      * @param clientAuthenticationMethod the clientAuthenticationMethod value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
-    public AuthorizationServerContractInner withClientAuthenticationMethod(
-        List<ClientAuthenticationMethod> clientAuthenticationMethod) {
+    public AuthorizationServerContractInner
+        withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AuthorizationServerContractProperties();
         }
@@ -325,8 +325,8 @@ public final class AuthorizationServerContractInner extends ProxyResource {
      * @param tokenBodyParameters the tokenBodyParameters value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
-    public AuthorizationServerContractInner withTokenBodyParameters(
-        List<TokenBodyParameterContract> tokenBodyParameters) {
+    public AuthorizationServerContractInner
+        withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AuthorizationServerContractProperties();
         }
@@ -422,8 +422,8 @@ public final class AuthorizationServerContractInner extends ProxyResource {
      * @param bearerTokenSendingMethods the bearerTokenSendingMethods value to set.
      * @return the AuthorizationServerContractInner object itself.
      */
-    public AuthorizationServerContractInner withBearerTokenSendingMethods(
-        List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
+    public AuthorizationServerContractInner
+        withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AuthorizationServerContractProperties();
         }

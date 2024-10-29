@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The frequency to update. */
+/**
+ * The frequency to update.
+ */
 public enum FrequencyTypes {
-    /** Enum value Minute. */
+    /**
+     * Enum value Minute.
+     */
     MINUTE("Minute"),
 
-    /** Enum value Hour. */
+    /**
+     * Enum value Hour.
+     */
     HOUR("Hour"),
 
-    /** Enum value Day. */
+    /**
+     * Enum value Day.
+     */
     DAY("Day"),
 
-    /** Enum value Week. */
+    /**
+     * Enum value Week.
+     */
     WEEK("Week"),
 
-    /** Enum value Month. */
+    /**
+     * Enum value Month.
+     */
     MONTH("Month");
 
-    /** The actual serialized value for a FrequencyTypes instance. */
+    /**
+     * The actual serialized value for a FrequencyTypes instance.
+     */
     private final String value;
 
     FrequencyTypes(String value) {
@@ -33,11 +44,10 @@ public enum FrequencyTypes {
 
     /**
      * Parses a serialized value to a FrequencyTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FrequencyTypes object, or null if unable to parse.
      */
-    @JsonCreator
     public static FrequencyTypes fromString(String value) {
         if (value == null) {
             return null;
@@ -51,8 +61,9 @@ public enum FrequencyTypes {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

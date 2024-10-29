@@ -24,7 +24,8 @@ import java.util.Map;
 @JsonFlatten
 @Fluent
 public class WorkspaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(WorkspaceInner.class);
 
     /*
      * The immutable id associated with this workspace.
@@ -504,8 +505,8 @@ public class WorkspaceInner extends Resource {
      * @param serviceManagedResourcesSettings the serviceManagedResourcesSettings value to set.
      * @return the WorkspaceInner object itself.
      */
-    public WorkspaceInner withServiceManagedResourcesSettings(
-        ServiceManagedResourcesSettings serviceManagedResourcesSettings) {
+    public WorkspaceInner
+        withServiceManagedResourcesSettings(ServiceManagedResourcesSettings serviceManagedResourcesSettings) {
         this.serviceManagedResourcesSettings = serviceManagedResourcesSettings;
         return this;
     }

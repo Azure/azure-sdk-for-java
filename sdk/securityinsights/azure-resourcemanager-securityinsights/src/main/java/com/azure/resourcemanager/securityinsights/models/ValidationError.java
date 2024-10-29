@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes an error encountered in the file during validation. */
+/**
+ * Describes an error encountered in the file during validation.
+ */
 @Fluent
-public final class ValidationError {
+public final class ValidationError implements JsonSerializable<ValidationError> {
     /*
      * The number of the record that has the error.
      */
-    @JsonProperty(value = "recordIndex")
     private Integer recordIndex;
 
     /*
      * A list of descriptions of the error.
      */
-    @JsonProperty(value = "errorMessages", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> errorMessages;
 
     /**
+     * Creates an instance of ValidationError class.
+     */
+    public ValidationError() {
+    }
+
+    /**
      * Get the recordIndex property: The number of the record that has the error.
-     *
+     * 
      * @return the recordIndex value.
      */
     public Integer recordIndex() {
@@ -34,7 +44,7 @@ public final class ValidationError {
 
     /**
      * Set the recordIndex property: The number of the record that has the error.
-     *
+     * 
      * @param recordIndex the recordIndex value to set.
      * @return the ValidationError object itself.
      */
@@ -45,7 +55,7 @@ public final class ValidationError {
 
     /**
      * Get the errorMessages property: A list of descriptions of the error.
-     *
+     * 
      * @return the errorMessages value.
      */
     public List<String> errorMessages() {
@@ -54,9 +64,48 @@ public final class ValidationError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("recordIndex", this.recordIndex);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidationError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidationError if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidationError.
+     */
+    public static ValidationError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidationError deserializedValidationError = new ValidationError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recordIndex".equals(fieldName)) {
+                    deserializedValidationError.recordIndex = reader.getNullable(JsonReader::getInt);
+                } else if ("errorMessages".equals(fieldName)) {
+                    List<String> errorMessages = reader.readArray(reader1 -> reader1.getString());
+                    deserializedValidationError.errorMessages = errorMessages;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidationError;
+        });
     }
 }

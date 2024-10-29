@@ -55,8 +55,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @param client the instance of the service client containing this operation class.
      */
     ApiSchemasClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ApiSchemasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ApiSchemasService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -67,101 +67,65 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
     public interface ApiSchemasService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SchemaCollection>> listByApi(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<SchemaCollection>> listByApi(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @QueryParam("$filter") String filter, @QueryParam("$top") Integer top,
+            @QueryParam("$skip") Integer skip, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Head("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<ApiSchemasGetEntityTagResponse> getEntityTag(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("schemaId") String schemaId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<ApiSchemasGetResponse> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("schemaId") String schemaId,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
+        @ExpectedResponses({ 200, 201, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("schemaId") String schemaId,
+            @HeaderParam("If-Match") String ifMatch, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SchemaContractInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ApiSchemasGetEntityTagResponse> getEntityTag(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("schemaId") String schemaId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("apiId") String apiId, @PathParam("schemaId") String schemaId,
+            @QueryParam("force") Boolean force, @HeaderParam("If-Match") String ifMatch,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<ApiSchemasGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("schemaId") String schemaId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
-        @ExpectedResponses({200, 201, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("schemaId") String schemaId,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") SchemaContractInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/apis/{apiId}/schemas/{schemaId}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("apiId") String apiId,
-            @PathParam("schemaId") String schemaId,
-            @QueryParam("force") Boolean force,
-            @HeaderParam("If-Match") String ifMatch,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SchemaCollection>> listByApiNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SchemaCollection>> listByApiNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -183,13 +147,11 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SchemaContractInner>> listByApiSinglePageAsync(
-        String resourceGroupName, String serviceName, String apiId, String filter, Integer top, Integer skip) {
+    private Mono<PagedResponse<SchemaContractInner>> listByApiSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiId, String filter, Integer top, Integer skip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -202,37 +164,15 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter apiId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByApi(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            filter,
-                            top,
-                            skip,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<SchemaContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByApi(this.client.getEndpoint(), resourceGroupName, serviceName, apiId,
+                filter, top, skip, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<SchemaContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -256,19 +196,11 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SchemaContractInner>> listByApiSinglePageAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private Mono<PagedResponse<SchemaContractInner>> listByApiSinglePageAsync(String resourceGroupName,
+        String serviceName, String apiId, String filter, Integer top, Integer skip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -281,35 +213,16 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter apiId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByApi(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                filter,
-                top,
-                skip,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByApi(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, filter, top, skip,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -330,10 +243,9 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the schema configuration at the API level as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SchemaContractInner> listByApiAsync(
-        String resourceGroupName, String serviceName, String apiId, String filter, Integer top, Integer skip) {
-        return new PagedFlux<>(
-            () -> listByApiSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip),
+    private PagedFlux<SchemaContractInner> listByApiAsync(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip) {
+        return new PagedFlux<>(() -> listByApiSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip),
             nextLink -> listByApiNextSinglePageAsync(nextLink));
     }
 
@@ -354,8 +266,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
         final String filter = null;
         final Integer top = null;
         final Integer skip = null;
-        return new PagedFlux<>(
-            () -> listByApiSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip),
+        return new PagedFlux<>(() -> listByApiSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip),
             nextLink -> listByApiNextSinglePageAsync(nextLink));
     }
 
@@ -378,14 +289,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the schema configuration at the API level as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SchemaContractInner> listByApiAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    private PagedFlux<SchemaContractInner> listByApiAsync(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedFlux<>(
             () -> listByApiSinglePageAsync(resourceGroupName, serviceName, apiId, filter, top, skip, context),
             nextLink -> listByApiNextSinglePageAsync(nextLink, context));
@@ -430,14 +335,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the schema configuration at the API level as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SchemaContractInner> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
+    public PagedIterable<SchemaContractInner> listByApi(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context) {
         return new PagedIterable<>(listByApiAsync(resourceGroupName, serviceName, apiId, filter, top, skip, context));
     }
 
@@ -456,13 +355,11 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiSchemasGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String schemaId) {
+    private Mono<ApiSchemasGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String schemaId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -478,26 +375,13 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter schemaId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getEntityTag(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            schemaId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName,
+                apiId, schemaId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -517,13 +401,11 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiSchemasGetEntityTagResponse> getEntityTagWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, Context context) {
+    private Mono<ApiSchemasGetEntityTagResponse> getEntityTagWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String schemaId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -539,24 +421,13 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter schemaId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getEntityTag(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                schemaId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getEntityTag(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, schemaId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -594,8 +465,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the entity state (Etag) version of the schema specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiSchemasGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, Context context) {
+    public ApiSchemasGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String schemaId, Context context) {
         return getEntityTagWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, context).block();
     }
 
@@ -630,13 +501,11 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the schema configuration at the API level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiSchemasGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String schemaId) {
+    private Mono<ApiSchemasGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName, String apiId,
+        String schemaId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -652,26 +521,13 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter schemaId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            schemaId,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serviceName, apiId,
+                schemaId, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -690,13 +546,11 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the schema configuration at the API level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiSchemasGetResponse> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, Context context) {
+    private Mono<ApiSchemasGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -712,24 +566,13 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter schemaId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                schemaId,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, schemaId,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -746,8 +589,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the schema configuration at the API level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SchemaContractInner> getAsync(
-        String resourceGroupName, String serviceName, String apiId, String schemaId) {
+    private Mono<SchemaContractInner> getAsync(String resourceGroupName, String serviceName, String apiId,
+        String schemaId) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -767,8 +610,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the schema configuration at the API level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiSchemasGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, Context context) {
+    public ApiSchemasGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, context).block();
     }
 
@@ -806,18 +649,11 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return aPI Schema Contract details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
-        String ifMatch) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String schemaId, SchemaContractInner parameters, String ifMatch) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -833,10 +669,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter schemaId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -845,21 +679,9 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            schemaId,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+                apiId, schemaId, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -880,19 +702,12 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return aPI Schema Contract details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
-        String ifMatch,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String apiId, String schemaId, SchemaContractInner parameters, String ifMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -908,10 +723,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter schemaId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -920,19 +733,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                schemaId,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, schemaId,
+            ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
@@ -952,22 +754,12 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
+        String resourceGroupName, String serviceName, String apiId, String schemaId, SchemaContractInner parameters,
         String ifMatch) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch);
-        return this
-            .client
-            .<SchemaContractInner, SchemaContractInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SchemaContractInner.class,
-                SchemaContractInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch);
+        return this.client.<SchemaContractInner, SchemaContractInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SchemaContractInner.class, SchemaContractInner.class, this.client.getContext());
     }
 
     /**
@@ -988,16 +780,10 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     private PollerFlux<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String serviceName, String apiId, String schemaId, SchemaContractInner parameters) {
         final String ifMatch = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch);
-        return this
-            .client
-            .<SchemaContractInner, SchemaContractInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SchemaContractInner.class,
-                SchemaContractInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch);
+        return this.client.<SchemaContractInner, SchemaContractInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SchemaContractInner.class, SchemaContractInner.class, this.client.getContext());
     }
 
     /**
@@ -1018,21 +804,13 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
-        String ifMatch,
-        Context context) {
+        String resourceGroupName, String serviceName, String apiId, String schemaId, SchemaContractInner parameters,
+        String ifMatch, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch, context);
-        return this
-            .client
-            .<SchemaContractInner, SchemaContractInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SchemaContractInner.class, SchemaContractInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, apiId,
+            schemaId, parameters, ifMatch, context);
+        return this.client.<SchemaContractInner, SchemaContractInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SchemaContractInner.class, SchemaContractInner.class, context);
     }
 
     /**
@@ -1053,8 +831,7 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
     public SyncPoller<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdate(
         String resourceGroupName, String serviceName, String apiId, String schemaId, SchemaContractInner parameters) {
         final String ifMatch = null;
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch)
             .getSyncPoller();
     }
 
@@ -1076,13 +853,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
-        String ifMatch,
-        Context context) {
+        String resourceGroupName, String serviceName, String apiId, String schemaId, SchemaContractInner parameters,
+        String ifMatch, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch, context)
             .getSyncPoller();
@@ -1104,15 +876,9 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return aPI Schema Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SchemaContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
-        String ifMatch) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch)
-            .last()
+    private Mono<SchemaContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, SchemaContractInner parameters, String ifMatch) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1131,11 +897,10 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return aPI Schema Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SchemaContractInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, SchemaContractInner parameters) {
+    private Mono<SchemaContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, SchemaContractInner parameters) {
         final String ifMatch = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1156,14 +921,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return aPI Schema Contract details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SchemaContractInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
-        String ifMatch,
-        Context context) {
+    private Mono<SchemaContractInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, SchemaContractInner parameters, String ifMatch, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1184,8 +943,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return aPI Schema Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SchemaContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, SchemaContractInner parameters) {
+    public SchemaContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, SchemaContractInner parameters) {
         final String ifMatch = null;
         return createOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch).block();
     }
@@ -1207,14 +966,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return aPI Schema Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SchemaContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
-        String ifMatch,
-        Context context) {
+    public SchemaContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, SchemaContractInner parameters, String ifMatch, Context context) {
         return createOrUpdateAsync(resourceGroupName, serviceName, apiId, schemaId, parameters, ifMatch, context)
             .block();
     }
@@ -1236,13 +989,11 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, String ifMatch, Boolean force) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, String ifMatch, Boolean force) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1261,28 +1012,14 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            apiId,
-                            schemaId,
-                            force,
-                            ifMatch,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, schemaId,
+                    force, ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1304,19 +1041,11 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        String ifMatch,
-        Boolean force,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, String ifMatch, Boolean force, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1335,26 +1064,13 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter ifMatch is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                apiId,
-                schemaId,
-                force,
-                ifMatch,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, apiId, schemaId, force,
+            ifMatch, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
@@ -1373,8 +1089,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, String ifMatch) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String apiId, String schemaId,
+        String ifMatch) {
         final Boolean force = null;
         return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, ifMatch, force)
             .flatMap(ignored -> Mono.empty());
@@ -1398,14 +1114,8 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        String ifMatch,
-        Boolean force,
-        Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, String ifMatch, Boolean force, Context context) {
         return deleteWithResponseAsync(resourceGroupName, serviceName, apiId, schemaId, ifMatch, force, context)
             .block();
     }
@@ -1447,23 +1157,14 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByApiNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SchemaContractInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SchemaContractInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1485,23 +1186,13 @@ public final class ApiSchemasClientImpl implements ApiSchemasClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByApiNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByApiNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -65,9 +65,8 @@ public final class ServerUsageListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ServerUsageListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ServerUsageListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

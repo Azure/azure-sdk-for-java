@@ -43,8 +43,8 @@ public interface ServiceConfigurationsClient {
      * @return the paginated list of serviceConfigurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServiceConfigurationResourceInner> listByEndpointResource(
-        String resourceUri, String endpointName, Context context);
+    PagedIterable<ServiceConfigurationResourceInner> listByEndpointResource(String resourceUri, String endpointName,
+        Context context);
 
     /**
      * Gets the details about the service to the resource.
@@ -59,8 +59,8 @@ public interface ServiceConfigurationsClient {
      * @return the details about the service to the resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceConfigurationResourceInner> getWithResponse(
-        String resourceUri, String endpointName, String serviceConfigurationName, Context context);
+    Response<ServiceConfigurationResourceInner> getWithResponse(String resourceUri, String endpointName,
+        String serviceConfigurationName, Context context);
 
     /**
      * Gets the details about the service to the resource.
@@ -90,11 +90,8 @@ public interface ServiceConfigurationsClient {
      * @return the service configuration details associated with the target resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceConfigurationResourceInner> createOrupdateWithResponse(
-        String resourceUri,
-        String endpointName,
-        String serviceConfigurationName,
-        ServiceConfigurationResourceInner serviceConfigurationResource,
+    Response<ServiceConfigurationResourceInner> createOrupdateWithResponse(String resourceUri, String endpointName,
+        String serviceConfigurationName, ServiceConfigurationResourceInner serviceConfigurationResource,
         Context context);
 
     /**
@@ -110,11 +107,8 @@ public interface ServiceConfigurationsClient {
      * @return the service configuration details associated with the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceConfigurationResourceInner createOrupdate(
-        String resourceUri,
-        String endpointName,
-        String serviceConfigurationName,
-        ServiceConfigurationResourceInner serviceConfigurationResource);
+    ServiceConfigurationResourceInner createOrupdate(String resourceUri, String endpointName,
+        String serviceConfigurationName, ServiceConfigurationResourceInner serviceConfigurationResource);
 
     /**
      * Update the service details in the service configurations of the target resource.
@@ -130,11 +124,8 @@ public interface ServiceConfigurationsClient {
      * @return the service configuration details associated with the target resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceConfigurationResourceInner> updateWithResponse(
-        String resourceUri,
-        String endpointName,
-        String serviceConfigurationName,
-        ServiceConfigurationResourcePatch serviceConfigurationResource,
+    Response<ServiceConfigurationResourceInner> updateWithResponse(String resourceUri, String endpointName,
+        String serviceConfigurationName, ServiceConfigurationResourcePatch serviceConfigurationResource,
         Context context);
 
     /**
@@ -150,10 +141,7 @@ public interface ServiceConfigurationsClient {
      * @return the service configuration details associated with the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceConfigurationResourceInner update(
-        String resourceUri,
-        String endpointName,
-        String serviceConfigurationName,
+    ServiceConfigurationResourceInner update(String resourceUri, String endpointName, String serviceConfigurationName,
         ServiceConfigurationResourcePatch serviceConfigurationResource);
 
     /**
@@ -169,8 +157,8 @@ public interface ServiceConfigurationsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceUri, String endpointName, String serviceConfigurationName, Context context);
+    Response<Void> deleteWithResponse(String resourceUri, String endpointName, String serviceConfigurationName,
+        Context context);
 
     /**
      * Deletes the service details to the target resource.

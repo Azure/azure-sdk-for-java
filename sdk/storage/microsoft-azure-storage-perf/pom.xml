@@ -17,7 +17,8 @@
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure:microsoft-azure-storage-perf;current} -->
 
   <properties>
-    <perf.test.mainClass>com.microsoft.azure.storage.Appp</perf.test.mainClass>
+    <perf.test.mainClass>com.microsoft.azure.storage.App</perf.test.mainClass>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <dependencies>
@@ -40,7 +41,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>

@@ -30,5 +30,5 @@ public @interface ServiceClient {
      *
      * @return An array of all services this service client interacts with
      */
-    Class<?>[] serviceInterfaces() default {};
+    Class<?>[] serviceInterfaces() default { };
 }

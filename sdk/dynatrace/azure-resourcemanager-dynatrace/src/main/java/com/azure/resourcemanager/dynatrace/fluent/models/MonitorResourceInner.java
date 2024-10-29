@@ -134,8 +134,8 @@ public final class MonitorResourceInner extends Resource {
      * @param marketplaceSubscriptionStatus the marketplaceSubscriptionStatus value to set.
      * @return the MonitorResourceInner object itself.
      */
-    public MonitorResourceInner withMarketplaceSubscriptionStatus(
-        MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
+    public MonitorResourceInner
+        withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MonitorProperties();
         }
@@ -158,8 +158,8 @@ public final class MonitorResourceInner extends Resource {
      * @param dynatraceEnvironmentProperties the dynatraceEnvironmentProperties value to set.
      * @return the MonitorResourceInner object itself.
      */
-    public MonitorResourceInner withDynatraceEnvironmentProperties(
-        DynatraceEnvironmentProperties dynatraceEnvironmentProperties) {
+    public MonitorResourceInner
+        withDynatraceEnvironmentProperties(DynatraceEnvironmentProperties dynatraceEnvironmentProperties) {
         if (this.innerProperties() == null) {
             this.innerProperties = new MonitorProperties();
         }
@@ -247,10 +247,8 @@ public final class MonitorResourceInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model MonitorResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model MonitorResourceInner"));
         } else {
             innerProperties().validate();
         }

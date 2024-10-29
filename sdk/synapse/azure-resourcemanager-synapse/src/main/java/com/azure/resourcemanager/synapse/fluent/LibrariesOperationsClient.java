@@ -41,6 +41,6 @@ public interface LibrariesOperationsClient {
      * @return a list of Library resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LibraryResourceInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<LibraryResourceInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

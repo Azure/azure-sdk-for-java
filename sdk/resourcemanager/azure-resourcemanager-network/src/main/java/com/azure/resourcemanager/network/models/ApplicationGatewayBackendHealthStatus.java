@@ -8,24 +8,24 @@ import java.util.Collection;
 /** Application gateway backend health status. */
 public class ApplicationGatewayBackendHealthStatus extends ExpandableStringEnum<ApplicationGatewayBackendHealthStatus> {
     /** Unknown health status. */
-    public static final ApplicationGatewayBackendHealthStatus UNKNOWN =
-        fromString(ApplicationGatewayBackendHealthServerHealth.UNKNOWN.toString());
+    public static final ApplicationGatewayBackendHealthStatus UNKNOWN
+        = fromString(ApplicationGatewayBackendHealthServerHealth.UNKNOWN.toString());
 
     /** The server is up. */
-    public static final ApplicationGatewayBackendHealthStatus UP =
-        fromString(ApplicationGatewayBackendHealthServerHealth.UP.toString());
+    public static final ApplicationGatewayBackendHealthStatus UP
+        = fromString(ApplicationGatewayBackendHealthServerHealth.UP.toString());
 
     /** The server is down. */
-    public static final ApplicationGatewayBackendHealthStatus DOWN =
-        fromString(ApplicationGatewayBackendHealthServerHealth.DOWN.toString());
+    public static final ApplicationGatewayBackendHealthStatus DOWN
+        = fromString(ApplicationGatewayBackendHealthServerHealth.DOWN.toString());
 
     /** Partial health status. */
-    public static final ApplicationGatewayBackendHealthStatus PARTIAL =
-        fromString(ApplicationGatewayBackendHealthServerHealth.PARTIAL.toString());
+    public static final ApplicationGatewayBackendHealthStatus PARTIAL
+        = fromString(ApplicationGatewayBackendHealthServerHealth.PARTIAL.toString());
 
     /** The server is draining. */
-    public static final ApplicationGatewayBackendHealthStatus DRAINING =
-        fromString(ApplicationGatewayBackendHealthServerHealth.DRAINING.toString());
+    public static final ApplicationGatewayBackendHealthStatus DRAINING
+        = fromString(ApplicationGatewayBackendHealthServerHealth.DRAINING.toString());
 
     /** The server is unhealthy. */
     public static final ApplicationGatewayBackendHealthStatus UNHEALTHY = fromString("Unhealthy");

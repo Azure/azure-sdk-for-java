@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RequestMatchPatternTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RequestMatchPattern model =
-            BinaryData
-                .fromString("{\"path\":\"hsgcbacphejkot\",\"method\":\"qgoulznd\"}")
-                .toObject(RequestMatchPattern.class);
+        RequestMatchPattern model = BinaryData.fromString("{\"path\":\"hsgcbacphejkot\",\"method\":\"qgoulznd\"}")
+            .toObject(RequestMatchPattern.class);
         Assertions.assertEquals("hsgcbacphejkot", model.path());
         Assertions.assertEquals("qgoulznd", model.method());
     }

@@ -36,6 +36,6 @@ public interface LocationsClient {
      * @return the check availability result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest body, Context context);
+    Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest body,
+        Context context);
 }

@@ -6,43 +6,47 @@ package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Input for the task that collects user tables for the given list of databases. */
+/**
+ * Input for the task that collects user tables for the given list of databases.
+ */
 @Fluent
-public final class GetUserTablesSqlSyncTaskInput {
+public final class GetUserTablesSqlSyncTaskInput implements JsonSerializable<GetUserTablesSqlSyncTaskInput> {
     /*
      * Connection information for SQL Server
      */
-    @JsonProperty(value = "sourceConnectionInfo", required = true)
     private SqlConnectionInfo sourceConnectionInfo;
 
     /*
      * Connection information for SQL DB
      */
-    @JsonProperty(value = "targetConnectionInfo", required = true)
     private SqlConnectionInfo targetConnectionInfo;
 
     /*
      * List of source database names to collect tables for
      */
-    @JsonProperty(value = "selectedSourceDatabases", required = true)
     private List<String> selectedSourceDatabases;
 
     /*
      * List of target database names to collect tables for
      */
-    @JsonProperty(value = "selectedTargetDatabases", required = true)
     private List<String> selectedTargetDatabases;
 
-    /** Creates an instance of GetUserTablesSqlSyncTaskInput class. */
+    /**
+     * Creates an instance of GetUserTablesSqlSyncTaskInput class.
+     */
     public GetUserTablesSqlSyncTaskInput() {
     }
 
     /**
      * Get the sourceConnectionInfo property: Connection information for SQL Server.
-     *
+     * 
      * @return the sourceConnectionInfo value.
      */
     public SqlConnectionInfo sourceConnectionInfo() {
@@ -51,7 +55,7 @@ public final class GetUserTablesSqlSyncTaskInput {
 
     /**
      * Set the sourceConnectionInfo property: Connection information for SQL Server.
-     *
+     * 
      * @param sourceConnectionInfo the sourceConnectionInfo value to set.
      * @return the GetUserTablesSqlSyncTaskInput object itself.
      */
@@ -62,7 +66,7 @@ public final class GetUserTablesSqlSyncTaskInput {
 
     /**
      * Get the targetConnectionInfo property: Connection information for SQL DB.
-     *
+     * 
      * @return the targetConnectionInfo value.
      */
     public SqlConnectionInfo targetConnectionInfo() {
@@ -71,7 +75,7 @@ public final class GetUserTablesSqlSyncTaskInput {
 
     /**
      * Set the targetConnectionInfo property: Connection information for SQL DB.
-     *
+     * 
      * @param targetConnectionInfo the targetConnectionInfo value to set.
      * @return the GetUserTablesSqlSyncTaskInput object itself.
      */
@@ -82,7 +86,7 @@ public final class GetUserTablesSqlSyncTaskInput {
 
     /**
      * Get the selectedSourceDatabases property: List of source database names to collect tables for.
-     *
+     * 
      * @return the selectedSourceDatabases value.
      */
     public List<String> selectedSourceDatabases() {
@@ -91,7 +95,7 @@ public final class GetUserTablesSqlSyncTaskInput {
 
     /**
      * Set the selectedSourceDatabases property: List of source database names to collect tables for.
-     *
+     * 
      * @param selectedSourceDatabases the selectedSourceDatabases value to set.
      * @return the GetUserTablesSqlSyncTaskInput object itself.
      */
@@ -102,7 +106,7 @@ public final class GetUserTablesSqlSyncTaskInput {
 
     /**
      * Get the selectedTargetDatabases property: List of target database names to collect tables for.
-     *
+     * 
      * @return the selectedTargetDatabases value.
      */
     public List<String> selectedTargetDatabases() {
@@ -111,7 +115,7 @@ public final class GetUserTablesSqlSyncTaskInput {
 
     /**
      * Set the selectedTargetDatabases property: List of target database names to collect tables for.
-     *
+     * 
      * @param selectedTargetDatabases the selectedTargetDatabases value to set.
      * @return the GetUserTablesSqlSyncTaskInput object itself.
      */
@@ -122,39 +126,86 @@ public final class GetUserTablesSqlSyncTaskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceConnectionInfo in model GetUserTablesSqlSyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property sourceConnectionInfo in model GetUserTablesSqlSyncTaskInput"));
         } else {
             sourceConnectionInfo().validate();
         }
         if (targetConnectionInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetConnectionInfo in model GetUserTablesSqlSyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property targetConnectionInfo in model GetUserTablesSqlSyncTaskInput"));
         } else {
             targetConnectionInfo().validate();
         }
         if (selectedSourceDatabases() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectedSourceDatabases in model GetUserTablesSqlSyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectedSourceDatabases in model GetUserTablesSqlSyncTaskInput"));
         }
         if (selectedTargetDatabases() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property selectedTargetDatabases in model GetUserTablesSqlSyncTaskInput"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property selectedTargetDatabases in model GetUserTablesSqlSyncTaskInput"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GetUserTablesSqlSyncTaskInput.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sourceConnectionInfo", this.sourceConnectionInfo);
+        jsonWriter.writeJsonField("targetConnectionInfo", this.targetConnectionInfo);
+        jsonWriter.writeArrayField("selectedSourceDatabases", this.selectedSourceDatabases,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("selectedTargetDatabases", this.selectedTargetDatabases,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetUserTablesSqlSyncTaskInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetUserTablesSqlSyncTaskInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GetUserTablesSqlSyncTaskInput.
+     */
+    public static GetUserTablesSqlSyncTaskInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetUserTablesSqlSyncTaskInput deserializedGetUserTablesSqlSyncTaskInput
+                = new GetUserTablesSqlSyncTaskInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceConnectionInfo".equals(fieldName)) {
+                    deserializedGetUserTablesSqlSyncTaskInput.sourceConnectionInfo = SqlConnectionInfo.fromJson(reader);
+                } else if ("targetConnectionInfo".equals(fieldName)) {
+                    deserializedGetUserTablesSqlSyncTaskInput.targetConnectionInfo = SqlConnectionInfo.fromJson(reader);
+                } else if ("selectedSourceDatabases".equals(fieldName)) {
+                    List<String> selectedSourceDatabases = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGetUserTablesSqlSyncTaskInput.selectedSourceDatabases = selectedSourceDatabases;
+                } else if ("selectedTargetDatabases".equals(fieldName)) {
+                    List<String> selectedTargetDatabases = reader.readArray(reader1 -> reader1.getString());
+                    deserializedGetUserTablesSqlSyncTaskInput.selectedTargetDatabases = selectedTargetDatabases;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetUserTablesSqlSyncTaskInput;
+        });
+    }
 }

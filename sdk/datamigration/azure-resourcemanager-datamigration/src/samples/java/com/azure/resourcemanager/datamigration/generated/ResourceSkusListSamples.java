@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.datamigration.generated;
 
-/** Samples for ResourceSkus List. */
+/**
+ * Samples for ResourceSkus List.
+ */
 public final class ResourceSkusListSamples {
     /*
-     * x-ms-original-file: specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/ResourceSkus_ListSkus.json
+     * x-ms-original-file:
+     * specification/datamigration/resource-manager/Microsoft.DataMigration/stable/2018-04-19/examples/
+     * ResourceSkus_ListSkus.json
      */
     /**
      * Sample code: ListSkus.
-     *
+     * 
      * @param manager Entry point to DataMigrationManager.
      */
     public static void listSkus(com.azure.resourcemanager.datamigration.DataMigrationManager manager) {

@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceCountryInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The paginated list of peering service countries. */
+/**
+ * The paginated list of peering service countries.
+ */
 @Fluent
-public final class PeeringServiceCountryListResult {
+public final class PeeringServiceCountryListResult implements JsonSerializable<PeeringServiceCountryListResult> {
     /*
      * The list of peering service countries.
      */
-    @JsonProperty(value = "value")
     private List<PeeringServiceCountryInner> value;
 
     /*
      * The link to fetch the next page of peering service countries.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PeeringServiceCountryListResult class. */
+    /**
+     * Creates an instance of PeeringServiceCountryListResult class.
+     */
     public PeeringServiceCountryListResult() {
     }
 
     /**
      * Get the value property: The list of peering service countries.
-     *
+     * 
      * @return the value value.
      */
     public List<PeeringServiceCountryInner> value() {
@@ -39,7 +45,7 @@ public final class PeeringServiceCountryListResult {
 
     /**
      * Set the value property: The list of peering service countries.
-     *
+     * 
      * @param value the value value to set.
      * @return the PeeringServiceCountryListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class PeeringServiceCountryListResult {
 
     /**
      * Get the nextLink property: The link to fetch the next page of peering service countries.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +65,7 @@ public final class PeeringServiceCountryListResult {
 
     /**
      * Set the nextLink property: The link to fetch the next page of peering service countries.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PeeringServiceCountryListResult object itself.
      */
@@ -70,12 +76,54 @@ public final class PeeringServiceCountryListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringServiceCountryListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringServiceCountryListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringServiceCountryListResult.
+     */
+    public static PeeringServiceCountryListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringServiceCountryListResult deserializedPeeringServiceCountryListResult
+                = new PeeringServiceCountryListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PeeringServiceCountryInner> value
+                        = reader.readArray(reader1 -> PeeringServiceCountryInner.fromJson(reader1));
+                    deserializedPeeringServiceCountryListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPeeringServiceCountryListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringServiceCountryListResult;
+        });
     }
 }

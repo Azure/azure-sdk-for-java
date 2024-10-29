@@ -30,12 +30,8 @@ public interface ReferenceDataSetsClient {
      * @return a reference data set provides metadata about the events in an environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReferenceDataSetResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters,
-        Context context);
+    Response<ReferenceDataSetResourceInner> createOrUpdateWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters, Context context);
 
     /**
      * Create or update a reference data set in the specified environment.
@@ -51,11 +47,8 @@ public interface ReferenceDataSetsClient {
      * @return a reference data set provides metadata about the events in an environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReferenceDataSetResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters);
+    ReferenceDataSetResourceInner createOrUpdate(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters);
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
@@ -72,8 +65,8 @@ public interface ReferenceDataSetsClient {
      * @return the reference data set with the specified name in the specified environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReferenceDataSetResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context);
+    Response<ReferenceDataSetResourceInner> getWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context);
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
@@ -109,11 +102,8 @@ public interface ReferenceDataSetsClient {
      * @return a reference data set provides metadata about the events in an environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReferenceDataSetResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
+    Response<ReferenceDataSetResourceInner> updateWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
         Context context);
 
     /**
@@ -133,10 +123,7 @@ public interface ReferenceDataSetsClient {
      * @return a reference data set provides metadata about the events in an environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReferenceDataSetResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
+    ReferenceDataSetResourceInner update(String resourceGroupName, String environmentName, String referenceDataSetName,
         ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters);
 
     /**
@@ -155,8 +142,8 @@ public interface ReferenceDataSetsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String referenceDataSetName,
+        Context context);
 
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
@@ -188,8 +175,8 @@ public interface ReferenceDataSetsClient {
      * @return the response of the List Reference Data Sets operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReferenceDataSetListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
+    Response<ReferenceDataSetListResponseInner> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context);
 
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource

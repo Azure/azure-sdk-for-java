@@ -44,7 +44,7 @@ public class SmsClientTests extends SmsTestBase {
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sendSmsUsingTokenCredential(HttpClient httpClient) {
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-        SmsClientBuilder  builder = getSmsClientWithToken(httpClient, tokenCredential);
+        SmsClientBuilder builder = getSmsClientWithToken(httpClient, tokenCredential);
         client = setupSyncClient(builder, "sendSmsUsingTokenCredentialSync");
         SmsSendResult sendResult = client.send(FROM_PHONE_NUMBER, TO_PHONE_NUMBER, MESSAGE);
         assertHappyPath(sendResult);
@@ -58,7 +58,8 @@ public class SmsClientTests extends SmsTestBase {
         client = setupSyncClient(builder, "sendSmsToGroupSync");
 
         // Action & Assert
-        Iterable<SmsSendResult> sendResults = client.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE);
+        Iterable<SmsSendResult> sendResults
+            = client.send(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE);
         for (SmsSendResult result : sendResults) {
             assertHappyPath(result);
         }
@@ -74,7 +75,8 @@ public class SmsClientTests extends SmsTestBase {
         options.setDeliveryReportEnabled(true);
         options.setTag("New Tag");
         // Action & Assert
-        Response<Iterable<SmsSendResult>> sendResults = client.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, options, Context.NONE);
+        Response<Iterable<SmsSendResult>> sendResults = client.sendWithResponse(FROM_PHONE_NUMBER,
+            Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, options, Context.NONE);
         for (SmsSendResult result : sendResults.getValue()) {
             assertHappyPath(result);
         }
@@ -159,7 +161,8 @@ public class SmsClientTests extends SmsTestBase {
         SmsClientBuilder builder = getSmsClientUsingConnectionString(httpClient);
         client = setupSyncClient(builder, "checkForRepeatabilityOptions");
         // Action & Assert
-        Response<Iterable<SmsSendResult>> response = client.sendWithResponse(FROM_PHONE_NUMBER, Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE);
+        Response<Iterable<SmsSendResult>> response = client.sendWithResponse(FROM_PHONE_NUMBER,
+            Arrays.asList(TO_PHONE_NUMBER, TO_PHONE_NUMBER), MESSAGE, null, Context.NONE);
         String bodyRequest = response.getRequest().getBodyAsBinaryData().toString();
         assertTrue(bodyRequest.contains("repeatabilityRequestId"));
         assertTrue(bodyRequest.contains("repeatabilityFirstSent"));

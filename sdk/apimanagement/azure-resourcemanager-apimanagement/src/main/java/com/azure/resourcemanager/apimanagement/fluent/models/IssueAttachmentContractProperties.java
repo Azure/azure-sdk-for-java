@@ -103,22 +103,16 @@ public final class IssueAttachmentContractProperties {
      */
     public void validate() {
         if (title() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property title in model IssueAttachmentContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property title in model IssueAttachmentContractProperties"));
         }
         if (contentFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property contentFormat in model IssueAttachmentContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property contentFormat in model IssueAttachmentContractProperties"));
         }
         if (content() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property content in model IssueAttachmentContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property content in model IssueAttachmentContractProperties"));
         }
     }
 

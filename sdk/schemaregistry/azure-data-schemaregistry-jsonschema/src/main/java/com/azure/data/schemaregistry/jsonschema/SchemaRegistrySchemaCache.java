@@ -78,11 +78,11 @@ class SchemaRegistrySchemaCache {
 
         final SchemaProperties serviceCall;
         if (autoRegisterSchemas) {
-            serviceCall = this.schemaRegistryClient
-                .registerSchema(schemaGroup, schemaFullName, schemaDefinition, SchemaFormat.JSON);
+            serviceCall = this.schemaRegistryClient.registerSchema(schemaGroup, schemaFullName, schemaDefinition,
+                SchemaFormat.JSON);
         } else {
-            serviceCall = this.schemaRegistryClient.getSchemaProperties(
-                schemaGroup, schemaFullName, schemaDefinition, SchemaFormat.JSON);
+            serviceCall = this.schemaRegistryClient.getSchemaProperties(schemaGroup, schemaFullName, schemaDefinition,
+                SchemaFormat.JSON);
         }
 
         final String schemaId = serviceCall.getId();
@@ -124,17 +124,16 @@ class SchemaRegistrySchemaCache {
 
         if (Objects.isNull(schemaRegistryAsyncClient)) {
             return monoError(LOGGER, new IllegalStateException("Cannot use async methods if SchemaRegistryAsyncClient "
-                + "Set client in SchemaRegistryJsonSchemaSerializer.schemaRegistryClient(SchemaRegistryAsyncClient)."
-            ));
+                + "Set client in SchemaRegistryJsonSchemaSerializer.schemaRegistryClient(SchemaRegistryAsyncClient)."));
         }
 
         final Mono<SchemaProperties> serviceCall;
         if (autoRegisterSchemas) {
-            serviceCall = this.schemaRegistryAsyncClient
-                .registerSchema(schemaGroup, schemaFullName, schemaDefinition, SchemaFormat.JSON);
+            serviceCall = this.schemaRegistryAsyncClient.registerSchema(schemaGroup, schemaFullName, schemaDefinition,
+                SchemaFormat.JSON);
         } else {
-            serviceCall = this.schemaRegistryAsyncClient.getSchemaProperties(
-                schemaGroup, schemaFullName, schemaDefinition, SchemaFormat.JSON);
+            serviceCall = this.schemaRegistryAsyncClient.getSchemaProperties(schemaGroup, schemaFullName,
+                schemaDefinition, SchemaFormat.JSON);
         }
 
         return serviceCall.map(properties -> {
@@ -198,22 +197,21 @@ class SchemaRegistrySchemaCache {
         }
 
         if (Objects.isNull(schemaRegistryAsyncClient)) {
-            return monoError(LOGGER, new IllegalStateException("Cannot use async methods if SchemaRegistryAsyncClient is not set."
-                + "Set client in SchemaRegistryJsonSchemaSerializer.schemaRegistryClient(SchemaRegistryAsyncClient)."
-            ));
+            return monoError(LOGGER,
+                new IllegalStateException("Cannot use async methods if SchemaRegistryAsyncClient is not set."
+                    + "Set client in SchemaRegistryJsonSchemaSerializer.schemaRegistryClient(SchemaRegistryAsyncClient)."));
         }
 
-        return schemaRegistryAsyncClient.getSchema(schemaId)
-            .handle((registryObject, sink) -> {
-                final String schemaString = registryObject.getDefinition();
+        return schemaRegistryAsyncClient.getSchema(schemaId).handle((registryObject, sink) -> {
+            final String schemaString = registryObject.getDefinition();
 
-                synchronized (lock) {
-                    cache.put(schemaId, schemaString);
-                    logCacheStatus();
-                }
+            synchronized (lock) {
+                cache.put(schemaId, schemaString);
+                logCacheStatus();
+            }
 
-                sink.next(schemaString);
-            });
+            sink.next(schemaString);
+        });
     }
 
     /**
@@ -252,8 +250,7 @@ class SchemaRegistrySchemaCache {
         LOGGER.atVerbose()
             .addKeyValue(SIZE_KEY, size)
             .addKeyValue(TOTAL_LENGTH_KEY, length)
-            .log("Cache entry added or updated. Total number of entries: {}; Total schema length: {}",
-                size, length);
+            .log("Cache entry added or updated. Total number of entries: {}; Total schema length: {}", size, length);
     }
 
     /**
@@ -340,4 +337,3 @@ class SchemaRegistrySchemaCache {
         }
     }
 }
-

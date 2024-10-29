@@ -7,6 +7,7 @@ package com.azure.maps.timezone.models;
 import java.time.OffsetDateTime;
 
 import com.azure.core.models.GeoPosition;
+
 /**
  * Organizes inputs for get timezone by coordinate
  */

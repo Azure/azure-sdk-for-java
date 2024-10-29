@@ -30,44 +30,32 @@ public final class AuthorizationAccessPoliciesCreateOrUpdateWithResponseMockTest
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"tenantId\":\"xdifbwblijhp\",\"objectId\":\"kxgoyxontb\"},\"id\":\"dqrxro\",\"name\":\"uqr\",\"type\":\"ldxfuaefewxatkt\"}";
+        String responseStr
+            = "{\"properties\":{\"tenantId\":\"xdifbwblijhp\",\"objectId\":\"kxgoyxontb\"},\"id\":\"dqrxro\",\"name\":\"uqr\",\"type\":\"ldxfuaefewxatkt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AuthorizationAccessPolicyContract response =
-            manager
-                .authorizationAccessPolicies()
-                .define("udekkbnjr")
-                .withExistingAuthorization("bbkfl", "wgsltutbuve", "wuuqbmenxcqsxwc", "ykc")
-                .withTenantId("ptedeuenthshnfi")
-                .withObjectId("pgpkkhpjnglaqlm")
-                .withIfMatch("loeohy")
-                .create();
+        AuthorizationAccessPolicyContract response = manager.authorizationAccessPolicies()
+            .define("udekkbnjr")
+            .withExistingAuthorization("bbkfl", "wgsltutbuve", "wuuqbmenxcqsxwc", "ykc")
+            .withTenantId("ptedeuenthshnfi")
+            .withObjectId("pgpkkhpjnglaqlm")
+            .withIfMatch("loeohy")
+            .create();
 
         Assertions.assertEquals("xdifbwblijhp", response.tenantId());
         Assertions.assertEquals("kxgoyxontb", response.objectId());

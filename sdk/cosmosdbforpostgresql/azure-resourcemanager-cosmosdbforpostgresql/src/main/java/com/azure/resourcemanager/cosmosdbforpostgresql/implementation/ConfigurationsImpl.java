@@ -77,8 +77,8 @@ public final class ConfigurationsImpl implements Configurations {
 
     public Response<ServerConfiguration> getCoordinatorWithResponse(String resourceGroupName, String clusterName,
         String configurationName, Context context) {
-        Response<ServerConfigurationInner> inner = this.serviceClient().getCoordinatorWithResponse(resourceGroupName,
-            clusterName, configurationName, context);
+        Response<ServerConfigurationInner> inner = this.serviceClient()
+            .getCoordinatorWithResponse(resourceGroupName, clusterName, configurationName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ServerConfigurationImpl(inner.getValue(), this.manager()));
@@ -110,8 +110,8 @@ public final class ConfigurationsImpl implements Configurations {
 
     public ServerConfiguration updateOnCoordinator(String resourceGroupName, String clusterName,
         String configurationName, ServerConfigurationInner parameters, Context context) {
-        ServerConfigurationInner inner = this.serviceClient().updateOnCoordinator(resourceGroupName, clusterName,
-            configurationName, parameters, context);
+        ServerConfigurationInner inner = this.serviceClient()
+            .updateOnCoordinator(resourceGroupName, clusterName, configurationName, parameters, context);
         if (inner != null) {
             return new ServerConfigurationImpl(inner, this.manager());
         } else {

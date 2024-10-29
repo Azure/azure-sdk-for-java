@@ -21,8 +21,8 @@ public final class AccountFiltersImpl implements AccountFilters {
 
     private final com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager;
 
-    public AccountFiltersImpl(
-        AccountFiltersClient innerClient, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
+    public AccountFiltersImpl(AccountFiltersClient innerClient,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -37,15 +37,12 @@ public final class AccountFiltersImpl implements AccountFilters {
         return Utils.mapPage(inner, inner1 -> new AccountFilterImpl(inner1, this.manager()));
     }
 
-    public Response<AccountFilter> getWithResponse(
-        String resourceGroupName, String accountName, String filterName, Context context) {
-        Response<AccountFilterInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, filterName, context);
+    public Response<AccountFilter> getWithResponse(String resourceGroupName, String accountName, String filterName,
+        Context context) {
+        Response<AccountFilterInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, filterName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AccountFilterImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -61,8 +58,8 @@ public final class AccountFiltersImpl implements AccountFilters {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String filterName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String filterName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, filterName, context);
     }
 
@@ -73,26 +70,18 @@ public final class AccountFiltersImpl implements AccountFilters {
     public AccountFilter getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
         String filterName = Utils.getValueFromIdByName(id, "accountFilters");
         if (filterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'accountFilters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accountFilters'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, filterName, Context.NONE).getValue();
     }
@@ -100,26 +89,18 @@ public final class AccountFiltersImpl implements AccountFilters {
     public Response<AccountFilter> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
         String filterName = Utils.getValueFromIdByName(id, "accountFilters");
         if (filterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'accountFilters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accountFilters'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, filterName, context);
     }
@@ -127,26 +108,18 @@ public final class AccountFiltersImpl implements AccountFilters {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
         String filterName = Utils.getValueFromIdByName(id, "accountFilters");
         if (filterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'accountFilters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accountFilters'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, accountName, filterName, Context.NONE);
     }
@@ -154,26 +127,18 @@ public final class AccountFiltersImpl implements AccountFilters {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
         String filterName = Utils.getValueFromIdByName(id, "accountFilters");
         if (filterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'accountFilters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accountFilters'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, accountName, filterName, context);
     }

@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.storage.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
@@ -41,19 +40,22 @@ public final class ManageStorageAccountAsync {
             System.out.println("Creating a Storage Accounts");
 
             Flux.merge(
-                    azureResourceManager.storageAccounts().define(storageAccountName)
-                            .withRegion(Region.US_EAST)
-                            .withNewResourceGroup(rgName)
-                            .createAsync(),
-                    azureResourceManager.storageAccounts().define(storageAccountName2)
-                            .withRegion(Region.US_EAST)
-                            .withNewResourceGroup(rgName)
-                            .createAsync())
-                    .map(storageAccount -> {
-                        System.out.println("Created a Storage Account:");
-                        Utils.print(storageAccount);
-                        return storageAccount;
-                    }).blockLast();
+                azureResourceManager.storageAccounts()
+                    .define(storageAccountName)
+                    .withRegion(Region.US_EAST)
+                    .withNewResourceGroup(rgName)
+                    .createAsync(),
+                azureResourceManager.storageAccounts()
+                    .define(storageAccountName2)
+                    .withRegion(Region.US_EAST)
+                    .withNewResourceGroup(rgName)
+                    .createAsync())
+                .map(storageAccount -> {
+                    System.out.println("Created a Storage Account:");
+                    Utils.print(storageAccount);
+                    return storageAccount;
+                })
+                .blockLast();
 
             // ============================================================
             // List storage accounts and regenerate storage account access keys
@@ -62,31 +64,27 @@ public final class ManageStorageAccountAsync {
 
             StorageAccounts storageAccounts = azureResourceManager.storageAccounts();
 
-            storageAccounts.listByResourceGroupAsync(rgName)
-                    .flatMap(storageAccount -> {
-                        System.out.println("Getting storage account access keys for Storage Account "
-                                + storageAccount.name() + " created @ " + storageAccount.creationTime());
+            storageAccounts.listByResourceGroupAsync(rgName).flatMap(storageAccount -> {
+                System.out.println("Getting storage account access keys for Storage Account " + storageAccount.name()
+                    + " created @ " + storageAccount.creationTime());
 
-                        return storageAccount.getKeysAsync()
-                                .flatMap(storageAccountKeys -> {
-                                    System.out.println("Regenerating first storage account access key");
-                                    return storageAccount.regenerateKeyAsync(storageAccountKeys.get(0).keyName());
-                                });
-                    })
-                    .map(storageAccountKeys -> {
-                        Utils.print(storageAccountKeys);
-                        return storageAccountKeys;
-                    }).blockLast();
+                return storageAccount.getKeysAsync().flatMap(storageAccountKeys -> {
+                    System.out.println("Regenerating first storage account access key");
+                    return storageAccount.regenerateKeyAsync(storageAccountKeys.get(0).keyName());
+                });
+            }).map(storageAccountKeys -> {
+                Utils.print(storageAccountKeys);
+                return storageAccountKeys;
+            }).blockLast();
 
             // ============================================================
             // Delete storage accounts
 
-            storageAccounts.listByResourceGroupAsync(rgName)
-                    .flatMap(storageAccount -> {
-                        System.out.println("Deleting a storage account - " + storageAccount.name()
-                                + " created @ " + storageAccount.creationTime());
-                        return azureResourceManager.storageAccounts().deleteByIdAsync(storageAccount.id());
-                    }).blockLast();
+            storageAccounts.listByResourceGroupAsync(rgName).flatMap(storageAccount -> {
+                System.out.println("Deleting a storage account - " + storageAccount.name() + " created @ "
+                    + storageAccount.creationTime());
+                return azureResourceManager.storageAccounts().deleteByIdAsync(storageAccount.id());
+            }).blockLast();
 
             return true;
         } finally {
@@ -112,8 +110,7 @@ public final class ManageStorageAccountAsync {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

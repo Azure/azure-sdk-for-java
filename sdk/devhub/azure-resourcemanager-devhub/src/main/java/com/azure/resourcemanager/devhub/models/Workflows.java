@@ -54,8 +54,8 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workflows within a resource group as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Workflow> listByResourceGroup(
-        String resourceGroupName, String managedClusterResource, Context context);
+    PagedIterable<Workflow> listByResourceGroup(String resourceGroupName, String managedClusterResource,
+        Context context);
 
     /**
      * Gets a workflow.
@@ -93,8 +93,8 @@ public interface Workflows {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return delete response if content must be provided on delete operation along with {@link Response}.
      */
-    Response<DeleteWorkflowResponse> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String workflowName, Context context);
+    Response<DeleteWorkflowResponse> deleteByResourceGroupWithResponse(String resourceGroupName, String workflowName,
+        Context context);
 
     /**
      * Deletes a workflow.

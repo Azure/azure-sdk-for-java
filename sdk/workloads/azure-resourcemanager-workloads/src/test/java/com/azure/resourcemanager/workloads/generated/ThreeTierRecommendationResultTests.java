@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ThreeTierRecommendationResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ThreeTierRecommendationResult model =
-            BinaryData
-                .fromString(
-                    "{\"deploymentType\":\"ThreeTier\",\"dbVmSku\":\"ocrkvcikh\",\"databaseInstanceCount\":191719140386438255,\"centralServerVmSku\":\"qgxqquezikyw\",\"centralServerInstanceCount\":5773769686889892375,\"applicationServerVmSku\":\"lla\",\"applicationServerInstanceCount\":8033658748454090244}")
-                .toObject(ThreeTierRecommendationResult.class);
+        ThreeTierRecommendationResult model = BinaryData.fromString(
+            "{\"deploymentType\":\"ThreeTier\",\"dbVmSku\":\"ocrkvcikh\",\"databaseInstanceCount\":191719140386438255,\"centralServerVmSku\":\"qgxqquezikyw\",\"centralServerInstanceCount\":5773769686889892375,\"applicationServerVmSku\":\"lla\",\"applicationServerInstanceCount\":8033658748454090244}")
+            .toObject(ThreeTierRecommendationResult.class);
         Assertions.assertEquals("ocrkvcikh", model.dbVmSku());
         Assertions.assertEquals(191719140386438255L, model.databaseInstanceCount());
         Assertions.assertEquals("qgxqquezikyw", model.centralServerVmSku());
@@ -26,14 +24,12 @@ public final class ThreeTierRecommendationResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ThreeTierRecommendationResult model =
-            new ThreeTierRecommendationResult()
-                .withDbVmSku("ocrkvcikh")
-                .withDatabaseInstanceCount(191719140386438255L)
-                .withCentralServerVmSku("qgxqquezikyw")
-                .withCentralServerInstanceCount(5773769686889892375L)
-                .withApplicationServerVmSku("lla")
-                .withApplicationServerInstanceCount(8033658748454090244L);
+        ThreeTierRecommendationResult model = new ThreeTierRecommendationResult().withDbVmSku("ocrkvcikh")
+            .withDatabaseInstanceCount(191719140386438255L)
+            .withCentralServerVmSku("qgxqquezikyw")
+            .withCentralServerInstanceCount(5773769686889892375L)
+            .withApplicationServerVmSku("lla")
+            .withApplicationServerInstanceCount(8033658748454090244L);
         model = BinaryData.fromObject(model).toObject(ThreeTierRecommendationResult.class);
         Assertions.assertEquals("ocrkvcikh", model.dbVmSku());
         Assertions.assertEquals(191719140386438255L, model.databaseInstanceCount());

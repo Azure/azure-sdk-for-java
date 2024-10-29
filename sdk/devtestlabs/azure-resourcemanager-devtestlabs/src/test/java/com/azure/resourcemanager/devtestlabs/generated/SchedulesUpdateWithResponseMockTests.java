@@ -34,45 +34,30 @@ public final class SchedulesUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"rdhabsr\",\"weeklyRecurrence\":{\"weekdays\":[\"rhpqatiwkkvya\",\"xkvvcs\",\"msvuvdjkqxetq\"],\"time\":\"livrjjxnwx\"},\"dailyRecurrence\":{\"time\":\"p\"},\"hourlyRecurrence\":{\"minute\":502816571},\"timeZoneId\":\"hzlxpgfquw\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":1697047368,\"webhookUrl\":\"lwcerwkwb\",\"emailRecipient\":\"xljtxbusqtbxxn\",\"notificationLocale\":\"i\"},\"createdDate\":\"2021-10-10T00:35:57Z\",\"targetResourceId\":\"gbdgzp\",\"provisioningState\":\"secnadbuwqrgxf\",\"uniqueIdentifier\":\"mqiyn\"},\"location\":\"zoellnkkiiwvmtum\",\"tags\":{\"rguncanldu\":\"mdjfuaxroqvqpi\",\"x\":\"zorxsb\"},\"id\":\"qk\",\"name\":\"xym\",\"type\":\"kqv\"}";
+        String responseStr
+            = "{\"properties\":{\"status\":\"Disabled\",\"taskType\":\"rdhabsr\",\"weeklyRecurrence\":{\"weekdays\":[\"rhpqatiwkkvya\",\"xkvvcs\",\"msvuvdjkqxetq\"],\"time\":\"livrjjxnwx\"},\"dailyRecurrence\":{\"time\":\"p\"},\"hourlyRecurrence\":{\"minute\":502816571},\"timeZoneId\":\"hzlxpgfquw\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":1697047368,\"webhookUrl\":\"lwcerwkwb\",\"emailRecipient\":\"xljtxbusqtbxxn\",\"notificationLocale\":\"i\"},\"createdDate\":\"2021-10-10T00:35:57Z\",\"targetResourceId\":\"gbdgzp\",\"provisioningState\":\"secnadbuwqrgxf\",\"uniqueIdentifier\":\"mqiyn\"},\"location\":\"zoellnkkiiwvmtum\",\"tags\":{\"rguncanldu\":\"mdjfuaxroqvqpi\",\"x\":\"zorxsb\"},\"id\":\"qk\",\"name\":\"xym\",\"type\":\"kqv\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Schedule response =
-            manager
-                .schedules()
-                .updateWithResponse(
-                    "sbvr",
-                    "aqgvto",
-                    "rulfuct",
-                    new ScheduleFragment().withTags(mapOf("hxlyubqjrostvrje", "thcfj", "ztr", "mtzzbeq")),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        Schedule response = manager.schedules()
+            .updateWithResponse("sbvr", "aqgvto", "rulfuct",
+                new ScheduleFragment().withTags(mapOf("hxlyubqjrostvrje", "thcfj", "ztr", "mtzzbeq")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("zoellnkkiiwvmtum", response.location());
         Assertions.assertEquals("mdjfuaxroqvqpi", response.tags().get("rguncanldu"));

@@ -42,21 +42,20 @@ import java.util.List;
  */
 public final class ManageTrafficManager {
 
-
     /**
      * Main function which runs the actual sample.
      * @param azureResourceManager instance of the azure client
      * @return true if sample runs successfully
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) throws IOException {
-        final String rgName                     = Utils.randomResourceName(azureResourceManager, "rgNEMV_", 24);
-        final String domainName                 = Utils.randomResourceName(azureResourceManager, "jsdkdemo-", 20) + ".com";
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rgNEMV_", 24);
+        final String domainName = Utils.randomResourceName(azureResourceManager, "jsdkdemo-", 20) + ".com";
         // [SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine", Justification="Serves as an example, not for deployment. Please change when using this in your code.")]
-        final String certPassword               = "StrongPass!12";
-        final String appServicePlanNamePrefix   = Utils.randomResourceName(azureResourceManager, "jplan1_", 15);
-        final String webAppNamePrefix           = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
-        final String tmName                     = Utils.randomResourceName(azureResourceManager, "jsdktm-", 20);
-        final List<Region> regions              = new ArrayList<>();
+        final String certPassword = "StrongPass!12";
+        final String appServicePlanNamePrefix = Utils.randomResourceName(azureResourceManager, "jplan1_", 15);
+        final String webAppNamePrefix = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String tmName = Utils.randomResourceName(azureResourceManager, "jsdktm-", 20);
+        final List<Region> regions = new ArrayList<>();
         // The regions in which web app needs to be created
         //
         regions.add(Region.US_WEST2);
@@ -65,31 +64,30 @@ public final class ManageTrafficManager {
         regions.add(Region.US_CENTRAL);
 
         try {
-            azureResourceManager.resourceGroups().define(rgName)
-                    .withRegion(Region.US_WEST)
-                    .create();
+            azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
             //============================================================
             // Purchase a domain (will be canceled for a full refund)
 
             System.out.println("Purchasing a domain " + domainName + "...");
-            AppServiceDomain domain = azureResourceManager.appServiceDomains().define(domainName)
-                    .withExistingResourceGroup(rgName)
-                    .defineRegistrantContact()
-                        .withFirstName("Jon")
-                        .withLastName("Doe")
-                        .withEmail("jondoe@contoso.com")
-                        .withAddressLine1("123 4th Ave")
-                        .withCity("Redmond")
-                        .withStateOrProvince("WA")
-                        .withCountry(CountryIsoCode.UNITED_STATES)
-                        .withPostalCode("98052")
-                        .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
-                        .withPhoneNumber("4258828080")
-                        .attach()
-                    .withDomainPrivacyEnabled(true)
-                    .withAutoRenewEnabled(false)
-                    .create();
+            AppServiceDomain domain = azureResourceManager.appServiceDomains()
+                .define(domainName)
+                .withExistingResourceGroup(rgName)
+                .defineRegistrantContact()
+                .withFirstName("Jon")
+                .withLastName("Doe")
+                .withEmail("jondoe@contoso.com")
+                .withAddressLine1("123 4th Ave")
+                .withCity("Redmond")
+                .withStateOrProvince("WA")
+                .withCountry(CountryIsoCode.UNITED_STATES)
+                .withPostalCode("98052")
+                .withPhoneCountryCode(CountryPhoneCode.UNITED_STATES)
+                .withPhoneNumber("4258828080")
+                .attach()
+                .withDomainPrivacyEnabled(true)
+                .withAutoRenewEnabled(false)
+                .create();
             System.out.println("Purchased domain " + domain.name());
             Utils.print(domain);
 
@@ -111,12 +109,13 @@ public final class ManageTrafficManager {
             for (Region region : regions) {
                 String planName = appServicePlanNamePrefix + id;
                 System.out.println("Creating an app service plan " + planName + " in region " + region + "...");
-                AppServicePlan appServicePlan = azureResourceManager.appServicePlans().define(planName)
-                        .withRegion(region)
-                        .withExistingResourceGroup(rgName)
-                        .withPricingTier(PricingTier.BASIC_B1)
-                        .withOperatingSystem(OperatingSystem.WINDOWS)
-                        .create();
+                AppServicePlan appServicePlan = azureResourceManager.appServicePlans()
+                    .define(planName)
+                    .withRegion(region)
+                    .withExistingResourceGroup(rgName)
+                    .withPricingTier(PricingTier.BASIC_B1)
+                    .withOperatingSystem(OperatingSystem.WINDOWS)
+                    .create();
                 System.out.println("Created app service plan " + planName);
                 Utils.print(appServicePlan);
                 appServicePlans.add(appServicePlan);
@@ -129,21 +128,23 @@ public final class ManageTrafficManager {
             id = 0;
             for (AppServicePlan appServicePlan : appServicePlans) {
                 String webAppName = webAppNamePrefix + id;
-                System.out.println("Creating a web app " + webAppName + " using the plan " + appServicePlan.name() + "...");
-                WebApp webApp = azureResourceManager.webApps().define(webAppName)
-                        .withExistingWindowsPlan(appServicePlan)
-                        .withExistingResourceGroup(rgName)
-                        .withManagedHostnameBindings(domain, webAppName)
-                        .defineSslBinding()
-                            .forHostname(webAppName + "." + domain.name())
-                            .withPfxCertificateToUpload(new File(pfxPath), certPassword)
-                            .withSniBasedSsl()
-                            .attach()
-                        .defineSourceControl()
-                            .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
-                            .withBranch("master")
-                            .attach()
-                        .create();
+                System.out
+                    .println("Creating a web app " + webAppName + " using the plan " + appServicePlan.name() + "...");
+                WebApp webApp = azureResourceManager.webApps()
+                    .define(webAppName)
+                    .withExistingWindowsPlan(appServicePlan)
+                    .withExistingResourceGroup(rgName)
+                    .withManagedHostnameBindings(domain, webAppName)
+                    .defineSslBinding()
+                    .forHostname(webAppName + "." + domain.name())
+                    .withPfxCertificateToUpload(new File(pfxPath), certPassword)
+                    .withSniBasedSsl()
+                    .attach()
+                    .defineSourceControl()
+                    .withPublicGitRepository("https://github.com/jianghaolu/azure-site-test")
+                    .withBranch("master")
+                    .attach()
+                    .create();
                 System.out.println("Created web app " + webAppName);
                 Utils.print(webApp);
                 webApps.add(webApp);
@@ -154,18 +155,19 @@ public final class ManageTrafficManager {
             // Creates a traffic manager profile
 
             System.out.println("Creating a traffic manager profile " + tmName + " for the web apps...");
-            TrafficManagerProfile.DefinitionStages.WithEndpoint tmDefinition = azureResourceManager.trafficManagerProfiles()
+            TrafficManagerProfile.DefinitionStages.WithEndpoint tmDefinition
+                = azureResourceManager.trafficManagerProfiles()
                     .define(tmName)
-                        .withExistingResourceGroup(rgName)
-                        .withLeafDomainLabel(tmName)
-                        .withPriorityBasedRouting();
+                    .withExistingResourceGroup(rgName)
+                    .withLeafDomainLabel(tmName)
+                    .withPriorityBasedRouting();
             Creatable<TrafficManagerProfile> tmCreatable = null;
             int priority = 1;
             for (WebApp webApp : webApps) {
                 tmCreatable = tmDefinition.defineAzureTargetEndpoint("endpoint-" + priority)
-                        .toResourceId(webApp.id())
-                        .withRoutingPriority(priority)
-                        .attach();
+                    .toResourceId(webApp.id())
+                    .withRoutingPriority(priority)
+                    .attach();
                 priority++;
             }
             TrafficManagerProfile trafficManagerProfile = tmCreatable.create();
@@ -177,11 +179,11 @@ public final class ManageTrafficManager {
 
             System.out.println("Disabling and removing endpoint...");
             trafficManagerProfile = trafficManagerProfile.update()
-                    .updateAzureTargetEndpoint("endpoint-1")
-                        .withTrafficDisabled()
-                        .parent()
-                    .withoutEndpoint("endpoint-2")
-                    .apply();
+                .updateAzureTargetEndpoint("endpoint-1")
+                .withTrafficDisabled()
+                .parent()
+                .withoutEndpoint("endpoint-2")
+                .apply();
             System.out.println("Endpoints updated");
 
             //============================================================
@@ -189,10 +191,10 @@ public final class ManageTrafficManager {
 
             System.out.println("Enabling endpoint...");
             trafficManagerProfile = trafficManagerProfile.update()
-                    .updateAzureTargetEndpoint("endpoint-1")
-                        .withTrafficEnabled()
-                        .parent()
-                    .apply();
+                .updateAzureTargetEndpoint("endpoint-1")
+                .withTrafficEnabled()
+                .parent()
+                .apply();
             System.out.println("Endpoint updated");
             Utils.print(trafficManagerProfile);
 
@@ -200,27 +202,21 @@ public final class ManageTrafficManager {
             // Change/configure traffic manager routing method
 
             System.out.println("Changing traffic manager profile routing method...");
-            trafficManagerProfile = trafficManagerProfile.update()
-                    .withPerformanceBasedRouting()
-                    .apply();
+            trafficManagerProfile = trafficManagerProfile.update().withPerformanceBasedRouting().apply();
             System.out.println("Changed traffic manager profile routing method");
 
             //============================================================
             // Disables the traffic manager profile
 
             System.out.println("Disabling traffic manager profile...");
-            trafficManagerProfile.update()
-                    .withProfileStatusDisabled()
-                    .apply();
+            trafficManagerProfile.update().withProfileStatusDisabled().apply();
             System.out.println("Traffic manager profile disabled");
 
             //============================================================
             // Enables the traffic manager profile
 
             System.out.println("Enabling traffic manager profile...");
-            trafficManagerProfile.update()
-                    .withProfileStatusDisabled()
-                    .apply();
+            trafficManagerProfile.update().withProfileStatusDisabled().apply();
             System.out.println("Traffic manager profile enabled");
 
             //============================================================
@@ -242,6 +238,7 @@ public final class ManageTrafficManager {
             }
         }
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -256,8 +253,7 @@ public final class ManageTrafficManager {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

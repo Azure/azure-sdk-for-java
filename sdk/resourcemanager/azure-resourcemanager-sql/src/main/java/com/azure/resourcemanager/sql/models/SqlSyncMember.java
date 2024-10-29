@@ -16,12 +16,8 @@ import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure SQL Server Sync Member. */
 @Fluent
-public interface SqlSyncMember
-    extends ExternalChildResource<SqlSyncMember, SqlSyncGroup>,
-        HasInnerModel<SyncMemberInner>,
-        HasResourceGroup,
-        Refreshable<SqlSyncMember>,
-        Updatable<SqlSyncMember.Update> {
+public interface SqlSyncMember extends ExternalChildResource<SqlSyncMember, SqlSyncGroup>,
+    HasInnerModel<SyncMemberInner>, HasResourceGroup, Refreshable<SqlSyncMember>, Updatable<SqlSyncMember.Update> {
     /** @return name of the SQL Server to which this Sync Member belongs */
     String sqlServerName();
 
@@ -97,12 +93,9 @@ public interface SqlSyncMember
      **************************************************************/
 
     /** The template for a SQL Sync Group update operation, containing all the settings that can be modified. */
-    interface Update
-        extends SqlSyncMember.UpdateStages.WithMemberUserName,
-            SqlSyncMember.UpdateStages.WithMemberPassword,
-            SqlSyncMember.UpdateStages.WithMemberDatabaseType,
-            SqlSyncMember.UpdateStages.WithSyncDirection,
-            Appliable<SqlSyncMember> {
+    interface Update extends SqlSyncMember.UpdateStages.WithMemberUserName,
+        SqlSyncMember.UpdateStages.WithMemberPassword, SqlSyncMember.UpdateStages.WithMemberDatabaseType,
+        SqlSyncMember.UpdateStages.WithSyncDirection, Appliable<SqlSyncMember> {
     }
 
     /** Grouping of all the SQL Sync Group update stages. */

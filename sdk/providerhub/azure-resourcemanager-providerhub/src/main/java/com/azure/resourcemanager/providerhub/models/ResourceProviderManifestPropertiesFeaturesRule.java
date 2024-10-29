@@ -15,8 +15,8 @@ public final class ResourceProviderManifestPropertiesFeaturesRule extends Featur
 
     /** {@inheritDoc} */
     @Override
-    public ResourceProviderManifestPropertiesFeaturesRule withRequiredFeaturesPolicy(
-        FeaturesPolicy requiredFeaturesPolicy) {
+    public ResourceProviderManifestPropertiesFeaturesRule
+        withRequiredFeaturesPolicy(FeaturesPolicy requiredFeaturesPolicy) {
         super.withRequiredFeaturesPolicy(requiredFeaturesPolicy);
         return this;
     }

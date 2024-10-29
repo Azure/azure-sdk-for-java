@@ -42,8 +42,8 @@ public class SchemaRegistryAsyncClientJsonTests extends TestProxyTestBase {
         String endpoint;
         String schemaGroup;
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = tokenRequestContext ->
-                Mono.fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
+            tokenCredential = tokenRequestContext -> Mono
+                .fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
             schemaGroup = PLAYBACK_TEST_GROUP;
             endpoint = PLAYBACK_ENDPOINT;
         } else {
@@ -55,9 +55,7 @@ public class SchemaRegistryAsyncClientJsonTests extends TestProxyTestBase {
             assertNotNull(schemaGroup, "'schemaGroup' cannot be null in LIVE/RECORD mode.");
         }
 
-        builder = new SchemaRegistryClientBuilder()
-            .credential(tokenCredential)
-            .fullyQualifiedNamespace(endpoint);
+        builder = new SchemaRegistryClientBuilder().credential(tokenCredential).fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
@@ -69,8 +67,7 @@ public class SchemaRegistryAsyncClientJsonTests extends TestProxyTestBase {
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        return new AssertingHttpClientBuilder(httpClient)
-            .assertAsync()
+        return new AssertingHttpClientBuilder(httpClient).assertAsync()
             .skipRequest((httpRequest, context) -> false)
             .build();
     }
@@ -124,7 +121,6 @@ public class SchemaRegistryAsyncClientJsonTests extends TestProxyTestBase {
         // Act & Assert
         testBase.registerAndGetSchemaId(client1, client2, schemaName, SCHEMA_CONTENT);
     }
-
 
     /**
      * Verifies that an error is returned if we try to register an invalid schema.

@@ -4,10 +4,12 @@
 
 module com.azure.resourcemanager.largeinstance {
     requires transitive com.azure.core.management;
+
     exports com.azure.resourcemanager.largeinstance;
     exports com.azure.resourcemanager.largeinstance.fluent;
     exports com.azure.resourcemanager.largeinstance.fluent.models;
     exports com.azure.resourcemanager.largeinstance.models;
+
     opens com.azure.resourcemanager.largeinstance.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
     opens com.azure.resourcemanager.largeinstance.models to com.azure.core, com.fasterxml.jackson.databind;
 }

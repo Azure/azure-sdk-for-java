@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EventHubConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EventHubConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"eventHubResourceId\":\"gmnhjevd\",\"consumerGroup\":\"znfaj\",\"tableName\":\"kskmqozzkivyhjrl\",\"mappingRuleName\":\"zji\",\"dataFormat\":\"TSVE\",\"eventSystemProperties\":[\"ef\",\"wabs\",\"lronqqlmg\",\"lqxsjxtelex\"],\"compression\":\"None\",\"provisioningState\":\"Succeeded\",\"managedIdentityResourceId\":\"zoolzqoca\"}")
-                .toObject(EventHubConnectionProperties.class);
+        EventHubConnectionProperties model = BinaryData.fromString(
+            "{\"eventHubResourceId\":\"gmnhjevd\",\"consumerGroup\":\"znfaj\",\"tableName\":\"kskmqozzkivyhjrl\",\"mappingRuleName\":\"zji\",\"dataFormat\":\"TSVE\",\"eventSystemProperties\":[\"ef\",\"wabs\",\"lronqqlmg\",\"lqxsjxtelex\"],\"compression\":\"None\",\"provisioningState\":\"Succeeded\",\"managedIdentityResourceId\":\"zoolzqoca\"}")
+            .toObject(EventHubConnectionProperties.class);
         Assertions.assertEquals("gmnhjevd", model.eventHubResourceId());
         Assertions.assertEquals("znfaj", model.consumerGroup());
         Assertions.assertEquals("kskmqozzkivyhjrl", model.tableName());
@@ -31,16 +29,14 @@ public final class EventHubConnectionPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EventHubConnectionProperties model =
-            new EventHubConnectionProperties()
-                .withEventHubResourceId("gmnhjevd")
-                .withConsumerGroup("znfaj")
-                .withTableName("kskmqozzkivyhjrl")
-                .withMappingRuleName("zji")
-                .withDataFormat(EventHubDataFormat.TSVE)
-                .withEventSystemProperties(Arrays.asList("ef", "wabs", "lronqqlmg", "lqxsjxtelex"))
-                .withCompression(Compression.NONE)
-                .withManagedIdentityResourceId("zoolzqoca");
+        EventHubConnectionProperties model = new EventHubConnectionProperties().withEventHubResourceId("gmnhjevd")
+            .withConsumerGroup("znfaj")
+            .withTableName("kskmqozzkivyhjrl")
+            .withMappingRuleName("zji")
+            .withDataFormat(EventHubDataFormat.TSVE)
+            .withEventSystemProperties(Arrays.asList("ef", "wabs", "lronqqlmg", "lqxsjxtelex"))
+            .withCompression(Compression.NONE)
+            .withManagedIdentityResourceId("zoolzqoca");
         model = BinaryData.fromObject(model).toObject(EventHubConnectionProperties.class);
         Assertions.assertEquals("gmnhjevd", model.eventHubResourceId());
         Assertions.assertEquals("znfaj", model.consumerGroup());

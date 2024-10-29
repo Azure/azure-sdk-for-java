@@ -36,8 +36,8 @@ public interface L3IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginCreate(
-        String resourceGroupName, String l3IsolationDomainName, L3IsolationDomainInner body);
+    SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginCreate(String resourceGroupName,
+        String l3IsolationDomainName, L3IsolationDomainInner body);
 
     /**
      * Create L3 Isolation Domain.
@@ -56,8 +56,8 @@ public interface L3IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginCreate(
-        String resourceGroupName, String l3IsolationDomainName, L3IsolationDomainInner body, Context context);
+    SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginCreate(String resourceGroupName,
+        String l3IsolationDomainName, L3IsolationDomainInner body, Context context);
 
     /**
      * Create L3 Isolation Domain.
@@ -94,8 +94,8 @@ public interface L3IsolationDomainsClient {
      * @return the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    L3IsolationDomainInner create(
-        String resourceGroupName, String l3IsolationDomainName, L3IsolationDomainInner body, Context context);
+    L3IsolationDomainInner create(String resourceGroupName, String l3IsolationDomainName, L3IsolationDomainInner body,
+        Context context);
 
     /**
      * Gets a L3 Isolation Domain.
@@ -111,8 +111,8 @@ public interface L3IsolationDomainsClient {
      * @return the L3 Isolation Domain resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<L3IsolationDomainInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
+    Response<L3IsolationDomainInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String l3IsolationDomainName, Context context);
 
     /**
      * Gets a L3 Isolation Domain.
@@ -143,8 +143,8 @@ public interface L3IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginUpdate(
-        String resourceGroupName, String l3IsolationDomainName, L3IsolationDomainPatch body);
+    SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginUpdate(String resourceGroupName,
+        String l3IsolationDomainName, L3IsolationDomainPatch body);
 
     /**
      * Updates a L3 Isolation Domain.
@@ -161,8 +161,8 @@ public interface L3IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginUpdate(
-        String resourceGroupName, String l3IsolationDomainName, L3IsolationDomainPatch body, Context context);
+    SyncPoller<PollResult<L3IsolationDomainInner>, L3IsolationDomainInner> beginUpdate(String resourceGroupName,
+        String l3IsolationDomainName, L3IsolationDomainPatch body, Context context);
 
     /**
      * Updates a L3 Isolation Domain.
@@ -195,8 +195,8 @@ public interface L3IsolationDomainsClient {
      * @return the L3 Isolation Domain resource definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    L3IsolationDomainInner update(
-        String resourceGroupName, String l3IsolationDomainName, L3IsolationDomainPatch body, Context context);
+    L3IsolationDomainInner update(String resourceGroupName, String l3IsolationDomainName, L3IsolationDomainPatch body,
+        Context context);
 
     /**
      * Deletes a L3 Isolation Domain.
@@ -227,8 +227,8 @@ public interface L3IsolationDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String l3IsolationDomainName,
+        Context context);
 
     /**
      * Deletes a L3 Isolation Domain.
@@ -329,8 +329,8 @@ public interface L3IsolationDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body);
+        beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            UpdateAdministrativeState body);
 
     /**
      * executes enable operation to the underlying resources.
@@ -348,8 +348,8 @@ public interface L3IsolationDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CommonPostActionResponseForDeviceUpdateInner>, CommonPostActionResponseForDeviceUpdateInner>
-        beginUpdateAdministrativeState(
-            String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context);
+        beginUpdateAdministrativeState(String resourceGroupName, String l3IsolationDomainName,
+            UpdateAdministrativeState body, Context context);
 
     /**
      * executes enable operation to the underlying resources.
@@ -365,8 +365,8 @@ public interface L3IsolationDomainsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body);
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, UpdateAdministrativeState body);
 
     /**
      * executes enable operation to the underlying resources.
@@ -383,8 +383,8 @@ public interface L3IsolationDomainsClient {
      * @return common response for device updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(
-        String resourceGroupName, String l3IsolationDomainName, UpdateAdministrativeState body, Context context);
+    CommonPostActionResponseForDeviceUpdateInner updateAdministrativeState(String resourceGroupName,
+        String l3IsolationDomainName, UpdateAdministrativeState body, Context context);
 
     /**
      * Validates the configuration of the resources.
@@ -440,8 +440,8 @@ public interface L3IsolationDomainsClient {
      * @return the response of the action validate configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ValidateConfigurationResponseInner validateConfiguration(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
+    ValidateConfigurationResponseInner validateConfiguration(String resourceGroupName, String l3IsolationDomainName,
+        Context context);
 
     /**
      * Execute the commit on the resources.
@@ -489,8 +489,8 @@ public interface L3IsolationDomainsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String l3IsolationDomainName);
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
+        String l3IsolationDomainName);
 
     /**
      * Execute the commit on the resources.
@@ -506,6 +506,6 @@ public interface L3IsolationDomainsClient {
      * @return common response for the state updates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CommonPostActionResponseForStateUpdateInner commitConfiguration(
-        String resourceGroupName, String l3IsolationDomainName, Context context);
+    CommonPostActionResponseForStateUpdateInner commitConfiguration(String resourceGroupName,
+        String l3IsolationDomainName, Context context);
 }

@@ -107,25 +107,21 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
     }
 
     public NetworkRack create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkRacks()
-                .create(resourceGroupName, networkRackName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkRacks()
+            .create(resourceGroupName, networkRackName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NetworkRack create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkRacks()
-                .create(resourceGroupName, networkRackName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkRacks()
+            .create(resourceGroupName, networkRackName, this.innerModel(), context);
         return this;
     }
 
-    NetworkRackImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    NetworkRackImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new NetworkRackInner();
         this.serviceManager = serviceManager;
         this.networkRackName = name;
@@ -137,25 +133,20 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
     }
 
     public NetworkRack apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkRacks()
-                .update(resourceGroupName, networkRackName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkRacks()
+            .update(resourceGroupName, networkRackName, updateBody, Context.NONE);
         return this;
     }
 
     public NetworkRack apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkRacks()
-                .update(resourceGroupName, networkRackName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkRacks()
+            .update(resourceGroupName, networkRackName, updateBody, context);
         return this;
     }
 
-    NetworkRackImpl(
-        NetworkRackInner innerObject,
+    NetworkRackImpl(NetworkRackInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -164,22 +155,18 @@ public final class NetworkRackImpl implements NetworkRack, NetworkRack.Definitio
     }
 
     public NetworkRack refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkRacks()
-                .getByResourceGroupWithResponse(resourceGroupName, networkRackName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkRacks()
+            .getByResourceGroupWithResponse(resourceGroupName, networkRackName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NetworkRack refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNetworkRacks()
-                .getByResourceGroupWithResponse(resourceGroupName, networkRackName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNetworkRacks()
+            .getByResourceGroupWithResponse(resourceGroupName, networkRackName, context)
+            .getValue();
         return this;
     }
 

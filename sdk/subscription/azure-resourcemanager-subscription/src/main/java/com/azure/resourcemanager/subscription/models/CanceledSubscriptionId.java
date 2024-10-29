@@ -6,18 +6,20 @@ package com.azure.resourcemanager.subscription.models;
 
 import com.azure.resourcemanager.subscription.fluent.models.CanceledSubscriptionIdInner;
 
-/** An immutable client-side representation of CanceledSubscriptionId. */
+/**
+ * An immutable client-side representation of CanceledSubscriptionId.
+ */
 public interface CanceledSubscriptionId {
     /**
      * Gets the subscriptionId property: The ID of the canceled subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String subscriptionId();
 
     /**
      * Gets the inner com.azure.resourcemanager.subscription.fluent.models.CanceledSubscriptionIdInner object.
-     *
+     * 
      * @return the inner object.
      */
     CanceledSubscriptionIdInner innerModel();

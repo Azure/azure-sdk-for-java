@@ -141,22 +141,18 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
     }
 
     public WebTest create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .createOrUpdateWithResponse(resourceGroupName, webTestName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .createOrUpdateWithResponse(resourceGroupName, webTestName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public WebTest create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .createOrUpdateWithResponse(resourceGroupName, webTestName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .createOrUpdateWithResponse(resourceGroupName, webTestName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -172,27 +168,22 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
     }
 
     public WebTest apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .updateTagsWithResponse(resourceGroupName, webTestName, updateWebTestTags, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .updateTagsWithResponse(resourceGroupName, webTestName, updateWebTestTags, Context.NONE)
+            .getValue();
         return this;
     }
 
     public WebTest apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .updateTagsWithResponse(resourceGroupName, webTestName, updateWebTestTags, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .updateTagsWithResponse(resourceGroupName, webTestName, updateWebTestTags, context)
+            .getValue();
         return this;
     }
 
-    WebTestImpl(
-        WebTestInner innerObject,
+    WebTestImpl(WebTestInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -201,22 +192,18 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
     }
 
     public WebTest refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .getByResourceGroupWithResponse(resourceGroupName, webTestName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .getByResourceGroupWithResponse(resourceGroupName, webTestName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public WebTest refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWebTests()
-                .getByResourceGroupWithResponse(resourceGroupName, webTestName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWebTests()
+            .getByResourceGroupWithResponse(resourceGroupName, webTestName, context)
+            .getValue();
         return this;
     }
 

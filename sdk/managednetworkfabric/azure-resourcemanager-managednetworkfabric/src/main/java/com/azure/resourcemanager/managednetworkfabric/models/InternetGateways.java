@@ -23,8 +23,8 @@ public interface InternetGateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Internet Gateway resource definition along with {@link Response}.
      */
-    Response<InternetGateway> getByResourceGroupWithResponse(
-        String resourceGroupName, String internetGatewayName, Context context);
+    Response<InternetGateway> getByResourceGroupWithResponse(String resourceGroupName, String internetGatewayName,
+        Context context);
 
     /**
      * Retrieves details of Network Fabric Service Internet Gateway.

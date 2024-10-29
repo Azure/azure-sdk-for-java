@@ -70,8 +70,8 @@ public interface ServerKeysClient {
      * @return a MySQL Server key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerKeyInner> getWithResponse(
-        String resourceGroupName, String serverName, String keyName, Context context);
+    Response<ServerKeyInner> getWithResponse(String resourceGroupName, String serverName, String keyName,
+        Context context);
 
     /**
      * Creates or updates a MySQL Server key.
@@ -86,8 +86,8 @@ public interface ServerKeysClient {
      * @return a MySQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters);
+    SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(String serverName, String keyName,
+        String resourceGroupName, ServerKeyInner parameters);
 
     /**
      * Creates or updates a MySQL Server key.
@@ -103,8 +103,8 @@ public interface ServerKeysClient {
      * @return a MySQL Server key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters, Context context);
+    SyncPoller<PollResult<ServerKeyInner>, ServerKeyInner> beginCreateOrUpdate(String serverName, String keyName,
+        String resourceGroupName, ServerKeyInner parameters, Context context);
 
     /**
      * Creates or updates a MySQL Server key.
@@ -119,8 +119,8 @@ public interface ServerKeysClient {
      * @return a MySQL Server key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerKeyInner createOrUpdate(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters);
+    ServerKeyInner createOrUpdate(String serverName, String keyName, String resourceGroupName,
+        ServerKeyInner parameters);
 
     /**
      * Creates or updates a MySQL Server key.
@@ -136,8 +136,8 @@ public interface ServerKeysClient {
      * @return a MySQL Server key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerKeyInner createOrUpdate(
-        String serverName, String keyName, String resourceGroupName, ServerKeyInner parameters, Context context);
+    ServerKeyInner createOrUpdate(String serverName, String keyName, String resourceGroupName,
+        ServerKeyInner parameters, Context context);
 
     /**
      * Deletes the MySQL Server key with the given name.
@@ -166,8 +166,8 @@ public interface ServerKeysClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String serverName, String keyName, String resourceGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String serverName, String keyName, String resourceGroupName,
+        Context context);
 
     /**
      * Deletes the MySQL Server key with the given name.

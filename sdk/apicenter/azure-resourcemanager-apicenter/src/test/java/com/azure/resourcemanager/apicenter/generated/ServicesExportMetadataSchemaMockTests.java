@@ -46,13 +46,15 @@ public final class ServicesExportMetadataSchemaMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        MetadataSchemaExportResult response = manager.services().exportMetadataSchema("fiwjmygtdssls", "tmweriofzpyq",
-            new MetadataSchemaExportRequest().withAssignedTo(MetadataAssignmentEntity.ENVIRONMENT),
-            com.azure.core.util.Context.NONE);
+        MetadataSchemaExportResult response = manager.services()
+            .exportMetadataSchema("fiwjmygtdssls", "tmweriofzpyq",
+                new MetadataSchemaExportRequest().withAssignedTo(MetadataAssignmentEntity.ENVIRONMENT),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(MetadataSchemaExportFormat.INLINE, response.format());
         Assertions.assertEquals("n", response.value());

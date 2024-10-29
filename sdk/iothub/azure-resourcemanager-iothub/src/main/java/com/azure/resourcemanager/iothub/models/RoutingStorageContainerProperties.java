@@ -381,16 +381,12 @@ public final class RoutingStorageContainerProperties {
             identity().validate();
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model RoutingStorageContainerProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model RoutingStorageContainerProperties"));
         }
         if (containerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property containerName in model RoutingStorageContainerProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property containerName in model RoutingStorageContainerProperties"));
         }
     }
 

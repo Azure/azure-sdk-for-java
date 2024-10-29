@@ -7,9 +7,5 @@ package com.azure.identity.implementation;
  * Enum used to represent different Managed Identity platforms.
  */
 public enum ManagedIdentityType {
-    VM,
-    APP_SERVICE,
-    SERVICE_FABRIC,
-    ARC,
-    AKS;
+    VM, APP_SERVICE, SERVICE_FABRIC, ARC, AKS;
 }

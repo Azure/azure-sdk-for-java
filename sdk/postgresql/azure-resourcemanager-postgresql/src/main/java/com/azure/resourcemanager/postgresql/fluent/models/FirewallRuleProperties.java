@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** The properties of a server firewall rule. */
 @Fluent
 public final class FirewallRuleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallRuleProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(FirewallRuleProperties.class);
 
     /*
      * The start IP address of the server firewall rule. Must be IPv4 format.
@@ -73,16 +74,12 @@ public final class FirewallRuleProperties {
      */
     public void validate() {
         if (startIpAddress() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property startIpAddress in model FirewallRuleProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property startIpAddress in model FirewallRuleProperties"));
         }
         if (endIpAddress() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endIpAddress in model FirewallRuleProperties"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endIpAddress in model FirewallRuleProperties"));
         }
     }
 }

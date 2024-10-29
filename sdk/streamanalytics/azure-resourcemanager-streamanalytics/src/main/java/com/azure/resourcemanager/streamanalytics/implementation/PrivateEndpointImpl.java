@@ -67,7 +67,8 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint create() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
             .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
                 createIfMatch, createIfNoneMatch, Context.NONE)
             .getValue();
@@ -75,7 +76,8 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
             .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
                 createIfMatch, createIfNoneMatch, context)
             .getValue();
@@ -97,7 +99,8 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint apply() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
             .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
                 updateIfMatch, updateIfNoneMatch, Context.NONE)
             .getValue();
@@ -105,7 +108,8 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
             .createOrUpdateWithResponse(resourceGroupName, clusterName, privateEndpointName, this.innerModel(),
                 updateIfMatch, updateIfNoneMatch, context)
             .getValue();
@@ -122,14 +126,18 @@ public final class PrivateEndpointImpl implements PrivateEndpoint, PrivateEndpoi
     }
 
     public PrivateEndpoint refresh() {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
-            .getWithResponse(resourceGroupName, clusterName, privateEndpointName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
+            .getWithResponse(resourceGroupName, clusterName, privateEndpointName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PrivateEndpoint refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getPrivateEndpoints()
-            .getWithResponse(resourceGroupName, clusterName, privateEndpointName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPrivateEndpoints()
+            .getWithResponse(resourceGroupName, clusterName, privateEndpointName, context)
+            .getValue();
         return this;
     }
 

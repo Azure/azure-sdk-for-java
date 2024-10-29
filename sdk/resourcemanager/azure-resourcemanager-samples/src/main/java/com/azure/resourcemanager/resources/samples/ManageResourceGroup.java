@@ -36,42 +36,33 @@ public final class ManageResourceGroup {
         final String resourceTagValue = Utils.randomResourceName(azureResourceManager, "rgRSTV", 24);
         try {
 
-
             //=============================================================
             // Create resource group.
 
             System.out.println("Creating a resource group with name: " + rgName);
 
-            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
-                    .withRegion(Region.US_WEST)
-                    .create();
+            ResourceGroup resourceGroup
+                = azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
 
             System.out.println("Created a resource group with name: " + rgName);
-
 
             //=============================================================
             // Update the resource group.
 
             System.out.println("Updating the resource group with name: " + rgName);
 
-            resourceGroup.update()
-                    .withTag(resourceTagName, resourceTagValue)
-                    .apply();
+            resourceGroup.update().withTag(resourceTagName, resourceTagValue).apply();
 
             System.out.println("Updated the resource group with name: " + rgName);
-
 
             //=============================================================
             // Create another resource group.
 
             System.out.println("Creating another resource group with name: " + rgName2);
 
-            azureResourceManager.resourceGroups().define(rgName2)
-                    .withRegion(Region.US_WEST)
-                    .create();
+            azureResourceManager.resourceGroups().define(rgName2).withRegion(Region.US_WEST).create();
 
             System.out.println("Created another resource group with name: " + rgName2);
-
 
             //=============================================================
             // List resource groups.
@@ -81,7 +72,6 @@ public final class ManageResourceGroup {
             for (ResourceGroup rGroup : azureResourceManager.resourceGroups().list()) {
                 System.out.println("Resource group: " + rGroup.name());
             }
-
 
             //=============================================================
             // Delete a resource group.
@@ -118,8 +108,7 @@ public final class ManageResourceGroup {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

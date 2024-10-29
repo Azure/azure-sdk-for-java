@@ -74,14 +74,12 @@ public final class ForecastAggregation {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ForecastAggregation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ForecastAggregation"));
         }
         if (function() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property function in model ForecastAggregation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property function in model ForecastAggregation"));
         }
     }
 

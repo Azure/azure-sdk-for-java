@@ -44,7 +44,8 @@ public final class IntegrationRuntimeDataFlowProperties {
     /*
      * Data flow properties for managed integration runtime.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
     /** Creates an instance of IntegrationRuntimeDataFlowProperties class. */
     public IntegrationRuntimeDataFlowProperties() {

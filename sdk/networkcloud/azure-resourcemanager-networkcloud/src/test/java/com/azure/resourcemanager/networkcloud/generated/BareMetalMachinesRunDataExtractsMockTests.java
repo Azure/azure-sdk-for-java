@@ -33,60 +33,41 @@ public final class BareMetalMachinesRunDataExtractsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"tipwcxbyubhiqd\",\"resourceId\":\"urnpnuhzafccnuh\",\"name\":\"gbylbuig\",\"status\":\"xvatvcr\",\"percentComplete\":21.649128,\"startTime\":\"2021-03-26T19:13:55Z\",\"endTime\":\"2021-07-31T13:29:51Z\",\"operations\":[{\"id\":\"csyhzlwxaeaov\",\"resourceId\":\"exdnd\",\"name\":\"dwead\",\"status\":\"rzmwn\",\"percentComplete\":15.468043,\"startTime\":\"2021-06-07T19:00:04Z\",\"endTime\":\"2021-07-05T10:58:17Z\",\"operations\":[{\"id\":\"magoaqylkjz\",\"resourceId\":\"iua\",\"name\":\"cgm\",\"status\":\"itpfinzcpdl\",\"percentComplete\":31.125391,\"startTime\":\"2021-06-08T11:12:37Z\",\"endTime\":\"2021-10-17T10:54:47Z\",\"operations\":[{\"status\":\"drvcqguef\"}]}]}]}";
+        String responseStr
+            = "{\"id\":\"tipwcxbyubhiqd\",\"resourceId\":\"urnpnuhzafccnuh\",\"name\":\"gbylbuig\",\"status\":\"xvatvcr\",\"percentComplete\":21.649128,\"startTime\":\"2021-03-26T19:13:55Z\",\"endTime\":\"2021-07-31T13:29:51Z\",\"operations\":[{\"id\":\"csyhzlwxaeaov\",\"resourceId\":\"exdnd\",\"name\":\"dwead\",\"status\":\"rzmwn\",\"percentComplete\":15.468043,\"startTime\":\"2021-06-07T19:00:04Z\",\"endTime\":\"2021-07-05T10:58:17Z\",\"operations\":[{\"id\":\"magoaqylkjz\",\"resourceId\":\"iua\",\"name\":\"cgm\",\"status\":\"itpfinzcpdl\",\"percentComplete\":31.125391,\"startTime\":\"2021-06-08T11:12:37Z\",\"endTime\":\"2021-10-17T10:54:47Z\",\"operations\":[{\"status\":\"drvcqguef\"}]}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatusResult response =
-            manager
-                .bareMetalMachines()
-                .runDataExtracts(
-                    "jfoknubnoitpkp",
-                    "trgdgxvc",
-                    new BareMetalMachineRunDataExtractsParameters()
-                        .withCommands(
-                            Arrays
-                                .asList(
-                                    new BareMetalMachineCommandSpecification()
-                                        .withArguments(Arrays.asList("sw", "gyxpqit", "eialwvskb"))
-                                        .withCommand("hzacaqtyltco"),
-                                    new BareMetalMachineCommandSpecification()
-                                        .withArguments(Arrays.asList("jpds", "zakuejk", "vbiztjofqcv"))
-                                        .withCommand("vjufycsjmlbe"),
-                                    new BareMetalMachineCommandSpecification()
-                                        .withArguments(Arrays.asList("jiriuxeg"))
-                                        .withCommand("hortu"),
-                                    new BareMetalMachineCommandSpecification()
-                                        .withArguments(
-                                            Arrays.asList("lpjfelqerpptcbgq", "zmnhiilialwc", "gckbb", "ccgzpraoxnyu"))
-                                        .withCommand("fa")))
-                        .withLimitTimeSeconds(9173171906821807545L),
-                    com.azure.core.util.Context.NONE);
+        OperationStatusResult response = manager.bareMetalMachines()
+            .runDataExtracts("jfoknubnoitpkp", "trgdgxvc",
+                new BareMetalMachineRunDataExtractsParameters().withCommands(Arrays.asList(
+                    new BareMetalMachineCommandSpecification()
+                        .withArguments(Arrays.asList("sw", "gyxpqit", "eialwvskb"))
+                        .withCommand("hzacaqtyltco"),
+                    new BareMetalMachineCommandSpecification()
+                        .withArguments(Arrays.asList("jpds", "zakuejk", "vbiztjofqcv"))
+                        .withCommand("vjufycsjmlbe"),
+                    new BareMetalMachineCommandSpecification().withArguments(Arrays.asList("jiriuxeg"))
+                        .withCommand("hortu"),
+                    new BareMetalMachineCommandSpecification()
+                        .withArguments(Arrays.asList("lpjfelqerpptcbgq", "zmnhiilialwc", "gckbb", "ccgzpraoxnyu"))
+                        .withCommand("fa")))
+                    .withLimitTimeSeconds(9173171906821807545L),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("tipwcxbyubhiqd", response.id());
         Assertions.assertEquals("gbylbuig", response.name());
@@ -104,15 +85,11 @@ public final class BareMetalMachinesRunDataExtractsMockTests {
         Assertions.assertEquals("cgm", response.operations().get(0).operations().get(0).name());
         Assertions.assertEquals("itpfinzcpdl", response.operations().get(0).operations().get(0).status());
         Assertions.assertEquals(31.125391F, response.operations().get(0).operations().get(0).percentComplete());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-06-08T11:12:37Z"),
-                response.operations().get(0).operations().get(0).startTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-10-17T10:54:47Z"),
-                response.operations().get(0).operations().get(0).endTime());
-        Assertions
-            .assertEquals("drvcqguef", response.operations().get(0).operations().get(0).operations().get(0).status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T11:12:37Z"),
+            response.operations().get(0).operations().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T10:54:47Z"),
+            response.operations().get(0).operations().get(0).endTime());
+        Assertions.assertEquals("drvcqguef",
+            response.operations().get(0).operations().get(0).operations().get(0).status());
     }
 }

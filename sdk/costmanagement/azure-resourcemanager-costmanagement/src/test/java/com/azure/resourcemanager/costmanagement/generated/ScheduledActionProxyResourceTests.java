@@ -12,11 +12,10 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduledActionProxyResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduledActionProxyResource model =
-            BinaryData
-                .fromString(
-                    "{\"eTag\":\"olbq\",\"kind\":\"Email\",\"id\":\"lmv\",\"name\":\"elfk\",\"type\":\"gplcrpwjxeznoigb\"}")
-                .toObject(ScheduledActionProxyResource.class);
+        ScheduledActionProxyResource model = BinaryData
+            .fromString(
+                "{\"eTag\":\"olbq\",\"kind\":\"Email\",\"id\":\"lmv\",\"name\":\"elfk\",\"type\":\"gplcrpwjxeznoigb\"}")
+            .toObject(ScheduledActionProxyResource.class);
         Assertions.assertEquals(ScheduledActionKind.EMAIL, model.kind());
     }
 

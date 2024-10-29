@@ -22,8 +22,8 @@ public interface ResourceProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> mitigateWithResponse(
-        String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest, Context context);
+    Response<Void> mitigateWithResponse(String jobName, String resourceGroupName, MitigateJobRequest mitigateJobRequest,
+        Context context);
 
     /**
      * Request to mitigate for a given job.

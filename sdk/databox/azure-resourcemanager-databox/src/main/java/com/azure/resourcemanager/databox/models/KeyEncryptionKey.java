@@ -126,9 +126,8 @@ public final class KeyEncryptionKey {
      */
     public void validate() {
         if (kekType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property kekType in model KeyEncryptionKey"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property kekType in model KeyEncryptionKey"));
         }
         if (identityProperties() != null) {
             identityProperties().validate();

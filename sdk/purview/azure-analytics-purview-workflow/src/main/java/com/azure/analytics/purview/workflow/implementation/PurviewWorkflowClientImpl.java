@@ -177,11 +177,8 @@ public final class PurviewWorkflowClientImpl {
      * @param serviceVersion Service version.
      */
     public PurviewWorkflowClientImpl(String endpoint, PurviewWorkflowServiceVersion serviceVersion) {
-        this(
-                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                endpoint,
-                serviceVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -191,8 +188,8 @@ public final class PurviewWorkflowClientImpl {
      * @param endpoint The account endpoint of your Purview account. Example: https://{accountName}.purview.azure.com/.
      * @param serviceVersion Service version.
      */
-    public PurviewWorkflowClientImpl(
-            HttpPipeline httpPipeline, String endpoint, PurviewWorkflowServiceVersion serviceVersion) {
+    public PurviewWorkflowClientImpl(HttpPipeline httpPipeline, String endpoint,
+        PurviewWorkflowServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -204,11 +201,8 @@ public final class PurviewWorkflowClientImpl {
      * @param endpoint The account endpoint of your Purview account. Example: https://{accountName}.purview.azure.com/.
      * @param serviceVersion Service version.
      */
-    public PurviewWorkflowClientImpl(
-            HttpPipeline httpPipeline,
-            SerializerAdapter serializerAdapter,
-            String endpoint,
-            PurviewWorkflowServiceVersion serviceVersion) {
+    public PurviewWorkflowClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
+        PurviewWorkflowServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

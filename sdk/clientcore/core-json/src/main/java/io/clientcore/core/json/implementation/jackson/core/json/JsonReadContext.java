@@ -9,8 +9,7 @@ import io.clientcore.core.json.implementation.jackson.core.io.ContentReference;
  * core methods needed, and also exposes
  * more complete API to parser implementation classes.
  */
-public final class JsonReadContext extends JsonStreamContext
-{
+public final class JsonReadContext extends JsonStreamContext {
     // // // Configuration
 
     /**
@@ -127,8 +126,8 @@ public final class JsonReadContext extends JsonStreamContext
     public JsonReadContext createChildArrayContext(int lineNr, int colNr) {
         JsonReadContext ctxt = _child;
         if (ctxt == null) {
-            _child = ctxt = new JsonReadContext(this,
-                    (_dups == null) ? null : _dups.child(), TYPE_ARRAY, lineNr, colNr);
+            _child
+                = ctxt = new JsonReadContext(this, (_dups == null) ? null : _dups.child(), TYPE_ARRAY, lineNr, colNr);
         } else {
             ctxt.reset(TYPE_ARRAY, lineNr, colNr);
         }
@@ -138,8 +137,8 @@ public final class JsonReadContext extends JsonStreamContext
     public JsonReadContext createChildObjectContext(int lineNr, int colNr) {
         JsonReadContext ctxt = _child;
         if (ctxt == null) {
-            _child = ctxt = new JsonReadContext(this,
-                    (_dups == null) ? null : _dups.child(), TYPE_OBJECT, lineNr, colNr);
+            _child
+                = ctxt = new JsonReadContext(this, (_dups == null) ? null : _dups.child(), TYPE_OBJECT, lineNr, colNr);
             return ctxt;
         }
         ctxt.reset(TYPE_OBJECT, lineNr, colNr);
@@ -152,12 +151,21 @@ public final class JsonReadContext extends JsonStreamContext
     /**********************************************************
      */
 
-    @Override public String getCurrentName() { return _currentName; }
+    @Override
+    public String getCurrentName() {
+        return _currentName;
+    }
 
     // @since 2.9
-    @Override public boolean hasCurrentName() { return _currentName != null; }
+    @Override
+    public boolean hasCurrentName() {
+        return _currentName != null;
+    }
 
-    @Override public JsonReadContext getParent() { return _parent; }
+    @Override
+    public JsonReadContext getParent() {
+        return _parent;
+    }
 
     @Override
     public JsonLocation startLocation(ContentReference srcRef) {
@@ -217,14 +225,16 @@ public final class JsonReadContext extends JsonStreamContext
 
     public void setCurrentName(String name) throws JsonProcessingException {
         _currentName = name;
-        if (_dups != null) { _checkDup(_dups, name); }
+        if (_dups != null) {
+            _checkDup(_dups, name);
+        }
     }
 
     private void _checkDup(DupDetector dd, String name) throws JsonProcessingException {
         if (dd.isDup(name)) {
             Object src = dd.getSource();
             throw new JsonParseException(((src instanceof JsonParser) ? ((JsonParser) src) : null),
-                    "Duplicate field '"+name+"'");
+                "Duplicate field '" + name + "'");
         }
     }
 }

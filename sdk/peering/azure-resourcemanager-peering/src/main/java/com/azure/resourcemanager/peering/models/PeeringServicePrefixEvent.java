@@ -5,49 +5,53 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The details of the event associated with a prefix. */
+/**
+ * The details of the event associated with a prefix.
+ */
 @Immutable
-public final class PeeringServicePrefixEvent {
+public final class PeeringServicePrefixEvent implements JsonSerializable<PeeringServicePrefixEvent> {
     /*
      * The timestamp of the event associated with a prefix.
      */
-    @JsonProperty(value = "eventTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime eventTimestamp;
 
     /*
      * The type of the event associated with a prefix.
      */
-    @JsonProperty(value = "eventType", access = JsonProperty.Access.WRITE_ONLY)
     private String eventType;
 
     /*
      * The summary of the event associated with a prefix.
      */
-    @JsonProperty(value = "eventSummary", access = JsonProperty.Access.WRITE_ONLY)
     private String eventSummary;
 
     /*
      * The level of the event associated with a prefix.
      */
-    @JsonProperty(value = "eventLevel", access = JsonProperty.Access.WRITE_ONLY)
     private String eventLevel;
 
     /*
      * The description of the event associated with a prefix.
      */
-    @JsonProperty(value = "eventDescription", access = JsonProperty.Access.WRITE_ONLY)
     private String eventDescription;
 
-    /** Creates an instance of PeeringServicePrefixEvent class. */
+    /**
+     * Creates an instance of PeeringServicePrefixEvent class.
+     */
     public PeeringServicePrefixEvent() {
     }
 
     /**
      * Get the eventTimestamp property: The timestamp of the event associated with a prefix.
-     *
+     * 
      * @return the eventTimestamp value.
      */
     public OffsetDateTime eventTimestamp() {
@@ -56,7 +60,7 @@ public final class PeeringServicePrefixEvent {
 
     /**
      * Get the eventType property: The type of the event associated with a prefix.
-     *
+     * 
      * @return the eventType value.
      */
     public String eventType() {
@@ -65,7 +69,7 @@ public final class PeeringServicePrefixEvent {
 
     /**
      * Get the eventSummary property: The summary of the event associated with a prefix.
-     *
+     * 
      * @return the eventSummary value.
      */
     public String eventSummary() {
@@ -74,7 +78,7 @@ public final class PeeringServicePrefixEvent {
 
     /**
      * Get the eventLevel property: The level of the event associated with a prefix.
-     *
+     * 
      * @return the eventLevel value.
      */
     public String eventLevel() {
@@ -83,7 +87,7 @@ public final class PeeringServicePrefixEvent {
 
     /**
      * Get the eventDescription property: The description of the event associated with a prefix.
-     *
+     * 
      * @return the eventDescription value.
      */
     public String eventDescription() {
@@ -92,9 +96,53 @@ public final class PeeringServicePrefixEvent {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringServicePrefixEvent from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringServicePrefixEvent if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PeeringServicePrefixEvent.
+     */
+    public static PeeringServicePrefixEvent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringServicePrefixEvent deserializedPeeringServicePrefixEvent = new PeeringServicePrefixEvent();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventTimestamp".equals(fieldName)) {
+                    deserializedPeeringServicePrefixEvent.eventTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("eventType".equals(fieldName)) {
+                    deserializedPeeringServicePrefixEvent.eventType = reader.getString();
+                } else if ("eventSummary".equals(fieldName)) {
+                    deserializedPeeringServicePrefixEvent.eventSummary = reader.getString();
+                } else if ("eventLevel".equals(fieldName)) {
+                    deserializedPeeringServicePrefixEvent.eventLevel = reader.getString();
+                } else if ("eventDescription".equals(fieldName)) {
+                    deserializedPeeringServicePrefixEvent.eventDescription = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringServicePrefixEvent;
+        });
     }
 }

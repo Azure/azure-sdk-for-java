@@ -14,22 +14,17 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"xlxqzvn\",\"\":{\"brqbsmswzi\":\"databycucrwnamikz\",\"vhczznvfby\":\"datagfuhokzrusw\",\"vumwmxqh\":\"datajsxjwwix\",\"hflzokxco\":\"datadvnoamldsehaohdj\"}},\"etag\":\"e\",\"id\":\"nje\",\"name\":\"agltsxoa\",\"type\":\"ftgz\"}")
-                .toObject(IntegrationRuntimeResourceInner.class);
+        IntegrationRuntimeResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"xlxqzvn\",\"\":{\"brqbsmswzi\":\"databycucrwnamikz\",\"vhczznvfby\":\"datagfuhokzrusw\",\"vumwmxqh\":\"datajsxjwwix\",\"hflzokxco\":\"datadvnoamldsehaohdj\"}},\"etag\":\"e\",\"id\":\"nje\",\"name\":\"agltsxoa\",\"type\":\"ftgz\"}")
+            .toObject(IntegrationRuntimeResourceInner.class);
         Assertions.assertEquals("xlxqzvn", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeResourceInner model =
-            new IntegrationRuntimeResourceInner()
-                .withProperties(
-                    new IntegrationRuntime()
-                        .withDescription("xlxqzvn")
-                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
+        IntegrationRuntimeResourceInner model
+            = new IntegrationRuntimeResourceInner().withProperties(new IntegrationRuntime().withDescription("xlxqzvn")
+                .withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeResourceInner.class);
         Assertions.assertEquals("xlxqzvn", model.properties().description());
     }

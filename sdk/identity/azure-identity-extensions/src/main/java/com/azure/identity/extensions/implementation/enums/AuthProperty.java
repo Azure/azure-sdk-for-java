@@ -18,15 +18,12 @@ public enum AuthProperty {
     /**
      * Client ID to use when performing service principal authentication with Azure.
      */
-    CLIENT_ID("azure.clientId",
-        "Client ID to use when performing service principal authentication with Azure.",
-        false),
+    CLIENT_ID("azure.clientId", "Client ID to use when performing service principal authentication with Azure.", false),
     /**
      * Client secret to use when performing service principal authentication with Azure.
      */
     CLIENT_SECRET("azure.clientSecret",
-        "Client secret to use when performing service principal authentication with Azure.",
-        false),
+        "Client secret to use when performing service principal authentication with Azure.", false),
     /**
      * Path of a PEM/PFX certificate file to use when performing service principal authentication with Azure.
      */
@@ -36,71 +33,51 @@ public enum AuthProperty {
     /**
      * Password of the certificate file.
      */
-    CLIENT_CERTIFICATE_PASSWORD("azure.clientCertificatePassword",
-        "Password of the certificate file.",
-        false),
+    CLIENT_CERTIFICATE_PASSWORD("azure.clientCertificatePassword", "Password of the certificate file.", false),
     /**
      * Username to use when performing username/password authentication with Azure.
      */
-    USERNAME("azure.username",
-        "Username to use when performing username/password authentication with Azure.",
-        false),
+    USERNAME("azure.username", "Username to use when performing username/password authentication with Azure.", false),
     /**
      * Password to use when performing username/password authentication with Azure.
      */
-    PASSWORD("azure.password",
-        "Password to use when performing username/password authentication with Azure.",
-        false),
+    PASSWORD("azure.password", "Password to use when performing username/password authentication with Azure.", false),
     /**
      *  Whether to enable managed identity to authenticate with Azure.
      */
     MANAGED_IDENTITY_ENABLED("azure.managedIdentityEnabled",
-        "Whether to enable managed identity to authenticate with Azure.",
-        false),
+        "Whether to enable managed identity to authenticate with Azure.", false),
     /**
      * The well known authority hosts for the Azure Public Cloud and sovereign clouds.
      */
-    AUTHORITY_HOST("azure.authorityHost",
-        AzureAuthorityHosts.AZURE_PUBLIC_CLOUD,
-        "The well known authority hosts for the Azure Public Cloud and sovereign clouds.",
-        true),
+    AUTHORITY_HOST("azure.authorityHost", AzureAuthorityHosts.AZURE_PUBLIC_CLOUD,
+        "The well known authority hosts for the Azure Public Cloud and sovereign clouds.", true),
     /**
      * Tenant ID for Azure resources.
      */
-    TENANT_ID("azure.tenantId",
-        "Tenant ID for Azure resources.",
-        true),
+    TENANT_ID("azure.tenantId", "Tenant ID for Azure resources.", true),
     /**
      * Claims for Azure resources.
      */
-    CLAIMS("azure.claims",
-        "Claims for Azure resources.",
-        false),
+    CLAIMS("azure.claims", "Claims for Azure resources.", false),
     /**
      * Scopes for Azure resources.
      */
-    SCOPES("azure.scopes",
-        "Scopes for Azure resources.",
-        false),
+    SCOPES("azure.scopes", "Scopes for Azure resources.", false),
     /**
      * Max time to get an access token.
      */
-    GET_TOKEN_TIMEOUT("azure.accessTokenTimeoutInSeconds",
-        "Max time to get an access token.",
-        false),
+    GET_TOKEN_TIMEOUT("azure.accessTokenTimeoutInSeconds", "Max time to get an access token.", false),
     /**
      * The canonical class name of a class that implements 'TokenCredentialProvider'.
      */
     TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME("azure.tokenCredentialProviderClassName",
-        "The canonical class name of a class that implements 'TokenCredentialProvider'.",
-        false),
+        "The canonical class name of a class that implements 'TokenCredentialProvider'.", false),
     /**
      * The given bean name of a TokenCredential bean in the Spring context.
      */
-    TOKEN_CREDENTIAL_BEAN_NAME("azure.tokenCredentialBeanName",
-        "springCloudAzureDefaultCredential",
-        "The given bean name of a TokenCredential bean in the Spring context.",
-        false);
+    TOKEN_CREDENTIAL_BEAN_NAME("azure.tokenCredentialBeanName", "springCloudAzureDefaultCredential",
+        "The given bean name of a TokenCredential bean in the Spring context.", false);
 
     String propertyKey;
     String defaultValue;
@@ -190,17 +167,18 @@ public enum AuthProperty {
 
     static class AuthPropertyConfigurationProperty {
         private static Configuration configuration = Configuration.getGlobalConfiguration();
-        static Map<AuthProperty, String> authPropertyKeyAndConfigurationPropertyKey = new HashMap<AuthProperty, String>() {
-            {
-                put(AuthProperty.CLIENT_ID, Configuration.PROPERTY_AZURE_CLIENT_ID);
-                put(AuthProperty.CLIENT_SECRET, Configuration.PROPERTY_AZURE_CLIENT_SECRET);
-                put(AuthProperty.CLIENT_CERTIFICATE_PATH, Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
-                put(AuthProperty.USERNAME, Configuration.PROPERTY_AZURE_USERNAME);
-                put(AuthProperty.PASSWORD, Configuration.PROPERTY_AZURE_PASSWORD);
-                put(AuthProperty.AUTHORITY_HOST, Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
-                put(AuthProperty.TENANT_ID, Configuration.PROPERTY_AZURE_TENANT_ID);
-            }
-        };
+        static Map<AuthProperty, String> authPropertyKeyAndConfigurationPropertyKey
+            = new HashMap<AuthProperty, String>() {
+                {
+                    put(AuthProperty.CLIENT_ID, Configuration.PROPERTY_AZURE_CLIENT_ID);
+                    put(AuthProperty.CLIENT_SECRET, Configuration.PROPERTY_AZURE_CLIENT_SECRET);
+                    put(AuthProperty.CLIENT_CERTIFICATE_PATH, Configuration.PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH);
+                    put(AuthProperty.USERNAME, Configuration.PROPERTY_AZURE_USERNAME);
+                    put(AuthProperty.PASSWORD, Configuration.PROPERTY_AZURE_PASSWORD);
+                    put(AuthProperty.AUTHORITY_HOST, Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
+                    put(AuthProperty.TENANT_ID, Configuration.PROPERTY_AZURE_TENANT_ID);
+                }
+            };
 
         static String getConfigurationPropertyValue(AuthProperty authProperty) {
             String key = authPropertyKeyAndConfigurationPropertyKey.get(authProperty);

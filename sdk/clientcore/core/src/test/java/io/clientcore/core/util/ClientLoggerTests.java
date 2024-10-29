@@ -78,11 +78,11 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("logMaliciousErrorSupplier")
     public void logMaliciousMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse) {
-        String logMessage = "You have successfully authenticated, \r\n[INFO] User dummy was not"
-            + " successfully authenticated.";
+        String logMessage
+            = "You have successfully authenticated, \r\n[INFO] User dummy was not" + " successfully authenticated.";
 
-        String expectedMessage = "You have successfully authenticated, \\r\\n[INFO] User dummy was not"
-            + " successfully authenticated.";
+        String expectedMessage
+            = "You have successfully authenticated, \\r\\n[INFO] User dummy was not" + " successfully authenticated.";
 
         logMessage(setupLogLevelAndGetLogger(logLevelToConfigure), logLevelToUse, logMessage);
 
@@ -379,10 +379,7 @@ public class ClientLoggerTests {
     public void logWithGlobalAndLocalContext(LogLevel logLevelToConfigure) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure, globalContext);
 
-        logger.atInfo()
-            .addKeyValue("local", true)
-            .addKeyValue("connectionId", "conflict")
-            .log("hello world");
+        logger.atInfo().addKeyValue("local", true).addKeyValue("connectionId", "conflict").log("hello world");
 
         String fullLog = byteArraySteamToString(logCaptureStream);
 
@@ -669,10 +666,11 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
 
-        assertSame(runtimeException, logger.atWarning()
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", "bar")
-            .log(null, runtimeException));
+        assertSame(runtimeException,
+            logger.atWarning()
+                .addKeyValue("connectionId", "foo")
+                .addKeyValue("linkName", "bar")
+                .log(null, runtimeException));
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "");
@@ -698,10 +696,11 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
-        assertSame(ioException, logger.atWarning()
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", "bar")
-            .log(null, ioException));
+        assertSame(ioException,
+            logger.atWarning()
+                .addKeyValue("connectionId", "foo")
+                .addKeyValue("linkName", "bar")
+                .log(null, ioException));
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "");
@@ -758,8 +757,8 @@ public class ClientLoggerTests {
     }
 
     private ClientLogger setupLogLevelAndGetLogger(LogLevel logLevelToSet, Map<String, Object> globalContext) {
-        DefaultLogger logger = new DefaultLogger(ClientLogger.class.getName(), new PrintStream(logCaptureStream),
-            logLevelToSet);
+        DefaultLogger logger
+            = new DefaultLogger(ClientLogger.class.getName(), new PrintStream(logCaptureStream), logLevelToSet);
 
         return new ClientLogger(logger, globalContext);
     }
@@ -774,15 +773,19 @@ public class ClientLoggerTests {
             case VERBOSE:
                 logger.atVerbose().log(logMessage, runtimeException);
                 break;
+
             case INFORMATIONAL:
                 logger.atInfo().log(logMessage, runtimeException);
                 break;
+
             case WARNING:
                 logger.atWarning().log(logMessage, runtimeException);
                 break;
+
             case ERROR:
                 logger.atError().log(logMessage, runtimeException);
                 break;
+
             default:
                 break;
         }
@@ -797,15 +800,19 @@ public class ClientLoggerTests {
             case VERBOSE:
                 logger.atVerbose().log(logMessage);
                 break;
+
             case INFORMATIONAL:
                 logger.atInfo().log(logMessage);
                 break;
+
             case WARNING:
                 logger.atWarning().log(logMessage);
                 break;
+
             case ERROR:
                 logger.atError().log(logMessage);
                 break;
+
             default:
                 break;
         }
@@ -820,8 +827,8 @@ public class ClientLoggerTests {
     }
 
     private static <T extends Throwable> T fillInStackTrace(T throwable) {
-        StackTraceElement[] stackTraceElements = {
-            new StackTraceElement("ClientLoggerTests", "onlyLogExceptionMessage", "ClientLoggerTests", 117) };
+        StackTraceElement[] stackTraceElements
+            = { new StackTraceElement("ClientLoggerTests", "onlyLogExceptionMessage", "ClientLoggerTests", 117) };
         throwable.setStackTrace(stackTraceElements);
 
         return throwable;

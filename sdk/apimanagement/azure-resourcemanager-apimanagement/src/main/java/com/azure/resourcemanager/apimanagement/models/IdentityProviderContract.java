@@ -156,19 +156,12 @@ public interface IdentityProviderContract {
          * The stage of the IdentityProviderContract definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithClientId,
-                DefinitionStages.WithClientSecret,
-                DefinitionStages.WithTypePropertiesType,
-                DefinitionStages.WithSigninTenant,
-                DefinitionStages.WithAllowedTenants,
-                DefinitionStages.WithAuthority,
-                DefinitionStages.WithSignupPolicyName,
-                DefinitionStages.WithSigninPolicyName,
-                DefinitionStages.WithProfileEditingPolicyName,
-                DefinitionStages.WithPasswordResetPolicyName,
-                DefinitionStages.WithClientLibrary,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithClientId, DefinitionStages.WithClientSecret,
+            DefinitionStages.WithTypePropertiesType, DefinitionStages.WithSigninTenant,
+            DefinitionStages.WithAllowedTenants, DefinitionStages.WithAuthority, DefinitionStages.WithSignupPolicyName,
+            DefinitionStages.WithSigninPolicyName, DefinitionStages.WithProfileEditingPolicyName,
+            DefinitionStages.WithPasswordResetPolicyName, DefinitionStages.WithClientLibrary,
+            DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -342,19 +335,10 @@ public interface IdentityProviderContract {
     IdentityProviderContract.Update update();
 
     /** The template for IdentityProviderContract update. */
-    interface Update
-        extends UpdateStages.WithClientId,
-            UpdateStages.WithClientSecret,
-            UpdateStages.WithType,
-            UpdateStages.WithSigninTenant,
-            UpdateStages.WithAllowedTenants,
-            UpdateStages.WithAuthority,
-            UpdateStages.WithSignupPolicyName,
-            UpdateStages.WithSigninPolicyName,
-            UpdateStages.WithProfileEditingPolicyName,
-            UpdateStages.WithPasswordResetPolicyName,
-            UpdateStages.WithClientLibrary,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithClientId, UpdateStages.WithClientSecret, UpdateStages.WithType,
+        UpdateStages.WithSigninTenant, UpdateStages.WithAllowedTenants, UpdateStages.WithAuthority,
+        UpdateStages.WithSignupPolicyName, UpdateStages.WithSigninPolicyName, UpdateStages.WithProfileEditingPolicyName,
+        UpdateStages.WithPasswordResetPolicyName, UpdateStages.WithClientLibrary, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

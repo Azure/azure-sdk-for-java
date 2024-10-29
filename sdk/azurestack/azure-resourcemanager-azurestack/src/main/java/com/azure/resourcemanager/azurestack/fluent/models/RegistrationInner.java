@@ -6,31 +6,51 @@ package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Registration information. */
+/**
+ * Registration information.
+ */
 @Fluent
 public final class RegistrationInner extends Resource {
     /*
      * Registration resource.
      */
-    @JsonProperty(value = "properties")
     private RegistrationProperties innerProperties;
 
     /*
      * The entity tag used for optimistic concurrency when modifying the resource.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
-    /** Creates an instance of RegistrationInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RegistrationInner class.
+     */
     public RegistrationInner() {
     }
 
     /**
      * Get the innerProperties property: Registration resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RegistrationProperties innerProperties() {
@@ -39,7 +59,7 @@ public final class RegistrationInner extends Resource {
 
     /**
      * Get the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -48,7 +68,7 @@ public final class RegistrationInner extends Resource {
 
     /**
      * Set the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the RegistrationInner object itself.
      */
@@ -57,14 +77,48 @@ public final class RegistrationInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RegistrationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RegistrationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -73,7 +127,7 @@ public final class RegistrationInner extends Resource {
 
     /**
      * Get the objectId property: The object identifier associated with the Azure Stack connecting to Azure.
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -82,7 +136,7 @@ public final class RegistrationInner extends Resource {
 
     /**
      * Set the objectId property: The object identifier associated with the Azure Stack connecting to Azure.
-     *
+     * 
      * @param objectId the objectId value to set.
      * @return the RegistrationInner object itself.
      */
@@ -96,7 +150,7 @@ public final class RegistrationInner extends Resource {
 
     /**
      * Get the cloudId property: The identifier of the registered Azure Stack.
-     *
+     * 
      * @return the cloudId value.
      */
     public String cloudId() {
@@ -105,7 +159,7 @@ public final class RegistrationInner extends Resource {
 
     /**
      * Set the cloudId property: The identifier of the registered Azure Stack.
-     *
+     * 
      * @param cloudId the cloudId value to set.
      * @return the RegistrationInner object itself.
      */
@@ -119,7 +173,7 @@ public final class RegistrationInner extends Resource {
 
     /**
      * Get the billingModel property: Specifies the billing mode for the Azure Stack registration.
-     *
+     * 
      * @return the billingModel value.
      */
     public String billingModel() {
@@ -128,7 +182,7 @@ public final class RegistrationInner extends Resource {
 
     /**
      * Set the billingModel property: Specifies the billing mode for the Azure Stack registration.
-     *
+     * 
      * @param billingModel the billingModel value to set.
      * @return the RegistrationInner object itself.
      */
@@ -142,12 +196,65 @@ public final class RegistrationInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistrationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistrationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RegistrationInner.
+     */
+    public static RegistrationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistrationInner deserializedRegistrationInner = new RegistrationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRegistrationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRegistrationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRegistrationInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedRegistrationInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedRegistrationInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRegistrationInner.innerProperties = RegistrationProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedRegistrationInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistrationInner;
+        });
     }
 }

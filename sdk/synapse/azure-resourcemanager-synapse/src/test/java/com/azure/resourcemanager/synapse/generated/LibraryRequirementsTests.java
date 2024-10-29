@@ -11,11 +11,10 @@ import org.junit.jupiter.api.Assertions;
 public final class LibraryRequirementsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LibraryRequirements model =
-            BinaryData
-                .fromString(
-                    "{\"time\":\"2021-02-12T17:13:55Z\",\"content\":\"kfkbgbzbowxeqocl\",\"filename\":\"ygvkzqkjj\"}")
-                .toObject(LibraryRequirements.class);
+        LibraryRequirements model = BinaryData
+            .fromString(
+                "{\"time\":\"2021-02-12T17:13:55Z\",\"content\":\"kfkbgbzbowxeqocl\",\"filename\":\"ygvkzqkjj\"}")
+            .toObject(LibraryRequirements.class);
         Assertions.assertEquals("kfkbgbzbowxeqocl", model.content());
         Assertions.assertEquals("ygvkzqkjj", model.filename());
     }

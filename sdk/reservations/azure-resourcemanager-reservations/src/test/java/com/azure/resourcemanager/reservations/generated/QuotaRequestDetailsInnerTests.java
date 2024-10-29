@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class QuotaRequestDetailsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaRequestDetailsInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"InProgress\",\"message\":\"jmoadsuv\",\"requestSubmitTime\":\"2021-09-26T15:36:35Z\",\"value\":[{\"limit\":1450729079,\"resourceType\":\"jqbjhhy\",\"unit\":\"rw\",\"provisioningState\":\"Accepted\",\"message\":\"duhpk\",\"subRequestId\":\"gymare\"},{\"limit\":999279087,\"resourceType\":\"qugjhkycube\",\"unit\":\"gssofwq\",\"provisioningState\":\"Accepted\",\"message\":\"lkrm\",\"subRequestId\":\"i\"},{\"limit\":988494266,\"resourceType\":\"q\",\"unit\":\"dfnbyxbaaabjyv\",\"provisioningState\":\"Succeeded\",\"message\":\"imrzrtuzqog\",\"subRequestId\":\"xnevfdnwn\"},{\"limit\":1417389324,\"resourceType\":\"syyceuzsoibjud\",\"unit\":\"rx\",\"provisioningState\":\"Succeeded\",\"message\":\"zvaytdwkqbr\",\"subRequestId\":\"bpaxhexiilivpdt\"}]},\"id\":\"irqtdqoa\",\"name\":\"oruzfgsquyfxrxx\",\"type\":\"eptra\"}")
-                .toObject(QuotaRequestDetailsInner.class);
+        QuotaRequestDetailsInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"InProgress\",\"message\":\"jmoadsuv\",\"requestSubmitTime\":\"2021-09-26T15:36:35Z\",\"value\":[{\"limit\":1450729079,\"resourceType\":\"jqbjhhy\",\"unit\":\"rw\",\"provisioningState\":\"Accepted\",\"message\":\"duhpk\",\"subRequestId\":\"gymare\"},{\"limit\":999279087,\"resourceType\":\"qugjhkycube\",\"unit\":\"gssofwq\",\"provisioningState\":\"Accepted\",\"message\":\"lkrm\",\"subRequestId\":\"i\"},{\"limit\":988494266,\"resourceType\":\"q\",\"unit\":\"dfnbyxbaaabjyv\",\"provisioningState\":\"Succeeded\",\"message\":\"imrzrtuzqog\",\"subRequestId\":\"xnevfdnwn\"},{\"limit\":1417389324,\"resourceType\":\"syyceuzsoibjud\",\"unit\":\"rx\",\"provisioningState\":\"Succeeded\",\"message\":\"zvaytdwkqbr\",\"subRequestId\":\"bpaxhexiilivpdt\"}]},\"id\":\"irqtdqoa\",\"name\":\"oruzfgsquyfxrxx\",\"type\":\"eptra\"}")
+            .toObject(QuotaRequestDetailsInner.class);
         Assertions.assertEquals(QuotaRequestState.IN_PROGRESS, model.provisioningState());
         Assertions.assertEquals("rw", model.value().get(0).unit());
         Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.value().get(0).provisioningState());
@@ -26,18 +24,12 @@ public final class QuotaRequestDetailsInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QuotaRequestDetailsInner model =
-            new QuotaRequestDetailsInner()
-                .withProvisioningState(QuotaRequestState.IN_PROGRESS)
-                .withValue(
-                    Arrays
-                        .asList(
-                            new SubRequest().withUnit("rw").withProvisioningState(QuotaRequestState.ACCEPTED),
-                            new SubRequest().withUnit("gssofwq").withProvisioningState(QuotaRequestState.ACCEPTED),
-                            new SubRequest()
-                                .withUnit("dfnbyxbaaabjyv")
-                                .withProvisioningState(QuotaRequestState.SUCCEEDED),
-                            new SubRequest().withUnit("rx").withProvisioningState(QuotaRequestState.SUCCEEDED)));
+        QuotaRequestDetailsInner model = new QuotaRequestDetailsInner()
+            .withProvisioningState(QuotaRequestState.IN_PROGRESS)
+            .withValue(Arrays.asList(new SubRequest().withUnit("rw").withProvisioningState(QuotaRequestState.ACCEPTED),
+                new SubRequest().withUnit("gssofwq").withProvisioningState(QuotaRequestState.ACCEPTED),
+                new SubRequest().withUnit("dfnbyxbaaabjyv").withProvisioningState(QuotaRequestState.SUCCEEDED),
+                new SubRequest().withUnit("rx").withProvisioningState(QuotaRequestState.SUCCEEDED)));
         model = BinaryData.fromObject(model).toObject(QuotaRequestDetailsInner.class);
         Assertions.assertEquals(QuotaRequestState.IN_PROGRESS, model.provisioningState());
         Assertions.assertEquals("rw", model.value().get(0).unit());

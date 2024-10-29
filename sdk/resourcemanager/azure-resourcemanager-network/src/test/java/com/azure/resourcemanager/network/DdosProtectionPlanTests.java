@@ -15,14 +15,12 @@ public class DdosProtectionPlanTests extends NetworkManagementTest {
     public void canCRUDDdosProtectionPlan() throws Exception {
         String ppName = generateRandomResourceName("ddosplan", 15);
 
-        DdosProtectionPlan pPlan =
-            networkManager
-                .ddosProtectionPlans()
-                .define(ppName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withTag("tag1", "value1")
-                .create();
+        DdosProtectionPlan pPlan = networkManager.ddosProtectionPlans()
+            .define(ppName)
+            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withNewResourceGroup(rgName)
+            .withTag("tag1", "value1")
+            .create();
         Assertions.assertEquals("value1", pPlan.tags().get("tag1"));
 
         PagedIterable<DdosProtectionPlan> ppList = networkManager.ddosProtectionPlans().list();

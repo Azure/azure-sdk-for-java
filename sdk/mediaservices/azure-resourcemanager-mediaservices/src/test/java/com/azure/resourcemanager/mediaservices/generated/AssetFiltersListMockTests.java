@@ -31,47 +31,35 @@ public final class AssetFiltersListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":1386545897996056143,\"endTimestamp\":602580373107184466,\"presentationWindowDuration\":3109060414746528388,\"liveBackoffDuration\":2813086357064357787,\"timescale\":4216715341648313500,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":247999147},\"tracks\":[]},\"id\":\"bcuiiz\",\"name\":\"ktwfa\",\"type\":\"snvpdibmi\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"presentationTimeRange\":{\"startTimestamp\":1386545897996056143,\"endTimestamp\":602580373107184466,\"presentationWindowDuration\":3109060414746528388,\"liveBackoffDuration\":2813086357064357787,\"timescale\":4216715341648313500,\"forceEndTimestamp\":true},\"firstQuality\":{\"bitrate\":247999147},\"tracks\":[]},\"id\":\"bcuiiz\",\"name\":\"ktwfa\",\"type\":\"snvpdibmi\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AssetFilter> response =
-            manager.assetFilters().list("igkxkbsazga", "gacyrcmjdmspo", "apvu", com.azure.core.util.Context.NONE);
+        PagedIterable<AssetFilter> response
+            = manager.assetFilters().list("igkxkbsazga", "gacyrcmjdmspo", "apvu", com.azure.core.util.Context.NONE);
 
-        Assertions
-            .assertEquals(1386545897996056143L, response.iterator().next().presentationTimeRange().startTimestamp());
+        Assertions.assertEquals(1386545897996056143L,
+            response.iterator().next().presentationTimeRange().startTimestamp());
         Assertions.assertEquals(602580373107184466L, response.iterator().next().presentationTimeRange().endTimestamp());
-        Assertions
-            .assertEquals(
-                3109060414746528388L, response.iterator().next().presentationTimeRange().presentationWindowDuration());
-        Assertions
-            .assertEquals(
-                2813086357064357787L, response.iterator().next().presentationTimeRange().liveBackoffDuration());
+        Assertions.assertEquals(3109060414746528388L,
+            response.iterator().next().presentationTimeRange().presentationWindowDuration());
+        Assertions.assertEquals(2813086357064357787L,
+            response.iterator().next().presentationTimeRange().liveBackoffDuration());
         Assertions.assertEquals(4216715341648313500L, response.iterator().next().presentationTimeRange().timescale());
         Assertions.assertEquals(true, response.iterator().next().presentationTimeRange().forceEndTimestamp());
         Assertions.assertEquals(247999147, response.iterator().next().firstQuality().bitrate());

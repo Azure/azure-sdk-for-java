@@ -5,33 +5,117 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.fluent.models.ApiPollingParameters;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Represents Codeless API Polling data connector. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("APIPolling")
+/**
+ * Represents Codeless API Polling data connector.
+ */
 @Fluent
 public final class CodelessApiPollingDataConnector extends DataConnectorInner {
     /*
+     * The data connector kind
+     */
+    private DataConnectorKind kind = DataConnectorKind.APIPOLLING;
+
+    /*
      * Codeless poling data connector properties
      */
-    @JsonProperty(value = "properties")
     private ApiPollingParameters innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CodelessApiPollingDataConnector class.
+     */
+    public CodelessApiPollingDataConnector() {
+    }
+
+    /**
+     * Get the kind property: The data connector kind.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public DataConnectorKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: Codeless poling data connector properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApiPollingParameters innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CodelessApiPollingDataConnector withEtag(String etag) {
         super.withEtag(etag);
@@ -40,7 +124,7 @@ public final class CodelessApiPollingDataConnector extends DataConnectorInner {
 
     /**
      * Get the connectorUiConfig property: Config to describe the instructions blade.
-     *
+     * 
      * @return the connectorUiConfig value.
      */
     public CodelessUiConnectorConfigProperties connectorUiConfig() {
@@ -49,12 +133,12 @@ public final class CodelessApiPollingDataConnector extends DataConnectorInner {
 
     /**
      * Set the connectorUiConfig property: Config to describe the instructions blade.
-     *
+     * 
      * @param connectorUiConfig the connectorUiConfig value to set.
      * @return the CodelessApiPollingDataConnector object itself.
      */
-    public CodelessApiPollingDataConnector withConnectorUiConfig(
-        CodelessUiConnectorConfigProperties connectorUiConfig) {
+    public CodelessApiPollingDataConnector
+        withConnectorUiConfig(CodelessUiConnectorConfigProperties connectorUiConfig) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiPollingParameters();
         }
@@ -64,7 +148,7 @@ public final class CodelessApiPollingDataConnector extends DataConnectorInner {
 
     /**
      * Get the pollingConfig property: Config to describe the polling instructions.
-     *
+     * 
      * @return the pollingConfig value.
      */
     public CodelessConnectorPollingConfigProperties pollingConfig() {
@@ -73,7 +157,7 @@ public final class CodelessApiPollingDataConnector extends DataConnectorInner {
 
     /**
      * Set the pollingConfig property: Config to describe the polling instructions.
-     *
+     * 
      * @param pollingConfig the pollingConfig value to set.
      * @return the CodelessApiPollingDataConnector object itself.
      */
@@ -87,14 +171,65 @@ public final class CodelessApiPollingDataConnector extends DataConnectorInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CodelessApiPollingDataConnector from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodelessApiPollingDataConnector if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CodelessApiPollingDataConnector.
+     */
+    public static CodelessApiPollingDataConnector fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodelessApiPollingDataConnector deserializedCodelessApiPollingDataConnector
+                = new CodelessApiPollingDataConnector();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCodelessApiPollingDataConnector.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCodelessApiPollingDataConnector.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCodelessApiPollingDataConnector.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedCodelessApiPollingDataConnector.withEtag(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCodelessApiPollingDataConnector.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedCodelessApiPollingDataConnector.kind = DataConnectorKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCodelessApiPollingDataConnector.innerProperties = ApiPollingParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCodelessApiPollingDataConnector;
+        });
     }
 }

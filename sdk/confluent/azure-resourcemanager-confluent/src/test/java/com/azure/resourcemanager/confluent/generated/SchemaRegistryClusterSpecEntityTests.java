@@ -30,11 +30,14 @@ public final class SchemaRegistryClusterSpecEntityTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SchemaRegistryClusterSpecEntity model = new SchemaRegistryClusterSpecEntity().withName("vipmdscwxqupevzh")
-            .withHttpEndpoint("totxhojujb").withPackageProperty("elmcuvhixbjxyfw")
-            .withRegion(new SchemaRegistryClusterEnvironmentRegionEntity().withId("r").withRelated("o")
+            .withHttpEndpoint("totxhojujb")
+            .withPackageProperty("elmcuvhixbjxyfw")
+            .withRegion(new SchemaRegistryClusterEnvironmentRegionEntity().withId("r")
+                .withRelated("o")
                 .withResourceName("ttpkiwkkbnujrywv"))
             .withEnvironment(new SchemaRegistryClusterEnvironmentRegionEntity().withId("bfpncurdo")
-                .withRelated("iithtywu").withResourceName("cbihwqk"))
+                .withRelated("iithtywu")
+                .withResourceName("cbihwqk"))
             .withCloud("dntwjchrdgo");
         model = BinaryData.fromObject(model).toObject(SchemaRegistryClusterSpecEntity.class);
         Assertions.assertEquals("vipmdscwxqupevzh", model.name());

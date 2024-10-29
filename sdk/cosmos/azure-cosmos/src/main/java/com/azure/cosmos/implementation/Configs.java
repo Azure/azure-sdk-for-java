@@ -202,6 +202,15 @@ public class Configs {
     public static final String PREVENT_INVALID_ID_CHARS = "COSMOS.PREVENT_INVALID_ID_CHARS";
     public static final String PREVENT_INVALID_ID_CHARS_VARIABLE = "COSMOS_PREVENT_INVALID_ID_CHARS";
     public static final boolean DEFAULT_PREVENT_INVALID_ID_CHARS = false;
+
+    // Config of CodingErrorAction on charset decoder for malformed input
+    public static final String CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = "COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT";
+    public static final String DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT = StringUtils.EMPTY;
+
+    // Config of CodingErrorAction on charset decoder for unmapped character
+    public static final String CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER = "COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER";
+    public static final String DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER = StringUtils.EMPTY;
+
     // Metrics
     // Samples:
     //            System.setProperty(
@@ -246,8 +255,6 @@ public class Configs {
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
-    private static final boolean DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = false;
-    private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -661,15 +668,6 @@ public class Configs {
         return Boolean.parseBoolean(shouldSystemExit);
     }
 
-    public static String isPerPartitionAutomaticFailoverEnabled() {
-
-        return System.getProperty(
-            IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
-            firstNonNull(
-                emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED)),
-                StringUtils.EMPTY));
-    }
-
     public static boolean shouldOptInDefaultCircuitBreakerConfig() {
 
         String shouldOptInDefaultPartitionLevelCircuitBreakerConfig =
@@ -798,5 +796,21 @@ public class Configs {
         }
 
         return DEFAULT_CONNECTION_ESTABLISHMENT_TIMEOUT_FOR_PARTITION_RECOVERY_IN_SECONDS;
+    }
+
+    public static String getCharsetDecoderErrorActionOnMalformedInput() {
+        return System.getProperty(
+                CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT)),
+                    DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT));
+    }
+
+    public static String getCharsetDecoderErrorActionOnUnmappedCharacter() {
+        return System.getProperty(
+                CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER)),
+                    DEFAULT_CHARSET_DECODER_ERROR_ACTION_ON_UNMAPPED_CHARACTER));
     }
 }

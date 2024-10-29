@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Describes AML Resource Usage. */
 @Immutable
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(UsageInner.class);
 
     /*
      * Specifies the resource ID.

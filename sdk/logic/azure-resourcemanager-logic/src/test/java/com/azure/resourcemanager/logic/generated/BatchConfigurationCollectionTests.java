@@ -8,6 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.logic.fluent.models.BatchConfigurationInner;
 import com.azure.resourcemanager.logic.models.BatchConfigurationCollection;
 import com.azure.resourcemanager.logic.models.BatchConfigurationProperties;
+import com.azure.resourcemanager.logic.models.BatchReleaseCriteria;
+import com.azure.resourcemanager.logic.models.RecurrenceFrequency;
+import com.azure.resourcemanager.logic.models.RecurrenceSchedule;
+import com.azure.resourcemanager.logic.models.WorkflowTriggerRecurrence;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -17,87 +21,71 @@ import org.junit.jupiter.api.Assertions;
 public final class BatchConfigurationCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BatchConfigurationCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"batchGroupName\":\"yzrpzbchckqqzq\",\"createdTime\":\"2021-11-10T00:02:28Z\",\"changedTime\":\"2021-09-28T16:07:34Z\",\"metadata\":\"datauiizynke\"},\"location\":\"yatrwy\",\"tags\":{\"ynpcdpumnzgmwznm\":\"ibzyhwitsmyp\",\"lwwrl\":\"biknsorgjhxbld\",\"ok\":\"dmtnc\",\"tdtbnnhadooc\":\"tllxdyhgsyocogj\"},\"id\":\"kvci\",\"name\":\"hnvpamqgxq\",\"type\":\"u\"},{\"properties\":{\"batchGroupName\":\"zikywgg\",\"createdTime\":\"2021-03-13T19:16:06Z\",\"changedTime\":\"2021-05-21T20:20:27Z\",\"metadata\":\"datatmelw\"},\"location\":\"ipicc\",\"tags\":{\"v\":\"z\",\"yrnxxmueedn\":\"vvcnayr\",\"alm\":\"rdvstkwqqtch\",\"gdv\":\"mtdaa\"},\"id\":\"vgpiohgwxrt\",\"name\":\"udxepxgyqagv\",\"type\":\"vmnpkukghimdblx\"},{\"properties\":{\"batchGroupName\":\"wi\",\"createdTime\":\"2020-12-24T20:58:33Z\",\"changedTime\":\"2021-12-10T08:58:19Z\",\"metadata\":\"dataj\"},\"location\":\"wmszkk\",\"tags\":{\"kzikfjawneaivxwc\":\"rey\",\"fatkld\":\"elpcirelsfeaenwa\"},\"id\":\"xbjhwuaanozjosph\",\"name\":\"oulpjrv\",\"type\":\"ag\"},{\"properties\":{\"batchGroupName\":\"rvimjwosytxitcsk\",\"createdTime\":\"2021-05-28T14:30:26Z\",\"changedTime\":\"2021-03-03T12:07:05Z\",\"metadata\":\"datamiekkezzikhlyfjh\"},\"location\":\"gqggebdunygae\",\"tags\":{\"dsuvarmywdmjsjqb\":\"bqfatpxllrxcyjmo\"},\"id\":\"hhyxxrw\",\"name\":\"yc\",\"type\":\"duhpk\"}]}")
-                .toObject(BatchConfigurationCollection.class);
-        Assertions.assertEquals("yatrwy", model.value().get(0).location());
-        Assertions.assertEquals("ibzyhwitsmyp", model.value().get(0).tags().get("ynpcdpumnzgmwznm"));
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-11-10T00:02:28Z"), model.value().get(0).properties().createdTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-09-28T16:07:34Z"), model.value().get(0).properties().changedTime());
-        Assertions.assertEquals("yzrpzbchckqqzq", model.value().get(0).properties().batchGroupName());
+        BatchConfigurationCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"batchGroupName\":\"vbquwr\",\"releaseCriteria\":{\"messageCount\":1619568012,\"batchSize\":2007657488,\"recurrence\":{\"frequency\":\"Day\",\"interval\":1035155607,\"startTime\":\"fkmr\",\"endTime\":\"mvvhmxtdrjfuta\",\"timeZone\":\"ebjvewzcjzn\",\"schedule\":{}}},\"createdTime\":\"2021-08-15T08:27:46Z\",\"changedTime\":\"2021-11-09T20:57Z\",\"metadata\":\"dataaadraufactkahz\"},\"location\":\"v\",\"tags\":{\"ulfgslqu\":\"ziuxxpshnee\"},\"id\":\"kwdlenrdsutujba\",\"name\":\"pjuohminyfl\",\"type\":\"orwmduvwpklv\"}]}")
+            .toObject(BatchConfigurationCollection.class);
+        Assertions.assertEquals("v", model.value().get(0).location());
+        Assertions.assertEquals("ziuxxpshnee", model.value().get(0).tags().get("ulfgslqu"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T08:27:46Z"),
+            model.value().get(0).properties().createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T20:57Z"),
+            model.value().get(0).properties().changedTime());
+        Assertions.assertEquals("vbquwr", model.value().get(0).properties().batchGroupName());
+        Assertions.assertEquals(1619568012, model.value().get(0).properties().releaseCriteria().messageCount());
+        Assertions.assertEquals(2007657488, model.value().get(0).properties().releaseCriteria().batchSize());
+        Assertions.assertEquals(RecurrenceFrequency.DAY,
+            model.value().get(0).properties().releaseCriteria().recurrence().frequency());
+        Assertions.assertEquals(1035155607,
+            model.value().get(0).properties().releaseCriteria().recurrence().interval());
+        Assertions.assertEquals("fkmr", model.value().get(0).properties().releaseCriteria().recurrence().startTime());
+        Assertions.assertEquals("mvvhmxtdrjfuta",
+            model.value().get(0).properties().releaseCriteria().recurrence().endTime());
+        Assertions.assertEquals("ebjvewzcjzn",
+            model.value().get(0).properties().releaseCriteria().recurrence().timeZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BatchConfigurationCollection model =
-            new BatchConfigurationCollection()
+        BatchConfigurationCollection model
+            = new BatchConfigurationCollection()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new BatchConfigurationInner()
-                                .withLocation("yatrwy")
-                                .withTags(
-                                    mapOf(
-                                        "ynpcdpumnzgmwznm",
-                                        "ibzyhwitsmyp",
-                                        "lwwrl",
-                                        "biknsorgjhxbld",
-                                        "ok",
-                                        "dmtnc",
-                                        "tdtbnnhadooc",
-                                        "tllxdyhgsyocogj"))
-                                .withProperties(
-                                    new BatchConfigurationProperties()
-                                        .withCreatedTime(OffsetDateTime.parse("2021-11-10T00:02:28Z"))
-                                        .withChangedTime(OffsetDateTime.parse("2021-09-28T16:07:34Z"))
-                                        .withMetadata("datauiizynke")
-                                        .withBatchGroupName("yzrpzbchckqqzq")),
-                            new BatchConfigurationInner()
-                                .withLocation("ipicc")
-                                .withTags(
-                                    mapOf("v", "z", "yrnxxmueedn", "vvcnayr", "alm", "rdvstkwqqtch", "gdv", "mtdaa"))
-                                .withProperties(
-                                    new BatchConfigurationProperties()
-                                        .withCreatedTime(OffsetDateTime.parse("2021-03-13T19:16:06Z"))
-                                        .withChangedTime(OffsetDateTime.parse("2021-05-21T20:20:27Z"))
-                                        .withMetadata("datatmelw")
-                                        .withBatchGroupName("zikywgg")),
-                            new BatchConfigurationInner()
-                                .withLocation("wmszkk")
-                                .withTags(mapOf("kzikfjawneaivxwc", "rey", "fatkld", "elpcirelsfeaenwa"))
-                                .withProperties(
-                                    new BatchConfigurationProperties()
-                                        .withCreatedTime(OffsetDateTime.parse("2020-12-24T20:58:33Z"))
-                                        .withChangedTime(OffsetDateTime.parse("2021-12-10T08:58:19Z"))
-                                        .withMetadata("dataj")
-                                        .withBatchGroupName("wi")),
-                            new BatchConfigurationInner()
-                                .withLocation("gqggebdunygae")
-                                .withTags(mapOf("dsuvarmywdmjsjqb", "bqfatpxllrxcyjmo"))
-                                .withProperties(
-                                    new BatchConfigurationProperties()
-                                        .withCreatedTime(OffsetDateTime.parse("2021-05-28T14:30:26Z"))
-                                        .withChangedTime(OffsetDateTime.parse("2021-03-03T12:07:05Z"))
-                                        .withMetadata("datamiekkezzikhlyfjh")
-                                        .withBatchGroupName("rvimjwosytxitcsk"))));
+                    Arrays.asList(new BatchConfigurationInner().withLocation("v")
+                        .withTags(mapOf("ulfgslqu", "ziuxxpshnee"))
+                        .withProperties(new BatchConfigurationProperties()
+                            .withCreatedTime(OffsetDateTime.parse("2021-08-15T08:27:46Z"))
+                            .withChangedTime(OffsetDateTime.parse("2021-11-09T20:57Z"))
+                            .withMetadata("dataaadraufactkahz")
+                            .withBatchGroupName("vbquwr")
+                            .withReleaseCriteria(new BatchReleaseCriteria().withMessageCount(1619568012)
+                                .withBatchSize(2007657488)
+                                .withRecurrence(new WorkflowTriggerRecurrence().withFrequency(RecurrenceFrequency.DAY)
+                                    .withInterval(1035155607)
+                                    .withStartTime("fkmr")
+                                    .withEndTime("mvvhmxtdrjfuta")
+                                    .withTimeZone("ebjvewzcjzn")
+                                    .withSchedule(new RecurrenceSchedule()))))));
         model = BinaryData.fromObject(model).toObject(BatchConfigurationCollection.class);
-        Assertions.assertEquals("yatrwy", model.value().get(0).location());
-        Assertions.assertEquals("ibzyhwitsmyp", model.value().get(0).tags().get("ynpcdpumnzgmwznm"));
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-11-10T00:02:28Z"), model.value().get(0).properties().createdTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-09-28T16:07:34Z"), model.value().get(0).properties().changedTime());
-        Assertions.assertEquals("yzrpzbchckqqzq", model.value().get(0).properties().batchGroupName());
+        Assertions.assertEquals("v", model.value().get(0).location());
+        Assertions.assertEquals("ziuxxpshnee", model.value().get(0).tags().get("ulfgslqu"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-15T08:27:46Z"),
+            model.value().get(0).properties().createdTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T20:57Z"),
+            model.value().get(0).properties().changedTime());
+        Assertions.assertEquals("vbquwr", model.value().get(0).properties().batchGroupName());
+        Assertions.assertEquals(1619568012, model.value().get(0).properties().releaseCriteria().messageCount());
+        Assertions.assertEquals(2007657488, model.value().get(0).properties().releaseCriteria().batchSize());
+        Assertions.assertEquals(RecurrenceFrequency.DAY,
+            model.value().get(0).properties().releaseCriteria().recurrence().frequency());
+        Assertions.assertEquals(1035155607,
+            model.value().get(0).properties().releaseCriteria().recurrence().interval());
+        Assertions.assertEquals("fkmr", model.value().get(0).properties().releaseCriteria().recurrence().startTime());
+        Assertions.assertEquals("mvvhmxtdrjfuta",
+            model.value().get(0).properties().releaseCriteria().recurrence().endTime());
+        Assertions.assertEquals("ebjvewzcjzn",
+            model.value().get(0).properties().releaseCriteria().recurrence().timeZone());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

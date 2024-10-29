@@ -14,61 +14,49 @@ import org.junit.jupiter.api.Assertions;
 public final class SwaggerCustomDynamicTreeCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SwaggerCustomDynamicTreeCommand model =
-            BinaryData
-                .fromString(
-                    "{\"operationId\":\"xlzgsjgkzzl\",\"itemsPath\":\"fhbzffovwmbjlzq\",\"itemValuePath\":\"zpgvdwnapfd\",\"itemTitlePath\":\"owftptnuwjtks\",\"itemFullTitlePath\":\"gcgqyhleseyqrhvy\",\"itemIsParent\":\"dotjvdk\",\"selectableFilter\":\"swskuk\",\"parameters\":{\"aqkue\":{\"selectedItemValuePath\":\"bvwispkx\",\"value\":\"datatxfkndlqvt\",\"parameterReference\":\"nvgmmbugtywa\",\"required\":false},\"vjmvqmtdwckygr\":{\"selectedItemValuePath\":\"groeshoyg\",\"value\":\"databyfqxkfaoy\",\"parameterReference\":\"h\",\"required\":false}}}")
-                .toObject(SwaggerCustomDynamicTreeCommand.class);
-        Assertions.assertEquals("xlzgsjgkzzl", model.operationId());
-        Assertions.assertEquals("fhbzffovwmbjlzq", model.itemsPath());
-        Assertions.assertEquals("zpgvdwnapfd", model.itemValuePath());
-        Assertions.assertEquals("owftptnuwjtks", model.itemTitlePath());
-        Assertions.assertEquals("gcgqyhleseyqrhvy", model.itemFullTitlePath());
-        Assertions.assertEquals("dotjvdk", model.itemIsParent());
-        Assertions.assertEquals("swskuk", model.selectableFilter());
-        Assertions.assertEquals("bvwispkx", model.parameters().get("aqkue").selectedItemValuePath());
-        Assertions.assertEquals("nvgmmbugtywa", model.parameters().get("aqkue").parameterReference());
-        Assertions.assertEquals(false, model.parameters().get("aqkue").required());
+        SwaggerCustomDynamicTreeCommand model = BinaryData.fromString(
+            "{\"operationId\":\"lsbna\",\"itemsPath\":\"fdzmrlprb\",\"itemValuePath\":\"jx\",\"itemTitlePath\":\"aawnzzlfve\",\"itemFullTitlePath\":\"kjbasmrdpbmo\",\"itemIsParent\":\"svukgfzby\",\"selectableFilter\":\"pmeomc\",\"parameters\":{\"xwv\":{\"selectedItemValuePath\":\"kdtgpny\",\"value\":\"datanwy\",\"parameterReference\":\"ew\",\"required\":true}}}")
+            .toObject(SwaggerCustomDynamicTreeCommand.class);
+        Assertions.assertEquals("lsbna", model.operationId());
+        Assertions.assertEquals("fdzmrlprb", model.itemsPath());
+        Assertions.assertEquals("jx", model.itemValuePath());
+        Assertions.assertEquals("aawnzzlfve", model.itemTitlePath());
+        Assertions.assertEquals("kjbasmrdpbmo", model.itemFullTitlePath());
+        Assertions.assertEquals("svukgfzby", model.itemIsParent());
+        Assertions.assertEquals("pmeomc", model.selectableFilter());
+        Assertions.assertEquals("kdtgpny", model.parameters().get("xwv").selectedItemValuePath());
+        Assertions.assertEquals("ew", model.parameters().get("xwv").parameterReference());
+        Assertions.assertEquals(true, model.parameters().get("xwv").required());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SwaggerCustomDynamicTreeCommand model =
-            new SwaggerCustomDynamicTreeCommand()
-                .withOperationId("xlzgsjgkzzl")
-                .withItemsPath("fhbzffovwmbjlzq")
-                .withItemValuePath("zpgvdwnapfd")
-                .withItemTitlePath("owftptnuwjtks")
-                .withItemFullTitlePath("gcgqyhleseyqrhvy")
-                .withItemIsParent("dotjvdk")
-                .withSelectableFilter("swskuk")
-                .withParameters(
-                    mapOf(
-                        "aqkue",
-                        new SwaggerCustomDynamicTreeParameter()
-                            .withSelectedItemValuePath("bvwispkx")
-                            .withValue("datatxfkndlqvt")
-                            .withParameterReference("nvgmmbugtywa")
-                            .withRequired(false),
-                        "vjmvqmtdwckygr",
-                        new SwaggerCustomDynamicTreeParameter()
-                            .withSelectedItemValuePath("groeshoyg")
-                            .withValue("databyfqxkfaoy")
-                            .withParameterReference("h")
-                            .withRequired(false)));
+        SwaggerCustomDynamicTreeCommand model = new SwaggerCustomDynamicTreeCommand().withOperationId("lsbna")
+            .withItemsPath("fdzmrlprb")
+            .withItemValuePath("jx")
+            .withItemTitlePath("aawnzzlfve")
+            .withItemFullTitlePath("kjbasmrdpbmo")
+            .withItemIsParent("svukgfzby")
+            .withSelectableFilter("pmeomc")
+            .withParameters(mapOf("xwv",
+                new SwaggerCustomDynamicTreeParameter().withSelectedItemValuePath("kdtgpny")
+                    .withValue("datanwy")
+                    .withParameterReference("ew")
+                    .withRequired(true)));
         model = BinaryData.fromObject(model).toObject(SwaggerCustomDynamicTreeCommand.class);
-        Assertions.assertEquals("xlzgsjgkzzl", model.operationId());
-        Assertions.assertEquals("fhbzffovwmbjlzq", model.itemsPath());
-        Assertions.assertEquals("zpgvdwnapfd", model.itemValuePath());
-        Assertions.assertEquals("owftptnuwjtks", model.itemTitlePath());
-        Assertions.assertEquals("gcgqyhleseyqrhvy", model.itemFullTitlePath());
-        Assertions.assertEquals("dotjvdk", model.itemIsParent());
-        Assertions.assertEquals("swskuk", model.selectableFilter());
-        Assertions.assertEquals("bvwispkx", model.parameters().get("aqkue").selectedItemValuePath());
-        Assertions.assertEquals("nvgmmbugtywa", model.parameters().get("aqkue").parameterReference());
-        Assertions.assertEquals(false, model.parameters().get("aqkue").required());
+        Assertions.assertEquals("lsbna", model.operationId());
+        Assertions.assertEquals("fdzmrlprb", model.itemsPath());
+        Assertions.assertEquals("jx", model.itemValuePath());
+        Assertions.assertEquals("aawnzzlfve", model.itemTitlePath());
+        Assertions.assertEquals("kjbasmrdpbmo", model.itemFullTitlePath());
+        Assertions.assertEquals("svukgfzby", model.itemIsParent());
+        Assertions.assertEquals("pmeomc", model.selectableFilter());
+        Assertions.assertEquals("kdtgpny", model.parameters().get("xwv").selectedItemValuePath());
+        Assertions.assertEquals("ew", model.parameters().get("xwv").parameterReference());
+        Assertions.assertEquals(true, model.parameters().get("xwv").required());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

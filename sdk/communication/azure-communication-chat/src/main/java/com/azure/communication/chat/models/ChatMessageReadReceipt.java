@@ -130,7 +130,8 @@ public final class ChatMessageReadReceipt implements JsonSerializable<ChatMessag
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("senderCommunicationIdentifier".equals(fieldName)) {
-                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    final CommunicationIdentifierModel identifier
+                        = reader.readObject(CommunicationIdentifierModel::fromJson);
                     receipt.setSender(CommunicationIdentifierConverter.convert(identifier));
                 } else if ("chatMessageId".equals(fieldName)) {
                     receipt.setChatMessageId(reader.getString());

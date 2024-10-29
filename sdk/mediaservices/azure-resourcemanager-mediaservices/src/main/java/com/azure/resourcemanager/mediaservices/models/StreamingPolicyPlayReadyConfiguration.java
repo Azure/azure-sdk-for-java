@@ -55,8 +55,8 @@ public final class StreamingPolicyPlayReadyConfiguration {
      * @param customLicenseAcquisitionUrlTemplate the customLicenseAcquisitionUrlTemplate value to set.
      * @return the StreamingPolicyPlayReadyConfiguration object itself.
      */
-    public StreamingPolicyPlayReadyConfiguration withCustomLicenseAcquisitionUrlTemplate(
-        String customLicenseAcquisitionUrlTemplate) {
+    public StreamingPolicyPlayReadyConfiguration
+        withCustomLicenseAcquisitionUrlTemplate(String customLicenseAcquisitionUrlTemplate) {
         this.customLicenseAcquisitionUrlTemplate = customLicenseAcquisitionUrlTemplate;
         return this;
     }

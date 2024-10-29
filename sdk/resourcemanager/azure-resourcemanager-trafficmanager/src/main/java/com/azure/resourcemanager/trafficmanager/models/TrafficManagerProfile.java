@@ -14,10 +14,8 @@ import com.azure.resourcemanager.trafficmanager.fluent.models.ProfileInner;
 import java.util.Map;
 
 /** An immutable client-side representation of an Azure traffic manager profile. */
-public interface TrafficManagerProfile
-    extends GroupableResource<TrafficManager, ProfileInner>,
-        Refreshable<TrafficManagerProfile>,
-        Updatable<TrafficManagerProfile.Update> {
+public interface TrafficManagerProfile extends GroupableResource<TrafficManager, ProfileInner>,
+    Refreshable<TrafficManagerProfile>, Updatable<TrafficManagerProfile.Update> {
     /** @return the relative DNS name of the traffic manager profile */
     String dnsLabel();
 
@@ -55,11 +53,8 @@ public interface TrafficManagerProfile
     Map<String, TrafficManagerNestedProfileEndpoint> nestedProfileEndpoints();
 
     /** The entirety of the traffic manager profile definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLeafDomainLabel,
-            DefinitionStages.WithTrafficRoutingMethod,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLeafDomainLabel,
+        DefinitionStages.WithTrafficRoutingMethod, DefinitionStages.WithCreate {
     }
 
     /** Grouping of traffic manager profile definition stages. */
@@ -152,8 +147,8 @@ public interface TrafficManagerProfile
              * @param name the name for the endpoint
              * @return the stage representing configuration for the endpoint
              */
-            TrafficManagerEndpoint.DefinitionStages.AzureTargetEndpointBlank<WithCreate> defineAzureTargetEndpoint(
-                String name);
+            TrafficManagerEndpoint.DefinitionStages.AzureTargetEndpointBlank<WithCreate>
+                defineAzureTargetEndpoint(String name);
 
             /**
              * Specifies definition of an external endpoint to be attached to the traffic manager profile.
@@ -243,13 +238,9 @@ public interface TrafficManagerProfile
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<TrafficManagerProfile>,
-                Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithMonitoringConfiguration,
-                DefinitionStages.WithTtl,
-                DefinitionStages.WithProfileStatus,
-                DefinitionStages.WithEndpoint {
+        interface WithCreate extends Creatable<TrafficManagerProfile>, Resource.DefinitionWithTags<WithCreate>,
+            DefinitionStages.WithMonitoringConfiguration, DefinitionStages.WithTtl, DefinitionStages.WithProfileStatus,
+            DefinitionStages.WithEndpoint {
         }
     }
 
@@ -366,8 +357,8 @@ public interface TrafficManagerProfile
              * @param name the name for the endpoint
              * @return the stage representing configuration for the endpoint
              */
-            TrafficManagerEndpoint.UpdateDefinitionStages.AzureTargetEndpointBlank<Update> defineAzureTargetEndpoint(
-                String name);
+            TrafficManagerEndpoint.UpdateDefinitionStages.AzureTargetEndpointBlank<Update>
+                defineAzureTargetEndpoint(String name);
 
             /**
              * Begins the definition of an external endpoint to be attached to the traffic manager profile.
@@ -459,13 +450,8 @@ public interface TrafficManagerProfile
      *
      * <p>Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
-    interface Update
-        extends Appliable<TrafficManagerProfile>,
-            UpdateStages.WithTrafficRoutingMethod,
-            UpdateStages.WithMonitoringConfiguration,
-            UpdateStages.WithEndpoint,
-            UpdateStages.WithTtl,
-            UpdateStages.WithProfileStatus,
-            Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<TrafficManagerProfile>, UpdateStages.WithTrafficRoutingMethod,
+        UpdateStages.WithMonitoringConfiguration, UpdateStages.WithEndpoint, UpdateStages.WithTtl,
+        UpdateStages.WithProfileStatus, Resource.UpdateWithTags<Update> {
     }
 }

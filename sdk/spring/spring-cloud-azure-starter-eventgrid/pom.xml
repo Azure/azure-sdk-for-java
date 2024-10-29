@@ -34,6 +34,7 @@
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <licenses>
@@ -95,7 +96,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
-      <version>4.25.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
+      <version>4.26.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;dependency} -->
     </dependency>
   </dependencies>
 

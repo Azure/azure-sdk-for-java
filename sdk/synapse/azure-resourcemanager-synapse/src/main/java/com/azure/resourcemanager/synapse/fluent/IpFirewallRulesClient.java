@@ -42,8 +42,8 @@ public interface IpFirewallRulesClient {
      * @return list of IP firewall rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<IpFirewallRuleInfoInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<IpFirewallRuleInfoInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Creates or updates a firewall rule.
@@ -76,10 +76,7 @@ public interface IpFirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String ruleName,
-        IpFirewallRuleInfoInner ipFirewallRuleInfo,
+        String resourceGroupName, String workspaceName, String ruleName, IpFirewallRuleInfoInner ipFirewallRuleInfo,
         Context context);
 
     /**
@@ -95,8 +92,8 @@ public interface IpFirewallRulesClient {
      * @return iP firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IpFirewallRuleInfoInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String ruleName, IpFirewallRuleInfoInner ipFirewallRuleInfo);
+    IpFirewallRuleInfoInner createOrUpdate(String resourceGroupName, String workspaceName, String ruleName,
+        IpFirewallRuleInfoInner ipFirewallRuleInfo);
 
     /**
      * Creates or updates a firewall rule.
@@ -112,12 +109,8 @@ public interface IpFirewallRulesClient {
      * @return iP firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IpFirewallRuleInfoInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String ruleName,
-        IpFirewallRuleInfoInner ipFirewallRuleInfo,
-        Context context);
+    IpFirewallRuleInfoInner createOrUpdate(String resourceGroupName, String workspaceName, String ruleName,
+        IpFirewallRuleInfoInner ipFirewallRuleInfo, Context context);
 
     /**
      * Deletes a firewall rule.
@@ -131,8 +124,8 @@ public interface IpFirewallRulesClient {
      * @return the {@link SyncPoller} for polling of iP firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner> beginDelete(
-        String resourceGroupName, String workspaceName, String ruleName);
+    SyncPoller<PollResult<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner> beginDelete(String resourceGroupName,
+        String workspaceName, String ruleName);
 
     /**
      * Deletes a firewall rule.
@@ -147,8 +140,8 @@ public interface IpFirewallRulesClient {
      * @return the {@link SyncPoller} for polling of iP firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner> beginDelete(
-        String resourceGroupName, String workspaceName, String ruleName, Context context);
+    SyncPoller<PollResult<IpFirewallRuleInfoInner>, IpFirewallRuleInfoInner> beginDelete(String resourceGroupName,
+        String workspaceName, String ruleName, Context context);
 
     /**
      * Deletes a firewall rule.
@@ -192,8 +185,8 @@ public interface IpFirewallRulesClient {
      * @return a firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IpFirewallRuleInfoInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String ruleName, Context context);
+    Response<IpFirewallRuleInfoInner> getWithResponse(String resourceGroupName, String workspaceName, String ruleName,
+        Context context);
 
     /**
      * Get a firewall rule.
@@ -238,8 +231,8 @@ public interface IpFirewallRulesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplaceAllFirewallRulesOperationResponseInner>, ReplaceAllFirewallRulesOperationResponseInner>
-        beginReplaceAll(
-            String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request, Context context);
+        beginReplaceAll(String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request,
+            Context context);
 
     /**
      * Replaces firewall rules.
@@ -253,8 +246,8 @@ public interface IpFirewallRulesClient {
      * @return an existing operation for replacing the firewall rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplaceAllFirewallRulesOperationResponseInner replaceAll(
-        String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request);
+    ReplaceAllFirewallRulesOperationResponseInner replaceAll(String resourceGroupName, String workspaceName,
+        ReplaceAllIpFirewallRulesRequest request);
 
     /**
      * Replaces firewall rules.
@@ -269,6 +262,6 @@ public interface IpFirewallRulesClient {
      * @return an existing operation for replacing the firewall rules.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplaceAllFirewallRulesOperationResponseInner replaceAll(
-        String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request, Context context);
+    ReplaceAllFirewallRulesOperationResponseInner replaceAll(String resourceGroupName, String workspaceName,
+        ReplaceAllIpFirewallRulesRequest request, Context context);
 }

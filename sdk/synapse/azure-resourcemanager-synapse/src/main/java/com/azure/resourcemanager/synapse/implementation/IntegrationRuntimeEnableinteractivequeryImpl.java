@@ -13,8 +13,7 @@ public final class IntegrationRuntimeEnableinteractivequeryImpl implements Integ
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    IntegrationRuntimeEnableinteractivequeryImpl(
-        IntegrationRuntimeEnableinteractivequeryInner innerObject,
+    IntegrationRuntimeEnableinteractivequeryImpl(IntegrationRuntimeEnableinteractivequeryInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

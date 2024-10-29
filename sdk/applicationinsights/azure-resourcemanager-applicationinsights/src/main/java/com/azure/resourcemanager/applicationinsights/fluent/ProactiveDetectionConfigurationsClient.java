@@ -28,8 +28,8 @@ public interface ProactiveDetectionConfigurationsClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> listWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>>
+        listWithResponse(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets a list of ProactiveDetection configurations of an Application Insights component.
@@ -42,8 +42,8 @@ public interface ProactiveDetectionConfigurationsClient {
      * @return a list of ProactiveDetection configurations of an Application Insights component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<ApplicationInsightsComponentProactiveDetectionConfigurationInner> list(
-        String resourceGroupName, String resourceName);
+    List<ApplicationInsightsComponentProactiveDetectionConfigurationInner> list(String resourceGroupName,
+        String resourceName);
 
     /**
      * Get the ProactiveDetection configuration for this configuration id.
@@ -59,8 +59,8 @@ public interface ProactiveDetectionConfigurationsClient {
      * @return the ProactiveDetection configuration for this configuration id along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> getWithResponse(
-        String resourceGroupName, String resourceName, String configurationId, Context context);
+    Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> getWithResponse(String resourceGroupName,
+        String resourceName, String configurationId, Context context);
 
     /**
      * Get the ProactiveDetection configuration for this configuration id.
@@ -75,8 +75,8 @@ public interface ProactiveDetectionConfigurationsClient {
      * @return the ProactiveDetection configuration for this configuration id.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentProactiveDetectionConfigurationInner get(
-        String resourceGroupName, String resourceName, String configurationId);
+    ApplicationInsightsComponentProactiveDetectionConfigurationInner get(String resourceGroupName, String resourceName,
+        String configurationId);
 
     /**
      * Update the ProactiveDetection configuration for this configuration id.
@@ -95,11 +95,8 @@ public interface ProactiveDetectionConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String configurationId,
-        ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties,
-        Context context);
+        String resourceGroupName, String resourceName, String configurationId,
+        ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties, Context context);
 
     /**
      * Update the ProactiveDetection configuration for this configuration id.
@@ -116,9 +113,7 @@ public interface ProactiveDetectionConfigurationsClient {
      * @return properties that define a ProactiveDetection configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentProactiveDetectionConfigurationInner update(
-        String resourceGroupName,
-        String resourceName,
-        String configurationId,
+    ApplicationInsightsComponentProactiveDetectionConfigurationInner update(String resourceGroupName,
+        String resourceName, String configurationId,
         ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties);
 }

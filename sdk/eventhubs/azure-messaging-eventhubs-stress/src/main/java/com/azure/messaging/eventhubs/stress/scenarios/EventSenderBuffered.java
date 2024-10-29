@@ -47,7 +47,8 @@ public class EventSenderBuffered extends EventHubsScenario {
     @Override
     public void run() {
         sender = toClose(getBuilder()
-            .onSendBatchFailed(context -> telemetryHelper.recordError(context.getThrowable(), "sendBuffed", context.getPartitionId()))
+            .onSendBatchFailed(
+                context -> telemetryHelper.recordError(context.getThrowable(), "sendBuffed", context.getPartitionId()))
             .onSendBatchSucceeded(context -> LOGGER.verbose("Send success."))
             .buildAsyncClient());
 
@@ -63,13 +64,11 @@ public class EventSenderBuffered extends EventHubsScenario {
     }
 
     private Mono<Void> singleRun() {
-        return createEvent().flatMap(event ->
-                Mono.usingWhen(rateLimiter.acquire(),
-                    i -> sender.enqueueEvent(event),
-                    i -> {
-                        rateLimiter.release();
-                        return Mono.empty();
-                    }))
+        return createEvent()
+            .flatMap(event -> Mono.usingWhen(rateLimiter.acquire(), i -> sender.enqueueEvent(event), i -> {
+                rateLimiter.release();
+                return Mono.empty();
+            }))
             .then();
     }
 

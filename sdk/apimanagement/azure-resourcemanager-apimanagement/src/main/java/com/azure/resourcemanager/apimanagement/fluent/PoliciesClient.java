@@ -30,8 +30,8 @@ public interface PoliciesClient {
      * @return the response of the list policy operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyCollectionInner> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PolicyCollectionInner> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Lists all the Global Policy definitions of the Api Management service.
@@ -59,8 +59,8 @@ public interface PoliciesClient {
      * @return the entity state (Etag) version of the Global policy definition in the Api Management service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, Context context);
+    PoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        PolicyIdName policyId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
@@ -89,12 +89,8 @@ public interface PoliciesClient {
      * @return the Global policy definition of the Api Management service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoliciesGetResponse getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
+    PoliciesGetResponse getWithResponse(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        PolicyExportFormat format, Context context);
 
     /**
      * Get the Global policy definition of the Api Management service.
@@ -125,13 +121,8 @@ public interface PoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PoliciesCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    PoliciesCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PolicyIdName policyId, PolicyContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or updates the global policy configuration of the Api Management service.
@@ -146,8 +137,8 @@ public interface PoliciesClient {
      * @return policy Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, PolicyContractInner parameters);
+    PolicyContractInner createOrUpdate(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        PolicyContractInner parameters);
 
     /**
      * Deletes the global policy configuration of the Api Management Service.
@@ -164,8 +155,8 @@ public interface PoliciesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the global policy configuration of the Api Management Service.

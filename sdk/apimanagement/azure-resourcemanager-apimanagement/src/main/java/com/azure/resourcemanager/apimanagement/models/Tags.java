@@ -24,8 +24,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TagContract> listByOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId);
+    PagedIterable<TagContract> listByOperation(String resourceGroupName, String serviceName, String apiId,
+        String operationId);
 
     /**
      * Lists all Tags associated with the Operation.
@@ -48,15 +48,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TagContract> listByOperation(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String operationId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<TagContract> listByOperation(String resourceGroupName, String serviceName, String apiId,
+        String operationId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -74,8 +67,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state version of the tag specified by its identifier.
      */
-    TagsGetEntityStateByOperationResponse getEntityStateByOperationWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
+    TagsGetEntityStateByOperationResponse getEntityStateByOperationWithResponse(String resourceGroupName,
+        String serviceName, String apiId, String operationId, String tagId, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -91,8 +84,8 @@ public interface Tags {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void getEntityStateByOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId);
+    void getEntityStateByOperation(String resourceGroupName, String serviceName, String apiId, String operationId,
+        String tagId);
 
     /**
      * Get tag associated with the Operation.
@@ -110,8 +103,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag associated with the Operation.
      */
-    Response<TagContract> getByOperationWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
+    Response<TagContract> getByOperationWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, String tagId, Context context);
 
     /**
      * Get tag associated with the Operation.
@@ -128,8 +121,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag associated with the Operation.
      */
-    TagContract getByOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId);
+    TagContract getByOperation(String resourceGroupName, String serviceName, String apiId, String operationId,
+        String tagId);
 
     /**
      * Assign tag to the Operation.
@@ -147,8 +140,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag Contract details along with {@link Response}.
      */
-    Response<TagContract> assignToOperationWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
+    Response<TagContract> assignToOperationWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, String tagId, Context context);
 
     /**
      * Assign tag to the Operation.
@@ -165,8 +158,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag Contract details.
      */
-    TagContract assignToOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId);
+    TagContract assignToOperation(String resourceGroupName, String serviceName, String apiId, String operationId,
+        String tagId);
 
     /**
      * Detach the tag from the Operation.
@@ -184,8 +177,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> detachFromOperationWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
+    Response<Void> detachFromOperationWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String operationId, String tagId, Context context);
 
     /**
      * Detach the tag from the Operation.
@@ -201,8 +194,8 @@ public interface Tags {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void detachFromOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId, String tagId);
+    void detachFromOperation(String resourceGroupName, String serviceName, String apiId, String operationId,
+        String tagId);
 
     /**
      * Lists all Tags associated with the API.
@@ -237,14 +230,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TagContract> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<TagContract> listByApi(String resourceGroupName, String serviceName, String apiId, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -260,8 +247,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state version of the tag specified by its identifier.
      */
-    TagsGetEntityStateByApiResponse getEntityStateByApiWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
+    TagsGetEntityStateByApiResponse getEntityStateByApiWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String tagId, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -291,8 +278,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag associated with the API.
      */
-    Response<TagContract> getByApiWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
+    Response<TagContract> getByApiWithResponse(String resourceGroupName, String serviceName, String apiId, String tagId,
+        Context context);
 
     /**
      * Get tag associated with the API.
@@ -323,8 +310,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag Contract details.
      */
-    Response<TagContract> assignToApiWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
+    Response<TagContract> assignToApiWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String tagId, Context context);
 
     /**
      * Assign tag to the Api.
@@ -355,8 +342,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> detachFromApiWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
+    Response<Void> detachFromApiWithResponse(String resourceGroupName, String serviceName, String apiId, String tagId,
+        Context context);
 
     /**
      * Detach the tag from the Api.
@@ -403,14 +390,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TagContract> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<TagContract> listByProduct(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -425,8 +406,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state version of the tag specified by its identifier.
      */
-    TagsGetEntityStateByProductResponse getEntityStateByProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, String tagId, Context context);
+    TagsGetEntityStateByProductResponse getEntityStateByProductWithResponse(String resourceGroupName,
+        String serviceName, String productId, String tagId, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -454,8 +435,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag associated with the Product.
      */
-    Response<TagContract> getByProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, String tagId, Context context);
+    Response<TagContract> getByProductWithResponse(String resourceGroupName, String serviceName, String productId,
+        String tagId, Context context);
 
     /**
      * Get tag associated with the Product.
@@ -484,8 +465,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return tag Contract details along with {@link Response}.
      */
-    Response<TagContract> assignToProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, String tagId, Context context);
+    Response<TagContract> assignToProductWithResponse(String resourceGroupName, String serviceName, String productId,
+        String tagId, Context context);
 
     /**
      * Assign tag to the Product.
@@ -514,8 +495,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> detachFromProductWithResponse(
-        String resourceGroupName, String serviceName, String productId, String tagId, Context context);
+    Response<Void> detachFromProductWithResponse(String resourceGroupName, String serviceName, String productId,
+        String tagId, Context context);
 
     /**
      * Detach the tag from the Product.
@@ -560,14 +541,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<TagContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String scope,
-        Context context);
+    PagedIterable<TagContract> listByService(String resourceGroupName, String serviceName, String filter, Integer top,
+        Integer skip, String scope, Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -581,8 +556,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state version of the tag specified by its identifier.
      */
-    TagsGetEntityStateResponse getEntityStateWithResponse(
-        String resourceGroupName, String serviceName, String tagId, Context context);
+    TagsGetEntityStateResponse getEntityStateWithResponse(String resourceGroupName, String serviceName, String tagId,
+        Context context);
 
     /**
      * Gets the entity state version of the tag specified by its identifier.
@@ -637,8 +612,8 @@ public interface Tags {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String tagId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String tagId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific tag of the API Management service instance.

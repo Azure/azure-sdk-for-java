@@ -21,8 +21,8 @@ public final class L3NetworksImpl implements L3Networks {
 
     private final com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager;
 
-    public L3NetworksImpl(
-        L3NetworksClient innerClient, com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
+    public L3NetworksImpl(L3NetworksClient innerClient,
+        com.azure.resourcemanager.networkcloud.NetworkCloudManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -47,15 +47,12 @@ public final class L3NetworksImpl implements L3Networks {
         return Utils.mapPage(inner, inner1 -> new L3NetworkImpl(inner1, this.manager()));
     }
 
-    public Response<L3Network> getByResourceGroupWithResponse(
-        String resourceGroupName, String l3NetworkName, Context context) {
-        Response<L3NetworkInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, l3NetworkName, context);
+    public Response<L3Network> getByResourceGroupWithResponse(String resourceGroupName, String l3NetworkName,
+        Context context) {
+        Response<L3NetworkInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, l3NetworkName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new L3NetworkImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -82,18 +79,13 @@ public final class L3NetworksImpl implements L3Networks {
     public L3Network getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String l3NetworkName = Utils.getValueFromIdByName(id, "l3Networks");
         if (l3NetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, l3NetworkName, Context.NONE).getValue();
     }
@@ -101,18 +93,13 @@ public final class L3NetworksImpl implements L3Networks {
     public Response<L3Network> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String l3NetworkName = Utils.getValueFromIdByName(id, "l3Networks");
         if (l3NetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, l3NetworkName, context);
     }
@@ -120,18 +107,13 @@ public final class L3NetworksImpl implements L3Networks {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String l3NetworkName = Utils.getValueFromIdByName(id, "l3Networks");
         if (l3NetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
         }
         this.delete(resourceGroupName, l3NetworkName, Context.NONE);
     }
@@ -139,18 +121,13 @@ public final class L3NetworksImpl implements L3Networks {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String l3NetworkName = Utils.getValueFromIdByName(id, "l3Networks");
         if (l3NetworkName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'l3Networks'.", id)));
         }
         this.delete(resourceGroupName, l3NetworkName, context);
     }

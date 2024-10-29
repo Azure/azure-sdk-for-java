@@ -10,11 +10,9 @@ import com.azure.resourcemanager.peering.fluent.models.CdnPeeringPrefixPropertie
 public final class CdnPeeringPrefixPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CdnPeeringPrefixProperties model =
-            BinaryData
-                .fromString(
-                    "{\"prefix\":\"rcryuanzwuxzdxta\",\"azureRegion\":\"lhmwhfpmrqobm\",\"azureService\":\"kknryrtihf\",\"isPrimaryRegion\":true,\"bgpCommunity\":\"bpzvgn\"}")
-                .toObject(CdnPeeringPrefixProperties.class);
+        CdnPeeringPrefixProperties model = BinaryData.fromString(
+            "{\"prefix\":\"rcryuanzwuxzdxta\",\"azureRegion\":\"lhmwhfpmrqobm\",\"azureService\":\"kknryrtihf\",\"isPrimaryRegion\":true,\"bgpCommunity\":\"bpzvgn\"}")
+            .toObject(CdnPeeringPrefixProperties.class);
     }
 
     @org.junit.jupiter.api.Test

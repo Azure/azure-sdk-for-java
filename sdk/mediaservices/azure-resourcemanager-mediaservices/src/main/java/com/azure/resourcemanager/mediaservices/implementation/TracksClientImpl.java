@@ -65,108 +65,73 @@ public final class TracksClientImpl implements TracksClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesTr")
     public interface TracksService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/tracks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/assets/{assetName}/tracks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssetTrackCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AssetTrackCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/tracks/{trackName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/assets/{assetName}/tracks/{trackName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AssetTrackInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<AssetTrackInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @PathParam("trackName") String trackName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @PathParam("trackName") String trackName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/tracks/{trackName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/assets/{assetName}/tracks/{trackName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @PathParam("trackName") String trackName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AssetTrackInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @PathParam("trackName") String trackName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AssetTrackInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/tracks/{trackName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/assets/{assetName}/tracks/{trackName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @PathParam("trackName") String trackName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @PathParam("trackName") String trackName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/tracks/{trackName}")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/assets/{assetName}/tracks/{trackName}")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @PathParam("trackName") String trackName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") AssetTrackInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @PathParam("trackName") String trackName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") AssetTrackInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/assets/{assetName}/tracks/{trackName}/updateTrackData")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
+            + "/{accountName}/assets/{assetName}/tracks/{trackName}/updateTrackData")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTrackData(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> updateTrackData(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("assetName") String assetName,
-            @PathParam("trackName") String trackName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("assetName") String assetName, @PathParam("trackName") String trackName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -184,19 +149,15 @@ public final class TracksClientImpl implements TracksClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssetTrackInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String assetName) {
+    private Mono<PagedResponse<AssetTrackInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String assetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -211,22 +172,10 @@ public final class TracksClientImpl implements TracksClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<AssetTrackInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, apiVersion, accept, context))
+            .<PagedResponse<AssetTrackInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -246,19 +195,15 @@ public final class TracksClientImpl implements TracksClient {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AssetTrackInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String assetName, Context context) {
+    private Mono<PagedResponse<AssetTrackInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String assetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -274,19 +219,10 @@ public final class TracksClientImpl implements TracksClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName, assetName,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -322,8 +258,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return a collection of AssetTrack items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AssetTrackInner> listAsync(
-        String resourceGroupName, String accountName, String assetName, Context context) {
+    private PagedFlux<AssetTrackInner> listAsync(String resourceGroupName, String accountName, String assetName,
+        Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, accountName, assetName, context));
     }
 
@@ -360,8 +296,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return a collection of AssetTrack items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AssetTrackInner> list(
-        String resourceGroupName, String accountName, String assetName, Context context) {
+    public PagedIterable<AssetTrackInner> list(String resourceGroupName, String accountName, String assetName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, assetName, context));
     }
 
@@ -380,19 +316,15 @@ public final class TracksClientImpl implements TracksClient {
      * @return the details of a Track in the Asset along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssetTrackInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName) {
+    private Mono<Response<AssetTrackInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String assetName, String trackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -410,19 +342,8 @@ public final class TracksClientImpl implements TracksClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            trackName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, trackName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -442,19 +363,15 @@ public final class TracksClientImpl implements TracksClient {
      * @return the details of a Track in the Asset along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AssetTrackInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+    private Mono<Response<AssetTrackInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String assetName, String trackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -472,17 +389,8 @@ public final class TracksClientImpl implements TracksClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                trackName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            assetName, trackName, apiVersion, accept, context);
     }
 
     /**
@@ -500,8 +408,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return the details of a Track in the Asset on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetTrackInner> getAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName) {
+    private Mono<AssetTrackInner> getAsync(String resourceGroupName, String accountName, String assetName,
+        String trackName) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -522,8 +430,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return the details of a Track in the Asset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AssetTrackInner> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+    public Response<AssetTrackInner> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String trackName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, assetName, trackName, context).block();
     }
 
@@ -562,19 +470,15 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -597,20 +501,8 @@ public final class TracksClientImpl implements TracksClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            trackName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, trackName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -631,24 +523,15 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -671,18 +554,8 @@ public final class TracksClientImpl implements TracksClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                trackName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, assetName, trackName, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -701,18 +574,12 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link PollerFlux} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, accountName, assetName, trackName, parameters);
-        return this
-            .client
-            .<AssetTrackInner, AssetTrackInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AssetTrackInner.class,
-                AssetTrackInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, accountName, assetName, trackName, parameters);
+        return this.client.<AssetTrackInner, AssetTrackInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AssetTrackInner.class, AssetTrackInner.class, this.client.getContext());
     }
 
     /**
@@ -732,20 +599,13 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link PollerFlux} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context) {
+    private PollerFlux<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, accountName, assetName, trackName, parameters, context);
-        return this
-            .client
-            .<AssetTrackInner, AssetTrackInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AssetTrackInner.class, AssetTrackInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, accountName,
+            assetName, trackName, parameters, context);
+        return this.client.<AssetTrackInner, AssetTrackInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AssetTrackInner.class, AssetTrackInner.class, context);
     }
 
     /**
@@ -764,10 +624,9 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link SyncPoller} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters)
+    public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters)
             .getSyncPoller();
     }
 
@@ -788,15 +647,9 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link SyncPoller} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
+    public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
             .getSyncPoller();
     }
 
@@ -816,10 +669,9 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetTrackInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters)
-            .last()
+    private Mono<AssetTrackInner> createOrUpdateAsync(String resourceGroupName, String accountName, String assetName,
+        String trackName, AssetTrackInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -840,13 +692,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetTrackInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context) {
+    private Mono<AssetTrackInner> createOrUpdateAsync(String resourceGroupName, String accountName, String assetName,
+        String trackName, AssetTrackInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -868,8 +715,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetTrackInner createOrUpdate(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
+    public AssetTrackInner createOrUpdate(String resourceGroupName, String accountName, String assetName,
+        String trackName, AssetTrackInner parameters) {
         return createOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters).block();
     }
 
@@ -890,13 +737,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetTrackInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context) {
+    public AssetTrackInner createOrUpdate(String resourceGroupName, String accountName, String assetName,
+        String trackName, AssetTrackInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context).block();
     }
 
@@ -915,19 +757,15 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String assetName, String trackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -945,19 +783,8 @@ public final class TracksClientImpl implements TracksClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            trackName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, trackName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -977,19 +804,15 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String assetName, String trackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1007,17 +830,8 @@ public final class TracksClientImpl implements TracksClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                trackName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, assetName, trackName, apiVersion, accept, context);
     }
 
     /**
@@ -1035,14 +849,12 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, assetName, trackName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String assetName, String trackName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, assetName, trackName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1061,14 +873,13 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String assetName, String trackName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, assetName, trackName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, assetName, trackName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1086,8 +897,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String assetName, String trackName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String assetName, String trackName) {
         return this.beginDeleteAsync(resourceGroupName, accountName, assetName, trackName).getSyncPoller();
     }
 
@@ -1107,8 +918,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String assetName, String trackName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, accountName, assetName, trackName, context).getSyncPoller();
     }
 
@@ -1128,8 +939,7 @@ public final class TracksClientImpl implements TracksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String assetName, String trackName) {
-        return beginDeleteAsync(resourceGroupName, accountName, assetName, trackName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, assetName, trackName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1149,10 +959,9 @@ public final class TracksClientImpl implements TracksClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, assetName, trackName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String assetName, String trackName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, accountName, assetName, trackName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1189,8 +998,8 @@ public final class TracksClientImpl implements TracksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+    public void delete(String resourceGroupName, String accountName, String assetName, String trackName,
+        Context context) {
         deleteAsync(resourceGroupName, accountName, assetName, trackName, context).block();
     }
 
@@ -1210,19 +1019,15 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String assetName, String trackName, AssetTrackInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1245,20 +1050,8 @@ public final class TracksClientImpl implements TracksClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            trackName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, trackName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1279,24 +1072,15 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String assetName, String trackName, AssetTrackInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1319,18 +1103,8 @@ public final class TracksClientImpl implements TracksClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                trackName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, assetName, trackName, apiVersion, parameters, accept, context);
     }
 
     /**
@@ -1349,18 +1123,12 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link PollerFlux} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, assetName, trackName, parameters);
-        return this
-            .client
-            .<AssetTrackInner, AssetTrackInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AssetTrackInner.class,
-                AssetTrackInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, assetName, trackName, parameters);
+        return this.client.<AssetTrackInner, AssetTrackInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AssetTrackInner.class, AssetTrackInner.class, this.client.getContext());
     }
 
     /**
@@ -1380,20 +1148,13 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link PollerFlux} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context) {
+    private PollerFlux<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, assetName, trackName, parameters, context);
-        return this
-            .client
-            .<AssetTrackInner, AssetTrackInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AssetTrackInner.class, AssetTrackInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, assetName, trackName, parameters, context);
+        return this.client.<AssetTrackInner, AssetTrackInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AssetTrackInner.class, AssetTrackInner.class, context);
     }
 
     /**
@@ -1412,8 +1173,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link SyncPoller} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdate(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
+    public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdate(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters) {
         return this.beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters).getSyncPoller();
     }
 
@@ -1434,15 +1195,9 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link SyncPoller} for polling of an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
+    public SyncPoller<PollResult<AssetTrackInner>, AssetTrackInner> beginUpdate(String resourceGroupName,
+        String accountName, String assetName, String trackName, AssetTrackInner parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
             .getSyncPoller();
     }
 
@@ -1462,10 +1217,9 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetTrackInner> updateAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
-        return beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters)
-            .last()
+    private Mono<AssetTrackInner> updateAsync(String resourceGroupName, String accountName, String assetName,
+        String trackName, AssetTrackInner parameters) {
+        return beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1486,15 +1240,9 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AssetTrackInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context)
-            .last()
+    private Mono<AssetTrackInner> updateAsync(String resourceGroupName, String accountName, String assetName,
+        String trackName, AssetTrackInner parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1514,8 +1262,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetTrackInner update(
-        String resourceGroupName, String accountName, String assetName, String trackName, AssetTrackInner parameters) {
+    public AssetTrackInner update(String resourceGroupName, String accountName, String assetName, String trackName,
+        AssetTrackInner parameters) {
         return updateAsync(resourceGroupName, accountName, assetName, trackName, parameters).block();
     }
 
@@ -1536,13 +1284,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return an Asset Track resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AssetTrackInner update(
-        String resourceGroupName,
-        String accountName,
-        String assetName,
-        String trackName,
-        AssetTrackInner parameters,
-        Context context) {
+    public AssetTrackInner update(String resourceGroupName, String accountName, String assetName, String trackName,
+        AssetTrackInner parameters, Context context) {
         return updateAsync(resourceGroupName, accountName, assetName, trackName, parameters, context).block();
     }
 
@@ -1564,19 +1307,15 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateTrackDataWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName) {
+    private Mono<Response<Flux<ByteBuffer>>> updateTrackDataWithResponseAsync(String resourceGroupName,
+        String accountName, String assetName, String trackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1594,19 +1333,8 @@ public final class TracksClientImpl implements TracksClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTrackData(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            assetName,
-                            trackName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.updateTrackData(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, assetName, trackName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1629,19 +1357,15 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateTrackDataWithResponseAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateTrackDataWithResponseAsync(String resourceGroupName,
+        String accountName, String assetName, String trackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1659,17 +1383,8 @@ public final class TracksClientImpl implements TracksClient {
         final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTrackData(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                assetName,
-                trackName,
-                apiVersion,
-                accept,
-                context);
+        return service.updateTrackData(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, assetName, trackName, apiVersion, accept, context);
     }
 
     /**
@@ -1690,14 +1405,12 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateTrackDataAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTrackDataWithResponseAsync(resourceGroupName, accountName, assetName, trackName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginUpdateTrackDataAsync(String resourceGroupName, String accountName,
+        String assetName, String trackName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateTrackDataWithResponseAsync(resourceGroupName, accountName, assetName, trackName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -1719,14 +1432,13 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginUpdateTrackDataAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginUpdateTrackDataAsync(String resourceGroupName, String accountName,
+        String assetName, String trackName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateTrackDataWithResponseAsync(resourceGroupName, accountName, assetName, trackName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateTrackDataWithResponseAsync(resourceGroupName, accountName, assetName, trackName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -1747,8 +1459,8 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(
-        String resourceGroupName, String accountName, String assetName, String trackName) {
+    public SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(String resourceGroupName, String accountName,
+        String assetName, String trackName) {
         return this.beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName).getSyncPoller();
     }
 
@@ -1771,10 +1483,9 @@ public final class TracksClientImpl implements TracksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
-        return this
-            .beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName, context)
+    public SyncPoller<PollResult<Void>, Void> beginUpdateTrackData(String resourceGroupName, String accountName,
+        String assetName, String trackName, Context context) {
+        return this.beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName, context)
             .getSyncPoller();
     }
 
@@ -1796,10 +1507,9 @@ public final class TracksClientImpl implements TracksClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateTrackDataAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName) {
-        return beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName)
-            .last()
+    private Mono<Void> updateTrackDataAsync(String resourceGroupName, String accountName, String assetName,
+        String trackName) {
+        return beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1822,10 +1532,9 @@ public final class TracksClientImpl implements TracksClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updateTrackDataAsync(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
-        return beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName, context)
-            .last()
+    private Mono<Void> updateTrackDataAsync(String resourceGroupName, String accountName, String assetName,
+        String trackName, Context context) {
+        return beginUpdateTrackDataAsync(resourceGroupName, accountName, assetName, trackName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1868,8 +1577,8 @@ public final class TracksClientImpl implements TracksClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateTrackData(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context) {
+    public void updateTrackData(String resourceGroupName, String accountName, String assetName, String trackName,
+        Context context) {
         updateTrackDataAsync(resourceGroupName, accountName, assetName, trackName, context).block();
     }
 }

@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VMInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"resourceId\":\"bhj\",\"version\":\"igeho\",\"monitoringType\":\"CLOUD_INFRASTRUCTURE\",\"autoUpdateSetting\":\"ENABLED\",\"updateStatus\":\"OUTDATED\",\"availabilityState\":\"SHUTDOWN\",\"logModule\":\"DISABLED\",\"hostGroup\":\"zlcuiywgqywgndrv\",\"hostName\":\"hzgpphrcgyncocpe\"}")
-                .toObject(VMInfoInner.class);
+        VMInfoInner model = BinaryData.fromString(
+            "{\"resourceId\":\"bhj\",\"version\":\"igeho\",\"monitoringType\":\"CLOUD_INFRASTRUCTURE\",\"autoUpdateSetting\":\"ENABLED\",\"updateStatus\":\"OUTDATED\",\"availabilityState\":\"SHUTDOWN\",\"logModule\":\"DISABLED\",\"hostGroup\":\"zlcuiywgqywgndrv\",\"hostName\":\"hzgpphrcgyncocpe\"}")
+            .toObject(VMInfoInner.class);
         Assertions.assertEquals("bhj", model.resourceId());
         Assertions.assertEquals("igeho", model.version());
         Assertions.assertEquals(MonitoringType.CLOUD_INFRASTRUCTURE, model.monitoringType());
@@ -34,17 +32,15 @@ public final class VMInfoInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMInfoInner model =
-            new VMInfoInner()
-                .withResourceId("bhj")
-                .withVersion("igeho")
-                .withMonitoringType(MonitoringType.CLOUD_INFRASTRUCTURE)
-                .withAutoUpdateSetting(AutoUpdateSetting.ENABLED)
-                .withUpdateStatus(UpdateStatus.OUTDATED)
-                .withAvailabilityState(AvailabilityState.SHUTDOWN)
-                .withLogModule(LogModule.DISABLED)
-                .withHostGroup("zlcuiywgqywgndrv")
-                .withHostname("hzgpphrcgyncocpe");
+        VMInfoInner model = new VMInfoInner().withResourceId("bhj")
+            .withVersion("igeho")
+            .withMonitoringType(MonitoringType.CLOUD_INFRASTRUCTURE)
+            .withAutoUpdateSetting(AutoUpdateSetting.ENABLED)
+            .withUpdateStatus(UpdateStatus.OUTDATED)
+            .withAvailabilityState(AvailabilityState.SHUTDOWN)
+            .withLogModule(LogModule.DISABLED)
+            .withHostGroup("zlcuiywgqywgndrv")
+            .withHostname("hzgpphrcgyncocpe");
         model = BinaryData.fromObject(model).toObject(VMInfoInner.class);
         Assertions.assertEquals("bhj", model.resourceId());
         Assertions.assertEquals("igeho", model.version());

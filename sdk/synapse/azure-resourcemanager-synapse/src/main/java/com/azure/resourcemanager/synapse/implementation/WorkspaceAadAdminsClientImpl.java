@@ -47,8 +47,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @param client the instance of the service client containing this operation class.
      */
     WorkspaceAadAdminsClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy.create(WorkspaceAadAdminsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkspaceAadAdminsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,51 +59,36 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface WorkspaceAadAdminsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/administrators/activeDirectory")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/administrators/activeDirectory")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkspaceAadAdminInfoInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<WorkspaceAadAdminInfoInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/administrators/activeDirectory")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/administrators/activeDirectory")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @BodyParam("application/json") WorkspaceAadAdminInfoInner aadAdminInfo,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/administrators/activeDirectory")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/administrators/activeDirectory")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -117,19 +102,15 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @return a workspace active directory admin along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceAadAdminInfoInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<Response<WorkspaceAadAdminInfoInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -141,17 +122,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -167,19 +139,15 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @return a workspace active directory admin along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkspaceAadAdminInfoInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<Response<WorkspaceAadAdminInfoInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,15 +159,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, accept, context);
     }
 
     /**
@@ -229,8 +190,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @return a workspace active directory admin along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkspaceAadAdminInfoInner> getWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
+    public Response<WorkspaceAadAdminInfoInner> getWithResponse(String resourceGroupName, String workspaceName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, context).block();
     }
 
@@ -262,19 +223,15 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -291,18 +248,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            aadAdminInfo,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, aadAdminInfo, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -320,19 +267,15 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -349,16 +292,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                aadAdminInfo,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, aadAdminInfo, accept, context);
     }
 
     /**
@@ -375,16 +310,11 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, aadAdminInfo);
-        return this
-            .client
-            .<WorkspaceAadAdminInfoInner, WorkspaceAadAdminInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WorkspaceAadAdminInfoInner.class,
-                WorkspaceAadAdminInfoInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, aadAdminInfo);
+        return this.client.<WorkspaceAadAdminInfoInner, WorkspaceAadAdminInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WorkspaceAadAdminInfoInner.class, WorkspaceAadAdminInfoInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -403,16 +333,10 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
     private PollerFlux<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, aadAdminInfo, context);
-        return this
-            .client
-            .<WorkspaceAadAdminInfoInner, WorkspaceAadAdminInfoInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                WorkspaceAadAdminInfoInner.class,
-                WorkspaceAadAdminInfoInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, aadAdminInfo, context);
+        return this.client.<WorkspaceAadAdminInfoInner, WorkspaceAadAdminInfoInner>getLroResult(mono,
+            this.client.getHttpPipeline(), WorkspaceAadAdminInfoInner.class, WorkspaceAadAdminInfoInner.class, context);
     }
 
     /**
@@ -427,8 +351,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @return the {@link SyncPoller} for polling of workspace active directory administrator.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
+    public SyncPoller<PollResult<WorkspaceAadAdminInfoInner>, WorkspaceAadAdminInfoInner>
+        beginCreateOrUpdate(String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, aadAdminInfo).getSyncPoller();
     }
 
@@ -462,10 +386,9 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @return workspace active directory administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspaceAadAdminInfoInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, aadAdminInfo)
-            .last()
+    private Mono<WorkspaceAadAdminInfoInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, aadAdminInfo).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -482,10 +405,9 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @return workspace active directory administrator on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkspaceAadAdminInfoInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, aadAdminInfo, context)
-            .last()
+    private Mono<WorkspaceAadAdminInfoInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, aadAdminInfo, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -501,8 +423,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @return workspace active directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkspaceAadAdminInfoInner createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo) {
+    public WorkspaceAadAdminInfoInner createOrUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, aadAdminInfo).block();
     }
 
@@ -519,8 +441,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @return workspace active directory administrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkspaceAadAdminInfoInner createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
+    public WorkspaceAadAdminInfoInner createOrUpdate(String resourceGroupName, String workspaceName,
+        WorkspaceAadAdminInfoInner aadAdminInfo, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, aadAdminInfo, context).block();
     }
 
@@ -537,16 +459,12 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -558,17 +476,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -584,19 +493,15 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -608,15 +513,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, accept, context);
     }
 
     /**
@@ -632,10 +530,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
@@ -650,13 +546,12 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, workspaceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
@@ -686,8 +581,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, workspaceName, context).getSyncPoller();
     }
 
@@ -719,8 +614,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, workspaceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 

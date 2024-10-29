@@ -3,27 +3,17 @@
 
 package com.azure.health.insights.radiologyinsights;
 
-import java.time.LocalDate;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.CountDownLatch;
-import java.util.function.Predicate;
-
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentAuthor;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContent;
+import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContentType;
 import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentType;
 import com.azure.health.insights.radiologyinsights.models.CriticalResultInference;
 import com.azure.health.insights.radiologyinsights.models.DocumentAdministrativeMetadata;
-import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentAuthor;
-import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContent;
 import com.azure.health.insights.radiologyinsights.models.DocumentContentSourceType;
-import com.azure.health.insights.radiologyinsights.models.ClinicalDocumentContentType;
 import com.azure.health.insights.radiologyinsights.models.EncounterClass;
 import com.azure.health.insights.radiologyinsights.models.FhirR4CodeableConcept;
 import com.azure.health.insights.radiologyinsights.models.FhirR4Coding;
@@ -47,15 +37,24 @@ import com.azure.health.insights.radiologyinsights.models.SpecialtyType;
 import com.azure.health.insights.radiologyinsights.models.TimePeriod;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.CountDownLatch;
+import java.util.function.Predicate;
+
 /**
- * The SampleCriticalResultInferenceAsync class processes a sample radiology document 
- * with the Radiology Insights service. It will initialize an asynchronous 
- * RadiologyInsightsAsyncClient, build a Radiology Insights job request with the sample document, poll the 
- * results and display the Critical Results extracted by the Radiology Insights service.  
- * 
+ * The SampleCriticalResultInferenceAsync class processes a sample radiology document
+ * with the Radiology Insights service. It will initialize an asynchronous
+ * RadiologyInsightsAsyncClient, build a Radiology Insights job request with the sample document, poll the
+ * results and display the Critical Results extracted by the Radiology Insights service.
+ *
  */
 public class SampleCriticalResultInferenceAsync {
 
@@ -90,7 +89,7 @@ public class SampleCriticalResultInferenceAsync {
     public static void main(final String[] args) throws InterruptedException {
         // BEGIN: com.azure.health.insights.radiologyinsights.buildasyncclient
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-        
+
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
                 .endpoint(endpoint)
@@ -102,9 +101,9 @@ public class SampleCriticalResultInferenceAsync {
         PollerFlux<RadiologyInsightsJob, RadiologyInsightsInferenceResult> asyncPoller = radiologyInsightsAsyncClient
                 .beginInferRadiologyInsights(UUID.randomUUID().toString(), createRadiologyInsightsJob());
         // END: com.azure.health.insights.radiologyinsights.inferradiologyinsights
-        
+
         CountDownLatch latch = new CountDownLatch(1);
-        
+
         asyncPoller
             .takeUntil(isComplete)
             .doFinally(signal -> {
@@ -139,7 +138,7 @@ public class SampleCriticalResultInferenceAsync {
                 if (inference instanceof CriticalResultInference) {
                     CriticalResultInference criticalResultInference = (CriticalResultInference) inference;
                     String description = criticalResultInference.getResult().getDescription();
-                    System.out.println("Critical Result Inference found: " + description);                    
+                    System.out.println("Critical Result Inference found: " + description);
                 }
             }
         }
@@ -177,7 +176,7 @@ public class SampleCriticalResultInferenceAsync {
 
         // Use LocalDate to set Date
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
-        
+
         patientRecord.setDetails(patientDetails);
 
         PatientEncounter encounter = new PatientEncounter("encounterid1");
@@ -241,7 +240,7 @@ public class SampleCriticalResultInferenceAsync {
      * @return The patient document.
      */
     private static PatientDocument getPatientDocument() {
-    	ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
+        ClinicalDocumentContent documentContent = new ClinicalDocumentContent(DocumentContentSourceType.INLINE, DOC_CONTENT);
         return new PatientDocument(ClinicalDocumentContentType.NOTE, "docid1", documentContent);
     }
 
@@ -269,7 +268,7 @@ public class SampleCriticalResultInferenceAsync {
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;
-    
+
     /**
      * Retrieves the RadiologyInsightsInferenceOptions object with the specified
      * options.
@@ -290,7 +289,7 @@ public class SampleCriticalResultInferenceAsync {
         return inferenceOptions;
     }
     // END: com.azure.health.insights.radiologyinsights.createrequest
-    
+
     private static Predicate<AsyncPollResponse<RadiologyInsightsJob, RadiologyInsightsInferenceResult>> isComplete = response -> {
         return response.getStatus() != LongRunningOperationStatus.IN_PROGRESS
             && response.getStatus() != LongRunningOperationStatus.NOT_STARTED;

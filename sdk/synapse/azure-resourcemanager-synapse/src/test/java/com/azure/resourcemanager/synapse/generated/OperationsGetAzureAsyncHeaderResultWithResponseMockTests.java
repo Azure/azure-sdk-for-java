@@ -31,41 +31,29 @@ public final class OperationsGetAzureAsyncHeaderResultWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"cbbprtugav\",\"name\":\"bcyksivmfogd\",\"status\":\"Failed\",\"properties\":\"datacmkrftsjcwjj\",\"startTime\":\"2021-06-09T20:33:36Z\",\"endTime\":\"2021-03-04T07:58:33Z\",\"percentComplete\":89.56149}";
+        String responseStr
+            = "{\"id\":\"cbbprtugav\",\"name\":\"bcyksivmfogd\",\"status\":\"Failed\",\"properties\":\"datacmkrftsjcwjj\",\"startTime\":\"2021-06-09T20:33:36Z\",\"endTime\":\"2021-03-04T07:58:33Z\",\"percentComplete\":89.56149}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationResource response =
-            manager
-                .operations()
-                .getAzureAsyncHeaderResultWithResponse(
-                    "pgeumilh", "uitrdexyiono", "ninbdbzsxcwqqrs", com.azure.core.util.Context.NONE)
-                .getValue();
+        OperationResource response = manager.operations()
+            .getAzureAsyncHeaderResultWithResponse("pgeumilh", "uitrdexyiono", "ninbdbzsxcwqqrs",
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("cbbprtugav", response.id());
         Assertions.assertEquals("bcyksivmfogd", response.name());

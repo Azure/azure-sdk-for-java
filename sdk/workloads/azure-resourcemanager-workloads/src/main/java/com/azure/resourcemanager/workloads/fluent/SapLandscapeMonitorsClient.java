@@ -64,11 +64,8 @@ public interface SapLandscapeMonitorsClient {
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapLandscapeMonitorInner> createWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-        Context context);
+    Response<SapLandscapeMonitorInner> createWithResponse(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter, Context context);
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
@@ -85,8 +82,8 @@ public interface SapLandscapeMonitorsClient {
      * @return configuration associated with SAP Landscape Monitor Dashboard.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SapLandscapeMonitorInner create(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter);
+    SapLandscapeMonitorInner create(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter);
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
@@ -137,11 +134,8 @@ public interface SapLandscapeMonitorsClient {
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapLandscapeMonitorInner> updateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-        Context context);
+    Response<SapLandscapeMonitorInner> updateWithResponse(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter, Context context);
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
@@ -159,8 +153,8 @@ public interface SapLandscapeMonitorsClient {
      * @return configuration associated with SAP Landscape Monitor Dashboard.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SapLandscapeMonitorInner update(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter);
+    SapLandscapeMonitorInner update(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter);
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
@@ -178,8 +172,8 @@ public interface SapLandscapeMonitorsClient {
      *     group, and resource name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapLandscapeMonitorListResultInner> listWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<SapLandscapeMonitorListResultInner> listWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.

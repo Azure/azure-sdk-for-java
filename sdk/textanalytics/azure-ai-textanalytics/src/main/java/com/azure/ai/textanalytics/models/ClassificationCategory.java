@@ -15,8 +15,8 @@ public final class ClassificationCategory {
     private double confidenceScore;
 
     static {
-        ClassificationCategoryPropertiesHelper.setAccessor(
-            new ClassificationCategoryPropertiesHelper.ClassificationCategoryAccessor() {
+        ClassificationCategoryPropertiesHelper
+            .setAccessor(new ClassificationCategoryPropertiesHelper.ClassificationCategoryAccessor() {
                 @Override
                 public void setCategory(ClassificationCategory classification, String category) {
                     classification.setCategory(category);

@@ -122,6 +122,9 @@ public final class TrainRequest implements JsonSerializable<TrainRequest> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

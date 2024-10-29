@@ -22,8 +22,8 @@ public interface GatewayCertificateAuthorities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Gateway certificate authority list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<GatewayCertificateAuthorityContract> listByService(
-        String resourceGroupName, String serviceName, String gatewayId);
+    PagedIterable<GatewayCertificateAuthorityContract> listByService(String resourceGroupName, String serviceName,
+        String gatewayId);
 
     /**
      * Lists the collection of Certificate Authorities for the specified Gateway entity.
@@ -43,14 +43,8 @@ public interface GatewayCertificateAuthorities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Gateway certificate authority list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<GatewayCertificateAuthorityContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<GatewayCertificateAuthorityContract> listByService(String resourceGroupName, String serviceName,
+        String gatewayId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks if Certificate entity is assigned to Gateway entity as Certificate Authority.
@@ -67,8 +61,8 @@ public interface GatewayCertificateAuthorities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context);
+    GatewayCertificateAuthoritiesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String gatewayId, String certificateId, Context context);
 
     /**
      * Checks if Certificate entity is assigned to Gateway entity as Certificate Authority.
@@ -100,8 +94,8 @@ public interface GatewayCertificateAuthorities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return assigned Gateway Certificate Authority details.
      */
-    Response<GatewayCertificateAuthorityContract> getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId, Context context);
+    Response<GatewayCertificateAuthorityContract> getWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, String certificateId, Context context);
 
     /**
      * Get assigned Gateway Certificate Authority details.
@@ -117,8 +111,8 @@ public interface GatewayCertificateAuthorities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return assigned Gateway Certificate Authority details.
      */
-    GatewayCertificateAuthorityContract get(
-        String resourceGroupName, String serviceName, String gatewayId, String certificateId);
+    GatewayCertificateAuthorityContract get(String resourceGroupName, String serviceName, String gatewayId,
+        String certificateId);
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.
@@ -137,13 +131,8 @@ public interface GatewayCertificateAuthorities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        String certificateId,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        String certificateId, String ifMatch, Context context);
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.

@@ -13,28 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkPacketBrokerPatchTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkPacketBrokerPatch model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"fubnsnstlpwqpj\":\"vknmpecqxgiqas\",\"ouweuiyx\":\"xjkhtupsv\",\"znfhkqytk\":\"wkztsmsfbevyl\",\"fcycrsvlo\":\"tadopgfzdg\"}}")
-                .toObject(NetworkPacketBrokerPatch.class);
+        NetworkPacketBrokerPatch model = BinaryData.fromString(
+            "{\"tags\":{\"fubnsnstlpwqpj\":\"vknmpecqxgiqas\",\"ouweuiyx\":\"xjkhtupsv\",\"znfhkqytk\":\"wkztsmsfbevyl\",\"fcycrsvlo\":\"tadopgfzdg\"}}")
+            .toObject(NetworkPacketBrokerPatch.class);
         Assertions.assertEquals("vknmpecqxgiqas", model.tags().get("fubnsnstlpwqpj"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkPacketBrokerPatch model =
-            new NetworkPacketBrokerPatch()
-                .withTags(
-                    mapOf(
-                        "fubnsnstlpwqpj",
-                        "vknmpecqxgiqas",
-                        "ouweuiyx",
-                        "xjkhtupsv",
-                        "znfhkqytk",
-                        "wkztsmsfbevyl",
-                        "fcycrsvlo",
-                        "tadopgfzdg"));
+        NetworkPacketBrokerPatch model = new NetworkPacketBrokerPatch().withTags(mapOf("fubnsnstlpwqpj",
+            "vknmpecqxgiqas", "ouweuiyx", "xjkhtupsv", "znfhkqytk", "wkztsmsfbevyl", "fcycrsvlo", "tadopgfzdg"));
         model = BinaryData.fromObject(model).toObject(NetworkPacketBrokerPatch.class);
         Assertions.assertEquals("vknmpecqxgiqas", model.tags().get("fubnsnstlpwqpj"));
     }

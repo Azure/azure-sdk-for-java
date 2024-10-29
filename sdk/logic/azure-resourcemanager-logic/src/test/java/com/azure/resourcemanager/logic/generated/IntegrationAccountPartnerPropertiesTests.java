@@ -7,6 +7,7 @@ package com.azure.resourcemanager.logic.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountPartnerProperties;
 import com.azure.resourcemanager.logic.models.B2BPartnerContent;
+import com.azure.resourcemanager.logic.models.BusinessIdentity;
 import com.azure.resourcemanager.logic.models.PartnerContent;
 import com.azure.resourcemanager.logic.models.PartnerType;
 import java.util.Arrays;
@@ -15,23 +16,26 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountPartnerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountPartnerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"partnerType\":\"B2B\",\"createdTime\":\"2021-12-09T14:22:52Z\",\"changedTime\":\"2021-07-04T20:55:26Z\",\"metadata\":\"datauzvx\",\"content\":{\"b2b\":{\"businessIdentities\":[]}}}")
-                .toObject(IntegrationAccountPartnerProperties.class);
+        IntegrationAccountPartnerProperties model = BinaryData.fromString(
+            "{\"partnerType\":\"B2B\",\"createdTime\":\"2021-02-27T19:55:15Z\",\"changedTime\":\"2021-11-09T11:00:58Z\",\"metadata\":\"dataqucwyhahnom\",\"content\":{\"b2b\":{\"businessIdentities\":[{\"qualifier\":\"wuhpsvfuur\",\"value\":\"tlwexxwlalniexz\"},{\"qualifier\":\"rzpgep\",\"value\":\"tybbwwpgda\"},{\"qualifier\":\"chzyvlixqnrk\",\"value\":\"xkjibnxmy\"}]}}}")
+            .toObject(IntegrationAccountPartnerProperties.class);
         Assertions.assertEquals(PartnerType.B2B, model.partnerType());
+        Assertions.assertEquals("wuhpsvfuur", model.content().b2B().businessIdentities().get(0).qualifier());
+        Assertions.assertEquals("tlwexxwlalniexz", model.content().b2B().businessIdentities().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountPartnerProperties model =
-            new IntegrationAccountPartnerProperties()
-                .withPartnerType(PartnerType.B2B)
-                .withMetadata("datauzvx")
-                .withContent(
-                    new PartnerContent().withB2B(new B2BPartnerContent().withBusinessIdentities(Arrays.asList())));
+        IntegrationAccountPartnerProperties model
+            = new IntegrationAccountPartnerProperties().withPartnerType(PartnerType.B2B)
+                .withMetadata("dataqucwyhahnom")
+                .withContent(new PartnerContent().withB2B(new B2BPartnerContent().withBusinessIdentities(
+                    Arrays.asList(new BusinessIdentity().withQualifier("wuhpsvfuur").withValue("tlwexxwlalniexz"),
+                        new BusinessIdentity().withQualifier("rzpgep").withValue("tybbwwpgda"),
+                        new BusinessIdentity().withQualifier("chzyvlixqnrk").withValue("xkjibnxmy")))));
         model = BinaryData.fromObject(model).toObject(IntegrationAccountPartnerProperties.class);
         Assertions.assertEquals(PartnerType.B2B, model.partnerType());
+        Assertions.assertEquals("wuhpsvfuur", model.content().b2B().businessIdentities().get(0).qualifier());
+        Assertions.assertEquals("tlwexxwlalniexz", model.content().b2B().businessIdentities().get(0).value());
     }
 }

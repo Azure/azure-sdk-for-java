@@ -17,63 +17,58 @@ import org.junit.jupiter.api.Assertions;
 public final class SqlServerInstancePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlServerInstanceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"version\":\"SQL Server"
-                        + " 2017\",\"edition\":\"Evaluation\",\"containerResourceId\":\"eojnabc\",\"createTime\":\"smtxpsieb\",\"vCore\":\"hvpesapskrdqm\",\"status\":\"Unknown\",\"patchLevel\":\"dhtldwkyz\",\"collation\":\"utknc\",\"currentVersion\":\"cwsvlxotog\",\"instanceName\":\"rupqsxvnmicy\",\"tcpDynamicPorts\":\"ceoveilovno\",\"tcpStaticPorts\":\"fj\",\"productId\":\"njbkcnxdhbttkph\",\"licenseType\":\"Undefined\",\"azureDefenderStatusLastUpdated\":\"2021-09-28T11:00:41Z\",\"azureDefenderStatus\":\"Unknown\",\"provisioningState\":\"qnermclfplphoxu\"}")
-                .toObject(SqlServerInstanceProperties.class);
-        Assertions.assertEquals(SqlVersion.SQL_SERVER_2017, model.version());
-        Assertions.assertEquals(EditionType.EVALUATION, model.edition());
-        Assertions.assertEquals("eojnabc", model.containerResourceId());
-        Assertions.assertEquals("hvpesapskrdqm", model.vCore());
-        Assertions.assertEquals(ConnectionStatus.UNKNOWN, model.status());
-        Assertions.assertEquals("dhtldwkyz", model.patchLevel());
-        Assertions.assertEquals("utknc", model.collation());
-        Assertions.assertEquals("cwsvlxotog", model.currentVersion());
-        Assertions.assertEquals("rupqsxvnmicy", model.instanceName());
-        Assertions.assertEquals("ceoveilovno", model.tcpDynamicPorts());
-        Assertions.assertEquals("fj", model.tcpStaticPorts());
-        Assertions.assertEquals("njbkcnxdhbttkph", model.productId());
-        Assertions.assertEquals(ArcSqlServerLicenseType.UNDEFINED, model.licenseType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T11:00:41Z"), model.azureDefenderStatusLastUpdated());
-        Assertions.assertEquals(DefenderStatus.UNKNOWN, model.azureDefenderStatus());
+        SqlServerInstanceProperties model = BinaryData.fromString(
+            "{\"version\":\"SQL Server 2019\",\"edition\":\"Express\",\"containerResourceId\":\"exq\",\"createTime\":\"fadmws\",\"vCore\":\"r\",\"status\":\"Connected\",\"patchLevel\":\"pv\",\"collation\":\"mzlfmisgwb\",\"currentVersion\":\"beldawkzbaliourq\",\"instanceName\":\"kauhashsfwxo\",\"tcpDynamicPorts\":\"w\",\"tcpStaticPorts\":\"cugicjoox\",\"productId\":\"ebwpucwwfvo\",\"licenseType\":\"Free\",\"azureDefenderStatusLastUpdated\":\"2021-05-26T04:02:26Z\",\"azureDefenderStatus\":\"Protected\",\"provisioningState\":\"ivyhzceuojgjrwju\"}")
+            .toObject(SqlServerInstanceProperties.class);
+        Assertions.assertEquals(SqlVersion.SQL_SERVER_2019, model.version());
+        Assertions.assertEquals(EditionType.EXPRESS, model.edition());
+        Assertions.assertEquals("exq", model.containerResourceId());
+        Assertions.assertEquals("r", model.vCore());
+        Assertions.assertEquals(ConnectionStatus.CONNECTED, model.status());
+        Assertions.assertEquals("pv", model.patchLevel());
+        Assertions.assertEquals("mzlfmisgwb", model.collation());
+        Assertions.assertEquals("beldawkzbaliourq", model.currentVersion());
+        Assertions.assertEquals("kauhashsfwxo", model.instanceName());
+        Assertions.assertEquals("w", model.tcpDynamicPorts());
+        Assertions.assertEquals("cugicjoox", model.tcpStaticPorts());
+        Assertions.assertEquals("ebwpucwwfvo", model.productId());
+        Assertions.assertEquals(ArcSqlServerLicenseType.FREE, model.licenseType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T04:02:26Z"), model.azureDefenderStatusLastUpdated());
+        Assertions.assertEquals(DefenderStatus.PROTECTED, model.azureDefenderStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlServerInstanceProperties model =
-            new SqlServerInstanceProperties()
-                .withVersion(SqlVersion.SQL_SERVER_2017)
-                .withEdition(EditionType.EVALUATION)
-                .withContainerResourceId("eojnabc")
-                .withVCore("hvpesapskrdqm")
-                .withStatus(ConnectionStatus.UNKNOWN)
-                .withPatchLevel("dhtldwkyz")
-                .withCollation("utknc")
-                .withCurrentVersion("cwsvlxotog")
-                .withInstanceName("rupqsxvnmicy")
-                .withTcpDynamicPorts("ceoveilovno")
-                .withTcpStaticPorts("fj")
-                .withProductId("njbkcnxdhbttkph")
-                .withLicenseType(ArcSqlServerLicenseType.UNDEFINED)
-                .withAzureDefenderStatusLastUpdated(OffsetDateTime.parse("2021-09-28T11:00:41Z"))
-                .withAzureDefenderStatus(DefenderStatus.UNKNOWN);
+        SqlServerInstanceProperties model = new SqlServerInstanceProperties().withVersion(SqlVersion.SQL_SERVER_2019)
+            .withEdition(EditionType.EXPRESS)
+            .withContainerResourceId("exq")
+            .withVCore("r")
+            .withStatus(ConnectionStatus.CONNECTED)
+            .withPatchLevel("pv")
+            .withCollation("mzlfmisgwb")
+            .withCurrentVersion("beldawkzbaliourq")
+            .withInstanceName("kauhashsfwxo")
+            .withTcpDynamicPorts("w")
+            .withTcpStaticPorts("cugicjoox")
+            .withProductId("ebwpucwwfvo")
+            .withLicenseType(ArcSqlServerLicenseType.FREE)
+            .withAzureDefenderStatusLastUpdated(OffsetDateTime.parse("2021-05-26T04:02:26Z"))
+            .withAzureDefenderStatus(DefenderStatus.PROTECTED);
         model = BinaryData.fromObject(model).toObject(SqlServerInstanceProperties.class);
-        Assertions.assertEquals(SqlVersion.SQL_SERVER_2017, model.version());
-        Assertions.assertEquals(EditionType.EVALUATION, model.edition());
-        Assertions.assertEquals("eojnabc", model.containerResourceId());
-        Assertions.assertEquals("hvpesapskrdqm", model.vCore());
-        Assertions.assertEquals(ConnectionStatus.UNKNOWN, model.status());
-        Assertions.assertEquals("dhtldwkyz", model.patchLevel());
-        Assertions.assertEquals("utknc", model.collation());
-        Assertions.assertEquals("cwsvlxotog", model.currentVersion());
-        Assertions.assertEquals("rupqsxvnmicy", model.instanceName());
-        Assertions.assertEquals("ceoveilovno", model.tcpDynamicPorts());
-        Assertions.assertEquals("fj", model.tcpStaticPorts());
-        Assertions.assertEquals("njbkcnxdhbttkph", model.productId());
-        Assertions.assertEquals(ArcSqlServerLicenseType.UNDEFINED, model.licenseType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T11:00:41Z"), model.azureDefenderStatusLastUpdated());
-        Assertions.assertEquals(DefenderStatus.UNKNOWN, model.azureDefenderStatus());
+        Assertions.assertEquals(SqlVersion.SQL_SERVER_2019, model.version());
+        Assertions.assertEquals(EditionType.EXPRESS, model.edition());
+        Assertions.assertEquals("exq", model.containerResourceId());
+        Assertions.assertEquals("r", model.vCore());
+        Assertions.assertEquals(ConnectionStatus.CONNECTED, model.status());
+        Assertions.assertEquals("pv", model.patchLevel());
+        Assertions.assertEquals("mzlfmisgwb", model.collation());
+        Assertions.assertEquals("beldawkzbaliourq", model.currentVersion());
+        Assertions.assertEquals("kauhashsfwxo", model.instanceName());
+        Assertions.assertEquals("w", model.tcpDynamicPorts());
+        Assertions.assertEquals("cugicjoox", model.tcpStaticPorts());
+        Assertions.assertEquals("ebwpucwwfvo", model.productId());
+        Assertions.assertEquals(ArcSqlServerLicenseType.FREE, model.licenseType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-26T04:02:26Z"), model.azureDefenderStatusLastUpdated());
+        Assertions.assertEquals(DefenderStatus.PROTECTED, model.azureDefenderStatus());
     }
 }

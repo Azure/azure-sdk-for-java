@@ -97,8 +97,8 @@ public final class ConfigurationStorePropertiesUpdateParameters {
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ConfigurationStorePropertiesUpdateParameters object itself.
      */
-    public ConfigurationStorePropertiesUpdateParameters withPublicNetworkAccess(
-        PublicNetworkAccess publicNetworkAccess) {
+    public ConfigurationStorePropertiesUpdateParameters
+        withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
         this.publicNetworkAccess = publicNetworkAccess;
         return this;
     }

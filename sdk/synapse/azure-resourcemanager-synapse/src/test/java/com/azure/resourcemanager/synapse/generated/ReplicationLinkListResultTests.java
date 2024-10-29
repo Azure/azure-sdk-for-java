@@ -12,17 +12,15 @@ import java.util.Arrays;
 public final class ReplicationLinkListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationLinkListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"location\":\"mifthnzdnd\",\"properties\":{\"isTerminationAllowed\":false,\"replicationMode\":\"yq\",\"partnerServer\":\"ynduha\",\"partnerDatabase\":\"qlkth\",\"partnerLocation\":\"aqolbgycduiertg\",\"role\":\"Source\",\"partnerRole\":\"Primary\",\"startTime\":\"2021-09-08T08:41:54Z\",\"percentComplete\":76010479,\"replicationState\":\"CATCH_UP\"},\"id\":\"lqlfm\",\"name\":\"dnbbglzps\",\"type\":\"iydmcwyhzdxs\"}],\"nextLink\":\"dbzm\"}")
-                .toObject(ReplicationLinkListResult.class);
+        ReplicationLinkListResult model = BinaryData.fromString(
+            "{\"value\":[{\"location\":\"mifthnzdnd\",\"properties\":{\"isTerminationAllowed\":false,\"replicationMode\":\"yq\",\"partnerServer\":\"ynduha\",\"partnerDatabase\":\"qlkth\",\"partnerLocation\":\"aqolbgycduiertg\",\"role\":\"Source\",\"partnerRole\":\"Primary\",\"startTime\":\"2021-09-08T08:41:54Z\",\"percentComplete\":76010479,\"replicationState\":\"CATCH_UP\"},\"id\":\"lqlfm\",\"name\":\"dnbbglzps\",\"type\":\"iydmcwyhzdxs\"}],\"nextLink\":\"dbzm\"}")
+            .toObject(ReplicationLinkListResult.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationLinkListResult model =
-            new ReplicationLinkListResult().withValue(Arrays.asList(new ReplicationLinkInner()));
+        ReplicationLinkListResult model
+            = new ReplicationLinkListResult().withValue(Arrays.asList(new ReplicationLinkInner()));
         model = BinaryData.fromObject(model).toObject(ReplicationLinkListResult.class);
     }
 }

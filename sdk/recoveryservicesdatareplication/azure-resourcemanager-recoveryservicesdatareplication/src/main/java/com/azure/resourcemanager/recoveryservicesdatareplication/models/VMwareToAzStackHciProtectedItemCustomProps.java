@@ -343,8 +343,8 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
      * @param targetArcClusterCustomLocationId the targetArcClusterCustomLocationId value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemCustomProps withTargetArcClusterCustomLocationId(
-        String targetArcClusterCustomLocationId) {
+    public VMwareToAzStackHciProtectedItemCustomProps
+        withTargetArcClusterCustomLocationId(String targetArcClusterCustomLocationId) {
         this.targetArcClusterCustomLocationId = targetArcClusterCustomLocationId;
         return this;
     }
@@ -442,8 +442,8 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
      * @param disksToInclude the disksToInclude value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemCustomProps withDisksToInclude(
-        List<VMwareToAzStackHciDiskInput> disksToInclude) {
+    public VMwareToAzStackHciProtectedItemCustomProps
+        withDisksToInclude(List<VMwareToAzStackHciDiskInput> disksToInclude) {
         this.disksToInclude = disksToInclude;
         return this;
     }
@@ -463,8 +463,8 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
      * @param nicsToInclude the nicsToInclude value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemCustomProps withNicsToInclude(
-        List<VMwareToAzStackHciNicInput> nicsToInclude) {
+    public VMwareToAzStackHciProtectedItemCustomProps
+        withNicsToInclude(List<VMwareToAzStackHciNicInput> nicsToInclude) {
         this.nicsToInclude = nicsToInclude;
         return this;
     }
@@ -633,8 +633,8 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
      * @param dynamicMemoryConfig the dynamicMemoryConfig value to set.
      * @return the VMwareToAzStackHciProtectedItemCustomProps object itself.
      */
-    public VMwareToAzStackHciProtectedItemCustomProps withDynamicMemoryConfig(
-        ProtectedItemDynamicMemoryConfig dynamicMemoryConfig) {
+    public VMwareToAzStackHciProtectedItemCustomProps
+        withDynamicMemoryConfig(ProtectedItemDynamicMemoryConfig dynamicMemoryConfig) {
         this.dynamicMemoryConfig = dynamicMemoryConfig;
         return this;
     }
@@ -950,54 +950,39 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
     public void validate() {
         super.validate();
         if (targetHciClusterId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetHciClusterId in model"
-                            + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property targetHciClusterId in model"
+                    + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (targetArcClusterCustomLocationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetArcClusterCustomLocationId in model"
-                            + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property targetArcClusterCustomLocationId in model"
+                    + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (storageContainerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageContainerId in model"
-                            + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property storageContainerId in model"
+                    + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (targetResourceGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceGroupId in model"
-                            + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property targetResourceGroupId in model"
+                    + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (customLocationRegion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customLocationRegion in model"
-                            + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property customLocationRegion in model"
+                    + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (disksToInclude() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property disksToInclude in model"
-                            + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property disksToInclude in model" + " VMwareToAzStackHciProtectedItemCustomProps"));
         } else {
             disksToInclude().forEach(e -> e.validate());
         }
         if (nicsToInclude() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property nicsToInclude in model VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property nicsToInclude in model VMwareToAzStackHciProtectedItemCustomProps"));
         } else {
             nicsToInclude().forEach(e -> e.validate());
         }
@@ -1008,40 +993,28 @@ public final class VMwareToAzStackHciProtectedItemCustomProps extends ProtectedI
             protectedNics().forEach(e -> e.validate());
         }
         if (hyperVGeneration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hyperVGeneration in model"
-                            + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property hyperVGeneration in model" + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (dynamicMemoryConfig() != null) {
             dynamicMemoryConfig().validate();
         }
         if (fabricDiscoveryMachineId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fabricDiscoveryMachineId in model"
-                            + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property fabricDiscoveryMachineId in model"
+                    + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (runAsAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property runAsAccountId in model"
-                            + " VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property runAsAccountId in model" + " VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (sourceDraName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceDraName in model VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceDraName in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
         if (targetDraName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetDraName in model VMwareToAzStackHciProtectedItemCustomProps"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetDraName in model VMwareToAzStackHciProtectedItemCustomProps"));
         }
     }
 

@@ -34,8 +34,8 @@ public interface WorkspaceManagedSqlServerBlobAuditingPoliciesClient {
      * @return a workspace managed sql server's blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerBlobAuditingPolicyInner> getWithResponse(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName, Context context);
+    Response<ServerBlobAuditingPolicyInner> getWithResponse(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, Context context);
 
     /**
      * Get server's blob auditing policy.
@@ -51,8 +51,8 @@ public interface WorkspaceManagedSqlServerBlobAuditingPoliciesClient {
      * @return a workspace managed sql server's blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerBlobAuditingPolicyInner get(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName);
+    ServerBlobAuditingPolicyInner get(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName);
 
     /**
      * Create or Update server's blob auditing policy.
@@ -70,9 +70,7 @@ public interface WorkspaceManagedSqlServerBlobAuditingPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
+        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName,
         ServerBlobAuditingPolicyInner parameters);
 
     /**
@@ -92,11 +90,8 @@ public interface WorkspaceManagedSqlServerBlobAuditingPoliciesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServerBlobAuditingPolicyInner>, ServerBlobAuditingPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ServerBlobAuditingPolicyInner parameters,
-        Context context);
+        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName,
+        ServerBlobAuditingPolicyInner parameters, Context context);
 
     /**
      * Create or Update server's blob auditing policy.
@@ -113,11 +108,8 @@ public interface WorkspaceManagedSqlServerBlobAuditingPoliciesClient {
      * @return a server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ServerBlobAuditingPolicyInner parameters);
+    ServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, ServerBlobAuditingPolicyInner parameters);
 
     /**
      * Create or Update server's blob auditing policy.
@@ -135,12 +127,8 @@ public interface WorkspaceManagedSqlServerBlobAuditingPoliciesClient {
      * @return a server blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        BlobAuditingPolicyName blobAuditingPolicyName,
-        ServerBlobAuditingPolicyInner parameters,
-        Context context);
+    ServerBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, ServerBlobAuditingPolicyInner parameters, Context context);
 
     /**
      * List workspace server's blob auditing policies.
@@ -171,6 +159,6 @@ public interface WorkspaceManagedSqlServerBlobAuditingPoliciesClient {
      * @return a list of server auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ServerBlobAuditingPolicyInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<ServerBlobAuditingPolicyInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 }

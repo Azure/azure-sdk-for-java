@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.samples;
 
-
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.appplatform.samples.ManageSpringCloud;
 import org.junit.jupiter.api.Assertions;
@@ -18,7 +17,8 @@ public class AppPlatformLiveOnlyTests extends SamplesTestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void testSpringCloud() throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, KeyManagementException {
+    public void testSpringCloud()
+        throws CertificateException, NoSuchAlgorithmException, KeyStoreException, IOException, KeyManagementException {
         if (skipInPlayback()) {
             return;
         }

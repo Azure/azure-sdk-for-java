@@ -43,8 +43,8 @@ public final class ReplicationLogicalNetworksImpl implements ReplicationLogicalN
 
     public Response<LogicalNetwork> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
         String logicalNetworkName, Context context) {
-        Response<LogicalNetworkInner> inner = this.serviceClient().getWithResponse(resourceName, resourceGroupName,
-            fabricName, logicalNetworkName, context);
+        Response<LogicalNetworkInner> inner = this.serviceClient()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, logicalNetworkName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LogicalNetworkImpl(inner.getValue(), this.manager()));

@@ -30,40 +30,28 @@ public final class RacksGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"extendedLocation\":{\"name\":\"mnnidmdia\",\"type\":\"pzxkzrntmkct\"},\"properties\":{\"availabilityZone\":\"huosgwqpsqaz\",\"clusterId\":\"qodvqgcnbhcbmj\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"bn\",\"provisioningState\":\"Accepted\",\"rackLocation\":\"tsxjmfmeftvhkmoo\",\"rackSerialNumber\":\"jrhskbwgmjgrul\",\"rackSkuId\":\"fogxhcxnw\"},\"location\":\"pfdzxcouzfwofw\",\"tags\":{\"ihezomucmq\":\"kzkdtzxsoednlwg\"},\"id\":\"isnionetbzdrdpue\",\"name\":\"xkgtlzlmtrlxcznn\",\"type\":\"zkbnbmxl\"}";
+        String responseStr
+            = "{\"extendedLocation\":{\"name\":\"mnnidmdia\",\"type\":\"pzxkzrntmkct\"},\"properties\":{\"availabilityZone\":\"huosgwqpsqaz\",\"clusterId\":\"qodvqgcnbhcbmj\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"bn\",\"provisioningState\":\"Accepted\",\"rackLocation\":\"tsxjmfmeftvhkmoo\",\"rackSerialNumber\":\"jrhskbwgmjgrul\",\"rackSkuId\":\"fogxhcxnw\"},\"location\":\"pfdzxcouzfwofw\",\"tags\":{\"ihezomucmq\":\"kzkdtzxsoednlwg\"},\"id\":\"isnionetbzdrdpue\",\"name\":\"xkgtlzlmtrlxcznn\",\"type\":\"zkbnbmxl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Rack response =
-            manager
-                .racks()
-                .getByResourceGroupWithResponse("fpcfjf", "zlgzawkgyepey", com.azure.core.util.Context.NONE)
-                .getValue();
+        Rack response = manager.racks()
+            .getByResourceGroupWithResponse("fpcfjf", "zlgzawkgyepey", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("pfdzxcouzfwofw", response.location());
         Assertions.assertEquals("kzkdtzxsoednlwg", response.tags().get("ihezomucmq"));

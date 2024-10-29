@@ -152,13 +152,13 @@ public abstract class JsonWriterContractTests {
             Arguments.of(write(jsonWriter -> jsonWriter.writeRawValue("{}")), "{}"),
             Arguments.of(write(jsonWriter -> jsonWriter.writeRawValue("{null}")), "{null}"),
 
-
             // Field name and value.
             // Binary
             Arguments.of(writeField(jsonWriter -> jsonWriter.writeBinaryField("field", null)), "{}"),
             Arguments.of(writeField(jsonWriter -> jsonWriter.writeBinaryField("field", new byte[0])),
                 "{\"field\":\"\"}"),
-            Arguments.of(writeField(
+            Arguments.of(
+                writeField(
                     jsonWriter -> jsonWriter.writeBinaryField("field", "Hello".getBytes(StandardCharsets.UTF_8))),
                 "{\"field\":\"" + Base64.getEncoder().encodeToString("Hello".getBytes(StandardCharsets.UTF_8)) + "\"}"),
 
@@ -232,8 +232,7 @@ public abstract class JsonWriterContractTests {
             Arguments.of(writeField(jsonWriter -> jsonWriter.writeRawField("field", "[]")), "{\"field\":[]}"),
             Arguments.of(writeField(jsonWriter -> jsonWriter.writeRawField("field", "[null]")), "{\"field\":[null]}"),
             Arguments.of(writeField(jsonWriter -> jsonWriter.writeRawField("field", "{}")), "{\"field\":{}}"),
-            Arguments.of(writeField(jsonWriter -> jsonWriter.writeRawField("field", "{null}")), "{\"field\":{null}}")
-        );
+            Arguments.of(writeField(jsonWriter -> jsonWriter.writeRawField("field", "{null}")), "{\"field\":{null}}"));
     }
 
     @ParameterizedTest
@@ -275,12 +274,11 @@ public abstract class JsonWriterContractTests {
 
             // Field value allows start array, start object, and simple value, so end array, end object, field name,
             // and field name and value will throw an exception.
-            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject()
-                .writeFieldName("fieldName")
-                .writeEndArray()), IllegalStateException.class),
-            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject()
-                .writeFieldName("fieldName")
-                .writeEndObject()), IllegalStateException.class),
+            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName").writeEndArray()),
+                IllegalStateException.class),
+            Arguments.of(
+                write(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName").writeEndObject()),
+                IllegalStateException.class),
             Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject()
                 .writeFieldName("fieldName")
                 .writeFieldName("anotherFieldName")), IllegalStateException.class),
@@ -304,9 +302,8 @@ public abstract class JsonWriterContractTests {
 
             Arguments.of(write(jsonWriter -> jsonWriter.writeStartArray().close()), IllegalStateException.class),
 
-            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject()
-                .writeFieldName("fieldName").close()), IllegalStateException.class)
-        );
+            Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName").close()),
+                IllegalStateException.class));
     }
 
     @ParameterizedTest
@@ -394,21 +391,26 @@ public abstract class JsonWriterContractTests {
                 JsonWriteState.OBJECT),
 
             // Starting an object in FIELD_VALUE enters OBJECT state.
-            Arguments.of(write(jsonWriter ->
-                jsonWriter.writeStartObject().writeFieldName("fieldName").writeStartObject()), JsonWriteState.OBJECT),
+            Arguments.of(
+                write(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName").writeStartObject()),
+                JsonWriteState.OBJECT),
 
             // Starting an array in FIELD_VALUE enters ARRAY state.
-            Arguments.of(write(jsonWriter ->
-                jsonWriter.writeStartObject().writeFieldName("fieldName").writeStartArray()), JsonWriteState.ARRAY),
+            Arguments.of(
+                write(jsonWriter -> jsonWriter.writeStartObject().writeFieldName("fieldName").writeStartArray()),
+                JsonWriteState.ARRAY),
 
             // Closing an object that is a field value enters OBJECT state.
             Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject()
-                .writeFieldName("fieldName").writeStartObject().writeEndObject()), JsonWriteState.OBJECT),
+                .writeFieldName("fieldName")
+                .writeStartObject()
+                .writeEndObject()), JsonWriteState.OBJECT),
 
             // Closing an array that is a field value enters OBJECT state.
             Arguments.of(write(jsonWriter -> jsonWriter.writeStartObject()
-                .writeFieldName("fieldName").writeStartArray().writeEndArray()), JsonWriteState.OBJECT)
-        );
+                .writeFieldName("fieldName")
+                .writeStartArray()
+                .writeEndArray()), JsonWriteState.OBJECT));
     }
 
     @ParameterizedTest
@@ -418,14 +420,11 @@ public abstract class JsonWriterContractTests {
     }
 
     private static Stream<IOExceptionConsumer<JsonWriter>> nullPointerExceptionsSupplier() {
-        return Stream.of(
-            write(jsonWriter -> jsonWriter.writeStartObject(null)),
-            write(jsonWriter -> jsonWriter.writeStartArray(null)),
-            write(jsonWriter -> jsonWriter.writeFieldName(null)),
+        return Stream.of(write(jsonWriter -> jsonWriter.writeStartObject(null)),
+            write(jsonWriter -> jsonWriter.writeStartArray(null)), write(jsonWriter -> jsonWriter.writeFieldName(null)),
             write(jsonWriter -> jsonWriter.writeArray((Object[]) null, null)),
             write(jsonWriter -> jsonWriter.writeArray(Collections.emptyList(), null)),
-            write(jsonWriter -> jsonWriter.writeMap(null, null)),
-            write(jsonWriter -> jsonWriter.writeRawValue(null)),
+            write(jsonWriter -> jsonWriter.writeMap(null, null)), write(jsonWriter -> jsonWriter.writeRawValue(null)),
 
             write(jsonWriter -> jsonWriter.writeNullableField(null, null, JsonWriter::writeUntyped)),
             write(jsonWriter -> jsonWriter.writeNullableField("field", null, null)),
@@ -449,8 +448,7 @@ public abstract class JsonWriterContractTests {
             write(jsonWriter -> jsonWriter.writeStringField(null, null)),
             write(jsonWriter -> jsonWriter.writeRawField(null, "0")),
             write(jsonWriter -> jsonWriter.writeRawField("field", null)),
-            write(jsonWriter -> jsonWriter.writeUntypedField(null, null))
-        );
+            write(jsonWriter -> jsonWriter.writeUntypedField(null, null)));
     }
 
     @Test
@@ -488,14 +486,12 @@ public abstract class JsonWriterContractTests {
 
     private static Stream<Arguments> writeJsonSupplier() {
         SimpleSerializable serializable = new SimpleSerializable(true, 42, 42.0, "hello");
-        return Stream.of(
-            Arguments.of(write(writer -> writer.writeJson(null)), ""),
+        return Stream.of(Arguments.of(write(writer -> writer.writeJson(null)), ""),
             Arguments.of(write(writer -> writer.writeJson(serializable)),
                 "{\"boolean\":true,\"int\":42,\"decimal\":42.0,\"string\":\"hello\"}"),
             Arguments.of(writeField(writer -> writer.writeJsonField("field", null)), "{}"),
             Arguments.of(writeField(writer -> writer.writeJsonField("field", serializable)),
-                "{\"field\":{\"boolean\":true,\"int\":42,\"decimal\":42.0,\"string\":\"hello\"}}")
-        );
+                "{\"field\":{\"boolean\":true,\"int\":42,\"decimal\":42.0,\"string\":\"hello\"}}"));
     }
 
     @Test
@@ -504,12 +500,12 @@ public abstract class JsonWriterContractTests {
         assertThrows(NullPointerException.class, () -> getJsonWriter().writeArray(Collections.emptyList(), null));
 
         assertThrows(NullPointerException.class, () -> getJsonWriter().writeArrayField(null, new Object[0], null));
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeArrayField(null, Collections.emptyList(),
-            null));
+        assertThrows(NullPointerException.class,
+            () -> getJsonWriter().writeArrayField(null, Collections.emptyList(), null));
 
         assertThrows(NullPointerException.class, () -> getJsonWriter().writeArrayField("field", new Object[0], null));
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeArrayField("field", Collections.emptyList(),
-            null));
+        assertThrows(NullPointerException.class,
+            () -> getJsonWriter().writeArrayField("field", Collections.emptyList(), null));
     }
 
     @ParameterizedTest
@@ -519,7 +515,7 @@ public abstract class JsonWriterContractTests {
     }
 
     private static Stream<Arguments> writeArraySupplier() {
-        Object[] array = new Object[]{true, 42, 42.0, "hello"};
+        Object[] array = new Object[] { true, 42, 42.0, "hello" };
         String expected = "[true,42,42.0,\"hello\"]";
         return Stream.of(
             Arguments.of(write(writer -> writer.writeArray((Object[]) null, JsonWriter::writeUntyped)), "null"),
@@ -537,22 +533,23 @@ public abstract class JsonWriterContractTests {
             Arguments.of(writeField(writer -> writer.writeArrayField("field", array, JsonWriter::writeUntyped)),
                 "{\"field\":" + expected + "}"),
 
-            Arguments.of(write(writer ->
-                writer.writeArrayField("field", (List<Object>) null, JsonWriter::writeUntyped)), ""),
-            Arguments.of(writeField(writer ->
-                writer.writeArrayField("field", Collections.emptyList(), JsonWriter::writeUntyped)), "{\"field\":[]}"),
+            Arguments.of(
+                write(writer -> writer.writeArrayField("field", (List<Object>) null, JsonWriter::writeUntyped)), ""),
+            Arguments.of(
+                writeField(
+                    writer -> writer.writeArrayField("field", Collections.emptyList(), JsonWriter::writeUntyped)),
+                "{\"field\":[]}"),
             Arguments.of(writeField(writer -> writer.writeArray(Arrays.asList(array), JsonWriter::writeUntyped)),
-                "{\"field\":" + expected + "}")
-        );
+                "{\"field\":" + expected + "}"));
     }
 
     @Test
     public void writeMapThrowsNullPointerException() {
         assertThrows(NullPointerException.class, () -> getJsonWriter().writeMap(Collections.emptyMap(), null));
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeMapField(null, Collections.emptyMap(),
-            null));
-        assertThrows(NullPointerException.class, () -> getJsonWriter().writeMapField("field", Collections.emptyMap(),
-            null));
+        assertThrows(NullPointerException.class,
+            () -> getJsonWriter().writeMapField(null, Collections.emptyMap(), null));
+        assertThrows(NullPointerException.class,
+            () -> getJsonWriter().writeMapField("field", Collections.emptyMap(), null));
     }
 
     @ParameterizedTest
@@ -569,17 +566,16 @@ public abstract class JsonWriterContractTests {
         map.put("string", "hello");
         String expected = "{\"boolean\":true,\"int\":42,\"decimal\":42.0,\"string\":\"hello\"}";
 
-        return Stream.of(
-            Arguments.of(write(writer -> writer.writeMap(null, JsonWriter::writeUntyped)), "null"),
+        return Stream.of(Arguments.of(write(writer -> writer.writeMap(null, JsonWriter::writeUntyped)), "null"),
             Arguments.of(write(writer -> writer.writeMap(Collections.emptyMap(), JsonWriter::writeUntyped)), "{}"),
             Arguments.of(write(writer -> writer.writeMap(map, JsonWriter::writeUntyped)), expected),
 
             Arguments.of(write(writer -> writer.writeMapField("field", null, JsonWriter::writeUntyped)), ""),
-            Arguments.of(writeField(writer ->
-                writer.writeMapField("field", Collections.emptyMap(), JsonWriter::writeUntyped)), "{\"field\":{}}"),
+            Arguments.of(
+                writeField(writer -> writer.writeMapField("field", Collections.emptyMap(), JsonWriter::writeUntyped)),
+                "{\"field\":{}}"),
             Arguments.of(writeField(writer -> writer.writeMapField("field", map, JsonWriter::writeUntyped)),
-                "{\"field\":" + expected + "}")
-        );
+                "{\"field\":" + expected + "}"));
     }
 
     @ParameterizedTest
@@ -596,30 +592,21 @@ public abstract class JsonWriterContractTests {
     }
 
     private static Stream<Arguments> writeUntypedSupplier() {
-        byte[] bytes = new byte[]{0, 1, 2, 3};
+        byte[] bytes = new byte[] { 0, 1, 2, 3 };
         UUID uuid = UUID.randomUUID();
 
-        return Stream.of(
-            Arguments.of(null, "null"),
-            Arguments.of((short) 42, "42"),
-            Arguments.of(42, "42"),
-            Arguments.of(42L, "42"),
-            Arguments.of(42.0F, "42.0"),
-            Arguments.of(42.0D, "42.0"),
-            Arguments.of(true, "true"),
-            Arguments.of(bytes, "\"" + Base64.getEncoder().encodeToString(bytes) + "\""),
-            Arguments.of("hello", "\"hello\""),
-            Arguments.of('h', "\"h\""),
+        return Stream.of(Arguments.of(null, "null"), Arguments.of((short) 42, "42"), Arguments.of(42, "42"),
+            Arguments.of(42L, "42"), Arguments.of(42.0F, "42.0"), Arguments.of(42.0D, "42.0"),
+            Arguments.of(true, "true"), Arguments.of(bytes, "\"" + Base64.getEncoder().encodeToString(bytes) + "\""),
+            Arguments.of("hello", "\"hello\""), Arguments.of('h', "\"h\""),
             Arguments.of(new SimpleSerializable(true, 42, 42.0D, "hello"),
                 "{\"boolean\":true,\"int\":42,\"decimal\":42.0,\"string\":\"hello\"}"),
             Arguments.of(new Object[0], "[]"),
-            Arguments.of(new Object[]{null, 42, 42.0, true, "hello", 'h'}, "[null,42,42.0,true,\"hello\",\"h\"]"),
+            Arguments.of(new Object[] { null, 42, 42.0, true, "hello", 'h' }, "[null,42,42.0,true,\"hello\",\"h\"]"),
             Arguments.of(Collections.emptyList(), "[]"),
             Arguments.of(Arrays.asList(null, 42, 42.0, true, "hello", 'h'), "[null,42,42.0,true,\"hello\",\"h\"]"),
             Arguments.of(Collections.singletonMap("hello", "json"), "{\"hello\":\"json\"}"),
-            Arguments.of(new Object(), "{}"),
-            Arguments.of(uuid, "\"" + uuid + "\"")
-        );
+            Arguments.of(new Object(), "{}"), Arguments.of(uuid, "\"" + uuid + "\""));
     }
 
     @Test

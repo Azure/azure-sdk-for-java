@@ -17,6 +17,7 @@ import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
@@ -26,6 +27,7 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -45,6 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.azure.storage.blob.specialized.AppendBlobClient.MAX_APPEND_BLOCKS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -187,25 +190,17 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<AppendBlobItem>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                BlobRequestConditions bac = new BlobRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setTagsConditions(tags);
-                return bc.createWithResponse(null, null, bac);
-            });
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
+                .flatMap(conditions -> {
+                    BlobRequestConditions bac = new BlobRequestConditions()
+                        .setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
+                        .setIfNoneMatch(noneMatch)
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified)
+                        .setTagsConditions(tags);
+                    return bc.createWithResponse(null, null, bac);
+                });
 
         assertAsyncResponseStatusCode(response, 201);
     }
@@ -226,22 +221,18 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("createACFailSupplier")
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID, String tags) {
-        Mono<Response<AppendBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                BlobRequestConditions bac = new BlobRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setTagsConditions(tags);
-                return bc.createWithResponse(null, null, bac);
-            });
+        Mono<Response<AppendBlobItem>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+            setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
+                .flatMap(conditions -> {
+                    BlobRequestConditions bac = new BlobRequestConditions()
+                        .setLeaseId(leaseID)
+                        .setIfMatch(match)
+                        .setIfNoneMatch(conditions.get(1))
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified)
+                        .setTagsConditions(tags);
+                    return bc.createWithResponse(null, null, bac);
+                });
 
         StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
@@ -279,6 +270,15 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         bc = ccAsync.getBlobAsyncClient(blobName).getAppendBlobAsyncClient();
 
         assertAsyncResponseStatusCode(bc.createIfNotExistsWithResponse(null), 201);
+    }
+
+    @Test
+    public void createIfNotExistsSimple() {
+        bc = ccAsync.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
+
+        StepVerifier.create(bc.createIfNotExists().then(bc.exists()))
+            .assertNext(Assertions::assertTrue)
+            .verifyComplete();
     }
 
     @Test
@@ -451,27 +451,19 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<AppendBlobItem>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setAppendPosition(appendPosE)
-                    .setMaxSize(maxSizeLTE)
-                    .setTagsConditions(tags);
-                return bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, bac);
-            });
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
+                .flatMap(conditions -> {
+                    AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+                        .setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
+                        .setIfNoneMatch(noneMatch)
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified)
+                        .setAppendPosition(appendPosE)
+                        .setMaxSize(maxSizeLTE)
+                        .setTagsConditions(tags);
+                    return bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, bac);
+                });
 
         assertAsyncResponseStatusCode(response, 201);
     }
@@ -494,24 +486,20 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     @MethodSource("appendBlockFailSupplier")
     public void appendBlockACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                   String leaseID, Long appendPosE, Long maxSizeLTE, String tags) {
-        Mono<Response<AppendBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setAppendPosition(appendPosE)
-                    .setMaxSize(maxSizeLTE)
-                    .setTagsConditions(tags);
-                return bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, bac);
-            });
+        Mono<Response<AppendBlobItem>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+            setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
+                .flatMap(conditions -> {
+                    AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+                        .setLeaseId(leaseID)
+                        .setIfMatch(match)
+                        .setIfNoneMatch(conditions.get(1))
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified)
+                        .setAppendPosition(appendPosE)
+                        .setMaxSize(maxSizeLTE)
+                        .setTagsConditions(tags);
+                    return bc.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null, bac);
+                });
 
         StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
@@ -668,19 +656,11 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         t.put("foo", "bar");
 
         Mono<Response<AppendBlobItem>> response = bc.setTags(t)
-            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID), setupBlobMatchConditionAsync(bc, match)))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
+            .then(Mono.zip(setupBlobLeaseCondition(bc, leaseID), setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls))
+            .flatMap(conditions -> {
                 AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
+                    .setLeaseId(conditions.get(0))
+                    .setIfMatch(conditions.get(1))
                     .setIfNoneMatch(noneMatch)
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified)
@@ -708,17 +688,13 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     public void appendBlockFromURLDestinationACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                                     String noneMatch, String leaseID, Long maxSizeLTE, Long appendPosE,
                                                     String tags) {
-        Mono<Response<AppendBlobItem>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
+        Mono<Response<AppendBlobItem>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+                setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
+            .flatMap(conditions -> {
                 AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
                     .setLeaseId(leaseID)
                     .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
+                    .setIfNoneMatch(conditions.get(1))
                     .setIfModifiedSince(modified)
                     .setIfUnmodifiedSince(unmodified)
                     .setAppendPosition(appendPosE)
@@ -749,17 +725,13 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
         Mono<Response<AppendBlobItem>> response = sourceURL.create()
             .then(sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
-            null))
-            .then(setupBlobMatchConditionAsync(sourceURL, sourceIfMatch))
-            .flatMap(r -> {
-                String newMatch = r;
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
+                null))
+            .then(setupBlobMatchCondition(sourceURL, sourceIfMatch))
+            .flatMap(condition -> {
                 BlobRequestConditions smac = new BlobRequestConditions()
                     .setIfModifiedSince(sourceIfModifiedSince)
                     .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
-                    .setIfMatch(newMatch)
+                    .setIfMatch(convertNull(condition))
                     .setIfNoneMatch(sourceIfNoneMatch);
 
                 String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
@@ -793,17 +765,13 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         Mono<Response<AppendBlobItem>> response = sourceURL.create()
             .then(sourceURL.appendBlockWithResponse(DATA.getDefaultFlux(), DATA.getDefaultDataSize(), null,
                 null))
-            .then(setupBlobMatchConditionAsync(sourceURL, sourceIfNoneMatch))
-            .flatMap(r -> {
-                String newNoneMatch = r;
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
+            .then(setupBlobMatchCondition(sourceURL, sourceIfNoneMatch))
+            .flatMap(condition -> {
                 BlobRequestConditions smac = new BlobRequestConditions()
                     .setIfModifiedSince(sourceIfModifiedSince)
                     .setIfUnmodifiedSince(sourceIfUnmodifiedSince)
                     .setIfMatch(sourceIfMatch)
-                    .setIfNoneMatch(newNoneMatch);
+                    .setIfNoneMatch(convertNull(condition));
 
                 String sas = sourceURL.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
                     new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
@@ -854,7 +822,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(bc.sealWithResponse(null))
             .assertNext(r -> {
                 assertResponseStatusCode(r, 200);
-                assertEquals("true", r.getHeaders().getValue("x-ms-blob-sealed"));
+                assertEquals("true", r.getHeaders().getValue(X_MS_BLOB_SEALED));
             })
             .verifyComplete();
     }
@@ -886,26 +854,18 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     public void sealAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                        String leaseID, Long appendPosE) {
 
-        Mono<Response<Void>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, match))
-            .flatMap(tuple -> {
-                String newLease = tuple.getT1();
-                String newMatch = tuple.getT2();
-                if ("null".equals(newLease)) {
-                    newLease = null;
-                }
-                if ("null".equals(newMatch)) {
-                    newMatch = null;
-                }
-                AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-                    .setLeaseId(newLease)
-                    .setIfMatch(newMatch)
-                    .setIfNoneMatch(noneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setAppendPosition(appendPosE);
-                return bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac));
-            });
+        Mono<Response<Void>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+            setupBlobMatchCondition(bc, match), BlobTestBase::convertNulls)
+                .flatMap(conditions -> {
+                    AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+                        .setLeaseId(conditions.get(0))
+                        .setIfMatch(conditions.get(1))
+                        .setIfNoneMatch(noneMatch)
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified)
+                        .setAppendPosition(appendPosE);
+                    return bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac));
+                });
 
         assertAsyncResponseStatusCode(response, 200);
 
@@ -929,22 +889,18 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
     public void sealACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                            String leaseID, Long appendPosE) {
 
-        Mono<Response<Void>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, leaseID),
-            setupBlobMatchConditionAsync(bc, noneMatch))
-            .flatMap(tuple -> {
-                String newNoneMatch = tuple.getT2();
-                if ("null".equals(newNoneMatch)) {
-                    newNoneMatch = null;
-                }
-                AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
-                    .setLeaseId(leaseID)
-                    .setIfMatch(match)
-                    .setIfNoneMatch(newNoneMatch)
-                    .setIfModifiedSince(modified)
-                    .setIfUnmodifiedSince(unmodified)
-                    .setAppendPosition(appendPosE);
-                return bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac));
-            });
+        Mono<Response<Void>> response = Mono.zip(setupBlobLeaseCondition(bc, leaseID),
+            setupBlobMatchCondition(bc, noneMatch), BlobTestBase::convertNulls)
+                .flatMap(conditions -> {
+                    AppendBlobRequestConditions bac = new AppendBlobRequestConditions()
+                        .setLeaseId(leaseID)
+                        .setIfMatch(match)
+                        .setIfNoneMatch(conditions.get(1))
+                        .setIfModifiedSince(modified)
+                        .setIfUnmodifiedSince(unmodified)
+                        .setAppendPosition(appendPosE);
+                    return bc.sealWithResponse(new AppendBlobSealOptions().setRequestConditions(bac));
+                });
 
         StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
@@ -1008,7 +964,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .buildAppendBlobAsyncClient();
 
         StepVerifier.create(aadBlob.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -1024,5 +980,38 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(aadBlob.exists())
             .expectNext(true)
             .verifyComplete();
+    }
+
+    @Test
+    public void getSnapshotClient() {
+        String fakeVersion = "2020-04-17T20:37:16.5129130Z";
+        BlobAsyncClientBase fakeSnapshotClient = bc.getSnapshotClient(fakeVersion);
+        assertEquals(fakeVersion, fakeSnapshotClient.getSnapshotId());
+    }
+
+    @Test
+    public void getVersionClient() {
+        String fakeVersion = "2020-04-17T20:37:16.5129130Z";
+        BlobAsyncClientBase fakeVersionClient = bc.getVersionClient(fakeVersion);
+        assertEquals(fakeVersion, fakeVersionClient.getVersionId());
+    }
+
+    @Test
+    public void getEncryptionScopeClient() {
+        String fakeScope = "fakeScope";
+        BlobAsyncClientBase fakeEncryptionScopeClient = bc.getEncryptionScopeAsyncClient(fakeScope);
+        assertEquals(fakeScope, fakeEncryptionScopeClient.getEncryptionScope());
+    }
+
+    @Test
+    public void getCPKClient() {
+        CustomerProvidedKey fakeCPK = new CustomerProvidedKey(getRandomKey());
+        BlobAsyncClientBase fakeCPKClient = bc.getCustomerProvidedKeyAsyncClient(fakeCPK);
+        assertEquals(fakeCPK.getKey(), fakeCPKClient.getCustomerProvidedKey().getEncryptionKey());
+    }
+
+    @Test
+    public void getMaxBlocks() {
+        assertEquals(MAX_APPEND_BLOCKS, bc.getMaxBlocks());
     }
 }

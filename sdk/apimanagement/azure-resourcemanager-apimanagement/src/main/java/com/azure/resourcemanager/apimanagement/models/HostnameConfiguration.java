@@ -328,14 +328,12 @@ public final class HostnameConfiguration {
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model HostnameConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model HostnameConfiguration"));
         }
         if (hostname() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property hostname in model HostnameConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property hostname in model HostnameConfiguration"));
         }
         if (certificate() != null) {
             certificate().validate();

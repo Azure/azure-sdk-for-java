@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified. */
+/**
+ * The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified.
+ */
 public final class ResourceDiscoveryMode extends ExpandableStringEnum<ResourceDiscoveryMode> {
-    /** Static value ExistingNonCompliant for ResourceDiscoveryMode. */
+    /**
+     * Static value ExistingNonCompliant for ResourceDiscoveryMode.
+     */
     public static final ResourceDiscoveryMode EXISTING_NON_COMPLIANT = fromString("ExistingNonCompliant");
 
-    /** Static value ReEvaluateCompliance for ResourceDiscoveryMode. */
+    /**
+     * Static value ReEvaluateCompliance for ResourceDiscoveryMode.
+     */
     public static final ResourceDiscoveryMode RE_EVALUATE_COMPLIANCE = fromString("ReEvaluateCompliance");
 
     /**
+     * Creates a new instance of ResourceDiscoveryMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ResourceDiscoveryMode() {
+    }
+
+    /**
      * Creates or finds a ResourceDiscoveryMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceDiscoveryMode.
      */
-    @JsonCreator
     public static ResourceDiscoveryMode fromString(String name) {
         return fromString(name, ResourceDiscoveryMode.class);
     }
 
     /**
      * Gets known ResourceDiscoveryMode values.
-     *
+     * 
      * @return known ResourceDiscoveryMode values.
      */
     public static Collection<ResourceDiscoveryMode> values() {

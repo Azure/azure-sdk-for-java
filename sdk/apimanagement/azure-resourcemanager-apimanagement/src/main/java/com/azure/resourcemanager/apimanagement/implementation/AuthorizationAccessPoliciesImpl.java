@@ -22,89 +22,45 @@ public final class AuthorizationAccessPoliciesImpl implements AuthorizationAcces
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public AuthorizationAccessPoliciesImpl(
-        AuthorizationAccessPoliciesClient innerClient,
+    public AuthorizationAccessPoliciesImpl(AuthorizationAccessPoliciesClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<AuthorizationAccessPolicyContract> listByAuthorization(
-        String resourceGroupName, String serviceName, String authorizationProviderId, String authorizationId) {
-        PagedIterable<AuthorizationAccessPolicyContractInner> inner =
-            this
-                .serviceClient()
-                .listByAuthorization(resourceGroupName, serviceName, authorizationProviderId, authorizationId);
+    public PagedIterable<AuthorizationAccessPolicyContract> listByAuthorization(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId) {
+        PagedIterable<AuthorizationAccessPolicyContractInner> inner = this.serviceClient()
+            .listByAuthorization(resourceGroupName, serviceName, authorizationProviderId, authorizationId);
         return Utils.mapPage(inner, inner1 -> new AuthorizationAccessPolicyContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AuthorizationAccessPolicyContract> listByAuthorization(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context) {
-        PagedIterable<AuthorizationAccessPolicyContractInner> inner =
-            this
-                .serviceClient()
-                .listByAuthorization(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    filter,
-                    top,
-                    skip,
-                    context);
+    public PagedIterable<AuthorizationAccessPolicyContract> listByAuthorization(String resourceGroupName,
+        String serviceName, String authorizationProviderId, String authorizationId, String filter, Integer top,
+        Integer skip, Context context) {
+        PagedIterable<AuthorizationAccessPolicyContractInner> inner = this.serviceClient()
+            .listByAuthorization(resourceGroupName, serviceName, authorizationProviderId, authorizationId, filter, top,
+                skip, context);
         return Utils.mapPage(inner, inner1 -> new AuthorizationAccessPolicyContractImpl(inner1, this.manager()));
     }
 
-    public Response<AuthorizationAccessPolicyContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        Context context) {
-        AuthorizationAccessPoliciesGetResponse inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    authorizationAccessPolicyId,
-                    context);
+    public Response<AuthorizationAccessPolicyContract> getWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId, Context context) {
+        AuthorizationAccessPoliciesGetResponse inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                authorizationAccessPolicyId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AuthorizationAccessPolicyContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AuthorizationAccessPolicyContract get(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId) {
-        AuthorizationAccessPolicyContractInner inner =
-            this
-                .serviceClient()
-                .get(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    authorizationAccessPolicyId);
+    public AuthorizationAccessPolicyContract get(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId) {
+        AuthorizationAccessPolicyContractInner inner = this.serviceClient()
+            .get(resourceGroupName, serviceName, authorizationProviderId, authorizationId, authorizationAccessPolicyId);
         if (inner != null) {
             return new AuthorizationAccessPolicyContractImpl(inner, this.manager());
         } else {
@@ -112,254 +68,142 @@ public final class AuthorizationAccessPoliciesImpl implements AuthorizationAcces
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch,
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, String authorizationId, String authorizationAccessPolicyId, String ifMatch,
         Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                ifMatch,
-                context);
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                authorizationAccessPolicyId, ifMatch, context);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        String authorizationId,
-        String authorizationAccessPolicyId,
-        String ifMatch) {
-        this
-            .serviceClient()
-            .delete(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                ifMatch);
+    public void delete(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String authorizationId, String authorizationAccessPolicyId, String ifMatch) {
+        this.serviceClient()
+            .delete(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                authorizationAccessPolicyId, ifMatch);
     }
 
     public AuthorizationAccessPolicyContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String authorizationProviderId = Utils.getValueFromIdByName(id, "authorizationProviders");
         if (authorizationProviderId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'authorizationProviders'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'authorizationProviders'.", id)));
         }
         String authorizationId = Utils.getValueFromIdByName(id, "authorizations");
         if (authorizationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
         }
         String authorizationAccessPolicyId = Utils.getValueFromIdByName(id, "accessPolicies");
         if (authorizationAccessPolicyId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
         }
         return this
-            .getWithResponse(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                Context.NONE)
+            .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                authorizationAccessPolicyId, Context.NONE)
             .getValue();
     }
 
     public Response<AuthorizationAccessPolicyContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String authorizationProviderId = Utils.getValueFromIdByName(id, "authorizationProviders");
         if (authorizationProviderId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'authorizationProviders'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'authorizationProviders'.", id)));
         }
         String authorizationId = Utils.getValueFromIdByName(id, "authorizations");
         if (authorizationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
         }
         String authorizationAccessPolicyId = Utils.getValueFromIdByName(id, "accessPolicies");
         if (authorizationAccessPolicyId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
         }
-        return this
-            .getWithResponse(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                context);
+        return this.getWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId, context);
     }
 
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String authorizationProviderId = Utils.getValueFromIdByName(id, "authorizationProviders");
         if (authorizationProviderId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'authorizationProviders'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'authorizationProviders'.", id)));
         }
         String authorizationId = Utils.getValueFromIdByName(id, "authorizations");
         if (authorizationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
         }
         String authorizationAccessPolicyId = Utils.getValueFromIdByName(id, "accessPolicies");
         if (authorizationAccessPolicyId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
         }
         String localIfMatch = null;
-        this
-            .deleteWithResponse(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                localIfMatch,
-                Context.NONE);
+        this.deleteWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String authorizationProviderId = Utils.getValueFromIdByName(id, "authorizationProviders");
         if (authorizationProviderId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'authorizationProviders'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'authorizationProviders'.", id)));
         }
         String authorizationId = Utils.getValueFromIdByName(id, "authorizations");
         if (authorizationId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'authorizations'.", id)));
         }
         String authorizationAccessPolicyId = Utils.getValueFromIdByName(id, "accessPolicies");
         if (authorizationAccessPolicyId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
         }
-        return this
-            .deleteWithResponse(
-                resourceGroupName,
-                serviceName,
-                authorizationProviderId,
-                authorizationId,
-                authorizationAccessPolicyId,
-                ifMatch,
-                context);
+        return this.deleteWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+            authorizationAccessPolicyId, ifMatch, context);
     }
 
     private AuthorizationAccessPoliciesClient serviceClient() {

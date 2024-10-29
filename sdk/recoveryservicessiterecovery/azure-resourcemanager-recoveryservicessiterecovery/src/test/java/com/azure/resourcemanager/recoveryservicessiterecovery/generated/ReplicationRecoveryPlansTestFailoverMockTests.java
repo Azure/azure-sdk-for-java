@@ -50,16 +50,20 @@ public final class ReplicationRecoveryPlansTestFailoverMockTests {
             return Mono.just(httpResponse);
         }));
 
-        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RecoveryPlan response = manager.replicationRecoveryPlans().testFailover("vxerowuzvrnnbeg", "af", "onmtoj",
-            new RecoveryPlanTestFailoverInput().withProperties(new RecoveryPlanTestFailoverInputProperties()
-                .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY).withNetworkType("dofmazhk")
-                .withNetworkId("sjknaq").withProviderSpecificDetails(Arrays.asList(
-                    new RecoveryPlanProviderSpecificFailoverInput(), new RecoveryPlanProviderSpecificFailoverInput()))),
-            com.azure.core.util.Context.NONE);
+        RecoveryPlan response = manager.replicationRecoveryPlans()
+            .testFailover("vxerowuzvrnnbeg", "af", "onmtoj",
+                new RecoveryPlanTestFailoverInput().withProperties(new RecoveryPlanTestFailoverInputProperties()
+                    .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)
+                    .withNetworkType("dofmazhk")
+                    .withNetworkId("sjknaq")
+                    .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificFailoverInput(),
+                        new RecoveryPlanProviderSpecificFailoverInput()))),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("pmdmwiwevves", response.properties().friendlyName());
         Assertions.assertEquals("hh", response.properties().primaryFabricId());

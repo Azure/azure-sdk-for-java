@@ -23,14 +23,12 @@ public class AnomalyIncidentRootCauseAsyncTest extends IncidentRootCauseTestBase
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
-    public void listIncidentRootCauses(HttpClient httpClient,
-        MetricsAdvisorServiceVersion serviceVersion) {
-        MetricsAdvisorAsyncClient client =
-            getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
+    public void listIncidentRootCauses(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
+        MetricsAdvisorAsyncClient client
+            = getMetricsAdvisorBuilder(httpClient, serviceVersion, false).buildAsyncClient();
         List<IncidentRootCause> actualIncidentRootCauses = new ArrayList<>();
 
-        StepVerifier.create(client.listIncidentRootCauses(
-            INCIDENT_ROOT_CAUSE_CONFIGURATION_ID, INCIDENT_ROOT_CAUSE_ID))
+        StepVerifier.create(client.listIncidentRootCauses(INCIDENT_ROOT_CAUSE_CONFIGURATION_ID, INCIDENT_ROOT_CAUSE_ID))
             .thenConsumeWhile(actualIncidentRootCauses::add)
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);

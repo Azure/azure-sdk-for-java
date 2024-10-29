@@ -75,8 +75,8 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the top level Log Analytics cluster resource container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner parameters);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName, String clusterName,
+        ClusterInner parameters);
 
     /**
      * Create or update a Log Analytics cluster.
@@ -91,8 +91,8 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the top level Log Analytics cluster resource container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, ClusterInner parameters, Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginCreateOrUpdate(String resourceGroupName, String clusterName,
+        ClusterInner parameters, Context context);
 
     /**
      * Create or update a Log Analytics cluster.
@@ -187,8 +187,8 @@ public interface ClustersClient {
      * @return a Log Analytics cluster instance along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<ClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Gets a Log Analytics cluster instance.
@@ -215,8 +215,8 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the top level Log Analytics cluster resource container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterPatch parameters);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
+        ClusterPatch parameters);
 
     /**
      * Updates a Log Analytics cluster.
@@ -231,8 +231,8 @@ public interface ClustersClient {
      * @return the {@link SyncPoller} for polling of the top level Log Analytics cluster resource container.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(
-        String resourceGroupName, String clusterName, ClusterPatch parameters, Context context);
+    SyncPoller<PollResult<ClusterInner>, ClusterInner> beginUpdate(String resourceGroupName, String clusterName,
+        ClusterPatch parameters, Context context);
 
     /**
      * Updates a Log Analytics cluster.

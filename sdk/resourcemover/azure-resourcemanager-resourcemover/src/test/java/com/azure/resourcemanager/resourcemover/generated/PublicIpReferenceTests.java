@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PublicIpReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PublicIpReference model =
-            BinaryData.fromString("{\"sourceArmResourceId\":\"aex\"}").toObject(PublicIpReference.class);
+        PublicIpReference model
+            = BinaryData.fromString("{\"sourceArmResourceId\":\"aex\"}").toObject(PublicIpReference.class);
         Assertions.assertEquals("aex", model.sourceArmResourceId());
     }
 

@@ -27,13 +27,14 @@ public final class BillingInfoResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BillingInfoResponseInner model
-            = new BillingInfoResponseInner()
-                .withMarketplaceSaasInfo(new MarketplaceSaaSInfo().withMarketplaceSubscriptionId("eo")
-                    .withMarketplaceSubscriptionName("okeyyienj").withMarketplaceResourceId("lwtgrhpdj")
-                    .withMarketplaceStatus("umasxazjpq").withBilledAzureSubscriptionId("gual"))
-                .withPartnerBillingEntity(
-                    new PartnerBillingEntity().withOrganizationId("xhejjzzvdud").withOrganizationName("dslfhotwmcy"));
+        BillingInfoResponseInner model = new BillingInfoResponseInner()
+            .withMarketplaceSaasInfo(new MarketplaceSaaSInfo().withMarketplaceSubscriptionId("eo")
+                .withMarketplaceSubscriptionName("okeyyienj")
+                .withMarketplaceResourceId("lwtgrhpdj")
+                .withMarketplaceStatus("umasxazjpq")
+                .withBilledAzureSubscriptionId("gual"))
+            .withPartnerBillingEntity(
+                new PartnerBillingEntity().withOrganizationId("xhejjzzvdud").withOrganizationName("dslfhotwmcy"));
         model = BinaryData.fromObject(model).toObject(BillingInfoResponseInner.class);
         Assertions.assertEquals("eo", model.marketplaceSaasInfo().marketplaceSubscriptionId());
         Assertions.assertEquals("okeyyienj", model.marketplaceSaasInfo().marketplaceSubscriptionName());

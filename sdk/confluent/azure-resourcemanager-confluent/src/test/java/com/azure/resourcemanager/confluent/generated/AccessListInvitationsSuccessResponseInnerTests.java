@@ -42,12 +42,22 @@ public final class AccessListInvitationsSuccessResponseInnerTests {
     public void testSerialize() throws Exception {
         AccessListInvitationsSuccessResponseInner model
             = new AccessListInvitationsSuccessResponseInner().withKind("okacspk")
-                .withMetadata(new ConfluentListMetadata().withFirst("zdobpxjmflbvvnch").withLast("cciw")
-                    .withPrev("juqk").withNext("sa").withTotalSize(1410521625))
-                .withData(Arrays.asList(new InvitationRecordInner().withKind("foskghsauuimj").withId("xieduugidyjrr")
-                    .withMetadata(new MetadataEntity().withSelf("aos").withResourceName("xc").withCreatedAt("npc")
-                        .withUpdatedAt("ocohslkevleg").withDeletedAt("fbuhfmvfaxkffe"))
-                    .withEmail("th").withAuthType("m").withStatus("yvshxmz").withAcceptedAt("bzoggigrx")
+                .withMetadata(new ConfluentListMetadata().withFirst("zdobpxjmflbvvnch")
+                    .withLast("cciw")
+                    .withPrev("juqk")
+                    .withNext("sa")
+                    .withTotalSize(1410521625))
+                .withData(Arrays.asList(new InvitationRecordInner().withKind("foskghsauuimj")
+                    .withId("xieduugidyjrr")
+                    .withMetadata(new MetadataEntity().withSelf("aos")
+                        .withResourceName("xc")
+                        .withCreatedAt("npc")
+                        .withUpdatedAt("ocohslkevleg")
+                        .withDeletedAt("fbuhfmvfaxkffe"))
+                    .withEmail("th")
+                    .withAuthType("m")
+                    .withStatus("yvshxmz")
+                    .withAcceptedAt("bzoggigrx")
                     .withExpiresAt("ur")));
         model = BinaryData.fromObject(model).toObject(AccessListInvitationsSuccessResponseInner.class);
         Assertions.assertEquals("okacspk", model.kind());

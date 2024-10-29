@@ -39,8 +39,8 @@ public interface SqlPoolRestorePoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sQL pool backup information as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RestorePoint> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<RestorePoint> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Creates a restore point for a data warehouse.
@@ -54,10 +54,7 @@ public interface SqlPoolRestorePoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return database restore points.
      */
-    RestorePoint create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    RestorePoint create(String resourceGroupName, String workspaceName, String sqlPoolName,
         CreateSqlPoolRestorePointDefinition parameters);
 
     /**
@@ -73,12 +70,8 @@ public interface SqlPoolRestorePoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return database restore points.
      */
-    RestorePoint create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
-        Context context);
+    RestorePoint create(String resourceGroupName, String workspaceName, String sqlPoolName,
+        CreateSqlPoolRestorePointDefinition parameters, Context context);
 
     /**
      * Gets a restore point.
@@ -93,8 +86,8 @@ public interface SqlPoolRestorePoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a restore point along with {@link Response}.
      */
-    Response<RestorePoint> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);
+    Response<RestorePoint> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName, Context context);
 
     /**
      * Gets a restore point.
@@ -123,8 +116,8 @@ public interface SqlPoolRestorePoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName, Context context);
 
     /**
      * Deletes a restore point.

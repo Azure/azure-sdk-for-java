@@ -58,11 +58,8 @@ public interface SapLandscapeMonitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response}.
      */
-    Response<SapLandscapeMonitor> createWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-        Context context);
+    Response<SapLandscapeMonitor> createWithResponse(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter, Context context);
 
     /**
      * Creates a SAP Landscape Monitor Dashboard.
@@ -78,8 +75,8 @@ public interface SapLandscapeMonitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard.
      */
-    SapLandscapeMonitor create(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter);
+    SapLandscapeMonitor create(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter);
 
     /**
      * Deletes a SAP Landscape Monitor Dashboard.
@@ -127,11 +124,8 @@ public interface SapLandscapeMonitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard along with {@link Response}.
      */
-    Response<SapLandscapeMonitor> updateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        SapLandscapeMonitorInner sapLandscapeMonitorParameter,
-        Context context);
+    Response<SapLandscapeMonitor> updateWithResponse(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter, Context context);
 
     /**
      * Patches the SAP Landscape Monitor Dashboard.
@@ -148,8 +142,8 @@ public interface SapLandscapeMonitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration associated with SAP Landscape Monitor Dashboard.
      */
-    SapLandscapeMonitor update(
-        String resourceGroupName, String monitorName, SapLandscapeMonitorInner sapLandscapeMonitorParameter);
+    SapLandscapeMonitor update(String resourceGroupName, String monitorName,
+        SapLandscapeMonitorInner sapLandscapeMonitorParameter);
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.
@@ -166,8 +160,8 @@ public interface SapLandscapeMonitors {
      * @return configuration values for Single Pane Of Glass for SAP monitor for the specified subscription, resource
      *     group, and resource name along with {@link Response}.
      */
-    Response<SapLandscapeMonitorListResult> listWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<SapLandscapeMonitorListResult> listWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Gets configuration values for Single Pane Of Glass for SAP monitor.

@@ -15,8 +15,7 @@ public final class OperationsDiscoveryCollectionImpl implements OperationsDiscov
 
     private final com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager;
 
-    OperationsDiscoveryCollectionImpl(
-        OperationsDiscoveryCollectionInner innerObject,
+    OperationsDiscoveryCollectionImpl(OperationsDiscoveryCollectionInner innerObject,
         com.azure.resourcemanager.resourcemover.ResourceMoverManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

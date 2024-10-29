@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ShipmentPickUpRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ShipmentPickUpRequest model =
-            BinaryData
-                .fromString(
-                    "{\"startTime\":\"2021-10-11T10:00:24Z\",\"endTime\":\"2021-02-02T03:25:54Z\",\"shipmentLocation\":\"bxwyjsflhhcaa\"}")
-                .toObject(ShipmentPickUpRequest.class);
+        ShipmentPickUpRequest model = BinaryData.fromString(
+            "{\"startTime\":\"2021-10-11T10:00:24Z\",\"endTime\":\"2021-02-02T03:25:54Z\",\"shipmentLocation\":\"bxwyjsflhhcaa\"}")
+            .toObject(ShipmentPickUpRequest.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-10-11T10:00:24Z"), model.startTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-02-02T03:25:54Z"), model.endTime());
         Assertions.assertEquals("bxwyjsflhhcaa", model.shipmentLocation());
@@ -24,9 +22,8 @@ public final class ShipmentPickUpRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShipmentPickUpRequest model =
-            new ShipmentPickUpRequest()
-                .withStartTime(OffsetDateTime.parse("2021-10-11T10:00:24Z"))
+        ShipmentPickUpRequest model
+            = new ShipmentPickUpRequest().withStartTime(OffsetDateTime.parse("2021-10-11T10:00:24Z"))
                 .withEndTime(OffsetDateTime.parse("2021-02-02T03:25:54Z"))
                 .withShipmentLocation("bxwyjsflhhcaa");
         model = BinaryData.fromObject(model).toObject(ShipmentPickUpRequest.class);

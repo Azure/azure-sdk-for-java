@@ -153,11 +153,8 @@ public interface ArtifactSource {
     ArtifactSourceInner innerModel();
 
     /** The entirety of the ArtifactSource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /** The ArtifactSource definition stages. */
@@ -201,16 +198,10 @@ public interface ArtifactSource {
          * The stage of the ArtifactSource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithDisplayName,
-                DefinitionStages.WithUri,
-                DefinitionStages.WithSourceType,
-                DefinitionStages.WithFolderPath,
-                DefinitionStages.WithArmTemplateFolderPath,
-                DefinitionStages.WithBranchRef,
-                DefinitionStages.WithSecurityToken,
-                DefinitionStages.WithStatus {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithDisplayName,
+            DefinitionStages.WithUri, DefinitionStages.WithSourceType, DefinitionStages.WithFolderPath,
+            DefinitionStages.WithArmTemplateFolderPath, DefinitionStages.WithBranchRef,
+            DefinitionStages.WithSecurityToken, DefinitionStages.WithStatus {
             /**
              * Executes the create request.
              *

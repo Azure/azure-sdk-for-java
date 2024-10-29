@@ -276,8 +276,8 @@ public final class OperationMetaMetricSpecification {
      * @param supportsInstanceLevelAggregation the supportsInstanceLevelAggregation value to set.
      * @return the OperationMetaMetricSpecification object itself.
      */
-    public OperationMetaMetricSpecification withSupportsInstanceLevelAggregation(
-        Boolean supportsInstanceLevelAggregation) {
+    public OperationMetaMetricSpecification
+        withSupportsInstanceLevelAggregation(Boolean supportsInstanceLevelAggregation) {
         this.supportsInstanceLevelAggregation = supportsInstanceLevelAggregation;
         return this;
     }

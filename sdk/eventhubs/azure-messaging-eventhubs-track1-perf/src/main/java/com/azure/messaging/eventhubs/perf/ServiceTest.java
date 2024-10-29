@@ -87,8 +87,8 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
      * @return A new instance the connection string builder.
      */
     ConnectionStringBuilder getConnectionStringBuilder() {
-        final ConnectionStringBuilder builder = new ConnectionStringBuilder(options.getConnectionString())
-            .setEventHubName(options.getEventHubName());
+        final ConnectionStringBuilder builder
+            = new ConnectionStringBuilder(options.getConnectionString()).setEventHubName(options.getEventHubName());
 
         if (options.getTransportType() != null) {
             builder.setTransportType(options.getTransportType());
@@ -138,8 +138,7 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
         final ConnectionStringBuilder builder = getConnectionStringBuilder();
 
         try {
-            return EventHubClient.createFromConnectionStringSync(builder.toString(),
-                scheduler);
+            return EventHubClient.createFromConnectionStringSync(builder.toString(), scheduler);
         } catch (IOException e) {
             throw new UncheckedIOException("Unable to create EventHubClient.", e);
         } catch (EventHubException e) {
@@ -153,8 +152,8 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
      * @return A Mono that completes with an {@link EventHubClient}.
      */
     CompletableFuture<EventHubClient> createEventHubClientAsync() {
-        final ConnectionStringBuilder builder = new ConnectionStringBuilder(options.getConnectionString())
-            .setEventHubName(options.getEventHubName());
+        final ConnectionStringBuilder builder
+            = new ConnectionStringBuilder(options.getConnectionString()).setEventHubName(options.getEventHubName());
 
         if (options.getTransportType() != null) {
             builder.setTransportType(options.getTransportType());
@@ -212,31 +211,28 @@ abstract class ServiceTest<T extends EventHubsOptions> extends PerfStressTest<T>
             createSenderFuture = client.createPartitionSender(partitionId);
         } catch (EventHubException e) {
             createSenderFuture = new CompletableFuture<>();
-            createSenderFuture.completeExceptionally(
-                new RuntimeException("Unable to create partition sender: " + partitionId, e));
+            createSenderFuture
+                .completeExceptionally(new RuntimeException("Unable to create partition sender: " + partitionId, e));
         }
 
-        return Mono.usingWhen(
-            Mono.fromCompletionStage(createSenderFuture),
-            sender -> {
-                EventDataBatch currentBatch;
+        return Mono.usingWhen(Mono.fromCompletionStage(createSenderFuture), sender -> {
+            EventDataBatch currentBatch;
 
-                int numberOfMessages = totalMessagesToSend;
-                while (numberOfMessages > 0) {
-                    currentBatch = sender.createBatch();
-                    addEvents(currentBatch, numberOfMessages);
-                    try {
-                        sender.sendSync(currentBatch);
-                        numberOfMessages = numberOfMessages - currentBatch.getSize();
-                    } catch (EventHubException e) {
-                        System.err.println("Could not send batch. Error: " + e);
-                    }
+            int numberOfMessages = totalMessagesToSend;
+            while (numberOfMessages > 0) {
+                currentBatch = sender.createBatch();
+                addEvents(currentBatch, numberOfMessages);
+                try {
+                    sender.sendSync(currentBatch);
+                    numberOfMessages = numberOfMessages - currentBatch.getSize();
+                } catch (EventHubException e) {
+                    System.err.println("Could not send batch. Error: " + e);
                 }
+            }
 
-                System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend);
-                return Mono.empty();
-            },
-            sender -> Mono.fromCompletionStage(sender.close()));
+            System.out.printf("%s: Sent %d messages.%n", partitionId, totalMessagesToSend);
+            return Mono.empty();
+        }, sender -> Mono.fromCompletionStage(sender.close()));
     }
 
     /**

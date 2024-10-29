@@ -10,17 +10,15 @@ import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationIn
 public final class ApplicationInsightsComponentFeatureCapabilitiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentFeatureCapabilitiesInner model =
-            BinaryData
-                .fromString(
-                    "{\"SupportExportData\":false,\"BurstThrottlePolicy\":\"ndhkrw\",\"MetadataClass\":\"appd\",\"LiveStreamMetrics\":true,\"ApplicationMap\":false,\"WorkItemIntegration\":false,\"PowerBIIntegration\":false,\"OpenSchema\":false,\"ProactiveDetection\":false,\"AnalyticsIntegration\":false,\"MultipleStepWebTest\":false,\"ApiAccessLevel\":\"eltmrldhugjzzdat\",\"TrackingType\":\"hocdgeab\",\"DailyCap\":22.124004,\"DailyCapResetTime\":91.44667,\"ThrottleRate\":89.55463}")
-                .toObject(ApplicationInsightsComponentFeatureCapabilitiesInner.class);
+        ApplicationInsightsComponentFeatureCapabilitiesInner model = BinaryData.fromString(
+            "{\"SupportExportData\":false,\"BurstThrottlePolicy\":\"ndhkrw\",\"MetadataClass\":\"appd\",\"LiveStreamMetrics\":true,\"ApplicationMap\":false,\"WorkItemIntegration\":false,\"PowerBIIntegration\":false,\"OpenSchema\":false,\"ProactiveDetection\":false,\"AnalyticsIntegration\":false,\"MultipleStepWebTest\":false,\"ApiAccessLevel\":\"eltmrldhugjzzdat\",\"TrackingType\":\"hocdgeab\",\"DailyCap\":22.124004,\"DailyCapResetTime\":91.44667,\"ThrottleRate\":89.55463}")
+            .toObject(ApplicationInsightsComponentFeatureCapabilitiesInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentFeatureCapabilitiesInner model =
-            new ApplicationInsightsComponentFeatureCapabilitiesInner();
+        ApplicationInsightsComponentFeatureCapabilitiesInner model
+            = new ApplicationInsightsComponentFeatureCapabilitiesInner();
         model = BinaryData.fromObject(model).toObject(ApplicationInsightsComponentFeatureCapabilitiesInner.class);
     }
 }

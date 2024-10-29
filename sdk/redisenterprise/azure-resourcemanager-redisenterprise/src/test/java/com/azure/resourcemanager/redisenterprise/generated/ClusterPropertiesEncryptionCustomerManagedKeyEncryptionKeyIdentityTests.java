@@ -13,22 +13,21 @@ public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIde
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity model = BinaryData
-            .fromString(
-                "{\"userAssignedIdentityResourceId\":\"wfndiodjpsl\",\"identityType\":\"systemAssignedIdentity\"}")
+            .fromString("{\"userAssignedIdentityResourceId\":\"mdvpjhulsu\",\"identityType\":\"userAssignedIdentity\"}")
             .toObject(ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.class);
-        Assertions.assertEquals("wfndiodjpsl", model.userAssignedIdentityResourceId());
-        Assertions.assertEquals(CmkIdentityType.SYSTEM_ASSIGNED_IDENTITY, model.identityType());
+        Assertions.assertEquals("mdvpjhulsu", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals(CmkIdentityType.USER_ASSIGNED_IDENTITY, model.identityType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity model
             = new ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity()
-                .withUserAssignedIdentityResourceId("wfndiodjpsl")
-                .withIdentityType(CmkIdentityType.SYSTEM_ASSIGNED_IDENTITY);
+                .withUserAssignedIdentityResourceId("mdvpjhulsu")
+                .withIdentityType(CmkIdentityType.USER_ASSIGNED_IDENTITY);
         model = BinaryData.fromObject(model)
             .toObject(ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.class);
-        Assertions.assertEquals("wfndiodjpsl", model.userAssignedIdentityResourceId());
-        Assertions.assertEquals(CmkIdentityType.SYSTEM_ASSIGNED_IDENTITY, model.identityType());
+        Assertions.assertEquals("mdvpjhulsu", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals(CmkIdentityType.USER_ASSIGNED_IDENTITY, model.identityType());
     }
 }

@@ -450,6 +450,14 @@ public interface NodeType {
     String computerNamePrefix();
 
     /**
+     * Gets the vmApplications property: Specifies the gallery applications that should be made available to the
+     * underlying VMSS.
+     * 
+     * @return the vmApplications value.
+     */
+    List<VmApplication> vmApplications();
+
+    /**
      * Gets the name of the resource group.
      * 
      * @return the name of the resource group.
@@ -519,7 +527,8 @@ public interface NodeType {
             DefinitionStages.WithVmSharedGalleryImageId, DefinitionStages.WithNatGatewayId,
             DefinitionStages.WithNatConfigurations, DefinitionStages.WithVmImagePlan,
             DefinitionStages.WithServiceArtifactReferenceId, DefinitionStages.WithDscpConfigurationId,
-            DefinitionStages.WithAdditionalNetworkInterfaceConfigurations, DefinitionStages.WithComputerNamePrefix {
+            DefinitionStages.WithAdditionalNetworkInterfaceConfigurations, DefinitionStages.WithComputerNamePrefix,
+            DefinitionStages.WithVmApplications {
             /**
              * Executes the create request.
              * 
@@ -1293,6 +1302,21 @@ public interface NodeType {
              * @return the next definition stage.
              */
             WithCreate withComputerNamePrefix(String computerNamePrefix);
+        }
+
+        /**
+         * The stage of the NodeType definition allowing to specify vmApplications.
+         */
+        interface WithVmApplications {
+            /**
+             * Specifies the vmApplications property: Specifies the gallery applications that should be made available
+             * to the underlying VMSS..
+             * 
+             * @param vmApplications Specifies the gallery applications that should be made available to the underlying
+             * VMSS.
+             * @return the next definition stage.
+             */
+            WithCreate withVmApplications(List<VmApplication> vmApplications);
         }
     }
 

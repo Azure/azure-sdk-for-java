@@ -5,29 +5,35 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The service resource properties for patch operations.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "serviceKind",
-    defaultImpl = ServiceResourceUpdateProperties.class)
-@JsonTypeName("ServiceResourceUpdateProperties")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "Stateful", value = StatefulServiceUpdateProperties.class),
-    @JsonSubTypes.Type(name = "Stateless", value = StatelessServiceUpdateProperties.class) })
 @Fluent
 public class ServiceResourceUpdateProperties extends ServiceResourcePropertiesBase {
+    /*
+     * The kind of service (Stateless or Stateful).
+     */
+    private ServiceKind serviceKind = ServiceKind.fromString("ServiceResourceUpdateProperties");
+
     /**
      * Creates an instance of ServiceResourceUpdateProperties class.
      */
     public ServiceResourceUpdateProperties() {
+    }
+
+    /**
+     * Get the serviceKind property: The kind of service (Stateless or Stateful).
+     * 
+     * @return the serviceKind value.
+     */
+    public ServiceKind serviceKind() {
+        return this.serviceKind;
     }
 
     /**
@@ -85,6 +91,104 @@ public class ServiceResourceUpdateProperties extends ServiceResourcePropertiesBa
      */
     @Override
     public void validate() {
-        super.validate();
+        if (correlationScheme() != null) {
+            correlationScheme().forEach(e -> e.validate());
+        }
+        if (serviceLoadMetrics() != null) {
+            serviceLoadMetrics().forEach(e -> e.validate());
+        }
+        if (servicePlacementPolicies() != null) {
+            servicePlacementPolicies().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("placementConstraints", placementConstraints());
+        jsonWriter.writeArrayField("correlationScheme", correlationScheme(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceLoadMetrics", serviceLoadMetrics(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("servicePlacementPolicies", servicePlacementPolicies(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("defaultMoveCost", defaultMoveCost() == null ? null : defaultMoveCost().toString());
+        jsonWriter.writeStringField("serviceKind", this.serviceKind == null ? null : this.serviceKind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceResourceUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceResourceUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceResourceUpdateProperties.
+     */
+    public static ServiceResourceUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("serviceKind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("Stateful".equals(discriminatorValue)) {
+                    return StatefulServiceUpdateProperties.fromJson(readerToUse.reset());
+                } else if ("Stateless".equals(discriminatorValue)) {
+                    return StatelessServiceUpdateProperties.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static ServiceResourceUpdateProperties fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceResourceUpdateProperties deserializedServiceResourceUpdateProperties
+                = new ServiceResourceUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("placementConstraints".equals(fieldName)) {
+                    deserializedServiceResourceUpdateProperties.withPlacementConstraints(reader.getString());
+                } else if ("correlationScheme".equals(fieldName)) {
+                    List<ServiceCorrelationDescription> correlationScheme
+                        = reader.readArray(reader1 -> ServiceCorrelationDescription.fromJson(reader1));
+                    deserializedServiceResourceUpdateProperties.withCorrelationScheme(correlationScheme);
+                } else if ("serviceLoadMetrics".equals(fieldName)) {
+                    List<ServiceLoadMetricDescription> serviceLoadMetrics
+                        = reader.readArray(reader1 -> ServiceLoadMetricDescription.fromJson(reader1));
+                    deserializedServiceResourceUpdateProperties.withServiceLoadMetrics(serviceLoadMetrics);
+                } else if ("servicePlacementPolicies".equals(fieldName)) {
+                    List<ServicePlacementPolicyDescription> servicePlacementPolicies
+                        = reader.readArray(reader1 -> ServicePlacementPolicyDescription.fromJson(reader1));
+                    deserializedServiceResourceUpdateProperties.withServicePlacementPolicies(servicePlacementPolicies);
+                } else if ("defaultMoveCost".equals(fieldName)) {
+                    deserializedServiceResourceUpdateProperties
+                        .withDefaultMoveCost(MoveCost.fromString(reader.getString()));
+                } else if ("serviceKind".equals(fieldName)) {
+                    deserializedServiceResourceUpdateProperties.serviceKind
+                        = ServiceKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceResourceUpdateProperties;
+        });
     }
 }

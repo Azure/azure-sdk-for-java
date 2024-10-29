@@ -33,57 +33,41 @@ public final class EmailTemplatesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"subject\":\"xfzzjdm\",\"body\":\"pbusxy\",\"title\":\"oz\",\"description\":\"lxzgzum\",\"isDefault\":true,\"parameters\":[{\"name\":\"kkbyg\",\"title\":\"i\",\"description\":\"wyshybbnhtt\"},{\"name\":\"zonzsurqcojasfz\",\"title\":\"zcarc\",\"description\":\"oxyipdthjfvnh\"},{\"name\":\"g\",\"title\":\"putfelfchnu\",\"description\":\"sjgbfbbach\"}]},\"id\":\"xczzunfnbphcee\",\"name\":\"vkbuxlepg\",\"type\":\"cnuqhqpvtw\"}";
+        String responseStr
+            = "{\"properties\":{\"subject\":\"xfzzjdm\",\"body\":\"pbusxy\",\"title\":\"oz\",\"description\":\"lxzgzum\",\"isDefault\":true,\"parameters\":[{\"name\":\"kkbyg\",\"title\":\"i\",\"description\":\"wyshybbnhtt\"},{\"name\":\"zonzsurqcojasfz\",\"title\":\"zcarc\",\"description\":\"oxyipdthjfvnh\"},{\"name\":\"g\",\"title\":\"putfelfchnu\",\"description\":\"sjgbfbbach\"}]},\"id\":\"xczzunfnbphcee\",\"name\":\"vkbuxlepg\",\"type\":\"cnuqhqpvtw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EmailTemplateContract response =
-            manager
-                .emailTemplates()
-                .define(TemplateName.PURCHASE_DEVELOPER_NOTIFICATION_MESSAGE)
-                .withExistingService("j", "dlxbaeyocpkv")
-                .withSubject("dzf")
-                .withTitle("pbdr")
-                .withDescription("bjxnnnoztn")
-                .withBody("dtuoamqobqe")
-                .withParameters(
-                    Arrays
-                        .asList(
-                            new EmailTemplateParametersContractProperties()
-                                .withName("htisyzfeoctr")
-                                .withTitle("wn")
-                                .withDescription("ckze"),
-                            new EmailTemplateParametersContractProperties()
-                                .withName("bvwdxgyypmxq")
-                                .withTitle("mlnxrca")
-                                .withDescription("uhske")))
-                .withIfMatch("dkvviilyes")
-                .create();
+        EmailTemplateContract response = manager.emailTemplates()
+            .define(TemplateName.PURCHASE_DEVELOPER_NOTIFICATION_MESSAGE)
+            .withExistingService("j", "dlxbaeyocpkv")
+            .withSubject("dzf")
+            .withTitle("pbdr")
+            .withDescription("bjxnnnoztn")
+            .withBody("dtuoamqobqe")
+            .withParameters(Arrays.asList(
+                new EmailTemplateParametersContractProperties().withName("htisyzfeoctr")
+                    .withTitle("wn")
+                    .withDescription("ckze"),
+                new EmailTemplateParametersContractProperties().withName("bvwdxgyypmxq")
+                    .withTitle("mlnxrca")
+                    .withDescription("uhske")))
+            .withIfMatch("dkvviilyes")
+            .create();
 
         Assertions.assertEquals("xfzzjdm", response.subject());
         Assertions.assertEquals("pbusxy", response.body());

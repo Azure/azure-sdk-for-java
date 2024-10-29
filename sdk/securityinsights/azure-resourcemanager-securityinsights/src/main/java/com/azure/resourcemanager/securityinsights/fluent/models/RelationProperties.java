@@ -6,38 +6,46 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Relation property bag. */
+/**
+ * Relation property bag.
+ */
 @Fluent
-public final class RelationProperties {
+public final class RelationProperties implements JsonSerializable<RelationProperties> {
     /*
      * The resource ID of the related resource
      */
-    @JsonProperty(value = "relatedResourceId", required = true)
     private String relatedResourceId;
 
     /*
      * The name of the related resource
      */
-    @JsonProperty(value = "relatedResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String relatedResourceName;
 
     /*
      * The resource type of the related resource
      */
-    @JsonProperty(value = "relatedResourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String relatedResourceType;
 
     /*
      * The resource kind of the related resource
      */
-    @JsonProperty(value = "relatedResourceKind", access = JsonProperty.Access.WRITE_ONLY)
     private String relatedResourceKind;
 
     /**
+     * Creates an instance of RelationProperties class.
+     */
+    public RelationProperties() {
+    }
+
+    /**
      * Get the relatedResourceId property: The resource ID of the related resource.
-     *
+     * 
      * @return the relatedResourceId value.
      */
     public String relatedResourceId() {
@@ -46,7 +54,7 @@ public final class RelationProperties {
 
     /**
      * Set the relatedResourceId property: The resource ID of the related resource.
-     *
+     * 
      * @param relatedResourceId the relatedResourceId value to set.
      * @return the RelationProperties object itself.
      */
@@ -57,7 +65,7 @@ public final class RelationProperties {
 
     /**
      * Get the relatedResourceName property: The name of the related resource.
-     *
+     * 
      * @return the relatedResourceName value.
      */
     public String relatedResourceName() {
@@ -66,7 +74,7 @@ public final class RelationProperties {
 
     /**
      * Get the relatedResourceType property: The resource type of the related resource.
-     *
+     * 
      * @return the relatedResourceType value.
      */
     public String relatedResourceType() {
@@ -75,7 +83,7 @@ public final class RelationProperties {
 
     /**
      * Get the relatedResourceKind property: The resource kind of the related resource.
-     *
+     * 
      * @return the relatedResourceKind value.
      */
     public String relatedResourceKind() {
@@ -84,17 +92,59 @@ public final class RelationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (relatedResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property relatedResourceId in model RelationProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property relatedResourceId in model RelationProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RelationProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("relatedResourceId", this.relatedResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelationProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelationProperties.
+     */
+    public static RelationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelationProperties deserializedRelationProperties = new RelationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("relatedResourceId".equals(fieldName)) {
+                    deserializedRelationProperties.relatedResourceId = reader.getString();
+                } else if ("relatedResourceName".equals(fieldName)) {
+                    deserializedRelationProperties.relatedResourceName = reader.getString();
+                } else if ("relatedResourceType".equals(fieldName)) {
+                    deserializedRelationProperties.relatedResourceType = reader.getString();
+                } else if ("relatedResourceKind".equals(fieldName)) {
+                    deserializedRelationProperties.relatedResourceKind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelationProperties;
+        });
+    }
 }

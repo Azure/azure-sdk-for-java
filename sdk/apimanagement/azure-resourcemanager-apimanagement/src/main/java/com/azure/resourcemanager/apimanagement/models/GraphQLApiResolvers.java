@@ -45,14 +45,8 @@ public interface GraphQLApiResolvers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Resolver list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ResolverContract> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<ResolverContract> listByApi(String resourceGroupName, String serviceName, String apiId, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver specified by its identifier.
@@ -69,8 +63,8 @@ public interface GraphQLApiResolvers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the GraphQL API resolver specified by its identifier.
      */
-    GraphQLApiResolversGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context);
+    GraphQLApiResolversGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String apiId, String resolverId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the GraphQL API resolver specified by its identifier.
@@ -102,8 +96,8 @@ public interface GraphQLApiResolvers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the GraphQL API Resolver specified by its identifier.
      */
-    Response<ResolverContract> getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, Context context);
+    Response<ResolverContract> getWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String resolverId, Context context);
 
     /**
      * Gets the details of the GraphQL API Resolver specified by its identifier.
@@ -138,8 +132,8 @@ public interface GraphQLApiResolvers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String resolverId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String resolverId,
+        String ifMatch, Context context);
 
     /**
      * Deletes the specified resolver in the GraphQL API.

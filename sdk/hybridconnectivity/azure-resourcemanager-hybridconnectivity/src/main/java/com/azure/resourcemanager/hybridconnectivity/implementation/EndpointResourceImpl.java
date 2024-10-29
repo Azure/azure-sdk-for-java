@@ -61,27 +61,23 @@ public final class EndpointResourceImpl
     }
 
     public EndpointResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .createOrUpdateWithResponse(resourceUri, endpointName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .createOrUpdateWithResponse(resourceUri, endpointName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public EndpointResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .createOrUpdateWithResponse(resourceUri, endpointName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .createOrUpdateWithResponse(resourceUri, endpointName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    EndpointResourceImpl(
-        String name, com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
+    EndpointResourceImpl(String name,
+        com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = new EndpointResourceInner();
         this.serviceManager = serviceManager;
         this.endpointName = name;
@@ -92,68 +88,50 @@ public final class EndpointResourceImpl
     }
 
     public EndpointResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .updateWithResponse(resourceUri, endpointName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .updateWithResponse(resourceUri, endpointName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public EndpointResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .updateWithResponse(resourceUri, endpointName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .updateWithResponse(resourceUri, endpointName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    EndpointResourceImpl(
-        EndpointResourceInner innerObject,
+    EndpointResourceImpl(EndpointResourceInner innerObject,
         com.azure.resourcemanager.hybridconnectivity.HybridConnectivityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceUri =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}",
-                    "resourceUri");
-        this.endpointName =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(),
-                    "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}",
-                    "endpointName");
+        this.resourceUri = Utils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "resourceUri");
+        this.endpointName = Utils.getValueFromIdByParameterName(innerObject.id(),
+            "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}", "endpointName");
     }
 
     public EndpointResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .getWithResponse(resourceUri, endpointName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .getWithResponse(resourceUri, endpointName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public EndpointResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getEndpoints()
-                .getWithResponse(resourceUri, endpointName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getEndpoints()
+            .getWithResponse(resourceUri, endpointName, context)
+            .getValue();
         return this;
     }
 
-    public Response<EndpointAccessResource> listCredentialsWithResponse(
-        Long expiresin, ListCredentialsRequest listCredentialsRequest, Context context) {
-        return serviceManager
-            .endpoints()
+    public Response<EndpointAccessResource> listCredentialsWithResponse(Long expiresin,
+        ListCredentialsRequest listCredentialsRequest, Context context) {
+        return serviceManager.endpoints()
             .listCredentialsWithResponse(resourceUri, endpointName, expiresin, listCredentialsRequest, context);
     }
 
@@ -161,22 +139,20 @@ public final class EndpointResourceImpl
         return serviceManager.endpoints().listCredentials(resourceUri, endpointName);
     }
 
-    public Response<IngressGatewayResource> listIngressGatewayCredentialsWithResponse(
-        Long expiresin, ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest, Context context) {
-        return serviceManager
-            .endpoints()
-            .listIngressGatewayCredentialsWithResponse(
-                resourceUri, endpointName, expiresin, listIngressGatewayCredentialsRequest, context);
+    public Response<IngressGatewayResource> listIngressGatewayCredentialsWithResponse(Long expiresin,
+        ListIngressGatewayCredentialsRequest listIngressGatewayCredentialsRequest, Context context) {
+        return serviceManager.endpoints()
+            .listIngressGatewayCredentialsWithResponse(resourceUri, endpointName, expiresin,
+                listIngressGatewayCredentialsRequest, context);
     }
 
     public IngressGatewayResource listIngressGatewayCredentials() {
         return serviceManager.endpoints().listIngressGatewayCredentials(resourceUri, endpointName);
     }
 
-    public Response<ManagedProxyResource> listManagedProxyDetailsWithResponse(
-        ManagedProxyRequest managedProxyRequest, Context context) {
-        return serviceManager
-            .endpoints()
+    public Response<ManagedProxyResource> listManagedProxyDetailsWithResponse(ManagedProxyRequest managedProxyRequest,
+        Context context) {
+        return serviceManager.endpoints()
             .listManagedProxyDetailsWithResponse(resourceUri, endpointName, managedProxyRequest, context);
     }
 

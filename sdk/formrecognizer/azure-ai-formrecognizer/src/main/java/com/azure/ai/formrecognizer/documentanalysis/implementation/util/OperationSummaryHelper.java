@@ -37,6 +37,7 @@ public final class OperationSummaryHelper {
         void setKind(OperationSummary operationSummary, OperationKind kind);
 
         void setResourceLocation(OperationSummary operationSummary, String resourceLocation);
+
         void setTags(OperationSummary operationSummary, Map<String, String> tags);
 
         void setServiceVersion(OperationSummary operationSummary, String serviceVersion);
@@ -47,8 +48,7 @@ public final class OperationSummaryHelper {
      *
      * @param operationSummaryAccessor The accessor.
      */
-    public static void setAccessor(
-        final OperationSummaryAccessor operationSummaryAccessor) {
+    public static void setAccessor(final OperationSummaryAccessor operationSummaryAccessor) {
         accessor = operationSummaryAccessor;
     }
 

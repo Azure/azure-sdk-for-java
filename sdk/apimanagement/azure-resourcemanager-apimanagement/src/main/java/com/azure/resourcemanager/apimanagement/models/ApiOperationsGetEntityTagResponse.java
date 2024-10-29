@@ -19,11 +19,7 @@ public final class ApiOperationsGetEntityTagResponse extends ResponseBase<ApiOpe
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiOperationsGetEntityTagResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
+    public ApiOperationsGetEntityTagResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, Void value,
         ApiOperationsGetEntityTagHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

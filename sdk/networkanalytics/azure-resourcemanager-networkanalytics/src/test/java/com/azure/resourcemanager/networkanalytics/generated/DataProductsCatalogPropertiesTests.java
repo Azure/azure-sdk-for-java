@@ -27,18 +27,23 @@ public final class DataProductsCatalogPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataProductsCatalogProperties model = new DataProductsCatalogProperties().withPublishers(
-            Arrays.asList(new PublisherInformation().withPublisherName("rpymzidnsez").withDataProducts(Arrays.asList(
-                new DataProductInformation().withDataProductName("tbzsgfyccs").withDescription("ewmdw")
-                    .withDataProductVersions(Arrays.asList(new DataProductVersion().withVersion("eiachboosflnr"),
-                        new DataProductVersion().withVersion("sfqpteehz"),
-                        new DataProductVersion().withVersion("vypyqrimzinpv"))),
-                new DataProductInformation().withDataProductName("wjdk").withDescription("rsoodqxhcrmnoh")
-                    .withDataProductVersions(Arrays.asList(new DataProductVersion().withVersion("ckwhds"))),
-                new DataProductInformation().withDataProductName("ifiyipjxsqwpgrj").withDescription("znorcj")
-                    .withDataProductVersions(Arrays.asList(new DataProductVersion().withVersion("snb"))),
-                new DataProductInformation().withDataProductName("xqabnmocpcysh").withDescription("rzafbljjgpbtoqcj")
-                    .withDataProductVersions(Arrays.asList(new DataProductVersion().withVersion("ljavbqid")))))));
+        DataProductsCatalogProperties model = new DataProductsCatalogProperties()
+            .withPublishers(Arrays.asList(new PublisherInformation().withPublisherName("rpymzidnsez")
+                .withDataProducts(Arrays.asList(
+                    new DataProductInformation().withDataProductName("tbzsgfyccs")
+                        .withDescription("ewmdw")
+                        .withDataProductVersions(Arrays.asList(new DataProductVersion().withVersion("eiachboosflnr"),
+                            new DataProductVersion().withVersion("sfqpteehz"),
+                            new DataProductVersion().withVersion("vypyqrimzinpv"))),
+                    new DataProductInformation().withDataProductName("wjdk")
+                        .withDescription("rsoodqxhcrmnoh")
+                        .withDataProductVersions(Arrays.asList(new DataProductVersion().withVersion("ckwhds"))),
+                    new DataProductInformation().withDataProductName("ifiyipjxsqwpgrj")
+                        .withDescription("znorcj")
+                        .withDataProductVersions(Arrays.asList(new DataProductVersion().withVersion("snb"))),
+                    new DataProductInformation().withDataProductName("xqabnmocpcysh")
+                        .withDescription("rzafbljjgpbtoqcj")
+                        .withDataProductVersions(Arrays.asList(new DataProductVersion().withVersion("ljavbqid")))))));
         model = BinaryData.fromObject(model).toObject(DataProductsCatalogProperties.class);
         Assertions.assertEquals("rpymzidnsez", model.publishers().get(0).publisherName());
         Assertions.assertEquals("tbzsgfyccs", model.publishers().get(0).dataProducts().get(0).dataProductName());

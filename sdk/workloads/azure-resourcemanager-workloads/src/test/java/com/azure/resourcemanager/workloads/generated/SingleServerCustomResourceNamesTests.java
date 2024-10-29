@@ -10,9 +10,8 @@ import com.azure.resourcemanager.workloads.models.SingleServerCustomResourceName
 public final class SingleServerCustomResourceNamesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SingleServerCustomResourceNames model =
-            BinaryData
-                .fromString("{\"namingPatternType\":\"SingleServerCustomResourceNames\"}")
+        SingleServerCustomResourceNames model
+            = BinaryData.fromString("{\"namingPatternType\":\"SingleServerCustomResourceNames\"}")
                 .toObject(SingleServerCustomResourceNames.class);
     }
 

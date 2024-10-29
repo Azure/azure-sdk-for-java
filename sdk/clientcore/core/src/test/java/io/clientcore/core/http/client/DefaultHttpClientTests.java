@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeAll;
 
 public class DefaultHttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
+
     @BeforeAll
     public static void startTestServer() {
         server = HttpClientTestsServer.getHttpClientTestsServer();
@@ -23,6 +24,7 @@ public class DefaultHttpClientTests extends HttpClientTests {
             server.stop();
         }
     }
+
     @Override
     protected HttpClient getHttpClient() {
         return HttpClient.getSharedInstance();

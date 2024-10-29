@@ -14,23 +14,17 @@ import org.junit.jupiter.api.Test;
 public final class GitHubOwnerInnerTests {
     @Test
     public void testDeserialize() {
-        GitHubOwnerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Succeeded\",\"ownerUrl\":\"llnwsubi\"},\"id\":\"jampmngnzscxaqw\",\"name\":\"ochcbonqvpkvl\",\"type\":\"xnj\"}")
-                .toObject(GitHubOwnerInner.class);
+        GitHubOwnerInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"ownerUrl\":\"llnwsubi\"},\"id\":\"jampmngnzscxaqw\",\"name\":\"ochcbonqvpkvl\",\"type\":\"xnj\"}")
+            .toObject(GitHubOwnerInner.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.properties().provisioningState());
         Assertions.assertEquals("llnwsubi", model.properties().ownerUrl());
     }
 
     @Test
     public void testSerialize() {
-        GitHubOwnerInner model =
-            new GitHubOwnerInner()
-                .withProperties(
-                    new GitHubOwnerProperties()
-                        .withProvisioningState(ProvisioningState.SUCCEEDED)
-                        .withOwnerUrl("llnwsubi"));
+        GitHubOwnerInner model = new GitHubOwnerInner().withProperties(
+            new GitHubOwnerProperties().withProvisioningState(ProvisioningState.SUCCEEDED).withOwnerUrl("llnwsubi"));
         model = BinaryData.fromObject(model).toObject(GitHubOwnerInner.class);
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, model.properties().provisioningState());
         Assertions.assertEquals("llnwsubi", model.properties().ownerUrl());

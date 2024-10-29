@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The kind of the entity query template. */
+/**
+ * The kind of the entity query template.
+ */
 public final class EntityQueryTemplateKind extends ExpandableStringEnum<EntityQueryTemplateKind> {
-    /** Static value Activity for EntityQueryTemplateKind. */
+    /**
+     * Static value Activity for EntityQueryTemplateKind.
+     */
     public static final EntityQueryTemplateKind ACTIVITY = fromString("Activity");
 
     /**
+     * Creates a new instance of EntityQueryTemplateKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityQueryTemplateKind() {
+    }
+
+    /**
      * Creates or finds a EntityQueryTemplateKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EntityQueryTemplateKind.
      */
-    @JsonCreator
     public static EntityQueryTemplateKind fromString(String name) {
         return fromString(name, EntityQueryTemplateKind.class);
     }
 
     /**
      * Gets known EntityQueryTemplateKind values.
-     *
+     * 
      * @return known EntityQueryTemplateKind values.
      */
     public static Collection<EntityQueryTemplateKind> values() {

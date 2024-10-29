@@ -8,32 +8,34 @@ import com.azure.resourcemanager.storagepool.fluent.models.DiskPoolZoneInfoInner
 import com.azure.resourcemanager.storagepool.fluent.models.Sku;
 import java.util.List;
 
-/** An immutable client-side representation of DiskPoolZoneInfo. */
+/**
+ * An immutable client-side representation of DiskPoolZoneInfo.
+ */
 public interface DiskPoolZoneInfo {
     /**
      * Gets the availabilityZones property: Logical zone for Disk Pool resource; example: ["1"].
-     *
+     * 
      * @return the availabilityZones value.
      */
     List<String> availabilityZones();
 
     /**
      * Gets the additionalCapabilities property: List of additional capabilities for Disk Pool.
-     *
+     * 
      * @return the additionalCapabilities value.
      */
     List<String> additionalCapabilities();
 
     /**
      * Gets the sku property: Determines the SKU of VM deployed for Disk Pool.
-     *
+     * 
      * @return the sku value.
      */
     Sku sku();
 
     /**
      * Gets the inner com.azure.resourcemanager.storagepool.fluent.models.DiskPoolZoneInfoInner object.
-     *
+     * 
      * @return the inner object.
      */
     DiskPoolZoneInfoInner innerModel();

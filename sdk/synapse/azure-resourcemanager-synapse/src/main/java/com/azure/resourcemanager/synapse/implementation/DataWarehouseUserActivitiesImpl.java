@@ -12,8 +12,8 @@ public final class DataWarehouseUserActivitiesImpl implements DataWarehouseUserA
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    DataWarehouseUserActivitiesImpl(
-        DataWarehouseUserActivitiesInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    DataWarehouseUserActivitiesImpl(DataWarehouseUserActivitiesInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

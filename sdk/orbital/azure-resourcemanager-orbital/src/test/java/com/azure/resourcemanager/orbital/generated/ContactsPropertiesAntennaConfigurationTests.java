@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactsPropertiesAntennaConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactsPropertiesAntennaConfiguration model =
-            BinaryData
-                .fromString("{\"destinationIp\":\"jdkirsoodqx\",\"sourceIps\":[\"mnoh\",\"t\"]}")
+        ContactsPropertiesAntennaConfiguration model
+            = BinaryData.fromString("{\"destinationIp\":\"jdkirsoodqx\",\"sourceIps\":[\"mnoh\",\"t\"]}")
                 .toObject(ContactsPropertiesAntennaConfiguration.class);
         Assertions.assertEquals("jdkirsoodqx", model.destinationIp());
         Assertions.assertEquals("mnoh", model.sourceIps().get(0));
@@ -22,9 +21,8 @@ public final class ContactsPropertiesAntennaConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactsPropertiesAntennaConfiguration model =
-            new ContactsPropertiesAntennaConfiguration()
-                .withDestinationIp("jdkirsoodqx")
+        ContactsPropertiesAntennaConfiguration model
+            = new ContactsPropertiesAntennaConfiguration().withDestinationIp("jdkirsoodqx")
                 .withSourceIps(Arrays.asList("mnoh", "t"));
         model = BinaryData.fromObject(model).toObject(ContactsPropertiesAntennaConfiguration.class);
         Assertions.assertEquals("jdkirsoodqx", model.destinationIp());

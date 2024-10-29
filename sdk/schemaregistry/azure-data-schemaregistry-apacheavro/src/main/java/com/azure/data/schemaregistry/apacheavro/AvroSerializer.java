@@ -40,7 +40,7 @@ class AvroSerializer {
     private static final Map<Class<?>, Schema> PRIMITIVE_SCHEMAS;
     private static final Schema NULL_SCHEMA = Schema.create(Schema.Type.NULL);
     private static final int V1_HEADER_LENGTH = 10;
-    private static final byte[] V1_HEADER = new byte[]{-61, 1};
+    private static final byte[] V1_HEADER = new byte[] { -61, 1 };
 
     private final ClientLogger logger = new ClientLogger(AvroSerializer.class);
     private final boolean avroSpecificReader;
@@ -93,8 +93,7 @@ class AvroSerializer {
      * @param encoderFactory Encoder factory
      * @param decoderFactory Decoder factory
      */
-    AvroSerializer(boolean avroSpecificReader, EncoderFactory encoderFactory,
-        DecoderFactory decoderFactory) {
+    AvroSerializer(boolean avroSpecificReader, EncoderFactory encoderFactory, DecoderFactory decoderFactory) {
 
         this.avroSpecificReader = avroSpecificReader;
         this.encoderFactory = Objects.requireNonNull(encoderFactory, "'encoderFactory' cannot be null.");
@@ -165,8 +164,8 @@ class AvroSerializer {
                     return reader.read(null, decoderFactory.binaryDecoder(input, null));
                 }
             } catch (IOException | RuntimeException e) {
-                throw logger.logExceptionAsError(new SchemaRegistryApacheAvroException(
-                    "Error deserializing raw Avro message.", e));
+                throw logger.logExceptionAsError(
+                    new SchemaRegistryApacheAvroException("Error deserializing raw Avro message.", e));
             }
         }
     }
@@ -248,8 +247,8 @@ class AvroSerializer {
                 .filter(constructor -> constructor.getParameterCount() == 0)
                 .findFirst();
         } catch (SecurityException e) {
-            logger.info("Could not get declaring constructors for deserializing T ({}). Using writer schema.",
-                clazz, e);
+            logger.info("Could not get declaring constructors for deserializing T ({}). Using writer schema.", clazz,
+                e);
             return null;
         }
 
@@ -264,9 +263,7 @@ class AvroSerializer {
             logger.info("Could not create new instance for deserializing T ({}). Using writer schema.", clazz, e);
         }
 
-        return instance instanceof GenericContainer
-            ? ((GenericContainer) instance).getSchema()
-            : null;
+        return instance instanceof GenericContainer ? ((GenericContainer) instance).getSchema() : null;
     }
 
     /**

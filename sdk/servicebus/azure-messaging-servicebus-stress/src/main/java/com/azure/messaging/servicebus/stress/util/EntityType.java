@@ -3,15 +3,14 @@
 
 package com.azure.messaging.servicebus.stress.util;
 
-
 /**
  * Messaging entity types supported by Service Bus.
  */
 public enum EntityType {
-    QUEUE(0),
-    TOPIC(1);
+    QUEUE(0), TOPIC(1);
 
     private int enumValue;
+
     EntityType(int enumValue) {
         this.enumValue = enumValue;
     }

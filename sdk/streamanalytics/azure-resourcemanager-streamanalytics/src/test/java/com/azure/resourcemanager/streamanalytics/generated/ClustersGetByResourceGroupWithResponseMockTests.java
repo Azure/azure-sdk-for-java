@@ -45,12 +45,14 @@ public final class ClustersGetByResourceGroupWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         Cluster response = manager.clusters()
-            .getByResourceGroupWithResponse("xdbeesmieknl", "ariaawi", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("xdbeesmieknl", "ariaawi", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("zldmozuxy", response.location());
         Assertions.assertEquals("btkadpysownbtgkb", response.tags().get("grjqctojcmi"));

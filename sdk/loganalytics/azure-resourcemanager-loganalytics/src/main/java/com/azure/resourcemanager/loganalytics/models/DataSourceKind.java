@@ -56,8 +56,8 @@ public final class DataSourceKind extends ExpandableStringEnum<DataSourceKind> {
     public static final DataSourceKind CHANGE_TRACKING_SERVICES = fromString("ChangeTrackingServices");
 
     /** Static value ChangeTrackingDataTypeConfiguration for DataSourceKind. */
-    public static final DataSourceKind CHANGE_TRACKING_DATA_TYPE_CONFIGURATION =
-        fromString("ChangeTrackingDataTypeConfiguration");
+    public static final DataSourceKind CHANGE_TRACKING_DATA_TYPE_CONFIGURATION
+        = fromString("ChangeTrackingDataTypeConfiguration");
 
     /** Static value ChangeTrackingDefaultRegistry for DataSourceKind. */
     public static final DataSourceKind CHANGE_TRACKING_DEFAULT_REGISTRY = fromString("ChangeTrackingDefaultRegistry");
@@ -81,20 +81,20 @@ public final class DataSourceKind extends ExpandableStringEnum<DataSourceKind> {
     public static final DataSourceKind OFFICE365 = fromString("Office365");
 
     /** Static value SecurityWindowsBaselineConfiguration for DataSourceKind. */
-    public static final DataSourceKind SECURITY_WINDOWS_BASELINE_CONFIGURATION =
-        fromString("SecurityWindowsBaselineConfiguration");
+    public static final DataSourceKind SECURITY_WINDOWS_BASELINE_CONFIGURATION
+        = fromString("SecurityWindowsBaselineConfiguration");
 
     /** Static value SecurityCenterSecurityWindowsBaselineConfiguration for DataSourceKind. */
-    public static final DataSourceKind SECURITY_CENTER_SECURITY_WINDOWS_BASELINE_CONFIGURATION =
-        fromString("SecurityCenterSecurityWindowsBaselineConfiguration");
+    public static final DataSourceKind SECURITY_CENTER_SECURITY_WINDOWS_BASELINE_CONFIGURATION
+        = fromString("SecurityCenterSecurityWindowsBaselineConfiguration");
 
     /** Static value SecurityEventCollectionConfiguration for DataSourceKind. */
-    public static final DataSourceKind SECURITY_EVENT_COLLECTION_CONFIGURATION =
-        fromString("SecurityEventCollectionConfiguration");
+    public static final DataSourceKind SECURITY_EVENT_COLLECTION_CONFIGURATION
+        = fromString("SecurityEventCollectionConfiguration");
 
     /** Static value SecurityInsightsSecurityEventCollectionConfiguration for DataSourceKind. */
-    public static final DataSourceKind SECURITY_INSIGHTS_SECURITY_EVENT_COLLECTION_CONFIGURATION =
-        fromString("SecurityInsightsSecurityEventCollectionConfiguration");
+    public static final DataSourceKind SECURITY_INSIGHTS_SECURITY_EVENT_COLLECTION_CONFIGURATION
+        = fromString("SecurityInsightsSecurityEventCollectionConfiguration");
 
     /** Static value ImportComputerGroup for DataSourceKind. */
     public static final DataSourceKind IMPORT_COMPUTER_GROUP = fromString("ImportComputerGroup");

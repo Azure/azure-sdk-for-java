@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of capacity name request body. */
+/**
+ * Details of capacity name request body.
+ */
 @Fluent
-public final class CheckCapacityNameAvailabilityParameters {
+public final class CheckCapacityNameAvailabilityParameters
+    implements JsonSerializable<CheckCapacityNameAvailabilityParameters> {
     /*
      * Name for checking availability.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The resource type of PowerBI dedicated.
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of CheckCapacityNameAvailabilityParameters class. */
+    /**
+     * Creates an instance of CheckCapacityNameAvailabilityParameters class.
+     */
     public CheckCapacityNameAvailabilityParameters() {
     }
 
     /**
      * Get the name property: Name for checking availability.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +44,7 @@ public final class CheckCapacityNameAvailabilityParameters {
 
     /**
      * Set the name property: Name for checking availability.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckCapacityNameAvailabilityParameters object itself.
      */
@@ -48,7 +55,7 @@ public final class CheckCapacityNameAvailabilityParameters {
 
     /**
      * Get the type property: The resource type of PowerBI dedicated.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -57,7 +64,7 @@ public final class CheckCapacityNameAvailabilityParameters {
 
     /**
      * Set the type property: The resource type of PowerBI dedicated.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckCapacityNameAvailabilityParameters object itself.
      */
@@ -68,9 +75,49 @@ public final class CheckCapacityNameAvailabilityParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CheckCapacityNameAvailabilityParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CheckCapacityNameAvailabilityParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CheckCapacityNameAvailabilityParameters.
+     */
+    public static CheckCapacityNameAvailabilityParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CheckCapacityNameAvailabilityParameters deserializedCheckCapacityNameAvailabilityParameters
+                = new CheckCapacityNameAvailabilityParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCheckCapacityNameAvailabilityParameters.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCheckCapacityNameAvailabilityParameters.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCheckCapacityNameAvailabilityParameters;
+        });
     }
 }

@@ -10,20 +10,25 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.VolumesClient;
+import com.azure.resourcemanager.netapp.fluent.models.ClusterPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.GetGroupIdListForLdapUserResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.azure.resourcemanager.netapp.fluent.models.ReplicationStatusInner;
+import com.azure.resourcemanager.netapp.fluent.models.SvmPeerCommandResponseInner;
 import com.azure.resourcemanager.netapp.fluent.models.VolumeInner;
 import com.azure.resourcemanager.netapp.models.AuthorizeRequest;
 import com.azure.resourcemanager.netapp.models.BreakFileLocksRequest;
 import com.azure.resourcemanager.netapp.models.BreakReplicationRequest;
+import com.azure.resourcemanager.netapp.models.ClusterPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserRequest;
 import com.azure.resourcemanager.netapp.models.GetGroupIdListForLdapUserResponse;
+import com.azure.resourcemanager.netapp.models.PeerClusterForVolumeMigrationRequest;
 import com.azure.resourcemanager.netapp.models.PoolChangeRequest;
 import com.azure.resourcemanager.netapp.models.ReestablishReplicationRequest;
 import com.azure.resourcemanager.netapp.models.RelocateVolumeRequest;
 import com.azure.resourcemanager.netapp.models.Replication;
 import com.azure.resourcemanager.netapp.models.ReplicationStatus;
+import com.azure.resourcemanager.netapp.models.SvmPeerCommandResponse;
 import com.azure.resourcemanager.netapp.models.Volume;
 import com.azure.resourcemanager.netapp.models.VolumeRevert;
 import com.azure.resourcemanager.netapp.models.Volumes;
@@ -245,6 +250,70 @@ public final class VolumesImpl implements Volumes {
     public void reInitializeReplication(String resourceGroupName, String accountName, String poolName,
         String volumeName, Context context) {
         this.serviceClient().reInitializeReplication(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public ClusterPeerCommandResponse peerExternalCluster(String resourceGroupName, String accountName, String poolName,
+        String volumeName, PeerClusterForVolumeMigrationRequest body) {
+        ClusterPeerCommandResponseInner inner
+            = this.serviceClient().peerExternalCluster(resourceGroupName, accountName, poolName, volumeName, body);
+        if (inner != null) {
+            return new ClusterPeerCommandResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ClusterPeerCommandResponse peerExternalCluster(String resourceGroupName, String accountName, String poolName,
+        String volumeName, PeerClusterForVolumeMigrationRequest body, Context context) {
+        ClusterPeerCommandResponseInner inner = this.serviceClient()
+            .peerExternalCluster(resourceGroupName, accountName, poolName, volumeName, body, context);
+        if (inner != null) {
+            return new ClusterPeerCommandResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SvmPeerCommandResponse authorizeExternalReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
+        SvmPeerCommandResponseInner inner
+            = this.serviceClient().authorizeExternalReplication(resourceGroupName, accountName, poolName, volumeName);
+        if (inner != null) {
+            return new SvmPeerCommandResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public SvmPeerCommandResponse authorizeExternalReplication(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
+        SvmPeerCommandResponseInner inner = this.serviceClient()
+            .authorizeExternalReplication(resourceGroupName, accountName, poolName, volumeName, context);
+        if (inner != null) {
+            return new SvmPeerCommandResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void finalizeExternalReplication(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        this.serviceClient().finalizeExternalReplication(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void finalizeExternalReplication(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        this.serviceClient().finalizeExternalReplication(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public void performReplicationTransfer(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        this.serviceClient().performReplicationTransfer(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void performReplicationTransfer(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        this.serviceClient().performReplicationTransfer(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void poolChange(String resourceGroupName, String accountName, String poolName, String volumeName,

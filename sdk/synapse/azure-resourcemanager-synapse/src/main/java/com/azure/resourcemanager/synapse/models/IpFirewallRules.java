@@ -74,8 +74,8 @@ public interface IpFirewallRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a firewall rule along with {@link Response}.
      */
-    Response<IpFirewallRuleInfo> getWithResponse(
-        String resourceGroupName, String workspaceName, String ruleName, Context context);
+    Response<IpFirewallRuleInfo> getWithResponse(String resourceGroupName, String workspaceName, String ruleName,
+        Context context);
 
     /**
      * Get a firewall rule.
@@ -101,8 +101,8 @@ public interface IpFirewallRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing operation for replacing the firewall rules.
      */
-    ReplaceAllFirewallRulesOperationResponse replaceAll(
-        String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request);
+    ReplaceAllFirewallRulesOperationResponse replaceAll(String resourceGroupName, String workspaceName,
+        ReplaceAllIpFirewallRulesRequest request);
 
     /**
      * Replaces firewall rules.
@@ -116,8 +116,8 @@ public interface IpFirewallRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing operation for replacing the firewall rules.
      */
-    ReplaceAllFirewallRulesOperationResponse replaceAll(
-        String resourceGroupName, String workspaceName, ReplaceAllIpFirewallRulesRequest request, Context context);
+    ReplaceAllFirewallRulesOperationResponse replaceAll(String resourceGroupName, String workspaceName,
+        ReplaceAllIpFirewallRulesRequest request, Context context);
 
     /**
      * Get a firewall rule.

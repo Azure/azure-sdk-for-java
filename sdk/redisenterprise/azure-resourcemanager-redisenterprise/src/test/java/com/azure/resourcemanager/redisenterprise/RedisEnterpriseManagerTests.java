@@ -14,8 +14,14 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.resourcemanager.redisenterprise.models.*;
+import com.azure.resourcemanager.redisenterprise.models.Cluster;
+import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.redisenterprise.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.redisenterprise.models.Sku;
+import com.azure.resourcemanager.redisenterprise.models.SkuName;
+import com.azure.resourcemanager.redisenterprise.models.TlsVersion;
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -34,16 +40,15 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        redisEnterpriseManager = RedisEnterpriseManager
-            .configure()
-            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
-            .authenticate(credential, profile);
-
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
+
+        redisEnterpriseManager = RedisEnterpriseManager.configure()
+            .withPolicy(new ProviderRegistrationPolicy(resourceManager))
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+            .authenticate(credential, profile);
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -51,10 +56,7 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -83,7 +85,8 @@ public class RedisEnterpriseManagerTests extends TestProxyTestBase {
             // @embedmeEnd
             cluster.refresh();
             Assertions.assertEquals(cluster.name(), clusterName);
-            Assertions.assertEquals(cluster.name(), redisEnterpriseManager.redisEnterprises().getById(cluster.id()).name());
+            Assertions.assertEquals(cluster.name(),
+                redisEnterpriseManager.redisEnterprises().getById(cluster.id()).name());
             Assertions.assertTrue(redisEnterpriseManager.redisEnterprises().list().stream().count() > 0);
         } finally {
             if (cluster != null) {

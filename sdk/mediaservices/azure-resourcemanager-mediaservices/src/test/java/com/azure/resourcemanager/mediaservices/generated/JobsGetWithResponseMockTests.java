@@ -31,40 +31,28 @@ public final class JobsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"created\":\"2021-06-12T10:34:29Z\",\"state\":\"Scheduled\",\"description\":\"wrtmjfjmy\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-04-05T08:29:20Z\",\"outputs\":[],\"priority\":\"Low\",\"correlationData\":{\"vnekhenlusfnrdtj\":\"x\",\"ttgepuslvyjtcv\":\"txrdcqtjvi\",\"ughtuqfecjxeygtu\":\"wkasiziesf\",\"cbuewmrswnjlxuz\":\"xu\"},\"startTime\":\"2021-07-05T07:48:33Z\",\"endTime\":\"2021-04-25T15:22:17Z\"},\"id\":\"xjbaqehgpdohzjq\",\"name\":\"tu\",\"type\":\"o\"}";
+        String responseStr
+            = "{\"properties\":{\"created\":\"2021-06-12T10:34:29Z\",\"state\":\"Scheduled\",\"description\":\"wrtmjfjmy\",\"input\":{\"@odata.type\":\"JobInput\"},\"lastModified\":\"2021-04-05T08:29:20Z\",\"outputs\":[],\"priority\":\"Low\",\"correlationData\":{\"vnekhenlusfnrdtj\":\"x\",\"ttgepuslvyjtcv\":\"txrdcqtjvi\",\"ughtuqfecjxeygtu\":\"wkasiziesf\",\"cbuewmrswnjlxuz\":\"xu\"},\"startTime\":\"2021-07-05T07:48:33Z\",\"endTime\":\"2021-04-25T15:22:17Z\"},\"id\":\"xjbaqehgpdohzjq\",\"name\":\"tu\",\"type\":\"o\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MediaServicesManager manager =
-            MediaServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Job response =
-            manager
-                .jobs()
-                .getWithResponse("rjvzuyt", "rmlmuowo", "bauiropi", "nszonwpngaj", com.azure.core.util.Context.NONE)
-                .getValue();
+        Job response = manager.jobs()
+            .getWithResponse("rjvzuyt", "rmlmuowo", "bauiropi", "nszonwpngaj", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("wrtmjfjmy", response.description());
         Assertions.assertEquals(Priority.LOW, response.priority());

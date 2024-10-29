@@ -19,7 +19,6 @@ public interface SupportsBeginDeletingByName {
      */
     void beginDeleteByName(String name);
 
-
     /**
      * Asynchronously begins deleting a resource from Azure, identifying it by its resource name.
      * The resource will stay until get() returns null.

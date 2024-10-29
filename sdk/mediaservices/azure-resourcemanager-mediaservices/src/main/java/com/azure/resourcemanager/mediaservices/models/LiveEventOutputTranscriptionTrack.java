@@ -53,10 +53,8 @@ public final class LiveEventOutputTranscriptionTrack {
      */
     public void validate() {
         if (trackName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property trackName in model LiveEventOutputTranscriptionTrack"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property trackName in model LiveEventOutputTranscriptionTrack"));
         }
     }
 
