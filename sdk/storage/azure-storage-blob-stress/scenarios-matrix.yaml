@@ -69,9 +69,8 @@ matrix:
 #      testScenario: downloadcontent
 #      sync: false
 #      sizeBytes: 1024
-#      parallelRuns: 20
 #      downloadFaults: true
-#      durationMin: 10
+#      durationMin: 25
 #      imageBuildDir: "../../.."
 
     # this test downloads 50MB (1024 * 1024 * 50), large content requiring multiple requests
@@ -151,9 +150,8 @@ matrix:
 #      testScenario: appendblockfromurl
 #      sync: true
 #      sizeBytes: 1024
-#      parallelRuns: 20
 #      uploadFaults: true
-#      durationMin: 10
+#      durationMin: 25
 #      imageBuildDir: "../../.."
 
     # this test uploads 50MB (1024 * 1024 * 50) to append blob from url, no chunking
@@ -217,7 +215,6 @@ matrix:
 #      testScenario: blockblobuploadfromurl
 #      sync: true
 #      sizeBytes: "52428800"
-#      parallelRuns: 20
 #      uploadFaults: true
 #      durationMin: 25
 #      imageBuildDir: "../../.."
@@ -299,7 +296,6 @@ matrix:
 #      testScenario: stageblock
 #      sync: true
 #      sizeBytes: 1024
-#      parallelRuns: 20
 #      uploadFaults: true
 #      durationMin: 10
 #      imageBuildDir: "../../.."
