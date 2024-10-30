@@ -33,7 +33,6 @@ import reactor.core.publisher.Mono;
 import java.util.Properties;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.enhancePasswordlessProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.registerTokenCredentialBean;
 
 
 /**
@@ -67,10 +66,8 @@ public class AzureLettucePasswordlessAutoConfiguration {
                                                 AzureRedisPasswordlessProperties azureRedisPasswordlessProperties,
                                                 AzureGlobalProperties azureGlobalProperties) {
         AzureRedisPasswordlessProperties redisPasswordlessProperties = mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties);
-        String passwordlessPropertiesPrefix = "spring.data.redis.azure";
-        registerTokenCredentialBean(applicationContext, passwordlessPropertiesPrefix, redisPasswordlessProperties);
         Properties passwordlessProperties = redisPasswordlessProperties.toPasswordlessProperties();
-        enhancePasswordlessProperties(passwordlessPropertiesPrefix, redisPasswordlessProperties, passwordlessProperties);
+        enhancePasswordlessProperties("spring.data.redis.azure", redisPasswordlessProperties, passwordlessProperties);
         return new AzureRedisCredentials(redisProperties.getUsername(), passwordlessProperties);
     }
 

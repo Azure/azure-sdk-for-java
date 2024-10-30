@@ -39,7 +39,7 @@ class JdbcPropertiesBeanPostProcessorTest {
     private static final String POSTGRESQL_CONNECTION_STRING = "jdbc:postgresql://host/database?enableSwitch1&property1=value1";
     private static final String PASSWORD = "password";
     private static final String US_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.us/";
-    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
+    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=";
     private static final String POSTGRESQL_ASSUME_MIN_SERVER_VERSION = POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION + "="
         + POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
     private static final String DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX = ".spring.datasource.azure";
@@ -103,9 +103,7 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
             MYSQL_CONNECTION_STRING,
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX,
-            MYSQL_USER_AGENT,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+            MYSQL_USER_AGENT
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -151,9 +149,7 @@ class JdbcPropertiesBeanPostProcessorTest {
                 DatabaseType.MYSQL,
                 MYSQL_CONNECTION_STRING,
                 MYSQL_USER_AGENT,
-                AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
-                US_AUTHORITY_HOST_STRING,
-                PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX
+                US_AUTHORITY_HOST_STRING
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -170,9 +166,7 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
             MYSQL_CONNECTION_STRING,
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX,
-            MYSQL_USER_AGENT,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+            MYSQL_USER_AGENT
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -191,9 +185,7 @@ class JdbcPropertiesBeanPostProcessorTest {
 
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
-            baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX
+            baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -212,9 +204,7 @@ class JdbcPropertiesBeanPostProcessorTest {
 
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
-            baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX
+            baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH
         );
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
@@ -231,9 +221,7 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.POSTGRESQL,
             baseUrl,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
             APPLICATION_NAME.getName() + "=" + AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH,
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX,
             POSTGRESQL_ASSUME_MIN_SERVER_VERSION
         );
 
@@ -254,12 +242,41 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.POSTGRESQL,
             baseUrl,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX,
             POSTGRESQL_ASSUME_MIN_SERVER_VERSION
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
 
+    @Test
+    void useDefaultTokenCredential() {
+        DataSourceProperties dataSourceProperties = new DataSourceProperties();
+        dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        String expectedJdbcUrl = enhanceJdbcUrl(
+            DatabaseType.MYSQL,
+            MYSQL_CONNECTION_STRING,
+            MYSQL_USER_AGENT
+        );
+        assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
+    }
+
+    @Test
+    void useTokenCredentialBeanName() {
+        DataSourceProperties dataSourceProperties = new DataSourceProperties();
+        dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
+        String tokenCredentialBeanName = "test-bean-name";
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
+        this.mockEnvironment.setProperty("spring.datasource.azure.credential.token-credential-bean-name", tokenCredentialBeanName);
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        String expectedJdbcUrl = enhanceJdbcUrl(
+            DatabaseType.MYSQL,
+            MYSQL_CONNECTION_STRING,
+            MYSQL_USER_AGENT,
+            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + tokenCredentialBeanName
+        );
+        assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
+    }
 }
