@@ -49,24 +49,19 @@ public class AuthorizationChallengeParser {
      * @return The extracted challenge parameters for the specified challenge scheme.
      */
     private static String getChallengeParametersForScheme(String challenge, String challengeScheme) {
-        if (challenge == null || challengeScheme == null) {
+        if (CoreUtils.isNullOrEmpty(challenge)) {
             return null;
         }
 
-        String[] challengeParts = challenge.split(",", -1);
-        for (String part : challengeParts) {
-            // Extract the challenge scheme and the parameters.
-            int spaceIndex = part.indexOf(' ');
-            if (spaceIndex != -1) {
-                String scheme = part.substring(0, spaceIndex).trim();
-                String parameters = part.substring(spaceIndex + 1).trim();
-
-                if (scheme.equals(challengeScheme)) {
-                    return parameters;
-                }
-            }
+        int schemeIndex = challenge.indexOf(challengeScheme + " ");
+        if (schemeIndex == -1) {
+            return null; // Scheme not found
         }
-        return null;
+
+        // Extract the parameters starting after the scheme
+        String parameters = challenge.substring(schemeIndex + challengeScheme.length()).trim();
+
+        return parameters;
     }
 
     /**
@@ -76,7 +71,7 @@ public class AuthorizationChallengeParser {
      * @return The extracted value of the challenge parameter.
      */
     private static String getChallengeParameterValue(String parameters, String parameter) {
-        if (parameters == null || parameter == null || parameters.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(parameters)) {
             return null;
         }
 
