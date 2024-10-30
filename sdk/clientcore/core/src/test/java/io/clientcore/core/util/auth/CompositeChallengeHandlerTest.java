@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -32,12 +33,20 @@ public class CompositeChallengeHandlerTest {
     @Mock
     private Response<?> response;
 
+    private AutoCloseable closeable;
+
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        closeable = MockitoAnnotations.openMocks(this);
 
         // Initializing composite with mocked challenge handlers
-        compositeChallengeHandler = new ChallengeHandler.CompositeChallengeHandler(Arrays.asList(digestHandler, basicHandler));
+        compositeChallengeHandler
+            = new ChallengeHandler.CompositeChallengeHandler(Arrays.asList(digestHandler, basicHandler));
+    }
+
+    @AfterEach
+    public void tearDown() throws Exception {
+        closeable.close();
     }
 
     @Test

@@ -33,7 +33,7 @@ public final class ProxyAuthenticator implements Authenticator {
     /**
      * Header representing the authorization the client is presenting to a proxy server.
      */
-    public static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
+    private static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
 
     /**
      * Header representing additional information a proxy server is expecting during future authentication requests.

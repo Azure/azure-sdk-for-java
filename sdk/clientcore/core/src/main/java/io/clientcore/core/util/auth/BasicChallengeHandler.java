@@ -36,7 +36,8 @@ public class BasicChallengeHandler implements ChallengeHandler {
     public void handleChallenge(HttpRequest request, Response<?> response, boolean isProxy) {
         if (canHandle(response, isProxy)) {
             synchronized (request.getHeaders()) {
-                HttpHeaderName headerName = isProxy ? HttpHeaderName.fromString(AuthUtils.PROXY_AUTHORIZATION) : HttpHeaderName.AUTHORIZATION;
+                HttpHeaderName headerName
+                    = isProxy ? HttpHeaderName.fromString(AuthUtils.PROXY_AUTHORIZATION) : HttpHeaderName.AUTHORIZATION;
                 // Check if the appropriate Authorization header is already present
                 if (request.getHeaders().getValue(headerName) == null) {
                     request.getHeaders().add(headerName, authHeader);
@@ -49,14 +50,15 @@ public class BasicChallengeHandler implements ChallengeHandler {
     public boolean canHandle(Response<?> response, boolean isProxy) {
         String authHeader;
         if (response.getHeaders() != null) {
-            HttpHeaderName authHeaderName = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
+            HttpHeaderName authHeaderName
+                = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
             authHeader = response.getHeaders().getValue(authHeaderName);
 
             if (authHeader != null) {
                 // Split by commas to handle multiple authentication methods in the header.
                 String[] challenges = authHeader.split(",");
                 for (String challenge : challenges) {
-                    if (challenge.trim().regionMatches(true, 0, BASIC, 0, BASIC.length()))  {
+                    if (challenge.trim().regionMatches(true, 0, BASIC, 0, BASIC.length())) {
                         return true;
                     }
                 }
@@ -65,4 +67,3 @@ public class BasicChallengeHandler implements ChallengeHandler {
         return false;
     }
 }
-

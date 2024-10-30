@@ -84,9 +84,8 @@ public interface ChallengeHandler {
             }
 
             // Log an error if no handler could handle the challenge
-            LOGGER.logThrowableAsError(new UnsupportedOperationException("None of the challenge handlers could handle the challenge."));
+            LOGGER.logThrowableAsError(
+                new UnsupportedOperationException("None of the challenge handlers could handle the challenge."));
         }
     }
 }
-
-

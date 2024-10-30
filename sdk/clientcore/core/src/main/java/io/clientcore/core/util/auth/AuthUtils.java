@@ -55,7 +55,7 @@ public final class AuthUtils {
      * @return The HA1 hex string.
      */
     public static String calculateHa1NoSess(Function<byte[], byte[]> digestFunction, String username, String realm,
-                                            String password) {
+        String password) {
         return bytesToHexString(
             digestFunction.apply((username + ":" + realm + ":" + password).getBytes(StandardCharsets.UTF_8)));
     }
@@ -78,7 +78,7 @@ public final class AuthUtils {
      * @return The HA1 hex string.
      */
     public static String calculateHa1Sess(Function<byte[], byte[]> digestFunction, String username, String realm,
-                                          String password, String nonce, String cnonce) {
+        String password, String nonce, String cnonce) {
         String ha1NoSess = calculateHa1NoSess(digestFunction, username, realm, password);
 
         return bytesToHexString(
@@ -98,7 +98,7 @@ public final class AuthUtils {
      * @return The HA2 hex string.
      */
     public static String calculateHa2AuthQopOrEmpty(Function<byte[], byte[]> digestFunction, String httpMethod,
-                                                    String uri) {
+        String uri) {
         return bytesToHexString(digestFunction.apply((httpMethod + ":" + uri).getBytes(StandardCharsets.UTF_8)));
     }
 
@@ -123,7 +123,7 @@ public final class AuthUtils {
      * @return The HA2 hex string.
      */
     public static String calculateHa2AuthIntQop(Function<byte[], byte[]> digestFunction, String httpMethod, String uri,
-                                                byte[] requestEntityBody) {
+        byte[] requestEntityBody) {
         String bodyHex = bytesToHexString(digestFunction.apply(requestEntityBody));
 
         return bytesToHexString(
@@ -144,7 +144,7 @@ public final class AuthUtils {
      * @return The response hex string.
      */
     public static String calculateResponseUnknownQop(Function<byte[], byte[]> digestFunction, String ha1, String nonce,
-                                                     String ha2) {
+        String ha2) {
         return bytesToHexString(digestFunction.apply((ha1 + ":" + nonce + ":" + ha2).getBytes(StandardCharsets.UTF_8)));
     }
 
@@ -167,7 +167,7 @@ public final class AuthUtils {
      * @return The response hex string.
      */
     public static String calculateResponseKnownQop(Function<byte[], byte[]> digestFunction, String ha1, String nonce,
-                                                   int nc, String cnonce, String qop, String ha2) {
+        int nc, String cnonce, String qop, String ha2) {
         String zeroPadNc = String.format("%08X", nc);
 
         return bytesToHexString(
@@ -276,10 +276,8 @@ public final class AuthUtils {
         return Arrays.stream(header.split(","))
             .map(String::trim)
             .map(kvp -> kvp.split("=", 2))
-            .collect(Collectors.toMap(
-                kvpPieces -> kvpPieces[0].toLowerCase(Locale.ROOT),
-                kvpPieces -> kvpPieces[1].replace("\"", "")
-            ));
+            .collect(Collectors.toMap(kvpPieces -> kvpPieces[0].toLowerCase(Locale.ROOT),
+                kvpPieces -> kvpPieces[1].replace("\"", "")));
     }
 
     /**
@@ -465,7 +463,7 @@ public final class AuthUtils {
      * @return The constructed Authorization/Proxy-Authorization header value.
      */
     public static String buildAuthorizationHeader(String username, String realm, String uri, String algorithm,
-                                                  String nonce, int nc, String cnonce, String qop, String response, String opaque, boolean userhash) {
+        String nonce, int nc, String cnonce, String qop, String response, String opaque, boolean userhash) {
         StringBuilder authorizationBuilder = new StringBuilder(512);
 
         authorizationBuilder.append(DIGEST + " ")
@@ -509,4 +507,3 @@ public final class AuthUtils {
         return authorizationBuilder.toString();
     }
 }
-

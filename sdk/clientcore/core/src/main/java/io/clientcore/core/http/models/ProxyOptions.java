@@ -117,10 +117,8 @@ public class ProxyOptions {
     public ProxyOptions setCredentials(String username, String password) {
         this.username = Objects.requireNonNull(username, "'username' cannot be null.");
         this.password = Objects.requireNonNull(password, "'password' cannot be null.");
-        this.challengeHandler = ChallengeHandler.of(
-            new BasicChallengeHandler(username, password),
-            new DigestChallengeHandler(username, password)
-        );
+        this.challengeHandler = ChallengeHandler.of(new BasicChallengeHandler(username, password),
+            new DigestChallengeHandler(username, password));
         return this;
     }
 

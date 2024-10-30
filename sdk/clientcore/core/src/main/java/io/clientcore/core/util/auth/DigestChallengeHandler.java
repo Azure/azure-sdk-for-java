@@ -62,9 +62,8 @@ public class DigestChallengeHandler implements ChallengeHandler {
     private static final String MD5_SESS = MD5 + SESS;
 
     // Algorithm preference order
-    private static final String[] ALGORITHM_PREFERENCE_ORDER = {
-        SHA_512_256, SHA_512_256_SESS, SHA_256, SHA_256_SESS, MD5, MD5_SESS
-    };
+    private static final String[] ALGORITHM_PREFERENCE_ORDER
+        = { SHA_512_256, SHA_512_256_SESS, SHA_256, SHA_256_SESS, MD5, MD5_SESS };
 
     /**
      * Creates an {@link DigestChallengeHandler} using the {@code username} and {@code password} to respond to
@@ -107,16 +106,12 @@ public class DigestChallengeHandler implements ChallengeHandler {
             }
 
             // Generate Digest Authorization header
-            String digestAuthHeader = generateDigestAuthHeader(
-                request.getHttpMethod().name(),
-                request.getUri().toString(),
-                algorithm,
-                digestFunction,
-                response.getBody()
-            );
+            String digestAuthHeader = generateDigestAuthHeader(request.getHttpMethod().name(),
+                request.getUri().toString(), algorithm, digestFunction, response.getBody());
 
             synchronized (request.getHeaders()) {
-                HttpHeaderName headerName = isProxy ? HttpHeaderName.fromString(AuthUtils.PROXY_AUTHORIZATION) : HttpHeaderName.AUTHORIZATION;
+                HttpHeaderName headerName
+                    = isProxy ? HttpHeaderName.fromString(AuthUtils.PROXY_AUTHORIZATION) : HttpHeaderName.AUTHORIZATION;
                 request.getHeaders().set(headerName, digestAuthHeader);
             }
         }
@@ -126,7 +121,8 @@ public class DigestChallengeHandler implements ChallengeHandler {
     public boolean canHandle(Response<?> response, boolean isProxy) {
         String authHeader;
         if (response.getHeaders() != null) {
-            HttpHeaderName authHeaderName = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
+            HttpHeaderName authHeaderName
+                = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
             authHeader = response.getHeaders().getValue(authHeaderName);
 
             if (authHeader != null) {
@@ -166,7 +162,8 @@ public class DigestChallengeHandler implements ChallengeHandler {
         return bytesToHexString(nonce);
     }
 
-    private String generateDigestAuthHeader(String method, String uri, String algorithm, Function<byte[], byte[]> digestFunction, BinaryData body) {
+    private String generateDigestAuthHeader(String method, String uri, String algorithm,
+        Function<byte[], byte[]> digestFunction, BinaryData body) {
         String nonce = digestCache.get(NONCE);
         String realm = digestCache.get(REALM);
         String qop = digestCache.get(QOP);

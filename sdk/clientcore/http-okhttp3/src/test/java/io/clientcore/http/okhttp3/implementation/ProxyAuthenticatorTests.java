@@ -306,8 +306,13 @@ public class ProxyAuthenticatorTests {
     }
 
     private static Response mockResponse(String message, Headers headers) {
-        return new Response.Builder().request(DEFAULT_REQUEST).protocol(Protocol.HTTP_1_1).message(message)
-            .code(407).headers(headers).sentRequestAtMillis(0).receivedResponseAtMillis(1)
+        return new Response.Builder().request(DEFAULT_REQUEST)
+            .protocol(Protocol.HTTP_1_1)
+            .message(message)
+            .code(407)
+            .headers(headers)
+            .sentRequestAtMillis(0)
+            .receivedResponseAtMillis(1)
             .build();
     }
 }
