@@ -3,12 +3,16 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
+import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.config.ConfigDef;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,15 +21,22 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CosmosSourceTaskConfig extends CosmosSourceConfig {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceTaskConfig.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     public static final String SOURCE_METADATA_TASK_UNIT = "azure.cosmos.source.task.metadataTaskUnit";
     public static final String SOURCE_FEED_RANGE_TASK_UNITS = "azure.cosmos.source.task.feedRangeTaskUnits";
     public static final String SOURCE_TASK_ID = "azure.cosmos.source.task.id";
+    public static final String COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT = "azure.cosmos.client.metadata.caches.snapshot";
+    public static final String THROUGHPUT_CONTROL_COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT =
+        "azure.cosmos.throughputControl.client.metadata.caches.snapshot";
 
     private final List<FeedRangeTaskUnit> feedRangeTaskUnits;
     private final MetadataTaskUnit metadataTaskUnit;
     private final String taskId;
+    private final CosmosClientMetadataCachesSnapshot cosmosClientMetadataCachesSnapshot;
+    private final CosmosClientMetadataCachesSnapshot throughputControlCosmosClientMetadataCachesSnapshot;
+
 
     public CosmosSourceTaskConfig(Map<String, String> parsedConfigs) {
         super(getConfigDef(), parsedConfigs);
@@ -33,6 +44,8 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
         this.feedRangeTaskUnits = this.parseFeedRangeTaskUnits();
         this.metadataTaskUnit = this.parseMetadataTaskUnit();
         this.taskId = this.getString(SOURCE_TASK_ID);
+        this.cosmosClientMetadataCachesSnapshot = this.parseClientMetadataCache();
+        this.throughputControlCosmosClientMetadataCachesSnapshot = this.parseThroughputControlClientMetadataCache();
     }
 
     public static ConfigDef getConfigDef() {
@@ -61,6 +74,18 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
                 ConfigDef.Type.STRING,
                 ConfigDef.NO_DEFAULT_VALUE,
                 ConfigDef.Importance.MEDIUM
+            )
+            .defineInternal(
+                COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
+                ConfigDef.Type.STRING,
+                null,
+                ConfigDef.Importance.LOW
+            )
+            .defineInternal(
+                THROUGHPUT_CONTROL_COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
+                ConfigDef.Type.STRING,
+                null,
+                ConfigDef.Importance.LOW
             );
     }
 
@@ -100,6 +125,16 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
         }
 
         return null;
+    }
+
+    private CosmosClientMetadataCachesSnapshot parseClientMetadataCache() {
+        return KafkaCosmosUtils.getCosmosClientMetadataFromString(
+            this.getString(COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT));
+    }
+
+    private CosmosClientMetadataCachesSnapshot parseThroughputControlClientMetadataCache() {
+        return KafkaCosmosUtils.getCosmosClientMetadataFromString(
+            this.getString(THROUGHPUT_CONTROL_COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT));
     }
 
     public static Map<String, String> getFeedRangeTaskUnitsConfigMap(List<FeedRangeTaskUnit> feedRangeTaskUnits) {
@@ -147,5 +182,13 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
 
     public String getTaskId() {
         return taskId;
+    }
+
+    public CosmosClientMetadataCachesSnapshot getCosmosClientMetadataCachesSnapshot() {
+        return cosmosClientMetadataCachesSnapshot;
+    }
+
+    public CosmosClientMetadataCachesSnapshot getThroughputControlCosmosClientMetadataCachesSnapshot() {
+        return throughputControlCosmosClientMetadataCachesSnapshot;
     }
 }

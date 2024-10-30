@@ -4,9 +4,11 @@
 package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.CosmosAsyncClient;
+import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkContainersConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
@@ -18,6 +20,7 @@ import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.sink.SinkConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +49,8 @@ public final class CosmosSinkConnector extends SinkConnector {
         this.sinkConfig = new CosmosSinkConfig(props);
         this.connectorName = props.containsKey(CONNECTOR_NAME) ? props.get(CONNECTOR_NAME).toString() : "EMPTY";
         CosmosSinkContainersConfig containersConfig = this.sinkConfig.getContainersConfig();
-        CosmosAsyncClient cosmosAsyncClient = CosmosClientStore.getCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
+        CosmosAsyncClient cosmosAsyncClient =
+            CosmosClientStore.getCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
         validateDatabaseAndContainers(
             new ArrayList<>(containersConfig.getTopicToContainerMap().values()),
             cosmosAsyncClient,
@@ -63,6 +67,10 @@ public final class CosmosSinkConnector extends SinkConnector {
     public List<Map<String, String>> taskConfigs(int maxTasks) {
         LOGGER.info("Setting task configurations with maxTasks {}", maxTasks);
         List<Map<String, String>> configs = new ArrayList<>();
+
+        String clientMetadataCacheString = getClientMetadataCacheString();
+        String throughputControlClientMetadataCacheString = getThroughputControlClientMetadataCacheString();
+
         for (int i = 0; i < maxTasks; i++) {
             Map<String, String> taskConfigs = this.sinkConfig.originalsStrings();
             taskConfigs.put(CosmosSinkTaskConfig.SINK_TASK_ID,
@@ -70,10 +78,62 @@ public final class CosmosSinkConnector extends SinkConnector {
                     "sink",
                     this.connectorName,
                     RandomUtils.nextInt(1, 9999999)));
+            taskConfigs.put(
+                CosmosSinkTaskConfig.COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
+                clientMetadataCacheString);
+            taskConfigs.put(
+                CosmosSinkTaskConfig.THROUGHPUT_CONTROL_COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
+                throughputControlClientMetadataCacheString);
             configs.add(taskConfigs);
         }
 
         return configs;
+    }
+
+    private String getClientMetadataCacheString() {
+        CosmosAsyncClient cosmosAsyncClient =
+            CosmosClientStore.getCosmosClient(this.sinkConfig.getAccountConfig(), this.connectorName);
+
+        CosmosSinkContainersConfig containersConfig = this.sinkConfig.getContainersConfig();
+        List<String> containers = new ArrayList<>(containersConfig.getTopicToContainerMap().values());
+        CosmosAsyncDatabase database = cosmosAsyncClient.getDatabase(containersConfig.getDatabaseName());
+
+        for (String container : containers) {
+            database.getContainer(container)
+                .read()
+                .onErrorResume(throwable -> {
+                    LOGGER.warn("Failed to read container {}", container, throwable);
+                    return Mono.empty();
+                })
+                .block();
+        }
+
+        return KafkaCosmosUtils.convertClientMetadataCacheToString(cosmosAsyncClient);
+    }
+
+    private String getThroughputControlClientMetadataCacheString() {
+        CosmosAsyncClient throughputControlClient = null;
+        if (this.sinkConfig.getThroughputControlConfig().isThroughputControlEnabled()
+            && this.sinkConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
+            throughputControlClient = CosmosClientStore.getCosmosClient(
+                this.sinkConfig.getThroughputControlConfig().getThroughputControlAccountConfig(),
+                this.connectorName
+            );
+
+            throughputControlClient
+                .getDatabase(
+                    this.sinkConfig.getThroughputControlConfig().getGlobalThroughputControlDatabaseName())
+                .getContainer(this.sinkConfig.getThroughputControlConfig().getGlobalThroughputControlContainerName())
+                .read()
+                .onErrorResume(throwable -> {
+                    LOGGER.warn("Failed to read throughput control container", throwable);
+                    return Mono.empty();
+                })
+                .block();
+
+        }
+
+        return KafkaCosmosUtils.convertClientMetadataCacheToString(throughputControlClient);
     }
 
     @Override

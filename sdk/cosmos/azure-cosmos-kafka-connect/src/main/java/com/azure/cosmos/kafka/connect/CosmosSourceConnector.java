@@ -12,6 +12,7 @@ import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosMasterKeyAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceContainersConfig;
@@ -237,6 +238,9 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         }
 
         List<Map<String, String>> feedRangeTaskConfigs = new ArrayList<>();
+        String clientMetadataCacheString = getClientMetadataCacheString();
+        String throughputControlClientMetadataCacheString = getThroughputControlClientMetadataCacheString();
+
         partitionedTaskUnits.forEach(feedRangeTaskUnits -> {
             Map<String, String> taskConfigs = this.config.originalsStrings();
             taskConfigs.putAll(
@@ -246,6 +250,12 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                     "source",
                     this.connectorName,
                     RandomUtils.nextInt(1, 9999999)));
+            taskConfigs.put(
+                CosmosSourceTaskConfig.COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
+                clientMetadataCacheString);
+            taskConfigs.put(
+                CosmosSourceTaskConfig.THROUGHPUT_CONTROL_COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
+                throughputControlClientMetadataCacheString);
             feedRangeTaskConfigs.add(taskConfigs);
         });
 
@@ -485,6 +495,33 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         });
 
         return effectiveContainersTopicMap;
+    }
+
+    private String getClientMetadataCacheString() {
+        return KafkaCosmosUtils.convertClientMetadataCacheToString(this.cosmosClient);
+    }
+
+    private String getThroughputControlClientMetadataCacheString() {
+        CosmosAsyncClient throughputControlClient = null;
+        if (this.config.getThroughputControlConfig().isThroughputControlEnabled()
+            && this.config.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
+            throughputControlClient = CosmosClientStore.getCosmosClient(
+                this.config.getThroughputControlConfig().getThroughputControlAccountConfig(),
+                this.connectorName
+            );
+
+            throughputControlClient.getDatabase(this.config.getThroughputControlConfig().getGlobalThroughputControlDatabaseName())
+                .getContainer(this.config.getThroughputControlConfig().getGlobalThroughputControlContainerName())
+                .read()
+                .onErrorResume(throwable -> {
+                    LOGGER.warn("Failed to read throughput control container", throwable);
+                    return Mono.empty();
+                })
+                .block();
+
+        }
+
+        return KafkaCosmosUtils.convertClientMetadataCacheToString(throughputControlClient);
     }
 
     @Override
