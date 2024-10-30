@@ -3,21 +3,17 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-//import com.azure.core.http.HttpPipeline;
-//import com.azure.core.http.HttpRequest;
-//import com.azure.core.http.HttpResponse;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
-//import com.azure.core.util.Context;
+
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.CollectionConfigurationInfo;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.IsSubscribedHeaders;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.MonitoringDataPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.PublishHeaders;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
-import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
@@ -84,57 +80,37 @@ class QuickPulseDataSender implements Runnable {
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             try {
                 //TODO: populate the saved etag here for filtering
-                Mono<Response<CollectionConfigurationInfo>> responseMono
-                    = liveMetricsRestAPIsForClientSDKs.publishNoCustomHeadersWithResponseAsync(endpointPrefix,
-                        instrumentationKey.get(), "", transmissionTimeInTicks, dataPointList);
+                Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
+                    .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), "",
+                        transmissionTimeInTicks, dataPointList)
+                    .block();
                 if (responseMono == null) {
                     // this shouldn't happen, the mono should complete with a response or a failure
                     throw new AssertionError("http response mono returned empty");
                 }
-                responseMono.doOnNext(response -> { //do on Success or do on Next??
-                    PublishHeaders headers = new PublishHeaders(response.getHeaders());
-                    String isSubscribed = headers.getXMsQpsSubscribed();
-                    this.qpStatus = getQuickPulseStatusFromHeader(isSubscribed);
-                    switch (this.qpStatus) {
-                        case QP_IS_OFF:
-                        case QP_IS_ON:
-                            lastValidTransmission = sendTime;
-                            //TODO: parse the response body here for filtering
-                            break;
+                // If we reach this point the api returned http 200
+                PublishHeaders headers = new PublishHeaders(responseMono.getHeaders());
+                String isSubscribed = headers.getXMsQpsSubscribed();
 
-                        case ERROR:
-                            onPostError(sendTime); // see if this part is a bug in tha main code
-                            break;
-                    }
-                    this.postResponseHeaders = headers;
-                });
+                // it is unlikely that we would get a null/empty subscribed header on an http 200
+                // but treating that like a not subscribed just in case
+                if (Strings.isNullOrEmpty(isSubscribed) || isSubscribed.equalsIgnoreCase("false")) {
+                    this.qpStatus = QuickPulseStatus.QP_IS_OFF;
+                } else {
+                    this.qpStatus = QuickPulseStatus.QP_IS_ON;
+                }
 
-            } catch (Exception e) {
-                logger.error("QuickPulseDataSender failed to send a request", e.getMessage());
+                lastValidTransmission = sendTime;
+                this.postResponseHeaders = headers;
+                //TODO: parse the response body here for filtering
+
+            } catch (RuntimeException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
+                onPostError(sendTime);
+                logger.error(
+                    "QuickPulseDataSender received a service error while attempting to send data to quickpulse {}",
+                    e.getMessage());
             }
-            /*try (HttpResponse response = httpPipeline.sendSync(post, Context.NONE)) {
-                if (response == null) {
-                    // this shouldn't happen, the mono should complete with a response or a failure
-                    throw new AssertionError("http response mono returned empty");
-                }
-            
-                if (networkHelper.isSuccess(response)) {
-                    QuickPulseHeaderInfo quickPulseHeaderInfo = networkHelper.getQuickPulseHeaderInfo(response);
-                    switch (quickPulseHeaderInfo.getQuickPulseStatus()) {
-                        case QP_IS_OFF:
-                        case QP_IS_ON:
-                            lastValidTransmission = sendTime;
-                            this.quickPulseHeaderInfo = quickPulseHeaderInfo;
-                            break;
-            
-                        case ERROR:
-                            onPostError(sendTime);
-                            break;
-                    }
-                }
-            } catch (Throwable t) {
-                logger.error("QuickPulseDataSender failed to send a request", t);
-            }*/
+
         }
     }
 
@@ -159,16 +135,11 @@ class QuickPulseDataSender implements Runnable {
     }
 
     private String getQuickPulseEndpoint() {
-        return endpointUrl.get().toString() + "QuickPulseService.svc";
+        return endpointUrl.get().toString();
     }
 
-    private QuickPulseStatus getQuickPulseStatusFromHeader(String headerValue) {
-        if (!Strings.isNullOrEmpty(headerValue)) {
-            return QuickPulseStatus.ERROR;
-        } else if (headerValue.equalsIgnoreCase("true")) {
-            return QuickPulseStatus.QP_IS_ON;
-        } else {
-            return QuickPulseStatus.QP_IS_OFF;
-        }
+    public QuickPulseStatus getQuickPulseStatus() {
+        return this.qpStatus;
     }
+
 }

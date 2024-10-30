@@ -9,16 +9,16 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.NetworkFriendlyExceptions;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseEnvelope;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.LiveMetricsRestAPIsForClientSDKs;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.IsSubscribedHeaders;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.MonitoringDataPoint;
+import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.ServiceErrorException;
 import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
-import reactor.core.publisher.Mono;
 import reactor.util.annotation.Nullable;
 
 //import java.io.IOException;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -87,23 +87,31 @@ class QuickPulsePingSender {
             = Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
 
         long sendTime = System.nanoTime();
-        Mono<Response<CollectionConfigurationInfo>> responseMono = null;
 
         try {
-            responseMono = liveMetricsRestAPIsForClientSDKs.isSubscribedNoCustomHeadersWithResponseAsync(endpointPrefix,
-                instrumentationKey, transmissionTimeInTicks, machineName, instanceName, quickPulseId, roleName,
-                String.valueOf(QuickPulse.QP_INVARIANT_VERSION), "", buildMonitoringDataPoint());
-            responseMono.doOnNext(response -> { //do on Success or do on Next??
-                responseHeaders = new IsSubscribedHeaders(response.getHeaders());
-                String isSubscribed = responseHeaders.getXMsQpsSubscribed();
-                if (isSubscribed.equalsIgnoreCase("true")) {
-                    lastValidTransmission = sendTime;
-                    operationLogger.recordSuccess();
-                    // consume response body here
-                }
-            });
+            Response<CollectionConfigurationInfo> responseMono
+                = liveMetricsRestAPIsForClientSDKs
+                    .isSubscribedNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey,
+                        transmissionTimeInTicks, machineName, instanceName, quickPulseId, roleName,
+                        String.valueOf(QuickPulse.QP_INVARIANT_VERSION), "", buildMonitoringDataPoint())
+                    .block();
+            if (responseMono == null) {
+                // this shouldn't happen, the mono should complete with a response or a failure
+                throw new AssertionError("http response mono returned empty");
+            }
+
+            // If we get to this point the api returned http 200
+            responseHeaders = new IsSubscribedHeaders(responseMono.getHeaders());
+            String isSubscribed = responseHeaders.getXMsQpsSubscribed();
+            if (!Strings.isNullOrEmpty(isSubscribed)) {
+                operationLogger.recordSuccess(); // when does this need to be called
+                lastValidTransmission = sendTime;
+            }
+
             return responseHeaders;
-        } catch (Throwable t) {
+        } catch (RuntimeException e) {
+            // 404 landed here
+            Throwable t = e.getCause();
             if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(t, getQuickPulseEndpoint(),
                 friendlyExceptionThrown, logger)) {
                 operationLogger.recordFailure(t.getMessage() + " (" + endpointPrefix + ")", t, QUICK_PULSE_PING_ERROR);
@@ -113,6 +121,7 @@ class QuickPulsePingSender {
     }
 
     // visible for testing
+    // TODO: alter this method if needed for test
     String getQuickPulsePingUri(String endpointPrefix) {
         return endpointPrefix + "/ping?ikey=" + getInstrumentationKey();
     }
@@ -124,24 +133,8 @@ class QuickPulsePingSender {
 
     // visible for testing
     String getQuickPulseEndpoint() {
-        return endpointUrl.get().toString() + "QuickPulseService.svc";
+        return endpointUrl.get().toString();
     }
-
-    /*private String buildPingEntity(long timeInMillis) throws IOException {
-        if (pingEnvelope == null) {
-            pingEnvelope = new QuickPulseEnvelope();
-            pingEnvelope.setInstance(instanceName);
-            pingEnvelope.setInvariantVersion(QuickPulse.QP_INVARIANT_VERSION);
-            pingEnvelope.setMachineName(machineName);
-            pingEnvelope.setRoleName(roleName);
-            pingEnvelope.setStreamId(quickPulseId);
-            pingEnvelope.setVersion(sdkVersion);
-        }
-        pingEnvelope.setTimeStamp("/Date(" + timeInMillis + ")/");
-    
-        // By default '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
-        return pingEnvelope.toJsonString().replace("/", "\\/");
-    }*/
 
     private MonitoringDataPoint buildMonitoringDataPoint() {
         MonitoringDataPoint dataPoint = new MonitoringDataPoint();

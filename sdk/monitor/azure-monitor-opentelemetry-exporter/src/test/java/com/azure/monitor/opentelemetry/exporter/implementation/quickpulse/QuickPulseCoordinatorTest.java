@@ -29,7 +29,10 @@ class QuickPulseCoordinatorTest {
         QuickPulseDataSender mockSender = mock(QuickPulseDataSender.class);
         QuickPulsePingSender mockPingSender = mock(QuickPulsePingSender.class);
         QuickPulseDataCollector collector = new QuickPulseDataCollector();
-        Mockito.doReturn(new QuickPulseHeaderInfo(QuickPulseStatus.QP_IS_OFF)).when(mockPingSender).ping(null);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(QPS_STATUS_HEADER, "false");
+        IsSubscribedHeaders pingHeaders =  new IsSubscribedHeaders(headers);
+        Mockito.doReturn(pingHeaders).when(mockPingSender).ping(null);
 
         QuickPulseCoordinatorInitData initData = new QuickPulseCoordinatorInitDataBuilder().withDataFetcher(mockFetcher)
             .withDataSender(mockSender)
@@ -53,7 +56,7 @@ class QuickPulseCoordinatorTest {
         Mockito.verify(mockFetcher, Mockito.never()).prepareQuickPulseDataForSend();
 
         Mockito.verify(mockSender, Mockito.never()).startSending();
-        Mockito.verify(mockSender, Mockito.never()).getPostResponseHeaders();
+        Mockito.verify(mockSender, Mockito.never()).getQuickPulseStatus();
 
         Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         // make sure QP_IS_OFF after ping
@@ -64,18 +67,14 @@ class QuickPulseCoordinatorTest {
     void testOnePingAndThenOnePost() throws InterruptedException {
         QuickPulseDataFetcher mockFetcher = mock(QuickPulseDataFetcher.class);
         QuickPulseDataSender mockSender = mock(QuickPulseDataSender.class);
-        HttpHeaders rawHeaders = new HttpHeaders();
-        rawHeaders.add(QPS_STATUS_HEADER, "false");
-        PublishHeaders postHeaders = new PublishHeaders(rawHeaders);
-        Mockito.doReturn(postHeaders).when(mockSender).getPostResponseHeaders();
+        Mockito.doReturn(QuickPulseStatus.QP_IS_OFF).when(mockSender).getQuickPulseStatus();
 
         QuickPulsePingSender mockPingSender = mock(QuickPulsePingSender.class);
         HttpHeaders rawHeadersPingOn = new HttpHeaders();
-        rawHeadersPingOn.add(QPS_STATUS_HEADER, "on");
+        rawHeadersPingOn.add(QPS_STATUS_HEADER, "true");
         IsSubscribedHeaders pingHeadersOn = new IsSubscribedHeaders(rawHeadersPingOn);
-
         HttpHeaders rawHeadersPingOff = new HttpHeaders();
-        rawHeadersPingOff.add(QPS_STATUS_HEADER, "off");
+        rawHeadersPingOff.add(QPS_STATUS_HEADER, "false");
         IsSubscribedHeaders pingHeadersOff = new IsSubscribedHeaders(rawHeadersPingOff);
         Mockito.when(mockPingSender.ping(null)).thenReturn(pingHeadersOn, pingHeadersOff);
 
@@ -102,7 +101,7 @@ class QuickPulseCoordinatorTest {
         Mockito.verify(mockFetcher, Mockito.atLeast(1)).prepareQuickPulseDataForSend();
 
         Mockito.verify(mockSender, Mockito.times(1)).startSending();
-        Mockito.verify(mockSender, Mockito.times(1)).getPostResponseHeaders();
+        Mockito.verify(mockSender, Mockito.times(1)).getQuickPulseStatus();
 
         Mockito.verify(mockPingSender, Mockito.atLeast(1)).ping(null);
         // Make sure QP_IS_OFF after one post and ping
