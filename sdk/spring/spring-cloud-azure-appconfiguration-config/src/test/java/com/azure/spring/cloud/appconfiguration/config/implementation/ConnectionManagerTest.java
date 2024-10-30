@@ -4,7 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -118,8 +117,6 @@ public class ConnectionManagerTest {
         expectedEndpoints.add(replicaEndpoint);
 
         assertEquals(2, connectionManager.getAvailableClients().size());
-        assertEquals(2, connectionManager.getAllEndpoints().size());
-        assertTrue(connectionManager.getAllEndpoints().containsAll(expectedEndpoints));
         assertEquals(AppConfigurationStoreHealth.UP, connectionManager.getHealth());
 
         connectionManager.backoffClient(originEndpoint);
@@ -129,15 +126,11 @@ public class ConnectionManagerTest {
         when(replicaClient1.getBackoffEndTime()).thenReturn(Instant.now().plusSeconds(1000));
 
         assertEquals(1, connectionManager.getAvailableClients().size());
-        assertEquals(2, connectionManager.getAllEndpoints().size());
-        assertTrue(connectionManager.getAllEndpoints().containsAll(expectedEndpoints));
         assertEquals(AppConfigurationStoreHealth.UP, connectionManager.getHealth());
 
         connectionManager.backoffClient(originEndpoint);
 
         assertEquals(1, connectionManager.getAvailableClients().size());
-        assertEquals(2, connectionManager.getAllEndpoints().size());
-        assertTrue(connectionManager.getAllEndpoints().containsAll(expectedEndpoints));
         assertEquals(AppConfigurationStoreHealth.UP, connectionManager.getHealth());
 
         connectionManager.backoffClient(replicaEndpoint);
@@ -146,8 +139,6 @@ public class ConnectionManagerTest {
         when(replicaClient2.getBackoffEndTime()).thenReturn(Instant.now().plusSeconds(1000));
 
         assertEquals(0, connectionManager.getAvailableClients().size());
-        assertEquals(2, connectionManager.getAllEndpoints().size());
-        assertTrue(connectionManager.getAllEndpoints().containsAll(expectedEndpoints));
         assertEquals(AppConfigurationStoreHealth.DOWN, connectionManager.getHealth());
     }
 

@@ -51,7 +51,7 @@ public final class AppConfigurationStoreTrigger {
      * Validates key isn't null
      */
     @PostConstruct
-    public void validateAndInit() {
+    void validateAndInit() {
         Assert.notNull(key, "All Triggers need a key value set.");
     }
 

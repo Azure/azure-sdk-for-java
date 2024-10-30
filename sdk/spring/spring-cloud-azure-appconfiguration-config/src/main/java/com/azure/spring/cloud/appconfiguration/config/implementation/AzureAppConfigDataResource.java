@@ -32,7 +32,7 @@ public class AzureAppConfigDataResource extends ConfigDataResource {
 
     private final AppConfigurationProviderProperties appProperties;
 
-    public AzureAppConfigDataResource(ConfigStore configStore, Profiles profiles,
+    AzureAppConfigDataResource(ConfigStore configStore, Profiles profiles,
         AppConfigurationProviderProperties appProperties) {
         this.configStoreEnabled = configStore.isEnabled();
         this.endpoint = configStore.getEndpoint();

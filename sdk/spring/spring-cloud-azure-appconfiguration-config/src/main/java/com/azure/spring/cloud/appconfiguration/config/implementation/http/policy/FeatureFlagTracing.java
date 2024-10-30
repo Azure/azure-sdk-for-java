@@ -5,7 +5,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.http.polic
 import java.util.Arrays;
 import java.util.List;
 
-public class FeatureFlagTracing {
+class FeatureFlagTracing {
 
     private static final String CUSTOM_FILTER = "CSTM";
 
@@ -34,18 +34,18 @@ public class FeatureFlagTracing {
 
     private Boolean usesTargetingFilter = false;
 
-    public boolean usesAnyFilter() {
+    boolean usesAnyFilter() {
         return usesCustomFilter || usesPercentageFilter || usesTimeWindowFilter || usesTargetingFilter;
     }
 
-    public void resetFeatureFilterTelemetry() {
+    void resetFeatureFilterTelemetry() {
         usesCustomFilter = false;
         usesPercentageFilter = false;
         usesTimeWindowFilter = false;
         usesTargetingFilter = false;
     }
 
-    public void updateFeatureFilterTelemetry(String filterName) {
+    void updateFeatureFilterTelemetry(String filterName) {
         if (PERCENTAGE_FILTER_NAMES.stream().anyMatch(name -> name.equalsIgnoreCase(filterName))) {
             usesPercentageFilter = true;
         } else if (TIME_WINDOW_FILTER_NAMES.stream().anyMatch(name -> name.equalsIgnoreCase(filterName))) {

@@ -26,12 +26,12 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     /**
      * Format of User Agent
      */
-    public static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
+    private static final String USER_AGENT = String.format("%s/%s", StringUtils.replace(PACKAGE_NAME, " ", ""),
         BaseAppConfigurationPolicy.class.getPackage().getImplementationVersion());
 
-    static Boolean watchRequests = false;
+    private static Boolean watchRequests = false;
 
-    final TracingInfo tracingInfo;
+    private final TracingInfo tracingInfo;
 
     /**
      * App Configuration Http Pipeline Policy

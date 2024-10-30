@@ -269,7 +269,7 @@ class AppConfigurationRefreshUtil {
             return this;
         }
 
-        RefreshEventData setFullMessage(String message) {
+        private RefreshEventData setFullMessage(String message) {
             this.message = message;
             this.doRefresh = true;
             return this;

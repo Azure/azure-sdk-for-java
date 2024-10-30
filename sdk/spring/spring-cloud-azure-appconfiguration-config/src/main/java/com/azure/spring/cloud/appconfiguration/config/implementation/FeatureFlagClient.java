@@ -43,10 +43,9 @@ import com.nimbusds.jose.util.Base64URL;
  * Loads sets of feature flags, and de-duplicates the results with previously loaded feature flags. Newer Feature Flags
  * take priority.
  */
-@Component
-public class FeatureFlagClient {
+@Component class FeatureFlagClient {
 
-    protected final Map<String, Feature> properties = new LinkedHashMap<>();
+    private final Map<String, Feature> properties = new LinkedHashMap<>();
 
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
@@ -63,7 +62,7 @@ public class FeatureFlagClient {
      * </p>
      *
      */
-    public List<FeatureFlags> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
+    List<FeatureFlags> loadFeatureFlags(AppConfigurationReplicaClient replicaClient, String customKeyFilter,
         String[] labelFilter) {
         List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
 
@@ -85,7 +84,7 @@ public class FeatureFlagClient {
         return loadedFeatureFlags;
     }
 
-    public List<FeatureFlags> proccessFeatureFlags(FeatureFlags features, String endpoint) {
+    List<FeatureFlags> proccessFeatureFlags(FeatureFlags features, String endpoint) {
         List<FeatureFlags> loadedFeatureFlags = new ArrayList<>();
         loadedFeatureFlags.add(features);
 

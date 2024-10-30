@@ -9,7 +9,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
  * configurations with any label.
  *
  */
-public class NormalizeNull {
+class NormalizeNull {
 
     private static final String EMPTY_LABEL = "\0";
 
@@ -19,7 +19,7 @@ public class NormalizeNull {
      * @param setting ConfigurationSetting
      * @return ConfigurationSetting with label corrected from null to \0
      */
-    public static ConfigurationSetting normalizeNullLabel(ConfigurationSetting setting) {
+    static ConfigurationSetting normalizeNullLabel(ConfigurationSetting setting) {
         return setting.getLabel() == null ? setting.setLabel(EMPTY_LABEL) : setting;
     }
 

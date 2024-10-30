@@ -63,7 +63,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         }
     }
 
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings({"unchecked"})
     private void tryServerSideSchema(Map<? extends String, ? extends Object> features) {
         if (features.keySet().isEmpty()) {
             return;

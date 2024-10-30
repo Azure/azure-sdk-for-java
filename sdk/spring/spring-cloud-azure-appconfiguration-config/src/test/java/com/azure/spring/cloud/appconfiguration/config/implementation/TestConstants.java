@@ -6,6 +6,22 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
  * Test constants which can be shared across different test classes
  */
 public final class TestConstants {
+    
+    /**
+     * Http Header Correlation Context
+     */
+    public static final String CORRELATION_CONTEXT = "Correlation-Context";
+    
+    /**
+     * App Configurations Key Vault Reference Content Type
+     */
+    public static final String KEY_VAULT_CONTENT_TYPE = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
+    
+    public static final String USERS = "users";
+    
+    public static final String GROUPS = "groups";
+    
+    public static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
     // Store specific configuration
     public static final String TEST_STORE_NAME = "store1";

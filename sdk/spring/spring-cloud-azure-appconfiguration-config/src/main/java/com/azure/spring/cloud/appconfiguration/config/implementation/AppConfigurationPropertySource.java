@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,12 +11,9 @@ import org.springframework.boot.context.properties.source.InvalidConfigurationPr
 import org.springframework.core.env.EnumerablePropertySource;
 
 import com.azure.data.appconfiguration.ConfigurationClient;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
 
 /**
- * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
- *
- * <p>
+ * Azure App Configu<p>
  * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be
  * created.
  * </p>
@@ -25,8 +21,6 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 abstract class AppConfigurationPropertySource extends EnumerablePropertySource<ConfigurationClient> {
 
     protected final Map<String, Object> properties = new LinkedHashMap<>();
-
-    protected final List<ConfigurationSetting> featureConfigurationSettings = new ArrayList<>();
 
     protected final AppConfigurationReplicaClient replicaClient;
 

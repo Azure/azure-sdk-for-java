@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.http.policy;
 
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.CORRELATION_CONTEXT;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEV_ENV_TRACING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.KEY_VAULT_CONFIGURED_TRACING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USER_AGENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.CORRELATION_CONTEXT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 

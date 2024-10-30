@@ -94,7 +94,7 @@ public final class FeatureFlagKeyValueSelector {
      * Validates key-filter and label-filter are valid.
      */
     @PostConstruct
-    public void validateAndInit() {
+    void validateAndInit() {
         if (labelFilter != null) {
             Assert.isTrue(!labelFilter.contains("*"), "LabelFilter must not contain asterisk(*)");
         }

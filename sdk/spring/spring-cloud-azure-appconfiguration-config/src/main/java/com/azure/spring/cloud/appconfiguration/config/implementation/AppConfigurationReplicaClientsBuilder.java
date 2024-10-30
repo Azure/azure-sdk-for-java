@@ -42,15 +42,15 @@ public class AppConfigurationReplicaClientsBuilder {
     /**
      * Invalid Connection String error message
      */
-    public static final String NON_EMPTY_MSG = "%s property should not be null or empty in the connection string of Azure Config Service.";
+    private static final String NON_EMPTY_MSG = "%s property should not be null or empty in the connection string of Azure Config Service.";
 
-    public static final String RETRY_MODE_PROPERTY_NAME = "retry.mode";
+    private static final String RETRY_MODE_PROPERTY_NAME = "retry.mode";
 
-    public static final String MAX_RETRIES_PROPERTY_NAME = "retry.exponential.max-retries";
+    private static final String MAX_RETRIES_PROPERTY_NAME = "retry.exponential.max-retries";
 
-    public static final String BASE_DELAY_PROPERTY_NAME = "retry.exponential.base-delay";
+    private static final String BASE_DELAY_PROPERTY_NAME = "retry.exponential.base-delay";
 
-    public static final String MAX_DELAY_PROPERTY_NAME = "retry.exponential.max-delay";
+    private static final String MAX_DELAY_PROPERTY_NAME = "retry.exponential.max-delay";
 
     private static final Duration DEFAULT_MIN_RETRY_POLICY = Duration.ofMillis(800);
 
@@ -64,7 +64,7 @@ public class AppConfigurationReplicaClientsBuilder {
     /**
      * Invalid Formatted Connection String Error message
      */
-    public static final String ENDPOINT_ERR_MSG = String.format("Connection string does not follow format %s.",
+    private static final String ENDPOINT_ERR_MSG = String.format("Connection string does not follow format %s.",
         CONN_STRING_REGEXP);
 
     private static final Pattern CONN_STRING_PATTERN = Pattern.compile(CONN_STRING_REGEXP);
@@ -81,7 +81,7 @@ public class AppConfigurationReplicaClientsBuilder {
 
     private final int defaultMaxRetries;
 
-    public AppConfigurationReplicaClientsBuilder(int defaultMaxRetries, ConfigurationClientBuilderFactory clientFactory,
+    AppConfigurationReplicaClientsBuilder(int defaultMaxRetries, ConfigurationClientBuilderFactory clientFactory,
         ConfigurationClientCustomizer clientCustomizer, boolean credentialConfigured, boolean isKeyVaultConfigured,
         boolean isDev) {
         this.defaultMaxRetries = defaultMaxRetries;
@@ -175,7 +175,7 @@ public class AppConfigurationReplicaClientsBuilder {
         return clients;
     }
 
-    public AppConfigurationReplicaClient buildClient(String failoverEndpoint, ConfigStore configStore) {
+    AppConfigurationReplicaClient buildClient(String failoverEndpoint, ConfigStore configStore) {
 
         if (StringUtils.hasText(configStore.getConnectionString())) {
             ConnectionString connectionString = new ConnectionString(configStore.getConnectionString());
@@ -209,7 +209,7 @@ public class AppConfigurationReplicaClientsBuilder {
         return new AppConfigurationReplicaClient(endpoint, builder.buildClient(), tracingInfo);
     }
 
-    protected ConfigurationClientBuilder createBuilderInstance() {
+    private ConfigurationClientBuilder createBuilderInstance() {
         RetryStrategy retryStatagy = null;
 
         String mode = System.getProperty(AzureGlobalProperties.PREFIX + "." + RETRY_MODE_PROPERTY_NAME);
