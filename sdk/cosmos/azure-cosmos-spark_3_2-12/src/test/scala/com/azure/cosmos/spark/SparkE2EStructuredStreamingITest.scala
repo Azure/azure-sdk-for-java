@@ -23,7 +23,7 @@ import scala.util.matching.Regex
 class SparkE2EStructuredStreamingITest
   extends IntegrationSpec
     with CosmosClient
-    with CosmosContainer
+    with CosmosContainerWithRetention
     with BasicLoggingTrait
     with Retries {
 
@@ -102,10 +102,16 @@ class SparkE2EStructuredStreamingITest
     logInfo(s"RecordCount in source container after first execution: $sourceCount")
     var targetCount: Long = getRecordCountOfContainer(targetContainer)
     logInfo(s"RecordCount in target container after first execution: $targetCount")
+    var endLSNs = getEndLSNInOffset(microBatchQuery.lastProgress.sources(0).endOffset)
+    var totalChanges = 0L
+    endLSNs.foreach(endLSN =>
+      totalChanges += endLSN - 1L
+    )
 
     processedRecordCount.get() shouldEqual 1L
     sourceCount shouldEqual 1L
     sourceCount shouldEqual targetCount
+    targetCount shouldEqual totalChanges
 
     // Initially ingest 100 records
     for (i <- 1 until 21) {
@@ -137,9 +143,15 @@ class SparkE2EStructuredStreamingITest
     logInfo(s"RecordCount in source container after second execution: $sourceCount")
     targetCount = getRecordCountOfContainer(targetContainer)
     logInfo(s"RecordCount in target container after second execution: $targetCount")
+    endLSNs = getEndLSNInOffset(secondMicroBatchQuery.lastProgress.sources(0).endOffset)
+    totalChanges = 0L
+    endLSNs.foreach(endLSN =>
+      totalChanges += endLSN - 1L
+    )
 
     sourceCount shouldEqual 21L
     targetCount shouldEqual sourceCount
+    targetCount shouldEqual totalChanges
 
     targetContainer.delete().block()
   }
@@ -206,12 +218,12 @@ class SparkE2EStructuredStreamingITest
       .outputMode("append")
       .start()
 
-    Thread.sleep(20000)
+    Thread.sleep(30000)
     microBatchQuery.stop()
 
-    var sourceCount: Long = getRecordCountOfContainer(sourceContainer)
+    val sourceCount: Long = getRecordCountOfContainer(sourceContainer)
     logInfo(s"RecordCount in source container after first execution: $sourceCount")
-    var targetCount: Long = getRecordCountOfContainer(targetContainer)
+    val targetCount: Long = getRecordCountOfContainer(targetContainer)
     logInfo(s"RecordCount in target container after first execution: $targetCount")
 
     val endLSNs = getEndLSNInOffset(microBatchQuery.lastProgress.sources(0).endOffset)
