@@ -250,6 +250,9 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
         true
       case Some(endLsn) =>
         // In streaming mode we only continue until we hit the endOffset's continuation Lsn
+        if (itemIterator.isEmpty) {
+          return false
+        }
         val node = itemIterator.head.asInstanceOf[ChangeFeedSparkRowItem]
         assert(node.lsn != null, "Change feed responses must have _lsn property.")
         assert(node.lsn != "", "Change feed responses must have non empty _lsn.")
