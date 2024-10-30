@@ -99,6 +99,29 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         };
     }
 
+    @DataProvider(name = "changeFeedQueryEndLSNDataProvider")
+    public static Object[][] changeFeedQueryEndLSNDataProvider() {
+        return new Object[][]{
+                // container RU, continuous ingest items, partition count
+                // number of docs from cf, documents to write
+
+                // endLSN is less than number of documents
+                { 400, true, 1, 3, 6},
+                { 400, false, 1, 3, 6},
+                // endLSN is equal to number of documents
+                { 400, false, 1, 3, 3},
+                // endLSN is greater than number of documents
+                { 400, false, 1, 2, 2},
+                // 2 partitions but only write to one, so
+                // that the other partition stops on 304
+                { 11000, true, 1, 3, 6},
+                { 11000, false, 1, 3, 6},
+                // both partitions have more than the endLSN
+                { 11000, true, 5, 6, 30},
+                { 11000, false, 5, 6, 30},
+        };
+    }
+
     @DataProvider(name = "changeFeedSplitHandlingDataProvider")
     public static Object[][] changeFeedSplitHandlingDataProvider() {
         return new Object[][]{
@@ -845,10 +868,13 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         assertThat(stateAfterLastDrainAttempt.getContinuation().getCompositeContinuationTokens()).hasSize(3);
     }
 
-    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryCompleteAfterAvailableNowDataProvider", timeOut = 100 * TIMEOUT)
+    @Test(groups = { "emulator" }, dataProvider = "changeFeedQueryEndLSNDataProvider", timeOut = 100 * TIMEOUT)
     public void changeFeedQueryCompleteAfterEndLSN(
         int throughput,
-        boolean shouldContinuouslyIngestItems) {
+        boolean shouldContinuouslyIngestItems,
+        int partitionCount,
+        int expectedDocs,
+        int docsToWrite) {
         String testContainerId = UUID.randomUUID().toString();
 
         try {
@@ -863,11 +889,12 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             List<FeedRange> feedRanges = testContainer.getFeedRanges().block();
             AtomicInteger currentPageCount = new AtomicInteger(0);
 
-            insertDocuments(1, 6, testContainer);
+            List<String> partitionKeys = insertDocumentsCore(partitionCount, docsToWrite, testContainer);
             CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions =
                 CosmosChangeFeedRequestOptions.createForProcessingFromBeginning(FeedRange.forFullRange());
             ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
                 .setEndLSN(cosmosChangeFeedRequestOptions, 4L);
+            cosmosChangeFeedRequestOptions.setMaxPrefetchPageCount(8);
 
             AtomicInteger totalQueryCount = new AtomicInteger(0);
             AtomicBoolean hasMoreChanges = new AtomicBoolean(false);
@@ -876,21 +903,20 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .flatMap(response -> {
                     int currentPage = currentPageCount.incrementAndGet();
                     totalQueryCount.set(totalQueryCount.get() + response.getResults().size());
-                    hasMoreChanges.set(ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor()
-                        .getHasMoreChangesToProcess(response));
-
 
                     // Only start creating new items once we have looped through all feedRanges once to make the test behavior more deterministic
                     if (shouldContinuouslyIngestItems && currentPage >= feedRanges.size()) {
+                        // Only keep adding to partitions that already have items in them
+                        // again to make the test behavior more deterministic
                         return testContainer
-                            .createItem(getDocumentDefinition(UUID.randomUUID().toString())).then();
+                            .createItem(getDocumentDefinition(partitionKeys.get(currentPage % 1))).then();
                     } else {
                         return Mono.empty();
                     }
                 })
                 .blockLast();
             assertThat(hasMoreChanges.get()).isFalse();
-            assertThat(totalQueryCount.get()).isEqualTo(3);
+            assertThat(totalQueryCount.get()).isEqualTo(expectedDocs);
         } finally {
             safeDeleteCollection(this.createdAsyncDatabase.getContainer(testContainerId));
         }
@@ -953,33 +979,43 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         int partitionCount,
         int documentCount,
         CosmosAsyncContainer container) {
+       insertDocumentsCore(partitionCount, documentCount, container);
+    }
+
+    List<String> insertDocumentsCore(
+            int partitionCount,
+            int documentCount,
+            CosmosAsyncContainer container) {
 
         List<ObjectNode> docs = new ArrayList<>();
+        List<String> partitionKeys = new ArrayList<>();
 
         for (int i = 0; i < partitionCount; i++) {
             String partitionKey = UUID.randomUUID().toString();
             for (int j = 0; j < documentCount; j++) {
                 docs.add(getDocumentDefinition(partitionKey));
             }
+            partitionKeys.add(partitionKey);
         }
 
         ArrayList<Mono<CosmosItemResponse<ObjectNode>>> result = new ArrayList<>();
         for (int i = 0; i < docs.size(); i++) {
             result.add(container
-                .createItem(docs.get(i)));
+                    .createItem(docs.get(i)));
         }
 
         List<ObjectNode> insertedDocs = Flux.merge(
-            Flux.fromIterable(result),
-            2)
-                   .map(CosmosItemResponse::getItem).collectList().block();
+                        Flux.fromIterable(result),
+                        2)
+                .map(CosmosItemResponse::getItem).collectList().block();
 
         for (ObjectNode doc : insertedDocs) {
             partitionKeyToDocuments.put(
-                doc.get(PARTITION_KEY_FIELD_NAME).textValue(),
-                doc);
+                    doc.get(PARTITION_KEY_FIELD_NAME).textValue(),
+                    doc);
         }
         logger.info("FINISHED INSERT");
+        return partitionKeys;
     }
 
     void deleteDocuments(

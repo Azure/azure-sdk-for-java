@@ -1085,8 +1085,6 @@ public class ImplementationBridgeHelpers {
             <TNew, T> FeedResponse<TNew> convertGenericType(FeedResponse<T> feedResponse, Function<T, TNew> conversion);
             <T> FeedResponse<T> createFeedResponse(
                 List<T> results, Map<String, String> headers, CosmosDiagnostics diagnostics);
-            <T> FeedResponse<T> setHasMoreChangesToProcess(FeedResponse<T> feedResponse, boolean hasMoreChangesToProcess);
-            <T> Boolean getHasMoreChangesToProcess(FeedResponse<T> feedResponse);
         }
     }
 

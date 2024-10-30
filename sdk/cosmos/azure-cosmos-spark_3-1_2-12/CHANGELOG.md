@@ -7,7 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed an issue when using `ChangeFeed` with `spark.cosmos.changeFeed.itemCountPerTriggerHint` causing all cosmos partitions to not be fully processed in some cases. - See [PR 42553](https://github.com/Azure/azure-sdk-for-java/pull/42553)
+* Fixed an issue when using `ChangeFeed` causing some cosmos partitions to not be fully processed in some cases. - See [PR 42553](https://github.com/Azure/azure-sdk-for-java/pull/42553)
 
 #### Other Changes
 

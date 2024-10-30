@@ -318,16 +318,14 @@ public final class ModelBridgeInternal {
         ConcurrentMap<String, QueryMetrics> queryMetricsMap,
         QueryInfo.QueryPlanDiagnosticsContext diagnosticsContext,
         boolean useEtagAsContinuation,
-        boolean isNoChanges,
-        Boolean hasMoreChangesToProcess) {
+        boolean isNoChanges) {
 
         FeedResponse<T> feedResponse =  new FeedResponse<>(
             results,
             headers,
             queryMetricsMap,
             useEtagAsContinuation,
-            isNoChanges,
-            hasMoreChangesToProcess);
+            isNoChanges);
         feedResponse.setQueryPlanDiagnosticsContext(diagnosticsContext);
         return feedResponse;
     }

@@ -18,6 +18,7 @@ import org.scalatest.tagobjects.Retryable
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicLong
 import java.util.regex.Pattern
+import scala.util.matching.Regex
 
 class SparkE2EStructuredStreamingITest
   extends IntegrationSpec
@@ -141,6 +142,88 @@ class SparkE2EStructuredStreamingITest
     targetCount shouldEqual sourceCount
 
     targetContainer.delete().block()
+  }
+
+  "spark change feed micro batch (incremental)" can
+    "have child partitions with more changes than endLSN " in {
+
+    val processedRecordCount = new AtomicLong()
+    var spark = this.createSparkSession(processedRecordCount)
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+    val testId = UUID.randomUUID().toString
+    val sourceContainerResponse = cosmosClient.getDatabase(cosmosDatabase).createContainer(
+      "source_" + testId,
+      "/sequenceNumber",
+      ThroughputProperties.createManualThroughput(11000)).block()
+    val sourceContainer = cosmosClient.getDatabase(cosmosDatabase).getContainer(sourceContainerResponse.getProperties.getId)
+    val targetContainerResponse = cosmosClient.getDatabase(cosmosDatabase).createContainer(
+      "target_" + testId,
+      "/sequenceNumber",
+      ThroughputProperties.createManualThroughput(11000)).block()
+    val targetContainer = cosmosClient
+      .getDatabase(cosmosDatabase)
+      .getContainer(targetContainerResponse.getProperties.getId)
+
+
+    // 2 partitions with 100 changes each
+    for (_ <- 0 until 100) {
+      this.ingestTestDocument(sourceContainer, 1)
+      this.ingestTestDocument(sourceContainer, 2)
+    }
+
+    val changeFeedCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> sourceContainer.getId,
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "1",
+    )
+
+    val writeCfg = Map(
+      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> targetContainer.getId,
+      "spark.cosmos.write.strategy" -> "ItemOverwrite",
+      "spark.cosmos.write.bulk.enabled" -> "true",
+      "checkpointLocation" -> ("/tmp/" + testId + "/")
+    )
+
+    val changeFeedDF = spark
+      .readStream
+      .format("cosmos.oltp.changeFeed")
+      .options(changeFeedCfg)
+      .load()
+
+
+    val microBatchQuery = changeFeedDF
+      .writeStream
+      .format("cosmos.oltp")
+      .trigger(Trigger.ProcessingTime("100 milliseconds"))
+      .queryName(testId)
+      .options(writeCfg)
+      .outputMode("append")
+      .start()
+
+    Thread.sleep(20000)
+    microBatchQuery.stop()
+
+    var sourceCount: Long = getRecordCountOfContainer(sourceContainer)
+    logInfo(s"RecordCount in source container after first execution: $sourceCount")
+    var targetCount: Long = getRecordCountOfContainer(targetContainer)
+    logInfo(s"RecordCount in target container after first execution: $targetCount")
+
+    val endLSNs = getEndLSNInOffset(microBatchQuery.lastProgress.sources(0).endOffset)
+    var totalChanges = 0L
+    endLSNs.foreach(endLSN => {
+      totalChanges += endLSN - 1L
+    }
+    )
+
+    sourceCount shouldEqual 200L
+    targetCount shouldEqual totalChanges
+
   }
 
   "spark change feed micro batch (incremental)" can
@@ -801,6 +884,13 @@ class SparkE2EStructuredStreamingITest
     while (matcher.find) { count += 1 }
 
     count
+  }
+
+  private[this] def getEndLSNInOffset(text: String): List[Long] = {
+    text should not be null
+    val pattern: Regex = "\"endLsn\"\\s*:\\s*(\\d+)".r
+    val endLSNs = pattern.findAllMatchIn(text).map(_.group(1).toLong).toList
+    endLSNs
   }
 
   private[this] def getRecordCountOfContainer(container: CosmosAsyncContainer): Long = {

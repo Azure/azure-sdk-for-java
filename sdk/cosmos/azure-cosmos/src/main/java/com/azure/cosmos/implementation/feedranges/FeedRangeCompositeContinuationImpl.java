@@ -269,12 +269,9 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
     }
 
     @Override
-    public <T> boolean hasFetchedAllChanges(FeedResponse<T> response, Long endLSN) {
-        // if endLSN is not provided, we will use the latest LSN from the session token for available now
-        // if endLSN is provided, we have to use the min of latestLSNFromSessionToken and endLSN in case some partitions
-        // have less changes than others
-        long lastestLSNFromSessionToken = this.getLatestLsnFromSessionToken(response.getSessionToken());
-        long lsn = endLSN != null ? Math.min(endLSN, lastestLSNFromSessionToken)  : lastestLSNFromSessionToken;
+    public <T> boolean hasFetchedAllChanges(FeedResponse<T> responseMessage, Long endLSN) {
+        long lastestLSNFromSessionToken = this.getLatestLsnFromSessionToken(responseMessage.getSessionToken());
+        long lsn = endLSN != null ? endLSN  : lastestLSNFromSessionToken;
         FeedRangeLSNContext feedRangeLSNContext =
             this.updateFeedRangeEndLSNIfAbsent(
                 this.currentToken.getRange(),
@@ -288,8 +285,22 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         } while (
             !this.currentToken.getRange().equals(initialToken) &&
                 this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange()));
+        feedRangeLSNContext.hasNoChanges = ModelBridgeInternal.<T>noChanges(responseMessage);
 
         return this.hasFetchedAllChangesForFeedRange(this.currentToken.getRange());
+    }
+
+    @Override
+    public boolean hasFetchedAllChanges() {
+        if (feedRangeLSNContextMap.size() != this.compositeContinuationTokens.size()) {
+            return false;
+        }
+        for (Map.Entry<Range<String>, FeedRangeLSNContext> entry : feedRangeLSNContextMap.entrySet()) {
+            if (!entry.getValue().hasCompleted && !entry.getValue().hasNoChanges) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -592,17 +603,19 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
         private Range<String> range;
         private Long endLSN;
         private boolean hasCompleted;
+        private boolean hasNoChanges;
 
         public FeedRangeLSNContext(Range<String> range, Long endLSN) {
             this.range = range;
             this.endLSN = endLSN;
             this.hasCompleted = false;
+            this.hasNoChanges = false;
         }
 
         public void handleLSNFromContinuation(CompositeContinuationToken compositeContinuationToken) {
             if (!compositeContinuationToken.getRange().equals(this.range)) {
                 throw new IllegalStateException(
-                    "Range in FeedRangeAvailableNowContext is different than the range in the continuationToken");
+                    "Range in FeedRangeLSNContext is different than the range in the continuationToken");
             }
 
             String lsnFromContinuationToken = compositeContinuationToken.getToken();

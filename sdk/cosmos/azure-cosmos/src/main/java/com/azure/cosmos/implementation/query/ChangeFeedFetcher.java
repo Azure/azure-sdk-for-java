@@ -120,18 +120,20 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
                        if (this.completeAfterAllCurrentChangesRetrieved || this.endLSN != null) {
                            if (continuationSnapshot != null) {
-                               //track the end-LSN available now for each sub-feedRange and then find the next sub-feedRange to fetch more changes
-                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChanges(r, this.endLSN);
-                               ImplementationBridgeHelpers.FeedResponseHelper.getFeedResponseAccessor()
-                                   .setHasMoreChangesToProcess(r, !shouldComplete);
+
+                               //track the end-LSN for each sub-feedRange and then find the next sub-feedRange to fetch more changes
+                               boolean shouldComplete = continuationSnapshot.hasFetchedAllChanges(r, endLSN);
                                if (shouldComplete) {
                                    this.disableShouldFetchMore();
                                    return Mono.just(r);
                                }
 
-                               if (ModelBridgeInternal.<T>noChanges(r)) {
+                               // We will return if we have seen either a 304 or we
+                               // have processed all changed up to an lsn for all sub-feedRanges
+                               if (ModelBridgeInternal.<T>noChanges(r) && !continuationSnapshot.hasFetchedAllChanges()) {
                                    // if we have reached here, it means we have got 304 for the current feedRange,
                                    // but we need to continue drain the changes from other sub-feedRange
+
                                    this.reEnableShouldFetchMoreForRetry();
                                    return Mono.empty();
                                }
