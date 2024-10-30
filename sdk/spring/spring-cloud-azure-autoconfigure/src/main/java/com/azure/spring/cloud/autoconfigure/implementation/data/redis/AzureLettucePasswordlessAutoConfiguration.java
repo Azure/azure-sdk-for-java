@@ -23,16 +23,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.data.redis.connection.RedisConfiguration;
 import org.springframework.data.redis.connection.RedisSentinelConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnection;
 import org.springframework.data.redis.connection.lettuce.RedisCredentialsProviderFactory;
 import reactor.core.publisher.Mono;
-
-import java.util.Properties;
-
-import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.enhancePasswordlessProperties;
 
 
 /**
@@ -48,12 +43,6 @@ import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPas
 @EnableConfigurationProperties(RedisProperties.class)
 public class AzureLettucePasswordlessAutoConfiguration {
 
-    private final GenericApplicationContext applicationContext;
-
-    AzureLettucePasswordlessAutoConfiguration(GenericApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
     @Bean
     @ConfigurationProperties(prefix = "spring.data.redis.azure")
     AzureRedisPasswordlessProperties redisPasswordlessProperties() {
@@ -66,9 +55,7 @@ public class AzureLettucePasswordlessAutoConfiguration {
                                                 AzureRedisPasswordlessProperties azureRedisPasswordlessProperties,
                                                 AzureGlobalProperties azureGlobalProperties) {
         AzureRedisPasswordlessProperties redisPasswordlessProperties = mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties);
-        Properties passwordlessProperties = redisPasswordlessProperties.toPasswordlessProperties();
-        enhancePasswordlessProperties("spring.data.redis.azure", redisPasswordlessProperties, passwordlessProperties);
-        return new AzureRedisCredentials(redisProperties.getUsername(), passwordlessProperties);
+        return new AzureRedisCredentials(redisProperties.getUsername(), redisPasswordlessProperties);
     }
 
     @Bean(name = "azureLettuceClientConfigurationBuilderCustomizer")
