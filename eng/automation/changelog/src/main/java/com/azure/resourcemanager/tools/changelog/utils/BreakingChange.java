@@ -40,7 +40,7 @@ public class BreakingChange {
             return "";
         }
         StringBuilder builder = new StringBuilder();
-        builder.append(String.format("#### `%s` was %s", className, type.getDisplayName()));
+        builder.append(String.format("#### `%s` was %s\n", className, type.getDisplayName()));
         for (String methodChange : methodChanges) {
             builder
                 .append("* ")
