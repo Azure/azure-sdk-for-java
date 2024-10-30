@@ -7,19 +7,10 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.CoreUtils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Parses Authorization challenges from the {@link HttpResponse}.
  */
 public class AuthorizationChallengeParser {
-
-    // These patterns are use to parse a challenge string from the WWw-Authenticate header.
-    // A WWW-Authenticate may have more than one challenge, grouped by scheme. The first pattern groups schemes and their parameters.
-    // The second pattern parses the parameters out of a given challenge scheme.
-    private static final Pattern CHALLENGE_PATTERN = Pattern.compile("(\\w+) ((?:\\w+=\"[^\"]*\",?\\s*)+)");
-    private static final Pattern CHALLENGE_PARAMS_PATTERN = Pattern.compile("(\\w+)=\"([^\"]*)\"");
 
     /**
      * Examines a {@link HttpResponse} to see if it is a CAE challenge.
@@ -58,13 +49,23 @@ public class AuthorizationChallengeParser {
      * @return The extracted challenge parameters for the specified challenge scheme.
      */
     private static String getChallengeParametersForScheme(String challenge, String challengeScheme) {
-        Matcher challengeMatch = CHALLENGE_PATTERN.matcher(challenge);
-        while (challengeMatch.find()) {
-            if (challengeMatch.group(1).equals(challengeScheme)) {
-                return challengeMatch.group(2);
-            }
+        if (challenge == null || challengeScheme == null) {
+            return null;
         }
 
+        String[] challengeParts = challenge.split(",", -1);
+        for (String part : challengeParts) {
+            // Extract the challenge scheme and the parameters.
+            int spaceIndex = part.indexOf(' ');
+            if (spaceIndex != -1) {
+                String scheme = part.substring(0, spaceIndex).trim();
+                String parameters = part.substring(spaceIndex + 1).trim();
+
+                if (scheme.equals(challengeScheme)) {
+                    return parameters;
+                }
+            }
+        }
         return null;
     }
 
@@ -75,17 +76,22 @@ public class AuthorizationChallengeParser {
      * @return The extracted value of the challenge parameter.
      */
     private static String getChallengeParameterValue(String parameters, String parameter) {
-        if (CoreUtils.isNullOrEmpty(parameters)) {
+        if (parameters == null || parameter == null || parameters.isEmpty()) {
             return null;
         }
 
-        Matcher paramsMatch = CHALLENGE_PARAMS_PATTERN.matcher(parameters);
-        while (paramsMatch.find()) {
-            if (parameter.equals(paramsMatch.group(1))) {
-                return paramsMatch.group(2);
+        String[] paramPairs = parameters.split(",", -1);
+        for (String pair : paramPairs) {
+            int equalsIndex = pair.indexOf('=');
+            if (equalsIndex != -1) {
+                String key = pair.substring(0, equalsIndex).trim();
+                String value = pair.substring(equalsIndex + 1).replace("\"", "").trim();
+
+                if (key.equals(parameter)) {
+                    return value;
+                }
             }
         }
-
         return null;
     }
 }
