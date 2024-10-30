@@ -17,7 +17,6 @@ public class BreakingChange {
     private final Set<String> methodChanges = new LinkedHashSet<>();
 
     private BreakingChange(String className) {
-        Objects.requireNonNull(className);
         this.className = className;
         setClassLevelChangeType(Type.NOT_CHANGED);
     }
@@ -37,6 +36,9 @@ public class BreakingChange {
     }
 
     public String getForChangelog() {
+        if (type == Type.NOT_CHANGED) {
+            return "";
+        }
         StringBuilder builder = new StringBuilder();
         builder.append(String.format("#### `%s` was %s", className, type.getDisplayName()));
         for (String methodChange : methodChanges) {

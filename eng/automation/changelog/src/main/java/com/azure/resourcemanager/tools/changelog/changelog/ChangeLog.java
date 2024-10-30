@@ -28,16 +28,15 @@ public class ChangeLog {
     protected List<String> newFeature;
     protected BreakingChange breakingChange;
 
-    ChangeLog() {
-        this.newFeature = new ArrayList<>();
-        this.breakingChange = BreakingChange.fromClass(getClassName());
-    }
-
     ChangeLog(AllMethods allMethods) {
         this.allMethods = allMethods;
         this.newFeature = new ArrayList<>();
-        this.breakingChange = BreakingChange.fromClass(getClassName());
+        this.breakingChange = BreakingChange.fromClass(getJApiClass().getFullyQualifiedName());
         calcChangeLog();
+    }
+
+    protected ChangeLog() {
+        this.newFeature = new ArrayList<>();
     }
 
     public static List<ChangeLog> fromClasses(List<JApiClass> classes) {
@@ -125,10 +124,6 @@ public class ChangeLog {
                 allMethods.getMethods().forEach(method -> this.calcChangelogForMethod(method, checkReturnType));
                 break;
         }
-    }
-
-    protected String getClassName() {
-        return getJApiClass().getFullyQualifiedName();
     }
 
     private void addClassTitle(List<String> list) {

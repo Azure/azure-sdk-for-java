@@ -26,6 +26,7 @@ public class DefinitionStageChangeLog extends ChangeLog {
 
     DefinitionStageChangeLog(Map<String, AllMethods> allStages, String parentClass) {
         this.parentClass = parentClass;
+        this.breakingChange = BreakingChange.fromClass(this.parentClass);
         oldMethodStages = new ArrayList<>();
         newMethodStages = new ArrayList<>();
         AllMethods blankStage = allStages.entrySet().stream().filter(x -> ClassName.name(x.getKey()).equals("Blank")).findAny().get().getValue();
@@ -70,14 +71,7 @@ public class DefinitionStageChangeLog extends ChangeLog {
     }
 
     @Override
-    protected String getClassName() {
-        return parentClass;
-    }
-
-    @Override
     protected void calcChangeLog() {
-        this.breakingChange = BreakingChange.fromClass(getClassName());
-        this.breakingChange.setClassLevelChangeType(BreakingChange.Type.MODIFIED);
         int oldSize = oldMethodStages.size() - 1;
         int newSize = newMethodStages.size() - 1; // don't need check the last stage
         for (int i = 0; i < Math.min(oldSize, newSize); ++i) {

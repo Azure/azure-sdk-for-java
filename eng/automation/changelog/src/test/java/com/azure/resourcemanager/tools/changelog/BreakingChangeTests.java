@@ -4,6 +4,8 @@ import com.azure.resourcemanager.tools.changelog.utils.BreakingChange;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.net.URL;
+
 public class BreakingChangeTests {
     @Test
     public void testBreakingChange() {
@@ -22,5 +24,14 @@ public class BreakingChangeTests {
         Assertions.assertEquals(2, breakingChange.getItems().size());
         Assertions.assertTrue(breakingChange.getForChangelog().contains("#### `MyClass` was modified"));
         Assertions.assertEquals("Method `sku()` was removed in class `MyClass`.", breakingChange.getItems().iterator().next());
+    }
+
+    @Test
+    public void testCompareJars() throws Exception {
+        URL oldJar = BreakingChangeTests.class.getResource("/old.jar");
+        URL newJar = BreakingChangeTests.class.getResource("/new.jar");
+        System.setProperty("OLD_JAR", oldJar.getFile());
+        System.setProperty("NEW_JAR", newJar.getFile());
+        Main.main(new String[]{});
     }
 }
