@@ -13,7 +13,9 @@ import org.springframework.core.env.EnumerablePropertySource;
 import com.azure.data.appconfiguration.ConfigurationClient;
 
 /**
- * Azure App Configu<p>
+ * Azure App Configuration PropertySource unique per Store Label(Profile) combo.
+ *
+ * <p>
  * i.e. If connecting to 2 stores and have 2 labels set 4 AppConfigurationPropertySources need to be
  * created.
  * </p>
