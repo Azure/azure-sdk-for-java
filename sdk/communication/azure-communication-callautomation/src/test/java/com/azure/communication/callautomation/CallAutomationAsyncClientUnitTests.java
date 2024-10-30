@@ -65,8 +65,8 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
 
         CreateCallResult createCallResult = callAutomationAsyncClient.createGroupCall(targets, CALL_CALLBACK_URL).block();
         assertNotNull(createCallResult);
-        assertEquals(MICROSOFT_TEAMS_APP_ID, ((MicrosoftTeamsAppIdentifier)createCallResult.getCallConnectionProperties().getSource()).getAppId());
-        assertEquals(PHONE_NUMBER, ((PhoneNumberIdentifier)createCallResult.getCallConnectionProperties().getTargetParticipants().get(0)).getPhoneNumber());
+        assertEquals(MICROSOFT_TEAMS_APP_ID, ((MicrosoftTeamsAppIdentifier) createCallResult.getCallConnectionProperties().getSource()).getAppId());
+        assertEquals(PHONE_NUMBER, ((PhoneNumberIdentifier) createCallResult.getCallConnectionProperties().getTargetParticipants().get(0)).getPhoneNumber());
     }
 
     @Test

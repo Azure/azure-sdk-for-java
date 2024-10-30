@@ -114,7 +114,7 @@ public class CallAutomationUnitTestBase {
                     .setCloud(CommunicationCloudEnvironmentModel.PUBLIC)
                 ))
             .setTargets(new ArrayList<>(Collections.singletonList(new CommunicationIdentifierModel()
-                .setRawId("+4:"+ targetId)
+                .setRawId("+4:" + targetId)
                 .setKind(CommunicationIdentifierModelKind.PHONE_NUMBER)
                 .setPhoneNumber(new PhoneNumberIdentifierModel()
                     .setValue(targetId)
