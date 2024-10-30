@@ -68,8 +68,8 @@ public final class ManagedVirtualNetworkSettings {
      * @param linkedAccessCheckOnTargetResource the linkedAccessCheckOnTargetResource value to set.
      * @return the ManagedVirtualNetworkSettings object itself.
      */
-    public ManagedVirtualNetworkSettings withLinkedAccessCheckOnTargetResource(
-        Boolean linkedAccessCheckOnTargetResource) {
+    public ManagedVirtualNetworkSettings
+        withLinkedAccessCheckOnTargetResource(Boolean linkedAccessCheckOnTargetResource) {
         this.linkedAccessCheckOnTargetResource = linkedAccessCheckOnTargetResource;
         return this;
     }

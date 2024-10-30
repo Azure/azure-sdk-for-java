@@ -21,8 +21,7 @@ public final class NetworkDeviceSkusImpl implements NetworkDeviceSkus {
 
     private final com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager;
 
-    public NetworkDeviceSkusImpl(
-        NetworkDeviceSkusClient innerClient,
+    public NetworkDeviceSkusImpl(NetworkDeviceSkusClient innerClient,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,10 +30,7 @@ public final class NetworkDeviceSkusImpl implements NetworkDeviceSkus {
     public Response<NetworkDeviceSku> getWithResponse(String networkDeviceSkuName, Context context) {
         Response<NetworkDeviceSkuInner> inner = this.serviceClient().getWithResponse(networkDeviceSkuName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetworkDeviceSkuImpl(inner.getValue(), this.manager()));
         } else {
             return null;

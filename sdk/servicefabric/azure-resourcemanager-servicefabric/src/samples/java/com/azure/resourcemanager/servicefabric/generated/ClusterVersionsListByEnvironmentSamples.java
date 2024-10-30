@@ -22,7 +22,8 @@ public final class ClusterVersionsListByEnvironmentSamples {
      */
     public static void
         listClusterVersionsByEnvironment(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusterVersions().listByEnvironmentWithResponse("eastus", ClusterVersionsEnvironment.WINDOWS,
-            com.azure.core.util.Context.NONE);
+        manager.clusterVersions()
+            .listByEnvironmentWithResponse("eastus", ClusterVersionsEnvironment.WINDOWS,
+                com.azure.core.util.Context.NONE);
     }
 }

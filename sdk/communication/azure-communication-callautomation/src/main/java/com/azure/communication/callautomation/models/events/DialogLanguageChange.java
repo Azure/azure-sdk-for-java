@@ -41,7 +41,8 @@ public final class DialogLanguageChange extends CallAutomationEventBase {
     private Object ivrContext;
 
     /** Creates an instance of DialogLanguageChange class. */
-    public DialogLanguageChange() {}
+    public DialogLanguageChange() {
+    }
 
     /**
      * Get the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.

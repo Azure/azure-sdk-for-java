@@ -22,8 +22,8 @@ public interface ApplicationDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managed application definition along with {@link Response}.
      */
-    Response<ApplicationDefinition> getByResourceGroupWithResponse(
-        String resourceGroupName, String applicationDefinitionName, Context context);
+    Response<ApplicationDefinition> getByResourceGroupWithResponse(String resourceGroupName,
+        String applicationDefinitionName, Context context);
 
     /**
      * Gets the managed application definition.
@@ -48,8 +48,8 @@ public interface ApplicationDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String applicationDefinitionName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String applicationDefinitionName,
+        Context context);
 
     /**
      * Deletes the managed application definition.
@@ -116,8 +116,8 @@ public interface ApplicationDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the managed application definition along with {@link Response}.
      */
-    Response<ApplicationDefinition> getByIdWithResponse(
-        String resourceGroupName, String applicationDefinitionName, Context context);
+    Response<ApplicationDefinition> getByIdWithResponse(String resourceGroupName, String applicationDefinitionName,
+        Context context);
 
     /**
      * Gets the managed application definition.
@@ -167,11 +167,8 @@ public interface ApplicationDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition along with {@link Response}.
      */
-    Response<ApplicationDefinition> createOrUpdateByIdWithResponse(
-        String resourceGroupName,
-        String applicationDefinitionName,
-        ApplicationDefinitionInner parameters,
-        Context context);
+    Response<ApplicationDefinition> createOrUpdateByIdWithResponse(String resourceGroupName,
+        String applicationDefinitionName, ApplicationDefinitionInner parameters, Context context);
 
     /**
      * Creates or updates a managed application definition.
@@ -184,8 +181,8 @@ public interface ApplicationDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition.
      */
-    ApplicationDefinition createOrUpdateById(
-        String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionInner parameters);
+    ApplicationDefinition createOrUpdateById(String resourceGroupName, String applicationDefinitionName,
+        ApplicationDefinitionInner parameters);
 
     /**
      * Updates the managed application definition.
@@ -199,11 +196,8 @@ public interface ApplicationDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition along with {@link Response}.
      */
-    Response<ApplicationDefinition> updateByIdWithResponse(
-        String resourceGroupName,
-        String applicationDefinitionName,
-        ApplicationDefinitionPatchable parameters,
-        Context context);
+    Response<ApplicationDefinition> updateByIdWithResponse(String resourceGroupName, String applicationDefinitionName,
+        ApplicationDefinitionPatchable parameters, Context context);
 
     /**
      * Updates the managed application definition.
@@ -216,8 +210,8 @@ public interface ApplicationDefinitions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition.
      */
-    ApplicationDefinition updateById(
-        String resourceGroupName, String applicationDefinitionName, ApplicationDefinitionPatchable parameters);
+    ApplicationDefinition updateById(String resourceGroupName, String applicationDefinitionName,
+        ApplicationDefinitionPatchable parameters);
 
     /**
      * Begins definition for a new ApplicationDefinition resource.

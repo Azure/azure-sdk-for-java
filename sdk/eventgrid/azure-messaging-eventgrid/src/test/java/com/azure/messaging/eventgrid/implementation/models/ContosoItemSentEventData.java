@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.messaging.eventgrid.implementation.models;
 
-
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -19,7 +18,6 @@ public class ContosoItemSentEventData implements JsonSerializable<ContosoItemSen
     public ShippingInfo getShippingInfo() {
         return this.shippingInfo;
     }
-
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

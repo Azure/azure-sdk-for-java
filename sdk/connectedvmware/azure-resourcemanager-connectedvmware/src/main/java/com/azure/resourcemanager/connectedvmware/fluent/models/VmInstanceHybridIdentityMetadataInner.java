@@ -18,8 +18,8 @@ public final class VmInstanceHybridIdentityMetadataInner extends ProxyResource {
      * Resource properties.
      */
     @JsonProperty(value = "properties", required = true)
-    private VmInstanceHybridIdentityMetadataProperties innerProperties =
-        new VmInstanceHybridIdentityMetadataProperties();
+    private VmInstanceHybridIdentityMetadataProperties innerProperties
+        = new VmInstanceHybridIdentityMetadataProperties();
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -111,10 +111,8 @@ public final class VmInstanceHybridIdentityMetadataInner extends ProxyResource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model VmInstanceHybridIdentityMetadataInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model VmInstanceHybridIdentityMetadataInner"));
         } else {
             innerProperties().validate();
         }

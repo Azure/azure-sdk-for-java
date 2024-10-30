@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Test;
 public final class OperationDisplayTests {
     @Test
     public void testDeserialize() {
-        OperationDisplay model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"ajvnysounqe\",\"resource\":\"noae\",\"operation\":\"fhyhltrpmopjmcma\",\"description\":\"okth\"}")
-                .toObject(OperationDisplay.class);
+        OperationDisplay model = BinaryData.fromString(
+            "{\"provider\":\"ajvnysounqe\",\"resource\":\"noae\",\"operation\":\"fhyhltrpmopjmcma\",\"description\":\"okth\"}")
+            .toObject(OperationDisplay.class);
     }
 
     @Test

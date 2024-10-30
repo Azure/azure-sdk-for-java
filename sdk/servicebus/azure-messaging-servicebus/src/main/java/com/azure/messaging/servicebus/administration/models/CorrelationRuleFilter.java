@@ -302,22 +302,19 @@ public class CorrelationRuleFilter extends RuleFilter {
     public String toString() {
         final StringBuilder builder = new StringBuilder("CorrelationRuleFilter: ");
 
-        boolean isFirstExpression = appendPropertyExpression(true, builder, "sys.CorrelationId",
-            correlationId);
-        isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.MessageId",
-            messageId);
+        boolean isFirstExpression = appendPropertyExpression(true, builder, "sys.CorrelationId", correlationId);
+        isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.MessageId", messageId);
         isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.To", to);
         isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.ReplyTo", replyTo);
         isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.Label", label);
         isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.SessionId", sessionId);
-        isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.ReplyToSessionId",
-            replyToSessionId);
-        isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.ContentType",
-            contentType);
+        isFirstExpression
+            = appendPropertyExpression(isFirstExpression, builder, "sys.ReplyToSessionId", replyToSessionId);
+        isFirstExpression = appendPropertyExpression(isFirstExpression, builder, "sys.ContentType", contentType);
 
         for (Map.Entry<String, Object> entry : properties.entrySet()) {
-            isFirstExpression = appendPropertyExpression(isFirstExpression, builder, entry.getKey(),
-                entry.getValue().toString());
+            isFirstExpression
+                = appendPropertyExpression(isFirstExpression, builder, entry.getKey(), entry.getValue().toString());
         }
 
         return builder.toString();
@@ -361,7 +358,7 @@ public class CorrelationRuleFilter extends RuleFilter {
     }
 
     private static boolean appendPropertyExpression(boolean isFirstExpression, StringBuilder builder, String display,
-                                                    String value) {
+        String value) {
 
         if (value == null) {
             return true;

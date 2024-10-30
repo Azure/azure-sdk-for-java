@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TrunkedNetworkPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrunkedNetworkProperties model =
-            BinaryData
-                .fromString(
-                    "{\"associatedResourceIds\":[\"es\"],\"clusterId\":\"dlpagzrcxfail\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"m\",\"hybridAksClustersAssociatedIds\":[\"xdfgsftufqobr\",\"lnacgcc\",\"knh\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"v\",\"isolationDomainIds\":[\"nrzvuljraaer\",\"nok\",\"gukkjqnvbroy\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"lcdisd\",\"sfjbjsvg\",\"rwhryvycytd\"],\"vlans\":[87313434350967654,4919215833349894285,5408599149275050969,3545804393254840755]}")
-                .toObject(TrunkedNetworkProperties.class);
+        TrunkedNetworkProperties model = BinaryData.fromString(
+            "{\"associatedResourceIds\":[\"es\"],\"clusterId\":\"dlpagzrcxfail\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"m\",\"hybridAksClustersAssociatedIds\":[\"xdfgsftufqobr\",\"lnacgcc\",\"knh\"],\"hybridAksPluginType\":\"DPDK\",\"interfaceName\":\"v\",\"isolationDomainIds\":[\"nrzvuljraaer\",\"nok\",\"gukkjqnvbroy\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"lcdisd\",\"sfjbjsvg\",\"rwhryvycytd\"],\"vlans\":[87313434350967654,4919215833349894285,5408599149275050969,3545804393254840755]}")
+            .toObject(TrunkedNetworkProperties.class);
         Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());
         Assertions.assertEquals("v", model.interfaceName());
         Assertions.assertEquals("nrzvuljraaer", model.isolationDomainIds().get(0));
@@ -26,14 +24,12 @@ public final class TrunkedNetworkPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrunkedNetworkProperties model =
-            new TrunkedNetworkProperties()
-                .withHybridAksPluginType(HybridAksPluginType.DPDK)
-                .withInterfaceName("v")
-                .withIsolationDomainIds(Arrays.asList("nrzvuljraaer", "nok", "gukkjqnvbroy"))
-                .withVlans(
-                    Arrays
-                        .asList(87313434350967654L, 4919215833349894285L, 5408599149275050969L, 3545804393254840755L));
+        TrunkedNetworkProperties model = new TrunkedNetworkProperties()
+            .withHybridAksPluginType(HybridAksPluginType.DPDK)
+            .withInterfaceName("v")
+            .withIsolationDomainIds(Arrays.asList("nrzvuljraaer", "nok", "gukkjqnvbroy"))
+            .withVlans(
+                Arrays.asList(87313434350967654L, 4919215833349894285L, 5408599149275050969L, 3545804393254840755L));
         model = BinaryData.fromObject(model).toObject(TrunkedNetworkProperties.class);
         Assertions.assertEquals(HybridAksPluginType.DPDK, model.hybridAksPluginType());
         Assertions.assertEquals("v", model.interfaceName());

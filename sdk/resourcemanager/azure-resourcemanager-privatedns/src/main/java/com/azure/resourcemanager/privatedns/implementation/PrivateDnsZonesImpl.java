@@ -12,13 +12,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** Implementation of {@link PrivateDnsZones}. */
-public final class PrivateDnsZonesImpl
-    extends TopLevelModifiableResourcesImpl<
-        PrivateDnsZone,
-        PrivateDnsZoneImpl,
-        PrivateZoneInner,
-        PrivateZonesClient,
-        PrivateDnsZoneManager>
+public final class PrivateDnsZonesImpl extends
+    TopLevelModifiableResourcesImpl<PrivateDnsZone, PrivateDnsZoneImpl, PrivateZoneInner, PrivateZonesClient, PrivateDnsZoneManager>
     implements PrivateDnsZones {
 
     public PrivateDnsZonesImpl(final PrivateDnsZoneManager manager) {
@@ -42,8 +37,8 @@ public final class PrivateDnsZonesImpl
 
     @Override
     public Mono<Void> deleteByIdAsync(String id, String etagValue) {
-        return deleteByResourceGroupNameAsync(
-            ResourceUtils.groupFromResourceId(id), ResourceUtils.nameFromResourceId(id), etagValue);
+        return deleteByResourceGroupNameAsync(ResourceUtils.groupFromResourceId(id),
+            ResourceUtils.nameFromResourceId(id), etagValue);
     }
 
     @Override

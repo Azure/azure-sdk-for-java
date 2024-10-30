@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedRGConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedRGConfiguration model =
-            BinaryData.fromString("{\"name\":\"jvwmfda\"}").toObject(ManagedRGConfiguration.class);
+        ManagedRGConfiguration model
+            = BinaryData.fromString("{\"name\":\"jvwmfda\"}").toObject(ManagedRGConfiguration.class);
         Assertions.assertEquals("jvwmfda", model.name());
     }
 

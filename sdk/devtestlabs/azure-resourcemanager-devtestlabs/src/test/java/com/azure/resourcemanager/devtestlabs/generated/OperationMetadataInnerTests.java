@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetadataInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetadataInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"nygj\",\"display\":{\"provider\":\"ddeqsrdeupewnwre\",\"resource\":\"jzyflu\",\"operation\":\"rh\",\"description\":\"fcqhsmyurkd\"}}")
-                .toObject(OperationMetadataInner.class);
+        OperationMetadataInner model = BinaryData.fromString(
+            "{\"name\":\"nygj\",\"display\":{\"provider\":\"ddeqsrdeupewnwre\",\"resource\":\"jzyflu\",\"operation\":\"rh\",\"description\":\"fcqhsmyurkd\"}}")
+            .toObject(OperationMetadataInner.class);
         Assertions.assertEquals("nygj", model.name());
         Assertions.assertEquals("ddeqsrdeupewnwre", model.display().provider());
         Assertions.assertEquals("jzyflu", model.display().resource());
@@ -26,15 +24,11 @@ public final class OperationMetadataInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetadataInner model =
-            new OperationMetadataInner()
-                .withName("nygj")
-                .withDisplay(
-                    new OperationMetadataDisplay()
-                        .withProvider("ddeqsrdeupewnwre")
-                        .withResource("jzyflu")
-                        .withOperation("rh")
-                        .withDescription("fcqhsmyurkd"));
+        OperationMetadataInner model = new OperationMetadataInner().withName("nygj")
+            .withDisplay(new OperationMetadataDisplay().withProvider("ddeqsrdeupewnwre")
+                .withResource("jzyflu")
+                .withOperation("rh")
+                .withDescription("fcqhsmyurkd"));
         model = BinaryData.fromObject(model).toObject(OperationMetadataInner.class);
         Assertions.assertEquals("nygj", model.name());
         Assertions.assertEquals("ddeqsrdeupewnwre", model.display().provider());

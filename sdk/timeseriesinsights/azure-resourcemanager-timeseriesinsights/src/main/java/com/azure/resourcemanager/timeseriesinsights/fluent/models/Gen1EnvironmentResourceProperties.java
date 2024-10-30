@@ -112,16 +112,16 @@ public final class Gen1EnvironmentResourceProperties extends Gen1EnvironmentCrea
 
     /** {@inheritDoc} */
     @Override
-    public Gen1EnvironmentResourceProperties withStorageLimitExceededBehavior(
-        StorageLimitExceededBehavior storageLimitExceededBehavior) {
+    public Gen1EnvironmentResourceProperties
+        withStorageLimitExceededBehavior(StorageLimitExceededBehavior storageLimitExceededBehavior) {
         super.withStorageLimitExceededBehavior(storageLimitExceededBehavior);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public Gen1EnvironmentResourceProperties withPartitionKeyProperties(
-        List<TimeSeriesIdProperty> partitionKeyProperties) {
+    public Gen1EnvironmentResourceProperties
+        withPartitionKeyProperties(List<TimeSeriesIdProperty> partitionKeyProperties) {
         super.withPartitionKeyProperties(partitionKeyProperties);
         return this;
     }

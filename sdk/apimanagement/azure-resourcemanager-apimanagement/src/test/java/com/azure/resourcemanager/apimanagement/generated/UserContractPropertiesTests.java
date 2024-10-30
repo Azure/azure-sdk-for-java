@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UserContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserContractProperties model =
-            BinaryData
-                .fromString(
-                    "{\"firstName\":\"tif\",\"lastName\":\"bcngkegxc\",\"email\":\"xbbfetwil\",\"registrationDate\":\"2021-02-17T00:32:27Z\",\"groups\":[{\"displayName\":\"pdxqlfrolqownkiu\",\"description\":\"ewnahwkxjjmzt\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"dtmvecdhdyswcrp\"},{\"displayName\":\"veajczxvlgsrg\",\"description\":\"fizrpywlptyuqhr\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"kpfuofix\"},{\"displayName\":\"npcfyk\",\"description\":\"yycpawmpjprdpw\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"fjfw\"},{\"displayName\":\"lgzawkgyepeyamnn\",\"description\":\"mdiawpzx\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"kctd\"}],\"state\":\"deleted\",\"note\":\"gwqpsqazih\",\"identities\":[{\"provider\":\"qgcnbhcbmjk\",\"id\":\"ibniynts\"},{\"provider\":\"mfmeftvhkmoo\",\"id\":\"rh\"},{\"provider\":\"bwgmjgrul\",\"id\":\"ogxhcxn\"},{\"provider\":\"tpfdzxcouzfwofwa\",\"id\":\"kzkdtzxsoednlwg\"}]}")
-                .toObject(UserContractProperties.class);
+        UserContractProperties model = BinaryData.fromString(
+            "{\"firstName\":\"tif\",\"lastName\":\"bcngkegxc\",\"email\":\"xbbfetwil\",\"registrationDate\":\"2021-02-17T00:32:27Z\",\"groups\":[{\"displayName\":\"pdxqlfrolqownkiu\",\"description\":\"ewnahwkxjjmzt\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"dtmvecdhdyswcrp\"},{\"displayName\":\"veajczxvlgsrg\",\"description\":\"fizrpywlptyuqhr\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"kpfuofix\"},{\"displayName\":\"npcfyk\",\"description\":\"yycpawmpjprdpw\",\"builtIn\":true,\"type\":\"custom\",\"externalId\":\"fjfw\"},{\"displayName\":\"lgzawkgyepeyamnn\",\"description\":\"mdiawpzx\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"kctd\"}],\"state\":\"deleted\",\"note\":\"gwqpsqazih\",\"identities\":[{\"provider\":\"qgcnbhcbmjk\",\"id\":\"ibniynts\"},{\"provider\":\"mfmeftvhkmoo\",\"id\":\"rh\"},{\"provider\":\"bwgmjgrul\",\"id\":\"ogxhcxn\"},{\"provider\":\"tpfdzxcouzfwofwa\",\"id\":\"kzkdtzxsoednlwg\"}]}")
+            .toObject(UserContractProperties.class);
         Assertions.assertEquals(UserState.DELETED, model.state());
         Assertions.assertEquals("gwqpsqazih", model.note());
         Assertions.assertEquals("qgcnbhcbmjk", model.identities().get(0).provider());
@@ -32,21 +30,17 @@ public final class UserContractPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserContractProperties model =
-            new UserContractProperties()
-                .withState(UserState.DELETED)
-                .withNote("gwqpsqazih")
-                .withIdentities(
-                    Arrays
-                        .asList(
-                            new UserIdentityContractInner().withProvider("qgcnbhcbmjk").withId("ibniynts"),
-                            new UserIdentityContractInner().withProvider("mfmeftvhkmoo").withId("rh"),
-                            new UserIdentityContractInner().withProvider("bwgmjgrul").withId("ogxhcxn"),
-                            new UserIdentityContractInner().withProvider("tpfdzxcouzfwofwa").withId("kzkdtzxsoednlwg")))
-                .withFirstName("tif")
-                .withLastName("bcngkegxc")
-                .withEmail("xbbfetwil")
-                .withRegistrationDate(OffsetDateTime.parse("2021-02-17T00:32:27Z"));
+        UserContractProperties model = new UserContractProperties().withState(UserState.DELETED)
+            .withNote("gwqpsqazih")
+            .withIdentities(
+                Arrays.asList(new UserIdentityContractInner().withProvider("qgcnbhcbmjk").withId("ibniynts"),
+                    new UserIdentityContractInner().withProvider("mfmeftvhkmoo").withId("rh"),
+                    new UserIdentityContractInner().withProvider("bwgmjgrul").withId("ogxhcxn"),
+                    new UserIdentityContractInner().withProvider("tpfdzxcouzfwofwa").withId("kzkdtzxsoednlwg")))
+            .withFirstName("tif")
+            .withLastName("bcngkegxc")
+            .withEmail("xbbfetwil")
+            .withRegistrationDate(OffsetDateTime.parse("2021-02-17T00:32:27Z"));
         model = BinaryData.fromObject(model).toObject(UserContractProperties.class);
         Assertions.assertEquals(UserState.DELETED, model.state());
         Assertions.assertEquals("gwqpsqazih", model.note());

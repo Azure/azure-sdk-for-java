@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.sql.samples;
 
-
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.management.AzureEnvironment;
@@ -52,21 +51,28 @@ public final class ManageSqlDatabaseInElasticPool {
             // ============================================================
             // Create a SQL Server, with 2 firewall rules.
 
-            SqlServer sqlServer = azureResourceManager.sqlServers().define(sqlServerName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withAdministratorLogin(administratorLogin)
-                    .withAdministratorPassword(administratorPassword)
-                    .defineElasticPool(elasticPoolName).withStandardPool().attach()
-                    .defineDatabase(database1Name).withExistingElasticPool(elasticPoolName).attach()
-                    .defineDatabase(database2Name).withExistingElasticPool(elasticPoolName).attach()
-                    .create();
+            SqlServer sqlServer = azureResourceManager.sqlServers()
+                .define(sqlServerName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withAdministratorLogin(administratorLogin)
+                .withAdministratorPassword(administratorPassword)
+                .defineElasticPool(elasticPoolName)
+                .withStandardPool()
+                .attach()
+                .defineDatabase(database1Name)
+                .withExistingElasticPool(elasticPoolName)
+                .attach()
+                .defineDatabase(database2Name)
+                .withExistingElasticPool(elasticPoolName)
+                .attach()
+                .create();
 
             Utils.print(sqlServer);
 
             // ============================================================
             // List and prints the elastic pools
-            for (SqlElasticPool elasticPool: sqlServer.elasticPools().list()) {
+            for (SqlElasticPool elasticPool : sqlServer.elasticPools().list()) {
                 Utils.print(elasticPool);
             }
 
@@ -78,16 +84,16 @@ public final class ManageSqlDatabaseInElasticPool {
             // ============================================================
             // Change DTUs in the elastic pools.
             elasticPool = elasticPool.update()
-                    .withReservedDtu(SqlElasticPoolBasicEDTUs.eDTU_200)
-                    .withStorageCapacity(204800 * 1024 * 1024L)
-                    .withDatabaseMinCapacity(10)
-                    .withDatabaseMaxCapacity(50)
-                    .apply();
+                .withReservedDtu(SqlElasticPoolBasicEDTUs.eDTU_200)
+                .withStorageCapacity(204800 * 1024 * 1024L)
+                .withDatabaseMinCapacity(10)
+                .withDatabaseMaxCapacity(50)
+                .apply();
 
             Utils.print(elasticPool);
 
             System.out.println("Start ------- Current databases in the elastic pool");
-            for (SqlDatabase databaseInElasticPool: elasticPool.listDatabases()) {
+            for (SqlDatabase databaseInElasticPool : elasticPool.listDatabases()) {
                 Utils.print(databaseInElasticPool);
             }
             System.out.println("End --------- Current databases in the elastic pool");
@@ -96,13 +102,11 @@ public final class ManageSqlDatabaseInElasticPool {
             // Create a Database in SQL server created above.
             System.out.println("Creating a database");
 
-            SqlDatabase database = sqlServer.databases()
-                    .define("myNewDatabase")
-                    .create();
+            SqlDatabase database = sqlServer.databases().define("myNewDatabase").create();
             Utils.print(database);
 
             System.out.println("Start ------- Current databases in the elastic pool");
-            for (SqlDatabase databaseInElasticPool: elasticPool.listDatabases()) {
+            for (SqlDatabase databaseInElasticPool : elasticPool.listDatabases()) {
                 Utils.print(databaseInElasticPool);
             }
             System.out.println("End --------- Current databases in the elastic pool");
@@ -110,24 +114,19 @@ public final class ManageSqlDatabaseInElasticPool {
             // ============================================================
             // Move newly created database to the pool.
             System.out.println("Updating a database");
-            database = database.update()
-                    .withExistingElasticPool(elasticPoolName)
-                    .apply();
+            database = database.update().withExistingElasticPool(elasticPoolName).apply();
             Utils.print(database);
 
             // ============================================================
             // Create another database and move it in elastic pool as update to the elastic pool.
-            SqlDatabase anotherDatabase = sqlServer.databases().define(anotherDatabaseName)
-                    .create();
+            SqlDatabase anotherDatabase = sqlServer.databases().define(anotherDatabaseName).create();
 
             // ============================================================
             // Update the elastic pool to have newly created database.
-            elasticPool.update()
-                    .withExistingDatabase(anotherDatabase)
-                    .apply();
+            elasticPool.update().withExistingDatabase(anotherDatabase).apply();
 
             System.out.println("Start ------- Current databases in the elastic pool");
-            for (SqlDatabase databaseInElasticPool: elasticPool.listDatabases()) {
+            for (SqlDatabase databaseInElasticPool : elasticPool.listDatabases()) {
                 Utils.print(databaseInElasticPool);
             }
             System.out.println("End --------- Current databases in the elastic pool");
@@ -136,23 +135,22 @@ public final class ManageSqlDatabaseInElasticPool {
             // Remove the database from the elastic pool.
             System.out.println("Remove the database from the pool.");
             anotherDatabase = anotherDatabase.update()
-                    .withoutElasticPool()
-                    .withStandardEdition(SqlDatabaseStandardServiceObjective.S3)
-                    .withMaxSizeBytes(1024 * 1024 * 1024 * 20)
-                    .apply();
+                .withoutElasticPool()
+                .withStandardEdition(SqlDatabaseStandardServiceObjective.S3)
+                .withMaxSizeBytes(1024 * 1024 * 1024 * 20)
+                .apply();
             Utils.print(anotherDatabase);
 
             System.out.println("Start ------- Current databases in the elastic pool");
-            for (SqlDatabase databaseInElasticPool: elasticPool.listDatabases()) {
+            for (SqlDatabase databaseInElasticPool : elasticPool.listDatabases()) {
                 Utils.print(databaseInElasticPool);
             }
             System.out.println("End --------- Current databases in the elastic pool");
 
-
             // ============================================================
             // Get list of elastic pool's activities and print the same.
             System.out.println("Start ------- Activities in a elastic pool");
-            for (ElasticPoolActivity activity: elasticPool.listActivities()) {
+            for (ElasticPoolActivity activity : elasticPool.listActivities()) {
                 Utils.print(activity);
             }
             System.out.println("End ------- Activities in a elastic pool");
@@ -160,7 +158,7 @@ public final class ManageSqlDatabaseInElasticPool {
             // ============================================================
             // List databases in the sql server and delete the same.
             System.out.println("List and delete all databases from SQL Server");
-            for (SqlDatabase databaseInServer: sqlServer.databases().list()) {
+            for (SqlDatabase databaseInServer : sqlServer.databases().list()) {
                 Utils.print(databaseInServer);
                 // Can not delete reserved database "master"
                 if (!databaseInServer.name().equals("master")) {
@@ -171,9 +169,7 @@ public final class ManageSqlDatabaseInElasticPool {
             // ============================================================
             // Create another elastic pool in SQL Server
             System.out.println("Create ElasticPool in existing SQL Server");
-            SqlElasticPool elasticPool2 = sqlServer.elasticPools().define(elasticPool2Name)
-                    .withStandardPool()
-                    .create();
+            SqlElasticPool elasticPool2 = sqlServer.elasticPools().define(elasticPool2Name).withStandardPool().create();
 
             Utils.print(elasticPool2);
 
@@ -210,8 +206,7 @@ public final class ManageSqlDatabaseInElasticPool {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();
@@ -229,6 +224,5 @@ public final class ManageSqlDatabaseInElasticPool {
     private ManageSqlDatabaseInElasticPool() {
 
     }
-
 
 }

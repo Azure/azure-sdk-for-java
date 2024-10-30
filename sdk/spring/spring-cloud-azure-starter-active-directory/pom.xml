@@ -33,6 +33,7 @@
     <legal>
       <![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <site.url>https://azuresdkartifacts.blob.core.windows.net/azure-sdk-for-java</site.url>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <licenses>
@@ -93,12 +94,12 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
-      <version>6.3.3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-web;external_dependency} -->
+      <version>6.3.4</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>6.3.3</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
+      <version>6.3.4</version> <!-- {x-version-update;springboot3_org.springframework.security:spring-security-config;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>

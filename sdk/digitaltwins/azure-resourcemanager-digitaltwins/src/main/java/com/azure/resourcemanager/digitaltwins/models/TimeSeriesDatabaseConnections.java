@@ -49,8 +49,8 @@ public interface TimeSeriesDatabaseConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of an existing time series database connection along with {@link Response}.
      */
-    Response<TimeSeriesDatabaseConnection> getWithResponse(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName, Context context);
+    Response<TimeSeriesDatabaseConnection> getWithResponse(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, Context context);
 
     /**
      * Get the description of an existing time series database connection.
@@ -63,8 +63,8 @@ public interface TimeSeriesDatabaseConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the description of an existing time series database connection.
      */
-    TimeSeriesDatabaseConnection get(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName);
+    TimeSeriesDatabaseConnection get(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName);
 
     /**
      * Delete a time series database connection.
@@ -77,8 +77,8 @@ public interface TimeSeriesDatabaseConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a time series database connection resource.
      */
-    TimeSeriesDatabaseConnection delete(
-        String resourceGroupName, String resourceName, String timeSeriesDatabaseConnectionName);
+    TimeSeriesDatabaseConnection delete(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName);
 
     /**
      * Delete a time series database connection.
@@ -95,11 +95,8 @@ public interface TimeSeriesDatabaseConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a time series database connection resource.
      */
-    TimeSeriesDatabaseConnection delete(
-        String resourceGroupName,
-        String resourceName,
-        String timeSeriesDatabaseConnectionName,
-        CleanupConnectionArtifacts cleanupConnectionArtifacts,
+    TimeSeriesDatabaseConnection delete(String resourceGroupName, String resourceName,
+        String timeSeriesDatabaseConnectionName, CleanupConnectionArtifacts cleanupConnectionArtifacts,
         Context context);
 
     /**
@@ -149,8 +146,8 @@ public interface TimeSeriesDatabaseConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a time series database connection resource.
      */
-    TimeSeriesDatabaseConnection deleteByIdWithResponse(
-        String id, CleanupConnectionArtifacts cleanupConnectionArtifacts, Context context);
+    TimeSeriesDatabaseConnection deleteByIdWithResponse(String id,
+        CleanupConnectionArtifacts cleanupConnectionArtifacts, Context context);
 
     /**
      * Begins definition for a new TimeSeriesDatabaseConnection resource.

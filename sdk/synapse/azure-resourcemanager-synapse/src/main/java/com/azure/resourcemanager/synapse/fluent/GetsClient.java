@@ -30,12 +30,8 @@ public interface GetsClient {
      * @return an integration runtime start operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeOperationStatusInner> integrationRuntimeStartWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context);
+    Response<IntegrationRuntimeOperationStatusInner> integrationRuntimeStartWithResponse(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId, Context context);
 
     /**
      * Get integration runtime start operation status
@@ -52,11 +48,8 @@ public interface GetsClient {
      * @return an integration runtime start operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeOperationStatusInner integrationRuntimeStart(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId);
+    IntegrationRuntimeOperationStatusInner integrationRuntimeStart(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String integrationRuntimeOperationId);
 
     /**
      * Get integration runtime stop operation status
@@ -74,12 +67,8 @@ public interface GetsClient {
      * @return an integration runtime stop operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeStopOperationStatusInner> integrationRuntimeStopWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context);
+    Response<IntegrationRuntimeStopOperationStatusInner> integrationRuntimeStopWithResponse(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId, Context context);
 
     /**
      * Get integration runtime stop operation status
@@ -96,11 +85,8 @@ public interface GetsClient {
      * @return an integration runtime stop operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeStopOperationStatusInner integrationRuntimeStop(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId);
+    IntegrationRuntimeStopOperationStatusInner integrationRuntimeStop(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String integrationRuntimeOperationId);
 
     /**
      * Get integration runtime enable interactivequery operation status
@@ -119,11 +105,8 @@ public interface GetsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<IntegrationRuntimeEnableinteractivequeryInner> integrationRuntimeEnableInteractivequeryWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId,
-        Context context);
+        String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        String integrationRuntimeOperationId, Context context);
 
     /**
      * Get integration runtime enable interactivequery operation status
@@ -140,9 +123,6 @@ public interface GetsClient {
      * @return an integration runtime enable interactivequery operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeEnableinteractivequeryInner integrationRuntimeEnableInteractivequery(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String integrationRuntimeOperationId);
+    IntegrationRuntimeEnableinteractivequeryInner integrationRuntimeEnableInteractivequery(String resourceGroupName,
+        String workspaceName, String integrationRuntimeName, String integrationRuntimeOperationId);
 }

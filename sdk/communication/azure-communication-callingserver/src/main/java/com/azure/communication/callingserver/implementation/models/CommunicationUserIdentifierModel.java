@@ -42,9 +42,7 @@ public final class CommunicationUserIdentifierModel implements JsonSerializable<
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject()
-            .writeStringField("id", id)
-            .writeEndObject();
+        return jsonWriter.writeStartObject().writeStringField("id", id).writeEndObject();
     }
 
     /**

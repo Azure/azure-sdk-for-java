@@ -43,12 +43,15 @@ public final class LocalRulestacksListAppIdsWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure()
+            .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ListAppIdResponse response = manager.localRulestacks().listAppIdsWithResponse("muowakywalhjy", "xcgqtagdrclsso",
-            "jomevtfycnlb", "gjco", "kk", 353901873, com.azure.core.util.Context.NONE).getValue();
+        ListAppIdResponse response = manager.localRulestacks()
+            .listAppIdsWithResponse("muowakywalhjy", "xcgqtagdrclsso", "jomevtfycnlb", "gjco", "kk", 353901873,
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("iytssikizbc", response.value().get(0));
         Assertions.assertEquals("q", response.nextLink());

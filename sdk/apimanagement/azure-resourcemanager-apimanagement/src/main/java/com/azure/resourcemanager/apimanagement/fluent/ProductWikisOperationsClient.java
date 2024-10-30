@@ -46,12 +46,6 @@ public interface ProductWikisOperationsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WikiContractInner> list(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<WikiContractInner> list(String resourceGroupName, String serviceName, String productId, String filter,
+        Integer top, Integer skip, Context context);
 }

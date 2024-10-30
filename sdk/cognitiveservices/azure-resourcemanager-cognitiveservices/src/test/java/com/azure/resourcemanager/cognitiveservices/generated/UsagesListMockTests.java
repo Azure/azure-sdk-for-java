@@ -33,37 +33,27 @@ public final class UsagesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"unit\":\"Bytes\",\"name\":{\"value\":\"hlhzdsqtzbsrgno\",\"localizedValue\":\"jhf\"},\"quotaPeriod\":\"vecactx\",\"limit\":41.168322378176114,\"currentValue\":22.497800609323814,\"nextResetTime\":\"cluqovekqvgqo\",\"status\":\"InOverage\"}]}";
+        String responseStr
+            = "{\"value\":[{\"unit\":\"Bytes\",\"name\":{\"value\":\"hlhzdsqtzbsrgno\",\"localizedValue\":\"jhf\"},\"quotaPeriod\":\"vecactx\",\"limit\":41.168322378176114,\"currentValue\":22.497800609323814,\"nextResetTime\":\"cluqovekqvgqo\",\"status\":\"InOverage\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CognitiveServicesManager manager =
-            CognitiveServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CognitiveServicesManager manager = CognitiveServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Usage> response =
-            manager.usages().list("pe", "ojyqdhcuplcplcw", com.azure.core.util.Context.NONE);
+        PagedIterable<Usage> response
+            = manager.usages().list("pe", "ojyqdhcuplcplcw", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(UnitType.BYTES, response.iterator().next().unit());
         Assertions.assertEquals("hlhzdsqtzbsrgno", response.iterator().next().name().value());

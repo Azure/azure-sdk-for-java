@@ -20,8 +20,8 @@ public final class DigitalTwinsIdentityType extends ExpandableStringEnum<Digital
     public static final DigitalTwinsIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
     /** Static value SystemAssigned,UserAssigned for DigitalTwinsIdentityType. */
-    public static final DigitalTwinsIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED =
-        fromString("SystemAssigned,UserAssigned");
+    public static final DigitalTwinsIdentityType SYSTEM_ASSIGNED_USER_ASSIGNED
+        = fromString("SystemAssigned,UserAssigned");
 
     /**
      * Creates a new instance of DigitalTwinsIdentityType value.

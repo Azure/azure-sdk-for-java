@@ -19,8 +19,7 @@ public final class AnalyzeHealthcareEntitiesResultCollection extends IterableStr
 
     static {
         AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.setAccessor(
-            new AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper
-                    .AnalyzeHealthcareEntitiesResultCollectionAccessor() {
+            new AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper.AnalyzeHealthcareEntitiesResultCollectionAccessor() {
                 @Override
                 public void setModelVersion(
                     AnalyzeHealthcareEntitiesResultCollection analyzeHealthcareEntitiesResultCollection,

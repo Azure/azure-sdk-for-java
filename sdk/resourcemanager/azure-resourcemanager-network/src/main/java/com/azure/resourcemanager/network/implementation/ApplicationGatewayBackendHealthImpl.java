@@ -25,8 +25,8 @@ public class ApplicationGatewayBackendHealthImpl implements ApplicationGatewayBa
         this.appGateway = appGateway;
         if (inner != null) {
             for (ApplicationGatewayBackendHealthHttpSettings httpConfigInner : inner.backendHttpSettingsCollection()) {
-                ApplicationGatewayBackendHttpConfigurationHealthImpl httpConfigHealth =
-                    new ApplicationGatewayBackendHttpConfigurationHealthImpl(httpConfigInner, this);
+                ApplicationGatewayBackendHttpConfigurationHealthImpl httpConfigHealth
+                    = new ApplicationGatewayBackendHttpConfigurationHealthImpl(httpConfigInner, this);
                 this.httpConfigHealths.put(httpConfigHealth.name(), httpConfigHealth);
             }
         }

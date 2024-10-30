@@ -47,8 +47,8 @@ public interface PortalRevisionsClient {
      * @return paged list of portal revisions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PortalRevisionContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<PortalRevisionContractInner> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the developer portal revision specified by its identifier.
@@ -64,8 +64,8 @@ public interface PortalRevisionsClient {
      * @return the developer portal revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String portalRevisionId, Context context);
+    PortalRevisionsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String portalRevisionId, Context context);
 
     /**
      * Gets the developer portal revision specified by its identifier.
@@ -95,8 +95,8 @@ public interface PortalRevisionsClient {
      * @return the developer portal's revision specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalRevisionsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String portalRevisionId, Context context);
+    PortalRevisionsGetResponse getWithResponse(String resourceGroupName, String serviceName, String portalRevisionId,
+        Context context);
 
     /**
      * Gets the developer portal's revision specified by its identifier.
@@ -148,10 +148,7 @@ public interface PortalRevisionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        PortalRevisionContractInner parameters,
+        String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters,
         Context context);
 
     /**
@@ -169,8 +166,8 @@ public interface PortalRevisionsClient {
      * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalRevisionContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String portalRevisionId, PortalRevisionContractInner parameters);
+    PortalRevisionContractInner createOrUpdate(String resourceGroupName, String serviceName, String portalRevisionId,
+        PortalRevisionContractInner parameters);
 
     /**
      * Creates a new developer portal's revision by running the portal's publishing. The `isCurrent` property indicates
@@ -188,12 +185,8 @@ public interface PortalRevisionsClient {
      * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalRevisionContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        PortalRevisionContractInner parameters,
-        Context context);
+    PortalRevisionContractInner createOrUpdate(String resourceGroupName, String serviceName, String portalRevisionId,
+        PortalRevisionContractInner parameters, Context context);
 
     /**
      * Updates the description of specified portal revision or makes it current.
@@ -212,10 +205,7 @@ public interface PortalRevisionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
+        String resourceGroupName, String serviceName, String portalRevisionId, String ifMatch,
         PortalRevisionContractInner parameters);
 
     /**
@@ -236,12 +226,8 @@ public interface PortalRevisionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PortalRevisionContractInner>, PortalRevisionContractInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
-        PortalRevisionContractInner parameters,
-        Context context);
+        String resourceGroupName, String serviceName, String portalRevisionId, String ifMatch,
+        PortalRevisionContractInner parameters, Context context);
 
     /**
      * Updates the description of specified portal revision or makes it current.
@@ -259,12 +245,8 @@ public interface PortalRevisionsClient {
      * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalRevisionContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
-        PortalRevisionContractInner parameters);
+    PortalRevisionContractInner update(String resourceGroupName, String serviceName, String portalRevisionId,
+        String ifMatch, PortalRevisionContractInner parameters);
 
     /**
      * Updates the description of specified portal revision or makes it current.
@@ -283,11 +265,6 @@ public interface PortalRevisionsClient {
      * @return portal Revision's contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalRevisionContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String portalRevisionId,
-        String ifMatch,
-        PortalRevisionContractInner parameters,
-        Context context);
+    PortalRevisionContractInner update(String resourceGroupName, String serviceName, String portalRevisionId,
+        String ifMatch, PortalRevisionContractInner parameters, Context context);
 }

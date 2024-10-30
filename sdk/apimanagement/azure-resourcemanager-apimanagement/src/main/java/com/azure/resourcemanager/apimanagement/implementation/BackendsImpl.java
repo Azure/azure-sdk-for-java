@@ -24,8 +24,8 @@ public final class BackendsImpl implements Backends {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public BackendsImpl(
-        BackendsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public BackendsImpl(BackendsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -35,15 +35,15 @@ public final class BackendsImpl implements Backends {
         return Utils.mapPage(inner, inner1 -> new BackendContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BackendContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
-        PagedIterable<BackendContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
+    public PagedIterable<BackendContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context) {
+        PagedIterable<BackendContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
         return Utils.mapPage(inner, inner1 -> new BackendContractImpl(inner1, this.manager()));
     }
 
-    public BackendsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String backendId, Context context) {
+    public BackendsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String backendId, Context context) {
         return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, backendId, context);
     }
 
@@ -51,15 +51,12 @@ public final class BackendsImpl implements Backends {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, backendId);
     }
 
-    public Response<BackendContract> getWithResponse(
-        String resourceGroupName, String serviceName, String backendId, Context context) {
-        BackendsGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, backendId, context);
+    public Response<BackendContract> getWithResponse(String resourceGroupName, String serviceName, String backendId,
+        Context context) {
+        BackendsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, backendId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BackendContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -75,8 +72,8 @@ public final class BackendsImpl implements Backends {
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String backendId, String ifMatch, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String backendId,
+        String ifMatch, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, backendId, ifMatch, context);
     }
 
@@ -84,14 +81,9 @@ public final class BackendsImpl implements Backends {
         this.serviceClient().delete(resourceGroupName, serviceName, backendId, ifMatch);
     }
 
-    public Response<Void> reconnectWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String backendId,
-        BackendReconnectContract parameters,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> reconnectWithResponse(String resourceGroupName, String serviceName, String backendId,
+        BackendReconnectContract parameters, Context context) {
+        return this.serviceClient()
             .reconnectWithResponse(resourceGroupName, serviceName, backendId, parameters, context);
     }
 
@@ -102,25 +94,18 @@ public final class BackendsImpl implements Backends {
     public BackendContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String backendId = Utils.getValueFromIdByName(id, "backends");
         if (backendId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, backendId, Context.NONE).getValue();
     }
@@ -128,25 +113,18 @@ public final class BackendsImpl implements Backends {
     public Response<BackendContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String backendId = Utils.getValueFromIdByName(id, "backends");
         if (backendId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, backendId, context);
     }
@@ -154,25 +132,18 @@ public final class BackendsImpl implements Backends {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String backendId = Utils.getValueFromIdByName(id, "backends");
         if (backendId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));
         }
         String localIfMatch = null;
         this.deleteWithResponse(resourceGroupName, serviceName, backendId, localIfMatch, Context.NONE);
@@ -181,25 +152,18 @@ public final class BackendsImpl implements Backends {
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String backendId = Utils.getValueFromIdByName(id, "backends");
         if (backendId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backends'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, serviceName, backendId, ifMatch, context);
     }

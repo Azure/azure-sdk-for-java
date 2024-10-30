@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MultiSubnetIpConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MultiSubnetIpConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"privateIpAddress\":{\"ipAddress\":\"djpslw\",\"subnetResourceId\":\"dpvwryoqpsoaccta\"},\"sqlVirtualMachineInstance\":\"akl\"}")
-                .toObject(MultiSubnetIpConfiguration.class);
+        MultiSubnetIpConfiguration model = BinaryData.fromString(
+            "{\"privateIpAddress\":{\"ipAddress\":\"djpslw\",\"subnetResourceId\":\"dpvwryoqpsoaccta\"},\"sqlVirtualMachineInstance\":\"akl\"}")
+            .toObject(MultiSubnetIpConfiguration.class);
         Assertions.assertEquals("djpslw", model.privateIpAddress().ipAddress());
         Assertions.assertEquals("dpvwryoqpsoaccta", model.privateIpAddress().subnetResourceId());
         Assertions.assertEquals("akl", model.sqlVirtualMachineInstance());
@@ -24,11 +22,10 @@ public final class MultiSubnetIpConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MultiSubnetIpConfiguration model =
-            new MultiSubnetIpConfiguration()
-                .withPrivateIpAddress(
-                    new PrivateIpAddress().withIpAddress("djpslw").withSubnetResourceId("dpvwryoqpsoaccta"))
-                .withSqlVirtualMachineInstance("akl");
+        MultiSubnetIpConfiguration model = new MultiSubnetIpConfiguration()
+            .withPrivateIpAddress(
+                new PrivateIpAddress().withIpAddress("djpslw").withSubnetResourceId("dpvwryoqpsoaccta"))
+            .withSqlVirtualMachineInstance("akl");
         model = BinaryData.fromObject(model).toObject(MultiSubnetIpConfiguration.class);
         Assertions.assertEquals("djpslw", model.privateIpAddress().ipAddress());
         Assertions.assertEquals("dpvwryoqpsoaccta", model.privateIpAddress().subnetResourceId());

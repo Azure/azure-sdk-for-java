@@ -60,7 +60,8 @@ public final class TableTransactionActionResponseAccessHelper {
      * @param subject The {@link TableTransactionActionResponse} to update.
      * @param request The request to attach to the {@link TableTransactionActionResponse}.
      */
-    public static void updateTableTransactionActionResponse(TableTransactionActionResponse subject, HttpRequest request) {
+    public static void updateTableTransactionActionResponse(TableTransactionActionResponse subject,
+        HttpRequest request) {
         accessor.updateTableTransactionActionResponse(subject, request);
     }
 

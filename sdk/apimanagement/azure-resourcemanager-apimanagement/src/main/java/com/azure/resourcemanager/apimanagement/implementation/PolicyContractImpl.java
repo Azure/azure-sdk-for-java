@@ -62,8 +62,8 @@ public final class PolicyContractImpl implements PolicyContract, PolicyContract.
 
     private String updateIfMatch;
 
-    public PolicyContractImpl withExistingOperation(
-        String resourceGroupName, String serviceName, String apiId, String operationId) {
+    public PolicyContractImpl withExistingOperation(String resourceGroupName, String serviceName, String apiId,
+        String operationId) {
         this.resourceGroupName = resourceGroupName;
         this.serviceName = serviceName;
         this.apiId = apiId;
@@ -72,38 +72,20 @@ public final class PolicyContractImpl implements PolicyContract, PolicyContract.
     }
 
     public PolicyContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperationPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    operationId,
-                    policyId,
-                    this.innerModel(),
-                    createIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperationPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, operationId, policyId, this.innerModel(),
+                createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PolicyContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperationPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    operationId,
-                    policyId,
-                    this.innerModel(),
-                    createIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperationPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, operationId, policyId, this.innerModel(),
+                createIfMatch, context)
+            .getValue();
         return this;
     }
 
@@ -120,43 +102,25 @@ public final class PolicyContractImpl implements PolicyContract, PolicyContract.
     }
 
     public PolicyContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperationPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    operationId,
-                    policyId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperationPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, operationId, policyId, this.innerModel(),
+                updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PolicyContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperationPolicies()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    apiId,
-                    operationId,
-                    policyId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperationPolicies()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, apiId, operationId, policyId, this.innerModel(),
+                updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    PolicyContractImpl(
-        PolicyContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    PolicyContractImpl(PolicyContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -168,24 +132,19 @@ public final class PolicyContractImpl implements PolicyContract, PolicyContract.
 
     public PolicyContract refresh() {
         PolicyExportFormat localFormat = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperationPolicies()
-                .getWithResponse(
-                    resourceGroupName, serviceName, apiId, operationId, policyId, localFormat, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperationPolicies()
+            .getWithResponse(resourceGroupName, serviceName, apiId, operationId, policyId, localFormat, Context.NONE)
+            .getValue();
         return this;
     }
 
     public PolicyContract refresh(Context context) {
         PolicyExportFormat localFormat = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApiOperationPolicies()
-                .getWithResponse(resourceGroupName, serviceName, apiId, operationId, policyId, localFormat, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getApiOperationPolicies()
+            .getWithResponse(resourceGroupName, serviceName, apiId, operationId, policyId, localFormat, context)
+            .getValue();
         return this;
     }
 

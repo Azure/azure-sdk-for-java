@@ -22,7 +22,8 @@ public final class StorageTaskPreviewActionConditionTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageTaskPreviewActionCondition model = new StorageTaskPreviewActionCondition()
-            .withIfProperty(new StorageTaskPreviewActionIfCondition().withCondition("k")).withElseBlockExists(true);
+            .withIfProperty(new StorageTaskPreviewActionIfCondition().withCondition("k"))
+            .withElseBlockExists(true);
         model = BinaryData.fromObject(model).toObject(StorageTaskPreviewActionCondition.class);
         Assertions.assertEquals("k", model.ifProperty().condition());
         Assertions.assertEquals(true, model.elseBlockExists());

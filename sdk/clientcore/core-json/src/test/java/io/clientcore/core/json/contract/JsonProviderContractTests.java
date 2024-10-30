@@ -43,33 +43,31 @@ public abstract class JsonProviderContractTests {
     @ParameterizedTest
     @MethodSource("nullJsonSupplier")
     public void nullJsonThrowsNullPointerException(Method creator) {
-        assertThrows(NullPointerException.class, () -> PUBLIC_LOOKUP.unreflect(creator)
-            .invokeWithArguments(getJsonProvider(), null, new JsonOptions()));
+        assertThrows(NullPointerException.class,
+            () -> PUBLIC_LOOKUP.unreflect(creator).invokeWithArguments(getJsonProvider(), null, new JsonOptions()));
     }
 
     private static Stream<Method> nullJsonSupplier() throws NoSuchMethodException {
-        return Stream.of(
-            JsonProvider.class.getDeclaredMethod("createReader", byte[].class, JsonOptions.class),
+        return Stream.of(JsonProvider.class.getDeclaredMethod("createReader", byte[].class, JsonOptions.class),
             JsonProvider.class.getDeclaredMethod("createReader", String.class, JsonOptions.class),
             JsonProvider.class.getDeclaredMethod("createReader", InputStream.class, JsonOptions.class),
             JsonProvider.class.getDeclaredMethod("createReader", Reader.class, JsonOptions.class),
             JsonProvider.class.getDeclaredMethod("createWriter", OutputStream.class, JsonOptions.class),
-            JsonProvider.class.getDeclaredMethod("createWriter", Writer.class, JsonOptions.class)
-        );
+            JsonProvider.class.getDeclaredMethod("createWriter", Writer.class, JsonOptions.class));
     }
 
     @ParameterizedTest
     @MethodSource("nonNullJsonSupplier")
     public <T> void nullJsonOptionsThrowsNullPointerException(Method creator, T json) {
-        assertThrows(NullPointerException.class, () -> PUBLIC_LOOKUP.unreflect(creator)
-            .invokeWithArguments(getJsonProvider(), json, null));
+        assertThrows(NullPointerException.class,
+            () -> PUBLIC_LOOKUP.unreflect(creator).invokeWithArguments(getJsonProvider(), json, null));
     }
 
     @ParameterizedTest
     @MethodSource("nonNullJsonSupplier")
     public <T> void canCreate(Method creator, T json) {
-        assertDoesNotThrow(() -> PUBLIC_LOOKUP.unreflect(creator)
-            .invokeWithArguments(getJsonProvider(), json, new JsonOptions()));
+        assertDoesNotThrow(
+            () -> PUBLIC_LOOKUP.unreflect(creator).invokeWithArguments(getJsonProvider(), json, new JsonOptions()));
     }
 
     private static Stream<Arguments> nonNullJsonSupplier() throws NoSuchMethodException {
@@ -84,7 +82,6 @@ public abstract class JsonProviderContractTests {
             Arguments.of(JsonProvider.class.getDeclaredMethod("createWriter", OutputStream.class, JsonOptions.class),
                 new ByteArrayOutputStream()),
             Arguments.of(JsonProvider.class.getDeclaredMethod("createWriter", Writer.class, JsonOptions.class),
-                new StringWriter())
-        );
+                new StringWriter()));
     }
 }

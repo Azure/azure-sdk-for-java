@@ -163,10 +163,8 @@ public final class RoutePolicyProperties extends AnnotationResource {
     public void validate() {
         super.validate();
         if (networkFabricId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkFabricId in model RoutePolicyProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkFabricId in model RoutePolicyProperties"));
         }
         if (statements() != null) {
             statements().forEach(e -> e.validate());

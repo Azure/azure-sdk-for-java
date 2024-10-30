@@ -51,14 +51,8 @@ public interface ApiSchemasClient {
      * @return the schema configuration at the API level as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SchemaContractInner> listByApi(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<SchemaContractInner> listByApi(String resourceGroupName, String serviceName, String apiId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the schema specified by its identifier.
@@ -75,8 +69,8 @@ public interface ApiSchemasClient {
      * @return the entity state (Etag) version of the schema specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiSchemasGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, Context context);
+    ApiSchemasGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String apiId,
+        String schemaId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the schema specified by its identifier.
@@ -108,8 +102,8 @@ public interface ApiSchemasClient {
      * @return the schema configuration at the API level.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApiSchemasGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, Context context);
+    ApiSchemasGetResponse getWithResponse(String resourceGroupName, String serviceName, String apiId, String schemaId,
+        Context context);
 
     /**
      * Get the schema configuration at the API level.
@@ -142,8 +136,8 @@ public interface ApiSchemasClient {
      * @return the {@link SyncPoller} for polling of aPI Schema Contract details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdate(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, SchemaContractInner parameters);
+    SyncPoller<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String apiId, String schemaId, SchemaContractInner parameters);
 
     /**
      * Creates or updates schema configuration for the API.
@@ -162,13 +156,8 @@ public interface ApiSchemasClient {
      * @return the {@link SyncPoller} for polling of aPI Schema Contract details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
-        String ifMatch,
+    SyncPoller<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdate(String resourceGroupName,
+        String serviceName, String apiId, String schemaId, SchemaContractInner parameters, String ifMatch,
         Context context);
 
     /**
@@ -186,8 +175,8 @@ public interface ApiSchemasClient {
      * @return aPI Schema Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SchemaContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String apiId, String schemaId, SchemaContractInner parameters);
+    SchemaContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId, String schemaId,
+        SchemaContractInner parameters);
 
     /**
      * Creates or updates schema configuration for the API.
@@ -206,14 +195,8 @@ public interface ApiSchemasClient {
      * @return aPI Schema Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SchemaContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        SchemaContractInner parameters,
-        String ifMatch,
-        Context context);
+    SchemaContractInner createOrUpdate(String resourceGroupName, String serviceName, String apiId, String schemaId,
+        SchemaContractInner parameters, String ifMatch, Context context);
 
     /**
      * Deletes the schema configuration at the Api.
@@ -233,14 +216,8 @@ public interface ApiSchemasClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String apiId,
-        String schemaId,
-        String ifMatch,
-        Boolean force,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String schemaId,
+        String ifMatch, Boolean force, Context context);
 
     /**
      * Deletes the schema configuration at the Api.

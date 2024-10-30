@@ -34,37 +34,27 @@ public final class RoutePoliciesListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"networkFabricId\":\"qfcorajdb\",\"addressFamilyType\":\"IPv6\",\"configurationState\":\"Failed\",\"provisioningState\":\"Failed\",\"administrativeState\":\"RMA\",\"statements\":[{\"sequenceNumber\":8939069278384047837,\"condition\":{\"type\":\"Or\",\"ipPrefixId\":\"vynhmb\",\"ipExtendedCommunityIds\":[\"fxfyzqrsu\"],\"ipCommunityIds\":[\"sudtb\"]},\"action\":{\"localPreference\":6839164776180374009,\"actionType\":\"Continue\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"lyedsormbvirnxey\"},{\"sequenceNumber\":3255422556816107564,\"condition\":{\"type\":\"And\",\"ipPrefixId\":\"yidecffjhizwqz\",\"ipExtendedCommunityIds\":[\"wjypioszczswhd\",\"lxppewtl\",\"swul\"],\"ipCommunityIds\":[\"fczwzrxvvbl\",\"npriyttiqdcjg\"]},\"action\":{\"localPreference\":3778611207800585693,\"actionType\":\"Permit\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"woetjrfruc\"}],\"annotation\":\"fwdxbpvbsibz\"},\"location\":\"deyo\",\"tags\":{\"ieshqielbk\":\"othtpaqmf\",\"mgud\":\"m\",\"ecuve\":\"y\",\"kkjvrrvj\":\"lcwdg\"},\"id\":\"hoehyir\",\"name\":\"vr\",\"type\":\"doxpvqpblqubfpe\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"networkFabricId\":\"qfcorajdb\",\"addressFamilyType\":\"IPv6\",\"configurationState\":\"Failed\",\"provisioningState\":\"Failed\",\"administrativeState\":\"RMA\",\"statements\":[{\"sequenceNumber\":8939069278384047837,\"condition\":{\"type\":\"Or\",\"ipPrefixId\":\"vynhmb\",\"ipExtendedCommunityIds\":[\"fxfyzqrsu\"],\"ipCommunityIds\":[\"sudtb\"]},\"action\":{\"localPreference\":6839164776180374009,\"actionType\":\"Continue\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"lyedsormbvirnxey\"},{\"sequenceNumber\":3255422556816107564,\"condition\":{\"type\":\"And\",\"ipPrefixId\":\"yidecffjhizwqz\",\"ipExtendedCommunityIds\":[\"wjypioszczswhd\",\"lxppewtl\",\"swul\"],\"ipCommunityIds\":[\"fczwzrxvvbl\",\"npriyttiqdcjg\"]},\"action\":{\"localPreference\":3778611207800585693,\"actionType\":\"Permit\",\"ipCommunityProperties\":{},\"ipExtendedCommunityProperties\":{}},\"annotation\":\"woetjrfruc\"}],\"annotation\":\"fwdxbpvbsibz\"},\"location\":\"deyo\",\"tags\":{\"ieshqielbk\":\"othtpaqmf\",\"mgud\":\"m\",\"ecuve\":\"y\",\"kkjvrrvj\":\"lcwdg\"},\"id\":\"hoehyir\",\"name\":\"vr\",\"type\":\"doxpvqpblqubfpe\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<RoutePolicy> response =
-            manager.routePolicies().listByResourceGroup("tqxqiqaefu", com.azure.core.util.Context.NONE);
+        PagedIterable<RoutePolicy> response
+            = manager.routePolicies().listByResourceGroup("tqxqiqaefu", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("deyo", response.iterator().next().location());
         Assertions.assertEquals("othtpaqmf", response.iterator().next().tags().get("ieshqielbk"));
@@ -72,22 +62,17 @@ public final class RoutePoliciesListByResourceGroupMockTests {
         Assertions.assertEquals(AddressFamilyType.IPV6, response.iterator().next().addressFamilyType());
         Assertions.assertEquals("lyedsormbvirnxey", response.iterator().next().statements().get(0).annotation());
         Assertions.assertEquals(8939069278384047837L, response.iterator().next().statements().get(0).sequenceNumber());
-        Assertions
-            .assertEquals("sudtb", response.iterator().next().statements().get(0).condition().ipCommunityIds().get(0));
-        Assertions
-            .assertEquals(
-                RoutePolicyConditionType.OR, response.iterator().next().statements().get(0).condition().type());
+        Assertions.assertEquals("sudtb",
+            response.iterator().next().statements().get(0).condition().ipCommunityIds().get(0));
+        Assertions.assertEquals(RoutePolicyConditionType.OR,
+            response.iterator().next().statements().get(0).condition().type());
         Assertions.assertEquals("vynhmb", response.iterator().next().statements().get(0).condition().ipPrefixId());
-        Assertions
-            .assertEquals(
-                "fxfyzqrsu",
-                response.iterator().next().statements().get(0).condition().ipExtendedCommunityIds().get(0));
-        Assertions
-            .assertEquals(
-                6839164776180374009L, response.iterator().next().statements().get(0).action().localPreference());
-        Assertions
-            .assertEquals(
-                RoutePolicyActionType.CONTINUE, response.iterator().next().statements().get(0).action().actionType());
+        Assertions.assertEquals("fxfyzqrsu",
+            response.iterator().next().statements().get(0).condition().ipExtendedCommunityIds().get(0));
+        Assertions.assertEquals(6839164776180374009L,
+            response.iterator().next().statements().get(0).action().localPreference());
+        Assertions.assertEquals(RoutePolicyActionType.CONTINUE,
+            response.iterator().next().statements().get(0).action().actionType());
         Assertions.assertEquals("fwdxbpvbsibz", response.iterator().next().annotation());
     }
 }

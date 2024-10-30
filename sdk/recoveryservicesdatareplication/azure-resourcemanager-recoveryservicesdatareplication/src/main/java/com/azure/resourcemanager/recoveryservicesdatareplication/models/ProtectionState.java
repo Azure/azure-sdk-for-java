@@ -38,12 +38,12 @@ public final class ProtectionState extends ExpandableStringEnum<ProtectionState>
     public static final ProtectionState INITIAL_REPLICATION_IN_PROGRESS = fromString("InitialReplicationInProgress");
 
     /** Static value InitialReplicationCompletedOnPrimary for ProtectionState. */
-    public static final ProtectionState INITIAL_REPLICATION_COMPLETED_ON_PRIMARY =
-        fromString("InitialReplicationCompletedOnPrimary");
+    public static final ProtectionState INITIAL_REPLICATION_COMPLETED_ON_PRIMARY
+        = fromString("InitialReplicationCompletedOnPrimary");
 
     /** Static value InitialReplicationCompletedOnRecovery for ProtectionState. */
-    public static final ProtectionState INITIAL_REPLICATION_COMPLETED_ON_RECOVERY =
-        fromString("InitialReplicationCompletedOnRecovery");
+    public static final ProtectionState INITIAL_REPLICATION_COMPLETED_ON_RECOVERY
+        = fromString("InitialReplicationCompletedOnRecovery");
 
     /** Static value InitialReplicationFailed for ProtectionState. */
     public static final ProtectionState INITIAL_REPLICATION_FAILED = fromString("InitialReplicationFailed");
@@ -61,8 +61,8 @@ public final class ProtectionState extends ExpandableStringEnum<ProtectionState>
     public static final ProtectionState PROTECTED_STATES_END = fromString("ProtectedStatesEnd");
 
     /** Static value PlannedFailoverTransitionStatesBegin for ProtectionState. */
-    public static final ProtectionState PLANNED_FAILOVER_TRANSITION_STATES_BEGIN =
-        fromString("PlannedFailoverTransitionStatesBegin");
+    public static final ProtectionState PLANNED_FAILOVER_TRANSITION_STATES_BEGIN
+        = fromString("PlannedFailoverTransitionStatesBegin");
 
     /** Static value PlannedFailoverInitiated for ProtectionState. */
     public static final ProtectionState PLANNED_FAILOVER_INITIATED = fromString("PlannedFailoverInitiated");
@@ -77,16 +77,16 @@ public final class ProtectionState extends ExpandableStringEnum<ProtectionState>
     public static final ProtectionState PLANNED_FAILOVER_FAILED = fromString("PlannedFailoverFailed");
 
     /** Static value PlannedFailoverCompletionFailed for ProtectionState. */
-    public static final ProtectionState PLANNED_FAILOVER_COMPLETION_FAILED =
-        fromString("PlannedFailoverCompletionFailed");
+    public static final ProtectionState PLANNED_FAILOVER_COMPLETION_FAILED
+        = fromString("PlannedFailoverCompletionFailed");
 
     /** Static value PlannedFailoverTransitionStatesEnd for ProtectionState. */
-    public static final ProtectionState PLANNED_FAILOVER_TRANSITION_STATES_END =
-        fromString("PlannedFailoverTransitionStatesEnd");
+    public static final ProtectionState PLANNED_FAILOVER_TRANSITION_STATES_END
+        = fromString("PlannedFailoverTransitionStatesEnd");
 
     /** Static value UnplannedFailoverTransitionStatesBegin for ProtectionState. */
-    public static final ProtectionState UNPLANNED_FAILOVER_TRANSITION_STATES_BEGIN =
-        fromString("UnplannedFailoverTransitionStatesBegin");
+    public static final ProtectionState UNPLANNED_FAILOVER_TRANSITION_STATES_BEGIN
+        = fromString("UnplannedFailoverTransitionStatesBegin");
 
     /** Static value UnplannedFailoverInitiated for ProtectionState. */
     public static final ProtectionState UNPLANNED_FAILOVER_INITIATED = fromString("UnplannedFailoverInitiated");
@@ -101,23 +101,23 @@ public final class ProtectionState extends ExpandableStringEnum<ProtectionState>
     public static final ProtectionState UNPLANNED_FAILOVER_FAILED = fromString("UnplannedFailoverFailed");
 
     /** Static value UnplannedFailoverCompletionFailed for ProtectionState. */
-    public static final ProtectionState UNPLANNED_FAILOVER_COMPLETION_FAILED =
-        fromString("UnplannedFailoverCompletionFailed");
+    public static final ProtectionState UNPLANNED_FAILOVER_COMPLETION_FAILED
+        = fromString("UnplannedFailoverCompletionFailed");
 
     /** Static value UnplannedFailoverTransitionStatesEnd for ProtectionState. */
-    public static final ProtectionState UNPLANNED_FAILOVER_TRANSITION_STATES_END =
-        fromString("UnplannedFailoverTransitionStatesEnd");
+    public static final ProtectionState UNPLANNED_FAILOVER_TRANSITION_STATES_END
+        = fromString("UnplannedFailoverTransitionStatesEnd");
 
     /** Static value CommitFailoverStatesBegin for ProtectionState. */
     public static final ProtectionState COMMIT_FAILOVER_STATES_BEGIN = fromString("CommitFailoverStatesBegin");
 
     /** Static value CommitFailoverInProgressOnPrimary for ProtectionState. */
-    public static final ProtectionState COMMIT_FAILOVER_IN_PROGRESS_ON_PRIMARY =
-        fromString("CommitFailoverInProgressOnPrimary");
+    public static final ProtectionState COMMIT_FAILOVER_IN_PROGRESS_ON_PRIMARY
+        = fromString("CommitFailoverInProgressOnPrimary");
 
     /** Static value CommitFailoverInProgressOnRecovery for ProtectionState. */
-    public static final ProtectionState COMMIT_FAILOVER_IN_PROGRESS_ON_RECOVERY =
-        fromString("CommitFailoverInProgressOnRecovery");
+    public static final ProtectionState COMMIT_FAILOVER_IN_PROGRESS_ON_RECOVERY
+        = fromString("CommitFailoverInProgressOnRecovery");
 
     /** Static value CommitFailoverCompleted for ProtectionState. */
     public static final ProtectionState COMMIT_FAILOVER_COMPLETED = fromString("CommitFailoverCompleted");
@@ -126,8 +126,8 @@ public final class ProtectionState extends ExpandableStringEnum<ProtectionState>
     public static final ProtectionState COMMIT_FAILOVER_FAILED_ON_PRIMARY = fromString("CommitFailoverFailedOnPrimary");
 
     /** Static value CommitFailoverFailedOnRecovery for ProtectionState. */
-    public static final ProtectionState COMMIT_FAILOVER_FAILED_ON_RECOVERY =
-        fromString("CommitFailoverFailedOnRecovery");
+    public static final ProtectionState COMMIT_FAILOVER_FAILED_ON_RECOVERY
+        = fromString("CommitFailoverFailedOnRecovery");
 
     /** Static value CommitFailoverStatesEnd for ProtectionState. */
     public static final ProtectionState COMMIT_FAILOVER_STATES_END = fromString("CommitFailoverStatesEnd");
@@ -136,26 +136,26 @@ public final class ProtectionState extends ExpandableStringEnum<ProtectionState>
     public static final ProtectionState CANCEL_FAILOVER_STATES_BEGIN = fromString("CancelFailoverStatesBegin");
 
     /** Static value CancelFailoverInProgressOnPrimary for ProtectionState. */
-    public static final ProtectionState CANCEL_FAILOVER_IN_PROGRESS_ON_PRIMARY =
-        fromString("CancelFailoverInProgressOnPrimary");
+    public static final ProtectionState CANCEL_FAILOVER_IN_PROGRESS_ON_PRIMARY
+        = fromString("CancelFailoverInProgressOnPrimary");
 
     /** Static value CancelFailoverInProgressOnRecovery for ProtectionState. */
-    public static final ProtectionState CANCEL_FAILOVER_IN_PROGRESS_ON_RECOVERY =
-        fromString("CancelFailoverInProgressOnRecovery");
+    public static final ProtectionState CANCEL_FAILOVER_IN_PROGRESS_ON_RECOVERY
+        = fromString("CancelFailoverInProgressOnRecovery");
 
     /** Static value CancelFailoverFailedOnPrimary for ProtectionState. */
     public static final ProtectionState CANCEL_FAILOVER_FAILED_ON_PRIMARY = fromString("CancelFailoverFailedOnPrimary");
 
     /** Static value CancelFailoverFailedOnRecovery for ProtectionState. */
-    public static final ProtectionState CANCEL_FAILOVER_FAILED_ON_RECOVERY =
-        fromString("CancelFailoverFailedOnRecovery");
+    public static final ProtectionState CANCEL_FAILOVER_FAILED_ON_RECOVERY
+        = fromString("CancelFailoverFailedOnRecovery");
 
     /** Static value CancelFailoverStatesEnd for ProtectionState. */
     public static final ProtectionState CANCEL_FAILOVER_STATES_END = fromString("CancelFailoverStatesEnd");
 
     /** Static value ChangeRecoveryPointStatesBegin for ProtectionState. */
-    public static final ProtectionState CHANGE_RECOVERY_POINT_STATES_BEGIN =
-        fromString("ChangeRecoveryPointStatesBegin");
+    public static final ProtectionState CHANGE_RECOVERY_POINT_STATES_BEGIN
+        = fromString("ChangeRecoveryPointStatesBegin");
 
     /** Static value ChangeRecoveryPointInitiated for ProtectionState. */
     public static final ProtectionState CHANGE_RECOVERY_POINT_INITIATED = fromString("ChangeRecoveryPointInitiated");

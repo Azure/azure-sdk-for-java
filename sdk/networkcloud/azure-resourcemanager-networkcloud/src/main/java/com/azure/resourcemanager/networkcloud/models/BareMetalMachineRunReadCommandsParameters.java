@@ -84,10 +84,8 @@ public final class BareMetalMachineRunReadCommandsParameters {
      */
     public void validate() {
         if (commands() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property commands in model BareMetalMachineRunReadCommandsParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property commands in model BareMetalMachineRunReadCommandsParameters"));
         } else {
             commands().forEach(e -> e.validate());
         }

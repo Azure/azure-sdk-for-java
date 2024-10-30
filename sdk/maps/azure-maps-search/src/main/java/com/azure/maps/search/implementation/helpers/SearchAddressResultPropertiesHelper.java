@@ -16,6 +16,7 @@ public final class SearchAddressResultPropertiesHelper {
 
     public interface SearchAddressResultAccessor {
         void setSummary(SearchAddressResult searchAddressResult, SearchSummary summary);
+
         void setResults(SearchAddressResult searchAddressResult, List<SearchAddressResultItem> results);
     }
 

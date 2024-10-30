@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageFormat model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.ImageFormat\",\"filenamePattern\":\"widf\"}")
+        ImageFormat model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.ImageFormat\",\"filenamePattern\":\"widf\"}")
                 .toObject(ImageFormat.class);
         Assertions.assertEquals("widf", model.filenamePattern());
     }

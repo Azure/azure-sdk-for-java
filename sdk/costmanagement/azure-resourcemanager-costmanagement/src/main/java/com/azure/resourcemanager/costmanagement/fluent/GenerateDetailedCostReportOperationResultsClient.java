@@ -29,8 +29,7 @@ public interface GenerateDetailedCostReportOperationResultsClient {
      * @return the {@link SyncPoller} for polling of the result of the specified operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginGet(String operationId, String scope);
 
     /**
@@ -47,8 +46,7 @@ public interface GenerateDetailedCostReportOperationResultsClient {
      * @return the {@link SyncPoller} for polling of the result of the specified operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginGet(String operationId, String scope, Context context);
 
     /**

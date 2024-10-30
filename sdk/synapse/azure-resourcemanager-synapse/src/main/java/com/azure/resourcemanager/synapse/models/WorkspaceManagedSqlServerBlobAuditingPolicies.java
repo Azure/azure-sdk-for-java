@@ -24,8 +24,8 @@ public interface WorkspaceManagedSqlServerBlobAuditingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace managed sql server's blob auditing policy along with {@link Response}.
      */
-    Response<ServerBlobAuditingPolicy> getWithResponse(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName, Context context);
+    Response<ServerBlobAuditingPolicy> getWithResponse(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName, Context context);
 
     /**
      * Get server's blob auditing policy.
@@ -40,8 +40,8 @@ public interface WorkspaceManagedSqlServerBlobAuditingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a workspace managed sql server's blob auditing policy.
      */
-    ServerBlobAuditingPolicy get(
-        String resourceGroupName, String workspaceName, BlobAuditingPolicyName blobAuditingPolicyName);
+    ServerBlobAuditingPolicy get(String resourceGroupName, String workspaceName,
+        BlobAuditingPolicyName blobAuditingPolicyName);
 
     /**
      * List workspace server's blob auditing policies.
@@ -70,8 +70,8 @@ public interface WorkspaceManagedSqlServerBlobAuditingPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of server auditing settings as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ServerBlobAuditingPolicy> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<ServerBlobAuditingPolicy> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
      * Get server's blob auditing policy.

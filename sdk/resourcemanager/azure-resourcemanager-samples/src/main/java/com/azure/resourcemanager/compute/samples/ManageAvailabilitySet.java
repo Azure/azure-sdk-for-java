@@ -58,15 +58,16 @@ public final class ManageAvailabilitySet {
 
             System.out.println("Creating an availability set");
 
-            AvailabilitySet availSet1 = azureResourceManager.availabilitySets().define(availSetName1)
-                    .withRegion(region)
-                    .withNewResourceGroup(rgName)
-                    .withFaultDomainCount(2)
-                    .withUpdateDomainCount(4)
-                    .withSku(AvailabilitySetSkuTypes.ALIGNED)
-                    .withTag("cluster", "Windowslinux")
-                    .withTag("tag1", "tag1val")
-                    .create();
+            AvailabilitySet availSet1 = azureResourceManager.availabilitySets()
+                .define(availSetName1)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withFaultDomainCount(2)
+                .withUpdateDomainCount(4)
+                .withSku(AvailabilitySetSkuTypes.ALIGNED)
+                .withTag("cluster", "Windowslinux")
+                .withTag("tag1", "tag1val")
+                .create();
 
             System.out.println("Created first availability set: " + availSet1.id());
             Utils.print(availSet1);
@@ -74,82 +75,77 @@ public final class ManageAvailabilitySet {
             //=============================================================
             // Define a virtual network for the VMs in this availability set
 
-            Creatable<Network> networkDefinition = azureResourceManager.networks().define(vnetName)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withAddressSpace("10.0.0.0/28");
-
+            Creatable<Network> networkDefinition = azureResourceManager.networks()
+                .define(vnetName)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withAddressSpace("10.0.0.0/28");
 
             //=============================================================
             // Create a Windows VM in the new availability set
 
             System.out.println("Creating a Windows VM in the availability set");
 
-            VirtualMachine vm1 = azureResourceManager.virtualMachines().define(vm1Name)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetwork(networkDefinition)
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                    .withAdminUsername(userName)
-                    .withAdminPassword(password)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .withExistingAvailabilitySet(availSet1)
-                    .create();
-
+            VirtualMachine vm1 = azureResourceManager.virtualMachines()
+                .define(vm1Name)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork(networkDefinition)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+                .withAdminUsername(userName)
+                .withAdminPassword(password)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withExistingAvailabilitySet(availSet1)
+                .create();
 
             System.out.println("Created first VM:" + vm1.id());
             Utils.print(vm1);
-
 
             //=============================================================
             // Create a Linux VM in the same availability set
 
             System.out.println("Creating a Linux VM in the availability set");
 
-            VirtualMachine vm2 = azureResourceManager.virtualMachines().define(vm2Name)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .withNewPrimaryNetwork(networkDefinition)
-                    .withPrimaryPrivateIPAddressDynamic()
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(userName)
-                    .withSsh(sshPublicKey)
-                    .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
-                    .withExistingAvailabilitySet(availSet1)
-                    .create();
+            VirtualMachine vm2 = azureResourceManager.virtualMachines()
+                .define(vm2Name)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .withNewPrimaryNetwork(networkDefinition)
+                .withPrimaryPrivateIPAddressDynamic()
+                .withoutPrimaryPublicIPAddress()
+                .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                .withRootUsername(userName)
+                .withSsh(sshPublicKey)
+                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withExistingAvailabilitySet(availSet1)
+                .create();
 
             System.out.println("Created second VM: " + vm2.id());
             Utils.print(vm2);
 
-
             //=============================================================
             // Update - Tag the availability set
 
-            availSet1 = availSet1.update()
-                    .withTag("server1", "nginx")
-                    .withTag("server2", "iis")
-                    .withoutTag("tag1")
-                    .apply();
+            availSet1
+                = availSet1.update().withTag("server1", "nginx").withTag("server2", "iis").withoutTag("tag1").apply();
 
             System.out.println("Tagged availability set: " + availSet1.id());
-
 
             //=============================================================
             // Create another availability set
 
             System.out.println("Creating an availability set");
 
-            AvailabilitySet availSet2 = azureResourceManager.availabilitySets().define(availSetName2)
-                    .withRegion(region)
-                    .withExistingResourceGroup(rgName)
-                    .create();
+            AvailabilitySet availSet2 = azureResourceManager.availabilitySets()
+                .define(availSetName2)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .create();
 
             System.out.println("Created second availability set: " + availSet2.id());
             Utils.print(availSet2);
-
 
             //=============================================================
             // List availability sets
@@ -158,10 +154,10 @@ public final class ManageAvailabilitySet {
 
             System.out.println("Printing list of availability sets  =======");
 
-            for (AvailabilitySet availabilitySet : azureResourceManager.availabilitySets().listByResourceGroup(resourceGroupName)) {
+            for (AvailabilitySet availabilitySet : azureResourceManager.availabilitySets()
+                .listByResourceGroup(resourceGroupName)) {
                 Utils.print(availabilitySet);
             }
-
 
             //=============================================================
             // Delete an availability set
@@ -201,8 +197,7 @@ public final class ManageAvailabilitySet {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

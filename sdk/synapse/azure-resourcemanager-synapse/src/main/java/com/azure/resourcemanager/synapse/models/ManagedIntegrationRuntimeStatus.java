@@ -22,8 +22,8 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
      * Managed integration runtime status type properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
-    private ManagedIntegrationRuntimeStatusTypeProperties innerTypeProperties =
-        new ManagedIntegrationRuntimeStatusTypeProperties();
+    private ManagedIntegrationRuntimeStatusTypeProperties innerTypeProperties
+        = new ManagedIntegrationRuntimeStatusTypeProperties();
 
     /** Creates an instance of ManagedIntegrationRuntimeStatus class. */
     public ManagedIntegrationRuntimeStatus() {
@@ -83,10 +83,8 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model ManagedIntegrationRuntimeStatus"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model ManagedIntegrationRuntimeStatus"));
         } else {
             innerTypeProperties().validate();
         }

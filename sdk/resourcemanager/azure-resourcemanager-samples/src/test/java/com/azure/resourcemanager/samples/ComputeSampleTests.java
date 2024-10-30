@@ -164,7 +164,8 @@ public class ComputeSampleTests extends SamplesTestBase {
 
     @Test
     public void testManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup() {
-        Assertions.assertTrue(ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup.runSample(azureResourceManager));
+        Assertions
+            .assertTrue(ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup.runSample(azureResourceManager));
     }
 
     @Test
@@ -197,7 +198,8 @@ public class ComputeSampleTests extends SamplesTestBase {
         final Configuration configuration = Configuration.getGlobalConfiguration();
         String clientId = configuration.get(Configuration.PROPERTY_AZURE_CLIENT_ID);
         Assertions.assertNotNull(clientId);
-        Assertions.assertTrue(CreateVirtualMachineEncryptedUsingCustomerManagedKey.runSample(azureResourceManager, clientId));
+        Assertions
+            .assertTrue(CreateVirtualMachineEncryptedUsingCustomerManagedKey.runSample(azureResourceManager, clientId));
     }
 
     @DoNotRecord(skipInPlayback = true)
@@ -213,6 +215,7 @@ public class ComputeSampleTests extends SamplesTestBase {
 
     @Test
     public void testCreateMultipleVirtualMachinesAndBatchQueryStatus() {
-        Assertions.assertTrue(CreateMultipleVirtualMachinesAndBatchQueryStatus.runSample(azureResourceManager, resourceGraphManager));
+        Assertions.assertTrue(
+            CreateMultipleVirtualMachinesAndBatchQueryStatus.runSample(azureResourceManager, resourceGraphManager));
     }
 }

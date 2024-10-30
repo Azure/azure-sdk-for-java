@@ -25,8 +25,11 @@ public final class A2AEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         A2AEventDetails model = new A2AEventDetails().withProtectedItemName("skndnelqkaadlknw")
-            .withFabricObjectId("anniyopetxivcnr").withFabricName("xnucaephblkwqp").withFabricLocation("vbqsdt")
-            .withRemoteFabricName("bctvivuzqym").withRemoteFabricLocation("owog");
+            .withFabricObjectId("anniyopetxivcnr")
+            .withFabricName("xnucaephblkwqp")
+            .withFabricLocation("vbqsdt")
+            .withRemoteFabricName("bctvivuzqym")
+            .withRemoteFabricLocation("owog");
         model = BinaryData.fromObject(model).toObject(A2AEventDetails.class);
         Assertions.assertEquals("skndnelqkaadlknw", model.protectedItemName());
         Assertions.assertEquals("anniyopetxivcnr", model.fabricObjectId());

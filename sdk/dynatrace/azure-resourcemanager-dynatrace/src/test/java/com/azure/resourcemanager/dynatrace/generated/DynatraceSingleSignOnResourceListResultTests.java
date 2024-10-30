@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DynatraceSingleSignOnResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynatraceSingleSignOnResourceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"kbfkg\",\"singleSignOnUrl\":\"dkexxppofm\",\"aadDomains\":[\"c\"],\"provisioningState\":\"Deleting\"},\"id\":\"ddtocjjxhvp\",\"name\":\"o\",\"type\":\"exhd\"},{\"properties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"qeojnxqbzvddntw\",\"singleSignOnUrl\":\"eic\",\"aadDomains\":[\"npzaoq\"],\"provisioningState\":\"Deleting\"},\"id\":\"hcffcyddglmjthjq\",\"name\":\"wpyeicxmqciwqvh\",\"type\":\"hix\"}],\"nextLink\":\"gdtopbobjogh\"}")
-                .toObject(DynatraceSingleSignOnResourceListResult.class);
+        DynatraceSingleSignOnResourceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"kbfkg\",\"singleSignOnUrl\":\"dkexxppofm\",\"aadDomains\":[\"c\"],\"provisioningState\":\"Deleting\"},\"id\":\"ddtocjjxhvp\",\"name\":\"o\",\"type\":\"exhd\"},{\"properties\":{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"qeojnxqbzvddntw\",\"singleSignOnUrl\":\"eic\",\"aadDomains\":[\"npzaoq\"],\"provisioningState\":\"Deleting\"},\"id\":\"hcffcyddglmjthjq\",\"name\":\"wpyeicxmqciwqvh\",\"type\":\"hix\"}],\"nextLink\":\"gdtopbobjogh\"}")
+            .toObject(DynatraceSingleSignOnResourceListResult.class);
         Assertions.assertEquals(SingleSignOnStates.ENABLE, model.value().get(0).singleSignOnState());
         Assertions.assertEquals("kbfkg", model.value().get(0).enterpriseAppId());
         Assertions.assertEquals("dkexxppofm", model.value().get(0).singleSignOnUrl());
@@ -28,21 +26,16 @@ public final class DynatraceSingleSignOnResourceListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynatraceSingleSignOnResourceListResult model =
-            new DynatraceSingleSignOnResourceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DynatraceSingleSignOnResourceInner()
-                                .withSingleSignOnState(SingleSignOnStates.ENABLE)
-                                .withEnterpriseAppId("kbfkg")
-                                .withSingleSignOnUrl("dkexxppofm")
-                                .withAadDomains(Arrays.asList("c")),
-                            new DynatraceSingleSignOnResourceInner()
-                                .withSingleSignOnState(SingleSignOnStates.INITIAL)
-                                .withEnterpriseAppId("qeojnxqbzvddntw")
-                                .withSingleSignOnUrl("eic")
-                                .withAadDomains(Arrays.asList("npzaoq"))))
+        DynatraceSingleSignOnResourceListResult model
+            = new DynatraceSingleSignOnResourceListResult().withValue(Arrays.asList(
+                new DynatraceSingleSignOnResourceInner().withSingleSignOnState(SingleSignOnStates.ENABLE)
+                    .withEnterpriseAppId("kbfkg")
+                    .withSingleSignOnUrl("dkexxppofm")
+                    .withAadDomains(Arrays.asList("c")),
+                new DynatraceSingleSignOnResourceInner().withSingleSignOnState(SingleSignOnStates.INITIAL)
+                    .withEnterpriseAppId("qeojnxqbzvddntw")
+                    .withSingleSignOnUrl("eic")
+                    .withAadDomains(Arrays.asList("npzaoq"))))
                 .withNextLink("gdtopbobjogh");
         model = BinaryData.fromObject(model).toObject(DynatraceSingleSignOnResourceListResult.class);
         Assertions.assertEquals(SingleSignOnStates.ENABLE, model.value().get(0).singleSignOnState());

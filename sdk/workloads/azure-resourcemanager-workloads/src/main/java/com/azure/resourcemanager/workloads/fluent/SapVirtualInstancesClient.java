@@ -29,8 +29,8 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreate(
-        String resourceGroupName, String sapVirtualInstanceName);
+    SyncPoller<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreate(String resourceGroupName,
+        String sapVirtualInstanceName);
 
     /**
      * Creates a Virtual Instance for SAP solutions (VIS) resource.
@@ -45,8 +45,8 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreate(
-        String resourceGroupName, String sapVirtualInstanceName, SapVirtualInstanceInner body, Context context);
+    SyncPoller<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreate(String resourceGroupName,
+        String sapVirtualInstanceName, SapVirtualInstanceInner body, Context context);
 
     /**
      * Creates a Virtual Instance for SAP solutions (VIS) resource.
@@ -74,8 +74,8 @@ public interface SapVirtualInstancesClient {
      * @return define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SapVirtualInstanceInner create(
-        String resourceGroupName, String sapVirtualInstanceName, SapVirtualInstanceInner body, Context context);
+    SapVirtualInstanceInner create(String resourceGroupName, String sapVirtualInstanceName,
+        SapVirtualInstanceInner body, Context context);
 
     /**
      * Gets a Virtual Instance for SAP solutions resource.
@@ -89,8 +89,8 @@ public interface SapVirtualInstancesClient {
      * @return a Virtual Instance for SAP solutions resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapVirtualInstanceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, Context context);
+    Response<SapVirtualInstanceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String sapVirtualInstanceName, Context context);
 
     /**
      * Gets a Virtual Instance for SAP solutions resource.
@@ -118,8 +118,8 @@ public interface SapVirtualInstancesClient {
      * @return define the Virtual Instance for SAP solutions resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SapVirtualInstanceInner> updateWithResponse(
-        String resourceGroupName, String sapVirtualInstanceName, UpdateSapVirtualInstanceRequest body, Context context);
+    Response<SapVirtualInstanceInner> updateWithResponse(String resourceGroupName, String sapVirtualInstanceName,
+        UpdateSapVirtualInstanceRequest body, Context context);
 
     /**
      * Updates a Virtual Instance for SAP solutions resource.
@@ -146,8 +146,8 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String sapVirtualInstanceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String sapVirtualInstanceName);
 
     /**
      * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
@@ -162,8 +162,8 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
-        String resourceGroupName, String sapVirtualInstanceName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(String resourceGroupName,
+        String sapVirtualInstanceName, Context context);
 
     /**
      * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
@@ -256,8 +256,8 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
-        String resourceGroupName, String sapVirtualInstanceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(String resourceGroupName,
+        String sapVirtualInstanceName);
 
     /**
      * Starts the SAP application, that is the Central Services instance and Application server instances.
@@ -271,8 +271,8 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
-        String resourceGroupName, String sapVirtualInstanceName, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(String resourceGroupName,
+        String sapVirtualInstanceName, Context context);
 
     /**
      * Starts the SAP application, that is the Central Services instance and Application server instances.
@@ -312,8 +312,8 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(
-        String resourceGroupName, String sapVirtualInstanceName);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(String resourceGroupName,
+        String sapVirtualInstanceName);
 
     /**
      * Stops the SAP Application, that is the Application server instances and Central Services instance.
@@ -328,8 +328,8 @@ public interface SapVirtualInstancesClient {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(
-        String resourceGroupName, String sapVirtualInstanceName, StopRequest body, Context context);
+    SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(String resourceGroupName,
+        String sapVirtualInstanceName, StopRequest body, Context context);
 
     /**
      * Stops the SAP Application, that is the Application server instances and Central Services instance.
@@ -357,6 +357,6 @@ public interface SapVirtualInstancesClient {
      * @return the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationStatusResultInner stop(
-        String resourceGroupName, String sapVirtualInstanceName, StopRequest body, Context context);
+    OperationStatusResultInner stop(String resourceGroupName, String sapVirtualInstanceName, StopRequest body,
+        Context context);
 }

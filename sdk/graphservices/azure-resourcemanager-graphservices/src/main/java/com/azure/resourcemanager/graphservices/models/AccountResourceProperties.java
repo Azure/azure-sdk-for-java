@@ -78,9 +78,8 @@ public final class AccountResourceProperties {
      */
     public void validate() {
         if (appId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property appId in model AccountResourceProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property appId in model AccountResourceProperties"));
         }
     }
 

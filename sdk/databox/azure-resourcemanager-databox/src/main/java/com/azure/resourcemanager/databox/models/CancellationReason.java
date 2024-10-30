@@ -48,9 +48,8 @@ public final class CancellationReason {
      */
     public void validate() {
         if (reason() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property reason in model CancellationReason"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property reason in model CancellationReason"));
         }
     }
 

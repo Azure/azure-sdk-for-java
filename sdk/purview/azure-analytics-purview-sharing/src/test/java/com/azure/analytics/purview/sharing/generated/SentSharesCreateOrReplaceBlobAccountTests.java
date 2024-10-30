@@ -16,14 +16,12 @@ public final class SentSharesCreateOrReplaceBlobAccountTests extends PurviewShar
     @Test
     @Disabled
     public void testSentSharesCreateOrReplaceBlobAccountTests() {
-        BinaryData sentShare =
-                BinaryData.fromString(
-                        "{\"properties\":{\"description\":\"description\",\"artifact\":{\"properties\":{\"paths\":[{\"containerName\":\"container1\",\"receiverPath\":\"SharedFile.txt\",\"senderPath\":\"directory/file.txt\"}]},\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/sender-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage\"}},\"displayName\":\"sentShare1\"},\"shareKind\":\"InPlace\"}");
+        BinaryData sentShare = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"description\",\"artifact\":{\"properties\":{\"paths\":[{\"containerName\":\"container1\",\"receiverPath\":\"SharedFile.txt\",\"senderPath\":\"directory/file.txt\"}]},\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/sender-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage\"}},\"displayName\":\"sentShare1\"},\"shareKind\":\"InPlace\"}");
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response =
-                sentSharesClient.beginCreateOrReplaceSentShare(
-                        "FF4A2AAE-8755-47BB-9C00-A774B5A7006E", sentShare, requestOptions);
-        Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+        SyncPoller<BinaryData, BinaryData> response = setPlaybackSyncPollerPollInterval(sentSharesClient
+            .beginCreateOrReplaceSentShare("FF4A2AAE-8755-47BB-9C00-A774B5A7006E", sentShare, requestOptions));
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            response.waitForCompletion().getStatus());
     }
 }

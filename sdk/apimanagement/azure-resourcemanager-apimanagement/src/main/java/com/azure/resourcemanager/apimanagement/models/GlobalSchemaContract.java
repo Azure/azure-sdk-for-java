@@ -99,12 +99,8 @@ public interface GlobalSchemaContract {
          * The stage of the GlobalSchemaContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithSchemaType,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithValue,
-                DefinitionStages.WithDocument,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithSchemaType, DefinitionStages.WithDescription,
+            DefinitionStages.WithValue, DefinitionStages.WithDocument, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -188,12 +184,8 @@ public interface GlobalSchemaContract {
     GlobalSchemaContract.Update update();
 
     /** The template for GlobalSchemaContract update. */
-    interface Update
-        extends UpdateStages.WithSchemaType,
-            UpdateStages.WithDescription,
-            UpdateStages.WithValue,
-            UpdateStages.WithDocument,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithSchemaType, UpdateStages.WithDescription, UpdateStages.WithValue,
+        UpdateStages.WithDocument, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

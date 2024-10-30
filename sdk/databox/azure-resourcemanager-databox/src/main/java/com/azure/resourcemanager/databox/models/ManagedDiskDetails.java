@@ -89,16 +89,12 @@ public final class ManagedDiskDetails extends DataAccountDetails {
     public void validate() {
         super.validate();
         if (resourceGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceGroupId in model ManagedDiskDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property resourceGroupId in model ManagedDiskDetails"));
         }
         if (stagingStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property stagingStorageAccountId in model ManagedDiskDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property stagingStorageAccountId in model ManagedDiskDetails"));
         }
     }
 

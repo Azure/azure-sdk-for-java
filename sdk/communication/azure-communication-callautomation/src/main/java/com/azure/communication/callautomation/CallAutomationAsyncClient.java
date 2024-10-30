@@ -97,11 +97,14 @@ public final class CallAutomationAsyncClient {
         this.callDialogsInternal = callServiceClient.getCallDialogs();
         this.eventProcessor = eventProcessor;
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
-        this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
+        this.contentDownloader
+            = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
         this.resourceUrl = callServiceClient.getEndpoint();
-        this.sourceIdentity = sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
-        this.oPSSourceIdentity = oPSSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(oPSSourceIdentity);
+        this.sourceIdentity =
+            sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
+        this.oPSSourceIdentity =
+            oPSSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(oPSSourceIdentity);
     }
 
     /**
@@ -139,8 +142,7 @@ public final class CallAutomationAsyncClient {
      * @return Result of creating the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CreateCallResult> createCall(CallInvite targetParticipant,
-                                             String callbackUrl) {
+    public Mono<CreateCallResult> createCall(CallInvite targetParticipant, String callbackUrl) {
         CreateCallOptions createCallOptions = new CreateCallOptions(targetParticipant, callbackUrl);
         return createCallWithResponse(createCallOptions).flatMap(FluxUtil::toMono);
     }
@@ -187,23 +189,26 @@ public final class CallAutomationAsyncClient {
         return withContext(context -> createGroupCallWithResponseInternal(createGroupCallOptions, context));
     }
 
-    Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions, Context context) {
+    Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions,
+                                                                    Context context) {
         return getCreateCallResponseMono(context, getCreateCallRequestInternal(createCallOptions));
     }
 
-    Mono<Response<CreateCallResult>> createGroupCallWithResponseInternal(CreateGroupCallOptions createGroupCallOptions, Context context) {
+    Mono<Response<CreateCallResult>> createGroupCallWithResponseInternal(CreateGroupCallOptions createGroupCallOptions,
+                                                                         Context context) {
         return getCreateCallResponseMono(context, getCreateCallRequestInternal(createGroupCallOptions));
     }
 
-    private Mono<Response<CreateCallResult>> getCreateCallResponseMono(Context context, CreateCallRequestInternal createCallRequestInternal) {
+    private Mono<Response<CreateCallResult>> getCreateCallResponseMono(Context context,
+                                                                       CreateCallRequestInternal createCallRequestInternal) {
         try {
             context = context == null ? Context.NONE : context;
-            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
-                    createCallRequestInternal,
-                    context)
+            return azureCommunicationCallAutomationServiceInternal
+                .createCallWithResponseAsync(createCallRequestInternal, context)
                 .map(response -> {
                     try {
-                        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
+                        CallConnectionAsync callConnectionAsync
+                            = getCallConnectionAsync(response.getValue().getCallConnectionId());
 
                         return new SimpleResponse<>(response,
                             new CreateCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
@@ -219,16 +224,20 @@ public final class CallAutomationAsyncClient {
 
     private CreateCallRequestInternal getCreateCallRequestInternal(CreateCallOptions createCallOptions) {
         List<CommunicationIdentifierModel> targetsModel = new LinkedList<CommunicationIdentifierModel>();
-        targetsModel.add(CommunicationIdentifierConverter.convert(createCallOptions.getCallInvite().getTargetParticipant()));
+        targetsModel
+            .add(CommunicationIdentifierConverter.convert(createCallOptions.getCallInvite().getTargetParticipant()));
 
         CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = null;
-        if (createCallOptions.getCallIntelligenceOptions() != null && createCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
+        if (createCallOptions.getCallIntelligenceOptions() != null
+            && createCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
             callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
-            callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(createCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
+            callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(
+                createCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
         }
 
         CreateCallRequestInternal request = new CreateCallRequestInternal()
-            .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallerIdNumber()))
+            .setSourceCallerIdNumber(
+                PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallerIdNumber()))
             .setSourceDisplayName(createCallOptions.getCallInvite().getSourceDisplayName())
             .setSource(sourceIdentity)
             .setOpsSource(oPSSourceIdentity)
@@ -238,7 +247,8 @@ public final class CallAutomationAsyncClient {
             .setOperationContext(createCallOptions.getOperationContext());
 
         // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-        if (createCallOptions.getCallInvite().getCustomCallingContext().getSipHeaders() != null || createCallOptions.getCallInvite().getCustomCallingContext().getVoipHeaders() != null) {
+        if (createCallOptions.getCallInvite().getCustomCallingContext().getSipHeaders() != null
+            || createCallOptions.getCallInvite().getCustomCallingContext().getVoipHeaders() != null) {
             CustomCallingContext customContext = new CustomCallingContext();
             customContext.setSipHeaders(createCallOptions.getCallInvite().getCustomCallingContext().getSipHeaders());
             customContext.setVoipHeaders(createCallOptions.getCallInvite().getCustomCallingContext().getVoipHeaders());
@@ -246,14 +256,14 @@ public final class CallAutomationAsyncClient {
         }
 
         if (createCallOptions.getMediaStreamingConfiguration() != null) {
-            MediaStreamingConfigurationInternal streamingConfigurationInternal =
-                getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
+            MediaStreamingConfigurationInternal streamingConfigurationInternal
+                = getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
             request.setMediaStreamingConfiguration(streamingConfigurationInternal);
         }
 
         if (createCallOptions.getTranscriptionConfiguration() != null) {
-            TranscriptionConfigurationInternal transcriptionConfigurationInternal =
-                getTranscriptionConfigurationInternal(createCallOptions.getTranscriptionConfiguration());
+            TranscriptionConfigurationInternal transcriptionConfigurationInternal
+                = getTranscriptionConfigurationInternal(createCallOptions.getTranscriptionConfiguration());
             request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
         }
 
@@ -262,16 +272,21 @@ public final class CallAutomationAsyncClient {
 
     private CreateCallRequestInternal getCreateCallRequestInternal(CreateGroupCallOptions createCallGroupOptions) {
         List<CommunicationIdentifierModel> targetsModel = createCallGroupOptions.getTargetParticipants()
-            .stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
+            .stream()
+            .map(CommunicationIdentifierConverter::convert)
+            .collect(Collectors.toList());
 
         CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = null;
-        if (createCallGroupOptions.getCallIntelligenceOptions() != null && createCallGroupOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
+        if (createCallGroupOptions.getCallIntelligenceOptions() != null
+            && createCallGroupOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
             callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
-            callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(createCallGroupOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
+            callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(
+                createCallGroupOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
         }
 
         CreateCallRequestInternal request = new CreateCallRequestInternal()
-            .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
+            .setSourceCallerIdNumber(
+                PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
             .setSourceDisplayName(createCallGroupOptions.getSourceDisplayName())
             .setSource(sourceIdentity)
             .setOpsSource(oPSSourceIdentity)
@@ -280,7 +295,8 @@ public final class CallAutomationAsyncClient {
             .setCallIntelligenceOptions(callIntelligenceOptionsInternal)
             .setOperationContext(createCallGroupOptions.getOperationContext());
 
-        if (createCallGroupOptions.getCustomContext().getSipHeaders() != null || createCallGroupOptions.getCustomContext().getVoipHeaders() != null) {
+        if (createCallGroupOptions.getCustomContext().getSipHeaders() != null
+            || createCallGroupOptions.getCustomContext().getVoipHeaders() != null) {
             CustomCallingContext customContext = new CustomCallingContext();
             customContext.setSipHeaders(createCallGroupOptions.getCustomContext().getSipHeaders());
             customContext.setVoipHeaders(createCallGroupOptions.getCustomContext().getVoipHeaders());
@@ -288,42 +304,36 @@ public final class CallAutomationAsyncClient {
         }
 
         if (createCallGroupOptions.getMediaStreamingConfiguration() != null) {
-            MediaStreamingConfigurationInternal streamingConfigurationInternal =
-                getMediaStreamingConfigurationInternal(createCallGroupOptions.getMediaStreamingConfiguration());
+            MediaStreamingConfigurationInternal streamingConfigurationInternal
+                = getMediaStreamingConfigurationInternal(createCallGroupOptions.getMediaStreamingConfiguration());
             request.setMediaStreamingConfiguration(streamingConfigurationInternal);
         }
 
         if (createCallGroupOptions.getTranscriptionConfiguration() != null) {
-            TranscriptionConfigurationInternal transcriptionConfigurationInternal =
-                getTranscriptionConfigurationInternal(createCallGroupOptions.getTranscriptionConfiguration());
+            TranscriptionConfigurationInternal transcriptionConfigurationInternal
+                = getTranscriptionConfigurationInternal(createCallGroupOptions.getTranscriptionConfiguration());
             request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
         }
 
         return request;
     }
 
-    private MediaStreamingConfigurationInternal getMediaStreamingConfigurationInternal(
-        MediaStreamingOptions mediaStreamingOptions) {
-        return new MediaStreamingConfigurationInternal()
-            .setTransportUrl(mediaStreamingOptions.getTransportUrl())
-            .setAudioChannelType(
-                MediaStreamingAudioChannelTypeInternal.fromString(
-                    mediaStreamingOptions.getAudioChannelType().toString()))
+    private MediaStreamingConfigurationInternal
+        getMediaStreamingConfigurationInternal(MediaStreamingOptions mediaStreamingOptions) {
+        return new MediaStreamingConfigurationInternal().setTransportUrl(mediaStreamingOptions.getTransportUrl())
+            .setAudioChannelType(MediaStreamingAudioChannelTypeInternal
+                .fromString(mediaStreamingOptions.getAudioChannelType().toString()))
             .setContentType(
-                MediaStreamingContentTypeInternal.fromString(
-                    mediaStreamingOptions.getContentType().toString()))
+                MediaStreamingContentTypeInternal.fromString(mediaStreamingOptions.getContentType().toString()))
             .setTransportType(
-                MediaStreamingTransportTypeInternal.fromString(
-                    mediaStreamingOptions.getTransportType().toString()));
+                MediaStreamingTransportTypeInternal.fromString(mediaStreamingOptions.getTransportType().toString()));
     }
 
-    private TranscriptionConfigurationInternal getTranscriptionConfigurationInternal(
-        TranscriptionOptions transcriptionOptions) {
-        return new TranscriptionConfigurationInternal()
-            .setTransportUrl(transcriptionOptions.getTransportUrl())
+    private TranscriptionConfigurationInternal
+        getTranscriptionConfigurationInternal(TranscriptionOptions transcriptionOptions) {
+        return new TranscriptionConfigurationInternal().setTransportUrl(transcriptionOptions.getTransportUrl())
             .setTransportType(
-                TranscriptionTransportTypeInternal.fromString(
-                    transcriptionOptions.getTransportType().toString()))
+                TranscriptionTransportTypeInternal.fromString(transcriptionOptions.getTransportType().toString()))
             .setLocale(transcriptionOptions.getLocale())
             .setStartTranscription(transcriptionOptions.getStartTranscription());
     }
@@ -357,42 +367,44 @@ public final class CallAutomationAsyncClient {
     }
 
     Mono<Response<AnswerCallResult>> answerCallWithResponseInternal(AnswerCallOptions answerCallOptions,
-                                                                    Context context) {
+        Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            AnswerCallRequestInternal request = new AnswerCallRequestInternal()
-                .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
-                .setCallbackUri(answerCallOptions.getCallbackUrl())
-                .setAnsweredBy(sourceIdentity)
-                .setOperationContext(answerCallOptions.getOperationContext());
+            AnswerCallRequestInternal request
+                = new AnswerCallRequestInternal().setIncomingCallContext(answerCallOptions.getIncomingCallContext())
+                    .setCallbackUri(answerCallOptions.getCallbackUrl())
+                    .setAnsweredBy(sourceIdentity)
+                    .setOperationContext(answerCallOptions.getOperationContext());
 
-            if (answerCallOptions.getCallIntelligenceOptions() != null && answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
+            if (answerCallOptions.getCallIntelligenceOptions() != null
+                && answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
                 CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();
-                callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
+                callIntelligenceOptionsInternal.setCognitiveServicesEndpoint(
+                    answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint());
                 request.setCallIntelligenceOptions(callIntelligenceOptionsInternal);
             }
 
             if (answerCallOptions.getMediaStreamingConfiguration() != null) {
-                MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
-                    getMediaStreamingConfigurationInternal(answerCallOptions.getMediaStreamingConfiguration());
+                MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal
+                    = getMediaStreamingConfigurationInternal(answerCallOptions.getMediaStreamingConfiguration());
                 request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
             }
 
             if (answerCallOptions.getTranscriptionConfiguration() != null) {
-                TranscriptionConfigurationInternal transcriptionConfigurationInternal =
-                    getTranscriptionConfigurationInternal(answerCallOptions.getTranscriptionConfiguration());
+                TranscriptionConfigurationInternal transcriptionConfigurationInternal
+                    = getTranscriptionConfigurationInternal(answerCallOptions.getTranscriptionConfiguration());
                 request.setTranscriptionConfiguration(transcriptionConfigurationInternal);
             }
 
-            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
-                    request,
-                    context)
+            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)
                 .map(response -> {
                     try {
-                        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
-                        AnswerCallResult result = new AnswerCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
-                            new CallConnection(callConnectionAsync), callConnectionAsync);
+                        CallConnectionAsync callConnectionAsync
+                            = getCallConnectionAsync(response.getValue().getCallConnectionId());
+                        AnswerCallResult result
+                            = new AnswerCallResult(CallConnectionPropertiesConstructorProxy.create(response.getValue()),
+                                new CallConnection(callConnectionAsync), callConnectionAsync);
                         result.setEventProcessor(eventProcessor, response.getValue().getCallConnectionId(), null);
 
                         return new SimpleResponse<>(response, result);
@@ -437,21 +449,23 @@ public final class CallAutomationAsyncClient {
         try {
             context = context == null ? Context.NONE : context;
 
-            RedirectCallRequestInternal request = new RedirectCallRequestInternal()
-                .setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
-                .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetParticipant().getTargetParticipant()));
+            RedirectCallRequestInternal request
+                = new RedirectCallRequestInternal().setIncomingCallContext(redirectCallOptions.getIncomingCallContext())
+                    .setTarget(CommunicationIdentifierConverter
+                        .convert(redirectCallOptions.getTargetParticipant().getTargetParticipant()));
 
             // Need to do a null check since SipHeaders and VoipHeaders are optional; If they both are null then we do not need to set custom context
-            if (redirectCallOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders() != null || redirectCallOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders() != null) {
+            if (redirectCallOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders() != null
+                || redirectCallOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders() != null) {
                 CustomCallingContext customContext = new CustomCallingContext();
-                customContext.setSipHeaders(redirectCallOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders());
-                customContext.setVoipHeaders(redirectCallOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
+                customContext.setSipHeaders(
+                    redirectCallOptions.getTargetParticipant().getCustomCallingContext().getSipHeaders());
+                customContext.setVoipHeaders(
+                    redirectCallOptions.getTargetParticipant().getCustomCallingContext().getVoipHeaders());
                 request.setCustomCallingContext(customContext);
             }
 
-            return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(
-                    request,
-                    context);
+            return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -488,15 +502,14 @@ public final class CallAutomationAsyncClient {
         try {
             context = context == null ? Context.NONE : context;
 
-            RejectCallRequestInternal request = new RejectCallRequestInternal()
-                .setIncomingCallContext(rejectCallOptions.getIncomingCallContext());
+            RejectCallRequestInternal request
+                = new RejectCallRequestInternal().setIncomingCallContext(rejectCallOptions.getIncomingCallContext());
             if (rejectCallOptions.getCallRejectReason() != null) {
-                request.setCallRejectReason(CallRejectReasonInternal.fromString(rejectCallOptions.getCallRejectReason().toString()));
+                request.setCallRejectReason(
+                    CallRejectReasonInternal.fromString(rejectCallOptions.getCallRejectReason().toString()));
             }
 
-            return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(
-                    request,
-                    context);
+            return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -511,7 +524,8 @@ public final class CallAutomationAsyncClient {
      * @return a CallContentAsync.
      */
     public CallConnectionAsync getCallConnectionAsync(String callConnectionId) {
-        return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal, callDialogsInternal, eventProcessor);
+        return new CallConnectionAsync(callConnectionId, callConnectionsInternal, callMediasInternal,
+            callDialogsInternal, eventProcessor);
     }
     //endregion
 

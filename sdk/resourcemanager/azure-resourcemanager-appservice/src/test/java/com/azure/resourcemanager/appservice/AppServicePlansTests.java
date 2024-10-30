@@ -30,21 +30,18 @@ public class AppServicePlansTests extends AppServiceTest {
     }
 
     @Test
-    @Disabled(
-        "Permanent server side issue: Cannot modify this web hosting plan because another operation is in progress")
+    @Disabled("Permanent server side issue: Cannot modify this web hosting plan because another operation is in progress")
     public void canCRUDAppServicePlan() throws Exception {
         // CREATE
-        AppServicePlan appServicePlan =
-            appServiceManager
-                .appServicePlans()
-                .define(appServicePlanName)
-                .withRegion(Region.US_WEST)
-                .withNewResourceGroup(rgName)
-                .withPricingTier(PricingTier.PREMIUM_P1)
-                .withOperatingSystem(OperatingSystem.WINDOWS)
-                .withPerSiteScaling(false)
-                .withCapacity(2)
-                .create();
+        AppServicePlan appServicePlan = appServiceManager.appServicePlans()
+            .define(appServicePlanName)
+            .withRegion(Region.US_WEST)
+            .withNewResourceGroup(rgName)
+            .withPricingTier(PricingTier.PREMIUM_P1)
+            .withOperatingSystem(OperatingSystem.WINDOWS)
+            .withPerSiteScaling(false)
+            .withCapacity(2)
+            .create();
         Assertions.assertNotNull(appServicePlan);
         Assertions.assertEquals(PricingTier.PREMIUM_P1, appServicePlan.pricingTier());
         Assertions.assertEquals(false, appServicePlan.perSiteScaling());
@@ -52,11 +49,9 @@ public class AppServicePlansTests extends AppServiceTest {
         Assertions.assertEquals(0, appServicePlan.numberOfWebApps());
         Assertions.assertEquals(20, appServicePlan.maxInstances());
         // GET
-        Assertions
-            .assertNotNull(appServiceManager.appServicePlans().getByResourceGroup(rgName, appServicePlanName));
+        Assertions.assertNotNull(appServiceManager.appServicePlans().getByResourceGroup(rgName, appServicePlanName));
         // LIST
-        PagedIterable<AppServicePlan> appServicePlans =
-            appServiceManager.appServicePlans().listByResourceGroup(rgName);
+        PagedIterable<AppServicePlan> appServicePlans = appServiceManager.appServicePlans().listByResourceGroup(rgName);
         boolean found = false;
         for (AppServicePlan asp : appServicePlans) {
             if (appServicePlanName.equals(asp.name())) {
@@ -66,13 +61,11 @@ public class AppServicePlansTests extends AppServiceTest {
         }
         Assertions.assertTrue(found);
         // UPDATE
-        appServicePlan =
-            appServicePlan
-                .update()
-                .withPricingTier(PricingTier.STANDARD_S1)
-                .withPerSiteScaling(true)
-                .withCapacity(3)
-                .apply();
+        appServicePlan = appServicePlan.update()
+            .withPricingTier(PricingTier.STANDARD_S1)
+            .withPerSiteScaling(true)
+            .withCapacity(3)
+            .apply();
         Assertions.assertNotNull(appServicePlan);
         Assertions.assertEquals(PricingTier.STANDARD_S1, appServicePlan.pricingTier());
         Assertions.assertEquals(true, appServicePlan.perSiteScaling());
@@ -81,9 +74,7 @@ public class AppServicePlansTests extends AppServiceTest {
 
     @Test
     public void failOnAppServiceNotFound() {
-        resourceManager.resourceGroups().define(rgName)
-            .withRegion(Region.US_WEST)
-            .create();
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_WEST).create();
         Assertions.assertThrows(ManagementException.class, () -> {
             appServiceManager.appServicePlans().getByResourceGroup("rgName", "no_such_appservice");
         });

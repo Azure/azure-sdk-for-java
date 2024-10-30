@@ -28,14 +28,8 @@ public interface SqlPoolColumnsClient {
      * @return sql pool column along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolColumnInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName,
-        Context context);
+    Response<SqlPoolColumnInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, String columnName, Context context);
 
     /**
      * Get Sql pool column.
@@ -52,11 +46,6 @@ public interface SqlPoolColumnsClient {
      * @return sql pool column.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolColumnInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName);
+    SqlPoolColumnInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName, String columnName);
 }

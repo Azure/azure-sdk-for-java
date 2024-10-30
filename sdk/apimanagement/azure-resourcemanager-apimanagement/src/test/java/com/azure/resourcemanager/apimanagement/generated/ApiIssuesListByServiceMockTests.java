@@ -32,47 +32,28 @@ public final class ApiIssuesListByServiceMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"title\":\"vr\",\"description\":\"ajynihtibu\",\"userId\":\"gzqzhluc\",\"createdDate\":\"2021-04-06T20:00:49Z\",\"state\":\"closed\",\"apiId\":\"bgcgyohrcmeqlj\"},\"id\":\"dumh\",\"name\":\"c\",\"type\":\"onebldxa\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"title\":\"vr\",\"description\":\"ajynihtibu\",\"userId\":\"gzqzhluc\",\"createdDate\":\"2021-04-06T20:00:49Z\",\"state\":\"closed\",\"apiId\":\"bgcgyohrcmeqlj\"},\"id\":\"dumh\",\"name\":\"c\",\"type\":\"onebldxa\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<IssueContract> response =
-            manager
-                .apiIssues()
-                .listByService(
-                    "tpoenefnoafpcnrx",
-                    "yrxowv",
-                    "ufcmuajwblxp",
-                    "tozfrfa",
-                    true,
-                    1556184463,
-                    740491963,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<IssueContract> response = manager.apiIssues()
+            .listByService("tpoenefnoafpcnrx", "yrxowv", "ufcmuajwblxp", "tozfrfa", true, 1556184463, 740491963,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("vr", response.iterator().next().title());
         Assertions.assertEquals("ajynihtibu", response.iterator().next().description());

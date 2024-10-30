@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DeleteWorkflowResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeleteWorkflowResponseInner model =
-            BinaryData.fromString("{\"status\":\"thz\"}").toObject(DeleteWorkflowResponseInner.class);
+        DeleteWorkflowResponseInner model
+            = BinaryData.fromString("{\"status\":\"thz\"}").toObject(DeleteWorkflowResponseInner.class);
         Assertions.assertEquals("thz", model.status());
     }
 

@@ -29,7 +29,8 @@ public final class FunctionPropertiesTests {
             .withInputs(
                 Arrays.asList(new FunctionInput().withDataType("jgkdmbpazlobcu").withIsConfigurationParameter(true),
                     new FunctionInput().withDataType("nrbtcqqjnq").withIsConfigurationParameter(true)))
-            .withOutput(new FunctionOutput().withDataType("nufo")).withBinding(new FunctionBinding());
+            .withOutput(new FunctionOutput().withDataType("nufo"))
+            .withBinding(new FunctionBinding());
         model = BinaryData.fromObject(model).toObject(FunctionProperties.class);
         Assertions.assertEquals("jgkdmbpazlobcu", model.inputs().get(0).dataType());
         Assertions.assertEquals(true, model.inputs().get(0).isConfigurationParameter());

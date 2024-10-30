@@ -25,7 +25,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-
 public final class IdentityUtil {
     private static final ClientLogger LOGGER = new ClientLogger(IdentityUtil.class);
     public static final String AZURE_ADDITIONALLY_ALLOWED_TENANTS = "AZURE_ADDITIONALLY_ALLOWED_TENANTS";
@@ -35,10 +34,12 @@ public final class IdentityUtil {
     public static final HttpHeaderName X_VSS_E2EID = HttpHeaderName.fromString("x-vss-e2eid");
     public static final HttpHeaderName X_MSEDGE_REF = HttpHeaderName.fromString("x-msedge-ref");
 
-    public static final File NULL_FILE =
-        new File((System.getProperty("os.name").startsWith("Windows") ? "NUL" : "/dev/null"));
+    public static final File NULL_FILE
+        = new File((System.getProperty("os.name").startsWith("Windows") ? "NUL" : "/dev/null"));
 
-    private IdentityUtil() { }
+    private IdentityUtil() {
+    }
+
     /**
      * Resolve the Tenant Id to be used in the authentication requests.
      * @param currentTenantId the current tenant Id.
@@ -47,7 +48,7 @@ public final class IdentityUtil {
      * on the credential or not.
      */
     public static String resolveTenantId(String currentTenantId, TokenRequestContext requestContext,
-                                         IdentityClientOptions options) {
+        IdentityClientOptions options) {
 
         String contextTenantId = requestContext.getTenantId();
 
@@ -56,21 +57,22 @@ public final class IdentityUtil {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The Multi Tenant Authentication "
                     + "is disabled. An updated Tenant Id provided via TokenRequestContext cannot be used in this "
                     + "scenario. To resolve this issue, set the env var AZURE_IDENTITY_DISABLE_MULTITENANTAUTH"
-                    + " to false ",
-                    null));
+                    + " to false ", null));
             } else if ("adfs".equals(currentTenantId)) {
                 throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The credential is configured with"
                     + "`adfs` tenant id and it cannot be replaced with a tenant id challenge provided via "
                     + "TokenRequestContext class. ", null));
             }
-            String resolvedTenantId =  CoreUtils.isNullOrEmpty(contextTenantId) ? currentTenantId
-                : contextTenantId;
+            String resolvedTenantId = CoreUtils.isNullOrEmpty(contextTenantId) ? currentTenantId : contextTenantId;
 
-            if (!resolvedTenantId.equalsIgnoreCase(currentTenantId) && !options.getAdditionallyAllowedTenants().contains(ALL_TENANTS)
+            if (!resolvedTenantId.equalsIgnoreCase(currentTenantId)
+                && !options.getAdditionallyAllowedTenants().contains(ALL_TENANTS)
                 && !options.getAdditionallyAllowedTenants().contains(resolvedTenantId)) {
-                throw LOGGER.logExceptionAsError(new ClientAuthenticationException("The current credential is not configured to acquire tokens for tenant "
-                    +  resolvedTenantId + ". To enable acquiring tokens for this tenant add it to the AdditionallyAllowedTenants on the credential options, "
-                    + "or add \"*\" to AdditionallyAllowedTenants to allow acquiring tokens for any tenant. See the troubleshooting guide for more information. https://aka.ms/azsdk/java/identity/multitenant/troubleshoot", null));
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
+                    "The current credential is not configured to acquire tokens for tenant " + resolvedTenantId
+                        + ". To enable acquiring tokens for this tenant add it to the AdditionallyAllowedTenants on the credential options, "
+                        + "or add \"*\" to AdditionallyAllowedTenants to allow acquiring tokens for any tenant. See the troubleshooting guide for more information. https://aka.ms/azsdk/java/identity/multitenant/troubleshoot",
+                    null));
             }
             return resolvedTenantId;
         }
@@ -94,7 +96,8 @@ public final class IdentityUtil {
     public static List<String> getAdditionalTenantsFromEnvironment(Configuration configuration) {
         String additionalTenantsFromEnv = configuration.get(AZURE_ADDITIONALLY_ALLOWED_TENANTS);
         if (!CoreUtils.isNullOrEmpty(additionalTenantsFromEnv)) {
-            return resolveAdditionalTenants(Arrays.asList(configuration.get(AZURE_ADDITIONALLY_ALLOWED_TENANTS).split(";")));
+            return resolveAdditionalTenants(
+                Arrays.asList(configuration.get(AZURE_ADDITIONALLY_ALLOWED_TENANTS).split(";")));
         } else {
             return Collections.emptyList();
         }
@@ -119,7 +122,6 @@ public final class IdentityUtil {
         }
         return outputStream.toByteArray();
     }
-
 
     /**
      * Parses the "access_token" field out of a response body.
@@ -152,7 +154,8 @@ public final class IdentityUtil {
         try (JsonReader jsonReader = JsonProviders.createReader(json)) {
 
             return jsonReader.readObject(reader -> jsonReader.readMap(mapReader -> {
-                if (mapReader.currentToken() == JsonToken.START_ARRAY || mapReader.currentToken() == JsonToken.START_OBJECT) {
+                if (mapReader.currentToken() == JsonToken.START_ARRAY
+                    || mapReader.currentToken() == JsonToken.START_OBJECT) {
                     return mapReader.readChildren();
                 } else {
                     return mapReader.getString();
@@ -160,7 +163,6 @@ public final class IdentityUtil {
             }));
         }
     }
-
 
     public static boolean isWindowsPlatform() {
         return System.getProperty("os.name").contains("Windows");

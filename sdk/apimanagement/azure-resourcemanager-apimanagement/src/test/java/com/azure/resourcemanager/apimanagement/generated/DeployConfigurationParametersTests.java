@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DeployConfigurationParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeployConfigurationParameters model =
-            BinaryData
-                .fromString("{\"properties\":{\"branch\":\"dhz\",\"force\":false}}")
+        DeployConfigurationParameters model
+            = BinaryData.fromString("{\"properties\":{\"branch\":\"dhz\",\"force\":false}}")
                 .toObject(DeployConfigurationParameters.class);
         Assertions.assertEquals("dhz", model.branch());
         Assertions.assertEquals(false, model.force());

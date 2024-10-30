@@ -81,24 +81,20 @@ public final class GroupContractImpl implements GroupContract, GroupContract.Def
     }
 
     public GroupContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGroups()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, groupId, createParameters, createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGroups()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, groupId, createParameters, createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public GroupContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGroups()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, groupId, createParameters, createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGroups()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, groupId, createParameters, createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -117,28 +113,23 @@ public final class GroupContractImpl implements GroupContract, GroupContract.Def
     }
 
     public GroupContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGroups()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, groupId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGroups()
+            .updateWithResponse(resourceGroupName, serviceName, groupId, updateIfMatch, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GroupContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGroups()
-                .updateWithResponse(resourceGroupName, serviceName, groupId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGroups()
+            .updateWithResponse(resourceGroupName, serviceName, groupId, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    GroupContractImpl(
-        GroupContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    GroupContractImpl(GroupContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -147,22 +138,18 @@ public final class GroupContractImpl implements GroupContract, GroupContract.Def
     }
 
     public GroupContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGroups()
-                .getWithResponse(resourceGroupName, serviceName, groupId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGroups()
+            .getWithResponse(resourceGroupName, serviceName, groupId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public GroupContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGroups()
-                .getWithResponse(resourceGroupName, serviceName, groupId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getGroups()
+            .getWithResponse(resourceGroupName, serviceName, groupId, context)
+            .getValue();
         return this;
     }
 

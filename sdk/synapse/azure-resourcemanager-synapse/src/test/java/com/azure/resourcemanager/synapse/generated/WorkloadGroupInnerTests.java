@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkloadGroupInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkloadGroupInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"minResourcePercent\":1591499316,\"maxResourcePercent\":122803528,\"minResourcePercentPerRequest\":21.702799317843912,\"maxResourcePercentPerRequest\":97.4438256079908,\"importance\":\"b\",\"queryExecutionTimeout\":1947593422},\"id\":\"ilbywdxsm\",\"name\":\"ccwr\",\"type\":\"fscjfnynszquji\"}")
-                .toObject(WorkloadGroupInner.class);
+        WorkloadGroupInner model = BinaryData.fromString(
+            "{\"properties\":{\"minResourcePercent\":1591499316,\"maxResourcePercent\":122803528,\"minResourcePercentPerRequest\":21.702799317843912,\"maxResourcePercentPerRequest\":97.4438256079908,\"importance\":\"b\",\"queryExecutionTimeout\":1947593422},\"id\":\"ilbywdxsm\",\"name\":\"ccwr\",\"type\":\"fscjfnynszquji\"}")
+            .toObject(WorkloadGroupInner.class);
         Assertions.assertEquals(1591499316, model.minResourcePercent());
         Assertions.assertEquals(122803528, model.maxResourcePercent());
         Assertions.assertEquals(21.702799317843912, model.minResourcePercentPerRequest());
@@ -26,14 +24,12 @@ public final class WorkloadGroupInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkloadGroupInner model =
-            new WorkloadGroupInner()
-                .withMinResourcePercent(1591499316)
-                .withMaxResourcePercent(122803528)
-                .withMinResourcePercentPerRequest(21.702799317843912)
-                .withMaxResourcePercentPerRequest(97.4438256079908D)
-                .withImportance("b")
-                .withQueryExecutionTimeout(1947593422);
+        WorkloadGroupInner model = new WorkloadGroupInner().withMinResourcePercent(1591499316)
+            .withMaxResourcePercent(122803528)
+            .withMinResourcePercentPerRequest(21.702799317843912)
+            .withMaxResourcePercentPerRequest(97.4438256079908D)
+            .withImportance("b")
+            .withQueryExecutionTimeout(1947593422);
         model = BinaryData.fromObject(model).toObject(WorkloadGroupInner.class);
         Assertions.assertEquals(1591499316, model.minResourcePercent());
         Assertions.assertEquals(122803528, model.maxResourcePercent());

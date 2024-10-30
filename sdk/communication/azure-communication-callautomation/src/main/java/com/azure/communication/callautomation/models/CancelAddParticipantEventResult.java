@@ -26,7 +26,8 @@ public final class CancelAddParticipantEventResult {
      * @param participant the participant.
      * @param invitationId the invitation id.
      */
-    CancelAddParticipantEventResult(boolean isSuccess, CancelAddParticipantSucceeded successResult, CancelAddParticipantFailed failureResult, String invitationId) {
+    CancelAddParticipantEventResult(boolean isSuccess, CancelAddParticipantSucceeded successResult,
+        CancelAddParticipantFailed failureResult, String invitationId) {
         this.isSuccess = isSuccess;
         this.successResult = successResult;
         this.failureResult = failureResult;

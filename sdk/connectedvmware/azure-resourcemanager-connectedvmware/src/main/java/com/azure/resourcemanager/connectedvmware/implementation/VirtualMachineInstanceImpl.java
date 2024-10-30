@@ -25,8 +25,7 @@ public final class VirtualMachineInstanceImpl implements VirtualMachineInstance 
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    VirtualMachineInstanceImpl(
-        VirtualMachineInstanceInner innerObject,
+    VirtualMachineInstanceImpl(VirtualMachineInstanceInner innerObject,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

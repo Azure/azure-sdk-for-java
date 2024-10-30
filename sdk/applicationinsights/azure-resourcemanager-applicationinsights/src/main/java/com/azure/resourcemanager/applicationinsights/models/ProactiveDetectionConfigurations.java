@@ -23,8 +23,8 @@ public interface ProactiveDetectionConfigurations {
      * @return a list of ProactiveDetection configurations of an Application Insights component along with {@link
      *     Response}.
      */
-    Response<List<ApplicationInsightsComponentProactiveDetectionConfiguration>> listWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<List<ApplicationInsightsComponentProactiveDetectionConfiguration>>
+        listWithResponse(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets a list of ProactiveDetection configurations of an Application Insights component.
@@ -36,8 +36,8 @@ public interface ProactiveDetectionConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of ProactiveDetection configurations of an Application Insights component.
      */
-    List<ApplicationInsightsComponentProactiveDetectionConfiguration> list(
-        String resourceGroupName, String resourceName);
+    List<ApplicationInsightsComponentProactiveDetectionConfiguration> list(String resourceGroupName,
+        String resourceName);
 
     /**
      * Get the ProactiveDetection configuration for this configuration id.
@@ -52,8 +52,8 @@ public interface ProactiveDetectionConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ProactiveDetection configuration for this configuration id along with {@link Response}.
      */
-    Response<ApplicationInsightsComponentProactiveDetectionConfiguration> getWithResponse(
-        String resourceGroupName, String resourceName, String configurationId, Context context);
+    Response<ApplicationInsightsComponentProactiveDetectionConfiguration> getWithResponse(String resourceGroupName,
+        String resourceName, String configurationId, Context context);
 
     /**
      * Get the ProactiveDetection configuration for this configuration id.
@@ -67,8 +67,8 @@ public interface ProactiveDetectionConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the ProactiveDetection configuration for this configuration id.
      */
-    ApplicationInsightsComponentProactiveDetectionConfiguration get(
-        String resourceGroupName, String resourceName, String configurationId);
+    ApplicationInsightsComponentProactiveDetectionConfiguration get(String resourceGroupName, String resourceName,
+        String configurationId);
 
     /**
      * Update the ProactiveDetection configuration for this configuration id.
@@ -85,12 +85,9 @@ public interface ProactiveDetectionConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a ProactiveDetection configuration along with {@link Response}.
      */
-    Response<ApplicationInsightsComponentProactiveDetectionConfiguration> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        String configurationId,
-        ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties,
-        Context context);
+    Response<ApplicationInsightsComponentProactiveDetectionConfiguration> updateWithResponse(String resourceGroupName,
+        String resourceName, String configurationId,
+        ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties, Context context);
 
     /**
      * Update the ProactiveDetection configuration for this configuration id.
@@ -106,9 +103,7 @@ public interface ProactiveDetectionConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define a ProactiveDetection configuration.
      */
-    ApplicationInsightsComponentProactiveDetectionConfiguration update(
-        String resourceGroupName,
-        String resourceName,
+    ApplicationInsightsComponentProactiveDetectionConfiguration update(String resourceGroupName, String resourceName,
         String configurationId,
         ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties);
 }

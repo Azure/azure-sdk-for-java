@@ -28,21 +28,8 @@ import java.util.List;
  * @param <FluentModelImplT> the parent fluent implementation
  * @param <ManagerT> the manager
  */
-abstract class AuthorizationRuleBaseImpl<
-        FluentModelT extends IndependentChildResource<ManagerT, InnerModelT>,
-        FluentParentModelT extends Resource & HasResourceGroup,
-        InnerModelT extends SBAuthorizationRuleInner,
-        FluentModelImplT extends IndependentChildResourceImpl<
-            FluentModelT,
-            FluentParentModelT,
-            InnerModelT,
-            FluentModelImplT,
-            ManagerT>,
-        ManagerT> extends IndependentChildResourceImpl<FluentModelT,
-        FluentParentModelT,
-        InnerModelT,
-        FluentModelImplT,
-        ManagerT> {
+abstract class AuthorizationRuleBaseImpl<FluentModelT extends IndependentChildResource<ManagerT, InnerModelT>, FluentParentModelT extends Resource & HasResourceGroup, InnerModelT extends SBAuthorizationRuleInner, FluentModelImplT extends IndependentChildResourceImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT>, ManagerT>
+    extends IndependentChildResourceImpl<FluentModelT, FluentParentModelT, InnerModelT, FluentModelImplT, ManagerT> {
     protected AuthorizationRuleBaseImpl(String name, InnerModelT innerObject, ManagerT manager) {
         super(name, innerObject, manager);
     }
@@ -51,8 +38,7 @@ abstract class AuthorizationRuleBaseImpl<
      * @return stream that emits primary, secondary keys and connection strings
      */
     public Mono<AuthorizationKeys> getKeysAsync() {
-        return this.getKeysInnerAsync()
-            .map(inner -> new AuthorizationKeysImpl(inner));
+        return this.getKeysInnerAsync().map(inner -> new AuthorizationKeysImpl(inner));
     }
 
     /**
@@ -63,8 +49,7 @@ abstract class AuthorizationRuleBaseImpl<
     }
 
     public Mono<AuthorizationKeys> regenerateKeyAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
-        return this.regenerateKeysInnerAsync(regenerateAccessKeyParameters)
-            .map(AuthorizationKeysImpl::new);
+        return this.regenerateKeysInnerAsync(regenerateAccessKeyParameters).map(AuthorizationKeysImpl::new);
     }
 
     public AuthorizationKeys regenerateKey(RegenerateAccessKeyParameters regenerateAccessKeyParameters) {
@@ -120,5 +105,7 @@ abstract class AuthorizationRuleBaseImpl<
     }
 
     protected abstract Mono<AccessKeysInner> getKeysInnerAsync();
-    protected abstract Mono<AccessKeysInner> regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters);
+
+    protected abstract Mono<AccessKeysInner>
+        regenerateKeysInnerAsync(RegenerateAccessKeyParameters regenerateAccessKeyParameters);
 }

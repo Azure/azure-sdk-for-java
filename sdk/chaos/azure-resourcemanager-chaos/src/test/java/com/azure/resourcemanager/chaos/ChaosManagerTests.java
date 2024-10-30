@@ -40,18 +40,15 @@ public class ChaosManagerTests extends TestProxyTestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        chaosManager = ChaosManager
-            .configure()
+        chaosManager = ChaosManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .authenticate(credential, profile);
 
-        keyVaultManager = KeyVaultManager
-            .configure()
+        keyVaultManager = KeyVaultManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -62,10 +59,7 @@ public class ChaosManagerTests extends TestProxyTestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -92,32 +86,21 @@ public class ChaosManagerTests extends TestProxyTestBase {
                 .create();
 
             target = chaosManager.targets()
-                .createOrUpdate(
-                    resourceGroupName,
-                    "microsoft.keyvault",
-                    "vaults",
-                    kvName,
-                    "microsoft-keyvault",
-                    new TargetInner()
-                        .withLocation(REGION.name())
-                        .withProperties(Collections.emptyMap())
-                );
+                .createOrUpdate(resourceGroupName, "microsoft.keyvault", "vaults", kvName, "microsoft-keyvault",
+                    new TargetInner().withLocation(REGION.name()).withProperties(Collections.emptyMap()));
             // @embedmeEnd
             Assertions.assertEquals(target.name(), "microsoft-keyvault");
-            Assertions.assertTrue(Objects.nonNull(chaosManager.targets().get(
-                resourceGroupName, "microsoft.keyvault",
-                "vaults", kvName, "microsoft-keyvault")));
-            Assertions.assertTrue(chaosManager.targets().list(
-                    resourceGroupName, "microsoft.keyvault",
-                    "vaults", kvName)
-                .stream().findAny().isPresent());
+            Assertions.assertTrue(Objects.nonNull(chaosManager.targets()
+                .get(resourceGroupName, "microsoft.keyvault", "vaults", kvName, "microsoft-keyvault")));
+            Assertions.assertTrue(chaosManager.targets()
+                .list(resourceGroupName, "microsoft.keyvault", "vaults", kvName)
+                .stream()
+                .findAny()
+                .isPresent());
         } finally {
             if (target != null) {
-                chaosManager.targets().delete(resourceGroupName,
-                    "microsoft.keyvault",
-                    "vaults",
-                    kvName,
-                    "microsoft-keyvault");
+                chaosManager.targets()
+                    .delete(resourceGroupName, "microsoft.keyvault", "vaults", kvName, "microsoft-keyvault");
             }
         }
     }

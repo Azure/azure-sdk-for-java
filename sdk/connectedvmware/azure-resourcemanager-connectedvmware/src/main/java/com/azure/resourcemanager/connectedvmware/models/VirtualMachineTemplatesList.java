@@ -76,10 +76,8 @@ public final class VirtualMachineTemplatesList {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model VirtualMachineTemplatesList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model VirtualMachineTemplatesList"));
         } else {
             value().forEach(e -> e.validate());
         }

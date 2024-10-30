@@ -217,8 +217,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
 
                 String dependentKey = node.key();
                 for (String dependencyKey : dagNode.dependencyKeys()) {
-                    nodeTable.get(dependencyKey)
-                            .addDependent(dependentKey);
+                    nodeTable.get(dependencyKey).addDependent(dependentKey);
                 }
             }
 

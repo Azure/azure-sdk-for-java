@@ -140,10 +140,8 @@ public final class NetworkPacketBrokerInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model NetworkPacketBrokerInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model NetworkPacketBrokerInner"));
         } else {
             innerProperties().validate();
         }

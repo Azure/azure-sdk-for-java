@@ -22,11 +22,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastDataset model =
-            BinaryData
-                .fromString(
-                    "{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"iuebbaumny\",\"upedeojnabckhs\",\"txp\",\"ie\"]},\"aggregation\":{\"vpesapskrdqmhjjd\":{\"name\":\"CostUSD\",\"function\":\"Sum\"},\"dwkyzxuu\":{\"name\":\"CostUSD\",\"function\":\"Sum\"},\"cwscwsvlx\":{\"name\":\"PreTaxCostUSD\",\"function\":\"Sum\"},\"g\":{\"name\":\"PreTaxCostUSD\",\"function\":\"Sum\"}},\"filter\":{\"and\":[{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]}],\"or\":[{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]}],\"dimensions\":{\"name\":\"tyfjfcnjbkcnxdhb\",\"operator\":\"In\",\"values\":[\"phywpnvj\",\"oqnermclfpl\",\"hoxus\"]},\"tags\":{\"name\":\"pabgyeps\",\"operator\":\"In\",\"values\":[\"azqugxywpmueefj\",\"wfqkquj\",\"dsuyonobgla\",\"cq\"]}}}")
-                .toObject(ForecastDataset.class);
+        ForecastDataset model = BinaryData.fromString(
+            "{\"granularity\":\"Daily\",\"configuration\":{\"columns\":[\"iuebbaumny\",\"upedeojnabckhs\",\"txp\",\"ie\"]},\"aggregation\":{\"vpesapskrdqmhjjd\":{\"name\":\"CostUSD\",\"function\":\"Sum\"},\"dwkyzxuu\":{\"name\":\"CostUSD\",\"function\":\"Sum\"},\"cwscwsvlx\":{\"name\":\"PreTaxCostUSD\",\"function\":\"Sum\"},\"g\":{\"name\":\"PreTaxCostUSD\",\"function\":\"Sum\"}},\"filter\":{\"and\":[{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]}],\"or\":[{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]},{\"and\":[],\"or\":[]}],\"dimensions\":{\"name\":\"tyfjfcnjbkcnxdhb\",\"operator\":\"In\",\"values\":[\"phywpnvj\",\"oqnermclfpl\",\"hoxus\"]},\"tags\":{\"name\":\"pabgyeps\",\"operator\":\"In\",\"values\":[\"azqugxywpmueefj\",\"wfqkquj\",\"dsuyonobgla\",\"cq\"]}}}")
+            .toObject(ForecastDataset.class);
         Assertions.assertEquals(GranularityType.DAILY, model.granularity());
         Assertions.assertEquals("iuebbaumny", model.configuration().columns().get(0));
         Assertions.assertEquals(FunctionName.COST_USD, model.aggregation().get("vpesapskrdqmhjjd").name());
@@ -41,49 +39,26 @@ public final class ForecastDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastDataset model =
-            new ForecastDataset()
-                .withGranularity(GranularityType.DAILY)
-                .withConfiguration(
-                    new ForecastDatasetConfiguration()
-                        .withColumns(Arrays.asList("iuebbaumny", "upedeojnabckhs", "txp", "ie")))
-                .withAggregation(
-                    mapOf(
-                        "vpesapskrdqmhjjd",
-                        new ForecastAggregation().withName(FunctionName.COST_USD).withFunction(FunctionType.SUM),
-                        "dwkyzxuu",
-                        new ForecastAggregation().withName(FunctionName.COST_USD).withFunction(FunctionType.SUM),
-                        "cwscwsvlx",
-                        new ForecastAggregation()
-                            .withName(FunctionName.PRE_TAX_COST_USD)
-                            .withFunction(FunctionType.SUM),
-                        "g",
-                        new ForecastAggregation()
-                            .withName(FunctionName.PRE_TAX_COST_USD)
-                            .withFunction(FunctionType.SUM)))
-                .withFilter(
-                    new ForecastFilter()
-                        .withAnd(
-                            Arrays
-                                .asList(
-                                    new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                        .withOr(
-                            Arrays
-                                .asList(
-                                    new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
-                                    new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
-                        .withDimensions(
-                            new ForecastComparisonExpression()
-                                .withName("tyfjfcnjbkcnxdhb")
-                                .withOperator(ForecastOperatorType.IN)
-                                .withValues(Arrays.asList("phywpnvj", "oqnermclfpl", "hoxus")))
-                        .withTags(
-                            new ForecastComparisonExpression()
-                                .withName("pabgyeps")
-                                .withOperator(ForecastOperatorType.IN)
-                                .withValues(Arrays.asList("azqugxywpmueefj", "wfqkquj", "dsuyonobgla", "cq"))));
+        ForecastDataset model = new ForecastDataset().withGranularity(GranularityType.DAILY)
+            .withConfiguration(new ForecastDatasetConfiguration()
+                .withColumns(Arrays.asList("iuebbaumny", "upedeojnabckhs", "txp", "ie")))
+            .withAggregation(mapOf("vpesapskrdqmhjjd",
+                new ForecastAggregation().withName(FunctionName.COST_USD).withFunction(FunctionType.SUM), "dwkyzxuu",
+                new ForecastAggregation().withName(FunctionName.COST_USD).withFunction(FunctionType.SUM), "cwscwsvlx",
+                new ForecastAggregation().withName(FunctionName.PRE_TAX_COST_USD).withFunction(FunctionType.SUM), "g",
+                new ForecastAggregation().withName(FunctionName.PRE_TAX_COST_USD).withFunction(FunctionType.SUM)))
+            .withFilter(new ForecastFilter()
+                .withAnd(Arrays.asList(new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
+                    new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
+                .withOr(Arrays.asList(new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
+                    new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList()),
+                    new ForecastFilter().withAnd(Arrays.asList()).withOr(Arrays.asList())))
+                .withDimensions(new ForecastComparisonExpression().withName("tyfjfcnjbkcnxdhb")
+                    .withOperator(ForecastOperatorType.IN)
+                    .withValues(Arrays.asList("phywpnvj", "oqnermclfpl", "hoxus")))
+                .withTags(new ForecastComparisonExpression().withName("pabgyeps")
+                    .withOperator(ForecastOperatorType.IN)
+                    .withValues(Arrays.asList("azqugxywpmueefj", "wfqkquj", "dsuyonobgla", "cq"))));
         model = BinaryData.fromObject(model).toObject(ForecastDataset.class);
         Assertions.assertEquals(GranularityType.DAILY, model.granularity());
         Assertions.assertEquals("iuebbaumny", model.configuration().columns().get(0));

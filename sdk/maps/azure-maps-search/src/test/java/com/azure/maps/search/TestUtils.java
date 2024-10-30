@@ -125,12 +125,12 @@ public class TestUtils {
      * @return A stream of HttpClient and service version combinations to test.
      */
     public static Stream<Arguments> getTestParameters() {
-        return TestProxyTestBase.getHttpClients().flatMap(httpClient -> Arrays.stream(MapsSearchServiceVersion.values())
-            .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
+        return TestProxyTestBase.getHttpClients()
+            .flatMap(httpClient -> Arrays.stream(MapsSearchServiceVersion.values())
+                .map(serviceVersion -> Arguments.of(httpClient, serviceVersion)));
     }
 
-    private static <T> T deserialize(String resourceName,
-        ReadValueCallback<JsonReader, T> deserializer) {
+    private static <T> T deserialize(String resourceName, ReadValueCallback<JsonReader, T> deserializer) {
         try (JsonReader jsonReader = JsonProviders.createReader(ClassLoader.getSystemResourceAsStream(resourceName))) {
             return deserializer.read(jsonReader);
         } catch (IOException ex) {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -37,7 +36,6 @@ public final class ArmUpgradeFailureAction extends ExpandableStringEnum<ArmUpgra
      * @param name a name to look for.
      * @return the corresponding ArmUpgradeFailureAction.
      */
-    @JsonCreator
     public static ArmUpgradeFailureAction fromString(String name) {
         return fromString(name, ArmUpgradeFailureAction.class);
     }

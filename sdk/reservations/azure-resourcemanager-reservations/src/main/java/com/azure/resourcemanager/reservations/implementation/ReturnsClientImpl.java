@@ -57,17 +57,13 @@ public final class ReturnsClientImpl implements ReturnsClient {
     @Host("{$host}")
     @ServiceInterface(name = "AzureReservationApiR")
     public interface ReturnsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/return")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> post(
-            @HostParam("$host") String endpoint,
-            @PathParam("reservationOrderId") String reservationOrderId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") RefundRequest body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> post(@HostParam("$host") String endpoint,
+            @PathParam("reservationOrderId") String reservationOrderId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RefundRequest body, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -86,10 +82,8 @@ public final class ReturnsClientImpl implements ReturnsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(String reservationOrderId, RefundRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -102,10 +96,8 @@ public final class ReturnsClientImpl implements ReturnsClient {
         }
         final String apiVersion = "2022-11-01";
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.post(this.client.getEndpoint(), reservationOrderId, apiVersion, body, accept, context))
+        return FluxUtil.withContext(
+            context -> service.post(this.client.getEndpoint(), reservationOrderId, apiVersion, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -124,13 +116,11 @@ public final class ReturnsClientImpl implements ReturnsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(
-        String reservationOrderId, RefundRequest body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(String reservationOrderId, RefundRequest body,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (reservationOrderId == null) {
             return Mono
@@ -160,17 +150,12 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @return the {@link PollerFlux} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPostAsync(
-        String reservationOrderId, RefundRequest body) {
+    private PollerFlux<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPostAsync(String reservationOrderId, RefundRequest body) {
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(reservationOrderId, body);
-        return this
-            .client
-            .<ReservationOrderResponseInner, ReservationOrderResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ReservationOrderResponseInner.class,
-                ReservationOrderResponseInner.class,
-                this.client.getContext());
+        return this.client.<ReservationOrderResponseInner, ReservationOrderResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ReservationOrderResponseInner.class, ReservationOrderResponseInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -187,18 +172,13 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @return the {@link PollerFlux} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPostAsync(
-        String reservationOrderId, RefundRequest body, Context context) {
+    private PollerFlux<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPostAsync(String reservationOrderId, RefundRequest body, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = postWithResponseAsync(reservationOrderId, body, context);
-        return this
-            .client
-            .<ReservationOrderResponseInner, ReservationOrderResponseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ReservationOrderResponseInner.class,
-                ReservationOrderResponseInner.class,
-                context);
+        return this.client.<ReservationOrderResponseInner, ReservationOrderResponseInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ReservationOrderResponseInner.class, ReservationOrderResponseInner.class,
+            context);
     }
 
     /**
@@ -214,8 +194,8 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPost(
-        String reservationOrderId, RefundRequest body) {
+    public SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPost(String reservationOrderId, RefundRequest body) {
         return this.beginPostAsync(reservationOrderId, body).getSyncPoller();
     }
 
@@ -233,8 +213,8 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @return the {@link SyncPoller} for polling of details of a reservation order being returned.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner> beginPost(
-        String reservationOrderId, RefundRequest body, Context context) {
+    public SyncPoller<PollResult<ReservationOrderResponseInner>, ReservationOrderResponseInner>
+        beginPost(String reservationOrderId, RefundRequest body, Context context) {
         return this.beginPostAsync(reservationOrderId, body, context).getSyncPoller();
     }
 
@@ -269,8 +249,8 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @return details of a reservation order being returned on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReservationOrderResponseInner> postAsync(
-        String reservationOrderId, RefundRequest body, Context context) {
+    private Mono<ReservationOrderResponseInner> postAsync(String reservationOrderId, RefundRequest body,
+        Context context) {
         return beginPostAsync(reservationOrderId, body, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 

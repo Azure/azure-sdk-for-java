@@ -21,7 +21,6 @@ public final class FormPageRange {
      */
     private final int lastPageNumber;
 
-
     /**
      * Construct a FormPageRange object.
      *

@@ -34,11 +34,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @return workspace managed sql server's encryption protector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<EncryptionProtectorInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context);
+    Response<EncryptionProtectorInner> getWithResponse(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName, Context context);
 
     /**
      * Get workspace server's encryption protector.
@@ -54,8 +51,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @return workspace managed sql server's encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EncryptionProtectorInner get(
-        String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName);
+    EncryptionProtectorInner get(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName);
 
     /**
      * Updates workspace server's encryption protector.
@@ -73,9 +70,7 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        EncryptionProtectorName encryptionProtectorName,
+        String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName,
         EncryptionProtectorInner parameters);
 
     /**
@@ -95,11 +90,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<EncryptionProtectorInner>, EncryptionProtectorInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        EncryptionProtectorName encryptionProtectorName,
-        EncryptionProtectorInner parameters,
-        Context context);
+        String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName,
+        EncryptionProtectorInner parameters, Context context);
 
     /**
      * Updates workspace server's encryption protector.
@@ -116,11 +108,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EncryptionProtectorInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        EncryptionProtectorName encryptionProtectorName,
-        EncryptionProtectorInner parameters);
+    EncryptionProtectorInner createOrUpdate(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters);
 
     /**
      * Updates workspace server's encryption protector.
@@ -138,12 +127,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @return the server encryption protector.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    EncryptionProtectorInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        EncryptionProtectorName encryptionProtectorName,
-        EncryptionProtectorInner parameters,
-        Context context);
+    EncryptionProtectorInner createOrUpdate(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName, EncryptionProtectorInner parameters, Context context);
 
     /**
      * Get list of encryption protectors for the server.
@@ -192,8 +177,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRevalidate(
-        String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName);
+    SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName);
 
     /**
      * Revalidates server's existing encryption protector.
@@ -210,11 +195,8 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRevalidate(
-        String resourceGroupName,
-        String workspaceName,
-        EncryptionProtectorName encryptionProtectorName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginRevalidate(String resourceGroupName, String workspaceName,
+        EncryptionProtectorName encryptionProtectorName, Context context);
 
     /**
      * Revalidates server's existing encryption protector.
@@ -245,9 +227,6 @@ public interface WorkspaceManagedSqlServerEncryptionProtectorsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void revalidate(
-        String resourceGroupName,
-        String workspaceName,
-        EncryptionProtectorName encryptionProtectorName,
+    void revalidate(String resourceGroupName, String workspaceName, EncryptionProtectorName encryptionProtectorName,
         Context context);
 }

@@ -17,8 +17,8 @@ public final class SubscriptionNotificationOperation extends ExpandableStringEnu
     public static final SubscriptionNotificationOperation DELETE_ALL_RESOURCES = fromString("DeleteAllResources");
 
     /** Static value SoftDeleteAllResources for SubscriptionNotificationOperation. */
-    public static final SubscriptionNotificationOperation SOFT_DELETE_ALL_RESOURCES =
-        fromString("SoftDeleteAllResources");
+    public static final SubscriptionNotificationOperation SOFT_DELETE_ALL_RESOURCES
+        = fromString("SoftDeleteAllResources");
 
     /** Static value NoOp for SubscriptionNotificationOperation. */
     public static final SubscriptionNotificationOperation NO_OP = fromString("NoOp");

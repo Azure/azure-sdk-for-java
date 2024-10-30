@@ -70,11 +70,13 @@ public interface AccessPolicyResource {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The AccessPolicyResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the AccessPolicyResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the AccessPolicyResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -87,14 +89,13 @@ public interface AccessPolicyResource {
              */
             WithCreate withExistingEnvironment(String resourceGroupName, String environmentName);
         }
+
         /**
          * The stage of the AccessPolicyResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithPrincipalObjectId,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithRoles {
+        interface WithCreate extends DefinitionStages.WithPrincipalObjectId, DefinitionStages.WithDescription,
+            DefinitionStages.WithRoles {
             /**
              * Executes the create request.
              *
@@ -110,6 +111,7 @@ public interface AccessPolicyResource {
              */
             AccessPolicyResource create(Context context);
         }
+
         /** The stage of the AccessPolicyResource definition allowing to specify principalObjectId. */
         interface WithPrincipalObjectId {
             /**
@@ -120,6 +122,7 @@ public interface AccessPolicyResource {
              */
             WithCreate withPrincipalObjectId(String principalObjectId);
         }
+
         /** The stage of the AccessPolicyResource definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -130,6 +133,7 @@ public interface AccessPolicyResource {
              */
             WithCreate withDescription(String description);
         }
+
         /** The stage of the AccessPolicyResource definition allowing to specify roles. */
         interface WithRoles {
             /**
@@ -141,6 +145,7 @@ public interface AccessPolicyResource {
             WithCreate withRoles(List<AccessPolicyRole> roles);
         }
     }
+
     /**
      * Begins update for the AccessPolicyResource resource.
      *
@@ -165,6 +170,7 @@ public interface AccessPolicyResource {
          */
         AccessPolicyResource apply(Context context);
     }
+
     /** The AccessPolicyResource update stages. */
     interface UpdateStages {
         /** The stage of the AccessPolicyResource update allowing to specify description. */
@@ -177,6 +183,7 @@ public interface AccessPolicyResource {
              */
             Update withDescription(String description);
         }
+
         /** The stage of the AccessPolicyResource update allowing to specify roles. */
         interface WithRoles {
             /**
@@ -188,6 +195,7 @@ public interface AccessPolicyResource {
             Update withRoles(List<AccessPolicyRole> roles);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -17,7 +17,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-
 /**
  * <p>The ClientSecretCredential acquires a token via service principal authentication. It is a type of authentication
  * in Azure that enables a non-interactive login to
@@ -97,11 +96,10 @@ public class ClientSecretCredential implements TokenCredential {
      * @param identityClientOptions the options for configuring the identity client
      */
     ClientSecretCredential(String tenantId, String clientId, String clientSecret,
-                           IdentityClientOptions identityClientOptions) {
+        IdentityClientOptions identityClientOptions) {
         Objects.requireNonNull(clientSecret, "'clientSecret' cannot be null.");
         Objects.requireNonNull(identityClientOptions, "'identityClientOptions' cannot be null.");
-        IdentityClientBuilder builder =  new IdentityClientBuilder()
-            .tenantId(tenantId)
+        IdentityClientBuilder builder = new IdentityClientBuilder().tenantId(tenantId)
             .clientId(clientId)
             .clientSecret(clientSecret)
             .identityClientOptions(identityClientOptions);
@@ -116,8 +114,8 @@ public class ClientSecretCredential implements TokenCredential {
             .onErrorResume(t -> Mono.empty())
             .switchIfEmpty(Mono.defer(() -> identityClient.authenticateWithConfidentialClient(request)))
             .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
-            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
-                error));
+            .doOnError(
+                error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, error));
     }
 
     @Override
@@ -128,7 +126,8 @@ public class ClientSecretCredential implements TokenCredential {
                 LoggingUtil.logTokenSuccess(LOGGER, request);
                 return token;
             }
-        } catch (Exception e) { }
+        } catch (Exception e) {
+        }
 
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClient(request);

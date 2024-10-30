@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationNotificationEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationNotificationEndpoint model =
-            BinaryData.fromString("{\"uri\":\"o\"}").toObject(ApplicationNotificationEndpoint.class);
+        ApplicationNotificationEndpoint model
+            = BinaryData.fromString("{\"uri\":\"o\"}").toObject(ApplicationNotificationEndpoint.class);
         Assertions.assertEquals("o", model.uri());
     }
 

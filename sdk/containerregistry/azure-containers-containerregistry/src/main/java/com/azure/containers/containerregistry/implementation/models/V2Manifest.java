@@ -31,7 +31,8 @@ public final class V2Manifest extends Manifest {
     private List<OciDescriptor> layers;
 
     /** Creates an instance of V2Manifest class. */
-    public V2Manifest() {}
+    public V2Manifest() {
+    }
 
     /**
      * Get the mediaType property: Media type for this Manifest.
@@ -119,28 +120,27 @@ public final class V2Manifest extends Manifest {
      * @throws IOException If an error occurs while reading the V2Manifest.
      */
     public static V2Manifest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    V2Manifest deserializedV2Manifest = new V2Manifest();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            V2Manifest deserializedV2Manifest = new V2Manifest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("schemaVersion".equals(fieldName)) {
-                            deserializedV2Manifest.setSchemaVersion(reader.getNullable(JsonReader::getInt));
-                        } else if ("mediaType".equals(fieldName)) {
-                            deserializedV2Manifest.mediaType = reader.getString();
-                        } else if ("config".equals(fieldName)) {
-                            deserializedV2Manifest.config = OciDescriptor.fromJson(reader);
-                        } else if ("layers".equals(fieldName)) {
-                            List<OciDescriptor> layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
-                            deserializedV2Manifest.layers = layers;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("schemaVersion".equals(fieldName)) {
+                    deserializedV2Manifest.setSchemaVersion(reader.getNullable(JsonReader::getInt));
+                } else if ("mediaType".equals(fieldName)) {
+                    deserializedV2Manifest.mediaType = reader.getString();
+                } else if ("config".equals(fieldName)) {
+                    deserializedV2Manifest.config = OciDescriptor.fromJson(reader);
+                } else if ("layers".equals(fieldName)) {
+                    List<OciDescriptor> layers = reader.readArray(reader1 -> OciDescriptor.fromJson(reader1));
+                    deserializedV2Manifest.layers = layers;
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedV2Manifest;
-                });
+            return deserializedV2Manifest;
+        });
     }
 }

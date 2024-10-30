@@ -27,10 +27,14 @@ public final class ClusterServerInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterServerInner model
-            = new ClusterServerInner().withRole(ServerRole.COORDINATOR).withAvailabilityZone("ujitcjcz")
-                .withPostgresqlVersion("evndh").withCitusVersion("wpdappdsbdkv").withServerEdition("wjfeusnhutjel")
-                .withStorageQuotaInMb(391471833).withVCores(1969626150).withEnableHa(true);
+        ClusterServerInner model = new ClusterServerInner().withRole(ServerRole.COORDINATOR)
+            .withAvailabilityZone("ujitcjcz")
+            .withPostgresqlVersion("evndh")
+            .withCitusVersion("wpdappdsbdkv")
+            .withServerEdition("wjfeusnhutjel")
+            .withStorageQuotaInMb(391471833)
+            .withVCores(1969626150)
+            .withEnableHa(true);
         model = BinaryData.fromObject(model).toObject(ClusterServerInner.class);
         Assertions.assertEquals(ServerRole.COORDINATOR, model.role());
         Assertions.assertEquals("ujitcjcz", model.availabilityZone());

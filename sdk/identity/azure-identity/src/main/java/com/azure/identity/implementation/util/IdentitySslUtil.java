@@ -33,7 +33,8 @@ public final class IdentitySslUtil {
         };
     }
 
-    private IdentitySslUtil() { }
+    private IdentitySslUtil() {
+    }
 
     /**
      *
@@ -45,7 +46,7 @@ public final class IdentitySslUtil {
      * @param logger The {@link ClientLogger} used to log any errors that occur in this method call.
      */
     public static void addTrustedCertificateThumbprint(HttpsURLConnection httpsUrlConnection,
-                                                       String certificateThumbprint, ClientLogger logger) {
+        String certificateThumbprint, ClientLogger logger) {
         //We expect the connection to work against a specific server side certificate only, so it's safe to disable the
         // host name verification.
         if (httpsUrlConnection.getHostnameVerifier() != ALL_HOSTS_ACCEPT_HOSTNAME_VERIFIER) {
@@ -53,9 +54,9 @@ public final class IdentitySslUtil {
         }
 
         // Create a Trust manager that trusts only certificate with specified thumbprint.
-        TrustManager[] certificateTrust = new TrustManager[]{new X509TrustManager() {
+        TrustManager[] certificateTrust = new TrustManager[] { new X509TrustManager() {
             public X509Certificate[] getAcceptedIssuers() {
-                return new X509Certificate[]{};
+                return new X509Certificate[] { };
             }
 
             public void checkClientTrusted(X509Certificate[] certificates, String authenticationType)
@@ -66,8 +67,8 @@ public final class IdentitySslUtil {
             public void checkServerTrusted(X509Certificate[] certificates, String authenticationType)
                 throws CertificateException {
                 if (certificates == null || certificates.length == 0) {
-                    throw logger.logExceptionAsError(
-                        new RuntimeException("Did not receive any certificate from the server."));
+                    throw logger
+                        .logExceptionAsError(new RuntimeException("Did not receive any certificate from the server."));
                 }
 
                 for (X509Certificate x509Certificate : certificates) {
@@ -76,11 +77,10 @@ public final class IdentitySslUtil {
                         return;
                     }
                 }
-                throw logger.logExceptionAsError(new RuntimeException(
-                    "Thumbprint of certificates received did not match the expected thumbprint."));
+                throw logger.logExceptionAsError(
+                    new RuntimeException("Thumbprint of certificates received did not match the expected thumbprint."));
             }
-        }
-        };
+        } };
 
         SSLSocketFactory sslSocketFactory;
         try {

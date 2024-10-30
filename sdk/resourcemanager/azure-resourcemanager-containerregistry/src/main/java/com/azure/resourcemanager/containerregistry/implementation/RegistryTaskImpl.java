@@ -171,8 +171,8 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     public Map<String, RegistrySourceTrigger> sourceTriggers() {
         Map<String, RegistrySourceTrigger> sourceTriggerMap = new HashMap<String, RegistrySourceTrigger>();
         for (SourceTrigger sourceTrigger : this.inner.trigger().sourceTriggers()) {
-            sourceTriggerMap
-                .put(sourceTrigger.name(), new RegistrySourceTriggerImpl(sourceTrigger.name(), this, false));
+            sourceTriggerMap.put(sourceTrigger.name(),
+                new RegistrySourceTriggerImpl(sourceTrigger.name(), this, false));
         }
         return sourceTriggerMap;
     }
@@ -189,8 +189,8 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
         this.taskName = inner.name();
         this.inner = inner;
         this.resourceGroupName = ResourceUtils.groupFromResourceId(this.inner.id());
-        this.registryName =
-            ResourceUtils.nameFromResourceId(ResourceUtils.parentResourceIdFromResourceId(this.inner.id()));
+        this.registryName
+            = ResourceUtils.nameFromResourceId(ResourceUtils.parentResourceIdFromResourceId(this.inner.id()));
         this.taskUpdateParameters = new TaskUpdateParameters();
         setTaskUpdateParameterTriggers();
     }
@@ -355,33 +355,27 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     }
 
     @Override
-    public DefinitionStages.TaskCreatable withBaseImageTrigger(
-        String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType) {
+    public DefinitionStages.TaskCreatable withBaseImageTrigger(String baseImageTriggerName,
+        BaseImageTriggerType baseImageTriggerType) {
         if (this.inner.trigger() == null) {
             this.inner.withTrigger(new TriggerProperties());
         }
-        this
-            .inner
-            .trigger()
+        this.inner.trigger()
             .withBaseImageTrigger(
                 new BaseImageTrigger().withBaseImageTriggerType(baseImageTriggerType).withName(baseImageTriggerName));
         return this;
     }
 
     @Override
-    public DefinitionStages.TaskCreatable withBaseImageTrigger(
-        String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType, TriggerStatus triggerStatus) {
+    public DefinitionStages.TaskCreatable withBaseImageTrigger(String baseImageTriggerName,
+        BaseImageTriggerType baseImageTriggerType, TriggerStatus triggerStatus) {
         if (this.inner.trigger() == null) {
             this.inner.withTrigger(new TriggerProperties());
         }
-        this
-            .inner
-            .trigger()
-            .withBaseImageTrigger(
-                new BaseImageTrigger()
-                    .withBaseImageTriggerType(baseImageTriggerType)
-                    .withName(baseImageTriggerName)
-                    .withStatus(triggerStatus));
+        this.inner.trigger()
+            .withBaseImageTrigger(new BaseImageTrigger().withBaseImageTriggerType(baseImageTriggerType)
+                .withName(baseImageTriggerName)
+                .withStatus(triggerStatus));
         return this;
     }
 
@@ -429,17 +423,14 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     @Override
     public Mono<RegistryTask> createAsync(Context context) {
         final RegistryTaskImpl self = this;
-        return this
-            .tasksInner
-            .createAsync(this.resourceGroupName, this.registryName, this.taskName, this.inner)
+        return this.tasksInner.createAsync(this.resourceGroupName, this.registryName, this.taskName, this.inner)
             .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
-            .flatMap(
-                taskInner -> {
-                    self.inner = taskInner;
-                    self.taskUpdateParameters = new TaskUpdateParameters();
-                    self.setTaskUpdateParameterTriggers();
-                    return Mono.just(self);
-                });
+            .flatMap(taskInner -> {
+                self.inner = taskInner;
+                self.taskUpdateParameters = new TaskUpdateParameters();
+                self.setTaskUpdateParameterTriggers();
+                return Mono.just(self);
+            });
     }
 
     @Override
@@ -450,25 +441,20 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     @Override
     public Mono<RegistryTask> refreshAsync() {
         final RegistryTaskImpl self = this;
-        return this
-            .tasksInner
-            .getAsync(this.resourceGroupName, this.registryName, this.taskName)
-            .map(
-                taskInner -> {
-                    self.inner = taskInner;
-                    self.taskUpdateParameters = new TaskUpdateParameters();
-                    self.setTaskUpdateParameterTriggers();
-                    return self;
-                });
+        return this.tasksInner.getAsync(this.resourceGroupName, this.registryName, this.taskName).map(taskInner -> {
+            self.inner = taskInner;
+            self.taskUpdateParameters = new TaskUpdateParameters();
+            self.setTaskUpdateParameterTriggers();
+            return self;
+        });
     }
 
     @Override
     public RegistryFileTaskStep.Update updateFileTaskStep() {
         if (!(this.inner.step() instanceof FileTaskStep)) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "Calling updateFileTaskStep on a RegistryTask that is of type "
-                    + this.inner.step().getClass().getName()
-                    + "."));
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException("Calling updateFileTaskStep on a RegistryTask that is of type "
+                    + this.inner.step().getClass().getName() + "."));
         }
         return new RegistryFileTaskStepImpl(this);
     }
@@ -476,10 +462,9 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     @Override
     public RegistryEncodedTaskStep.Update updateEncodedTaskStep() {
         if (!(this.inner.step() instanceof EncodedTaskStep)) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "Calling updateEncodedTaskStep on a RegistryTask that is of type "
-                    + this.inner.step().getClass().getName()
-                    + "."));
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException("Calling updateEncodedTaskStep on a RegistryTask that is of type "
+                    + this.inner.step().getClass().getName() + "."));
         }
         return new RegistryEncodedTaskStepImpl(this);
     }
@@ -487,10 +472,9 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     @Override
     public RegistryDockerTaskStep.Update updateDockerTaskStep() {
         if (!(this.inner.step() instanceof DockerTaskStep)) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(
-                "Calling updateDockerTaskStep on a RegistryTask that is of type "
-                    + this.inner.step().getClass().getName()
-                    + "."));
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException("Calling updateDockerTaskStep on a RegistryTask that is of type "
+                    + this.inner.step().getClass().getName() + "."));
         }
         return new RegistryDockerTaskStepImpl(this);
     }
@@ -502,27 +486,19 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
 
     @Override
     public Update updateBaseImageTrigger(String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType) {
-        this
-            .taskUpdateParameters
-            .trigger()
-            .withBaseImageTrigger(
-                new BaseImageTriggerUpdateParameters()
-                    .withBaseImageTriggerType(baseImageTriggerType)
-                    .withName(baseImageTriggerName));
+        this.taskUpdateParameters.trigger()
+            .withBaseImageTrigger(new BaseImageTriggerUpdateParameters().withBaseImageTriggerType(baseImageTriggerType)
+                .withName(baseImageTriggerName));
         return this;
     }
 
     @Override
-    public Update updateBaseImageTrigger(
-        String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType, TriggerStatus triggerStatus) {
-        this
-            .taskUpdateParameters
-            .trigger()
-            .withBaseImageTrigger(
-                new BaseImageTriggerUpdateParameters()
-                    .withBaseImageTriggerType(baseImageTriggerType)
-                    .withName(baseImageTriggerName)
-                    .withStatus(triggerStatus));
+    public Update updateBaseImageTrigger(String baseImageTriggerName, BaseImageTriggerType baseImageTriggerType,
+        TriggerStatus triggerStatus) {
+        this.taskUpdateParameters.trigger()
+            .withBaseImageTrigger(new BaseImageTriggerUpdateParameters().withBaseImageTriggerType(baseImageTriggerType)
+                .withName(baseImageTriggerName)
+                .withStatus(triggerStatus));
         return this;
     }
 
@@ -549,19 +525,17 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     @Override
     public Mono<RegistryTask> applyAsync(Context context) {
         final RegistryTaskImpl self = this;
-        return this
-            .tasksInner
+        return this.tasksInner
             .updateAsync(this.resourceGroupName, this.registryName, this.taskName, this.taskUpdateParameters)
             .contextWrite(c -> c.putAll(FluxUtil.toReactorContext(context).readOnly()))
-            .map(
-                taskInner -> {
-                    self.inner = taskInner;
-                    self.taskUpdateParameters = new TaskUpdateParameters();
-                    self.registryTaskStep = null;
-                    self.taskUpdateParameters = new TaskUpdateParameters();
-                    self.setTaskUpdateParameterTriggers();
-                    return self;
-                });
+            .map(taskInner -> {
+                self.inner = taskInner;
+                self.taskUpdateParameters = new TaskUpdateParameters();
+                self.registryTaskStep = null;
+                self.taskUpdateParameters = new TaskUpdateParameters();
+                self.setTaskUpdateParameterTriggers();
+                return self;
+            });
     }
 
     private boolean isInCreateMode() {
@@ -602,8 +576,8 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
     }
 
     void withSourceTriggerUpdateParameters(SourceTriggerUpdateParameters sourceTriggerUpdateParameters) {
-        List<SourceTriggerUpdateParameters> sourceTriggerUpdateParametersList =
-            this.taskUpdateParameters.trigger().sourceTriggers();
+        List<SourceTriggerUpdateParameters> sourceTriggerUpdateParametersList
+            = this.taskUpdateParameters.trigger().sourceTriggers();
         sourceTriggerUpdateParametersList.add(sourceTriggerUpdateParameters);
         this.taskUpdateParameters.trigger().withSourceTriggers(sourceTriggerUpdateParametersList);
     }
@@ -617,8 +591,8 @@ class RegistryTaskImpl implements RegistryTask, RegistryTask.Definition, Registr
             return;
         }
         if (this.inner.trigger().sourceTriggers() != null) {
-            List<SourceTriggerUpdateParameters> sourceTriggerUpdateParameters =
-                new ArrayList<SourceTriggerUpdateParameters>();
+            List<SourceTriggerUpdateParameters> sourceTriggerUpdateParameters
+                = new ArrayList<SourceTriggerUpdateParameters>();
             for (SourceTrigger sourceTrigger : this.inner.trigger().sourceTriggers()) {
                 sourceTriggerUpdateParameters.add(sourceTriggerToSourceTriggerUpdateParameters(sourceTrigger));
             }

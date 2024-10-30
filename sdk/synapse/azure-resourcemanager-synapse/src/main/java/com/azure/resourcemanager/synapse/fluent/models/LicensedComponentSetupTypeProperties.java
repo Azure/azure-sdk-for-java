@@ -75,10 +75,8 @@ public final class LicensedComponentSetupTypeProperties {
      */
     public void validate() {
         if (componentName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property componentName in model LicensedComponentSetupTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property componentName in model LicensedComponentSetupTypeProperties"));
         }
         if (licenseKey() != null) {
             licenseKey().validate();

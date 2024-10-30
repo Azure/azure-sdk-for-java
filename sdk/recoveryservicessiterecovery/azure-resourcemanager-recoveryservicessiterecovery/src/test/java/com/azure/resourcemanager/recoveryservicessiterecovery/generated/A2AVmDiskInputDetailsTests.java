@@ -22,7 +22,8 @@ public final class A2AVmDiskInputDetailsTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         A2AVmDiskInputDetails model = new A2AVmDiskInputDetails().withDiskUri("qdx")
-            .withRecoveryAzureStorageAccountId("urnpnuhzafccnuh").withPrimaryStagingAzureStorageAccountId("i");
+            .withRecoveryAzureStorageAccountId("urnpnuhzafccnuh")
+            .withPrimaryStagingAzureStorageAccountId("i");
         model = BinaryData.fromObject(model).toObject(A2AVmDiskInputDetails.class);
         Assertions.assertEquals("qdx", model.diskUri());
         Assertions.assertEquals("urnpnuhzafccnuh", model.recoveryAzureStorageAccountId());

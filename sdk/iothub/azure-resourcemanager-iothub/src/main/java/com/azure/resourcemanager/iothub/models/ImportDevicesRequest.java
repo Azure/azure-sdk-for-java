@@ -234,16 +234,12 @@ public final class ImportDevicesRequest {
      */
     public void validate() {
         if (inputBlobContainerUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property inputBlobContainerUri in model ImportDevicesRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property inputBlobContainerUri in model ImportDevicesRequest"));
         }
         if (outputBlobContainerUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property outputBlobContainerUri in model ImportDevicesRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property outputBlobContainerUri in model ImportDevicesRequest"));
         }
         if (identity() != null) {
             identity().validate();

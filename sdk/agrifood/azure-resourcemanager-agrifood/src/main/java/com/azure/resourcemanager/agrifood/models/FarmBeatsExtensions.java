@@ -34,13 +34,8 @@ public interface FarmBeatsExtensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of farmBeats extension as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<FarmBeatsExtension> list(
-        List<String> farmBeatsExtensionIds,
-        List<String> farmBeatsExtensionNames,
-        List<String> extensionCategories,
-        List<String> publisherIds,
-        Integer maxPageSize,
-        Context context);
+    PagedIterable<FarmBeatsExtension> list(List<String> farmBeatsExtensionIds, List<String> farmBeatsExtensionNames,
+        List<String> extensionCategories, List<String> publisherIds, Integer maxPageSize, Context context);
 
     /**
      * Get farmBeats extension.

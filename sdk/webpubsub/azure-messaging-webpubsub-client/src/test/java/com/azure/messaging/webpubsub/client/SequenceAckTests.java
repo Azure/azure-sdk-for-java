@@ -20,8 +20,7 @@ public class SequenceAckTests extends TestBase {
     public void testNewSequenceIdAfterStop() {
         String groupName = "testNewSequenceIdAfterStop";
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.start();
         client.joinGroup(groupName);
@@ -50,8 +49,7 @@ public class SequenceAckTests extends TestBase {
     public void testContinuedSequenceIdAfterRecover() {
         String groupName = "testContinuedSequenceIdAfterRecover";
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.start();
         client.joinGroup(groupName);
@@ -77,8 +75,7 @@ public class SequenceAckTests extends TestBase {
     public void testNewSequenceIdAfterReconnect() {
         String groupName = "testNewSequenceIdAfterReconnect";
 
-        WebPubSubClient client = getClientBuilder()
-            .buildClient();
+        WebPubSubClient client = getClientBuilder().buildClient();
 
         client.start();
         client.joinGroup(groupName);

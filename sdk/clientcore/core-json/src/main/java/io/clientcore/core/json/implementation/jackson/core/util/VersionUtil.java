@@ -24,8 +24,7 @@ import io.clientcore.core.json.implementation.jackson.core.Versioned;
  * Note that functionality for reading "VERSION.txt" was removed completely
  * from Jackson 2.6.
  */
-public class VersionUtil
-{
+public class VersionUtil {
     private final static Pattern V_SEP = Pattern.compile("[-_./;:]");
 
     /*
@@ -34,10 +33,13 @@ public class VersionUtil
     /**********************************************************************
      */
 
-    protected VersionUtil() { }
+    protected VersionUtil() {
+    }
 
     @Deprecated // since 2.9
-    public Version version() { return Version.unknownVersion(); }
+    public Version version() {
+        return Version.unknownVersion();
+    }
 
     /*
     /**********************************************************************
@@ -58,8 +60,7 @@ public class VersionUtil
      * @return Version information discovered if any;
      *  {@link Version#unknownVersion()} if none
      */
-    public static Version versionFor(Class<?> cls)
-    {
+    public static Version versionFor(Class<?> cls) {
         Version v = null;
         try {
             String versionInfoClassName = cls.getPackage().getName() + ".PackageVersion";
@@ -68,7 +69,7 @@ public class VersionUtil
             try {
                 v = ((Versioned) vClass.getDeclaredConstructor().newInstance()).version();
             } catch (Exception e) {
-                throw new IllegalArgumentException("Failed to get Versioned out of "+vClass);
+                throw new IllegalArgumentException("Failed to get Versioned out of " + vClass);
             }
         } catch (Exception e) { // ok to be missing (not good but acceptable)
             ;
@@ -107,10 +108,9 @@ public class VersionUtil
      */
     @SuppressWarnings("resource")
     @Deprecated // since 2.6
-    public static Version mavenVersionFor(ClassLoader cl, String groupId, String artifactId)
-    {
-        InputStream pomProperties = cl.getResourceAsStream("META-INF/maven/"
-                + groupId.replaceAll("\\.", "/")+ "/" + artifactId + "/pom.properties");
+    public static Version mavenVersionFor(ClassLoader cl, String groupId, String artifactId) {
+        InputStream pomProperties = cl.getResourceAsStream(
+            "META-INF/maven/" + groupId.replaceAll("\\.", "/") + "/" + artifactId + "/pom.properties");
         if (pomProperties != null) {
             try {
                 Properties props = new Properties();
@@ -138,15 +138,12 @@ public class VersionUtil
      * @return Version instance constructed from parsed components, if successful;
      *    {@link Version#unknownVersion()} if parsing of components fail
      */
-    public static Version parseVersion(String s, String groupId, String artifactId)
-    {
+    public static Version parseVersion(String s, String groupId, String artifactId) {
         if (s != null && (s = s.trim()).length() > 0) {
             String[] parts = V_SEP.split(s);
-            return new Version(parseVersionPart(parts[0]),
-                    (parts.length > 1) ? parseVersionPart(parts[1]) : 0,
-                    (parts.length > 2) ? parseVersionPart(parts[2]) : 0,
-                    (parts.length > 3) ? parts[3] : null,
-                    groupId, artifactId);
+            return new Version(parseVersionPart(parts[0]), (parts.length > 1) ? parseVersionPart(parts[1]) : 0,
+                (parts.length > 2) ? parseVersionPart(parts[2]) : 0, (parts.length > 3) ? parts[3] : null, groupId,
+                artifactId);
         }
         return Version.unknownVersion();
     }
@@ -155,7 +152,8 @@ public class VersionUtil
         int number = 0;
         for (int i = 0, len = s.length(); i < len; ++i) {
             char c = s.charAt(i);
-            if (c > '9' || c < '0') break;
+            if (c > '9' || c < '0')
+                break;
             number = (number * 10) + (c - '0');
         }
         return number;
@@ -164,7 +162,8 @@ public class VersionUtil
     private final static void _close(Closeable c) {
         try {
             c.close();
-        } catch (IOException e) { }
+        } catch (IOException e) {
+        }
     }
 
     /*

@@ -23,8 +23,8 @@ public interface IntegrationRuntimeConnectionInfos {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return connection info for an integration runtime along with {@link Response}.
      */
-    Response<IntegrationRuntimeConnectionInfo> getWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeConnectionInfo> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Get integration runtime connection info

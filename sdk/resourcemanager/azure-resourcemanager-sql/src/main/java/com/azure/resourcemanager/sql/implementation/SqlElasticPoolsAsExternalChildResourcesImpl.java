@@ -13,9 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Represents a SQL Elastic Pool collection associated with an Azure SQL server. */
-public class SqlElasticPoolsAsExternalChildResourcesImpl
-    extends ExternalChildResourcesNonCachedImpl<
-        SqlElasticPoolImpl, SqlElasticPool, ElasticPoolInner, SqlServerImpl, SqlServer> {
+public class SqlElasticPoolsAsExternalChildResourcesImpl extends
+    ExternalChildResourcesNonCachedImpl<SqlElasticPoolImpl, SqlElasticPool, ElasticPoolInner, SqlServerImpl, SqlServer> {
 
     SqlServerManager sqlServerManager;
 
@@ -48,8 +47,8 @@ public class SqlElasticPoolsAsExternalChildResourcesImpl
      * @param sqlServerManager the manager
      * @param childResourceName the child resource name (for logging)
      */
-    protected SqlElasticPoolsAsExternalChildResourcesImpl(
-        TaskGroup parentTaskGroup, SqlServerManager sqlServerManager, String childResourceName) {
+    protected SqlElasticPoolsAsExternalChildResourcesImpl(TaskGroup parentTaskGroup, SqlServerManager sqlServerManager,
+        String childResourceName) {
         super(null, parentTaskGroup, childResourceName);
         this.sqlServerManager = sqlServerManager;
     }

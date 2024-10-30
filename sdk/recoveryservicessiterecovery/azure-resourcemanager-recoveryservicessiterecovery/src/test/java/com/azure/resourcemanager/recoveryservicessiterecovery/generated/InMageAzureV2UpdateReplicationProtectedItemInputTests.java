@@ -35,15 +35,18 @@ public final class InMageAzureV2UpdateReplicationProtectedItemInputTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageAzureV2UpdateReplicationProtectedItemInput model = new InMageAzureV2UpdateReplicationProtectedItemInput()
-            .withRecoveryAzureV1ResourceGroupId("llrqmtlpbyxro").withRecoveryAzureV2ResourceGroupId("uyqyp")
-            .withUseManagedDisks("mnoiicsudy").withTargetProximityPlacementGroupId("rjjtalxrdsjrho")
+            .withRecoveryAzureV1ResourceGroupId("llrqmtlpbyxro")
+            .withRecoveryAzureV2ResourceGroupId("uyqyp")
+            .withUseManagedDisks("mnoiicsudy")
+            .withTargetProximityPlacementGroupId("rjjtalxrdsjrho")
             .withTargetAvailabilityZone("qwgusxxhdo")
             .withTargetVmTags(
                 mapOf("bdmvsby", "wyblv", "kmkwjfbo", "daelqpv", "v", "loggdusxursu", "qrizfwihvaan", "xcjkcoqwczsy"))
             .withTargetManagedDiskTags(mapOf("bbaex", "nhjrfdmfd", "vmuafmc", "jfwtgdfkkaui", "vpltidajjvy", "fedyuep"))
             .withTargetNicTags(
                 mapOf("yelsyasvfnk", "cfkumcfjxo", "jekrknfd", "myg", "lcr", "ugjqyckgtxkrdt", "tcsubmzoo", "jdkl"))
-            .withSqlServerLicenseType(SqlServerLicenseType.NOT_SPECIFIED).withVmDisks(
+            .withSqlServerLicenseType(SqlServerLicenseType.NOT_SPECIFIED)
+            .withVmDisks(
                 Arrays.asList(new UpdateDiskInput().withDiskId("chkxfpwhdysl").withTargetDiskName("lglmnnkkwayqsh")));
         model = BinaryData.fromObject(model).toObject(InMageAzureV2UpdateReplicationProtectedItemInput.class);
         Assertions.assertEquals("llrqmtlpbyxro", model.recoveryAzureV1ResourceGroupId());

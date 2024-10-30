@@ -152,8 +152,8 @@ public final class CallConnectionPropertiesInternal implements JsonSerializable<
      * @param callConnectionState the callConnectionState value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setCallConnectionState(
-            CallConnectionStateModelInternal callConnectionState) {
+    public CallConnectionPropertiesInternal
+        setCallConnectionState(CallConnectionStateModelInternal callConnectionState) {
         this.callConnectionState = callConnectionState;
         return this;
     }

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class EnvironmentCreateOrUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentCreateOrUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"EnvironmentCreateOrUpdateParameters\",\"sku\":{\"name\":\"L1\",\"capacity\":900623903},\"location\":\"lniwpwcukjfkgiaw\",\"tags\":{\"dhsgcba\":\"ryplwckbasyypn\",\"dlikwyqkgfgibma\":\"phejkotynqgoulz\",\"yb\":\"gakeqsr\",\"lmmnkzsmodmglo\":\"qqedqytbciqfou\"}}")
-                .toObject(EnvironmentCreateOrUpdateParameters.class);
+        EnvironmentCreateOrUpdateParameters model = BinaryData.fromString(
+            "{\"kind\":\"EnvironmentCreateOrUpdateParameters\",\"sku\":{\"name\":\"L1\",\"capacity\":900623903},\"location\":\"lniwpwcukjfkgiaw\",\"tags\":{\"dhsgcba\":\"ryplwckbasyypn\",\"dlikwyqkgfgibma\":\"phejkotynqgoulz\",\"yb\":\"gakeqsr\",\"lmmnkzsmodmglo\":\"qqedqytbciqfou\"}}")
+            .toObject(EnvironmentCreateOrUpdateParameters.class);
         Assertions.assertEquals("lniwpwcukjfkgiaw", model.location());
         Assertions.assertEquals("ryplwckbasyypn", model.tags().get("dhsgcba"));
         Assertions.assertEquals(SkuName.L1, model.sku().name());
@@ -28,19 +26,10 @@ public final class EnvironmentCreateOrUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentCreateOrUpdateParameters model =
-            new EnvironmentCreateOrUpdateParameters()
-                .withLocation("lniwpwcukjfkgiaw")
-                .withTags(
-                    mapOf(
-                        "dhsgcba",
-                        "ryplwckbasyypn",
-                        "dlikwyqkgfgibma",
-                        "phejkotynqgoulz",
-                        "yb",
-                        "gakeqsr",
-                        "lmmnkzsmodmglo",
-                        "qqedqytbciqfou"))
+        EnvironmentCreateOrUpdateParameters model
+            = new EnvironmentCreateOrUpdateParameters().withLocation("lniwpwcukjfkgiaw")
+                .withTags(mapOf("dhsgcba", "ryplwckbasyypn", "dlikwyqkgfgibma", "phejkotynqgoulz", "yb", "gakeqsr",
+                    "lmmnkzsmodmglo", "qqedqytbciqfou"))
                 .withSku(new Sku().withName(SkuName.L1).withCapacity(900623903));
         model = BinaryData.fromObject(model).toObject(EnvironmentCreateOrUpdateParameters.class);
         Assertions.assertEquals("lniwpwcukjfkgiaw", model.location());

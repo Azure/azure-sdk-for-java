@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastComparisonExpressionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastComparisonExpression model =
-            BinaryData
-                .fromString("{\"name\":\"euojgjrwju\",\"operator\":\"In\",\"values\":[\"twm\",\"dytdxwitx\"]}")
+        ForecastComparisonExpression model
+            = BinaryData.fromString("{\"name\":\"euojgjrwju\",\"operator\":\"In\",\"values\":[\"twm\",\"dytdxwitx\"]}")
                 .toObject(ForecastComparisonExpression.class);
         Assertions.assertEquals("euojgjrwju", model.name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.operator());
@@ -24,11 +23,9 @@ public final class ForecastComparisonExpressionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastComparisonExpression model =
-            new ForecastComparisonExpression()
-                .withName("euojgjrwju")
-                .withOperator(ForecastOperatorType.IN)
-                .withValues(Arrays.asList("twm", "dytdxwitx"));
+        ForecastComparisonExpression model = new ForecastComparisonExpression().withName("euojgjrwju")
+            .withOperator(ForecastOperatorType.IN)
+            .withValues(Arrays.asList("twm", "dytdxwitx"));
         model = BinaryData.fromObject(model).toObject(ForecastComparisonExpression.class);
         Assertions.assertEquals("euojgjrwju", model.name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.operator());

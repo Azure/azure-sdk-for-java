@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableSkusResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableSkusResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"sku\":{\"name\":\"DataBox\",\"displayName\":\"p\",\"family\":\"g\"},\"enabled\":true,\"properties\":{\"dataLocationToServiceLocationMap\":[],\"costs\":[],\"apiVersions\":[],\"disabledReason\":\"Region\",\"disabledReasonMessage\":\"honowkgshwank\",\"requiredFeature\":\"zbinjeputtm\",\"countriesWithinCommerceBoundary\":[]}},{\"sku\":{\"name\":\"DataBox\",\"displayName\":\"zoqftiyqzrnkcqvy\",\"family\":\"whzlsicohoq\"},\"enabled\":false,\"properties\":{\"dataLocationToServiceLocationMap\":[],\"costs\":[],\"apiVersions\":[],\"disabledReason\":\"NoSubscriptionInfo\",\"disabledReasonMessage\":\"heun\",\"requiredFeature\":\"qhgyxzkonocukok\",\"countriesWithinCommerceBoundary\":[]}}],\"nextLink\":\"xuconu\"}")
-                .toObject(AvailableSkusResult.class);
+        AvailableSkusResult model = BinaryData.fromString(
+            "{\"value\":[{\"sku\":{\"name\":\"DataBox\",\"displayName\":\"p\",\"family\":\"g\"},\"enabled\":true,\"properties\":{\"dataLocationToServiceLocationMap\":[],\"costs\":[],\"apiVersions\":[],\"disabledReason\":\"Region\",\"disabledReasonMessage\":\"honowkgshwank\",\"requiredFeature\":\"zbinjeputtm\",\"countriesWithinCommerceBoundary\":[]}},{\"sku\":{\"name\":\"DataBox\",\"displayName\":\"zoqftiyqzrnkcqvy\",\"family\":\"whzlsicohoq\"},\"enabled\":false,\"properties\":{\"dataLocationToServiceLocationMap\":[],\"costs\":[],\"apiVersions\":[],\"disabledReason\":\"NoSubscriptionInfo\",\"disabledReasonMessage\":\"heun\",\"requiredFeature\":\"qhgyxzkonocukok\",\"countriesWithinCommerceBoundary\":[]}}],\"nextLink\":\"xuconu\"}")
+            .toObject(AvailableSkusResult.class);
         Assertions.assertEquals("xuconu", model.nextLink());
     }
 

@@ -275,18 +275,11 @@ public interface VirtualMachine {
     VirtualMachineInner innerModel();
 
     /** The entirety of the VirtualMachine definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithAdminUsername,
-            DefinitionStages.WithCloudServicesNetworkAttachment,
-            DefinitionStages.WithCpuCores,
-            DefinitionStages.WithMemorySizeGB,
-            DefinitionStages.WithStorageProfile,
-            DefinitionStages.WithVmImage,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithExtendedLocation, DefinitionStages.WithAdminUsername,
+        DefinitionStages.WithCloudServicesNetworkAttachment, DefinitionStages.WithCpuCores,
+        DefinitionStages.WithMemorySizeGB, DefinitionStages.WithStorageProfile, DefinitionStages.WithVmImage,
+        DefinitionStages.WithCreate {
     }
 
     /** The VirtualMachine definition stages. */
@@ -424,18 +417,11 @@ public interface VirtualMachine {
          * The stage of the VirtualMachine definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithBootMethod,
-                DefinitionStages.WithIsolateEmulatorThread,
-                DefinitionStages.WithNetworkAttachments,
-                DefinitionStages.WithNetworkData,
-                DefinitionStages.WithPlacementHints,
-                DefinitionStages.WithSshPublicKeys,
-                DefinitionStages.WithUserData,
-                DefinitionStages.WithVirtioInterface,
-                DefinitionStages.WithVmDeviceModel,
-                DefinitionStages.WithVmImageRepositoryCredentials {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithBootMethod,
+            DefinitionStages.WithIsolateEmulatorThread, DefinitionStages.WithNetworkAttachments,
+            DefinitionStages.WithNetworkData, DefinitionStages.WithPlacementHints, DefinitionStages.WithSshPublicKeys,
+            DefinitionStages.WithUserData, DefinitionStages.WithVirtioInterface, DefinitionStages.WithVmDeviceModel,
+            DefinitionStages.WithVmImageRepositoryCredentials {
             /**
              * Executes the create request.
              *

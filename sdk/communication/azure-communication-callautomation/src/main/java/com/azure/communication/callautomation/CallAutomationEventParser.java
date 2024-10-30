@@ -58,7 +58,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 /**
  * Event handler for taking care of event related tasks.
  */
@@ -91,7 +90,8 @@ public final class CallAutomationEventParser {
             }
 
             for (CloudEvent cloudEvent : cloudEvents) {
-                CallAutomationEventBase temp = parseSingleCloudEvent(cloudEvent.getData().toString(), cloudEvent.getType());
+                CallAutomationEventBase temp
+                    = parseSingleCloudEvent(cloudEvent.getData().toString(), cloudEvent.getType());
                 if (temp != null) {
                     callAutomationBaseEvents.add(temp);
                 }
@@ -171,7 +171,7 @@ public final class CallAutomationEventParser {
                 ret = TeamsComplianceRecordingStateChanged.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TeamsRecordingStateChanged")) {
                 ret = TeamsRecordingStateChanged.fromJson(jsonReader);
-            }   else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
                 ret = TranscriptionStarted.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionFailed")) {
                 ret = TranscriptionFailed.fromJson(jsonReader);

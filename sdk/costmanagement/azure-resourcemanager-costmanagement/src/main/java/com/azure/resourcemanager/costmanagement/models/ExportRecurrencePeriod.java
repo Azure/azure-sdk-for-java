@@ -75,9 +75,8 @@ public final class ExportRecurrencePeriod {
      */
     public void validate() {
         if (from() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property from in model ExportRecurrencePeriod"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property from in model ExportRecurrencePeriod"));
         }
     }
 

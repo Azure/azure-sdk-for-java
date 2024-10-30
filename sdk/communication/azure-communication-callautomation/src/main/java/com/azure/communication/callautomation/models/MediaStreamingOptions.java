@@ -41,7 +41,8 @@ public final class MediaStreamingOptions implements JsonSerializable<MediaStream
      * @param contentType - Content Type
      * @param audioChannelType - Audio Channel Type
      */
-    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType, MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType) {
+    public MediaStreamingOptions(String transportUrl, MediaStreamingTransport transportType,
+        MediaStreamingContent contentType, MediaStreamingAudioChannel audioChannelType) {
         this.transportUrl = transportUrl;
         this.transportType = transportType;
         this.contentType = contentType;

@@ -13,23 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"configurationType\":\"Deployment\",\"appLocation\":\"opqgikyzirtxdyux\",\"infrastructureConfiguration\":{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"jntpsewgioilqu\"},\"softwareConfiguration\":{\"softwareInstallationType\":\"SoftwareConfiguration\"}}")
-                .toObject(DeploymentConfiguration.class);
+        DeploymentConfiguration model = BinaryData.fromString(
+            "{\"configurationType\":\"Deployment\",\"appLocation\":\"opqgikyzirtxdyux\",\"infrastructureConfiguration\":{\"deploymentType\":\"InfrastructureConfiguration\",\"appResourceGroup\":\"jntpsewgioilqu\"},\"softwareConfiguration\":{\"softwareInstallationType\":\"SoftwareConfiguration\"}}")
+            .toObject(DeploymentConfiguration.class);
         Assertions.assertEquals("opqgikyzirtxdyux", model.appLocation());
         Assertions.assertEquals("jntpsewgioilqu", model.infrastructureConfiguration().appResourceGroup());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentConfiguration model =
-            new DeploymentConfiguration()
-                .withAppLocation("opqgikyzirtxdyux")
-                .withInfrastructureConfiguration(
-                    new InfrastructureConfiguration().withAppResourceGroup("jntpsewgioilqu"))
-                .withSoftwareConfiguration(new SoftwareConfiguration());
+        DeploymentConfiguration model = new DeploymentConfiguration().withAppLocation("opqgikyzirtxdyux")
+            .withInfrastructureConfiguration(new InfrastructureConfiguration().withAppResourceGroup("jntpsewgioilqu"))
+            .withSoftwareConfiguration(new SoftwareConfiguration());
         model = BinaryData.fromObject(model).toObject(DeploymentConfiguration.class);
         Assertions.assertEquals("opqgikyzirtxdyux", model.appLocation());
         Assertions.assertEquals("jntpsewgioilqu", model.infrastructureConfiguration().appResourceGroup());

@@ -12,13 +12,9 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing
 
 /** Entry point for express route circuit peerings management API in Azure. */
 @Fluent
-public interface ExpressRouteCircuitPeerings
-    extends SupportsListing<ExpressRouteCircuitPeering>,
-        SupportsGettingByName<ExpressRouteCircuitPeering>,
-        SupportsGettingById<ExpressRouteCircuitPeering>,
-        SupportsDeletingByName,
-        SupportsDeletingById,
-        HasParent<ExpressRouteCircuit> {
+public interface ExpressRouteCircuitPeerings extends SupportsListing<ExpressRouteCircuitPeering>,
+    SupportsGettingByName<ExpressRouteCircuitPeering>, SupportsGettingById<ExpressRouteCircuitPeering>,
+    SupportsDeletingByName, SupportsDeletingById, HasParent<ExpressRouteCircuit> {
     /**
      * Begins definition of Azure private peering.
      *

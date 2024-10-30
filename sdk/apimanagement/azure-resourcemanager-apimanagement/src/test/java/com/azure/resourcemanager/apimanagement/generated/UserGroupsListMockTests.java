@@ -32,46 +32,28 @@ public final class UserGroupsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"phnazp\",\"description\":\"fcubxlmqhed\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"hzyfuupqkr\"},\"id\":\"vdjpcevbkkgq\",\"name\":\"j\",\"type\":\"gphhpwxghwwfqzw\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"displayName\":\"phnazp\",\"description\":\"fcubxlmqhed\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"hzyfuupqkr\"},\"id\":\"vdjpcevbkkgq\",\"name\":\"j\",\"type\":\"gphhpwxghwwfqzw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<GroupContract> response =
-            manager
-                .userGroups()
-                .list(
-                    "xwrf",
-                    "fzay",
-                    "fzuvuoxzy",
-                    "qcjclvbqovkz",
-                    2095291240,
-                    1551671924,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<GroupContract> response = manager.userGroups()
+            .list("xwrf", "fzay", "fzuvuoxzy", "qcjclvbqovkz", 2095291240, 1551671924,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("phnazp", response.iterator().next().displayName());
         Assertions.assertEquals("fcubxlmqhed", response.iterator().next().description());

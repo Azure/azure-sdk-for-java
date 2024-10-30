@@ -51,29 +51,33 @@ public final class ApisCreateOrUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Api response
-            = manager.apis().define("yhmlwpaztzp")
-                .withExistingWorkspace("zuempsbzkf", "beyvpnqicvinvkjj", "dxrbuukzcle")
-                .withProperties(new ApiProperties().withTitle("ncckw").withKind(ApiKind.REST)
-                    .withDescription("qwhxxbuyqaxzfeqz").withSummary("priolx")
-                    .withTermsOfService(new TermsOfService().withUrl("lt"))
-                    .withExternalDocumentation(Arrays.asList(
-                        new ExternalDocumentation().withTitle("cwsobqwcs").withDescription("nwdcfhu")
-                            .withUrl("qdpfuvglsbjjca"),
-                        new ExternalDocumentation().withTitle("xbvtvudu").withDescription("cormr").withUrl("xqtvcofu"),
-                        new ExternalDocumentation().withTitle("lvkgju").withDescription("dknnqvsazn").withUrl("n"),
-                        new ExternalDocumentation().withTitle("rudsg").withDescription("hmk").withUrl("c")))
-                    .withContacts(
-                        Arrays.asList(new Contact().withName("wjue").withUrl("eburu").withEmail("movsmzlxwabmqoe"),
-                            new Contact().withName("ifrvtpu").withUrl("jmqlgkfb").withEmail("doaon"),
-                            new Contact().withName("jcntuj").withUrl("c").withEmail("df")))
-                    .withLicense(new License().withName("ae").withUrl("ojvdcpzfoqo").withIdentifier("cybxa"))
-                    .withCustomProperties("datagszufoxciqopid"))
-                .create();
+        Api response = manager.apis()
+            .define("yhmlwpaztzp")
+            .withExistingWorkspace("zuempsbzkf", "beyvpnqicvinvkjj", "dxrbuukzcle")
+            .withProperties(new ApiProperties().withTitle("ncckw")
+                .withKind(ApiKind.REST)
+                .withDescription("qwhxxbuyqaxzfeqz")
+                .withSummary("priolx")
+                .withTermsOfService(new TermsOfService().withUrl("lt"))
+                .withExternalDocumentation(Arrays.asList(
+                    new ExternalDocumentation().withTitle("cwsobqwcs")
+                        .withDescription("nwdcfhu")
+                        .withUrl("qdpfuvglsbjjca"),
+                    new ExternalDocumentation().withTitle("xbvtvudu").withDescription("cormr").withUrl("xqtvcofu"),
+                    new ExternalDocumentation().withTitle("lvkgju").withDescription("dknnqvsazn").withUrl("n"),
+                    new ExternalDocumentation().withTitle("rudsg").withDescription("hmk").withUrl("c")))
+                .withContacts(
+                    Arrays.asList(new Contact().withName("wjue").withUrl("eburu").withEmail("movsmzlxwabmqoe"),
+                        new Contact().withName("ifrvtpu").withUrl("jmqlgkfb").withEmail("doaon"),
+                        new Contact().withName("jcntuj").withUrl("c").withEmail("df")))
+                .withLicense(new License().withName("ae").withUrl("ojvdcpzfoqo").withIdentifier("cybxa"))
+                .withCustomProperties("datagszufoxciqopid"))
+            .create();
 
         Assertions.assertEquals("z", response.properties().title());
         Assertions.assertEquals(ApiKind.GRAPHQL, response.properties().kind());

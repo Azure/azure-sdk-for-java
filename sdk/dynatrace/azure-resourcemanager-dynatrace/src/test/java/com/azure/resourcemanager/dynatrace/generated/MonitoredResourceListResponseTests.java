@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitoredResourceListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitoredResourceListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"id\":\"quvgjxpybczme\",\"sendingMetrics\":\"Disabled\",\"reasonForMetricsStatus\":\"opb\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"upi\"},{\"id\":\"sybbejhph\",\"sendingMetrics\":\"Disabled\",\"reasonForMetricsStatus\":\"sx\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"dxbmtqioq\"},{\"id\":\"ehtbm\",\"sendingMetrics\":\"Enabled\",\"reasonForMetricsStatus\":\"wnoi\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"rxybqsoq\"}],\"nextLink\":\"gkdmb\"}")
-                .toObject(MonitoredResourceListResponse.class);
+        MonitoredResourceListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"id\":\"quvgjxpybczme\",\"sendingMetrics\":\"Disabled\",\"reasonForMetricsStatus\":\"opb\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"upi\"},{\"id\":\"sybbejhph\",\"sendingMetrics\":\"Disabled\",\"reasonForMetricsStatus\":\"sx\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"dxbmtqioq\"},{\"id\":\"ehtbm\",\"sendingMetrics\":\"Enabled\",\"reasonForMetricsStatus\":\"wnoi\",\"sendingLogs\":\"Enabled\",\"reasonForLogsStatus\":\"rxybqsoq\"}],\"nextLink\":\"gkdmb\"}")
+            .toObject(MonitoredResourceListResponse.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).id());
         Assertions.assertEquals(SendingMetricsStatus.DISABLED, model.value().get(0).sendingMetrics());
         Assertions.assertEquals("opb", model.value().get(0).reasonForMetricsStatus());
@@ -30,30 +28,23 @@ public final class MonitoredResourceListResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitoredResourceListResponse model =
-            new MonitoredResourceListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new MonitoredResourceInner()
-                                .withId("quvgjxpybczme")
-                                .withSendingMetrics(SendingMetricsStatus.DISABLED)
-                                .withReasonForMetricsStatus("opb")
-                                .withSendingLogs(SendingLogsStatus.ENABLED)
-                                .withReasonForLogsStatus("upi"),
-                            new MonitoredResourceInner()
-                                .withId("sybbejhph")
-                                .withSendingMetrics(SendingMetricsStatus.DISABLED)
-                                .withReasonForMetricsStatus("sx")
-                                .withSendingLogs(SendingLogsStatus.ENABLED)
-                                .withReasonForLogsStatus("dxbmtqioq"),
-                            new MonitoredResourceInner()
-                                .withId("ehtbm")
-                                .withSendingMetrics(SendingMetricsStatus.ENABLED)
-                                .withReasonForMetricsStatus("wnoi")
-                                .withSendingLogs(SendingLogsStatus.ENABLED)
-                                .withReasonForLogsStatus("rxybqsoq")))
-                .withNextLink("gkdmb");
+        MonitoredResourceListResponse model = new MonitoredResourceListResponse().withValue(Arrays.asList(
+            new MonitoredResourceInner().withId("quvgjxpybczme")
+                .withSendingMetrics(SendingMetricsStatus.DISABLED)
+                .withReasonForMetricsStatus("opb")
+                .withSendingLogs(SendingLogsStatus.ENABLED)
+                .withReasonForLogsStatus("upi"),
+            new MonitoredResourceInner().withId("sybbejhph")
+                .withSendingMetrics(SendingMetricsStatus.DISABLED)
+                .withReasonForMetricsStatus("sx")
+                .withSendingLogs(SendingLogsStatus.ENABLED)
+                .withReasonForLogsStatus("dxbmtqioq"),
+            new MonitoredResourceInner().withId("ehtbm")
+                .withSendingMetrics(SendingMetricsStatus.ENABLED)
+                .withReasonForMetricsStatus("wnoi")
+                .withSendingLogs(SendingLogsStatus.ENABLED)
+                .withReasonForLogsStatus("rxybqsoq")))
+            .withNextLink("gkdmb");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceListResponse.class);
         Assertions.assertEquals("quvgjxpybczme", model.value().get(0).id());
         Assertions.assertEquals(SendingMetricsStatus.DISABLED, model.value().get(0).sendingMetrics());

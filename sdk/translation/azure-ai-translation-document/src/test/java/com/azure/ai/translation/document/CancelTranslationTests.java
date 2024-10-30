@@ -30,8 +30,7 @@ public class CancelTranslationTests extends DocumentTranslationClientTestBase {
         targetInputs.add(targetInput);
         BatchRequest batchRequest = new BatchRequest(sourceInput, targetInputs);
         SyncPoller<TranslationStatus, TranslationStatus> poller = setPlaybackSyncPollerPollInterval(
-                documentTranslationClient
-                        .beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
+            documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Cancel Translation
         String translationId = poller.poll().getValue().getId();
@@ -41,6 +40,7 @@ public class CancelTranslationTests extends DocumentTranslationClientTestBase {
         TranslationStatus translationStatus = documentTranslationClient.getTranslationStatus(translationId);
         Assertions.assertEquals(translationId, translationStatus.getId());
         String status = translationStatus.getStatus().toString();
-        Assertions.assertTrue("Cancelled".equals(status) || "Cancelling".equals(status) || "NotStarted".equals(status));
+        Assertions.assertTrue("Cancelled".equals(status) || "Cancelling".equals(status) || "NotStarted".equals(status),
+            "Expected status to be one of 'Cancelled', 'Cancelling', or 'NotStarted', but was: " + status);
     }
 }

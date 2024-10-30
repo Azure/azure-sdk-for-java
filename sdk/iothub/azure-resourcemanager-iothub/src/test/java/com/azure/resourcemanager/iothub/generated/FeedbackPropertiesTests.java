@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class FeedbackPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FeedbackProperties model =
-            BinaryData
-                .fromString(
-                    "{\"lockDurationAsIso8601\":\"PT101H36M29S\",\"ttlAsIso8601\":\"PT205H18M18S\",\"maxDeliveryCount\":551724215}")
-                .toObject(FeedbackProperties.class);
+        FeedbackProperties model = BinaryData.fromString(
+            "{\"lockDurationAsIso8601\":\"PT101H36M29S\",\"ttlAsIso8601\":\"PT205H18M18S\",\"maxDeliveryCount\":551724215}")
+            .toObject(FeedbackProperties.class);
         Assertions.assertEquals(Duration.parse("PT101H36M29S"), model.lockDurationAsIso8601());
         Assertions.assertEquals(Duration.parse("PT205H18M18S"), model.ttlAsIso8601());
         Assertions.assertEquals(551724215, model.maxDeliveryCount());
@@ -24,11 +22,9 @@ public final class FeedbackPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FeedbackProperties model =
-            new FeedbackProperties()
-                .withLockDurationAsIso8601(Duration.parse("PT101H36M29S"))
-                .withTtlAsIso8601(Duration.parse("PT205H18M18S"))
-                .withMaxDeliveryCount(551724215);
+        FeedbackProperties model = new FeedbackProperties().withLockDurationAsIso8601(Duration.parse("PT101H36M29S"))
+            .withTtlAsIso8601(Duration.parse("PT205H18M18S"))
+            .withMaxDeliveryCount(551724215);
         model = BinaryData.fromObject(model).toObject(FeedbackProperties.class);
         Assertions.assertEquals(Duration.parse("PT101H36M29S"), model.lockDurationAsIso8601());
         Assertions.assertEquals(Duration.parse("PT205H18M18S"), model.ttlAsIso8601());

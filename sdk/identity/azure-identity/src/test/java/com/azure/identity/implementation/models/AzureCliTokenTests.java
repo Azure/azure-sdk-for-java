@@ -22,24 +22,17 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class AzureCliTokenTests {
 
-    String jsonWithExpiresOnUnixTime = "{\n"
-        + "  \"accessToken\": \"tokenValue\",\n"
-        + "  \"expiresOn\": \"2024-02-28 12:05:53.000000\",\n"
-        + "  \"expires_on\": 1709150753,\n"
-        + "  \"subscription\": \"subscriptionValue\",\n"
-        + "  \"tenant\": \"tenantValue\",\n"
-        + "  \"tokenType\": \"Bearer\"\n"
-        + "}";
+    String jsonWithExpiresOnUnixTime
+        = "{\n" + "  \"accessToken\": \"tokenValue\",\n" + "  \"expiresOn\": \"2024-02-28 12:05:53.000000\",\n"
+            + "  \"expires_on\": 1709150753,\n" + "  \"subscription\": \"subscriptionValue\",\n"
+            + "  \"tenant\": \"tenantValue\",\n" + "  \"tokenType\": \"Bearer\"\n" + "}";
 
     // This is the payload that gets parsed in the fallback case. It does not have time zone information.
     // For test purposes, we need to inject the current time here, so the test works in different regions.
-    String jsonWithoutExpiresOnUnixTime =  "{\n"
-        + "  \"accessToken\": \"tokenValue\",\n"
-        + "  \"expiresOn\": \"%s\",\n"
-        + "  \"subscription\": \"subscriptionValue\",\n"
-        + "  \"tenant\": \"tenantValue\",\n"
-        + "  \"tokenType\": \"Bearer\"\n"
-        + "}";
+    String jsonWithoutExpiresOnUnixTime = "{\n" + "  \"accessToken\": \"tokenValue\",\n" + "  \"expiresOn\": \"%s\",\n"
+        + "  \"subscription\": \"subscriptionValue\",\n" + "  \"tenant\": \"tenantValue\",\n"
+        + "  \"tokenType\": \"Bearer\"\n" + "}";
+
     @Test
     public void testRoundTripWithoutExpiresOnUnixTime() {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -50,7 +43,8 @@ public class AzureCliTokenTests {
         LocalDateTime localNow = expected.atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime();
         expected = expected.atZoneSameInstant(ZoneId.of("Z")).toOffsetDateTime();
         // recreate the incorrect date format from az
-        String nowString = localNow.format(DateTimeFormatter.ISO_DATE) + " " + localNow.format(DateTimeFormatter.ISO_TIME);
+        String nowString
+            = localNow.format(DateTimeFormatter.ISO_DATE) + " " + localNow.format(DateTimeFormatter.ISO_TIME);
         String localJson = String.format(jsonWithoutExpiresOnUnixTime, nowString);
 
         try {

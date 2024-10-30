@@ -30,11 +30,8 @@ public interface ManagedPrivateEndpointsClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        ManagedPrivateEndpointsCheckNameRequest resourceName,
-        Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        ManagedPrivateEndpointsCheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the managed private endpoints resource name is valid and is not already in use.
@@ -48,8 +45,8 @@ public interface ManagedPrivateEndpointsClient {
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, ManagedPrivateEndpointsCheckNameRequest resourceName);
+    CheckNameResultInner checkNameAvailability(String resourceGroupName, String clusterName,
+        ManagedPrivateEndpointsCheckNameRequest resourceName);
 
     /**
      * Returns the list of managed private endpoints.
@@ -91,8 +88,8 @@ public interface ManagedPrivateEndpointsClient {
      * @return a managed private endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ManagedPrivateEndpointInner> getWithResponse(
-        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context);
+    Response<ManagedPrivateEndpointInner> getWithResponse(String resourceGroupName, String clusterName,
+        String managedPrivateEndpointName, Context context);
 
     /**
      * Gets a managed private endpoint.
@@ -122,9 +119,7 @@ public interface ManagedPrivateEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String managedPrivateEndpointName,
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName,
         ManagedPrivateEndpointInner parameters);
 
     /**
@@ -142,11 +137,8 @@ public interface ManagedPrivateEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String managedPrivateEndpointName,
-        ManagedPrivateEndpointInner parameters,
-        Context context);
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters, Context context);
 
     /**
      * Creates a managed private endpoint.
@@ -161,11 +153,8 @@ public interface ManagedPrivateEndpointsClient {
      * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedPrivateEndpointInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String managedPrivateEndpointName,
-        ManagedPrivateEndpointInner parameters);
+    ManagedPrivateEndpointInner createOrUpdate(String resourceGroupName, String clusterName,
+        String managedPrivateEndpointName, ManagedPrivateEndpointInner parameters);
 
     /**
      * Creates a managed private endpoint.
@@ -181,12 +170,8 @@ public interface ManagedPrivateEndpointsClient {
      * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedPrivateEndpointInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String managedPrivateEndpointName,
-        ManagedPrivateEndpointInner parameters,
-        Context context);
+    ManagedPrivateEndpointInner createOrUpdate(String resourceGroupName, String clusterName,
+        String managedPrivateEndpointName, ManagedPrivateEndpointInner parameters, Context context);
 
     /**
      * Updates a managed private endpoint.
@@ -202,9 +187,7 @@ public interface ManagedPrivateEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String managedPrivateEndpointName,
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName,
         ManagedPrivateEndpointInner parameters);
 
     /**
@@ -222,11 +205,8 @@ public interface ManagedPrivateEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedPrivateEndpointInner>, ManagedPrivateEndpointInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String managedPrivateEndpointName,
-        ManagedPrivateEndpointInner parameters,
-        Context context);
+        String resourceGroupName, String clusterName, String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters, Context context);
 
     /**
      * Updates a managed private endpoint.
@@ -241,10 +221,7 @@ public interface ManagedPrivateEndpointsClient {
      * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedPrivateEndpointInner update(
-        String resourceGroupName,
-        String clusterName,
-        String managedPrivateEndpointName,
+    ManagedPrivateEndpointInner update(String resourceGroupName, String clusterName, String managedPrivateEndpointName,
         ManagedPrivateEndpointInner parameters);
 
     /**
@@ -261,12 +238,8 @@ public interface ManagedPrivateEndpointsClient {
      * @return class representing a managed private endpoint.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedPrivateEndpointInner update(
-        String resourceGroupName,
-        String clusterName,
-        String managedPrivateEndpointName,
-        ManagedPrivateEndpointInner parameters,
-        Context context);
+    ManagedPrivateEndpointInner update(String resourceGroupName, String clusterName, String managedPrivateEndpointName,
+        ManagedPrivateEndpointInner parameters, Context context);
 
     /**
      * Deletes a managed private endpoint.
@@ -280,8 +253,8 @@ public interface ManagedPrivateEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String managedPrivateEndpointName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String managedPrivateEndpointName);
 
     /**
      * Deletes a managed private endpoint.
@@ -296,8 +269,8 @@ public interface ManagedPrivateEndpointsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String managedPrivateEndpointName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String managedPrivateEndpointName, Context context);
 
     /**
      * Deletes a managed private endpoint.

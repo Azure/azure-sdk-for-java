@@ -6,24 +6,26 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Creates a particular correlation between services.
  */
 @Fluent
-public final class ServiceCorrelationDescription {
+public final class ServiceCorrelationDescription implements JsonSerializable<ServiceCorrelationDescription> {
     /*
      * The ServiceCorrelationScheme which describes the relationship between this service and the service specified via
      * ServiceName.
      */
-    @JsonProperty(value = "scheme", required = true)
     private ServiceCorrelationScheme scheme;
 
     /*
      * The name of the service that the correlation relationship is established with.
      */
-    @JsonProperty(value = "serviceName", required = true)
     private String serviceName;
 
     /**
@@ -81,14 +83,58 @@ public final class ServiceCorrelationDescription {
      */
     public void validate() {
         if (scheme() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property scheme in model ServiceCorrelationDescription"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property scheme in model ServiceCorrelationDescription"));
         }
         if (serviceName() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property serviceName in model ServiceCorrelationDescription"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serviceName in model ServiceCorrelationDescription"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceCorrelationDescription.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scheme", this.scheme == null ? null : this.scheme.toString());
+        jsonWriter.writeStringField("serviceName", this.serviceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceCorrelationDescription from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceCorrelationDescription if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceCorrelationDescription.
+     */
+    public static ServiceCorrelationDescription fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceCorrelationDescription deserializedServiceCorrelationDescription
+                = new ServiceCorrelationDescription();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scheme".equals(fieldName)) {
+                    deserializedServiceCorrelationDescription.scheme
+                        = ServiceCorrelationScheme.fromString(reader.getString());
+                } else if ("serviceName".equals(fieldName)) {
+                    deserializedServiceCorrelationDescription.serviceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceCorrelationDescription;
+        });
+    }
 }

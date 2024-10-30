@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateIntegrationRuntimeNodeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateIntegrationRuntimeNodeRequest model =
-            BinaryData
-                .fromString("{\"concurrentJobsLimit\":1685978755}")
-                .toObject(UpdateIntegrationRuntimeNodeRequest.class);
+        UpdateIntegrationRuntimeNodeRequest model = BinaryData.fromString("{\"concurrentJobsLimit\":1685978755}")
+            .toObject(UpdateIntegrationRuntimeNodeRequest.class);
         Assertions.assertEquals(1685978755, model.concurrentJobsLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateIntegrationRuntimeNodeRequest model =
-            new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(1685978755);
+        UpdateIntegrationRuntimeNodeRequest model
+            = new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(1685978755);
         model = BinaryData.fromObject(model).toObject(UpdateIntegrationRuntimeNodeRequest.class);
         Assertions.assertEquals(1685978755, model.concurrentJobsLimit());
     }

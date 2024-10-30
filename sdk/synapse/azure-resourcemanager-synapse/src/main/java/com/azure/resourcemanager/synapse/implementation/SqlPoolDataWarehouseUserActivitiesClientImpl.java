@@ -42,12 +42,8 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolDataWarehouseUserActivitiesClientImpl(SynapseManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SqlPoolDataWarehouseUserActivitiesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlPoolDataWarehouseUserActivitiesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,22 +54,17 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolDataWarehouseUserActivitiesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-                + "/{workspaceName}/sqlPools/{sqlPoolName}/dataWarehouseUserActivities/{dataWarehouseUserActivityName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
+            + "/{workspaceName}/sqlPools/{sqlPoolName}/dataWarehouseUserActivities/{dataWarehouseUserActivityName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataWarehouseUserActivitiesInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<DataWarehouseUserActivitiesInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("sqlPoolName") String sqlPoolName,
             @PathParam("dataWarehouseUserActivityName") DataWarehouseUserActivityName dataWarehouseUserActivityName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -92,22 +83,15 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataWarehouseUserActivitiesInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        DataWarehouseUserActivityName dataWarehouseUserActivityName) {
+    private Mono<Response<DataWarehouseUserActivitiesInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, DataWarehouseUserActivityName dataWarehouseUserActivityName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -120,27 +104,14 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
         if (dataWarehouseUserActivityName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter dataWarehouseUserActivityName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter dataWarehouseUserActivityName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            sqlPoolName,
-                            dataWarehouseUserActivityName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, sqlPoolName, dataWarehouseUserActivityName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -161,23 +132,16 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataWarehouseUserActivitiesInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        DataWarehouseUserActivityName dataWarehouseUserActivityName,
+    private Mono<Response<DataWarehouseUserActivitiesInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String sqlPoolName, DataWarehouseUserActivityName dataWarehouseUserActivityName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -190,25 +154,14 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
             return Mono.error(new IllegalArgumentException("Parameter sqlPoolName is required and cannot be null."));
         }
         if (dataWarehouseUserActivityName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter dataWarehouseUserActivityName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter dataWarehouseUserActivityName is required and cannot be null."));
         }
         final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                sqlPoolName,
-                dataWarehouseUserActivityName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, sqlPoolName, dataWarehouseUserActivityName, accept, context);
     }
 
     /**
@@ -227,11 +180,8 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataWarehouseUserActivitiesInner> getAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        DataWarehouseUserActivityName dataWarehouseUserActivityName) {
+    private Mono<DataWarehouseUserActivitiesInner> getAsync(String resourceGroupName, String workspaceName,
+        String sqlPoolName, DataWarehouseUserActivityName dataWarehouseUserActivityName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, dataWarehouseUserActivityName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -253,15 +203,10 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataWarehouseUserActivitiesInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        DataWarehouseUserActivityName dataWarehouseUserActivityName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, workspaceName, sqlPoolName, dataWarehouseUserActivityName, context)
-            .block();
+    public Response<DataWarehouseUserActivitiesInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, DataWarehouseUserActivityName dataWarehouseUserActivityName, Context context) {
+        return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, dataWarehouseUserActivityName,
+            context).block();
     }
 
     /**
@@ -279,13 +224,9 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
      * @return the user activities of a SQL pool which includes running and suspended queries.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataWarehouseUserActivitiesInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    public DataWarehouseUserActivitiesInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
         DataWarehouseUserActivityName dataWarehouseUserActivityName) {
-        return getWithResponse(
-                resourceGroupName, workspaceName, sqlPoolName, dataWarehouseUserActivityName, Context.NONE)
-            .getValue();
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, dataWarehouseUserActivityName,
+            Context.NONE).getValue();
     }
 }

@@ -38,10 +38,8 @@ public interface RouteFilterRule extends HasInnerModel<RouteFilterRuleInner>, Ch
      *
      * @param <ParentT> the return type of the final {@link Attachable#attach()}
      */
-    interface Definition<ParentT>
-        extends DefinitionStages.Blank<ParentT>,
-            DefinitionStages.WithBgpCommunities<ParentT>,
-            DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ParentT> extends DefinitionStages.Blank<ParentT>, DefinitionStages.WithBgpCommunities<ParentT>,
+        DefinitionStages.WithAttach<ParentT> {
     }
 
     /** Grouping of route filter rule definition stages applicable as part of a route filter group creation. */

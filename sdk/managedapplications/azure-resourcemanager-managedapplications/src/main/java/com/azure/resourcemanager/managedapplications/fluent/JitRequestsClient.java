@@ -28,8 +28,8 @@ public interface JitRequestsClient {
      * @return the JIT request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JitRequestDefinitionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String jitRequestName, Context context);
+    Response<JitRequestDefinitionInner> getByResourceGroupWithResponse(String resourceGroupName, String jitRequestName,
+        Context context);
 
     /**
      * Gets the JIT request.
@@ -56,8 +56,8 @@ public interface JitRequestsClient {
      * @return the {@link SyncPoller} for polling of information about JIT request definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<JitRequestDefinitionInner>, JitRequestDefinitionInner> beginCreateOrUpdate(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters);
+    SyncPoller<PollResult<JitRequestDefinitionInner>, JitRequestDefinitionInner>
+        beginCreateOrUpdate(String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters);
 
     /**
      * Creates or updates the JIT request.
@@ -87,8 +87,8 @@ public interface JitRequestsClient {
      * @return information about JIT request definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JitRequestDefinitionInner createOrUpdate(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters);
+    JitRequestDefinitionInner createOrUpdate(String resourceGroupName, String jitRequestName,
+        JitRequestDefinitionInner parameters);
 
     /**
      * Creates or updates the JIT request.
@@ -103,8 +103,8 @@ public interface JitRequestsClient {
      * @return information about JIT request definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    JitRequestDefinitionInner createOrUpdate(
-        String resourceGroupName, String jitRequestName, JitRequestDefinitionInner parameters, Context context);
+    JitRequestDefinitionInner createOrUpdate(String resourceGroupName, String jitRequestName,
+        JitRequestDefinitionInner parameters, Context context);
 
     /**
      * Updates the JIT request.
@@ -119,8 +119,8 @@ public interface JitRequestsClient {
      * @return information about JIT request definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JitRequestDefinitionInner> updateWithResponse(
-        String resourceGroupName, String jitRequestName, JitRequestPatchable parameters, Context context);
+    Response<JitRequestDefinitionInner> updateWithResponse(String resourceGroupName, String jitRequestName,
+        JitRequestPatchable parameters, Context context);
 
     /**
      * Updates the JIT request.
@@ -195,8 +195,8 @@ public interface JitRequestsClient {
      * @return list of JIT requests along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<JitRequestDefinitionListResultInner> listByResourceGroupWithResponse(
-        String resourceGroupName, Context context);
+    Response<JitRequestDefinitionListResultInner> listByResourceGroupWithResponse(String resourceGroupName,
+        Context context);
 
     /**
      * Lists all JIT requests within the resource group.

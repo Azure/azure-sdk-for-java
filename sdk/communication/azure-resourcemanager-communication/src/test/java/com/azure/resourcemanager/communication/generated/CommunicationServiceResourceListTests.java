@@ -42,12 +42,14 @@ public final class CommunicationServiceResourceListTests {
                             .withUserAssignedIdentities(mapOf("tegjvwmf", new UserAssignedIdentity(), "scmdvpjhulsuu",
                                 new UserAssignedIdentity(), "jozkrwfndiod", new UserAssignedIdentity(), "lwejdpv",
                                 new UserAssignedIdentity())))
-                        .withDataLocation("oxzjnchgejspod").withLinkedDomains(Arrays.asList("mqnjaqw", "xj")),
+                        .withDataLocation("oxzjnchgejspod")
+                        .withLinkedDomains(Arrays.asList("mqnjaqw", "xj")),
                     new CommunicationServiceResourceInner().withLocation("rnfygxgispem")
                         .withTags(mapOf("fxqeof", "fkufublj", "jqul", "aeqjhqjbasvms", "clxxwrljdo", "gsntnbybkzgcwr"))
                         .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
                             .withUserAssignedIdentities(mapOf("nhungbw", new UserAssignedIdentity())))
-                        .withDataLocation("pjkjlxofpdv").withLinkedDomains(Arrays.asList("theotusiv"))))
+                        .withDataLocation("pjkjlxofpdv")
+                        .withLinkedDomains(Arrays.asList("theotusiv"))))
                 .withNextLink("p");
         model = BinaryData.fromObject(model).toObject(CommunicationServiceResourceList.class);
         Assertions.assertEquals("yoqpsoaccta", model.value().get(0).location());

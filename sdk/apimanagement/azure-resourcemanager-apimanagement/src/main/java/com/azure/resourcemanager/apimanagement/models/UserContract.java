@@ -134,18 +134,10 @@ public interface UserContract {
          * The stage of the UserContract definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithEmail,
-                DefinitionStages.WithFirstName,
-                DefinitionStages.WithLastName,
-                DefinitionStages.WithPassword,
-                DefinitionStages.WithAppType,
-                DefinitionStages.WithConfirmation,
-                DefinitionStages.WithState,
-                DefinitionStages.WithNote,
-                DefinitionStages.WithIdentities,
-                DefinitionStages.WithNotify,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithEmail, DefinitionStages.WithFirstName,
+            DefinitionStages.WithLastName, DefinitionStages.WithPassword, DefinitionStages.WithAppType,
+            DefinitionStages.WithConfirmation, DefinitionStages.WithState, DefinitionStages.WithNote,
+            DefinitionStages.WithIdentities, DefinitionStages.WithNotify, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -303,15 +295,9 @@ public interface UserContract {
     UserContract.Update update();
 
     /** The template for UserContract update. */
-    interface Update
-        extends UpdateStages.WithEmail,
-            UpdateStages.WithPassword,
-            UpdateStages.WithFirstName,
-            UpdateStages.WithLastName,
-            UpdateStages.WithState,
-            UpdateStages.WithNote,
-            UpdateStages.WithIdentities,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithEmail, UpdateStages.WithPassword, UpdateStages.WithFirstName,
+        UpdateStages.WithLastName, UpdateStages.WithState, UpdateStages.WithNote, UpdateStages.WithIdentities,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

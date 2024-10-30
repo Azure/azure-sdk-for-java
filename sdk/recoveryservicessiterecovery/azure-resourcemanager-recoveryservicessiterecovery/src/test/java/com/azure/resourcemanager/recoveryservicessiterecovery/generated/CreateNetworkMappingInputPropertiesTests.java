@@ -22,7 +22,8 @@ public final class CreateNetworkMappingInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CreateNetworkMappingInputProperties model
-            = new CreateNetworkMappingInputProperties().withRecoveryFabricName("j").withRecoveryNetworkId("dpydn")
+            = new CreateNetworkMappingInputProperties().withRecoveryFabricName("j")
+                .withRecoveryNetworkId("dpydn")
                 .withFabricSpecificDetails(new FabricSpecificCreateNetworkMappingInput());
         model = BinaryData.fromObject(model).toObject(CreateNetworkMappingInputProperties.class);
         Assertions.assertEquals("j", model.recoveryFabricName());

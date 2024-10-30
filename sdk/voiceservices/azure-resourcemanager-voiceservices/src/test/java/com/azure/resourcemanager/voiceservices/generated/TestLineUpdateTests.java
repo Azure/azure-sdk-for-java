@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class TestLineUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestLineUpdate model =
-            BinaryData.fromString("{\"tags\":{\"bmdg\":\"kdosvqw\"}}").toObject(TestLineUpdate.class);
+        TestLineUpdate model
+            = BinaryData.fromString("{\"tags\":{\"bmdg\":\"kdosvqw\"}}").toObject(TestLineUpdate.class);
         Assertions.assertEquals("kdosvqw", model.tags().get("bmdg"));
     }
 

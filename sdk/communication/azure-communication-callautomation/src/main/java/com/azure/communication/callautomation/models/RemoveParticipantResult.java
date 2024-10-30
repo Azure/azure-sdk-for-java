@@ -23,8 +23,8 @@ public final class RemoveParticipantResult extends ResultWithEventHandling<Remov
     private final String operationContext;
 
     static {
-        RemoveParticipantResponseConstructorProxy.setAccessor(
-            new RemoveParticipantResponseConstructorProxy.RemoveParticipantResponseConstructorAccessor() {
+        RemoveParticipantResponseConstructorProxy
+            .setAccessor(new RemoveParticipantResponseConstructorProxy.RemoveParticipantResponseConstructorAccessor() {
                 @Override
                 public RemoveParticipantResult create(RemoveParticipantResponseInternal internalHeaders) {
                     return new RemoveParticipantResult(internalHeaders);
@@ -65,13 +65,20 @@ public final class RemoveParticipantResult extends ResultWithEventHandling<Remov
             return Mono.empty();
         }
 
-        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == RemoveParticipantSucceeded.class || event.getClass() == RemoveParticipantFailed.class))
-            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == RemoveParticipantSucceeded.class || event.getClass() == RemoveParticipantFailed.class), timeout)
-        ).flatMap(event -> Mono.just(getReturnedEvent(event)));
+        return (timeout == null
+            ? eventProcessor
+                .waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                        || operationContextFromRequest == null)
+                    && (event.getClass() == RemoveParticipantSucceeded.class
+                        || event.getClass() == RemoveParticipantFailed.class))
+            : eventProcessor
+                .waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
+                    && (Objects.equals(event.getOperationContext(), operationContextFromRequest)
+                        || operationContextFromRequest == null)
+                    && (event.getClass() == RemoveParticipantSucceeded.class
+                        || event.getClass() == RemoveParticipantFailed.class),
+                    timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
     }
 
     @Override
@@ -79,9 +86,11 @@ public final class RemoveParticipantResult extends ResultWithEventHandling<Remov
         RemoveParticipantEventResult result = null;
 
         if (event.getClass() == RemoveParticipantSucceeded.class) {
-            result = new RemoveParticipantEventResult(true, (RemoveParticipantSucceeded) event, null, ((RemoveParticipantSucceeded) event).getParticipant());
+            result = new RemoveParticipantEventResult(true, (RemoveParticipantSucceeded) event, null,
+                ((RemoveParticipantSucceeded) event).getParticipant());
         } else if (event.getClass() == RemoveParticipantFailed.class) {
-            result = new RemoveParticipantEventResult(false, null, (RemoveParticipantFailed) event, ((RemoveParticipantFailed) event).getParticipant());
+            result = new RemoveParticipantEventResult(false, null, (RemoveParticipantFailed) event,
+                ((RemoveParticipantFailed) event).getParticipant());
         }
 
         return result;

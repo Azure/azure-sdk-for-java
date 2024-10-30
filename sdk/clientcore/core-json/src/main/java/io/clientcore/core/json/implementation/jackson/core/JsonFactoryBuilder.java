@@ -17,8 +17,7 @@ import io.clientcore.core.json.implementation.jackson.core.json.JsonWriteFeature
  *
  * @since 2.10
  */
-public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuilder>
-{
+public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuilder> {
     protected CharacterEscapes _characterEscapes;
 
     protected SerializableString _rootValueSeparator;
@@ -224,12 +223,21 @@ public class JsonFactoryBuilder extends TSFBuilder<JsonFactory, JsonFactoryBuild
 
     // // // Accessors for JSON-specific settings
 
-    public CharacterEscapes characterEscapes() { return _characterEscapes; }
-    public SerializableString rootValueSeparator() { return _rootValueSeparator; }
+    public CharacterEscapes characterEscapes() {
+        return _characterEscapes;
+    }
 
-    public int highestNonEscapedChar() { return _maximumNonEscapedChar; }
+    public SerializableString rootValueSeparator() {
+        return _rootValueSeparator;
+    }
 
-    public char quoteChar() { return _quoteChar; }
+    public int highestNonEscapedChar() {
+        return _maximumNonEscapedChar;
+    }
+
+    public char quoteChar() {
+        return _quoteChar;
+    }
 
     @Override
     public JsonFactory build() {

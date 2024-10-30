@@ -43,6 +43,7 @@ public final class ListByteBufferBinaryData extends BinaryData {
     public ListByteBufferBinaryData(List<ByteBuffer> content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
+
     @Override
     public Long getLength() {
         if (cachedLength == null) {

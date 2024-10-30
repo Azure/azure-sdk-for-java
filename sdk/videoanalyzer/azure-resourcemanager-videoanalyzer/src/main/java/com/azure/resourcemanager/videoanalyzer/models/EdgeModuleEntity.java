@@ -57,11 +57,13 @@ public interface EdgeModuleEntity {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The EdgeModuleEntity definition stages. */
     interface DefinitionStages {
         /** The first stage of the EdgeModuleEntity definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the EdgeModuleEntity definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -73,6 +75,7 @@ public interface EdgeModuleEntity {
              */
             WithCreate withExistingVideoAnalyzer(String resourceGroupName, String accountName);
         }
+
         /**
          * The stage of the EdgeModuleEntity definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -94,6 +97,7 @@ public interface EdgeModuleEntity {
             EdgeModuleEntity create(Context context);
         }
     }
+
     /**
      * Begins update for the EdgeModuleEntity resource.
      *
@@ -118,9 +122,11 @@ public interface EdgeModuleEntity {
          */
         EdgeModuleEntity apply(Context context);
     }
+
     /** The EdgeModuleEntity update stages. */
     interface UpdateStages {
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
@@ -167,6 +173,6 @@ public interface EdgeModuleEntity {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return provisioning token properties along with {@link Response}.
      */
-    Response<EdgeModuleProvisioningToken> listProvisioningTokenWithResponse(
-        ListProvisioningTokenInput parameters, Context context);
+    Response<EdgeModuleProvisioningToken> listProvisioningTokenWithResponse(ListProvisioningTokenInput parameters,
+        Context context);
 }

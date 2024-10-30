@@ -33,50 +33,37 @@ public final class RacksCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"extendedLocation\":{\"name\":\"gsmgb\",\"type\":\"mt\"},\"properties\":{\"availabilityZone\":\"wrqbebjnfv\",\"clusterId\":\"labt\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"wznhtfgfic\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"hizpaczmuh\",\"rackSerialNumber\":\"cakznhokhoitwhrj\",\"rackSkuId\":\"dmmazdnc\"},\"location\":\"dbjp\",\"tags\":{\"fhbssdpjeyoqxded\":\"zqpxzbawkikcd\",\"shzz\":\"cfiwhagxsurejq\",\"ll\":\"g\",\"gl\":\"xiqqzjkoxdupna\"},\"id\":\"ouigdmfivjqte\",\"name\":\"dqqigdydkghpc\",\"type\":\"rwqirvtktyhhmvf\"}";
+        String responseStr
+            = "{\"extendedLocation\":{\"name\":\"gsmgb\",\"type\":\"mt\"},\"properties\":{\"availabilityZone\":\"wrqbebjnfv\",\"clusterId\":\"labt\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"wznhtfgfic\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"hizpaczmuh\",\"rackSerialNumber\":\"cakznhokhoitwhrj\",\"rackSkuId\":\"dmmazdnc\"},\"location\":\"dbjp\",\"tags\":{\"fhbssdpjeyoqxded\":\"zqpxzbawkikcd\",\"shzz\":\"cfiwhagxsurejq\",\"ll\":\"g\",\"gl\":\"xiqqzjkoxdupna\"},\"id\":\"ouigdmfivjqte\",\"name\":\"dqqigdydkghpc\",\"type\":\"rwqirvtktyhhmvf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetworkCloudManager manager =
-            NetworkCloudManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetworkCloudManager manager = NetworkCloudManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Rack response =
-            manager
-                .racks()
-                .define("ahfsgb")
-                .withRegion("tfshksnyzm")
-                .withExistingResourceGroup("qzusitoq")
-                .withExtendedLocation(new ExtendedLocation().withName("mlree").withType("rfwss"))
-                .withAvailabilityZone("vlcwlisolntfxxc")
-                .withRackLocation("bulnvgskjtoxjdz")
-                .withRackSerialNumber("sjznvhx")
-                .withRackSkuId("qmqipaydhfnzoc")
-                .withTags(
-                    mapOf(
-                        "iqdktwtkvih", "mwbwmbnlslce", "nguuzhwvla", "pfliwo", "mhjhaus", "p", "ekymffztsilscvqs", "b"))
-                .create();
+        Rack response = manager.racks()
+            .define("ahfsgb")
+            .withRegion("tfshksnyzm")
+            .withExistingResourceGroup("qzusitoq")
+            .withExtendedLocation(new ExtendedLocation().withName("mlree").withType("rfwss"))
+            .withAvailabilityZone("vlcwlisolntfxxc")
+            .withRackLocation("bulnvgskjtoxjdz")
+            .withRackSerialNumber("sjznvhx")
+            .withRackSkuId("qmqipaydhfnzoc")
+            .withTags(
+                mapOf("iqdktwtkvih", "mwbwmbnlslce", "nguuzhwvla", "pfliwo", "mhjhaus", "p", "ekymffztsilscvqs", "b"))
+            .create();
 
         Assertions.assertEquals("dbjp", response.location());
         Assertions.assertEquals("zqpxzbawkikcd", response.tags().get("fhbssdpjeyoqxded"));

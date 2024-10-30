@@ -181,24 +181,16 @@ public final class ApiManagementServiceBackupRestoreParameters {
      */
     public void validate() {
         if (storageAccount() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageAccount in model"
-                            + " ApiManagementServiceBackupRestoreParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageAccount in model" + " ApiManagementServiceBackupRestoreParameters"));
         }
         if (containerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property containerName in model"
-                            + " ApiManagementServiceBackupRestoreParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property containerName in model" + " ApiManagementServiceBackupRestoreParameters"));
         }
         if (backupName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property backupName in model ApiManagementServiceBackupRestoreParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property backupName in model ApiManagementServiceBackupRestoreParameters"));
         }
     }
 

@@ -21,34 +21,31 @@ public final class SqlPoolSchemasImpl implements SqlPoolSchemas {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public SqlPoolSchemasImpl(
-        SqlPoolSchemasClient innerClient, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    public SqlPoolSchemasImpl(SqlPoolSchemasClient innerClient,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<SqlPoolSchema> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        PagedIterable<SqlPoolSchemaInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName);
+        PagedIterable<SqlPoolSchemaInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName);
         return Utils.mapPage(inner, inner1 -> new SqlPoolSchemaImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SqlPoolSchema> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String filter, Context context) {
-        PagedIterable<SqlPoolSchemaInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName, filter, context);
+    public PagedIterable<SqlPoolSchema> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String filter, Context context) {
+        PagedIterable<SqlPoolSchemaInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName, filter, context);
         return Utils.mapPage(inner, inner1 -> new SqlPoolSchemaImpl(inner1, this.manager()));
     }
 
-    public Response<SqlPoolSchema> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, Context context) {
-        Response<SqlPoolSchemaInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, context);
+    public Response<SqlPoolSchema> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, Context context) {
+        Response<SqlPoolSchemaInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SqlPoolSchemaImpl(inner.getValue(), this.manager()));
         } else {
             return null;

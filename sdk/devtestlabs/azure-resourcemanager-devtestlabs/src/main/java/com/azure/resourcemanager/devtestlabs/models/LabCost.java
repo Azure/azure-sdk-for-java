@@ -147,11 +147,8 @@ public interface LabCost {
     LabCostInner innerModel();
 
     /** The entirety of the LabCost definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
     /** The LabCost definition stages. */
@@ -196,12 +193,8 @@ public interface LabCost {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithTargetCost,
-                DefinitionStages.WithCurrencyCode,
-                DefinitionStages.WithStartDateTime,
-                DefinitionStages.WithEndDateTime,
-                DefinitionStages.WithCreatedDate {
+            extends DefinitionStages.WithTags, DefinitionStages.WithTargetCost, DefinitionStages.WithCurrencyCode,
+            DefinitionStages.WithStartDateTime, DefinitionStages.WithEndDateTime, DefinitionStages.WithCreatedDate {
             /**
              * Executes the create request.
              *
@@ -293,13 +286,8 @@ public interface LabCost {
     LabCost.Update update();
 
     /** The template for LabCost update. */
-    interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithTargetCost,
-            UpdateStages.WithCurrencyCode,
-            UpdateStages.WithStartDateTime,
-            UpdateStages.WithEndDateTime,
-            UpdateStages.WithCreatedDate {
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithTargetCost, UpdateStages.WithCurrencyCode,
+        UpdateStages.WithStartDateTime, UpdateStages.WithEndDateTime, UpdateStages.WithCreatedDate {
         /**
          * Executes the update request.
          *

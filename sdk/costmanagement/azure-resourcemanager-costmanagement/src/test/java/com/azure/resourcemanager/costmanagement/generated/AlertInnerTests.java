@@ -21,11 +21,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"definition\":{\"type\":\"Invoice\",\"category\":\"Billing\",\"criteria\":\"CrossCloudNewDataAvailable\"},\"description\":\"ubisnjampmng\",\"source\":\"Preset\",\"details\":{\"timeGrainType\":\"Monthly\",\"periodStartDate\":\"wooc\",\"triggeredBy\":\"bonqvpkvlrxnjeas\",\"resourceGroupFilter\":[\"dataheoflokeyyienjbd\",\"datawtgrhpdjpj\",\"datamasxazjpqyegu\"],\"resourceFilter\":[\"datab\"],\"meterFilter\":[\"datae\",\"datajzzvdud\"],\"tagFilter\":\"datadslfhotwmcy\",\"operator\":\"None\",\"unit\":\"npgacftade\",\"contactEmails\":[\"tyfsoppusuesn\",\"wd\"],\"contactGroups\":[\"avo\"],\"contactRoles\":[\"dmoh\",\"tbqvudw\",\"dndnvow\"],\"overridingAlert\":\"jjugwdkcglhslaz\",\"departmentName\":\"yggdtjixh\",\"companyName\":\"uofqwe\",\"enrollmentNumber\":\"hmenevfyexfwhybc\",\"enrollmentStartDate\":\"vyvdcs\",\"enrollmentEndDate\":\"ynnaam\"},\"costEntityId\":\"tehfiqscjeypvh\",\"status\":\"Resolved\",\"creationTime\":\"gqhcjrefovg\",\"closeTime\":\"qsl\",\"modificationTime\":\"yvxyqjp\",\"statusModificationUserName\":\"attpngjcrcczsq\",\"statusModificationTime\":\"hvmdajvnysounq\"},\"eTag\":\"a\",\"id\":\"oaeupfhyhltrpmo\",\"name\":\"jmcmatuokthfu\",\"type\":\"uaodsfcpk\"}")
-                .toObject(AlertInner.class);
+        AlertInner model = BinaryData.fromString(
+            "{\"properties\":{\"definition\":{\"type\":\"Invoice\",\"category\":\"Billing\",\"criteria\":\"CrossCloudNewDataAvailable\"},\"description\":\"ubisnjampmng\",\"source\":\"Preset\",\"details\":{\"timeGrainType\":\"Monthly\",\"periodStartDate\":\"wooc\",\"triggeredBy\":\"bonqvpkvlrxnjeas\",\"resourceGroupFilter\":[\"dataheoflokeyyienjbd\",\"datawtgrhpdjpj\",\"datamasxazjpqyegu\"],\"resourceFilter\":[\"datab\"],\"meterFilter\":[\"datae\",\"datajzzvdud\"],\"tagFilter\":\"datadslfhotwmcy\",\"operator\":\"None\",\"unit\":\"npgacftade\",\"contactEmails\":[\"tyfsoppusuesn\",\"wd\"],\"contactGroups\":[\"avo\"],\"contactRoles\":[\"dmoh\",\"tbqvudw\",\"dndnvow\"],\"overridingAlert\":\"jjugwdkcglhslaz\",\"departmentName\":\"yggdtjixh\",\"companyName\":\"uofqwe\",\"enrollmentNumber\":\"hmenevfyexfwhybc\",\"enrollmentStartDate\":\"vyvdcs\",\"enrollmentEndDate\":\"ynnaam\"},\"costEntityId\":\"tehfiqscjeypvh\",\"status\":\"Resolved\",\"creationTime\":\"gqhcjrefovg\",\"closeTime\":\"qsl\",\"modificationTime\":\"yvxyqjp\",\"statusModificationUserName\":\"attpngjcrcczsq\",\"statusModificationTime\":\"hvmdajvnysounq\"},\"eTag\":\"a\",\"id\":\"oaeupfhyhltrpmo\",\"name\":\"jmcmatuokthfu\",\"type\":\"uaodsfcpk\"}")
+            .toObject(AlertInner.class);
         Assertions.assertEquals("a", model.etag());
         Assertions.assertEquals(AlertType.INVOICE, model.definition().type());
         Assertions.assertEquals(AlertCategory.BILLING, model.definition().category());
@@ -57,44 +55,37 @@ public final class AlertInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertInner model =
-            new AlertInner()
-                .withEtag("a")
-                .withDefinition(
-                    new AlertPropertiesDefinition()
-                        .withType(AlertType.INVOICE)
-                        .withCategory(AlertCategory.BILLING)
-                        .withCriteria(AlertCriteria.CROSS_CLOUD_NEW_DATA_AVAILABLE))
-                .withDescription("ubisnjampmng")
-                .withSource(AlertSource.PRESET)
-                .withDetails(
-                    new AlertPropertiesDetails()
-                        .withTimeGrainType(AlertTimeGrainType.MONTHLY)
-                        .withPeriodStartDate("wooc")
-                        .withTriggeredBy("bonqvpkvlrxnjeas")
-                        .withResourceGroupFilter(
-                            Arrays.asList("dataheoflokeyyienjbd", "datawtgrhpdjpj", "datamasxazjpqyegu"))
-                        .withResourceFilter(Arrays.asList("datab"))
-                        .withMeterFilter(Arrays.asList("datae", "datajzzvdud"))
-                        .withTagFilter("datadslfhotwmcy")
-                        .withOperator(AlertOperator.NONE)
-                        .withUnit("npgacftade")
-                        .withContactEmails(Arrays.asList("tyfsoppusuesn", "wd"))
-                        .withContactGroups(Arrays.asList("avo"))
-                        .withContactRoles(Arrays.asList("dmoh", "tbqvudw", "dndnvow"))
-                        .withOverridingAlert("jjugwdkcglhslaz")
-                        .withDepartmentName("yggdtjixh")
-                        .withCompanyName("uofqwe")
-                        .withEnrollmentNumber("hmenevfyexfwhybc")
-                        .withEnrollmentStartDate("vyvdcs")
-                        .withEnrollmentEndDate("ynnaam"))
-                .withCostEntityId("tehfiqscjeypvh")
-                .withStatus(AlertStatus.RESOLVED)
-                .withCreationTime("gqhcjrefovg")
-                .withCloseTime("qsl")
-                .withModificationTime("yvxyqjp")
-                .withStatusModificationUsername("attpngjcrcczsq")
-                .withStatusModificationTime("hvmdajvnysounq");
+        AlertInner model = new AlertInner().withEtag("a")
+            .withDefinition(new AlertPropertiesDefinition().withType(AlertType.INVOICE)
+                .withCategory(AlertCategory.BILLING)
+                .withCriteria(AlertCriteria.CROSS_CLOUD_NEW_DATA_AVAILABLE))
+            .withDescription("ubisnjampmng")
+            .withSource(AlertSource.PRESET)
+            .withDetails(new AlertPropertiesDetails().withTimeGrainType(AlertTimeGrainType.MONTHLY)
+                .withPeriodStartDate("wooc")
+                .withTriggeredBy("bonqvpkvlrxnjeas")
+                .withResourceGroupFilter(Arrays.asList("dataheoflokeyyienjbd", "datawtgrhpdjpj", "datamasxazjpqyegu"))
+                .withResourceFilter(Arrays.asList("datab"))
+                .withMeterFilter(Arrays.asList("datae", "datajzzvdud"))
+                .withTagFilter("datadslfhotwmcy")
+                .withOperator(AlertOperator.NONE)
+                .withUnit("npgacftade")
+                .withContactEmails(Arrays.asList("tyfsoppusuesn", "wd"))
+                .withContactGroups(Arrays.asList("avo"))
+                .withContactRoles(Arrays.asList("dmoh", "tbqvudw", "dndnvow"))
+                .withOverridingAlert("jjugwdkcglhslaz")
+                .withDepartmentName("yggdtjixh")
+                .withCompanyName("uofqwe")
+                .withEnrollmentNumber("hmenevfyexfwhybc")
+                .withEnrollmentStartDate("vyvdcs")
+                .withEnrollmentEndDate("ynnaam"))
+            .withCostEntityId("tehfiqscjeypvh")
+            .withStatus(AlertStatus.RESOLVED)
+            .withCreationTime("gqhcjrefovg")
+            .withCloseTime("qsl")
+            .withModificationTime("yvxyqjp")
+            .withStatusModificationUsername("attpngjcrcczsq")
+            .withStatusModificationTime("hvmdajvnysounq");
         model = BinaryData.fromObject(model).toObject(AlertInner.class);
         Assertions.assertEquals("a", model.etag());
         Assertions.assertEquals(AlertType.INVOICE, model.definition().type());

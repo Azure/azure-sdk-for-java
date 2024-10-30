@@ -14,8 +14,7 @@ public final class ApplicationInsightsComponentApiKeyImpl implements Application
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    ApplicationInsightsComponentApiKeyImpl(
-        ApplicationInsightsComponentApiKeyInner innerObject,
+    ApplicationInsightsComponentApiKeyImpl(ApplicationInsightsComponentApiKeyInner innerObject,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

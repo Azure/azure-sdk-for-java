@@ -24,8 +24,8 @@ public final class CustomRolloutPropertiesStatus extends CustomRolloutStatus {
 
     /** {@inheritDoc} */
     @Override
-    public CustomRolloutPropertiesStatus withFailedOrSkippedRegions(
-        Map<String, ExtendedErrorInfo> failedOrSkippedRegions) {
+    public CustomRolloutPropertiesStatus
+        withFailedOrSkippedRegions(Map<String, ExtendedErrorInfo> failedOrSkippedRegions) {
         super.withFailedOrSkippedRegions(failedOrSkippedRegions);
         return this;
     }

@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SignalRCorsSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SignalRCorsSettings model =
-            BinaryData.fromString("{\"allowedOrigins\":[\"dmqnrojlpij\"]}").toObject(SignalRCorsSettings.class);
+        SignalRCorsSettings model
+            = BinaryData.fromString("{\"allowedOrigins\":[\"dmqnrojlpij\"]}").toObject(SignalRCorsSettings.class);
         Assertions.assertEquals("dmqnrojlpij", model.allowedOrigins().get(0));
     }
 

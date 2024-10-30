@@ -23,14 +23,8 @@ import java.util.List;
  * Management lock.
  */
 @Fluent
-public interface ManagementLock extends
-    Indexable,
-    Refreshable<ManagementLock>,
-    Updatable<ManagementLock.Update>,
-    HasInnerModel<ManagementLockObjectInner>,
-    HasManager<ResourceManager>,
-    HasId,
-    HasName {
+public interface ManagementLock extends Indexable, Refreshable<ManagementLock>, Updatable<ManagementLock.Update>,
+    HasInnerModel<ManagementLockObjectInner>, HasManager<ResourceManager>, HasId, HasName {
 
     /**
      * @return the lock level
@@ -55,11 +49,8 @@ public interface ManagementLock extends
     /**
      * Container interface for all the definitions.
      */
-    interface Definition extends
-        DefinitionStages.Blank,
-        DefinitionStages.WithLockedResource,
-        DefinitionStages.WithLevel,
-        DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLockedResource,
+        DefinitionStages.WithLevel, DefinitionStages.WithCreate {
     }
 
     /**
@@ -69,8 +60,7 @@ public interface ManagementLock extends
         /**
          * The first stage of a management lock definition.
          */
-        interface Blank
-            extends WithLockedResource {
+        interface Blank extends WithLockedResource {
         }
 
         /**
@@ -136,19 +126,14 @@ public interface ManagementLock extends
          * the resource to be created but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends
-            Creatable<ManagementLock>,
-            DefinitionStages.WithNotes {
+        interface WithCreate extends Creatable<ManagementLock>, DefinitionStages.WithNotes {
         }
     }
 
     /**
      * Container interface for all the updates.
      */
-    interface Update extends
-        Appliable<ManagementLock>,
-        UpdateStages.WithLevel,
-        UpdateStages.WithLockedResource {
+    interface Update extends Appliable<ManagementLock>, UpdateStages.WithLevel, UpdateStages.WithLockedResource {
     }
 
     /**

@@ -164,19 +164,16 @@ public final class RouteProperties {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model RouteProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model RouteProperties"));
         }
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model RouteProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property source in model RouteProperties"));
         }
         if (endpointNames() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endpointNames in model RouteProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property endpointNames in model RouteProperties"));
         }
     }
 

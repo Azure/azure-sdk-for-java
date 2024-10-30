@@ -10,11 +10,9 @@ import com.azure.resourcemanager.databox.models.JobStages;
 public final class JobStagesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobStages model =
-            BinaryData
-                .fromString(
-                    "{\"stageName\":\"Failed_IssueReportedAtCustomer\",\"displayName\":\"od\",\"stageStatus\":\"WaitingForCustomerActionForCleanUp\",\"stageTime\":\"2021-03-03T09:41:38Z\",\"jobStageDetails\":\"datanohjt\"}")
-                .toObject(JobStages.class);
+        JobStages model = BinaryData.fromString(
+            "{\"stageName\":\"Failed_IssueReportedAtCustomer\",\"displayName\":\"od\",\"stageStatus\":\"WaitingForCustomerActionForCleanUp\",\"stageTime\":\"2021-03-03T09:41:38Z\",\"jobStageDetails\":\"datanohjt\"}")
+            .toObject(JobStages.class);
     }
 
     @org.junit.jupiter.api.Test

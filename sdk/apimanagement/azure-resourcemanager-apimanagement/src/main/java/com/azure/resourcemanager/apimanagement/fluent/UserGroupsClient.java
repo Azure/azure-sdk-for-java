@@ -46,12 +46,6 @@ public interface UserGroupsClient {
      * @return paged Group list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GroupContractInner> list(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<GroupContractInner> list(String resourceGroupName, String serviceName, String userId, String filter,
+        Integer top, Integer skip, Context context);
 }

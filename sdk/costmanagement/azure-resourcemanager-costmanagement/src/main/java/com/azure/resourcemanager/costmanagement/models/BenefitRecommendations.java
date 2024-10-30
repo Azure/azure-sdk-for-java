@@ -47,6 +47,6 @@ public interface BenefitRecommendations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing benefit recommendations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BenefitRecommendationModel> list(
-        String billingScope, String filter, String orderby, String expand, Context context);
+    PagedIterable<BenefitRecommendationModel> list(String billingScope, String filter, String orderby, String expand,
+        Context context);
 }

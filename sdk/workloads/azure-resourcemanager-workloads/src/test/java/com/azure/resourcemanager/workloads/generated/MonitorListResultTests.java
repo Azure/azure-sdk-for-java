@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MonitorListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MonitorListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Updating\",\"appLocation\":\"savjcbpwxqps\",\"routingPreference\":\"RouteAll\",\"zoneRedundancyPreference\":\"tguvriuhp\",\"logAnalyticsWorkspaceArmId\":\"dyvxqtayriww\",\"monitorSubnet\":\"yqbexrmcqibycno\",\"msiArmId\":\"knme\",\"storageAccountArmId\":\"sgzvahapjyzhpv\"},\"location\":\"zcjrvxdjzlmwlx\",\"tags\":{\"nnprn\":\"gfhzovawjvzunlut\"},\"id\":\"i\",\"name\":\"eilpjzuaejxdu\",\"type\":\"tskzbbtdzumveek\"},{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Creating\",\"appLocation\":\"p\",\"routingPreference\":\"RouteAll\",\"zoneRedundancyPreference\":\"ofd\",\"logAnalyticsWorkspaceArmId\":\"us\",\"monitorSubnet\":\"touwaboekqv\",\"msiArmId\":\"lns\",\"storageAccountArmId\":\"bxwyjsflhhcaa\"},\"location\":\"jixisxyawjoyaqcs\",\"tags\":{\"zyexzn\":\"pkii\",\"bnxknalaulppg\":\"lixhnrztfol\",\"gvpgy\":\"dtpnapnyiropuhp\",\"n\":\"gqgitxmedjvcsl\"},\"id\":\"wwncwzzhxgk\",\"name\":\"rmgucnap\",\"type\":\"t\"},{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Updating\",\"appLocation\":\"d\",\"routingPreference\":\"RouteAll\",\"zoneRedundancyPreference\":\"qbuaceopzfqr\",\"logAnalyticsWorkspaceArmId\":\"ao\",\"monitorSubnet\":\"pcqeqx\",\"msiArmId\":\"z\",\"storageAccountArmId\":\"hzxct\"},\"location\":\"gbkdmoizpos\",\"tags\":{\"qjhhkxbpv\":\"rcfbunrm\",\"swbxqz\":\"ymjhxxjyngudivkr\"},\"id\":\"szjfauvjfdxxivet\",\"name\":\"t\",\"type\":\"qaqtdoqmcbxvwvxy\"},{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Creating\",\"appLocation\":\"blytk\",\"routingPreference\":\"Default\",\"zoneRedundancyPreference\":\"ewwwfbkrvrnsv\",\"logAnalyticsWorkspaceArmId\":\"johxcrsb\",\"monitorSubnet\":\"vasrruvwb\",\"msiArmId\":\"qfsubcgjbirx\",\"storageAccountArmId\":\"ybsrfbjfdtwss\"},\"location\":\"ftpvjzbexil\",\"tags\":{\"jmkcjhwqytj\":\"fqqnvwpmqtaruo\",\"jewgdrjerv\":\"ybn\"},\"id\":\"aen\",\"name\":\"pehindoygm\",\"type\":\"fthnzdn\"}],\"nextLink\":\"l\"}")
-                .toObject(MonitorListResult.class);
+        MonitorListResult model = BinaryData.fromString(
+            "{\"value\":[{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Updating\",\"appLocation\":\"savjcbpwxqps\",\"routingPreference\":\"RouteAll\",\"zoneRedundancyPreference\":\"tguvriuhp\",\"logAnalyticsWorkspaceArmId\":\"dyvxqtayriww\",\"monitorSubnet\":\"yqbexrmcqibycno\",\"msiArmId\":\"knme\",\"storageAccountArmId\":\"sgzvahapjyzhpv\"},\"location\":\"zcjrvxdjzlmwlx\",\"tags\":{\"nnprn\":\"gfhzovawjvzunlut\"},\"id\":\"i\",\"name\":\"eilpjzuaejxdu\",\"type\":\"tskzbbtdzumveek\"},{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Creating\",\"appLocation\":\"p\",\"routingPreference\":\"RouteAll\",\"zoneRedundancyPreference\":\"ofd\",\"logAnalyticsWorkspaceArmId\":\"us\",\"monitorSubnet\":\"touwaboekqv\",\"msiArmId\":\"lns\",\"storageAccountArmId\":\"bxwyjsflhhcaa\"},\"location\":\"jixisxyawjoyaqcs\",\"tags\":{\"zyexzn\":\"pkii\",\"bnxknalaulppg\":\"lixhnrztfol\",\"gvpgy\":\"dtpnapnyiropuhp\",\"n\":\"gqgitxmedjvcsl\"},\"id\":\"wwncwzzhxgk\",\"name\":\"rmgucnap\",\"type\":\"t\"},{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Updating\",\"appLocation\":\"d\",\"routingPreference\":\"RouteAll\",\"zoneRedundancyPreference\":\"qbuaceopzfqr\",\"logAnalyticsWorkspaceArmId\":\"ao\",\"monitorSubnet\":\"pcqeqx\",\"msiArmId\":\"z\",\"storageAccountArmId\":\"hzxct\"},\"location\":\"gbkdmoizpos\",\"tags\":{\"qjhhkxbpv\":\"rcfbunrm\",\"swbxqz\":\"ymjhxxjyngudivkr\"},\"id\":\"szjfauvjfdxxivet\",\"name\":\"t\",\"type\":\"qaqtdoqmcbxvwvxy\"},{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Creating\",\"appLocation\":\"blytk\",\"routingPreference\":\"Default\",\"zoneRedundancyPreference\":\"ewwwfbkrvrnsv\",\"logAnalyticsWorkspaceArmId\":\"johxcrsb\",\"monitorSubnet\":\"vasrruvwb\",\"msiArmId\":\"qfsubcgjbirx\",\"storageAccountArmId\":\"ybsrfbjfdtwss\"},\"location\":\"ftpvjzbexil\",\"tags\":{\"jmkcjhwqytj\":\"fqqnvwpmqtaruo\",\"jewgdrjerv\":\"ybn\"},\"id\":\"aen\",\"name\":\"pehindoygm\",\"type\":\"fthnzdn\"}],\"nextLink\":\"l\"}")
+            .toObject(MonitorListResult.class);
         Assertions.assertEquals("zcjrvxdjzlmwlx", model.value().get(0).location());
         Assertions.assertEquals("gfhzovawjvzunlut", model.value().get(0).tags().get("nnprn"));
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.value().get(0).identity().type());
@@ -36,69 +34,45 @@ public final class MonitorListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MonitorListResult model =
-            new MonitorListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new MonitorInner()
-                                .withLocation("zcjrvxdjzlmwlx")
-                                .withTags(mapOf("nnprn", "gfhzovawjvzunlut"))
-                                .withIdentity(
-                                    new UserAssignedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.NONE)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withAppLocation("savjcbpwxqps")
-                                .withRoutingPreference(RoutingPreference.ROUTE_ALL)
-                                .withZoneRedundancyPreference("tguvriuhp")
-                                .withLogAnalyticsWorkspaceArmId("dyvxqtayriww")
-                                .withMonitorSubnet("yqbexrmcqibycno"),
-                            new MonitorInner()
-                                .withLocation("jixisxyawjoyaqcs")
-                                .withTags(
-                                    mapOf(
-                                        "zyexzn",
-                                        "pkii",
-                                        "bnxknalaulppg",
-                                        "lixhnrztfol",
-                                        "gvpgy",
-                                        "dtpnapnyiropuhp",
-                                        "n",
-                                        "gqgitxmedjvcsl"))
-                                .withIdentity(
-                                    new UserAssignedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.NONE)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withAppLocation("p")
-                                .withRoutingPreference(RoutingPreference.ROUTE_ALL)
-                                .withZoneRedundancyPreference("ofd")
-                                .withLogAnalyticsWorkspaceArmId("us")
-                                .withMonitorSubnet("touwaboekqv"),
-                            new MonitorInner()
-                                .withLocation("gbkdmoizpos")
-                                .withTags(mapOf("qjhhkxbpv", "rcfbunrm", "swbxqz", "ymjhxxjyngudivkr"))
-                                .withIdentity(
-                                    new UserAssignedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withAppLocation("d")
-                                .withRoutingPreference(RoutingPreference.ROUTE_ALL)
-                                .withZoneRedundancyPreference("qbuaceopzfqr")
-                                .withLogAnalyticsWorkspaceArmId("ao")
-                                .withMonitorSubnet("pcqeqx"),
-                            new MonitorInner()
-                                .withLocation("ftpvjzbexil")
-                                .withTags(mapOf("jmkcjhwqytj", "fqqnvwpmqtaruo", "jewgdrjerv", "ybn"))
-                                .withIdentity(
-                                    new UserAssignedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                                        .withUserAssignedIdentities(mapOf()))
-                                .withAppLocation("blytk")
-                                .withRoutingPreference(RoutingPreference.DEFAULT)
-                                .withZoneRedundancyPreference("ewwwfbkrvrnsv")
-                                .withLogAnalyticsWorkspaceArmId("johxcrsb")
-                                .withMonitorSubnet("vasrruvwb")))
-                .withNextLink("l");
+        MonitorListResult model = new MonitorListResult().withValue(Arrays.asList(
+            new MonitorInner().withLocation("zcjrvxdjzlmwlx")
+                .withTags(mapOf("nnprn", "gfhzovawjvzunlut"))
+                .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf()))
+                .withAppLocation("savjcbpwxqps")
+                .withRoutingPreference(RoutingPreference.ROUTE_ALL)
+                .withZoneRedundancyPreference("tguvriuhp")
+                .withLogAnalyticsWorkspaceArmId("dyvxqtayriww")
+                .withMonitorSubnet("yqbexrmcqibycno"),
+            new MonitorInner().withLocation("jixisxyawjoyaqcs")
+                .withTags(mapOf("zyexzn", "pkii", "bnxknalaulppg", "lixhnrztfol", "gvpgy", "dtpnapnyiropuhp", "n",
+                    "gqgitxmedjvcsl"))
+                .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                    .withUserAssignedIdentities(mapOf()))
+                .withAppLocation("p")
+                .withRoutingPreference(RoutingPreference.ROUTE_ALL)
+                .withZoneRedundancyPreference("ofd")
+                .withLogAnalyticsWorkspaceArmId("us")
+                .withMonitorSubnet("touwaboekqv"),
+            new MonitorInner().withLocation("gbkdmoizpos")
+                .withTags(mapOf("qjhhkxbpv", "rcfbunrm", "swbxqz", "ymjhxxjyngudivkr"))
+                .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf()))
+                .withAppLocation("d")
+                .withRoutingPreference(RoutingPreference.ROUTE_ALL)
+                .withZoneRedundancyPreference("qbuaceopzfqr")
+                .withLogAnalyticsWorkspaceArmId("ao")
+                .withMonitorSubnet("pcqeqx"),
+            new MonitorInner().withLocation("ftpvjzbexil")
+                .withTags(mapOf("jmkcjhwqytj", "fqqnvwpmqtaruo", "jewgdrjerv", "ybn"))
+                .withIdentity(new UserAssignedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf()))
+                .withAppLocation("blytk")
+                .withRoutingPreference(RoutingPreference.DEFAULT)
+                .withZoneRedundancyPreference("ewwwfbkrvrnsv")
+                .withLogAnalyticsWorkspaceArmId("johxcrsb")
+                .withMonitorSubnet("vasrruvwb")))
+            .withNextLink("l");
         model = BinaryData.fromObject(model).toObject(MonitorListResult.class);
         Assertions.assertEquals("zcjrvxdjzlmwlx", model.value().get(0).location());
         Assertions.assertEquals("gfhzovawjvzunlut", model.value().get(0).tags().get("nnprn"));

@@ -15,8 +15,8 @@ public final class RegionConfigurationResponseImpl implements RegionConfiguratio
 
     private final com.azure.resourcemanager.databox.DataBoxManager serviceManager;
 
-    RegionConfigurationResponseImpl(
-        RegionConfigurationResponseInner innerObject, com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
+    RegionConfigurationResponseImpl(RegionConfigurationResponseInner innerObject,
+        com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

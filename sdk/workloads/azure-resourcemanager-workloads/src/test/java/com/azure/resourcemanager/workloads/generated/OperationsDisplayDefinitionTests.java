@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationsDisplayDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationsDisplayDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"provider\":\"frymsgaojfmwnc\",\"resource\":\"tmr\",\"operation\":\"hirctymoxoftpipi\",\"description\":\"yczuhxacpq\"}")
-                .toObject(OperationsDisplayDefinition.class);
+        OperationsDisplayDefinition model = BinaryData.fromString(
+            "{\"provider\":\"frymsgaojfmwnc\",\"resource\":\"tmr\",\"operation\":\"hirctymoxoftpipi\",\"description\":\"yczuhxacpq\"}")
+            .toObject(OperationsDisplayDefinition.class);
         Assertions.assertEquals("frymsgaojfmwnc", model.provider());
         Assertions.assertEquals("tmr", model.resource());
         Assertions.assertEquals("hirctymoxoftpipi", model.operation());
@@ -24,12 +22,10 @@ public final class OperationsDisplayDefinitionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationsDisplayDefinition model =
-            new OperationsDisplayDefinition()
-                .withProvider("frymsgaojfmwnc")
-                .withResource("tmr")
-                .withOperation("hirctymoxoftpipi")
-                .withDescription("yczuhxacpq");
+        OperationsDisplayDefinition model = new OperationsDisplayDefinition().withProvider("frymsgaojfmwnc")
+            .withResource("tmr")
+            .withOperation("hirctymoxoftpipi")
+            .withDescription("yczuhxacpq");
         model = BinaryData.fromObject(model).toObject(OperationsDisplayDefinition.class);
         Assertions.assertEquals("frymsgaojfmwnc", model.provider());
         Assertions.assertEquals("tmr", model.resource());

@@ -71,11 +71,10 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
     @Test
     @DoNotRecord(skipInPlayback = true)
     public void testManageFunctionAppLogs() throws IOException {
-        azureResourceManager = buildManager(
-            AzureResourceManager.class,
+        azureResourceManager = buildManager(AzureResourceManager.class,
             setReadTimeout(azureResourceManager.storageAccounts().manager().httpPipeline(), Duration.ofMinutes(10)),
-            new AzureProfile(azureResourceManager.tenantId(), azureResourceManager.subscriptionId(), AzureEnvironment.AZURE)
-        );
+            new AzureProfile(azureResourceManager.tenantId(), azureResourceManager.subscriptionId(),
+                AzureEnvironment.AZURE));
         Assertions.assertTrue(ManageFunctionAppLogs.runSample(azureResourceManager));
     }
 
@@ -85,11 +84,10 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
         if (skipInPlayback()) {
             return;
         }
-        azureResourceManager = buildManager(
-            AzureResourceManager.class,
+        azureResourceManager = buildManager(AzureResourceManager.class,
             setReadTimeout(azureResourceManager.storageAccounts().manager().httpPipeline(), Duration.ofMinutes(10)),
-            new AzureProfile(azureResourceManager.tenantId(), azureResourceManager.subscriptionId(), AzureEnvironment.AZURE)
-        );
+            new AzureProfile(azureResourceManager.tenantId(), azureResourceManager.subscriptionId(),
+                AzureEnvironment.AZURE));
         Assertions.assertTrue(ManageWebAppLogs.runSample(azureResourceManager));
     }
 
@@ -99,12 +97,7 @@ public class AppServiceSampleLiveOnlyTests extends SamplesTestBase {
             builder.policies(httpPipeline.getPolicy(i));
         }
         builder.httpClient(
-            super.generateHttpClientWithProxy(
-                new NettyAsyncHttpClientBuilder()
-                    .readTimeout(timeout),
-                null
-            )
-        );
+            super.generateHttpClientWithProxy(new NettyAsyncHttpClientBuilder().readTimeout(timeout), null));
         return builder.build();
     }
 

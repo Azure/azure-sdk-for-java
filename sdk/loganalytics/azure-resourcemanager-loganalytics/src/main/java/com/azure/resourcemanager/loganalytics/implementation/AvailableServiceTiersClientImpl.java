@@ -40,9 +40,8 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
      * @param client the instance of the service client containing this operation class.
      */
     AvailableServiceTiersClientImpl(OperationalInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(AvailableServiceTiersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(AvailableServiceTiersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,19 +52,14 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
     public interface AvailableServiceTiersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/availableServiceTiers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/availableServiceTiers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<AvailableServiceTierInner>>> listByWorkspace(
-            @HostParam("$host") String endpoint,
+        Mono<Response<List<AvailableServiceTierInner>>> listByWorkspace(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -80,19 +74,15 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<AvailableServiceTierInner>>> listByWorkspaceWithResponseAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<Response<List<AvailableServiceTierInner>>> listByWorkspaceWithResponseAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -104,17 +94,8 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -131,19 +112,15 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<AvailableServiceTierInner>>> listByWorkspaceWithResponseAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<Response<List<AvailableServiceTierInner>>> listByWorkspaceWithResponseAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -155,15 +132,8 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
         final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                apiVersion,
-                accept,
-                context);
+        return service.listByWorkspace(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workspaceName, apiVersion, accept, context);
     }
 
     /**
@@ -194,8 +164,8 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
      * @return the available service tiers for the workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AvailableServiceTierInner>> listByWorkspaceWithResponse(
-        String resourceGroupName, String workspaceName, Context context) {
+    public Response<List<AvailableServiceTierInner>> listByWorkspaceWithResponse(String resourceGroupName,
+        String workspaceName, Context context) {
         return listByWorkspaceWithResponseAsync(resourceGroupName, workspaceName, context).block();
     }
 

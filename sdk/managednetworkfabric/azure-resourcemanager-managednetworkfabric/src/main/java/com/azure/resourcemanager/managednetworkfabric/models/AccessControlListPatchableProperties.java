@@ -94,8 +94,8 @@ public class AccessControlListPatchableProperties {
      * @param matchConfigurations the matchConfigurations value to set.
      * @return the AccessControlListPatchableProperties object itself.
      */
-    public AccessControlListPatchableProperties withMatchConfigurations(
-        List<AccessControlListMatchConfiguration> matchConfigurations) {
+    public AccessControlListPatchableProperties
+        withMatchConfigurations(List<AccessControlListMatchConfiguration> matchConfigurations) {
         this.matchConfigurations = matchConfigurations;
         return this;
     }
@@ -115,8 +115,8 @@ public class AccessControlListPatchableProperties {
      * @param dynamicMatchConfigurations the dynamicMatchConfigurations value to set.
      * @return the AccessControlListPatchableProperties object itself.
      */
-    public AccessControlListPatchableProperties withDynamicMatchConfigurations(
-        List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
+    public AccessControlListPatchableProperties
+        withDynamicMatchConfigurations(List<CommonDynamicMatchConfiguration> dynamicMatchConfigurations) {
         this.dynamicMatchConfigurations = dynamicMatchConfigurations;
         return this;
     }

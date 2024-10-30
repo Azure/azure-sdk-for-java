@@ -26,8 +26,8 @@ public final class FormField {
      * @param value The value of the recognized field.
      * @param confidence The confidence of the recognized field.
      */
-    public FormField(final String name, final FieldData labelData, final FieldData valueData,
-        final FieldValue value, final float confidence) {
+    public FormField(final String name, final FieldData labelData, final FieldData valueData, final FieldValue value,
+        final float confidence) {
         this.confidence = confidence;
         this.labelData = labelData;
         this.name = name;

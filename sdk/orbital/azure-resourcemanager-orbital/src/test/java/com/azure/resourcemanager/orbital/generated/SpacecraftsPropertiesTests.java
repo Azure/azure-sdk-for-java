@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SpacecraftsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SpacecraftsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"creating\",\"noradId\":\"pfzfsinzgvfc\",\"titleLine\":\"rwzoxxjtfelluwf\",\"tleLine1\":\"it\",\"tleLine2\":\"np\",\"links\":[{\"name\":\"fpjkjlxofp\",\"centerFrequencyMHz\":89.44505,\"bandwidthMHz\":15.607655,\"direction\":\"Uplink\",\"polarization\":\"linearHorizontal\",\"authorizations\":[]},{\"name\":\"ypininm\",\"centerFrequencyMHz\":57.324726,\"bandwidthMHz\":20.052296,\"direction\":\"Downlink\",\"polarization\":\"RHCP\",\"authorizations\":[]}]}")
-                .toObject(SpacecraftsProperties.class);
+        SpacecraftsProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"creating\",\"noradId\":\"pfzfsinzgvfc\",\"titleLine\":\"rwzoxxjtfelluwf\",\"tleLine1\":\"it\",\"tleLine2\":\"np\",\"links\":[{\"name\":\"fpjkjlxofp\",\"centerFrequencyMHz\":89.44505,\"bandwidthMHz\":15.607655,\"direction\":\"Uplink\",\"polarization\":\"linearHorizontal\",\"authorizations\":[]},{\"name\":\"ypininm\",\"centerFrequencyMHz\":57.324726,\"bandwidthMHz\":20.052296,\"direction\":\"Downlink\",\"polarization\":\"RHCP\",\"authorizations\":[]}]}")
+            .toObject(SpacecraftsProperties.class);
         Assertions.assertEquals(SpacecraftsPropertiesProvisioningState.CREATING, model.provisioningState());
         Assertions.assertEquals("pfzfsinzgvfc", model.noradId());
         Assertions.assertEquals("rwzoxxjtfelluwf", model.titleLine());
@@ -35,28 +33,23 @@ public final class SpacecraftsPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SpacecraftsProperties model =
-            new SpacecraftsProperties()
-                .withProvisioningState(SpacecraftsPropertiesProvisioningState.CREATING)
+        SpacecraftsProperties model
+            = new SpacecraftsProperties().withProvisioningState(SpacecraftsPropertiesProvisioningState.CREATING)
                 .withNoradId("pfzfsinzgvfc")
                 .withTitleLine("rwzoxxjtfelluwf")
                 .withTleLine1("it")
                 .withTleLine2("np")
-                .withLinks(
-                    Arrays
-                        .asList(
-                            new SpacecraftLink()
-                                .withName("fpjkjlxofp")
-                                .withCenterFrequencyMHz(89.44505f)
-                                .withBandwidthMHz(15.607655f)
-                                .withDirection(Direction.UPLINK)
-                                .withPolarization(Polarization.LINEAR_HORIZONTAL),
-                            new SpacecraftLink()
-                                .withName("ypininm")
-                                .withCenterFrequencyMHz(57.324726f)
-                                .withBandwidthMHz(20.052296f)
-                                .withDirection(Direction.DOWNLINK)
-                                .withPolarization(Polarization.RHCP)));
+                .withLinks(Arrays.asList(
+                    new SpacecraftLink().withName("fpjkjlxofp")
+                        .withCenterFrequencyMHz(89.44505f)
+                        .withBandwidthMHz(15.607655f)
+                        .withDirection(Direction.UPLINK)
+                        .withPolarization(Polarization.LINEAR_HORIZONTAL),
+                    new SpacecraftLink().withName("ypininm")
+                        .withCenterFrequencyMHz(57.324726f)
+                        .withBandwidthMHz(20.052296f)
+                        .withDirection(Direction.DOWNLINK)
+                        .withPolarization(Polarization.RHCP)));
         model = BinaryData.fromObject(model).toObject(SpacecraftsProperties.class);
         Assertions.assertEquals(SpacecraftsPropertiesProvisioningState.CREATING, model.provisioningState());
         Assertions.assertEquals("pfzfsinzgvfc", model.noradId());

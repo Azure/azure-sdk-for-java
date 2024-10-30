@@ -32,12 +32,8 @@ public interface SqlPoolTransparentDataEncryptionsClient {
      * @return a SQL pool's transparent data encryption configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TransparentDataEncryptionInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName,
-        Context context);
+    Response<TransparentDataEncryptionInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName, Context context);
 
     /**
      * Get a SQL pool's transparent data encryption configuration
@@ -54,10 +50,7 @@ public interface SqlPoolTransparentDataEncryptionsClient {
      * @return a SQL pool's transparent data encryption configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TransparentDataEncryptionInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    TransparentDataEncryptionInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
         TransparentDataEncryptionName transparentDataEncryptionName);
 
     /**
@@ -77,13 +70,9 @@ public interface SqlPoolTransparentDataEncryptionsClient {
      * @return represents a Sql pool transparent data encryption configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TransparentDataEncryptionInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName,
-        TransparentDataEncryptionInner parameters,
-        Context context);
+    Response<TransparentDataEncryptionInner> createOrUpdateWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, TransparentDataEncryptionName transparentDataEncryptionName,
+        TransparentDataEncryptionInner parameters, Context context);
 
     /**
      * Creates or updates a Sql pool's transparent data encryption configuration
@@ -101,12 +90,8 @@ public interface SqlPoolTransparentDataEncryptionsClient {
      * @return represents a Sql pool transparent data encryption configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TransparentDataEncryptionInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        TransparentDataEncryptionName transparentDataEncryptionName,
-        TransparentDataEncryptionInner parameters);
+    TransparentDataEncryptionInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        TransparentDataEncryptionName transparentDataEncryptionName, TransparentDataEncryptionInner parameters);
 
     /**
      * SQL pool's transparent data encryption configurations
@@ -123,8 +108,8 @@ public interface SqlPoolTransparentDataEncryptionsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TransparentDataEncryptionInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName);
+    PagedIterable<TransparentDataEncryptionInner> list(String resourceGroupName, String workspaceName,
+        String sqlPoolName);
 
     /**
      * SQL pool's transparent data encryption configurations
@@ -142,6 +127,6 @@ public interface SqlPoolTransparentDataEncryptionsClient {
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TransparentDataEncryptionInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<TransparentDataEncryptionInner> list(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 }

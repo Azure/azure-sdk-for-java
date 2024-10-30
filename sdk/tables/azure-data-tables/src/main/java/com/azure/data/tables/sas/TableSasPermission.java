@@ -57,22 +57,25 @@ public final class TableSasPermission {
                     permissions.readPermission = true;
 
                     break;
+
                 case 'a':
                     permissions.addPermission = true;
 
                     break;
+
                 case 'u':
                     permissions.updatePermission = true;
 
                     break;
+
                 case 'd':
                     permissions.deletePermission = true;
 
                     break;
+
                 default:
-                    throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, StorageConstants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permString, c));
+                    throw new IllegalArgumentException(String.format(Locale.ROOT,
+                        StorageConstants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
             }
         }
 

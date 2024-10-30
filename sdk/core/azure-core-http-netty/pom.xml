@@ -65,7 +65,6 @@
 
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
-    <spotless.skip>false</spotless.skip>
     <animal.sniffer.skip>false</animal.sniffer.skip>
 
     <netty.version>4.1.112.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->

@@ -28,8 +28,8 @@ public interface SqlPoolTablesClient {
      * @return tables of a given schema in a SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolTableInner> listBySchema(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName);
+    PagedIterable<SqlPoolTableInner> listBySchema(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName);
 
     /**
      * Gets tables of a given schema in a SQL pool
@@ -48,13 +48,8 @@ public interface SqlPoolTablesClient {
      * @return tables of a given schema in a SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SqlPoolTableInner> listBySchema(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String filter,
-        Context context);
+    PagedIterable<SqlPoolTableInner> listBySchema(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String filter, Context context);
 
     /**
      * Get Sql pool table.
@@ -71,13 +66,8 @@ public interface SqlPoolTablesClient {
      * @return sql pool table along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolTableInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        Context context);
+    Response<SqlPoolTableInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String schemaName, String tableName, Context context);
 
     /**
      * Get Sql pool table.
@@ -93,6 +83,6 @@ public interface SqlPoolTablesClient {
      * @return sql pool table.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolTableInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName);
+    SqlPoolTableInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName,
+        String tableName);
 }

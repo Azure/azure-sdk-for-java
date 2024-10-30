@@ -144,8 +144,8 @@ public final class CommonEncryptionCbcs {
      * @param clearKeyEncryptionConfiguration the clearKeyEncryptionConfiguration value to set.
      * @return the CommonEncryptionCbcs object itself.
      */
-    public CommonEncryptionCbcs withClearKeyEncryptionConfiguration(
-        ClearKeyEncryptionConfiguration clearKeyEncryptionConfiguration) {
+    public CommonEncryptionCbcs
+        withClearKeyEncryptionConfiguration(ClearKeyEncryptionConfiguration clearKeyEncryptionConfiguration) {
         this.clearKeyEncryptionConfiguration = clearKeyEncryptionConfiguration;
         return this;
     }

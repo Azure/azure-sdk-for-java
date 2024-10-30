@@ -108,19 +108,16 @@ public final class ApiKeyAuthentication extends RestRequestAuthentication {
     public void validate() {
         super.validate();
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ApiKeyAuthentication"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ApiKeyAuthentication"));
         }
         if (in() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property in in model ApiKeyAuthentication"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property in in model ApiKeyAuthentication"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ApiKeyAuthentication"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ApiKeyAuthentication"));
         }
     }
 

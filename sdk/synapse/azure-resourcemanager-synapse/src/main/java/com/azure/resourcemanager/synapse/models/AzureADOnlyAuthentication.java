@@ -63,11 +63,13 @@ public interface AzureADOnlyAuthentication {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The AzureADOnlyAuthentication definition stages. */
     interface DefinitionStages {
         /** The first stage of the AzureADOnlyAuthentication definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the AzureADOnlyAuthentication definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -79,6 +81,7 @@ public interface AzureADOnlyAuthentication {
              */
             WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
+
         /**
          * The stage of the AzureADOnlyAuthentication definition which contains all the minimum required properties for
          * the resource to be created, but also allows for any other optional properties to be specified.
@@ -99,6 +102,7 @@ public interface AzureADOnlyAuthentication {
              */
             AzureADOnlyAuthentication create(Context context);
         }
+
         /** The stage of the AzureADOnlyAuthentication definition allowing to specify azureADOnlyAuthentication. */
         interface WithAzureADOnlyAuthentication {
             /**
@@ -110,6 +114,7 @@ public interface AzureADOnlyAuthentication {
             WithCreate withAzureADOnlyAuthentication(boolean azureADOnlyAuthentication);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *
