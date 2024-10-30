@@ -18,6 +18,8 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcConnectionStringUtils.enhanceJdbcUrl;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertiesBeanPostProcessorTest.MANAGED_IDENTITY_ENABLED_DEFAULT;
+import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertiesBeanPostProcessorTest.SCOPES_DEFAULT;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.MySqlAzureJdbcAutoConfigurationTest.MYSQL_USER_AGENT;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -75,6 +77,8 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
                         DatabaseType.MYSQL,
                         MYSQL_CONNECTION_STRING,
                         PUBLIC_AUTHORITY_HOST_STRING,
+                        MANAGED_IDENTITY_ENABLED_DEFAULT,
+                        SCOPES_DEFAULT,
                         MYSQL_USER_AGENT
                     );
                     assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());

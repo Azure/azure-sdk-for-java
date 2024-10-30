@@ -16,6 +16,8 @@ import org.springframework.util.StringUtils;
 import java.util.Objects;
 import java.util.Properties;
 
+import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.enhancePasswordlessProperties;
+
 public class AzureRedisCredentials implements RedisCredentials {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(AzureRedisCredentials.class);
@@ -28,15 +30,9 @@ public class AzureRedisCredentials implements RedisCredentials {
     public AzureRedisCredentials(String username, PasswordlessProperties passwordlessProperties) {
         Objects.requireNonNull(passwordlessProperties, "PasswordlessProperties is required.");
         azureAuthenticationTemplate = new AzureAuthenticationTemplate();
-        azureAuthenticationTemplate.init(passwordlessProperties.toPasswordlessProperties());
-        this.username = resolveUsername(azureAuthenticationTemplate, username);
-    }
-
-    public AzureRedisCredentials(String username,
-                                 Properties passwordlessProperties) {
-        Objects.requireNonNull(passwordlessProperties, "PasswordlessProperties is required.");
-        azureAuthenticationTemplate = new AzureAuthenticationTemplate();
-        azureAuthenticationTemplate.init(passwordlessProperties);
+        Properties properties = passwordlessProperties.toPasswordlessProperties();
+        enhancePasswordlessProperties("spring.data.redis.azure", passwordlessProperties, properties);
+        azureAuthenticationTemplate.init(properties);
         this.username = resolveUsername(azureAuthenticationTemplate, username);
     }
 
