@@ -7,40 +7,95 @@ package com.azure.resourcemanager.logic.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The integration account session. */
+/**
+ * The integration account session.
+ */
 @Fluent
 public final class IntegrationAccountSessionInner extends Resource {
     /*
      * The integration account session properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private IntegrationAccountSessionProperties innerProperties = new IntegrationAccountSessionProperties();
 
-    /** Creates an instance of IntegrationAccountSessionInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of IntegrationAccountSessionInner class.
+     */
     public IntegrationAccountSessionInner() {
     }
 
     /**
      * Get the innerProperties property: The integration account session properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IntegrationAccountSessionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationAccountSessionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationAccountSessionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -49,7 +104,7 @@ public final class IntegrationAccountSessionInner extends Resource {
 
     /**
      * Get the createdTime property: The created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -58,7 +113,7 @@ public final class IntegrationAccountSessionInner extends Resource {
 
     /**
      * Get the changedTime property: The changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -67,7 +122,7 @@ public final class IntegrationAccountSessionInner extends Resource {
 
     /**
      * Get the content property: The session content.
-     *
+     * 
      * @return the content value.
      */
     public Object content() {
@@ -76,7 +131,7 @@ public final class IntegrationAccountSessionInner extends Resource {
 
     /**
      * Set the content property: The session content.
-     *
+     * 
      * @param content the content value to set.
      * @return the IntegrationAccountSessionInner object itself.
      */
@@ -90,19 +145,70 @@ public final class IntegrationAccountSessionInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model IntegrationAccountSessionInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IntegrationAccountSessionInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountSessionInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountSessionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountSessionInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationAccountSessionInner.
+     */
+    public static IntegrationAccountSessionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountSessionInner deserializedIntegrationAccountSessionInner
+                = new IntegrationAccountSessionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIntegrationAccountSessionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIntegrationAccountSessionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIntegrationAccountSessionInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIntegrationAccountSessionInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIntegrationAccountSessionInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIntegrationAccountSessionInner.innerProperties
+                        = IntegrationAccountSessionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountSessionInner;
+        });
+    }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 4.9.0-beta.1 (Unreleased)
+## 4.10.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+
+## 4.9.0 (2024-10-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+
+## 4.8.7 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
+## 4.8.6 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
 
 ## 4.8.5 (2024-07-29)
 
@@ -20,7 +49,6 @@
 - Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
 - Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
 
-
 ## 4.8.4 (2024-06-27)
 
 ### Other Changes
@@ -29,7 +57,6 @@
 
 - Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
 - Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
-
 
 ## 4.8.3 (2024-05-13)
 
@@ -49,7 +76,6 @@
 - Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
 - Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
 
-
 ## 4.8.1 (2024-03-20)
 
 ### Other Changes
@@ -58,7 +84,6 @@
 
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
-
 
 ## 4.8.0 (2024-02-22)
 Changes when compared to the last stable release (`4.7.3`) include:
@@ -394,7 +419,6 @@ Changes when compared to the last stable release (`4.7.3`) include:
 - Upgraded `azure-core` dependency to `1.19.0`
 - Upgraded `azure-core-http-netty` dependency to `1.10.2`
 
-
 ## 4.3.1 (2021-07-08)
 
 ### Other Changes
@@ -609,7 +633,6 @@ This package's
 and
 [samples](https://github.com/Azure/azure-sdk-for-java/blob/azure-keyvault-secrets_4.0.0-preview.1/keyvault/client/secrets/src/samples/java)
 demonstrate the new API.
-
 
 ### Major changes from `azure-keyvault`
 - Packages scoped by functionality

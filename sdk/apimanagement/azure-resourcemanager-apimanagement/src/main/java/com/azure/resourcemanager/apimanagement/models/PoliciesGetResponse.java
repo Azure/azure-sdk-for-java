@@ -20,11 +20,7 @@ public final class PoliciesGetResponse extends ResponseBase<PoliciesGetHeaders, 
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public PoliciesGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        PolicyContractInner value,
+    public PoliciesGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, PolicyContractInner value,
         PoliciesGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

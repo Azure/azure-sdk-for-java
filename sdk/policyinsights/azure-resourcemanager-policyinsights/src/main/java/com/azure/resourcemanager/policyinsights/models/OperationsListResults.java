@@ -7,25 +7,27 @@ package com.azure.resourcemanager.policyinsights.models;
 import com.azure.resourcemanager.policyinsights.fluent.models.OperationsListResultsInner;
 import java.util.List;
 
-/** An immutable client-side representation of OperationsListResults. */
+/**
+ * An immutable client-side representation of OperationsListResults.
+ */
 public interface OperationsListResults {
     /**
      * Gets the odataCount property: OData entity count; represents the number of operations returned.
-     *
+     * 
      * @return the odataCount value.
      */
     Integer odataCount();
 
     /**
      * Gets the value property: List of available operations.
-     *
+     * 
      * @return the value value.
      */
     List<Operation> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.policyinsights.fluent.models.OperationsListResultsInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationsListResultsInner innerModel();

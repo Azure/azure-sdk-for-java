@@ -34,17 +34,23 @@ import com.azure.resourcemanager.datamigration.fluent.models.ProjectInner;
 import com.azure.resourcemanager.datamigration.models.ProjectList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProjectsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProjectsClient.
+ */
 public final class ProjectsClientImpl implements ProjectsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProjectsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataMigrationManagementClientImpl client;
 
     /**
      * Initializes an instance of ProjectsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProjectsClientImpl(DataMigrationManagementClientImpl client) {
@@ -59,126 +65,86 @@ public final class ProjectsClientImpl implements ProjectsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataMigrationManagem")
     public interface ProjectsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services"
-                + "/{serviceName}/projects")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProjectList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("groupName") String groupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ProjectList>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
+            @PathParam("serviceName") String serviceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services"
-                + "/{serviceName}/projects/{projectName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProjectInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("groupName") String groupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("projectName") String projectName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ProjectInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ProjectInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
+            @PathParam("serviceName") String serviceName, @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ProjectInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services"
-                + "/{serviceName}/projects/{projectName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProjectInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("groupName") String groupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("projectName") String projectName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ProjectInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
+            @PathParam("serviceName") String serviceName, @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services"
-                + "/{serviceName}/projects/{projectName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("groupName") String groupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("projectName") String projectName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("deleteRunningTasks") Boolean deleteRunningTasks,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
+            @PathParam("serviceName") String serviceName, @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("deleteRunningTasks") Boolean deleteRunningTasks,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services"
-                + "/{serviceName}/projects/{projectName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.DataMigration/services/{serviceName}/projects/{projectName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProjectInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("groupName") String groupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("projectName") String projectName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ProjectInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ProjectInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("groupName") String groupName,
+            @PathParam("serviceName") String serviceName, @PathParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ProjectInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProjectList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get projects in a service
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. This method returns a list
-     * of projects owned by a service resource.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. This method returns a list of
+     * projects owned by a service resource.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return oData page of project resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProjectInner>> listByResourceGroupSinglePageAsync(String groupName, String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
@@ -188,58 +154,38 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            groupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<ProjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), groupName, serviceName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ProjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get projects in a service
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. This method returns a list
-     * of projects owned by a service resource.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. This method returns a list of
+     * projects owned by a service resource.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return oData page of project resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProjectInner>> listByResourceGroupSinglePageAsync(
-        String groupName, String serviceName, Context context) {
+    private Mono<PagedResponse<ProjectInner>> listByResourceGroupSinglePageAsync(String groupName, String serviceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
@@ -250,31 +196,18 @@ public final class ProjectsClientImpl implements ProjectsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                groupName,
-                serviceName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName, serviceName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get projects in a service
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. This method returns a list
-     * of projects owned by a service resource.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. This method returns a list of
+     * projects owned by a service resource.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,17 +217,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProjectInner> listByResourceGroupAsync(String groupName, String serviceName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(groupName, serviceName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(groupName, serviceName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Get projects in a service
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. This method returns a list
-     * of projects owned by a service resource.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. This method returns a list of
+     * projects owned by a service resource.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param context The context to associate with this operation.
@@ -305,17 +237,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProjectInner> listByResourceGroupAsync(String groupName, String serviceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(groupName, serviceName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(groupName, serviceName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get projects in a service
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. This method returns a list
-     * of projects owned by a service resource.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. This method returns a list of
+     * projects owned by a service resource.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,10 +261,10 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Get projects in a service
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. This method returns a list
-     * of projects owned by a service resource.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. This method returns a list of
+     * projects owned by a service resource.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param context The context to associate with this operation.
@@ -349,10 +280,10 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Create or update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PUT method creates a
-     * new project or updates an existing one.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PUT method creates a new
+     * project or updates an existing one.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -363,19 +294,15 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> createOrUpdateWithResponseAsync(
-        String groupName, String serviceName, String projectName, ProjectInner parameters) {
+    private Mono<Response<ProjectInner>> createOrUpdateWithResponseAsync(String groupName, String serviceName,
+        String projectName, ProjectInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
@@ -393,28 +320,17 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            groupName,
-                            serviceName,
-                            projectName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                groupName, serviceName, projectName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PUT method creates a
-     * new project or updates an existing one.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PUT method creates a new
+     * project or updates an existing one.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -426,19 +342,15 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> createOrUpdateWithResponseAsync(
-        String groupName, String serviceName, String projectName, ProjectInner parameters, Context context) {
+    private Mono<Response<ProjectInner>> createOrUpdateWithResponseAsync(String groupName, String serviceName,
+        String projectName, ProjectInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
@@ -456,25 +368,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                groupName,
-                serviceName,
-                projectName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName,
+            serviceName, projectName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Create or update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PUT method creates a
-     * new project or updates an existing one.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PUT method creates a new
+     * project or updates an existing one.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -485,18 +388,18 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProjectInner> createOrUpdateAsync(
-        String groupName, String serviceName, String projectName, ProjectInner parameters) {
+    private Mono<ProjectInner> createOrUpdateAsync(String groupName, String serviceName, String projectName,
+        ProjectInner parameters) {
         return createOrUpdateWithResponseAsync(groupName, serviceName, projectName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PUT method creates a
-     * new project or updates an existing one.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PUT method creates a new
+     * project or updates an existing one.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -508,17 +411,17 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProjectInner> createOrUpdateWithResponse(
-        String groupName, String serviceName, String projectName, ProjectInner parameters, Context context) {
+    public Response<ProjectInner> createOrUpdateWithResponse(String groupName, String serviceName, String projectName,
+        ProjectInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(groupName, serviceName, projectName, parameters, context).block();
     }
 
     /**
      * Create or update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PUT method creates a
-     * new project or updates an existing one.
-     *
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PUT method creates a new
+     * project or updates an existing one.
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -529,17 +432,17 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProjectInner createOrUpdate(
-        String groupName, String serviceName, String projectName, ProjectInner parameters) {
+    public ProjectInner createOrUpdate(String groupName, String serviceName, String projectName,
+        ProjectInner parameters) {
         return createOrUpdateWithResponse(groupName, serviceName, projectName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Get project information
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The GET method retrieves
+     * 
+     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
      * information about a project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -549,19 +452,15 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> getWithResponseAsync(
-        String groupName, String serviceName, String projectName) {
+    private Mono<Response<ProjectInner>> getWithResponseAsync(String groupName, String serviceName,
+        String projectName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
@@ -574,27 +473,17 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            groupName,
-                            serviceName,
-                            projectName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName,
+                serviceName, projectName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get project information
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The GET method retrieves
+     * 
+     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
      * information about a project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -605,19 +494,15 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> getWithResponseAsync(
-        String groupName, String serviceName, String projectName, Context context) {
+    private Mono<Response<ProjectInner>> getWithResponseAsync(String groupName, String serviceName, String projectName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
@@ -630,24 +515,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                groupName,
-                serviceName,
-                projectName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName, serviceName,
+            projectName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get project information
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The GET method retrieves
+     * 
+     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
      * information about a project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -664,10 +541,10 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Get project information
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The GET method retrieves
+     * 
+     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
      * information about a project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -678,17 +555,17 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProjectInner> getWithResponse(
-        String groupName, String serviceName, String projectName, Context context) {
+    public Response<ProjectInner> getWithResponse(String groupName, String serviceName, String projectName,
+        Context context) {
         return getWithResponseAsync(groupName, serviceName, projectName, context).block();
     }
 
     /**
      * Get project information
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The GET method retrieves
+     * 
+     * The project resource is a nested resource representing a stored migration project. The GET method retrieves
      * information about a project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -704,10 +581,10 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Delete project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
+     * 
+     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
      * project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -718,19 +595,15 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String groupName, String serviceName, String projectName, Boolean deleteRunningTasks) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String groupName, String serviceName, String projectName,
+        Boolean deleteRunningTasks) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
@@ -743,28 +616,17 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            groupName,
-                            serviceName,
-                            projectName,
-                            this.client.getApiVersion(),
-                            deleteRunningTasks,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                groupName, serviceName, projectName, this.client.getApiVersion(), deleteRunningTasks, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
+     * 
+     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
      * project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -776,19 +638,15 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String groupName, String serviceName, String projectName, Boolean deleteRunningTasks, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String groupName, String serviceName, String projectName,
+        Boolean deleteRunningTasks, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
@@ -801,25 +659,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                groupName,
-                serviceName,
-                projectName,
-                this.client.getApiVersion(),
-                deleteRunningTasks,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName, serviceName,
+            projectName, this.client.getApiVersion(), deleteRunningTasks, accept, context);
     }
 
     /**
      * Delete project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
+     * 
+     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
      * project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -837,10 +686,10 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Delete project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
+     * 
+     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
      * project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -852,17 +701,17 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String groupName, String serviceName, String projectName, Boolean deleteRunningTasks, Context context) {
+    public Response<Void> deleteWithResponse(String groupName, String serviceName, String projectName,
+        Boolean deleteRunningTasks, Context context) {
         return deleteWithResponseAsync(groupName, serviceName, projectName, deleteRunningTasks, context).block();
     }
 
     /**
      * Delete project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
+     * 
+     * The project resource is a nested resource representing a stored migration project. The DELETE method deletes a
      * project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -878,10 +727,10 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PATCH method updates an
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PATCH method updates an
      * existing project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -892,19 +741,15 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> updateWithResponseAsync(
-        String groupName, String serviceName, String projectName, ProjectInner parameters) {
+    private Mono<Response<ProjectInner>> updateWithResponseAsync(String groupName, String serviceName,
+        String projectName, ProjectInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
@@ -922,28 +767,17 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            groupName,
-                            serviceName,
-                            projectName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                groupName, serviceName, projectName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PATCH method updates an
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PATCH method updates an
      * existing project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -955,19 +789,15 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProjectInner>> updateWithResponseAsync(
-        String groupName, String serviceName, String projectName, ProjectInner parameters, Context context) {
+    private Mono<Response<ProjectInner>> updateWithResponseAsync(String groupName, String serviceName,
+        String projectName, ProjectInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (groupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupName is required and cannot be null."));
@@ -985,25 +815,16 @@ public final class ProjectsClientImpl implements ProjectsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                groupName,
-                serviceName,
-                projectName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), groupName, serviceName,
+            projectName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PATCH method updates an
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PATCH method updates an
      * existing project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -1014,18 +835,18 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProjectInner> updateAsync(
-        String groupName, String serviceName, String projectName, ProjectInner parameters) {
+    private Mono<ProjectInner> updateAsync(String groupName, String serviceName, String projectName,
+        ProjectInner parameters) {
         return updateWithResponseAsync(groupName, serviceName, projectName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PATCH method updates an
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PATCH method updates an
      * existing project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -1037,17 +858,17 @@ public final class ProjectsClientImpl implements ProjectsClient {
      * @return a project resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProjectInner> updateWithResponse(
-        String groupName, String serviceName, String projectName, ProjectInner parameters, Context context) {
+    public Response<ProjectInner> updateWithResponse(String groupName, String serviceName, String projectName,
+        ProjectInner parameters, Context context) {
         return updateWithResponseAsync(groupName, serviceName, projectName, parameters, context).block();
     }
 
     /**
      * Update project
-     *
-     * <p>The project resource is a nested resource representing a stored migration project. The PATCH method updates an
+     * 
+     * The project resource is a nested resource representing a stored migration project. The PATCH method updates an
      * existing project.
-     *
+     * 
      * @param groupName Name of the resource group.
      * @param serviceName Name of the service.
      * @param projectName Name of the project.
@@ -1064,14 +885,13 @@ public final class ProjectsClientImpl implements ProjectsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return oData page of project resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProjectInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1079,38 +899,28 @@ public final class ProjectsClientImpl implements ProjectsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ProjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ProjectInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return oData page of project resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return oData page of project resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProjectInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -1118,23 +928,13 @@ public final class ProjectsClientImpl implements ProjectsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

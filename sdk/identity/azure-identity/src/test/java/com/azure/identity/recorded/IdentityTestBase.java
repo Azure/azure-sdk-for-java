@@ -39,14 +39,14 @@ public class IdentityTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isRecordMode() || interceptorManager.isPlaybackMode()) {
             List<TestProxySanitizer> customSanitizers = new ArrayList<>();
-            customSanitizers.add(new TestProxySanitizer("$..access_token", null, INVALID_DUMMY_TOKEN,
-                TestProxySanitizerType.BODY_KEY));
-            customSanitizers.add(new TestProxySanitizer("client-request-id", null, "REDACTED",
-                TestProxySanitizerType.HEADER));
-            customSanitizers.add(new TestProxySanitizer("x-client-last-telemetry", null, "REDACTED",
-                TestProxySanitizerType.HEADER));
-            customSanitizers.add(new TestProxySanitizer(null, "(client_id=)[^&]+", "$1Dummy-Id",
-                TestProxySanitizerType.BODY_REGEX));
+            customSanitizers.add(
+                new TestProxySanitizer("$..access_token", null, INVALID_DUMMY_TOKEN, TestProxySanitizerType.BODY_KEY));
+            customSanitizers
+                .add(new TestProxySanitizer("client-request-id", null, "REDACTED", TestProxySanitizerType.HEADER));
+            customSanitizers.add(
+                new TestProxySanitizer("x-client-last-telemetry", null, "REDACTED", TestProxySanitizerType.HEADER));
+            customSanitizers.add(
+                new TestProxySanitizer(null, "(client_id=)[^&]+", "$1Dummy-Id", TestProxySanitizerType.BODY_REGEX));
             customSanitizers.add(new TestProxySanitizer(null, "(client_secret=)[^&]+", "$1Dummy-Secret",
                 TestProxySanitizerType.BODY_REGEX));
             customSanitizers.add(new TestProxySanitizer(null, "(client_assertion=)[^&]+", "$1Dummy-Secret",
@@ -66,8 +66,7 @@ public class IdentityTestBase extends TestProxyTestBase {
             interceptorManager.addMatchers(customMatchers);
         }
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
 

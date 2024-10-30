@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Device Configuration. */
+/**
+ * Device Configuration.
+ */
 @Immutable
-public final class DeviceConfiguration {
+public final class DeviceConfiguration implements JsonSerializable<DeviceConfiguration> {
     /*
      * Version of the device.
      */
-    @JsonProperty(value = "deviceVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String deviceVersion;
 
     /*
      * Identity system of the device.
      */
-    @JsonProperty(value = "identitySystem", access = JsonProperty.Access.WRITE_ONLY)
     private Category identitySystem;
 
-    /** Creates an instance of DeviceConfiguration class. */
+    /**
+     * Creates an instance of DeviceConfiguration class.
+     */
     public DeviceConfiguration() {
     }
 
     /**
      * Get the deviceVersion property: Version of the device.
-     *
+     * 
      * @return the deviceVersion value.
      */
     public String deviceVersion() {
@@ -37,7 +43,7 @@ public final class DeviceConfiguration {
 
     /**
      * Get the identitySystem property: Identity system of the device.
-     *
+     * 
      * @return the identitySystem value.
      */
     public Category identitySystem() {
@@ -46,9 +52,46 @@ public final class DeviceConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceConfiguration.
+     */
+    public static DeviceConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceConfiguration deserializedDeviceConfiguration = new DeviceConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceVersion".equals(fieldName)) {
+                    deserializedDeviceConfiguration.deviceVersion = reader.getString();
+                } else if ("identitySystem".equals(fieldName)) {
+                    deserializedDeviceConfiguration.identitySystem = Category.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceConfiguration;
+        });
     }
 }

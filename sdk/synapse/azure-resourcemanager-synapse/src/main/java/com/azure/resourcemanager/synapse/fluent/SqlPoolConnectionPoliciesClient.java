@@ -29,12 +29,8 @@ public interface SqlPoolConnectionPoliciesClient {
      * @return a Sql pool's connection policy, which is used with table auditing along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SqlPoolConnectionPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ConnectionPolicyName connectionPolicyName,
-        Context context);
+    Response<SqlPoolConnectionPolicyInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, ConnectionPolicyName connectionPolicyName, Context context);
 
     /**
      * Get a Sql pool's connection policy, which is used with table auditing
@@ -51,6 +47,6 @@ public interface SqlPoolConnectionPoliciesClient {
      * @return a Sql pool's connection policy, which is used with table auditing.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SqlPoolConnectionPolicyInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, ConnectionPolicyName connectionPolicyName);
+    SqlPoolConnectionPolicyInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        ConnectionPolicyName connectionPolicyName);
 }

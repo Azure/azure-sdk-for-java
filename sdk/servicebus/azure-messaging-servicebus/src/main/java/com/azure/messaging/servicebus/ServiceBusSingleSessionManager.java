@@ -40,18 +40,19 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
     private final ServiceBusReceiverInstrumentation instrumentation;
 
     ServiceBusSingleSessionManager(ClientLogger logger, String identifier,
-        ServiceBusSessionReactorReceiver sessionReceiver, int prefetch,
-        MessageSerializer serializer, AmqpRetryOptions retryOptions, ServiceBusReceiverInstrumentation instrumentation) {
+        ServiceBusSessionReactorReceiver sessionReceiver, int prefetch, MessageSerializer serializer,
+        AmqpRetryOptions retryOptions, ServiceBusReceiverInstrumentation instrumentation) {
         this.logger = Objects.requireNonNull(logger, "logger cannot be null.");
         this.identifier = identifier;
         this.sessionReceiver = Objects.requireNonNull(sessionReceiver, "sessionReceiver cannot be null.");
         this.serializer = Objects.requireNonNull(serializer, "serializer cannot be null.");
         Objects.requireNonNull(retryOptions, "retryOptions cannot be null.");
         this.operationTimeout = retryOptions.getTryTimeout();
-        final Flux<ServiceBusSessionReactorReceiver> messageFluxUpstream = new SessionReceiverStream(sessionReceiver).flux();
+        final Flux<ServiceBusSessionReactorReceiver> messageFluxUpstream
+            = new SessionReceiverStream(sessionReceiver).flux();
         this.instrumentation = Objects.requireNonNull(instrumentation, "instrumentation cannot be null");
-        MessageFlux messageFluxLocal = new MessageFlux(messageFluxUpstream, prefetch, CreditFlowMode.RequestDriven,
-            NULL_RETRY_POLICY);
+        MessageFlux messageFluxLocal
+            = new MessageFlux(messageFluxUpstream, prefetch, CreditFlowMode.RequestDriven, NULL_RETRY_POLICY);
         this.messageFlux = TracingFluxOperator.create(messageFluxLocal, instrumentation);
     }
 
@@ -67,8 +68,7 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
 
     @Override
     public Flux<ServiceBusMessageContext> receive() {
-        return receiveMessages()
-            .map(m -> new ServiceBusMessageContext(m))
+        return receiveMessages().map(m -> new ServiceBusMessageContext(m))
             .onErrorResume(e -> Mono.just(new ServiceBusMessageContext(sessionReceiver.getSessionId(), e)));
     }
 
@@ -96,18 +96,16 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
     // temporary contract IServiceBusSessionManager, this method will be renamed to 'receive()'
     // replacing the above receive::Flux<ServiceBusMessageContext>.
     Flux<ServiceBusReceivedMessage> receiveMessages() {
-        return messageFlux
-            .map(qpidMessage -> {
-                final ServiceBusReceivedMessage m = serializer.deserialize(qpidMessage, ServiceBusReceivedMessage.class);
-                logger.atVerbose()
-                    .addKeyValue(SESSION_ID_KEY, sessionReceiver.getSessionId())
-                    .addKeyValue(MESSAGE_ID_LOGGING_KEY, m.getMessageId())
-                    .log("Received message.");
-                return m;
-            })
-            .doOnError(e -> {
-                withLinkInfo(logger.atWarning()).log("Error occurred. Ending session.", e);
-            });
+        return messageFlux.map(qpidMessage -> {
+            final ServiceBusReceivedMessage m = serializer.deserialize(qpidMessage, ServiceBusReceivedMessage.class);
+            logger.atVerbose()
+                .addKeyValue(SESSION_ID_KEY, sessionReceiver.getSessionId())
+                .addKeyValue(MESSAGE_ID_LOGGING_KEY, m.getMessageId())
+                .log("Received message.");
+            return m;
+        }).doOnError(e -> {
+            withLinkInfo(logger.atWarning()).log("Error occurred. Ending session.", e);
+        });
     }
 
     private LoggingEventBuilder withLinkInfo(LoggingEventBuilder builder) {
@@ -116,8 +114,7 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
             .addKeyValue(LINK_NAME_KEY, sessionReceiver.getLinkName());
     }
 
-    private static final class SessionReceiverStream
-        extends AtomicBoolean
+    private static final class SessionReceiverStream extends AtomicBoolean
         implements Consumer<FluxSink<ServiceBusSessionReactorReceiver>> {
         private final ServiceBusSessionReactorReceiver sessionReceiver;
 
@@ -146,12 +143,14 @@ final class ServiceBusSingleSessionManager implements IServiceBusSessionManager 
         public void accept(FluxSink<ServiceBusSessionReactorReceiver> sink) {
             sink.onRequest(r -> {
                 if (r != 1) {
-                    sink.error(new UnsupportedOperationException("Expects one request for sessionReceiver but was " + r));
+                    sink.error(
+                        new UnsupportedOperationException("Expects one request for sessionReceiver but was " + r));
                     return;
                 }
                 final boolean emittedOnce = getAndSet(true);
                 if (emittedOnce) {
-                    sink.error(new UnsupportedOperationException("Cannot subscribe or request for sessionReceiver more than once."));
+                    sink.error(new UnsupportedOperationException(
+                        "Cannot subscribe or request for sessionReceiver more than once."));
                     return;
                 }
                 sink.next(sessionReceiver);

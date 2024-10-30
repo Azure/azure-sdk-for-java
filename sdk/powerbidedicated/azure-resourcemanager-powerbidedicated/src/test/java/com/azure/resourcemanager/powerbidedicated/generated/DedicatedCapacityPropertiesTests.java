@@ -14,21 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DedicatedCapacityPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DedicatedCapacityProperties model =
-            BinaryData
-                .fromString(
-                    "{\"state\":\"Suspending\",\"provisioningState\":\"Updating\",\"administration\":{\"members\":[\"smy\"]},\"mode\":\"Gen2\",\"tenantId\":\"tmlxhekuksjtx\",\"friendlyName\":\"cdm\"}")
-                .toObject(DedicatedCapacityProperties.class);
+        DedicatedCapacityProperties model = BinaryData.fromString(
+            "{\"state\":\"Suspending\",\"provisioningState\":\"Updating\",\"administration\":{\"members\":[\"smy\"]},\"mode\":\"Gen2\",\"tenantId\":\"tmlxhekuksjtx\",\"friendlyName\":\"cdm\"}")
+            .toObject(DedicatedCapacityProperties.class);
         Assertions.assertEquals("smy", model.administration().members().get(0));
         Assertions.assertEquals(Mode.GEN2, model.mode());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DedicatedCapacityProperties model =
-            new DedicatedCapacityProperties()
-                .withAdministration(new DedicatedCapacityAdministrators().withMembers(Arrays.asList("smy")))
-                .withMode(Mode.GEN2);
+        DedicatedCapacityProperties model = new DedicatedCapacityProperties()
+            .withAdministration(new DedicatedCapacityAdministrators().withMembers(Arrays.asList("smy")))
+            .withMode(Mode.GEN2);
         model = BinaryData.fromObject(model).toObject(DedicatedCapacityProperties.class);
         Assertions.assertEquals("smy", model.administration().members().get(0));
         Assertions.assertEquals(Mode.GEN2, model.mode());

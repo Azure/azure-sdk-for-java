@@ -5,61 +5,62 @@
 package com.azure.resourcemanager.consumption.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 
-/** The properties of legacy charge summary. */
+/**
+ * The properties of legacy charge summary.
+ */
 @Immutable
-public final class LegacyChargeSummaryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyChargeSummaryProperties.class);
-
+public final class LegacyChargeSummaryProperties implements JsonSerializable<LegacyChargeSummaryProperties> {
     /*
      * The id of the billing period resource that the charge belongs to.
      */
-    @JsonProperty(value = "billingPeriodId", access = JsonProperty.Access.WRITE_ONLY)
     private String billingPeriodId;
 
     /*
      * Usage start date.
      */
-    @JsonProperty(value = "usageStart", access = JsonProperty.Access.WRITE_ONLY)
     private String usageStart;
 
     /*
      * Usage end date.
      */
-    @JsonProperty(value = "usageEnd", access = JsonProperty.Access.WRITE_ONLY)
     private String usageEnd;
 
     /*
      * Azure Charges.
      */
-    @JsonProperty(value = "azureCharges", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal azureCharges;
 
     /*
      * Charges Billed separately.
      */
-    @JsonProperty(value = "chargesBilledSeparately", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal chargesBilledSeparately;
 
     /*
      * Marketplace Charges.
      */
-    @JsonProperty(value = "marketplaceCharges", access = JsonProperty.Access.WRITE_ONLY)
-    private BigDecimal marketplaceCharges;
+    private BigDecimal azureMarketplaceCharges;
 
     /*
      * Currency Code
      */
-    @JsonProperty(value = "currency", access = JsonProperty.Access.WRITE_ONLY)
     private String currency;
 
     /**
+     * Creates an instance of LegacyChargeSummaryProperties class.
+     */
+    public LegacyChargeSummaryProperties() {
+    }
+
+    /**
      * Get the billingPeriodId property: The id of the billing period resource that the charge belongs to.
-     *
+     * 
      * @return the billingPeriodId value.
      */
     public String billingPeriodId() {
@@ -68,7 +69,7 @@ public final class LegacyChargeSummaryProperties {
 
     /**
      * Get the usageStart property: Usage start date.
-     *
+     * 
      * @return the usageStart value.
      */
     public String usageStart() {
@@ -77,7 +78,7 @@ public final class LegacyChargeSummaryProperties {
 
     /**
      * Get the usageEnd property: Usage end date.
-     *
+     * 
      * @return the usageEnd value.
      */
     public String usageEnd() {
@@ -86,7 +87,7 @@ public final class LegacyChargeSummaryProperties {
 
     /**
      * Get the azureCharges property: Azure Charges.
-     *
+     * 
      * @return the azureCharges value.
      */
     public BigDecimal azureCharges() {
@@ -95,7 +96,7 @@ public final class LegacyChargeSummaryProperties {
 
     /**
      * Get the chargesBilledSeparately property: Charges Billed separately.
-     *
+     * 
      * @return the chargesBilledSeparately value.
      */
     public BigDecimal chargesBilledSeparately() {
@@ -103,17 +104,17 @@ public final class LegacyChargeSummaryProperties {
     }
 
     /**
-     * Get the marketplaceCharges property: Marketplace Charges.
-     *
-     * @return the marketplaceCharges value.
+     * Get the azureMarketplaceCharges property: Marketplace Charges.
+     * 
+     * @return the azureMarketplaceCharges value.
      */
-    public BigDecimal marketplaceCharges() {
-        return this.marketplaceCharges;
+    public BigDecimal azureMarketplaceCharges() {
+        return this.azureMarketplaceCharges;
     }
 
     /**
      * Get the currency property: Currency Code.
-     *
+     * 
      * @return the currency value.
      */
     public String currency() {
@@ -122,9 +123,60 @@ public final class LegacyChargeSummaryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LegacyChargeSummaryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LegacyChargeSummaryProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LegacyChargeSummaryProperties.
+     */
+    public static LegacyChargeSummaryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LegacyChargeSummaryProperties deserializedLegacyChargeSummaryProperties
+                = new LegacyChargeSummaryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("billingPeriodId".equals(fieldName)) {
+                    deserializedLegacyChargeSummaryProperties.billingPeriodId = reader.getString();
+                } else if ("usageStart".equals(fieldName)) {
+                    deserializedLegacyChargeSummaryProperties.usageStart = reader.getString();
+                } else if ("usageEnd".equals(fieldName)) {
+                    deserializedLegacyChargeSummaryProperties.usageEnd = reader.getString();
+                } else if ("azureCharges".equals(fieldName)) {
+                    deserializedLegacyChargeSummaryProperties.azureCharges
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("chargesBilledSeparately".equals(fieldName)) {
+                    deserializedLegacyChargeSummaryProperties.chargesBilledSeparately
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("azureMarketplaceCharges".equals(fieldName)) {
+                    deserializedLegacyChargeSummaryProperties.azureMarketplaceCharges
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("currency".equals(fieldName)) {
+                    deserializedLegacyChargeSummaryProperties.currency = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLegacyChargeSummaryProperties;
+        });
     }
 }

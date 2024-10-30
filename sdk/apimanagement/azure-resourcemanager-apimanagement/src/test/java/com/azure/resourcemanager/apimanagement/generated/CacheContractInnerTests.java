@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CacheContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CacheContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"twloesqr\",\"connectionString\":\"gvrbny\",\"useFromLocation\":\"ukoila\",\"resourceId\":\"duwjleipjlhwy\"},\"id\":\"p\",\"name\":\"ruzythqkkwhbg\",\"type\":\"vellvulnxdmnitm\"}")
-                .toObject(CacheContractInner.class);
+        CacheContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"twloesqr\",\"connectionString\":\"gvrbny\",\"useFromLocation\":\"ukoila\",\"resourceId\":\"duwjleipjlhwy\"},\"id\":\"p\",\"name\":\"ruzythqkkwhbg\",\"type\":\"vellvulnxdmnitm\"}")
+            .toObject(CacheContractInner.class);
         Assertions.assertEquals("twloesqr", model.description());
         Assertions.assertEquals("gvrbny", model.connectionString());
         Assertions.assertEquals("ukoila", model.useFromLocation());
@@ -24,12 +22,10 @@ public final class CacheContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CacheContractInner model =
-            new CacheContractInner()
-                .withDescription("twloesqr")
-                .withConnectionString("gvrbny")
-                .withUseFromLocation("ukoila")
-                .withResourceId("duwjleipjlhwy");
+        CacheContractInner model = new CacheContractInner().withDescription("twloesqr")
+            .withConnectionString("gvrbny")
+            .withUseFromLocation("ukoila")
+            .withResourceId("duwjleipjlhwy");
         model = BinaryData.fromObject(model).toObject(CacheContractInner.class);
         Assertions.assertEquals("twloesqr", model.description());
         Assertions.assertEquals("gvrbny", model.connectionString());

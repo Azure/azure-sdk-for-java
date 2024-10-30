@@ -74,6 +74,9 @@ public final class AccessTokenUtil {
      */
     private static final Logger LOGGER = Logger.getLogger(AccessTokenUtil.class.getName());
 
+    private static final String PROPERTY_IDENTITY_ENDPOINT = "IDENTITY_ENDPOINT";
+    private static final String PROPERTY_IDENTITY_HEADER = "IDENTITY_HEADER";
+
     /**
      * Get an access token for a managed identity.
      *
@@ -85,8 +88,16 @@ public final class AccessTokenUtil {
     public static AccessToken getAccessToken(String resource, String identity) {
         AccessToken result;
 
+        /*
+         * App Service 2017-09-01: MSI_ENDPOINT, MSI_SECRET
+         * Azure Container App 2019-08-01: IDENTITY_ENDPOINT, IDENTITY_HEADER, see more from https://learn.microsoft.com/en-us/azure/container-apps/managed-identity?tabs=cli%2Chttp#rest-endpoint-reference
+         * Azure Virtual Machine 2018-02-01, see more from https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token#get-a-token-using-http
+         */
         if (System.getenv("WEBSITE_SITE_NAME") != null && !System.getenv("WEBSITE_SITE_NAME").isEmpty()) {
             result = getAccessTokenOnAppService(resource, identity);
+        } else if (System.getenv(PROPERTY_IDENTITY_ENDPOINT) != null
+            && !System.getenv(PROPERTY_IDENTITY_ENDPOINT).isEmpty()) {
+            result = getAccessTokenOnContainerApp(resource, identity);
         } else {
             result = getAccessTokenOnOthers(resource, identity);
         }
@@ -135,12 +146,14 @@ public final class AccessTokenUtil {
         StringBuilder requestBody = new StringBuilder();
 
         requestBody.append(GRANT_TYPE_FRAGMENT)
-            .append(CLIENT_ID_FRAGMENT).append(clientId)
-            .append(CLIENT_SECRET_FRAGMENT).append(encodedClientSecret)
-            .append(RESOURCE_FRAGMENT).append(resource);
+            .append(CLIENT_ID_FRAGMENT)
+            .append(clientId)
+            .append(CLIENT_SECRET_FRAGMENT)
+            .append(encodedClientSecret)
+            .append(RESOURCE_FRAGMENT)
+            .append(resource);
 
-        String body =
-            HttpUtil.post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
+        String body = HttpUtil.post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
 
         if (body != null) {
             result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
@@ -167,7 +180,8 @@ public final class AccessTokenUtil {
 
         url.append(System.getenv("MSI_ENDPOINT"))
             .append("?api-version=2017-09-01")
-            .append(RESOURCE_FRAGMENT).append(resource);
+            .append(RESOURCE_FRAGMENT)
+            .append(resource);
 
         if (clientId != null) {
             url.append("&clientid=").append(clientId);
@@ -192,6 +206,46 @@ public final class AccessTokenUtil {
     }
 
     /**
+     * Get the access token on Azure Container App (API version 2019-08-01)
+     *
+     * @param resource The resource.
+     * @param clientId The user-assigned managed identity (null if system-assigned).
+     * @return The authorization token.
+     */
+    private static AccessToken getAccessTokenOnContainerApp(String resource, String clientId) {
+        LOGGER.entering("AccessTokenUtil", "getAccessTokenOnContainerApp", resource);
+        LOGGER.info("Getting access token using managed identity.");
+
+        AccessToken result = null;
+        StringBuilder url = new StringBuilder();
+
+        url.append(System.getenv(PROPERTY_IDENTITY_ENDPOINT))
+            .append("?api-version=2019-08-01")
+            .append(RESOURCE_FRAGMENT)
+            .append(resource);
+
+        if (clientId != null) {
+            url.append("&client_id=").append(clientId);
+            LOGGER.log(INFO, "Using managed identity with client ID: {0}", clientId);
+        }
+
+        Map<String, String> headers = new HashMap<>();
+        if (System.getenv(PROPERTY_IDENTITY_HEADER) != null && !System.getenv(PROPERTY_IDENTITY_HEADER).isEmpty()) {
+            headers.put("X-IDENTITY-HEADER", System.getenv(PROPERTY_IDENTITY_HEADER));
+        }
+
+        String body = HttpUtil.get(url.toString(), headers);
+
+        if (body != null) {
+            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
+        }
+
+        LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnContainerApp", result);
+
+        return result;
+    }
+
+    /**
      * Get the authorization token on everything else but Azure App Service.
      *
      * @param resource The resource.
@@ -210,8 +264,7 @@ public final class AccessTokenUtil {
 
         StringBuilder url = new StringBuilder();
 
-        url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL)
-           .append(RESOURCE_FRAGMENT).append(resource);
+        url.append(OAUTH2_MANAGED_IDENTITY_TOKEN_URL).append(RESOURCE_FRAGMENT).append(resource);
 
         if (identity != null) {
             url.append("&object_id=").append(identity);
@@ -242,8 +295,8 @@ public final class AccessTokenUtil {
             throw new IllegalStateException("Could not obtain login URI to retrieve access token from.");
         }
 
-        Map<String, String> challengeAttributes =
-            extractChallengeAttributes(response.getFirstHeader(WWW_AUTHENTICATE).getValue());
+        Map<String, String> challengeAttributes
+            = extractChallengeAttributes(response.getFirstHeader(WWW_AUTHENTICATE).getValue());
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {
@@ -293,8 +346,8 @@ public final class AccessTokenUtil {
             return Collections.emptyMap();
         }
 
-        authenticateHeader =
-            authenticateHeader.toLowerCase(Locale.ROOT).replace(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT), "");
+        authenticateHeader
+            = authenticateHeader.toLowerCase(Locale.ROOT).replace(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT), "");
 
         String[] attributes = authenticateHeader.split(", ");
         Map<String, String> attributeMap = new HashMap<>();
@@ -316,7 +369,8 @@ public final class AccessTokenUtil {
      * @return A boolean indicating if the challenge is a bearer challenge or not.
      */
     private static boolean isBearerChallenge(String authenticateHeader) {
-        return authenticateHeader != null && !authenticateHeader.isEmpty()
+        return authenticateHeader != null
+            && !authenticateHeader.isEmpty()
             && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(BEARER_TOKEN_PREFIX.toLowerCase(Locale.ROOT));
     }
 
@@ -346,7 +400,8 @@ public final class AccessTokenUtil {
         }
 
         // Returns false if the host specified in the scope does not match the requested domain.
-        return resourceUri.getHost().toLowerCase(Locale.ROOT)
+        return resourceUri.getHost()
+            .toLowerCase(Locale.ROOT)
             .endsWith("." + scopeUri.getHost().toLowerCase(Locale.ROOT));
     }
 }

@@ -23,7 +23,7 @@ public final class PrivateEndpointConnectionsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"ztfolhbnxk\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"ulppggdtpnapnyir\",\"actionsRequired\":\"uhpigvp\"},\"provisioningState\":\"Succeeded\"},\"id\":\"gqgitxmedjvcsl\",\"name\":\"n\",\"type\":\"wwncwzzhxgk\"}]}";
+            = "{\"value\":[{\"properties\":{\"privateEndpoint\":{\"id\":\"napnyiropuhpigv\"},\"privateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"gqgitxmedjvcsl\",\"actionsRequired\":\"qwwncw\"},\"provisioningState\":\"Succeeded\"},\"id\":\"xgk\",\"name\":\"rmgucnap\",\"type\":\"t\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,13 +33,13 @@ public final class PrivateEndpointConnectionsListMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateEndpointConnection> response
-            = manager.privateEndpointConnections().list("yjpkiidzyexz", "eli", com.azure.core.util.Context.NONE);
+            = manager.privateEndpointConnections().list("hb", "xknalaulppg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED,
             response.iterator().next().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ulppggdtpnapnyir",
+        Assertions.assertEquals("gqgitxmedjvcsl",
             response.iterator().next().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("uhpigvp",
+        Assertions.assertEquals("qwwncw",
             response.iterator().next().privateLinkServiceConnectionState().actionsRequired());
     }
 }

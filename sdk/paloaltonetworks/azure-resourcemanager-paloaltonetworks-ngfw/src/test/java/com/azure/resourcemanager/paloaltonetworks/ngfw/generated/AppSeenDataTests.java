@@ -29,9 +29,13 @@ public final class AppSeenDataTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AppSeenData model = new AppSeenData().withCount(90744470)
-            .withAppSeenList(Arrays.asList(new AppSeenInfo().withTitle("gxhuriplbp").withCategory("dxunkbebxmubyyn")
-                .withSubCategory("wlrbqtkoievseo").withRisk("gqrlltmuwla").withTag("wzizxbmpgcjefuzm")
-                .withTechnology("vpbttd").withStandardPorts("morppxebmnzbtbh")));
+            .withAppSeenList(Arrays.asList(new AppSeenInfo().withTitle("gxhuriplbp")
+                .withCategory("dxunkbebxmubyyn")
+                .withSubCategory("wlrbqtkoievseo")
+                .withRisk("gqrlltmuwla")
+                .withTag("wzizxbmpgcjefuzm")
+                .withTechnology("vpbttd")
+                .withStandardPorts("morppxebmnzbtbh")));
         model = BinaryData.fromObject(model).toObject(AppSeenData.class);
         Assertions.assertEquals(90744470, model.count());
         Assertions.assertEquals("gxhuriplbp", model.appSeenList().get(0).title());

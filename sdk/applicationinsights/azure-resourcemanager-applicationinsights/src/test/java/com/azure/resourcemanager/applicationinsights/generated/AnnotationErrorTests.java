@@ -10,11 +10,9 @@ import com.azure.resourcemanager.applicationinsights.models.AnnotationError;
 public final class AnnotationErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AnnotationError model =
-            BinaryData
-                .fromString(
-                    "{\"innererror\":{\"diagnosticcontext\":\"pvwryoqpsoacc\",\"time\":\"2021-10-30T16:42:46Z\"}}")
-                .toObject(AnnotationError.class);
+        AnnotationError model = BinaryData
+            .fromString("{\"innererror\":{\"diagnosticcontext\":\"pvwryoqpsoacc\",\"time\":\"2021-10-30T16:42:46Z\"}}")
+            .toObject(AnnotationError.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -43,7 +43,7 @@ import java.util.Map;
  */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
      * CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
@@ -77,6 +77,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                 .withRestoreParameters(new RestoreParameters().withRestoreSource(
                     "/subscriptions/subid/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc")
                     .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-03-11T22:05:09Z"))
+                    .withRestoreWithTtlDisabled(false)
                     .withRestoreMode(RestoreMode.POINT_IN_TIME)
                     .withDatabasesToRestore(Arrays.asList(
                         new DatabaseRestoreResource().withDatabaseName("db1")
@@ -87,7 +88,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
      * CosmosDBDatabaseAccountCreateMax.json
      */
     /**
@@ -145,7 +146,7 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-05-15/examples/
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-08-15/examples/
      * CosmosDBDatabaseAccountCreateMin.json
      */
     /**

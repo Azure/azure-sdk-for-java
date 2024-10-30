@@ -22,16 +22,16 @@ public final class ResourceTypeRegistrationPropertiesResourceMovePolicy extends 
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationPropertiesResourceMovePolicy withCrossResourceGroupMoveEnabled(
-        Boolean crossResourceGroupMoveEnabled) {
+    public ResourceTypeRegistrationPropertiesResourceMovePolicy
+        withCrossResourceGroupMoveEnabled(Boolean crossResourceGroupMoveEnabled) {
         super.withCrossResourceGroupMoveEnabled(crossResourceGroupMoveEnabled);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ResourceTypeRegistrationPropertiesResourceMovePolicy withCrossSubscriptionMoveEnabled(
-        Boolean crossSubscriptionMoveEnabled) {
+    public ResourceTypeRegistrationPropertiesResourceMovePolicy
+        withCrossSubscriptionMoveEnabled(Boolean crossSubscriptionMoveEnabled) {
         super.withCrossSubscriptionMoveEnabled(crossSubscriptionMoveEnabled);
         return this;
     }

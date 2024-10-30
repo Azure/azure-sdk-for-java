@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DocumentationContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DocumentationContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"title\":\"rrwcsp\",\"content\":\"tc\"},\"id\":\"vfxrdytz\",\"name\":\"slxizhqikmgob\",\"type\":\"iqemcdiiisklbon\"}")
-                .toObject(DocumentationContractInner.class);
+        DocumentationContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"title\":\"rrwcsp\",\"content\":\"tc\"},\"id\":\"vfxrdytz\",\"name\":\"slxizhqikmgob\",\"type\":\"iqemcdiiisklbon\"}")
+            .toObject(DocumentationContractInner.class);
         Assertions.assertEquals("rrwcsp", model.title());
         Assertions.assertEquals("tc", model.content());
     }

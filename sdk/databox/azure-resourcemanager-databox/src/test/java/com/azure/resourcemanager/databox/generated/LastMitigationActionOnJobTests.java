@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LastMitigationActionOnJobTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LastMitigationActionOnJob model =
-            BinaryData
-                .fromString(
-                    "{\"actionDateTimeInUtc\":\"2021-04-14T04:20:05Z\",\"isPerformedByCustomer\":false,\"customerResolution\":\"Resume\"}")
-                .toObject(LastMitigationActionOnJob.class);
+        LastMitigationActionOnJob model = BinaryData.fromString(
+            "{\"actionDateTimeInUtc\":\"2021-04-14T04:20:05Z\",\"isPerformedByCustomer\":false,\"customerResolution\":\"Resume\"}")
+            .toObject(LastMitigationActionOnJob.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T04:20:05Z"), model.actionDateTimeInUtc());
         Assertions.assertEquals(false, model.isPerformedByCustomer());
         Assertions.assertEquals(CustomerResolutionCode.RESUME, model.customerResolution());
@@ -25,9 +23,8 @@ public final class LastMitigationActionOnJobTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LastMitigationActionOnJob model =
-            new LastMitigationActionOnJob()
-                .withActionDateTimeInUtc(OffsetDateTime.parse("2021-04-14T04:20:05Z"))
+        LastMitigationActionOnJob model
+            = new LastMitigationActionOnJob().withActionDateTimeInUtc(OffsetDateTime.parse("2021-04-14T04:20:05Z"))
                 .withIsPerformedByCustomer(false)
                 .withCustomerResolution(CustomerResolutionCode.RESUME);
         model = BinaryData.fromObject(model).toObject(LastMitigationActionOnJob.class);

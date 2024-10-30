@@ -12,28 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class SetTriggerStateActionDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SetTriggerStateActionDefinition model =
-            BinaryData
-                .fromString(
-                    "{\"source\":{\"flowName\":\"dckzywbiexz\",\"triggerName\":\"yueaxibxujwb\",\"id\":\"walm\",\"name\":\"yoxa\",\"type\":\"dkzjancuxrh\"}}")
-                .toObject(SetTriggerStateActionDefinition.class);
-        Assertions.assertEquals("walm", model.source().id());
-        Assertions.assertEquals("dckzywbiexz", model.source().flowName());
-        Assertions.assertEquals("yueaxibxujwb", model.source().triggerName());
+        SetTriggerStateActionDefinition model = BinaryData.fromString(
+            "{\"source\":{\"flowName\":\"dut\",\"triggerName\":\"ormrlxqtvcofudfl\",\"id\":\"gj\",\"name\":\"gdknnqv\",\"type\":\"znqntoru\"}}")
+            .toObject(SetTriggerStateActionDefinition.class);
+        Assertions.assertEquals("gj", model.source().id());
+        Assertions.assertEquals("dut", model.source().flowName());
+        Assertions.assertEquals("ormrlxqtvcofudfl", model.source().triggerName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SetTriggerStateActionDefinition model =
-            new SetTriggerStateActionDefinition()
-                .withSource(
-                    new WorkflowTriggerReference()
-                        .withId("walm")
-                        .withFlowName("dckzywbiexz")
-                        .withTriggerName("yueaxibxujwb"));
+        SetTriggerStateActionDefinition model = new SetTriggerStateActionDefinition().withSource(
+            new WorkflowTriggerReference().withId("gj").withFlowName("dut").withTriggerName("ormrlxqtvcofudfl"));
         model = BinaryData.fromObject(model).toObject(SetTriggerStateActionDefinition.class);
-        Assertions.assertEquals("walm", model.source().id());
-        Assertions.assertEquals("dckzywbiexz", model.source().flowName());
-        Assertions.assertEquals("yueaxibxujwb", model.source().triggerName());
+        Assertions.assertEquals("gj", model.source().id());
+        Assertions.assertEquals("dut", model.source().flowName());
+        Assertions.assertEquals("ormrlxqtvcofudfl", model.source().triggerName());
     }
 }

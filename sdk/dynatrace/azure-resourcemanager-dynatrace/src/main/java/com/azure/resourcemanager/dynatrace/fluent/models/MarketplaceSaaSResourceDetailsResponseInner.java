@@ -88,8 +88,8 @@ public final class MarketplaceSaaSResourceDetailsResponseInner {
      * @param marketplaceSubscriptionStatus the marketplaceSubscriptionStatus value to set.
      * @return the MarketplaceSaaSResourceDetailsResponseInner object itself.
      */
-    public MarketplaceSaaSResourceDetailsResponseInner withMarketplaceSubscriptionStatus(
-        MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
+    public MarketplaceSaaSResourceDetailsResponseInner
+        withMarketplaceSubscriptionStatus(MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
         this.marketplaceSubscriptionStatus = marketplaceSubscriptionStatus;
         return this;
     }

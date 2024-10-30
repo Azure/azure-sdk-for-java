@@ -36,8 +36,8 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return extension resource along with {@link Response}.
      */
-    Response<Extension> createWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context);
+    Response<Extension> createWithResponse(String resourceGroupName, String farmBeatsResourceName, String extensionId,
+        Context context);
 
     /**
      * Get installed extension details by extension id.
@@ -64,8 +64,8 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return installed extension details by extension id along with {@link Response}.
      */
-    Response<Extension> getWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context);
+    Response<Extension> getWithResponse(String resourceGroupName, String farmBeatsResourceName, String extensionId,
+        Context context);
 
     /**
      * Upgrade to latest extension.
@@ -92,8 +92,8 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return extension resource along with {@link Response}.
      */
-    Response<Extension> updateWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context);
+    Response<Extension> updateWithResponse(String resourceGroupName, String farmBeatsResourceName, String extensionId,
+        Context context);
 
     /**
      * Uninstall extension.
@@ -119,8 +119,8 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String extensionId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String farmBeatsResourceName, String extensionId,
+        Context context);
 
     /**
      * Get installed extensions details.
@@ -149,12 +149,7 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return installed extensions details as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Extension> listByFarmBeats(
-        String resourceGroupName,
-        String farmBeatsResourceName,
-        List<String> extensionIds,
-        List<String> extensionCategories,
-        Integer maxPageSize,
-        String skipToken,
+    PagedIterable<Extension> listByFarmBeats(String resourceGroupName, String farmBeatsResourceName,
+        List<String> extensionIds, List<String> extensionCategories, Integer maxPageSize, String skipToken,
         Context context);
 }

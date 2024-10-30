@@ -29,130 +29,128 @@ import com.azure.resourcemanager.edgeorder.models.ProductFamiliesRequest;
 import com.azure.resourcemanager.edgeorder.models.ProductFamily;
 import com.azure.resourcemanager.edgeorder.models.ResourceProviders;
 import com.azure.resourcemanager.edgeorder.models.ReturnOrderItemDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 
     private final com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient, com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager) {
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
+        com.azure.resourcemanager.edgeorder.EdgeOrderManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Operation> listOperations() {
         PagedIterable<OperationInner> inner = this.serviceClient().listOperations();
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Operation> listOperations(Context context) {
         PagedIterable<OperationInner> inner = this.serviceClient().listOperations(context);
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AddressResource> list() {
         PagedIterable<AddressResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AddressResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AddressResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AddressResource> list(String filter, String skipToken, Context context) {
         PagedIterable<AddressResourceInner> inner = this.serviceClient().list(filter, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new AddressResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AddressResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProductFamily> listProductFamilies(ProductFamiliesRequest productFamiliesRequest) {
         PagedIterable<ProductFamilyInner> inner = this.serviceClient().listProductFamilies(productFamiliesRequest);
-        return Utils.mapPage(inner, inner1 -> new ProductFamilyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProductFamilyImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ProductFamily> listProductFamilies(
-        ProductFamiliesRequest productFamiliesRequest, String expand, String skipToken, Context context) {
-        PagedIterable<ProductFamilyInner> inner =
-            this.serviceClient().listProductFamilies(productFamiliesRequest, expand, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ProductFamilyImpl(inner1, this.manager()));
+    public PagedIterable<ProductFamily> listProductFamilies(ProductFamiliesRequest productFamiliesRequest,
+        String expand, String skipToken, Context context) {
+        PagedIterable<ProductFamilyInner> inner
+            = this.serviceClient().listProductFamilies(productFamiliesRequest, expand, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProductFamilyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Configuration> listConfigurations(ConfigurationsRequest configurationsRequest) {
         PagedIterable<ConfigurationInner> inner = this.serviceClient().listConfigurations(configurationsRequest);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Configuration> listConfigurations(
-        ConfigurationsRequest configurationsRequest, String skipToken, Context context) {
-        PagedIterable<ConfigurationInner> inner =
-            this.serviceClient().listConfigurations(configurationsRequest, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
+    public PagedIterable<Configuration> listConfigurations(ConfigurationsRequest configurationsRequest,
+        String skipToken, Context context) {
+        PagedIterable<ConfigurationInner> inner
+            = this.serviceClient().listConfigurations(configurationsRequest, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ProductFamiliesMetadataDetails> listProductFamiliesMetadata() {
         PagedIterable<ProductFamiliesMetadataDetailsInner> inner = this.serviceClient().listProductFamiliesMetadata();
-        return Utils.mapPage(inner, inner1 -> new ProductFamiliesMetadataDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ProductFamiliesMetadataDetailsImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ProductFamiliesMetadataDetails> listProductFamiliesMetadata(
-        String skipToken, Context context) {
-        PagedIterable<ProductFamiliesMetadataDetailsInner> inner =
-            this.serviceClient().listProductFamiliesMetadata(skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ProductFamiliesMetadataDetailsImpl(inner1, this.manager()));
+    public PagedIterable<ProductFamiliesMetadataDetails> listProductFamiliesMetadata(String skipToken,
+        Context context) {
+        PagedIterable<ProductFamiliesMetadataDetailsInner> inner
+            = this.serviceClient().listProductFamiliesMetadata(skipToken, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ProductFamiliesMetadataDetailsImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OrderResource> listOrderAtSubscriptionLevel() {
         PagedIterable<OrderResourceInner> inner = this.serviceClient().listOrderAtSubscriptionLevel();
-        return Utils.mapPage(inner, inner1 -> new OrderResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrderResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OrderResource> listOrderAtSubscriptionLevel(String skipToken, Context context) {
         PagedIterable<OrderResourceInner> inner = this.serviceClient().listOrderAtSubscriptionLevel(skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new OrderResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrderResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OrderItemResource> listOrderItemsAtSubscriptionLevel() {
         PagedIterable<OrderItemResourceInner> inner = this.serviceClient().listOrderItemsAtSubscriptionLevel();
-        return Utils.mapPage(inner, inner1 -> new OrderItemResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrderItemResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OrderItemResource> listOrderItemsAtSubscriptionLevel(
-        String filter, String expand, String skipToken, Context context) {
-        PagedIterable<OrderItemResourceInner> inner =
-            this.serviceClient().listOrderItemsAtSubscriptionLevel(filter, expand, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new OrderItemResourceImpl(inner1, this.manager()));
+    public PagedIterable<OrderItemResource> listOrderItemsAtSubscriptionLevel(String filter, String expand,
+        String skipToken, Context context) {
+        PagedIterable<OrderItemResourceInner> inner
+            = this.serviceClient().listOrderItemsAtSubscriptionLevel(filter, expand, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrderItemResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AddressResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<AddressResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AddressResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AddressResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AddressResource> listByResourceGroup(
-        String resourceGroupName, String filter, String skipToken, Context context) {
-        PagedIterable<AddressResourceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, filter, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new AddressResourceImpl(inner1, this.manager()));
+    public PagedIterable<AddressResource> listByResourceGroup(String resourceGroupName, String filter, String skipToken,
+        Context context) {
+        PagedIterable<AddressResourceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, filter, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AddressResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<AddressResource> getByResourceGroupWithResponse(String resourceGroupName, String addressName,
+        Context context) {
+        Response<AddressResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, addressName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AddressResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AddressResource getByResourceGroup(String resourceGroupName, String addressName) {
         AddressResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, addressName);
         if (inner != null) {
             return new AddressResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<AddressResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String addressName, Context context) {
-        Response<AddressResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, addressName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AddressResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -168,14 +166,26 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     public PagedIterable<OrderResource> listOrderAtResourceGroupLevel(String resourceGroupName) {
         PagedIterable<OrderResourceInner> inner = this.serviceClient().listOrderAtResourceGroupLevel(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new OrderResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrderResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OrderResource> listOrderAtResourceGroupLevel(
-        String resourceGroupName, String skipToken, Context context) {
-        PagedIterable<OrderResourceInner> inner =
-            this.serviceClient().listOrderAtResourceGroupLevel(resourceGroupName, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new OrderResourceImpl(inner1, this.manager()));
+    public PagedIterable<OrderResource> listOrderAtResourceGroupLevel(String resourceGroupName, String skipToken,
+        Context context) {
+        PagedIterable<OrderResourceInner> inner
+            = this.serviceClient().listOrderAtResourceGroupLevel(resourceGroupName, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrderResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<OrderResource> getOrderByNameWithResponse(String orderName, String resourceGroupName,
+        String location, Context context) {
+        Response<OrderResourceInner> inner
+            = this.serviceClient().getOrderByNameWithResponse(orderName, resourceGroupName, location, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OrderResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OrderResource getOrderByName(String orderName, String resourceGroupName, String location) {
@@ -187,55 +197,35 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Response<OrderResource> getOrderByNameWithResponse(
-        String orderName, String resourceGroupName, String location, Context context) {
-        Response<OrderResourceInner> inner =
-            this.serviceClient().getOrderByNameWithResponse(orderName, resourceGroupName, location, context);
+    public PagedIterable<OrderItemResource> listOrderItemsAtResourceGroupLevel(String resourceGroupName) {
+        PagedIterable<OrderItemResourceInner> inner
+            = this.serviceClient().listOrderItemsAtResourceGroupLevel(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrderItemResourceImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<OrderItemResource> listOrderItemsAtResourceGroupLevel(String resourceGroupName, String filter,
+        String expand, String skipToken, Context context) {
+        PagedIterable<OrderItemResourceInner> inner = this.serviceClient()
+            .listOrderItemsAtResourceGroupLevel(resourceGroupName, filter, expand, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrderItemResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<OrderItemResource> getOrderItemByNameWithResponse(String orderItemName, String resourceGroupName,
+        String expand, Context context) {
+        Response<OrderItemResourceInner> inner
+            = this.serviceClient().getOrderItemByNameWithResponse(orderItemName, resourceGroupName, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OrderResourceImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OrderItemResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
-    }
-
-    public PagedIterable<OrderItemResource> listOrderItemsAtResourceGroupLevel(String resourceGroupName) {
-        PagedIterable<OrderItemResourceInner> inner =
-            this.serviceClient().listOrderItemsAtResourceGroupLevel(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new OrderItemResourceImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<OrderItemResource> listOrderItemsAtResourceGroupLevel(
-        String resourceGroupName, String filter, String expand, String skipToken, Context context) {
-        PagedIterable<OrderItemResourceInner> inner =
-            this
-                .serviceClient()
-                .listOrderItemsAtResourceGroupLevel(resourceGroupName, filter, expand, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new OrderItemResourceImpl(inner1, this.manager()));
     }
 
     public OrderItemResource getOrderItemByName(String orderItemName, String resourceGroupName) {
         OrderItemResourceInner inner = this.serviceClient().getOrderItemByName(orderItemName, resourceGroupName);
         if (inner != null) {
             return new OrderItemResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OrderItemResource> getOrderItemByNameWithResponse(
-        String orderItemName, String resourceGroupName, String expand, Context context) {
-        Response<OrderItemResourceInner> inner =
-            this.serviceClient().getOrderItemByNameWithResponse(orderItemName, resourceGroupName, expand, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OrderItemResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -249,181 +239,136 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         this.serviceClient().deleteOrderItemByName(orderItemName, resourceGroupName, context);
     }
 
+    public Response<Void> cancelOrderItemWithResponse(String orderItemName, String resourceGroupName,
+        CancellationReason cancellationReason, Context context) {
+        return this.serviceClient()
+            .cancelOrderItemWithResponse(orderItemName, resourceGroupName, cancellationReason, context);
+    }
+
     public void cancelOrderItem(String orderItemName, String resourceGroupName, CancellationReason cancellationReason) {
         this.serviceClient().cancelOrderItem(orderItemName, resourceGroupName, cancellationReason);
     }
 
-    public Response<Void> cancelOrderItemWithResponse(
-        String orderItemName, String resourceGroupName, CancellationReason cancellationReason, Context context) {
-        return this
-            .serviceClient()
-            .cancelOrderItemWithResponse(orderItemName, resourceGroupName, cancellationReason, context);
-    }
-
-    public void returnOrderItem(
-        String orderItemName, String resourceGroupName, ReturnOrderItemDetails returnOrderItemDetails) {
+    public void returnOrderItem(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails) {
         this.serviceClient().returnOrderItem(orderItemName, resourceGroupName, returnOrderItemDetails);
     }
 
-    public void returnOrderItem(
-        String orderItemName,
-        String resourceGroupName,
-        ReturnOrderItemDetails returnOrderItemDetails,
-        Context context) {
+    public void returnOrderItem(String orderItemName, String resourceGroupName,
+        ReturnOrderItemDetails returnOrderItemDetails, Context context) {
         this.serviceClient().returnOrderItem(orderItemName, resourceGroupName, returnOrderItemDetails, context);
     }
 
     public AddressResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String addressName = Utils.getValueFromIdByName(id, "addresses");
+        String addressName = ResourceManagerUtils.getValueFromIdByName(id, "addresses");
         if (addressName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'addresses'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'addresses'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, addressName, Context.NONE).getValue();
     }
 
     public Response<AddressResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String addressName = Utils.getValueFromIdByName(id, "addresses");
+        String addressName = ResourceManagerUtils.getValueFromIdByName(id, "addresses");
         if (addressName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'addresses'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'addresses'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, addressName, context);
     }
 
     public OrderItemResource getOrderItemById(String id) {
-        String orderItemName = Utils.getValueFromIdByName(id, "orderItems");
+        String orderItemName = ResourceManagerUtils.getValueFromIdByName(id, "orderItems");
         if (orderItemName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'orderItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'orderItems'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localExpand = null;
-        return this
-            .getOrderItemByNameWithResponse(orderItemName, resourceGroupName, localExpand, Context.NONE)
+        return this.getOrderItemByNameWithResponse(orderItemName, resourceGroupName, localExpand, Context.NONE)
             .getValue();
     }
 
     public Response<OrderItemResource> getOrderItemByIdWithResponse(String id, String expand, Context context) {
-        String orderItemName = Utils.getValueFromIdByName(id, "orderItems");
+        String orderItemName = ResourceManagerUtils.getValueFromIdByName(id, "orderItems");
         if (orderItemName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'orderItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'orderItems'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         return this.getOrderItemByNameWithResponse(orderItemName, resourceGroupName, expand, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String addressName = Utils.getValueFromIdByName(id, "addresses");
+        String addressName = ResourceManagerUtils.getValueFromIdByName(id, "addresses");
         if (addressName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'addresses'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'addresses'.", id)));
         }
         this.delete(resourceGroupName, addressName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String addressName = Utils.getValueFromIdByName(id, "addresses");
+        String addressName = ResourceManagerUtils.getValueFromIdByName(id, "addresses");
         if (addressName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'addresses'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'addresses'.", id)));
         }
         this.delete(resourceGroupName, addressName, context);
     }
 
     public void deleteOrderItemById(String id) {
-        String orderItemName = Utils.getValueFromIdByName(id, "orderItems");
+        String orderItemName = ResourceManagerUtils.getValueFromIdByName(id, "orderItems");
         if (orderItemName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'orderItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'orderItems'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         this.deleteOrderItemByName(orderItemName, resourceGroupName, Context.NONE);
     }
 
     public void deleteOrderItemByIdWithResponse(String id, Context context) {
-        String orderItemName = Utils.getValueFromIdByName(id, "orderItems");
+        String orderItemName = ResourceManagerUtils.getValueFromIdByName(id, "orderItems");
         if (orderItemName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'orderItems'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'orderItems'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         this.deleteOrderItemByName(orderItemName, resourceGroupName, context);
     }

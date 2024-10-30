@@ -76,15 +76,12 @@ public final class ServiceRegionProperties {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ServiceRegionProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ServiceRegionProperties"));
         }
         if (primaryRegionProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property primaryRegionProperties in model ServiceRegionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property primaryRegionProperties in model ServiceRegionProperties"));
         } else {
             primaryRegionProperties().validate();
         }

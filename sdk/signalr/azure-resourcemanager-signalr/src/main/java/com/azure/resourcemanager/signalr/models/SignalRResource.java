@@ -274,11 +274,8 @@ public interface SignalRResource {
     SignalRResourceInner innerModel();
 
     /** The entirety of the SignalRResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The SignalRResource definition stages. */
@@ -321,24 +318,13 @@ public interface SignalRResource {
          * The stage of the SignalRResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithSku,
-                DefinitionStages.WithKind,
-                DefinitionStages.WithIdentity,
-                DefinitionStages.WithTls,
-                DefinitionStages.WithFeatures,
-                DefinitionStages.WithLiveTraceConfiguration,
-                DefinitionStages.WithResourceLogConfiguration,
-                DefinitionStages.WithCors,
-                DefinitionStages.WithServerless,
-                DefinitionStages.WithUpstream,
-                DefinitionStages.WithNetworkACLs,
-                DefinitionStages.WithPublicNetworkAccess,
-                DefinitionStages.WithDisableLocalAuth,
-                DefinitionStages.WithDisableAadAuth,
-                DefinitionStages.WithRegionEndpointEnabled,
-                DefinitionStages.WithResourceStopped {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithSku, DefinitionStages.WithKind,
+            DefinitionStages.WithIdentity, DefinitionStages.WithTls, DefinitionStages.WithFeatures,
+            DefinitionStages.WithLiveTraceConfiguration, DefinitionStages.WithResourceLogConfiguration,
+            DefinitionStages.WithCors, DefinitionStages.WithServerless, DefinitionStages.WithUpstream,
+            DefinitionStages.WithNetworkACLs, DefinitionStages.WithPublicNetworkAccess,
+            DefinitionStages.WithDisableLocalAuth, DefinitionStages.WithDisableAadAuth,
+            DefinitionStages.WithRegionEndpointEnabled, DefinitionStages.WithResourceStopped {
             /**
              * Executes the create request.
              *
@@ -579,22 +565,11 @@ public interface SignalRResource {
 
     /** The template for SignalRResource update. */
     interface Update
-        extends UpdateStages.WithTags,
-            UpdateStages.WithSku,
-            UpdateStages.WithIdentity,
-            UpdateStages.WithTls,
-            UpdateStages.WithFeatures,
-            UpdateStages.WithLiveTraceConfiguration,
-            UpdateStages.WithResourceLogConfiguration,
-            UpdateStages.WithCors,
-            UpdateStages.WithServerless,
-            UpdateStages.WithUpstream,
-            UpdateStages.WithNetworkACLs,
-            UpdateStages.WithPublicNetworkAccess,
-            UpdateStages.WithDisableLocalAuth,
-            UpdateStages.WithDisableAadAuth,
-            UpdateStages.WithRegionEndpointEnabled,
-            UpdateStages.WithResourceStopped {
+        extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity, UpdateStages.WithTls,
+        UpdateStages.WithFeatures, UpdateStages.WithLiveTraceConfiguration, UpdateStages.WithResourceLogConfiguration,
+        UpdateStages.WithCors, UpdateStages.WithServerless, UpdateStages.WithUpstream, UpdateStages.WithNetworkACLs,
+        UpdateStages.WithPublicNetworkAccess, UpdateStages.WithDisableLocalAuth, UpdateStages.WithDisableAadAuth,
+        UpdateStages.WithRegionEndpointEnabled, UpdateStages.WithResourceStopped {
         /**
          * Executes the update request.
          *

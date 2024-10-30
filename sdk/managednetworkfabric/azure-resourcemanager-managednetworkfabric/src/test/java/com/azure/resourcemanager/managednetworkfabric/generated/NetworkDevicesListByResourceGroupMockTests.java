@@ -31,37 +31,27 @@ public final class NetworkDevicesListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"version\":\"wdkouzyvi\",\"networkDeviceSku\":\"v\",\"networkDeviceRole\":\"CE\",\"networkRackId\":\"mtsmgkre\",\"managementIpv4Address\":\"ny\",\"managementIpv6Address\":\"eulbyzz\",\"configurationState\":\"Failed\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"hostName\":\"myckdpzbr\",\"serialNumber\":\"mljrjyfjleuxix\",\"annotation\":\"sjldg\"},\"location\":\"mqoacfqzx\",\"tags\":{\"efq\":\"qcsotwqtkpdc\"},\"id\":\"ermgmgnddaxaog\",\"name\":\"khcm\",\"type\":\"mbipysehyyb\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"version\":\"wdkouzyvi\",\"networkDeviceSku\":\"v\",\"networkDeviceRole\":\"CE\",\"networkRackId\":\"mtsmgkre\",\"managementIpv4Address\":\"ny\",\"managementIpv6Address\":\"eulbyzz\",\"configurationState\":\"Failed\",\"provisioningState\":\"Accepted\",\"administrativeState\":\"Enabled\",\"hostName\":\"myckdpzbr\",\"serialNumber\":\"mljrjyfjleuxix\",\"annotation\":\"sjldg\"},\"location\":\"mqoacfqzx\",\"tags\":{\"efq\":\"qcsotwqtkpdc\"},\"id\":\"ermgmgnddaxaog\",\"name\":\"khcm\",\"type\":\"mbipysehyyb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<NetworkDevice> response =
-            manager.networkDevices().listByResourceGroup("l", com.azure.core.util.Context.NONE);
+        PagedIterable<NetworkDevice> response
+            = manager.networkDevices().listByResourceGroup("l", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("mqoacfqzx", response.iterator().next().location());
         Assertions.assertEquals("qcsotwqtkpdc", response.iterator().next().tags().get("efq"));

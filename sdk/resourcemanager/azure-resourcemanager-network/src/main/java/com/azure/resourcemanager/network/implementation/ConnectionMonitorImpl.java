@@ -30,10 +30,7 @@ public class ConnectionMonitorImpl
     private final ConnectionMonitorInner createParameters;
     private final NetworkWatcher parent;
 
-    ConnectionMonitorImpl(
-        String name,
-        NetworkWatcherImpl parent,
-        ConnectionMonitorResultInner innerObject,
+    ConnectionMonitorImpl(String name, NetworkWatcherImpl parent, ConnectionMonitorResultInner innerObject,
         ConnectionMonitorsClient client) {
         super(name, innerObject);
         this.client = client;
@@ -102,9 +99,7 @@ public class ConnectionMonitorImpl
 
     @Override
     public Mono<Void> stopAsync() {
-        return this
-            .client
-            .stopAsync(parent.resourceGroupName(), parent.name(), name())
+        return this.client.stopAsync(parent.resourceGroupName(), parent.name(), name())
             .flatMap(aVoid -> refreshAsync())
             .then();
     }
@@ -116,9 +111,7 @@ public class ConnectionMonitorImpl
 
     @Override
     public Mono<Void> startAsync() {
-        return this
-            .client
-            .startAsync(parent.resourceGroupName(), parent.name(), name())
+        return this.client.startAsync(parent.resourceGroupName(), parent.name(), name())
             .flatMap(aVoid -> refreshAsync())
             .then();
     }
@@ -130,9 +123,7 @@ public class ConnectionMonitorImpl
 
     @Override
     public Mono<ConnectionMonitorQueryResult> queryAsync() {
-        return this
-            .client
-            .queryAsync(parent.resourceGroupName(), parent.name(), name())
+        return this.client.queryAsync(parent.resourceGroupName(), parent.name(), name())
             .map(inner -> new ConnectionMonitorQueryResultImpl(inner));
     }
 
@@ -143,9 +134,7 @@ public class ConnectionMonitorImpl
 
     @Override
     public Mono<ConnectionMonitor> createResourceAsync() {
-        return this
-            .client
-            .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), createParameters)
+        return this.client.createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), createParameters)
             .map(innerToFluentMap(this));
     }
 

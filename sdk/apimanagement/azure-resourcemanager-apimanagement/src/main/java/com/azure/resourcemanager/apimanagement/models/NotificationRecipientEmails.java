@@ -21,8 +21,8 @@ public interface NotificationRecipientEmails {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the Notification Recipient Emails subscribed to a notification along with {@link Response}.
      */
-    Response<RecipientEmailCollection> listByNotificationWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, Context context);
+    Response<RecipientEmailCollection> listByNotificationWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, Context context);
 
     /**
      * Gets the list of the Notification Recipient Emails subscribed to a notification.
@@ -35,8 +35,8 @@ public interface NotificationRecipientEmails {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the Notification Recipient Emails subscribed to a notification.
      */
-    RecipientEmailCollection listByNotification(
-        String resourceGroupName, String serviceName, NotificationName notificationName);
+    RecipientEmailCollection listByNotification(String resourceGroupName, String serviceName,
+        NotificationName notificationName);
 
     /**
      * Determine if Notification Recipient Email subscribed to the notification.
@@ -51,8 +51,8 @@ public interface NotificationRecipientEmails {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists along with {@link Response}.
      */
-    Response<Boolean> checkEntityExistsWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String email, Context context);
+    Response<Boolean> checkEntityExistsWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String email, Context context);
 
     /**
      * Determine if Notification Recipient Email subscribed to the notification.
@@ -66,8 +66,8 @@ public interface NotificationRecipientEmails {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return whether resource exists.
      */
-    boolean checkEntityExists(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String email);
+    boolean checkEntityExists(String resourceGroupName, String serviceName, NotificationName notificationName,
+        String email);
 
     /**
      * Adds the Email address to the list of Recipients for the Notification.
@@ -82,8 +82,8 @@ public interface NotificationRecipientEmails {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recipient Email details along with {@link Response}.
      */
-    Response<RecipientEmailContract> createOrUpdateWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String email, Context context);
+    Response<RecipientEmailContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String email, Context context);
 
     /**
      * Adds the Email address to the list of Recipients for the Notification.
@@ -97,8 +97,8 @@ public interface NotificationRecipientEmails {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return recipient Email details.
      */
-    RecipientEmailContract createOrUpdate(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String email);
+    RecipientEmailContract createOrUpdate(String resourceGroupName, String serviceName,
+        NotificationName notificationName, String email);
 
     /**
      * Removes the email from the list of Notification.
@@ -113,8 +113,8 @@ public interface NotificationRecipientEmails {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, NotificationName notificationName, String email, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, NotificationName notificationName,
+        String email, Context context);
 
     /**
      * Removes the email from the list of Notification.

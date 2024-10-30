@@ -35,8 +35,8 @@ public final class CallConnectionProperties {
     private final String correlationId;
 
     static {
-        CallConnectionPropertiesConstructorProxy.setAccessor(
-            new CallConnectionPropertiesConstructorProxy.CallConnectionPropertiesConstructorAccessor() {
+        CallConnectionPropertiesConstructorProxy
+            .setAccessor(new CallConnectionPropertiesConstructorProxy.CallConnectionPropertiesConstructorAccessor() {
                 @Override
                 public CallConnectionProperties create(CallConnectionPropertiesInternal internalHeaders) {
                     return new CallConnectionProperties(internalHeaders);
@@ -71,15 +71,21 @@ public final class CallConnectionProperties {
     CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
         this.callConnectionId = callConnectionPropertiesInternal.getCallConnectionId();
         this.source = CommunicationIdentifierConverter.convert(callConnectionPropertiesInternal.getSource());
-        this.sourceCallerIdNumber = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceCallerIdNumber());
+        this.sourceCallerIdNumber
+            = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceCallerIdNumber());
         this.sourceDisplayName = callConnectionPropertiesInternal.getSourceDisplayName();
         this.serverCallId = callConnectionPropertiesInternal.getServerCallId();
-        this.targetParticipants = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
-        this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
+        this.targetParticipants = callConnectionPropertiesInternal.getTargets()
+            .stream()
+            .map(CommunicationIdentifierConverter::convert)
+            .collect(Collectors.toList());
+        this.callConnectionState
+            = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUrl = callConnectionPropertiesInternal.getCallbackUri();
         this.mediaSubscriptionId = callConnectionPropertiesInternal.getMediaSubscriptionId();
         this.dataSubscriptionId = callConnectionPropertiesInternal.getDataSubscriptionId();
-        this.answeredBy = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
+        this.answeredBy
+            = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
         this.correlationId = callConnectionPropertiesInternal.getCorrelationId();
     }
 

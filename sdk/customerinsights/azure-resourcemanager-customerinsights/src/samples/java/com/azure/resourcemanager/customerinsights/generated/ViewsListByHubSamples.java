@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.customerinsights.generated;
 
-/** Samples for Views ListByHub. */
+/**
+ * Samples for Views ListByHub.
+ */
 public final class ViewsListByHubSamples {
     /*
-     * x-ms-original-file: specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/ViewsListByHub.json
+     * x-ms-original-file:
+     * specification/customer-insights/resource-manager/Microsoft.CustomerInsights/stable/2017-04-26/examples/
+     * ViewsListByHub.json
      */
     /**
      * Sample code: Views_ListByHub.
-     *
+     * 
      * @param manager Entry point to CustomerInsightsManager.
      */
     public static void viewsListByHub(com.azure.resourcemanager.customerinsights.CustomerInsightsManager manager) {

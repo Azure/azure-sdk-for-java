@@ -17,12 +17,10 @@ import org.junit.jupiter.api.Assertions;
 public final class KustoPoolUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        KustoPoolUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"qpd\":\"omacluzvxnqmhr\",\"ssffxuifmc\":\"wmkoisq\",\"zsylollgt\":\"ypobkdqzr\",\"vuaurk\":\"czzydmxzjij\"},\"sku\":{\"name\":\"Compute"
-                        + " optimized\",\"capacity\":772541424,\"size\":\"Medium\"},\"properties\":{\"state\":\"Creating\",\"provisioningState\":\"Failed\",\"uri\":\"c\",\"dataIngestionUri\":\"nbkkjanurnnq\",\"stateReason\":\"q\",\"optimizedAutoscale\":{\"version\":170755995,\"isEnabled\":true,\"minimum\":1872065986,\"maximum\":1388268954},\"enableStreamingIngest\":true,\"enablePurge\":false,\"languageExtensions\":{\"value\":[]},\"workspaceUID\":\"pxrxvbfihwu\"},\"id\":\"vctafsrb\",\"name\":\"rblmli\",\"type\":\"wxihs\"}")
-                .toObject(KustoPoolUpdate.class);
+        KustoPoolUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"qpd\":\"omacluzvxnqmhr\",\"ssffxuifmc\":\"wmkoisq\",\"zsylollgt\":\"ypobkdqzr\",\"vuaurk\":\"czzydmxzjij\"},\"sku\":{\"name\":\"Compute"
+                + " optimized\",\"capacity\":772541424,\"size\":\"Medium\"},\"properties\":{\"state\":\"Creating\",\"provisioningState\":\"Failed\",\"uri\":\"c\",\"dataIngestionUri\":\"nbkkjanurnnq\",\"stateReason\":\"q\",\"optimizedAutoscale\":{\"version\":170755995,\"isEnabled\":true,\"minimum\":1872065986,\"maximum\":1388268954},\"enableStreamingIngest\":true,\"enablePurge\":false,\"languageExtensions\":{\"value\":[]},\"workspaceUID\":\"pxrxvbfihwu\"},\"id\":\"vctafsrb\",\"name\":\"rblmli\",\"type\":\"wxihs\"}")
+            .toObject(KustoPoolUpdate.class);
         Assertions.assertEquals("omacluzvxnqmhr", model.tags().get("qpd"));
         Assertions.assertEquals(SkuName.COMPUTE_OPTIMIZED, model.sku().name());
         Assertions.assertEquals(772541424, model.sku().capacity());
@@ -38,29 +36,18 @@ public final class KustoPoolUpdateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        KustoPoolUpdate model =
-            new KustoPoolUpdate()
-                .withTags(
-                    mapOf(
-                        "qpd",
-                        "omacluzvxnqmhr",
-                        "ssffxuifmc",
-                        "wmkoisq",
-                        "zsylollgt",
-                        "ypobkdqzr",
-                        "vuaurk",
-                        "czzydmxzjij"))
-                .withSku(
-                    new AzureSku().withName(SkuName.COMPUTE_OPTIMIZED).withCapacity(772541424).withSize(SkuSize.MEDIUM))
-                .withOptimizedAutoscale(
-                    new OptimizedAutoscale()
-                        .withVersion(170755995)
-                        .withIsEnabled(true)
-                        .withMinimum(1872065986)
-                        .withMaximum(1388268954))
-                .withEnableStreamingIngest(true)
-                .withEnablePurge(false)
-                .withWorkspaceUid("pxrxvbfihwu");
+        KustoPoolUpdate model = new KustoPoolUpdate()
+            .withTags(mapOf("qpd", "omacluzvxnqmhr", "ssffxuifmc", "wmkoisq", "zsylollgt", "ypobkdqzr", "vuaurk",
+                "czzydmxzjij"))
+            .withSku(
+                new AzureSku().withName(SkuName.COMPUTE_OPTIMIZED).withCapacity(772541424).withSize(SkuSize.MEDIUM))
+            .withOptimizedAutoscale(new OptimizedAutoscale().withVersion(170755995)
+                .withIsEnabled(true)
+                .withMinimum(1872065986)
+                .withMaximum(1388268954))
+            .withEnableStreamingIngest(true)
+            .withEnablePurge(false)
+            .withWorkspaceUid("pxrxvbfihwu");
         model = BinaryData.fromObject(model).toObject(KustoPoolUpdate.class);
         Assertions.assertEquals("omacluzvxnqmhr", model.tags().get("qpd"));
         Assertions.assertEquals(SkuName.COMPUTE_OPTIMIZED, model.sku().name());

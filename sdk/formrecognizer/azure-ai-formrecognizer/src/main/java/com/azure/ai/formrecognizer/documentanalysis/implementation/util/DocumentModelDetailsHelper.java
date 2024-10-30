@@ -34,6 +34,7 @@ public final class DocumentModelDetailsHelper {
         void setTags(DocumentModelDetails documentModelDetails, Map<String, String> tags);
 
         void setExpiresOn(DocumentModelDetails documentModelDetails, OffsetDateTime expiresOn);
+
         void setServiceVersion(DocumentModelDetails documentModelDetails, String apiVersion);
     }
 

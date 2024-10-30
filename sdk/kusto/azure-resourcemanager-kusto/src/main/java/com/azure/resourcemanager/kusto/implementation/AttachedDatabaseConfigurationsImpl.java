@@ -24,36 +24,28 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public AttachedDatabaseConfigurationsImpl(
-        AttachedDatabaseConfigurationsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    public AttachedDatabaseConfigurationsImpl(AttachedDatabaseConfigurationsClient innerClient,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
-        Context context) {
-        Response<CheckNameResultInner> inner =
-            this
-                .serviceClient()
-                .checkNameAvailabilityWithResponse(resourceGroupName, clusterName, resourceName, context);
+    public Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        AttachedDatabaseConfigurationsCheckNameRequest resourceName, Context context) {
+        Response<CheckNameResultInner> inner = this.serviceClient()
+            .checkNameAvailabilityWithResponse(resourceGroupName, clusterName, resourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
+    public CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName,
+        AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+        CheckNameResultInner inner
+            = this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
         if (inner != null) {
             return new CheckNameResultImpl(inner, this.manager());
         } else {
@@ -62,39 +54,34 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
     }
 
     public PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName) {
-        PagedIterable<AttachedDatabaseConfigurationInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName);
+        PagedIterable<AttachedDatabaseConfigurationInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName);
         return Utils.mapPage(inner, inner1 -> new AttachedDatabaseConfigurationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AttachedDatabaseConfiguration> listByCluster(
-        String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<AttachedDatabaseConfigurationInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+    public PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName,
+        Context context) {
+        PagedIterable<AttachedDatabaseConfigurationInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new AttachedDatabaseConfigurationImpl(inner1, this.manager()));
     }
 
-    public Response<AttachedDatabaseConfiguration> getWithResponse(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
-        Response<AttachedDatabaseConfigurationInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
+    public Response<AttachedDatabaseConfiguration> getWithResponse(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, Context context) {
+        Response<AttachedDatabaseConfigurationInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AttachedDatabaseConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AttachedDatabaseConfiguration get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName) {
-        AttachedDatabaseConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
+    public AttachedDatabaseConfiguration get(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName) {
+        AttachedDatabaseConfigurationInner inner
+            = this.serviceClient().get(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
         if (inner != null) {
             return new AttachedDatabaseConfigurationImpl(inner, this.manager());
         } else {
@@ -106,69 +93,46 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         this.serviceClient().delete(resourceGroupName, clusterName, attachedDatabaseConfigurationName);
     }
 
-    public void delete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context) {
+    public void delete(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
     }
 
     public AttachedDatabaseConfiguration getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'attachedDatabaseConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment" + " 'attachedDatabaseConfigurations'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE)
             .getValue();
     }
 
     public Response<AttachedDatabaseConfiguration> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'attachedDatabaseConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment" + " 'attachedDatabaseConfigurations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
     }
@@ -176,29 +140,18 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'attachedDatabaseConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment" + " 'attachedDatabaseConfigurations'.", id)));
         }
         this.delete(resourceGroupName, clusterName, attachedDatabaseConfigurationName, Context.NONE);
     }
@@ -206,29 +159,18 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String clusterName = Utils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
         String attachedDatabaseConfigurationName = Utils.getValueFromIdByName(id, "attachedDatabaseConfigurations");
         if (attachedDatabaseConfigurationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'attachedDatabaseConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment" + " 'attachedDatabaseConfigurations'.", id)));
         }
         this.delete(resourceGroupName, clusterName, attachedDatabaseConfigurationName, context);
     }

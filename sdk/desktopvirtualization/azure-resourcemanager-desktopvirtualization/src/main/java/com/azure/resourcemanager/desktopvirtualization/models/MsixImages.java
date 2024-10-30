@@ -7,11 +7,13 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of MsixImages. */
+/**
+ * Resource collection API of MsixImages.
+ */
 public interface MsixImages {
     /**
      * Expands and Lists MSIX packages in an Image, given the Image Path.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixImageUri Object containing URI to MSIX Image.
@@ -24,7 +26,7 @@ public interface MsixImages {
 
     /**
      * Expands and Lists MSIX packages in an Image, given the Image Path.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param hostPoolName The name of the host pool within the specified resource group.
      * @param msixImageUri Object containing URI to MSIX Image.
@@ -34,6 +36,6 @@ public interface MsixImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expandMsixImageList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ExpandMsixImage> expand(
-        String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri, Context context);
+    PagedIterable<ExpandMsixImage> expand(String resourceGroupName, String hostPoolName, MsixImageUri msixImageUri,
+        Context context);
 }

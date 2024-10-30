@@ -10,13 +10,13 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
-import com.azure.core.http.vertx.VertxAsyncHttpClientProvider;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
@@ -50,8 +50,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -131,8 +130,8 @@ public class HttpFaultInjectingTests {
             StandardOpenOption.TRUNCATE_EXISTING, // If the file already exists and it is opened for WRITE access, then its length is truncated to 0.
             StandardOpenOption.READ, StandardOpenOption.WRITE));
 
-        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        executorService.invokeAll(files.stream().map(it -> (Callable<Void>) () -> {
+        CountDownLatch countDownLatch = new CountDownLatch(500);
+        SharedExecutorService.getInstance().invokeAll(files.stream().map(it -> (Callable<Void>) () -> {
             try {
                 downloadClient.downloadToFileWithResponse(new BlobDownloadToFileOptions(it.getAbsolutePath())
                         .setOpenOptions(overwriteOptions)
@@ -149,13 +148,14 @@ public class HttpFaultInjectingTests {
                 LOGGER.atWarning()
                     .addKeyValue("downloadFile", it.getAbsolutePath())
                     .log("Failed to complete download.", ex);
+            } finally {
+                countDownLatch.countDown();
             }
 
             return null;
         }).collect(Collectors.toList()));
 
-        executorService.shutdown();
-        executorService.awaitTermination(10, TimeUnit.MINUTES);
+        countDownLatch.await(10, TimeUnit.MINUTES);
 
         assertTrue(successCount.get() >= 450);
         // cleanup
@@ -187,7 +187,7 @@ public class HttpFaultInjectingTests {
                 return HttpClient.createDefault(new HttpClientOptions()
                     .readTimeout(Duration.ofSeconds(2))
                     .responseTimeout(Duration.ofSeconds(2))
-                    .setHttpClientProvider(VertxAsyncHttpClientProvider.class));
+                    .setHttpClientProvider(getVertxClientProviderReflectivelyUntilNameChangeReleases()));
             case JDK_HTTP:
                 try {
                     return HttpClient.createDefault(new HttpClientOptions()
@@ -202,6 +202,23 @@ public class HttpFaultInjectingTests {
             default:
                 throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());
         }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Class<? extends HttpClientProvider> getVertxClientProviderReflectivelyUntilNameChangeReleases() {
+        Class<?> clazz;
+        try {
+            clazz = Class.forName("com.azure.core.http.vertx.VertxHttpClientProvider");
+        } catch (ClassNotFoundException ex) {
+            try {
+                clazz = Class.forName("com.azure.core.http.vertx.VertxAsyncHttpClientProvider");
+            } catch (ClassNotFoundException ex2) {
+                ex2.addSuppressed(ex);
+                throw new RuntimeException(ex2);
+            }
+        }
+
+        return (Class<? extends HttpClientProvider>) clazz;
     }
 
     // For now a local implementation is here in azure-storage-blob until this is released in azure-core-test.

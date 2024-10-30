@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SchedulePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleProperties model =
-            BinaryData
-                .fromString(
-                    "{\"frequency\":\"Weekly\",\"hourOfDay\":1629743975,\"daysOfWeek\":[\"Saturday\"],\"weeksOfMonth\":[\"Second\",\"Fourth\",\"First\",\"Second\"],\"dayOfMonth\":401545193,\"startDate\":\"2021-10-26T10:22:19Z\",\"endDate\":\"2021-05-04T23:51:10Z\"}")
-                .toObject(ScheduleProperties.class);
+        ScheduleProperties model = BinaryData.fromString(
+            "{\"frequency\":\"Weekly\",\"hourOfDay\":1629743975,\"daysOfWeek\":[\"Saturday\"],\"weeksOfMonth\":[\"Second\",\"Fourth\",\"First\",\"Second\"],\"dayOfMonth\":401545193,\"startDate\":\"2021-10-26T10:22:19Z\",\"endDate\":\"2021-05-04T23:51:10Z\"}")
+            .toObject(ScheduleProperties.class);
         Assertions.assertEquals(ScheduleFrequency.WEEKLY, model.frequency());
         Assertions.assertEquals(1629743975, model.hourOfDay());
         Assertions.assertEquals(DaysOfWeek.SATURDAY, model.daysOfWeek().get(0));
@@ -32,16 +30,14 @@ public final class SchedulePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScheduleProperties model =
-            new ScheduleProperties()
-                .withFrequency(ScheduleFrequency.WEEKLY)
-                .withHourOfDay(1629743975)
-                .withDaysOfWeek(Arrays.asList(DaysOfWeek.SATURDAY))
-                .withWeeksOfMonth(
-                    Arrays.asList(WeeksOfMonth.SECOND, WeeksOfMonth.FOURTH, WeeksOfMonth.FIRST, WeeksOfMonth.SECOND))
-                .withDayOfMonth(401545193)
-                .withStartDate(OffsetDateTime.parse("2021-10-26T10:22:19Z"))
-                .withEndDate(OffsetDateTime.parse("2021-05-04T23:51:10Z"));
+        ScheduleProperties model = new ScheduleProperties().withFrequency(ScheduleFrequency.WEEKLY)
+            .withHourOfDay(1629743975)
+            .withDaysOfWeek(Arrays.asList(DaysOfWeek.SATURDAY))
+            .withWeeksOfMonth(
+                Arrays.asList(WeeksOfMonth.SECOND, WeeksOfMonth.FOURTH, WeeksOfMonth.FIRST, WeeksOfMonth.SECOND))
+            .withDayOfMonth(401545193)
+            .withStartDate(OffsetDateTime.parse("2021-10-26T10:22:19Z"))
+            .withEndDate(OffsetDateTime.parse("2021-05-04T23:51:10Z"));
         model = BinaryData.fromObject(model).toObject(ScheduleProperties.class);
         Assertions.assertEquals(ScheduleFrequency.WEEKLY, model.frequency());
         Assertions.assertEquals(1629743975, model.hourOfDay());

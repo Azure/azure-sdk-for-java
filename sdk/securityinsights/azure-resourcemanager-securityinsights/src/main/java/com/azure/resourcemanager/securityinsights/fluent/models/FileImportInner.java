@@ -7,33 +7,57 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.securityinsights.models.FileImportContentType;
 import com.azure.resourcemanager.securityinsights.models.FileImportState;
 import com.azure.resourcemanager.securityinsights.models.FileMetadata;
 import com.azure.resourcemanager.securityinsights.models.IngestionMode;
 import com.azure.resourcemanager.securityinsights.models.ValidationError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Represents a file import in Azure Security Insights. */
+/**
+ * Represents a file import in Azure Security Insights.
+ */
 @Fluent
 public final class FileImportInner extends ProxyResource {
     /*
      * File import properties
      */
-    @JsonProperty(value = "properties")
     private FileImportProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FileImportInner class.
+     */
+    public FileImportInner() {
+    }
 
     /**
      * Get the innerProperties property: File import properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FileImportProperties innerProperties() {
@@ -42,7 +66,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,8 +74,38 @@ public final class FileImportInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the ingestionMode property: Describes how to ingest the records in the file.
-     *
+     * 
      * @return the ingestionMode value.
      */
     public IngestionMode ingestionMode() {
@@ -60,7 +114,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Set the ingestionMode property: Describes how to ingest the records in the file.
-     *
+     * 
      * @param ingestionMode the ingestionMode value to set.
      * @return the FileImportInner object itself.
      */
@@ -74,7 +128,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Get the contentType property: The content type of this file.
-     *
+     * 
      * @return the contentType value.
      */
     public FileImportContentType contentType() {
@@ -83,7 +137,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Set the contentType property: The content type of this file.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the FileImportInner object itself.
      */
@@ -97,7 +151,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Get the createdTimeUtc property: The time the file was imported.
-     *
+     * 
      * @return the createdTimeUtc value.
      */
     public OffsetDateTime createdTimeUtc() {
@@ -107,7 +161,7 @@ public final class FileImportInner extends ProxyResource {
     /**
      * Get the errorFile property: Represents the error file (if the import was ingested with errors or failed the
      * validation).
-     *
+     * 
      * @return the errorFile value.
      */
     public FileMetadata errorFile() {
@@ -116,7 +170,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Get the errorsPreview property: An ordered list of some of the errors that were encountered during validation.
-     *
+     * 
      * @return the errorsPreview value.
      */
     public List<ValidationError> errorsPreview() {
@@ -125,7 +179,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Get the importFile property: Represents the imported file.
-     *
+     * 
      * @return the importFile value.
      */
     public FileMetadata importFile() {
@@ -134,7 +188,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Set the importFile property: Represents the imported file.
-     *
+     * 
      * @param importFile the importFile value to set.
      * @return the FileImportInner object itself.
      */
@@ -148,7 +202,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Get the ingestedRecordCount property: The number of records that have been successfully ingested.
-     *
+     * 
      * @return the ingestedRecordCount value.
      */
     public Integer ingestedRecordCount() {
@@ -157,7 +211,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Get the source property: The source for the data in the file.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -166,7 +220,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Set the source property: The source for the data in the file.
-     *
+     * 
      * @param source the source value to set.
      * @return the FileImportInner object itself.
      */
@@ -180,7 +234,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Get the state property: The state of the file import.
-     *
+     * 
      * @return the state value.
      */
     public FileImportState state() {
@@ -189,7 +243,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Get the totalRecordCount property: The number of records in the file.
-     *
+     * 
      * @return the totalRecordCount value.
      */
     public Integer totalRecordCount() {
@@ -198,7 +252,7 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Get the validRecordCount property: The number of records that have passed validation.
-     *
+     * 
      * @return the validRecordCount value.
      */
     public Integer validRecordCount() {
@@ -208,7 +262,7 @@ public final class FileImportInner extends ProxyResource {
     /**
      * Get the filesValidUntilTimeUtc property: The time the files associated with this import are deleted from the
      * storage account.
-     *
+     * 
      * @return the filesValidUntilTimeUtc value.
      */
     public OffsetDateTime filesValidUntilTimeUtc() {
@@ -218,7 +272,7 @@ public final class FileImportInner extends ProxyResource {
     /**
      * Get the importValidUntilTimeUtc property: The time the file import record is soft deleted from the database and
      * history.
-     *
+     * 
      * @return the importValidUntilTimeUtc value.
      */
     public OffsetDateTime importValidUntilTimeUtc() {
@@ -227,12 +281,57 @@ public final class FileImportInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileImportInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileImportInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FileImportInner.
+     */
+    public static FileImportInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileImportInner deserializedFileImportInner = new FileImportInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFileImportInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFileImportInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFileImportInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFileImportInner.innerProperties = FileImportProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFileImportInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileImportInner;
+        });
     }
 }

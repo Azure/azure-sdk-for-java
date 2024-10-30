@@ -23,8 +23,10 @@ public final class SCMetadataEntityTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SCMetadataEntity model = new SCMetadataEntity().withSelf("gxqquezik").withResourceName("ggxkallatmelwuip")
-            .withCreatedTimestamp("cjzkzivgvvcna").withUpdatedTimestamp("hyrnxxmu")
+        SCMetadataEntity model = new SCMetadataEntity().withSelf("gxqquezik")
+            .withResourceName("ggxkallatmelwuip")
+            .withCreatedTimestamp("cjzkzivgvvcna")
+            .withUpdatedTimestamp("hyrnxxmu")
             .withDeletedTimestamp("dndrdvstkwqqtche");
         model = BinaryData.fromObject(model).toObject(SCMetadataEntity.class);
         Assertions.assertEquals("gxqquezik", model.self());

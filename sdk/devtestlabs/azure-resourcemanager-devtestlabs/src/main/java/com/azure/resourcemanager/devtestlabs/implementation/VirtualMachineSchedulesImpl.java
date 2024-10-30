@@ -22,8 +22,7 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public VirtualMachineSchedulesImpl(
-        VirtualMachineSchedulesClient innerClient,
+    public VirtualMachineSchedulesImpl(VirtualMachineSchedulesClient innerClient,
         com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,36 +33,19 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
         return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Schedule> list(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
-        PagedIterable<ScheduleInner> inner =
-            this
-                .serviceClient()
-                .list(resourceGroupName, labName, virtualMachineName, expand, filter, top, orderby, context);
+    public PagedIterable<Schedule> list(String resourceGroupName, String labName, String virtualMachineName,
+        String expand, String filter, Integer top, String orderby, Context context) {
+        PagedIterable<ScheduleInner> inner = this.serviceClient()
+            .list(resourceGroupName, labName, virtualMachineName, expand, filter, top, orderby, context);
         return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
-    public Response<Schedule> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        String expand,
-        Context context) {
-        Response<ScheduleInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, labName, virtualMachineName, name, expand, context);
+    public Response<Schedule> getWithResponse(String resourceGroupName, String labName, String virtualMachineName,
+        String name, String expand, Context context) {
+        Response<ScheduleInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, labName, virtualMachineName, name, expand, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ScheduleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -79,32 +61,22 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
         }
     }
 
-    public Response<Schedule> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        ScheduleInner schedule,
-        Context context) {
-        Response<ScheduleInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(resourceGroupName, labName, virtualMachineName, name, schedule, context);
+    public Response<Schedule> createOrUpdateWithResponse(String resourceGroupName, String labName,
+        String virtualMachineName, String name, ScheduleInner schedule, Context context) {
+        Response<ScheduleInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, labName, virtualMachineName, name, schedule, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ScheduleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Schedule createOrUpdate(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleInner schedule) {
-        ScheduleInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, labName, virtualMachineName, name, schedule);
+    public Schedule createOrUpdate(String resourceGroupName, String labName, String virtualMachineName, String name,
+        ScheduleInner schedule) {
+        ScheduleInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, labName, virtualMachineName, name, schedule);
         if (inner != null) {
             return new ScheduleImpl(inner, this.manager());
         } else {
@@ -112,8 +84,8 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String labName, String virtualMachineName, String name, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String labName, String virtualMachineName,
+        String name, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, labName, virtualMachineName, name, context);
     }
 
@@ -121,32 +93,22 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
         this.serviceClient().delete(resourceGroupName, labName, virtualMachineName, name);
     }
 
-    public Response<Schedule> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        ScheduleFragment schedule,
-        Context context) {
-        Response<ScheduleInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, labName, virtualMachineName, name, schedule, context);
+    public Response<Schedule> updateWithResponse(String resourceGroupName, String labName, String virtualMachineName,
+        String name, ScheduleFragment schedule, Context context) {
+        Response<ScheduleInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, labName, virtualMachineName, name, schedule, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ScheduleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Schedule update(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleFragment schedule) {
-        ScheduleInner inner =
-            this.serviceClient().update(resourceGroupName, labName, virtualMachineName, name, schedule);
+    public Schedule update(String resourceGroupName, String labName, String virtualMachineName, String name,
+        ScheduleFragment schedule) {
+        ScheduleInner inner
+            = this.serviceClient().update(resourceGroupName, labName, virtualMachineName, name, schedule);
         if (inner != null) {
             return new ScheduleImpl(inner, this.manager());
         } else {
@@ -158,8 +120,8 @@ public final class VirtualMachineSchedulesImpl implements VirtualMachineSchedule
         this.serviceClient().execute(resourceGroupName, labName, virtualMachineName, name);
     }
 
-    public void execute(
-        String resourceGroupName, String labName, String virtualMachineName, String name, Context context) {
+    public void execute(String resourceGroupName, String labName, String virtualMachineName, String name,
+        Context context) {
         this.serviceClient().execute(resourceGroupName, labName, virtualMachineName, name, context);
     }
 

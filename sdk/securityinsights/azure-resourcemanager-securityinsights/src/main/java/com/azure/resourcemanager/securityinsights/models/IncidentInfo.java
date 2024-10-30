@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes related incident information for the bookmark. */
+/**
+ * Describes related incident information for the bookmark.
+ */
 @Fluent
-public final class IncidentInfo {
+public final class IncidentInfo implements JsonSerializable<IncidentInfo> {
     /*
      * Incident Id
      */
-    @JsonProperty(value = "incidentId")
     private String incidentId;
 
     /*
      * The severity of the incident
      */
-    @JsonProperty(value = "severity")
     private IncidentSeverity severity;
 
     /*
      * The title of the incident
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Relation Name
      */
-    @JsonProperty(value = "relationName")
     private String relationName;
 
     /**
+     * Creates an instance of IncidentInfo class.
+     */
+    public IncidentInfo() {
+    }
+
+    /**
      * Get the incidentId property: Incident Id.
-     *
+     * 
      * @return the incidentId value.
      */
     public String incidentId() {
@@ -45,7 +53,7 @@ public final class IncidentInfo {
 
     /**
      * Set the incidentId property: Incident Id.
-     *
+     * 
      * @param incidentId the incidentId value to set.
      * @return the IncidentInfo object itself.
      */
@@ -56,7 +64,7 @@ public final class IncidentInfo {
 
     /**
      * Get the severity property: The severity of the incident.
-     *
+     * 
      * @return the severity value.
      */
     public IncidentSeverity severity() {
@@ -65,7 +73,7 @@ public final class IncidentInfo {
 
     /**
      * Set the severity property: The severity of the incident.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the IncidentInfo object itself.
      */
@@ -76,7 +84,7 @@ public final class IncidentInfo {
 
     /**
      * Get the title property: The title of the incident.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -85,7 +93,7 @@ public final class IncidentInfo {
 
     /**
      * Set the title property: The title of the incident.
-     *
+     * 
      * @param title the title value to set.
      * @return the IncidentInfo object itself.
      */
@@ -96,7 +104,7 @@ public final class IncidentInfo {
 
     /**
      * Get the relationName property: Relation Name.
-     *
+     * 
      * @return the relationName value.
      */
     public String relationName() {
@@ -105,7 +113,7 @@ public final class IncidentInfo {
 
     /**
      * Set the relationName property: Relation Name.
-     *
+     * 
      * @param relationName the relationName value to set.
      * @return the IncidentInfo object itself.
      */
@@ -116,9 +124,54 @@ public final class IncidentInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("incidentId", this.incidentId);
+        jsonWriter.writeStringField("severity", this.severity == null ? null : this.severity.toString());
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("relationName", this.relationName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IncidentInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IncidentInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IncidentInfo.
+     */
+    public static IncidentInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IncidentInfo deserializedIncidentInfo = new IncidentInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("incidentId".equals(fieldName)) {
+                    deserializedIncidentInfo.incidentId = reader.getString();
+                } else if ("severity".equals(fieldName)) {
+                    deserializedIncidentInfo.severity = IncidentSeverity.fromString(reader.getString());
+                } else if ("title".equals(fieldName)) {
+                    deserializedIncidentInfo.title = reader.getString();
+                } else if ("relationName".equals(fieldName)) {
+                    deserializedIncidentInfo.relationName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIncidentInfo;
+        });
     }
 }

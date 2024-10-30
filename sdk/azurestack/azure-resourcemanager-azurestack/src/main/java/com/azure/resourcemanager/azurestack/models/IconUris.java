@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Links to product icons. */
+/**
+ * Links to product icons.
+ */
 @Fluent
-public final class IconUris {
+public final class IconUris implements JsonSerializable<IconUris> {
     /*
      * URI to large icon.
      */
-    @JsonProperty(value = "large")
     private String large;
 
     /*
      * URI to wide icon.
      */
-    @JsonProperty(value = "wide")
     private String wide;
 
     /*
      * URI to medium icon.
      */
-    @JsonProperty(value = "medium")
     private String medium;
 
     /*
      * URI to small icon.
      */
-    @JsonProperty(value = "small")
     private String small;
 
     /*
      * URI to hero icon.
      */
-    @JsonProperty(value = "hero")
     private String hero;
 
-    /** Creates an instance of IconUris class. */
+    /**
+     * Creates an instance of IconUris class.
+     */
     public IconUris() {
     }
 
     /**
      * Get the large property: URI to large icon.
-     *
+     * 
      * @return the large value.
      */
     public String large() {
@@ -55,7 +58,7 @@ public final class IconUris {
 
     /**
      * Set the large property: URI to large icon.
-     *
+     * 
      * @param large the large value to set.
      * @return the IconUris object itself.
      */
@@ -66,7 +69,7 @@ public final class IconUris {
 
     /**
      * Get the wide property: URI to wide icon.
-     *
+     * 
      * @return the wide value.
      */
     public String wide() {
@@ -75,7 +78,7 @@ public final class IconUris {
 
     /**
      * Set the wide property: URI to wide icon.
-     *
+     * 
      * @param wide the wide value to set.
      * @return the IconUris object itself.
      */
@@ -86,7 +89,7 @@ public final class IconUris {
 
     /**
      * Get the medium property: URI to medium icon.
-     *
+     * 
      * @return the medium value.
      */
     public String medium() {
@@ -95,7 +98,7 @@ public final class IconUris {
 
     /**
      * Set the medium property: URI to medium icon.
-     *
+     * 
      * @param medium the medium value to set.
      * @return the IconUris object itself.
      */
@@ -106,7 +109,7 @@ public final class IconUris {
 
     /**
      * Get the small property: URI to small icon.
-     *
+     * 
      * @return the small value.
      */
     public String small() {
@@ -115,7 +118,7 @@ public final class IconUris {
 
     /**
      * Set the small property: URI to small icon.
-     *
+     * 
      * @param small the small value to set.
      * @return the IconUris object itself.
      */
@@ -126,7 +129,7 @@ public final class IconUris {
 
     /**
      * Get the hero property: URI to hero icon.
-     *
+     * 
      * @return the hero value.
      */
     public String hero() {
@@ -135,7 +138,7 @@ public final class IconUris {
 
     /**
      * Set the hero property: URI to hero icon.
-     *
+     * 
      * @param hero the hero value to set.
      * @return the IconUris object itself.
      */
@@ -146,9 +149,57 @@ public final class IconUris {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("large", this.large);
+        jsonWriter.writeStringField("wide", this.wide);
+        jsonWriter.writeStringField("medium", this.medium);
+        jsonWriter.writeStringField("small", this.small);
+        jsonWriter.writeStringField("hero", this.hero);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IconUris from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IconUris if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the IconUris.
+     */
+    public static IconUris fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IconUris deserializedIconUris = new IconUris();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("large".equals(fieldName)) {
+                    deserializedIconUris.large = reader.getString();
+                } else if ("wide".equals(fieldName)) {
+                    deserializedIconUris.wide = reader.getString();
+                } else if ("medium".equals(fieldName)) {
+                    deserializedIconUris.medium = reader.getString();
+                } else if ("small".equals(fieldName)) {
+                    deserializedIconUris.small = reader.getString();
+                } else if ("hero".equals(fieldName)) {
+                    deserializedIconUris.hero = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIconUris;
+        });
     }
 }

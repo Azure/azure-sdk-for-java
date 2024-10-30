@@ -14,7 +14,7 @@ import java.util.Map;
 public final class IpGroupsUpdateGroupsSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2024-01-01/examples/IpGroupsUpdateTags.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-03-01/examples/IpGroupsUpdateTags.json
      */
     /**
      * Sample code: Update_IpGroups.

@@ -64,40 +64,28 @@ public final class HybridRunbookWorkerGroupImpl
 
     private HybridRunbookWorkerGroupCreateOrUpdateParameters updateHybridRunbookWorkerGroupUpdationParameters;
 
-    public HybridRunbookWorkerGroupImpl withExistingAutomationAccount(
-        String resourceGroupName, String automationAccountName) {
+    public HybridRunbookWorkerGroupImpl withExistingAutomationAccount(String resourceGroupName,
+        String automationAccountName) {
         this.resourceGroupName = resourceGroupName;
         this.automationAccountName = automationAccountName;
         return this;
     }
 
     public HybridRunbookWorkerGroup create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridRunbookWorkerGroups()
-                .createWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    hybridRunbookWorkerGroupName,
-                    createHybridRunbookWorkerGroupCreationParameters,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHybridRunbookWorkerGroups()
+            .createWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName,
+                createHybridRunbookWorkerGroupCreationParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public HybridRunbookWorkerGroup create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridRunbookWorkerGroups()
-                .createWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    hybridRunbookWorkerGroupName,
-                    createHybridRunbookWorkerGroupCreationParameters,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHybridRunbookWorkerGroups()
+            .createWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName,
+                createHybridRunbookWorkerGroupCreationParameters, context)
+            .getValue();
         return this;
     }
 
@@ -114,62 +102,46 @@ public final class HybridRunbookWorkerGroupImpl
     }
 
     public HybridRunbookWorkerGroup apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridRunbookWorkerGroups()
-                .updateWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    hybridRunbookWorkerGroupName,
-                    updateHybridRunbookWorkerGroupUpdationParameters,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHybridRunbookWorkerGroups()
+            .updateWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName,
+                updateHybridRunbookWorkerGroupUpdationParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public HybridRunbookWorkerGroup apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridRunbookWorkerGroups()
-                .updateWithResponse(
-                    resourceGroupName,
-                    automationAccountName,
-                    hybridRunbookWorkerGroupName,
-                    updateHybridRunbookWorkerGroupUpdationParameters,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHybridRunbookWorkerGroups()
+            .updateWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName,
+                updateHybridRunbookWorkerGroupUpdationParameters, context)
+            .getValue();
         return this;
     }
 
-    HybridRunbookWorkerGroupImpl(
-        HybridRunbookWorkerGroupInner innerObject,
+    HybridRunbookWorkerGroupImpl(HybridRunbookWorkerGroupInner innerObject,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationAccountName = Utils.getValueFromIdByName(innerObject.id(), "automationAccounts");
-        this.hybridRunbookWorkerGroupName = Utils.getValueFromIdByName(innerObject.id(), "hybridRunbookWorkerGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationAccountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automationAccounts");
+        this.hybridRunbookWorkerGroupName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hybridRunbookWorkerGroups");
     }
 
     public HybridRunbookWorkerGroup refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridRunbookWorkerGroups()
-                .getWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHybridRunbookWorkerGroups()
+            .getWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public HybridRunbookWorkerGroup refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHybridRunbookWorkerGroups()
-                .getWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHybridRunbookWorkerGroups()
+            .getWithResponse(resourceGroupName, automationAccountName, hybridRunbookWorkerGroupName, context)
+            .getValue();
         return this;
     }
 

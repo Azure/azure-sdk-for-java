@@ -96,10 +96,8 @@ public final class SecretClientImpl {
      * @param apiVersion Api Version.
      */
     public SecretClientImpl(String apiVersion) {
-        this(
-                new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-                JacksonAdapter.createDefaultSerializerAdapter(),
-                apiVersion);
+        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
+            JacksonAdapter.createDefaultSerializerAdapter(), apiVersion);
     }
 
     /**
@@ -133,312 +131,220 @@ public final class SecretClientImpl {
     @ServiceInterface(name = "SecretClient")
     public interface SecretClientService {
         @Put("/secrets/{secret-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<SecretBundle>> setSecret(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SecretSetParameters parameters,
-                @HeaderParam("Accept") String accept,
-                @HeaderParam("Content-Type") String contentType,
-                Context context);
+        Mono<Response<SecretBundle>> setSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SecretSetParameters parameters, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, Context context);
 
         @Put("/secrets/{secret-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<SecretBundle> setSecretSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SecretSetParameters parameters,
-                @HeaderParam("Accept") String accept,
-                @HeaderParam("Content-Type") String contentType,
-                Context context);
+        Response<SecretBundle> setSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SecretSetParameters parameters, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, Context context);
 
         @Delete("/secrets/{secret-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<DeletedSecretBundle>> deleteSecret(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<DeletedSecretBundle>> deleteSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/secrets/{secret-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<DeletedSecretBundle> deleteSecretSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<DeletedSecretBundle> deleteSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Patch("/secrets/{secret-name}/{secret-version}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<SecretBundle>> updateSecret(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @PathParam("secret-version") String secretVersion,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SecretUpdateParameters parameters,
-                @HeaderParam("Accept") String accept,
-                @HeaderParam("Content-Type") String contentType,
-                Context context);
+        Mono<Response<SecretBundle>> updateSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @PathParam("secret-version") String secretVersion,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SecretUpdateParameters parameters, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, Context context);
 
         @Patch("/secrets/{secret-name}/{secret-version}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<SecretBundle> updateSecretSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @PathParam("secret-version") String secretVersion,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SecretUpdateParameters parameters,
-                @HeaderParam("Accept") String accept,
-                @HeaderParam("Content-Type") String contentType,
-                Context context);
+        Response<SecretBundle> updateSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @PathParam("secret-version") String secretVersion,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SecretUpdateParameters parameters, @HeaderParam("Accept") String accept,
+            @HeaderParam("Content-Type") String contentType, Context context);
 
         @Get("/secrets/{secret-name}/{secret-version}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<SecretBundle>> getSecret(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @PathParam("secret-version") String secretVersion,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SecretBundle>> getSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @PathParam("secret-version") String secretVersion,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/secrets/{secret-name}/{secret-version}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<SecretBundle> getSecretSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @PathParam("secret-version") String secretVersion,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<SecretBundle> getSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @PathParam("secret-version") String secretVersion,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/secrets")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<SecretListResult>> getSecrets(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SecretListResult>> getSecrets(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/secrets")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<SecretListResult> getSecretsSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<SecretListResult> getSecretsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/secrets/{secret-name}/versions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<SecretListResult>> getSecretVersions(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SecretListResult>> getSecretVersions(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/secrets/{secret-name}/versions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<SecretListResult> getSecretVersionsSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<SecretListResult> getSecretVersionsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/deletedsecrets")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<DeletedSecretListResult>> getDeletedSecrets(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<DeletedSecretListResult>> getDeletedSecrets(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/deletedsecrets")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<DeletedSecretListResult> getDeletedSecretsSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("maxresults") Integer maxresults,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<DeletedSecretListResult> getDeletedSecretsSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("maxresults") Integer maxresults, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/deletedsecrets/{secret-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<DeletedSecretBundle>> getDeletedSecret(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<DeletedSecretBundle>> getDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/deletedsecrets/{secret-name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<DeletedSecretBundle> getDeletedSecretSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<DeletedSecretBundle> getDeletedSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/deletedsecrets/{secret-name}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<Void>> purgeDeletedSecret(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> purgeDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/deletedsecrets/{secret-name}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<Void> purgeDeletedSecretSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Void> purgeDeletedSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/deletedsecrets/{secret-name}/recover")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<SecretBundle>> recoverDeletedSecret(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SecretBundle>> recoverDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/deletedsecrets/{secret-name}/recover")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<SecretBundle> recoverDeletedSecretSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<SecretBundle> recoverDeletedSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/secrets/{secret-name}/backup")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<BackupSecretResult>> backupSecret(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<BackupSecretResult>> backupSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/secrets/{secret-name}/backup")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<BackupSecretResult> backupSecretSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @PathParam("secret-name") String secretName,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<BackupSecretResult> backupSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @PathParam("secret-name") String secretName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Post("/secrets/restore")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<SecretBundle>> restoreSecret(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SecretRestoreParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SecretBundle>> restoreSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SecretRestoreParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Post("/secrets/restore")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<SecretBundle> restoreSecretSync(
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") SecretRestoreParameters parameters,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<SecretBundle> restoreSecretSync(@HostParam("vaultBaseUrl") String vaultBaseUrl,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SecretRestoreParameters parameters, @HeaderParam("Accept") String accept,
+            Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<SecretListResult>> getSecretsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SecretListResult>> getSecretsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Response<SecretListResult> getSecretsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<SecretListResult> getSecretsNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<SecretListResult>> getSecretVersionsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Response<SecretListResult> getSecretVersionsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Mono<Response<DeletedSecretListResult>> getDeletedSecretsNext(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
 
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
         Response<DeletedSecretListResult> getDeletedSecretsNextSync(
-                @PathParam(value = "nextLink", encoded = true) String nextLink,
-                @HostParam("vaultBaseUrl") String vaultBaseUrl,
-                @HeaderParam("Accept") String accept,
-                Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -461,13 +367,8 @@ public final class SecretClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretBundle>> setSecretWithResponseAsync(
-            String vaultBaseUrl,
-            String secretName,
-            String value,
-            Map<String, String> tags,
-            String secretContentType,
-            SecretAttributes secretAttributes) {
+    public Mono<Response<SecretBundle>> setSecretWithResponseAsync(String vaultBaseUrl, String secretName, String value,
+        Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes) {
         final String accept = "application/json";
         final String contentType = "application/json";
         SecretSetParameters parameters = new SecretSetParameters();
@@ -475,16 +376,8 @@ public final class SecretClientImpl {
         parameters.setTags(tags);
         parameters.setContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
-        return FluxUtil.withContext(
-                context ->
-                        service.setSecret(
-                                vaultBaseUrl,
-                                secretName,
-                                this.getApiVersion(),
-                                parameters,
-                                accept,
-                                contentType,
-                                context));
+        return FluxUtil.withContext(context -> service.setSecret(vaultBaseUrl, secretName, this.getApiVersion(),
+            parameters, accept, contentType, context));
     }
 
     /**
@@ -508,14 +401,8 @@ public final class SecretClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretBundle>> setSecretWithResponseAsync(
-            String vaultBaseUrl,
-            String secretName,
-            String value,
-            Map<String, String> tags,
-            String secretContentType,
-            SecretAttributes secretAttributes,
-            Context context) {
+    public Mono<Response<SecretBundle>> setSecretWithResponseAsync(String vaultBaseUrl, String secretName, String value,
+        Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes, Context context) {
         final String accept = "application/json";
         final String contentType = "application/json";
         SecretSetParameters parameters = new SecretSetParameters();
@@ -523,8 +410,8 @@ public final class SecretClientImpl {
         parameters.setTags(tags);
         parameters.setContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
-        return service.setSecret(
-                vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType, context);
+        return service.setSecret(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType,
+            context);
     }
 
     /**
@@ -546,15 +433,10 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecretBundle> setSecretAsync(
-            String vaultBaseUrl,
-            String secretName,
-            String value,
-            Map<String, String> tags,
-            String secretContentType,
-            SecretAttributes secretAttributes) {
+    public Mono<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value,
+        Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes) {
         return setSecretWithResponseAsync(vaultBaseUrl, secretName, value, tags, secretContentType, secretAttributes)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -577,17 +459,10 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecretBundle> setSecretAsync(
-            String vaultBaseUrl,
-            String secretName,
-            String value,
-            Map<String, String> tags,
-            String secretContentType,
-            SecretAttributes secretAttributes,
-            Context context) {
-        return setSecretWithResponseAsync(
-                        vaultBaseUrl, secretName, value, tags, secretContentType, secretAttributes, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<SecretBundle> setSecretAsync(String vaultBaseUrl, String secretName, String value,
+        Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes, Context context) {
+        return setSecretWithResponseAsync(vaultBaseUrl, secretName, value, tags, secretContentType, secretAttributes,
+            context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -610,14 +485,8 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecretBundle> setSecretWithResponse(
-            String vaultBaseUrl,
-            String secretName,
-            String value,
-            Map<String, String> tags,
-            String secretContentType,
-            SecretAttributes secretAttributes,
-            Context context) {
+    public Response<SecretBundle> setSecretWithResponse(String vaultBaseUrl, String secretName, String value,
+        Map<String, String> tags, String secretContentType, SecretAttributes secretAttributes, Context context) {
         final String accept = "application/json";
         final String contentType = "application/json";
         SecretSetParameters parameters = new SecretSetParameters();
@@ -625,8 +494,8 @@ public final class SecretClientImpl {
         parameters.setTags(tags);
         parameters.setContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
-        return service.setSecretSync(
-                vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType, context);
+        return service.setSecretSync(vaultBaseUrl, secretName, this.getApiVersion(), parameters, accept, contentType,
+            context);
     }
 
     /**
@@ -648,16 +517,10 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretBundle setSecret(
-            String vaultBaseUrl,
-            String secretName,
-            String value,
-            Map<String, String> tags,
-            String secretContentType,
-            SecretAttributes secretAttributes) {
-        return setSecretWithResponse(
-                        vaultBaseUrl, secretName, value, tags, secretContentType, secretAttributes, Context.NONE)
-                .getValue();
+    public SecretBundle setSecret(String vaultBaseUrl, String secretName, String value, Map<String, String> tags,
+        String secretContentType, SecretAttributes secretAttributes) {
+        return setSecretWithResponse(vaultBaseUrl, secretName, value, tags, secretContentType, secretAttributes,
+            Context.NONE).getValue();
     }
 
     /**
@@ -678,7 +541,7 @@ public final class SecretClientImpl {
     public Mono<Response<DeletedSecretBundle>> deleteSecretWithResponseAsync(String vaultBaseUrl, String secretName) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
+            context -> service.deleteSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -697,8 +560,8 @@ public final class SecretClientImpl {
      *     it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedSecretBundle>> deleteSecretWithResponseAsync(
-            String vaultBaseUrl, String secretName, Context context) {
+    public Mono<Response<DeletedSecretBundle>> deleteSecretWithResponseAsync(String vaultBaseUrl, String secretName,
+        Context context) {
         final String accept = "application/json";
         return service.deleteSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context);
     }
@@ -740,7 +603,7 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecretBundle> deleteSecretAsync(String vaultBaseUrl, String secretName, Context context) {
         return deleteSecretWithResponseAsync(vaultBaseUrl, secretName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -759,8 +622,8 @@ public final class SecretClientImpl {
      *     it will be purged along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedSecretBundle> deleteSecretWithResponse(
-            String vaultBaseUrl, String secretName, Context context) {
+    public Response<DeletedSecretBundle> deleteSecretWithResponse(String vaultBaseUrl, String secretName,
+        Context context) {
         final String accept = "application/json";
         return service.deleteSecretSync(vaultBaseUrl, secretName, this.getApiVersion(), accept, context);
     }
@@ -804,30 +667,16 @@ public final class SecretClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretBundle>> updateSecretWithResponseAsync(
-            String vaultBaseUrl,
-            String secretName,
-            String secretVersion,
-            String secretContentType,
-            SecretAttributes secretAttributes,
-            Map<String, String> tags) {
+    public Mono<Response<SecretBundle>> updateSecretWithResponseAsync(String vaultBaseUrl, String secretName,
+        String secretVersion, String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags) {
         final String accept = "application/json";
         final String contentType = "application/json";
         SecretUpdateParameters parameters = new SecretUpdateParameters();
         parameters.setContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
         parameters.setTags(tags);
-        return FluxUtil.withContext(
-                context ->
-                        service.updateSecret(
-                                vaultBaseUrl,
-                                secretName,
-                                secretVersion,
-                                this.getApiVersion(),
-                                parameters,
-                                accept,
-                                contentType,
-                                context));
+        return FluxUtil.withContext(context -> service.updateSecret(vaultBaseUrl, secretName, secretVersion,
+            this.getApiVersion(), parameters, accept, contentType, context));
     }
 
     /**
@@ -851,29 +700,17 @@ public final class SecretClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretBundle>> updateSecretWithResponseAsync(
-            String vaultBaseUrl,
-            String secretName,
-            String secretVersion,
-            String secretContentType,
-            SecretAttributes secretAttributes,
-            Map<String, String> tags,
-            Context context) {
+    public Mono<Response<SecretBundle>> updateSecretWithResponseAsync(String vaultBaseUrl, String secretName,
+        String secretVersion, String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags,
+        Context context) {
         final String accept = "application/json";
         final String contentType = "application/json";
         SecretUpdateParameters parameters = new SecretUpdateParameters();
         parameters.setContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
         parameters.setTags(tags);
-        return service.updateSecret(
-                vaultBaseUrl,
-                secretName,
-                secretVersion,
-                this.getApiVersion(),
-                parameters,
-                accept,
-                contentType,
-                context);
+        return service.updateSecret(vaultBaseUrl, secretName, secretVersion, this.getApiVersion(), parameters, accept,
+            contentType, context);
     }
 
     /**
@@ -895,16 +732,10 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecretBundle> updateSecretAsync(
-            String vaultBaseUrl,
-            String secretName,
-            String secretVersion,
-            String secretContentType,
-            SecretAttributes secretAttributes,
-            Map<String, String> tags) {
-        return updateSecretWithResponseAsync(
-                        vaultBaseUrl, secretName, secretVersion, secretContentType, secretAttributes, tags)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion,
+        String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags) {
+        return updateSecretWithResponseAsync(vaultBaseUrl, secretName, secretVersion, secretContentType,
+            secretAttributes, tags).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -927,17 +758,10 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecretBundle> updateSecretAsync(
-            String vaultBaseUrl,
-            String secretName,
-            String secretVersion,
-            String secretContentType,
-            SecretAttributes secretAttributes,
-            Map<String, String> tags,
-            Context context) {
-        return updateSecretWithResponseAsync(
-                        vaultBaseUrl, secretName, secretVersion, secretContentType, secretAttributes, tags, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<SecretBundle> updateSecretAsync(String vaultBaseUrl, String secretName, String secretVersion,
+        String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags, Context context) {
+        return updateSecretWithResponseAsync(vaultBaseUrl, secretName, secretVersion, secretContentType,
+            secretAttributes, tags, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -960,29 +784,16 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecretBundle> updateSecretWithResponse(
-            String vaultBaseUrl,
-            String secretName,
-            String secretVersion,
-            String secretContentType,
-            SecretAttributes secretAttributes,
-            Map<String, String> tags,
-            Context context) {
+    public Response<SecretBundle> updateSecretWithResponse(String vaultBaseUrl, String secretName, String secretVersion,
+        String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags, Context context) {
         final String accept = "application/json";
         final String contentType = "application/json";
         SecretUpdateParameters parameters = new SecretUpdateParameters();
         parameters.setContentType(secretContentType);
         parameters.setSecretAttributes(secretAttributes);
         parameters.setTags(tags);
-        return service.updateSecretSync(
-                vaultBaseUrl,
-                secretName,
-                secretVersion,
-                this.getApiVersion(),
-                parameters,
-                accept,
-                contentType,
-                context);
+        return service.updateSecretSync(vaultBaseUrl, secretName, secretVersion, this.getApiVersion(), parameters,
+            accept, contentType, context);
     }
 
     /**
@@ -1004,16 +815,10 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecretBundle updateSecret(
-            String vaultBaseUrl,
-            String secretName,
-            String secretVersion,
-            String secretContentType,
-            SecretAttributes secretAttributes,
-            Map<String, String> tags) {
-        return updateSecretWithResponse(
-                        vaultBaseUrl, secretName, secretVersion, secretContentType, secretAttributes, tags, Context.NONE)
-                .getValue();
+    public SecretBundle updateSecret(String vaultBaseUrl, String secretName, String secretVersion,
+        String secretContentType, SecretAttributes secretAttributes, Map<String, String> tags) {
+        return updateSecretWithResponse(vaultBaseUrl, secretName, secretVersion, secretContentType, secretAttributes,
+            tags, Context.NONE).getValue();
     }
 
     /**
@@ -1033,13 +838,11 @@ public final class SecretClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretBundle>> getSecretWithResponseAsync(
-            String vaultBaseUrl, String secretName, String secretVersion) {
+    public Mono<Response<SecretBundle>> getSecretWithResponseAsync(String vaultBaseUrl, String secretName,
+        String secretVersion) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                context ->
-                        service.getSecret(
-                                vaultBaseUrl, secretName, secretVersion, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(context -> service.getSecret(vaultBaseUrl, secretName, secretVersion,
+            this.getApiVersion(), accept, context));
     }
 
     /**
@@ -1060,8 +863,8 @@ public final class SecretClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretBundle>> getSecretWithResponseAsync(
-            String vaultBaseUrl, String secretName, String secretVersion, Context context) {
+    public Mono<Response<SecretBundle>> getSecretWithResponseAsync(String vaultBaseUrl, String secretName,
+        String secretVersion, Context context) {
         final String accept = "application/json";
         return service.getSecret(vaultBaseUrl, secretName, secretVersion, this.getApiVersion(), accept, context);
     }
@@ -1084,7 +887,7 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBundle> getSecretAsync(String vaultBaseUrl, String secretName, String secretVersion) {
         return getSecretWithResponseAsync(vaultBaseUrl, secretName, secretVersion)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1104,10 +907,10 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SecretBundle> getSecretAsync(
-            String vaultBaseUrl, String secretName, String secretVersion, Context context) {
+    public Mono<SecretBundle> getSecretAsync(String vaultBaseUrl, String secretName, String secretVersion,
+        Context context) {
         return getSecretWithResponseAsync(vaultBaseUrl, secretName, secretVersion, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1127,8 +930,8 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecretBundle> getSecretWithResponse(
-            String vaultBaseUrl, String secretName, String secretVersion, Context context) {
+    public Response<SecretBundle> getSecretWithResponse(String vaultBaseUrl, String secretName, String secretVersion,
+        Context context) {
         final String accept = "application/json";
         return service.getSecretSync(vaultBaseUrl, secretName, secretVersion, this.getApiVersion(), accept, context);
     }
@@ -1171,17 +974,10 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SecretItem>> getSecretsSinglePageAsync(String vaultBaseUrl, Integer maxresults) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context -> service.getSecrets(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.getSecrets(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -1201,19 +997,12 @@ public final class SecretClientImpl {
      * @return the secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SecretItem>> getSecretsSinglePageAsync(
-            String vaultBaseUrl, Integer maxresults, Context context) {
+    public Mono<PagedResponse<SecretItem>> getSecretsSinglePageAsync(String vaultBaseUrl, Integer maxresults,
+        Context context) {
         final String accept = "application/json";
         return service.getSecrets(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -1233,9 +1022,8 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretItem> getSecretsAsync(String vaultBaseUrl, Integer maxresults) {
-        return new PagedFlux<>(
-                () -> getSecretsSinglePageAsync(vaultBaseUrl, maxresults),
-                nextLink -> getSecretsNextSinglePageAsync(nextLink, vaultBaseUrl));
+        return new PagedFlux<>(() -> getSecretsSinglePageAsync(vaultBaseUrl, maxresults),
+            nextLink -> getSecretsNextSinglePageAsync(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -1256,9 +1044,8 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretItem> getSecretsAsync(String vaultBaseUrl, Integer maxresults, Context context) {
-        return new PagedFlux<>(
-                () -> getSecretsSinglePageAsync(vaultBaseUrl, maxresults, context),
-                nextLink -> getSecretsNextSinglePageAsync(nextLink, vaultBaseUrl, context));
+        return new PagedFlux<>(() -> getSecretsSinglePageAsync(vaultBaseUrl, maxresults, context),
+            nextLink -> getSecretsNextSinglePageAsync(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -1279,15 +1066,10 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SecretItem> getSecretsSinglePage(String vaultBaseUrl, Integer maxresults) {
         final String accept = "application/json";
-        Response<SecretListResult> res =
-                service.getSecretsSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<SecretListResult> res
+            = service.getSecretsSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -1309,15 +1091,10 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SecretItem> getSecretsSinglePage(String vaultBaseUrl, Integer maxresults, Context context) {
         final String accept = "application/json";
-        Response<SecretListResult> res =
-                service.getSecretsSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<SecretListResult> res
+            = service.getSecretsSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -1337,9 +1114,8 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecrets(String vaultBaseUrl, Integer maxresults) {
-        return new PagedIterable<>(
-                () -> getSecretsSinglePage(vaultBaseUrl, maxresults, Context.NONE),
-                nextLink -> getSecretsNextSinglePage(nextLink, vaultBaseUrl));
+        return new PagedIterable<>(() -> getSecretsSinglePage(vaultBaseUrl, maxresults, Context.NONE),
+            nextLink -> getSecretsNextSinglePage(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -1360,9 +1136,8 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecrets(String vaultBaseUrl, Integer maxresults, Context context) {
-        return new PagedIterable<>(
-                () -> getSecretsSinglePage(vaultBaseUrl, maxresults, context),
-                nextLink -> getSecretsNextSinglePage(nextLink, vaultBaseUrl, context));
+        return new PagedIterable<>(() -> getSecretsSinglePage(vaultBaseUrl, maxresults, context),
+            nextLink -> getSecretsNextSinglePage(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -1381,22 +1156,14 @@ public final class SecretClientImpl {
      * @return the secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SecretItem>> getSecretVersionsSinglePageAsync(
-            String vaultBaseUrl, String secretName, Integer maxresults) {
+    public Mono<PagedResponse<SecretItem>> getSecretVersionsSinglePageAsync(String vaultBaseUrl, String secretName,
+        Integer maxresults) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getSecretVersions(
-                                        vaultBaseUrl, secretName, maxresults, this.getApiVersion(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.getSecretVersions(vaultBaseUrl, secretName, maxresults,
+                this.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -1416,19 +1183,12 @@ public final class SecretClientImpl {
      * @return the secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SecretItem>> getSecretVersionsSinglePageAsync(
-            String vaultBaseUrl, String secretName, Integer maxresults, Context context) {
+    public Mono<PagedResponse<SecretItem>> getSecretVersionsSinglePageAsync(String vaultBaseUrl, String secretName,
+        Integer maxresults, Context context) {
         final String accept = "application/json";
         return service.getSecretVersions(vaultBaseUrl, secretName, maxresults, this.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -1448,9 +1208,8 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SecretItem> getSecretVersionsAsync(String vaultBaseUrl, String secretName, Integer maxresults) {
-        return new PagedFlux<>(
-                () -> getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName, maxresults),
-                nextLink -> getSecretVersionsNextSinglePageAsync(nextLink, vaultBaseUrl));
+        return new PagedFlux<>(() -> getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName, maxresults),
+            nextLink -> getSecretVersionsNextSinglePageAsync(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -1470,11 +1229,10 @@ public final class SecretClientImpl {
      * @return the secret list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SecretItem> getSecretVersionsAsync(
-            String vaultBaseUrl, String secretName, Integer maxresults, Context context) {
-        return new PagedFlux<>(
-                () -> getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName, maxresults, context),
-                nextLink -> getSecretVersionsNextSinglePageAsync(nextLink, vaultBaseUrl, context));
+    public PagedFlux<SecretItem> getSecretVersionsAsync(String vaultBaseUrl, String secretName, Integer maxresults,
+        Context context) {
+        return new PagedFlux<>(() -> getSecretVersionsSinglePageAsync(vaultBaseUrl, secretName, maxresults, context),
+            nextLink -> getSecretVersionsNextSinglePageAsync(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -1493,19 +1251,13 @@ public final class SecretClientImpl {
      * @return the secret list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretVersionsSinglePage(
-            String vaultBaseUrl, String secretName, Integer maxresults) {
+    public PagedResponse<SecretItem> getSecretVersionsSinglePage(String vaultBaseUrl, String secretName,
+        Integer maxresults) {
         final String accept = "application/json";
-        Response<SecretListResult> res =
-                service.getSecretVersionsSync(
-                        vaultBaseUrl, secretName, maxresults, this.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<SecretListResult> res = service.getSecretVersionsSync(vaultBaseUrl, secretName, maxresults,
+            this.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -1525,19 +1277,13 @@ public final class SecretClientImpl {
      * @return the secret list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretVersionsSinglePage(
-            String vaultBaseUrl, String secretName, Integer maxresults, Context context) {
+    public PagedResponse<SecretItem> getSecretVersionsSinglePage(String vaultBaseUrl, String secretName,
+        Integer maxresults, Context context) {
         final String accept = "application/json";
-        Response<SecretListResult> res =
-                service.getSecretVersionsSync(
-                        vaultBaseUrl, secretName, maxresults, this.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<SecretListResult> res = service.getSecretVersionsSync(vaultBaseUrl, secretName, maxresults,
+            this.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -1558,8 +1304,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecretVersions(String vaultBaseUrl, String secretName, Integer maxresults) {
         return new PagedIterable<>(
-                () -> getSecretVersionsSinglePage(vaultBaseUrl, secretName, maxresults, Context.NONE),
-                nextLink -> getSecretVersionsNextSinglePage(nextLink, vaultBaseUrl));
+            () -> getSecretVersionsSinglePage(vaultBaseUrl, secretName, maxresults, Context.NONE),
+            nextLink -> getSecretVersionsNextSinglePage(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -1579,11 +1325,10 @@ public final class SecretClientImpl {
      * @return the secret list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretItem> getSecretVersions(
-            String vaultBaseUrl, String secretName, Integer maxresults, Context context) {
-        return new PagedIterable<>(
-                () -> getSecretVersionsSinglePage(vaultBaseUrl, secretName, maxresults, context),
-                nextLink -> getSecretVersionsNextSinglePage(nextLink, vaultBaseUrl, context));
+    public PagedIterable<SecretItem> getSecretVersions(String vaultBaseUrl, String secretName, Integer maxresults,
+        Context context) {
+        return new PagedIterable<>(() -> getSecretVersionsSinglePage(vaultBaseUrl, secretName, maxresults, context),
+            nextLink -> getSecretVersionsNextSinglePage(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -1601,22 +1346,14 @@ public final class SecretClientImpl {
      * @return the deleted secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeletedSecretItem>> getDeletedSecretsSinglePageAsync(
-            String vaultBaseUrl, Integer maxresults) {
+    public Mono<PagedResponse<DeletedSecretItem>> getDeletedSecretsSinglePageAsync(String vaultBaseUrl,
+        Integer maxresults) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-                        context ->
-                                service.getDeletedSecrets(
-                                        vaultBaseUrl, maxresults, this.getApiVersion(), accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+        return FluxUtil
+            .withContext(
+                context -> service.getDeletedSecrets(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -1635,19 +1372,12 @@ public final class SecretClientImpl {
      * @return the deleted secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeletedSecretItem>> getDeletedSecretsSinglePageAsync(
-            String vaultBaseUrl, Integer maxresults, Context context) {
+    public Mono<PagedResponse<DeletedSecretItem>> getDeletedSecretsSinglePageAsync(String vaultBaseUrl,
+        Integer maxresults, Context context) {
         final String accept = "application/json";
         return service.getDeletedSecrets(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -1666,9 +1396,8 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeletedSecretItem> getDeletedSecretsAsync(String vaultBaseUrl, Integer maxresults) {
-        return new PagedFlux<>(
-                () -> getDeletedSecretsSinglePageAsync(vaultBaseUrl, maxresults),
-                nextLink -> getDeletedSecretsNextSinglePageAsync(nextLink, vaultBaseUrl));
+        return new PagedFlux<>(() -> getDeletedSecretsSinglePageAsync(vaultBaseUrl, maxresults),
+            nextLink -> getDeletedSecretsNextSinglePageAsync(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -1687,11 +1416,10 @@ public final class SecretClientImpl {
      * @return the deleted secret list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DeletedSecretItem> getDeletedSecretsAsync(
-            String vaultBaseUrl, Integer maxresults, Context context) {
-        return new PagedFlux<>(
-                () -> getDeletedSecretsSinglePageAsync(vaultBaseUrl, maxresults, context),
-                nextLink -> getDeletedSecretsNextSinglePageAsync(nextLink, vaultBaseUrl, context));
+    public PagedFlux<DeletedSecretItem> getDeletedSecretsAsync(String vaultBaseUrl, Integer maxresults,
+        Context context) {
+        return new PagedFlux<>(() -> getDeletedSecretsSinglePageAsync(vaultBaseUrl, maxresults, context),
+            nextLink -> getDeletedSecretsNextSinglePageAsync(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -1711,15 +1439,10 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DeletedSecretItem> getDeletedSecretsSinglePage(String vaultBaseUrl, Integer maxresults) {
         final String accept = "application/json";
-        Response<DeletedSecretListResult> res =
-                service.getDeletedSecretsSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<DeletedSecretListResult> res
+            = service.getDeletedSecretsSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -1738,18 +1461,13 @@ public final class SecretClientImpl {
      * @return the deleted secret list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedSecretItem> getDeletedSecretsSinglePage(
-            String vaultBaseUrl, Integer maxresults, Context context) {
+    public PagedResponse<DeletedSecretItem> getDeletedSecretsSinglePage(String vaultBaseUrl, Integer maxresults,
+        Context context) {
         final String accept = "application/json";
-        Response<DeletedSecretListResult> res =
-                service.getDeletedSecretsSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<DeletedSecretListResult> res
+            = service.getDeletedSecretsSync(vaultBaseUrl, maxresults, this.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -1768,9 +1486,8 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedSecretItem> getDeletedSecrets(String vaultBaseUrl, Integer maxresults) {
-        return new PagedIterable<>(
-                () -> getDeletedSecretsSinglePage(vaultBaseUrl, maxresults, Context.NONE),
-                nextLink -> getDeletedSecretsNextSinglePage(nextLink, vaultBaseUrl));
+        return new PagedIterable<>(() -> getDeletedSecretsSinglePage(vaultBaseUrl, maxresults, Context.NONE),
+            nextLink -> getDeletedSecretsNextSinglePage(nextLink, vaultBaseUrl));
     }
 
     /**
@@ -1789,11 +1506,10 @@ public final class SecretClientImpl {
      * @return the deleted secret list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedSecretItem> getDeletedSecrets(
-            String vaultBaseUrl, Integer maxresults, Context context) {
-        return new PagedIterable<>(
-                () -> getDeletedSecretsSinglePage(vaultBaseUrl, maxresults, context),
-                nextLink -> getDeletedSecretsNextSinglePage(nextLink, vaultBaseUrl, context));
+    public PagedIterable<DeletedSecretItem> getDeletedSecrets(String vaultBaseUrl, Integer maxresults,
+        Context context) {
+        return new PagedIterable<>(() -> getDeletedSecretsSinglePage(vaultBaseUrl, maxresults, context),
+            nextLink -> getDeletedSecretsNextSinglePage(nextLink, vaultBaseUrl, context));
     }
 
     /**
@@ -1811,11 +1527,11 @@ public final class SecretClientImpl {
      *     it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedSecretBundle>> getDeletedSecretWithResponseAsync(
-            String vaultBaseUrl, String secretName) {
+    public Mono<Response<DeletedSecretBundle>> getDeletedSecretWithResponseAsync(String vaultBaseUrl,
+        String secretName) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
+            context -> service.getDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -1834,8 +1550,8 @@ public final class SecretClientImpl {
      *     it will be purged along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeletedSecretBundle>> getDeletedSecretWithResponseAsync(
-            String vaultBaseUrl, String secretName, Context context) {
+    public Mono<Response<DeletedSecretBundle>> getDeletedSecretWithResponseAsync(String vaultBaseUrl, String secretName,
+        Context context) {
         final String accept = "application/json";
         return service.getDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context);
     }
@@ -1857,7 +1573,7 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecretBundle> getDeletedSecretAsync(String vaultBaseUrl, String secretName) {
         return getDeletedSecretWithResponseAsync(vaultBaseUrl, secretName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1878,7 +1594,7 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSecretBundle> getDeletedSecretAsync(String vaultBaseUrl, String secretName, Context context) {
         return getDeletedSecretWithResponseAsync(vaultBaseUrl, secretName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1897,8 +1613,8 @@ public final class SecretClientImpl {
      *     it will be purged along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedSecretBundle> getDeletedSecretWithResponse(
-            String vaultBaseUrl, String secretName, Context context) {
+    public Response<DeletedSecretBundle> getDeletedSecretWithResponse(String vaultBaseUrl, String secretName,
+        Context context) {
         final String accept = "application/json";
         return service.getDeletedSecretSync(vaultBaseUrl, secretName, this.getApiVersion(), accept, context);
     }
@@ -1940,7 +1656,7 @@ public final class SecretClientImpl {
     public Mono<Response<Void>> purgeDeletedSecretWithResponseAsync(String vaultBaseUrl, String secretName) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.purgeDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
+            context -> service.purgeDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -1959,8 +1675,8 @@ public final class SecretClientImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> purgeDeletedSecretWithResponseAsync(
-            String vaultBaseUrl, String secretName, Context context) {
+    public Mono<Response<Void>> purgeDeletedSecretWithResponseAsync(String vaultBaseUrl, String secretName,
+        Context context) {
         final String accept = "application/json";
         return service.purgeDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context);
     }
@@ -2061,8 +1777,7 @@ public final class SecretClientImpl {
     public Mono<Response<SecretBundle>> recoverDeletedSecretWithResponseAsync(String vaultBaseUrl, String secretName) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context ->
-                        service.recoverDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
+            context -> service.recoverDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -2081,8 +1796,8 @@ public final class SecretClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretBundle>> recoverDeletedSecretWithResponseAsync(
-            String vaultBaseUrl, String secretName, Context context) {
+    public Mono<Response<SecretBundle>> recoverDeletedSecretWithResponseAsync(String vaultBaseUrl, String secretName,
+        Context context) {
         final String accept = "application/json";
         return service.recoverDeletedSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context);
     }
@@ -2103,7 +1818,7 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBundle> recoverDeletedSecretAsync(String vaultBaseUrl, String secretName) {
         return recoverDeletedSecretWithResponseAsync(vaultBaseUrl, secretName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2123,7 +1838,7 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBundle> recoverDeletedSecretAsync(String vaultBaseUrl, String secretName, Context context) {
         return recoverDeletedSecretWithResponseAsync(vaultBaseUrl, secretName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2141,8 +1856,8 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecretBundle> recoverDeletedSecretWithResponse(
-            String vaultBaseUrl, String secretName, Context context) {
+    public Response<SecretBundle> recoverDeletedSecretWithResponse(String vaultBaseUrl, String secretName,
+        Context context) {
         final String accept = "application/json";
         return service.recoverDeletedSecretSync(vaultBaseUrl, secretName, this.getApiVersion(), accept, context);
     }
@@ -2183,7 +1898,7 @@ public final class SecretClientImpl {
     public Mono<Response<BackupSecretResult>> backupSecretWithResponseAsync(String vaultBaseUrl, String secretName) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.backupSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
+            context -> service.backupSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -2202,8 +1917,8 @@ public final class SecretClientImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BackupSecretResult>> backupSecretWithResponseAsync(
-            String vaultBaseUrl, String secretName, Context context) {
+    public Mono<Response<BackupSecretResult>> backupSecretWithResponseAsync(String vaultBaseUrl, String secretName,
+        Context context) {
         final String accept = "application/json";
         return service.backupSecret(vaultBaseUrl, secretName, this.getApiVersion(), accept, context);
     }
@@ -2243,7 +1958,7 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BackupSecretResult> backupSecretAsync(String vaultBaseUrl, String secretName, Context context) {
         return backupSecretWithResponseAsync(vaultBaseUrl, secretName, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2261,8 +1976,8 @@ public final class SecretClientImpl {
      * @return the backup secret result, containing the backup blob along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupSecretResult> backupSecretWithResponse(
-            String vaultBaseUrl, String secretName, Context context) {
+    public Response<BackupSecretResult> backupSecretWithResponse(String vaultBaseUrl, String secretName,
+        Context context) {
         final String accept = "application/json";
         return service.backupSecretSync(vaultBaseUrl, secretName, this.getApiVersion(), accept, context);
     }
@@ -2305,7 +2020,7 @@ public final class SecretClientImpl {
         SecretRestoreParameters parameters = new SecretRestoreParameters();
         parameters.setSecretBundleBackup(secretBundleBackup);
         return FluxUtil.withContext(
-                context -> service.restoreSecret(vaultBaseUrl, this.getApiVersion(), parameters, accept, context));
+            context -> service.restoreSecret(vaultBaseUrl, this.getApiVersion(), parameters, accept, context));
     }
 
     /**
@@ -2324,8 +2039,8 @@ public final class SecretClientImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SecretBundle>> restoreSecretWithResponseAsync(
-            String vaultBaseUrl, byte[] secretBundleBackup, Context context) {
+    public Mono<Response<SecretBundle>> restoreSecretWithResponseAsync(String vaultBaseUrl, byte[] secretBundleBackup,
+        Context context) {
         final String accept = "application/json";
         SecretRestoreParameters parameters = new SecretRestoreParameters();
         parameters.setSecretBundleBackup(secretBundleBackup);
@@ -2348,7 +2063,7 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBundle> restoreSecretAsync(String vaultBaseUrl, byte[] secretBundleBackup) {
         return restoreSecretWithResponseAsync(vaultBaseUrl, secretBundleBackup)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2368,7 +2083,7 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SecretBundle> restoreSecretAsync(String vaultBaseUrl, byte[] secretBundleBackup, Context context) {
         return restoreSecretWithResponseAsync(vaultBaseUrl, secretBundleBackup, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2386,8 +2101,8 @@ public final class SecretClientImpl {
      * @return a secret consisting of a value, id and its attributes along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecretBundle> restoreSecretWithResponse(
-            String vaultBaseUrl, byte[] secretBundleBackup, Context context) {
+    public Response<SecretBundle> restoreSecretWithResponse(String vaultBaseUrl, byte[] secretBundleBackup,
+        Context context) {
         final String accept = "application/json";
         SecretRestoreParameters parameters = new SecretRestoreParameters();
         parameters.setSecretBundleBackup(secretBundleBackup);
@@ -2427,15 +2142,8 @@ public final class SecretClientImpl {
     public Mono<PagedResponse<SecretItem>> getSecretsNextSinglePageAsync(String nextLink, String vaultBaseUrl) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getSecretsNext(nextLink, vaultBaseUrl, accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2451,19 +2159,12 @@ public final class SecretClientImpl {
      * @return the secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SecretItem>> getSecretsNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public Mono<PagedResponse<SecretItem>> getSecretsNextSinglePageAsync(String nextLink, String vaultBaseUrl,
+        Context context) {
         final String accept = "application/json";
         return service.getSecretsNext(nextLink, vaultBaseUrl, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2481,13 +2182,8 @@ public final class SecretClientImpl {
     public PagedResponse<SecretItem> getSecretsNextSinglePage(String nextLink, String vaultBaseUrl) {
         final String accept = "application/json";
         Response<SecretListResult> res = service.getSecretsNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -2506,13 +2202,8 @@ public final class SecretClientImpl {
     public PagedResponse<SecretItem> getSecretsNextSinglePage(String nextLink, String vaultBaseUrl, Context context) {
         final String accept = "application/json";
         Response<SecretListResult> res = service.getSecretsNextSync(nextLink, vaultBaseUrl, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -2530,15 +2221,8 @@ public final class SecretClientImpl {
     public Mono<PagedResponse<SecretItem>> getSecretVersionsNextSinglePageAsync(String nextLink, String vaultBaseUrl) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getSecretVersionsNext(nextLink, vaultBaseUrl, accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2554,19 +2238,12 @@ public final class SecretClientImpl {
      * @return the secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SecretItem>> getSecretVersionsNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public Mono<PagedResponse<SecretItem>> getSecretVersionsNextSinglePageAsync(String nextLink, String vaultBaseUrl,
+        Context context) {
         final String accept = "application/json";
         return service.getSecretVersionsNext(nextLink, vaultBaseUrl, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2583,15 +2260,10 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SecretItem> getSecretVersionsNextSinglePage(String nextLink, String vaultBaseUrl) {
         final String accept = "application/json";
-        Response<SecretListResult> res =
-                service.getSecretVersionsNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<SecretListResult> res
+            = service.getSecretVersionsNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -2607,17 +2279,12 @@ public final class SecretClientImpl {
      * @return the secret list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretVersionsNextSinglePage(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public PagedResponse<SecretItem> getSecretVersionsNextSinglePage(String nextLink, String vaultBaseUrl,
+        Context context) {
         final String accept = "application/json";
         Response<SecretListResult> res = service.getSecretVersionsNextSync(nextLink, vaultBaseUrl, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -2632,19 +2299,12 @@ public final class SecretClientImpl {
      * @return the deleted secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeletedSecretItem>> getDeletedSecretsNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl) {
+    public Mono<PagedResponse<DeletedSecretItem>> getDeletedSecretsNextSinglePageAsync(String nextLink,
+        String vaultBaseUrl) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getDeletedSecretsNext(nextLink, vaultBaseUrl, accept, context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2660,19 +2320,12 @@ public final class SecretClientImpl {
      * @return the deleted secret list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<DeletedSecretItem>> getDeletedSecretsNextSinglePageAsync(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public Mono<PagedResponse<DeletedSecretItem>> getDeletedSecretsNextSinglePageAsync(String nextLink,
+        String vaultBaseUrl, Context context) {
         final String accept = "application/json";
         return service.getDeletedSecretsNext(nextLink, vaultBaseUrl, accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getValue(),
-                                        res.getValue().getNextLink(),
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getValue(), res.getValue().getNextLink(), null));
     }
 
     /**
@@ -2689,15 +2342,10 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DeletedSecretItem> getDeletedSecretsNextSinglePage(String nextLink, String vaultBaseUrl) {
         final String accept = "application/json";
-        Response<DeletedSecretListResult> res =
-                service.getDeletedSecretsNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<DeletedSecretListResult> res
+            = service.getDeletedSecretsNextSync(nextLink, vaultBaseUrl, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 
     /**
@@ -2713,17 +2361,12 @@ public final class SecretClientImpl {
      * @return the deleted secret list result along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedSecretItem> getDeletedSecretsNextSinglePage(
-            String nextLink, String vaultBaseUrl, Context context) {
+    public PagedResponse<DeletedSecretItem> getDeletedSecretsNextSinglePage(String nextLink, String vaultBaseUrl,
+        Context context) {
         final String accept = "application/json";
-        Response<DeletedSecretListResult> res =
-                service.getDeletedSecretsNextSync(nextLink, vaultBaseUrl, accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().getValue(),
-                res.getValue().getNextLink(),
-                null);
+        Response<DeletedSecretListResult> res
+            = service.getDeletedSecretsNextSync(nextLink, vaultBaseUrl, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getValue(), res.getValue().getNextLink(), null);
     }
 }

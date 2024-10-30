@@ -10,7 +10,7 @@ import java.util.Arrays;
 import static io.clientcore.core.implementation.util.ImplUtils.isNullOrEmpty;
 
 /**
- * An escaper that escapes URL data through percent encoding.
+ * An escaper that escapes URI data through percent encoding.
  */
 public final class PercentEscaper {
     private static final char[] HEX_CHARACTERS = "0123456789ABCDEF".toCharArray();
@@ -244,8 +244,8 @@ public final class PercentEscaper {
         } else if (Character.isHighSurrogate(char1)) {
             // High surrogates will occur first in the string.
             if (index == end) {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(
-                    "String contains trailing high surrogate without paired low surrogate."));
+                throw LOGGER.logThrowableAsError(
+                    new IllegalStateException("String contains trailing high surrogate without paired low surrogate."));
             }
 
             char char2 = original.charAt(index);
@@ -253,11 +253,11 @@ public final class PercentEscaper {
                 return Character.toCodePoint(char1, char2);
             }
 
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "String contains high surrogate without trailing low surrogate."));
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("String contains high surrogate without trailing low surrogate."));
         } else {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "String contains low surrogate without leading high surrogate."));
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("String contains low surrogate without leading high surrogate."));
         }
     }
 }

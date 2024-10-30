@@ -14,9 +14,7 @@ import io.clientcore.core.json.implementation.jackson.core.util.RequestPayload;
  * (content that does not conform to JSON syntax as per specification)
  * is encountered.
  */
-public class JsonParseException
-    extends StreamReadException
-{
+public class JsonParseException extends StreamReadException {
     private static final long serialVersionUID = 2L; // 2.7
 
     @Deprecated // since 2.7

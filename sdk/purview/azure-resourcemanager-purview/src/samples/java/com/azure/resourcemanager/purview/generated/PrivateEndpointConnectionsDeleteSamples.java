@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.purview.generated;
 
-/** Samples for PrivateEndpointConnections Delete. */
+/**
+ * Samples for PrivateEndpointConnections Delete.
+ */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/PrivateEndpointConnections_Delete.json
+     * x-ms-original-file: specification/purview/resource-manager/Microsoft.Purview/stable/2021-07-01/examples/
+     * PrivateEndpointConnections_Delete.json
      */
     /**
      * Sample code: PrivateEndpointConnections_Delete.
-     *
+     * 
      * @param manager Entry point to PurviewManager.
      */
     public static void privateEndpointConnectionsDelete(com.azure.resourcemanager.purview.PurviewManager manager) {
-        manager
-            .privateEndpointConnections()
+        manager.privateEndpointConnections()
             .delete("SampleResourceGroup", "account1", "privateEndpointConnection1", com.azure.core.util.Context.NONE);
     }
 }

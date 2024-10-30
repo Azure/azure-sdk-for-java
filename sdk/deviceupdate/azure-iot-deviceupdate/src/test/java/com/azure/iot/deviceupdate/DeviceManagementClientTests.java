@@ -4,7 +4,6 @@
 package com.azure.iot.deviceupdate;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedFlux;
@@ -21,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class DeviceManagementClientTests extends TestProxyTestBase {
     private DeviceManagementAsyncClient createClient() {
-        DeviceManagementClientBuilder clientBuilder = new DeviceManagementClientBuilder()
-            .endpoint(TestData.ACCOUNT_ENDPOINT)
-            .instanceId(TestData.INSTANCE_ID)
-            .httpClient(HttpClient.createDefault())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        DeviceManagementClientBuilder clientBuilder
+            = new DeviceManagementClientBuilder().endpoint(TestData.ACCOUNT_ENDPOINT)
+                .instanceId(TestData.INSTANCE_ID)
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (interceptorManager.isPlaybackMode()) {
             clientBuilder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {

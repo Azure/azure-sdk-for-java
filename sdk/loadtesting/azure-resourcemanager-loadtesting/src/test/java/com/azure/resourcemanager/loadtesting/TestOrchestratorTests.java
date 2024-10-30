@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -19,7 +19,7 @@ import java.util.Random;
 import com.azure.resourcemanager.resources.ResourceManager;
 import org.junit.jupiter.api.Test;
 
-public class TestOrchestratorTests extends TestBase {
+public class TestOrchestratorTests extends TestProxyTestBase {
 
     private static final Random RANDOM = new Random();
     private static final Region LOCATION = Region.US_WEST2;
@@ -35,13 +35,11 @@ public class TestOrchestratorTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        loadTestManager = LoadTestManager
-            .configure()
+        loadTestManager = LoadTestManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -51,12 +49,10 @@ public class TestOrchestratorTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(LOCATION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(LOCATION).create();
         }
     }
+
     @Override
     protected void afterTest() {
         if (!testEnv) {
@@ -67,7 +63,8 @@ public class TestOrchestratorTests extends TestBase {
     @Test
     @LiveOnly
     public void startTest() {
-        ResourceOperations resourceOperations = new ResourceOperations(LOCATION.toString(), resourceGroupName, RESOURCE_NAME);
+        ResourceOperations resourceOperations
+            = new ResourceOperations(LOCATION.toString(), resourceGroupName, RESOURCE_NAME);
         resourceOperations.create(loadTestManager);
         resourceOperations.get(loadTestManager);
         resourceOperations.update(loadTestManager);

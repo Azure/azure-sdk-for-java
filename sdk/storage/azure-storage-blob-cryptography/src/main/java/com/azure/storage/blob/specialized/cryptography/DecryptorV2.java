@@ -30,7 +30,6 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_GCM_NO_PADDING;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.AES_KEY_SIZE_BITS;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.EMPTY_BUFFER;
-import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_PROTOCOL_V2;
 import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.TAG_LENGTH;
 
 class DecryptorV2 extends Decryptor {
@@ -45,11 +44,11 @@ class DecryptorV2 extends Decryptor {
     Flux<ByteBuffer> decrypt(Flux<ByteBuffer> encryptedFlux, EncryptedBlobRange encryptedBlobRange,
         boolean padding, String requestUri, AtomicLong totalInputBytes, byte[] contentEncryptionKey) {
         // Buffer an exact region with the nonce and tag
-        final int gcmEncryptionRegionLength = encryptionData.getEncryptedRegionInfo().getDataLength();
+        final int authenticatedRegionDataLength = (int) encryptionData.getEncryptedRegionInfo().getDataLength();
         final int nonceLength = encryptionData.getEncryptedRegionInfo().getNonceLength();
         BufferStagingArea stagingArea =
-            new BufferStagingArea(gcmEncryptionRegionLength + TAG_LENGTH + nonceLength,
-                gcmEncryptionRegionLength + TAG_LENGTH + nonceLength);
+            new BufferStagingArea(authenticatedRegionDataLength + TAG_LENGTH + nonceLength,
+                authenticatedRegionDataLength + TAG_LENGTH + nonceLength);
 
         return encryptedFlux
             .flatMapSequential(stagingArea::write, 1, 1)
@@ -65,7 +64,7 @@ class DecryptorV2 extends Decryptor {
                     return Mono.error(LOGGER.logExceptionAsError(Exceptions.propagate(e)));
                 }
 
-                ByteBuffer decryptedRegion = ByteBuffer.allocate(gcmEncryptionRegionLength);
+                ByteBuffer decryptedRegion = ByteBuffer.allocate(authenticatedRegionDataLength);
                 return aggregator.asFlux()
                     .map(buffer -> {
                         // Write into the preallocated buffer and always return this buffer.
@@ -97,7 +96,7 @@ class DecryptorV2 extends Decryptor {
                 byte[] protocolBytes = new byte[3];
                 try {
                     keyStream.read(protocolBytes);
-                    if (ByteBuffer.wrap(ENCRYPTION_PROTOCOL_V2.getBytes(StandardCharsets.UTF_8))
+                    if (ByteBuffer.wrap(encryptionData.getEncryptionAgent().getProtocol().getBytes(StandardCharsets.UTF_8))
                         .compareTo(ByteBuffer.wrap(protocolBytes)) != 0) {
                         return Mono.error(LOGGER.logExceptionAsError(
                             new IllegalStateException("Padded wrapped key did not match protocol version")));

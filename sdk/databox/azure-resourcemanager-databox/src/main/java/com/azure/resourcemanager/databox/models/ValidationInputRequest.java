@@ -26,8 +26,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "ValidateSkuAvailability", value = SkuAvailabilityValidationRequest.class),
     @JsonSubTypes.Type(
         name = "ValidateSubscriptionIsAllowedToCreateJob",
-        value = SubscriptionIsAllowedToCreateJobValidationRequest.class)
-})
+        value = SubscriptionIsAllowedToCreateJobValidationRequest.class) })
 @Immutable
 public class ValidationInputRequest {
     /** Creates an instance of ValidationInputRequest class. */

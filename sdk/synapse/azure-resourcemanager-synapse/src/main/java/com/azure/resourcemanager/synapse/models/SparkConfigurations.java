@@ -23,8 +23,8 @@ public interface SparkConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return sparkConfiguration by name in a workspace along with {@link Response}.
      */
-    Response<SparkConfigurationResource> getWithResponse(
-        String resourceGroupName, String sparkConfigurationName, String workspaceName, Context context);
+    Response<SparkConfigurationResource> getWithResponse(String resourceGroupName, String sparkConfigurationName,
+        String workspaceName, Context context);
 
     /**
      * Get SparkConfiguration by name.

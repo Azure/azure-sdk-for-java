@@ -17,8 +17,8 @@ import java.util.stream.Stream;
  * interfaces.
  */
 @Immutable
-public final class ExtractiveSummaryPagedIterable extends ContinuablePagedIterable<String,
-        ExtractiveSummaryResultCollection, PagedResponse<ExtractiveSummaryResultCollection>> {
+public final class ExtractiveSummaryPagedIterable extends
+    ContinuablePagedIterable<String, ExtractiveSummaryResultCollection, PagedResponse<ExtractiveSummaryResultCollection>> {
 
     /**
      * Creates an instance of {@code ExtractiveSummaryPagedIterable}. The constructor takes a {@code Supplier} and

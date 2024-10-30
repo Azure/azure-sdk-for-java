@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"diskVolumeConfigurations\":{\"ivgvvcna\":{\"count\":3900047479392463058,\"sizeGB\":4740858947759401461,\"sku\":{\"name\":\"Premium_LRS\"}},\"eedndrdvstkwqqtc\":{\"count\":8913535749004515550,\"sizeGB\":5279516661370439683,\"sku\":{\"name\":\"Premium_ZRS\"}},\"aygdvwvgpioh\":{\"count\":2777563543070243433,\"sizeGB\":6465025791585269802,\"sku\":{\"name\":\"UltraSSD_LRS\"}}}}")
-                .toObject(DiskConfiguration.class);
+        DiskConfiguration model = BinaryData.fromString(
+            "{\"diskVolumeConfigurations\":{\"ivgvvcna\":{\"count\":3900047479392463058,\"sizeGB\":4740858947759401461,\"sku\":{\"name\":\"Premium_LRS\"}},\"eedndrdvstkwqqtc\":{\"count\":8913535749004515550,\"sizeGB\":5279516661370439683,\"sku\":{\"name\":\"Premium_ZRS\"}},\"aygdvwvgpioh\":{\"count\":2777563543070243433,\"sizeGB\":6465025791585269802,\"sku\":{\"name\":\"UltraSSD_LRS\"}}}}")
+            .toObject(DiskConfiguration.class);
         Assertions.assertEquals(3900047479392463058L, model.diskVolumeConfigurations().get("ivgvvcna").count());
         Assertions.assertEquals(4740858947759401461L, model.diskVolumeConfigurations().get("ivgvvcna").sizeGB());
         Assertions.assertEquals(DiskSkuName.PREMIUM_LRS, model.diskVolumeConfigurations().get("ivgvvcna").sku().name());
@@ -28,25 +26,18 @@ public final class DiskConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskConfiguration model =
-            new DiskConfiguration()
-                .withDiskVolumeConfigurations(
-                    mapOf(
-                        "ivgvvcna",
-                        new DiskVolumeConfiguration()
-                            .withCount(3900047479392463058L)
-                            .withSizeGB(4740858947759401461L)
-                            .withSku(new DiskSku().withName(DiskSkuName.PREMIUM_LRS)),
-                        "eedndrdvstkwqqtc",
-                        new DiskVolumeConfiguration()
-                            .withCount(8913535749004515550L)
-                            .withSizeGB(5279516661370439683L)
-                            .withSku(new DiskSku().withName(DiskSkuName.PREMIUM_ZRS)),
-                        "aygdvwvgpioh",
-                        new DiskVolumeConfiguration()
-                            .withCount(2777563543070243433L)
-                            .withSizeGB(6465025791585269802L)
-                            .withSku(new DiskSku().withName(DiskSkuName.ULTRA_SSD_LRS))));
+        DiskConfiguration model = new DiskConfiguration().withDiskVolumeConfigurations(mapOf("ivgvvcna",
+            new DiskVolumeConfiguration().withCount(3900047479392463058L)
+                .withSizeGB(4740858947759401461L)
+                .withSku(new DiskSku().withName(DiskSkuName.PREMIUM_LRS)),
+            "eedndrdvstkwqqtc",
+            new DiskVolumeConfiguration().withCount(8913535749004515550L)
+                .withSizeGB(5279516661370439683L)
+                .withSku(new DiskSku().withName(DiskSkuName.PREMIUM_ZRS)),
+            "aygdvwvgpioh",
+            new DiskVolumeConfiguration().withCount(2777563543070243433L)
+                .withSizeGB(6465025791585269802L)
+                .withSku(new DiskSku().withName(DiskSkuName.ULTRA_SSD_LRS))));
         model = BinaryData.fromObject(model).toObject(DiskConfiguration.class);
         Assertions.assertEquals(3900047479392463058L, model.diskVolumeConfigurations().get("ivgvvcna").count());
         Assertions.assertEquals(4740858947759401461L, model.diskVolumeConfigurations().get("ivgvvcna").sizeGB());

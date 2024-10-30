@@ -21,8 +21,8 @@ public interface PolicyDescriptions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return descriptions of API Management policies along with {@link Response}.
      */
-    Response<PolicyDescriptionCollection> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, PolicyScopeContract scope, Context context);
+    Response<PolicyDescriptionCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        PolicyScopeContract scope, Context context);
 
     /**
      * Lists all policy descriptions.

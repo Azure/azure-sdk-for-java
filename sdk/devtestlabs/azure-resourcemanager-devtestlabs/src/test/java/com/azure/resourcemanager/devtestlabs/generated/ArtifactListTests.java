@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ArtifactListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ArtifactList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"title\":\"wj\",\"description\":\"gdrjervnaenqpe\",\"publisher\":\"ndoygmifthnzdnd\",\"filePath\":\"gnayqigynduh\",\"icon\":\"hqlkthumaqo\",\"targetOsType\":\"gycdu\",\"parameters\":\"datar\",\"createdDate\":\"2021-07-05T23:49:12Z\"},\"location\":\"cym\",\"tags\":{\"ssl\":\"l\",\"d\":\"lfmmdnbbglzpswi\",\"bzmnvdfznud\":\"cwyhzdxssa\"},\"id\":\"od\",\"name\":\"xzb\",\"type\":\"cblylpstdbhhxsr\"}],\"nextLink\":\"zucerscdntnev\"}")
-                .toObject(ArtifactList.class);
+        ArtifactList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"title\":\"wj\",\"description\":\"gdrjervnaenqpe\",\"publisher\":\"ndoygmifthnzdnd\",\"filePath\":\"gnayqigynduh\",\"icon\":\"hqlkthumaqo\",\"targetOsType\":\"gycdu\",\"parameters\":\"datar\",\"createdDate\":\"2021-07-05T23:49:12Z\"},\"location\":\"cym\",\"tags\":{\"ssl\":\"l\",\"d\":\"lfmmdnbbglzpswi\",\"bzmnvdfznud\":\"cwyhzdxssa\"},\"id\":\"od\",\"name\":\"xzb\",\"type\":\"cblylpstdbhhxsr\"}],\"nextLink\":\"zucerscdntnev\"}")
+            .toObject(ArtifactList.class);
         Assertions.assertEquals("cym", model.value().get(0).location());
         Assertions.assertEquals("l", model.value().get(0).tags().get("ssl"));
         Assertions.assertEquals("zucerscdntnev", model.nextLink());
@@ -27,15 +25,10 @@ public final class ArtifactListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArtifactList model =
-            new ArtifactList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ArtifactInner()
-                                .withLocation("cym")
-                                .withTags(mapOf("ssl", "l", "d", "lfmmdnbbglzpswi", "bzmnvdfznud", "cwyhzdxssa"))))
-                .withNextLink("zucerscdntnev");
+        ArtifactList model = new ArtifactList()
+            .withValue(Arrays.asList(new ArtifactInner().withLocation("cym")
+                .withTags(mapOf("ssl", "l", "d", "lfmmdnbbglzpswi", "bzmnvdfznud", "cwyhzdxssa"))))
+            .withNextLink("zucerscdntnev");
         model = BinaryData.fromObject(model).toObject(ArtifactList.class);
         Assertions.assertEquals("cym", model.value().get(0).location());
         Assertions.assertEquals("l", model.value().get(0).tags().get("ssl"));

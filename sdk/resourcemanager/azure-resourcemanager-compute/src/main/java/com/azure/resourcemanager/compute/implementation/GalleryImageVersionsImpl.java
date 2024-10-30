@@ -41,48 +41,43 @@ public class GalleryImageVersionsImpl extends WrapperImpl<GalleryImageVersionsCl
     }
 
     @Override
-    public PagedFlux<GalleryImageVersion> listByGalleryImageAsync(
-        final String resourceGroupName, final String galleryName, final String galleryImageName) {
-        return PagedConverter.mapPage(innerModel()
-            .listByGalleryImageAsync(resourceGroupName, galleryName, galleryImageName),
+    public PagedFlux<GalleryImageVersion> listByGalleryImageAsync(final String resourceGroupName,
+        final String galleryName, final String galleryImageName) {
+        return PagedConverter.mapPage(
+            innerModel().listByGalleryImageAsync(resourceGroupName, galleryName, galleryImageName), this::wrapModel);
+    }
+
+    @Override
+    public PagedIterable<GalleryImageVersion> listByGalleryImage(String resourceGroupName, String galleryName,
+        String galleryImageName) {
+        return PagedConverter.mapPage(innerModel().listByGalleryImage(resourceGroupName, galleryName, galleryImageName),
             this::wrapModel);
     }
 
     @Override
-    public PagedIterable<GalleryImageVersion> listByGalleryImage(
-        String resourceGroupName, String galleryName, String galleryImageName) {
-        return PagedConverter.mapPage(innerModel()
-            .listByGalleryImage(resourceGroupName, galleryName, galleryImageName),
-            this::wrapModel);
-    }
-
-    @Override
-    public Mono<GalleryImageVersion> getByGalleryImageAsync(
-        String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName) {
-        return innerModel()
-            .getAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName)
+    public Mono<GalleryImageVersion> getByGalleryImageAsync(String resourceGroupName, String galleryName,
+        String galleryImageName, String galleryImageVersionName) {
+        return innerModel().getAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName)
             .map(this::wrapModel);
     }
 
     @Override
-    public GalleryImageVersion getByGalleryImage(
-        String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName) {
-        return this
-            .getByGalleryImageAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName)
+    public GalleryImageVersion getByGalleryImage(String resourceGroupName, String galleryName, String galleryImageName,
+        String galleryImageVersionName) {
+        return this.getByGalleryImageAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName)
             .block();
     }
 
     @Override
-    public Mono<Void> deleteByGalleryImageAsync(
-        String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName) {
+    public Mono<Void> deleteByGalleryImageAsync(String resourceGroupName, String galleryName, String galleryImageName,
+        String galleryImageVersionName) {
         return innerModel().deleteAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName);
     }
 
     @Override
-    public void deleteByGalleryImage(
-        String resourceGroupName, String galleryName, String galleryImageName, String galleryImageVersionName) {
-        this
-            .deleteByGalleryImageAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName)
+    public void deleteByGalleryImage(String resourceGroupName, String galleryName, String galleryImageName,
+        String galleryImageVersionName) {
+        this.deleteByGalleryImageAsync(resourceGroupName, galleryName, galleryImageName, galleryImageVersionName)
             .block();
     }
 }

@@ -7,39 +7,58 @@ package com.azure.resourcemanager.databricks.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databricks.models.AccessConnectorProperties;
 import com.azure.resourcemanager.databricks.models.ManagedServiceIdentity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Information about azure databricks accessConnector. */
+/**
+ * Information about azure databricks accessConnector.
+ */
 @Fluent
 public final class AccessConnectorInner extends Resource {
     /*
      * Managed service identity (system assigned and/or user assigned identities)
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * The system metadata relating to this resource
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Azure Databricks accessConnector properties
      */
-    @JsonProperty(value = "properties")
     private AccessConnectorProperties properties;
 
-    /** Creates an instance of AccessConnectorInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AccessConnectorInner class.
+     */
     public AccessConnectorInner() {
     }
 
     /**
      * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -48,7 +67,7 @@ public final class AccessConnectorInner extends Resource {
 
     /**
      * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
-     *
+     * 
      * @param identity the identity value to set.
      * @return the AccessConnectorInner object itself.
      */
@@ -59,7 +78,7 @@ public final class AccessConnectorInner extends Resource {
 
     /**
      * Get the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -68,7 +87,7 @@ public final class AccessConnectorInner extends Resource {
 
     /**
      * Get the properties property: Azure Databricks accessConnector properties.
-     *
+     * 
      * @return the properties value.
      */
     public AccessConnectorProperties properties() {
@@ -77,7 +96,7 @@ public final class AccessConnectorInner extends Resource {
 
     /**
      * Set the properties property: Azure Databricks accessConnector properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AccessConnectorInner object itself.
      */
@@ -86,14 +105,48 @@ public final class AccessConnectorInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessConnectorInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccessConnectorInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -102,7 +155,7 @@ public final class AccessConnectorInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -112,5 +165,60 @@ public final class AccessConnectorInner extends Resource {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccessConnectorInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccessConnectorInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AccessConnectorInner.
+     */
+    public static AccessConnectorInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccessConnectorInner deserializedAccessConnectorInner = new AccessConnectorInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAccessConnectorInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAccessConnectorInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAccessConnectorInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAccessConnectorInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAccessConnectorInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedAccessConnectorInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAccessConnectorInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAccessConnectorInner.properties = AccessConnectorProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccessConnectorInner;
+        });
     }
 }

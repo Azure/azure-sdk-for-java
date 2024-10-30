@@ -136,17 +136,10 @@ public interface BackendContract {
          * The stage of the BackendContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithUrl,
-                DefinitionStages.WithProtocol,
-                DefinitionStages.WithTitle,
-                DefinitionStages.WithDescription,
-                DefinitionStages.WithResourceId,
-                DefinitionStages.WithProperties,
-                DefinitionStages.WithCredentials,
-                DefinitionStages.WithProxy,
-                DefinitionStages.WithTls,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithUrl, DefinitionStages.WithProtocol,
+            DefinitionStages.WithTitle, DefinitionStages.WithDescription, DefinitionStages.WithResourceId,
+            DefinitionStages.WithProperties, DefinitionStages.WithCredentials, DefinitionStages.WithProxy,
+            DefinitionStages.WithTls, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -286,17 +279,9 @@ public interface BackendContract {
     BackendContract.Update update();
 
     /** The template for BackendContract update. */
-    interface Update
-        extends UpdateStages.WithUrl,
-            UpdateStages.WithProtocol,
-            UpdateStages.WithTitle,
-            UpdateStages.WithDescription,
-            UpdateStages.WithResourceId,
-            UpdateStages.WithProperties,
-            UpdateStages.WithCredentials,
-            UpdateStages.WithProxy,
-            UpdateStages.WithTls,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithUrl, UpdateStages.WithProtocol, UpdateStages.WithTitle,
+        UpdateStages.WithDescription, UpdateStages.WithResourceId, UpdateStages.WithProperties,
+        UpdateStages.WithCredentials, UpdateStages.WithProxy, UpdateStages.WithTls, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

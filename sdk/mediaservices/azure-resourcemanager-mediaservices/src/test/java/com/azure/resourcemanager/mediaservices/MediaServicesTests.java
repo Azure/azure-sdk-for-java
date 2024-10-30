@@ -8,7 +8,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -27,12 +27,13 @@ import com.azure.resourcemanager.mediaservices.models.TransformOutput;
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.Random;
 
-public class MediaServicesTests extends TestBase {
+public class MediaServicesTests extends TestProxyTestBase {
 
     private static final Random RANDOM = new Random();
 
@@ -42,15 +43,16 @@ public class MediaServicesTests extends TestBase {
 
     private String resourceGroup = "rg" + randomPadding();
 
+    @Disabled("resource in jobHttpBaseUri/jobFile is expired, didn't find a replacement")
     @Test
     @LiveOnly
     public void mediaServicesTest() {
-        StorageManager storageManager = StorageManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        StorageManager storageManager = StorageManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
-        MediaServicesManager manager = MediaServicesManager
-            .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
+        MediaServicesManager manager = MediaServicesManager.configure()
+            .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(new AzurePowerShellCredentialBuilder().build(), new AzureProfile(AzureEnvironment.AZURE));
 
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
@@ -58,26 +60,25 @@ public class MediaServicesTests extends TestBase {
         if (testEnv) {
             resourceGroup = testResourceGroup;
         } else {
-            storageManager.resourceManager().resourceGroups().define(resourceGroup)
-                .withRegion(REGION)
-                .create();
+            storageManager.resourceManager().resourceGroups().define(resourceGroup).withRegion(REGION).create();
         }
 
         try {
             // @embedmeStart
             // storage account
-            StorageAccount storageAccount = storageManager.storageAccounts().define(STORAGE_ACCOUNT)
+            StorageAccount storageAccount = storageManager.storageAccounts()
+                .define(STORAGE_ACCOUNT)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroup)
                 .create();
 
             // media service account
-            MediaService account = manager.mediaservices().define(ACCOUNT)
+            MediaService account = manager.mediaservices()
+                .define(ACCOUNT)
                 .withRegion(Region.US_WEST3)
                 .withExistingResourceGroup(resourceGroup)
                 .withStorageAccounts(Collections.singletonList(
-                    new com.azure.resourcemanager.mediaservices.models.StorageAccount()
-                        .withId(storageAccount.id())
+                    new com.azure.resourcemanager.mediaservices.models.StorageAccount().withId(storageAccount.id())
                         .withType(StorageAccountType.PRIMARY)))
                 .create();
 
@@ -85,26 +86,23 @@ public class MediaServicesTests extends TestBase {
             Transform transform = manager.transforms()
                 .define("transform1")
                 .withExistingMediaService(resourceGroup, ACCOUNT)
-                .withOutputs(Collections.singletonList(new TransformOutput()
-                    .withPreset(new BuiltInStandardEncoderPreset()
-                        .withPresetName(EncoderNamedPreset.CONTENT_AWARE_ENCODING))))
+                .withOutputs(Collections.singletonList(new TransformOutput().withPreset(
+                    new BuiltInStandardEncoderPreset().withPresetName(EncoderNamedPreset.CONTENT_AWARE_ENCODING))))
                 .create();
 
             // output asset
-            Asset asset = manager.assets()
-                .define("output1")
-                .withExistingMediaService(resourceGroup, ACCOUNT)
-                .create();
+            Asset asset = manager.assets().define("output1").withExistingMediaService(resourceGroup, ACCOUNT).create();
 
             // input uri
-            String jobHttpBaseUri = "https://nimbuscdn-nimbuspm.streaming.mediaservices.windows.net/2b533311-b215-4409-80af-529c3e853622/";
+            String jobHttpBaseUri
+                = "https://nimbuscdn-nimbuspm.streaming.mediaservices.windows.net/2b533311-b215-4409-80af-529c3e853622/";
             String jobFile = "Ignite-short.mp4";
 
             // job
-            Job job = manager.jobs().define("job1")
+            Job job = manager.jobs()
+                .define("job1")
                 .withExistingTransform(resourceGroup, ACCOUNT, "transform1")
-                .withInput(new JobInputHttp()
-                    .withFiles(Collections.singletonList(jobFile))
+                .withInput(new JobInputHttp().withFiles(Collections.singletonList(jobFile))
                     .withBaseUri(jobHttpBaseUri)
                     .withLabel("input1"))
                 .withOutputs(Collections.singletonList(new JobOutputAsset().withAssetName("output1")))

@@ -47,12 +47,12 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
     private static final String LOCAL_FILE_PATH = "src/test/resources/sample_files/Test/";
 
     static final String AZURE_FORM_RECOGNIZER_ENDPOINT = "AZURE_FORM_RECOGNIZER_ENDPOINT";
-    static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL =
-        "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
-    static final String FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL =
-        "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL";
-    static final String FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL =
-        "FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL";
+    static final String FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL
+        = "FORM_RECOGNIZER_TRAINING_BLOB_CONTAINER_SAS_URL";
+    static final String FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL
+        = "FORM_RECOGNIZER_MULTIPAGE_TRAINING_BLOB_CONTAINER_SAS_URL";
+    static final String FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL
+        = "FORM_RECOGNIZER_SELECTION_MARK_BLOB_CONTAINER_SAS_URL";
     static final String PREFIX_SUBFOLDER = "subfolder";
     static final String INVALID_PREFIX_FILE_NAME = "XXXXX";
 
@@ -86,8 +86,7 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
 
     FormTrainingClientBuilder getFormTrainingClientBuilder(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion) {
-        FormTrainingClientBuilder builder = new FormTrainingClientBuilder()
-            .endpoint(getEndpoint())
+        FormTrainingClientBuilder builder = new FormTrainingClientBuilder().endpoint(getEndpoint())
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion);
@@ -152,11 +151,13 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
     @Test
     abstract void getFormRecognizerClientAndValidate(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
+
     @Test
     abstract void getCustomModelLabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void getCustomModelUnlabeled(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
     @Test
     abstract void getCustomModelWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
@@ -164,12 +165,16 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
     abstract void validGetAccountProperties(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
     @Test
-    abstract void validGetAccountPropertiesWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void validGetAccountPropertiesWithResponse(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
+
     @Test
-    abstract void deleteModelValidModelIdWithResponse(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+    abstract void deleteModelValidModelIdWithResponse(HttpClient httpClient,
+        FormRecognizerServiceVersion serviceVersion);
 
     @Test
     abstract void listCustomModels(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
+
     @Test
     abstract void beginCopy(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion);
 
@@ -204,10 +209,6 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
 
     @Test
     abstract void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithPrefixName(HttpClient httpClient,
-        FormRecognizerServiceVersion serviceVersion);
-
-    @Test
-    abstract void beginTrainingWithoutTrainingLabelsIncludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
         FormRecognizerServiceVersion serviceVersion);
 
     @Test
@@ -248,10 +249,10 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
      * @return the target resource Identifier
      */
     String getTargetResourceId() {
-        return interceptorManager.isPlaybackMode() ? "resourceIdInPlayback"
+        return interceptorManager.isPlaybackMode()
+            ? "resourceIdInPlayback"
             : Configuration.getGlobalConfiguration().get(RESOURCE_ID);
     }
-
 
     /**
      * Get the target resource region based on the test running mode.
@@ -259,7 +260,8 @@ public abstract class FormTrainingClientTestBase extends TestProxyTestBase {
      * @return the target resource region
      */
     String getTargetResourceRegion() {
-        return interceptorManager.isPlaybackMode() ? "resourceRegionInPlayback"
+        return interceptorManager.isPlaybackMode()
+            ? "resourceRegionInPlayback"
             : Configuration.getGlobalConfiguration().get(RESOURCE_REGION);
     }
 

@@ -6,25 +6,46 @@ package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.fluent.models.SecuritySettingsProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The security settings of a device. */
+/**
+ * The security settings of a device.
+ */
 @Fluent
 public final class SecuritySettings extends ArmBaseModel {
     /*
      * Properties of the security settings.
      */
-    @JsonProperty(value = "properties", required = true)
     private SecuritySettingsProperties innerProperties = new SecuritySettingsProperties();
 
-    /** Creates an instance of SecuritySettings class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SecuritySettings class.
+     */
     public SecuritySettings() {
     }
 
     /**
      * Get the innerProperties property: Properties of the security settings.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecuritySettingsProperties innerProperties() {
@@ -32,10 +53,40 @@ public final class SecuritySettings extends ArmBaseModel {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the deviceAdminPassword property: Device administrator password as an encrypted string (encrypted using RSA
      * PKCS #1) is used to sign into the local web UI of the device. The Actual password should have at least 8
      * characters that are a combination of uppercase, lowercase, numeric, and special characters.
-     *
+     * 
      * @return the deviceAdminPassword value.
      */
     public AsymmetricEncryptedSecret deviceAdminPassword() {
@@ -46,7 +97,7 @@ public final class SecuritySettings extends ArmBaseModel {
      * Set the deviceAdminPassword property: Device administrator password as an encrypted string (encrypted using RSA
      * PKCS #1) is used to sign into the local web UI of the device. The Actual password should have at least 8
      * characters that are a combination of uppercase, lowercase, numeric, and special characters.
-     *
+     * 
      * @param deviceAdminPassword the deviceAdminPassword value to set.
      * @return the SecuritySettings object itself.
      */
@@ -60,21 +111,62 @@ public final class SecuritySettings extends ArmBaseModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SecuritySettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model SecuritySettings"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SecuritySettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecuritySettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecuritySettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecuritySettings.
+     */
+    public static SecuritySettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecuritySettings deserializedSecuritySettings = new SecuritySettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecuritySettings.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSecuritySettings.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSecuritySettings.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSecuritySettings.innerProperties = SecuritySettingsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecuritySettings;
+        });
+    }
 }

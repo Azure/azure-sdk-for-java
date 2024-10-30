@@ -41,8 +41,8 @@ public interface ServerAdministratorsClient {
      * @return information about a AAD server administrator along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServerAdministratorResourceInner> getWithResponse(
-        String resourceGroupName, String serverName, Context context);
+    Response<ServerAdministratorResourceInner> getWithResponse(String resourceGroupName, String serverName,
+        Context context);
 
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
@@ -58,8 +58,8 @@ public interface ServerAdministratorsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServerAdministratorResourceInner>, ServerAdministratorResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, ServerAdministratorResourceInner properties);
+    SyncPoller<PollResult<ServerAdministratorResourceInner>, ServerAdministratorResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String serverName, ServerAdministratorResourceInner properties);
 
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
@@ -92,8 +92,8 @@ public interface ServerAdministratorsClient {
      * @return represents a and external administrator to be created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerAdministratorResourceInner createOrUpdate(
-        String resourceGroupName, String serverName, ServerAdministratorResourceInner properties);
+    ServerAdministratorResourceInner createOrUpdate(String resourceGroupName, String serverName,
+        ServerAdministratorResourceInner properties);
 
     /**
      * Creates or update active directory administrator on an existing server. The update action will overwrite the
@@ -109,8 +109,8 @@ public interface ServerAdministratorsClient {
      * @return represents a and external administrator to be created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServerAdministratorResourceInner createOrUpdate(
-        String resourceGroupName, String serverName, ServerAdministratorResourceInner properties, Context context);
+    ServerAdministratorResourceInner createOrUpdate(String resourceGroupName, String serverName,
+        ServerAdministratorResourceInner properties, Context context);
 
     /**
      * Deletes server active directory administrator.

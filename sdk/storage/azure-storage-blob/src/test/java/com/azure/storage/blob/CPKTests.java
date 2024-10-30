@@ -48,11 +48,12 @@ public class CPKTests extends BlobTestBase {
     public void setup() {
         key = new CustomerProvidedKey(getRandomKey());
         BlobContainerClientBuilder builder = instrument(new BlobContainerClientBuilder()
-            .endpoint(cc.getBlobContainerUrl().toString())
+            .endpoint(cc.getBlobContainerUrl())
             .customerProvidedKey(key)
             .credential(ENVIRONMENT.getPrimaryAccount().getCredential()));
 
         cpkContainer = builder.buildClient();
+
         cpkBlockBlob = cpkContainer.getBlobClient(generateBlobName()).getBlockBlobClient();
         cpkPageBlob = cpkContainer.getBlobClient(generateBlobName()).getPageBlobClient();
         cpkAppendBlob = cpkContainer.getBlobClient(generateBlobName()).getAppendBlobClient();
@@ -64,6 +65,11 @@ public class CPKTests extends BlobTestBase {
     }
 
     @Test
+    public void getCPK() {
+        assertEquals(key.getKey(), cpkContainer.getCustomerProvidedKey().getEncryptionKey());
+    }
+
+    @Test
     public void putBlobWithCPK() {
         Response<BlockBlobItem> response = cpkBlockBlob.uploadWithResponse(DATA.getDefaultInputStream(),
             DATA.getDefaultDataSize(), null, null, null, null, null, null, null);
@@ -72,6 +78,7 @@ public class CPKTests extends BlobTestBase {
         assertEquals(key.getKeySha256(), response.getValue().getEncryptionKeySha256());
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void getBlobWithCPK() {
         cpkBlockBlob.upload(DATA.getDefaultInputStream(), DATA.getDefaultDataSize());

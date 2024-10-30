@@ -8,10 +8,8 @@ import io.clientcore.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static io.clientcore.core.util.TestUtils.createUrl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -27,11 +25,7 @@ public class HttpResponseTests {
     private static final HttpRequest HTTP_REQUEST;
 
     static {
-        try {
-            HTTP_REQUEST = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        HTTP_REQUEST = new HttpRequest(HttpMethod.POST, "http://request.uri");
     }
 
     @Test

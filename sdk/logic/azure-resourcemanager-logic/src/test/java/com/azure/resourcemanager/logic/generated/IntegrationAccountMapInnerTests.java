@@ -15,39 +15,36 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationAccountMapInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationAccountMapInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"mapType\":\"NotSpecified\",\"parametersSchema\":{\"ref\":\"nai\"},\"createdTime\":\"2021-09-08T02:56:48Z\",\"changedTime\":\"2021-07-11T23:25:50Z\",\"content\":\"dreaxh\",\"contentType\":\"xdrrvqahqkghtp\",\"contentLink\":{\"uri\":\"nhyjsv\",\"contentVersion\":\"cxzbfvoowvr\",\"contentSize\":278153886100525858,\"metadata\":\"datappyostronzmyhgf\"},\"metadata\":\"datansxkmcwaekrrjr\"},\"location\":\"afxtsgum\",\"tags\":{\"xwslolbqpv\":\"lik\",\"crpw\":\"zlmvfelfktgp\",\"brnjwmw\":\"xeznoi\"},\"id\":\"pn\",\"name\":\"saz\",\"type\":\"jjoqkagf\"}")
-                .toObject(IntegrationAccountMapInner.class);
-        Assertions.assertEquals("afxtsgum", model.location());
-        Assertions.assertEquals("lik", model.tags().get("xwslolbqpv"));
-        Assertions.assertEquals(MapType.NOT_SPECIFIED, model.mapType());
-        Assertions.assertEquals("nai", model.parametersSchema().ref());
-        Assertions.assertEquals("dreaxh", model.content());
-        Assertions.assertEquals("xdrrvqahqkghtp", model.contentType());
+        IntegrationAccountMapInner model = BinaryData.fromString(
+            "{\"properties\":{\"mapType\":\"Xslt\",\"parametersSchema\":{\"ref\":\"na\"},\"createdTime\":\"2021-02-08T20:51:05Z\",\"changedTime\":\"2021-01-07T13:26:47Z\",\"content\":\"jid\",\"contentType\":\"syxkyxvxevblb\",\"contentLink\":{\"uri\":\"nljlageuaulx\",\"contentVersion\":\"smjbnkppxyn\",\"contentSize\":8200427919923501571,\"contentHash\":{\"algorithm\":\"eizzgwk\",\"value\":\"srmffeycxcktpiym\"},\"metadata\":\"datateeammxqiekkkzd\"},\"metadata\":\"datatkgdojbmxva\"},\"location\":\"refdee\",\"tags\":{\"s\":\"cuijpxt\",\"wsawddjibabxvi\":\"wprtu\",\"tfgle\":\"itvtzeexavo\"},\"id\":\"dmdqb\",\"name\":\"pypqtgsfj\",\"type\":\"cbslhhx\"}")
+            .toObject(IntegrationAccountMapInner.class);
+        Assertions.assertEquals("refdee", model.location());
+        Assertions.assertEquals("cuijpxt", model.tags().get("s"));
+        Assertions.assertEquals(MapType.XSLT, model.mapType());
+        Assertions.assertEquals("na", model.parametersSchema().ref());
+        Assertions.assertEquals("jid", model.content());
+        Assertions.assertEquals("syxkyxvxevblb", model.contentType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationAccountMapInner model =
-            new IntegrationAccountMapInner()
-                .withLocation("afxtsgum")
-                .withTags(mapOf("xwslolbqpv", "lik", "crpw", "zlmvfelfktgp", "brnjwmw", "xeznoi"))
-                .withMapType(MapType.NOT_SPECIFIED)
-                .withParametersSchema(new IntegrationAccountMapPropertiesParametersSchema().withRef("nai"))
-                .withContent("dreaxh")
-                .withContentType("xdrrvqahqkghtp")
-                .withMetadata("datansxkmcwaekrrjr");
+        IntegrationAccountMapInner model = new IntegrationAccountMapInner().withLocation("refdee")
+            .withTags(mapOf("s", "cuijpxt", "wsawddjibabxvi", "wprtu", "tfgle", "itvtzeexavo"))
+            .withMapType(MapType.XSLT)
+            .withParametersSchema(new IntegrationAccountMapPropertiesParametersSchema().withRef("na"))
+            .withContent("jid")
+            .withContentType("syxkyxvxevblb")
+            .withMetadata("datatkgdojbmxva");
         model = BinaryData.fromObject(model).toObject(IntegrationAccountMapInner.class);
-        Assertions.assertEquals("afxtsgum", model.location());
-        Assertions.assertEquals("lik", model.tags().get("xwslolbqpv"));
-        Assertions.assertEquals(MapType.NOT_SPECIFIED, model.mapType());
-        Assertions.assertEquals("nai", model.parametersSchema().ref());
-        Assertions.assertEquals("dreaxh", model.content());
-        Assertions.assertEquals("xdrrvqahqkghtp", model.contentType());
+        Assertions.assertEquals("refdee", model.location());
+        Assertions.assertEquals("cuijpxt", model.tags().get("s"));
+        Assertions.assertEquals(MapType.XSLT, model.mapType());
+        Assertions.assertEquals("na", model.parametersSchema().ref());
+        Assertions.assertEquals("jid", model.content());
+        Assertions.assertEquals("syxkyxvxevblb", model.contentType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

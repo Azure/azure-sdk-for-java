@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.databoxedge.generated;
 
-/** Samples for Devices InstallUpdates. */
+/**
+ * Samples for Devices InstallUpdates.
+ */
 public final class DevicesInstallUpdatesSamples {
     /*
-     * x-ms-original-file: specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/InstallUpdatesPost.json
+     * x-ms-original-file:
+     * specification/databoxedge/resource-manager/Microsoft.DataBoxEdge/stable/2019-08-01/examples/InstallUpdatesPost.
+     * json
      */
     /**
      * Sample code: InstallUpdatesPost.
-     *
+     * 
      * @param manager Entry point to DataBoxEdgeManager.
      */
     public static void installUpdatesPost(com.azure.resourcemanager.databoxedge.DataBoxEdgeManager manager) {

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SolutionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"workspaceResourceId\":\"p\",\"provisioningState\":\"noi\",\"containedResources\":[\"lrxybqsoq\",\"jgkdmbpazlobcu\"],\"referencedResources\":[\"znrb\",\"cqqjnqglhqgn\",\"foooj\"]}")
-                .toObject(SolutionProperties.class);
+        SolutionProperties model = BinaryData.fromString(
+            "{\"workspaceResourceId\":\"p\",\"provisioningState\":\"noi\",\"containedResources\":[\"lrxybqsoq\",\"jgkdmbpazlobcu\"],\"referencedResources\":[\"znrb\",\"cqqjnqglhqgn\",\"foooj\"]}")
+            .toObject(SolutionProperties.class);
         Assertions.assertEquals("p", model.workspaceResourceId());
         Assertions.assertEquals("lrxybqsoq", model.containedResources().get(0));
         Assertions.assertEquals("znrb", model.referencedResources().get(0));
@@ -24,11 +22,9 @@ public final class SolutionPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SolutionProperties model =
-            new SolutionProperties()
-                .withWorkspaceResourceId("p")
-                .withContainedResources(Arrays.asList("lrxybqsoq", "jgkdmbpazlobcu"))
-                .withReferencedResources(Arrays.asList("znrb", "cqqjnqglhqgn", "foooj"));
+        SolutionProperties model = new SolutionProperties().withWorkspaceResourceId("p")
+            .withContainedResources(Arrays.asList("lrxybqsoq", "jgkdmbpazlobcu"))
+            .withReferencedResources(Arrays.asList("znrb", "cqqjnqglhqgn", "foooj"));
         model = BinaryData.fromObject(model).toObject(SolutionProperties.class);
         Assertions.assertEquals("p", model.workspaceResourceId());
         Assertions.assertEquals("lrxybqsoq", model.containedResources().get(0));

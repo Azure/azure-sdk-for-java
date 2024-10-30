@@ -8,6 +8,7 @@ import com.azure.ai.formrecognizer.FormRecognizerClientBuilder;
 import com.azure.ai.formrecognizer.FormRecognizerServiceVersion;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient;
+import com.azure.ai.formrecognizer.implementation.CustomModelsImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.Utility;
 import com.azure.ai.formrecognizer.implementation.models.ComposeRequest;
@@ -56,6 +57,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.formrecognizer.implementation.Utility.DEFAULT_POLL_INTERVAL;
+import static com.azure.ai.formrecognizer.implementation.Utility.getCreateComposeModelOptions;
 import static com.azure.ai.formrecognizer.implementation.Utility.parseModelId;
 import static com.azure.ai.formrecognizer.implementation.Utility.urlActivationOperation;
 import static com.azure.ai.formrecognizer.training.CustomModelTransforms.toCustomFormModel;
@@ -134,6 +136,7 @@ public final class FormTrainingAsyncClient {
     private final ClientLogger logger = new ClientLogger(FormTrainingAsyncClient.class);
     private final FormRecognizerClientImpl service;
     private final FormRecognizerServiceVersion serviceVersion;
+    private final CustomModelsImpl customModelsImpl;
 
     /**
      * Create a {@link FormTrainingClient} that sends requests to the Form Recognizer service's endpoint.
@@ -145,6 +148,7 @@ public final class FormTrainingAsyncClient {
     FormTrainingAsyncClient(FormRecognizerClientImpl service, FormRecognizerServiceVersion serviceVersion) {
         this.service = service;
         this.serviceVersion = serviceVersion;
+        this.customModelsImpl = service.getCustomModels();
     }
 
     /**
@@ -271,16 +275,18 @@ public final class FormTrainingAsyncClient {
     }
 
     PollerFlux<FormRecognizerOperationResult, CustomFormModel> beginTraining(String trainingFilesUrl,
-        boolean useTrainingLabels,
-        TrainingOptions trainingOptions, Context context) {
-        trainingOptions =  trainingOptions == null ? new TrainingOptions() : trainingOptions;
+        boolean useTrainingLabels, TrainingOptions trainingOptions, Context context) {
+        trainingOptions = trainingOptions == null ? new TrainingOptions() : trainingOptions;
         return new PollerFlux<>(trainingOptions.getPollInterval(),
             getTrainingActivationOperation(trainingFilesUrl, useTrainingLabels,
                 trainingOptions.getTrainingFileFilter() != null
-                    ? trainingOptions.getTrainingFileFilter().isSubfoldersIncluded() : false,
+                    ? trainingOptions.getTrainingFileFilter().isSubfoldersIncluded()
+                    : false,
                 trainingOptions.getTrainingFileFilter() != null
-                    ? trainingOptions.getTrainingFileFilter().getPrefix() : null,
-                trainingOptions.getModelName(), context), createModelPollOperation(context),
+                    ? trainingOptions.getTrainingFileFilter().getPrefix()
+                    : null,
+                trainingOptions.getModelName(), context),
+            createModelPollOperation(context),
             (activationResponse, pollingContext) -> Mono.error(new RuntimeException("Cancellation is not supported")),
             fetchModelResultOperation(context));
     }
@@ -354,7 +360,7 @@ public final class FormTrainingAsyncClient {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             return monoError(logger, new IllegalArgumentException("'modelId' is required and cannot be null or empty"));
         }
-        return service.getCustomModelWithResponseAsync(UUID.fromString(modelId), true, context)
+        return customModelsImpl.getWithResponseAsync(UUID.fromString(modelId), true, context)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, toCustomFormModel(response.getValue())));
     }
@@ -412,11 +418,10 @@ public final class FormTrainingAsyncClient {
     }
 
     Mono<Response<AccountProperties>> getAccountPropertiesWithResponse(Context context) {
-        return service.getCustomModelsWithResponseAsync(context)
+        return customModelsImpl.getSummaryWithResponseAsync(context)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
-            .map(response -> new SimpleResponse<>(response,
-                new AccountProperties(response.getValue().getSummary().getCount(),
-                    response.getValue().getSummary().getLimit())));
+            .map(response -> new SimpleResponse<>(response, new AccountProperties(
+                response.getValue().getSummary().getCount(), response.getValue().getSummary().getLimit())));
     }
 
     /**
@@ -474,7 +479,7 @@ public final class FormTrainingAsyncClient {
         if (CoreUtils.isNullOrEmpty(modelId)) {
             return monoError(logger, new IllegalArgumentException("'modelId' is required and cannot be null or empty"));
         }
-        return service.deleteCustomModelWithResponseAsync(UUID.fromString(modelId), context)
+        return customModelsImpl.deleteWithResponseAsync(UUID.fromString(modelId), context)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(response -> new SimpleResponse<>(response, null));
     }
@@ -800,22 +805,22 @@ public final class FormTrainingAsyncClient {
         CreateComposedModelOptions creatComposeModelOptions, Context context) {
         try {
             if (CoreUtils.isNullOrEmpty(modelIds)) {
-                return PollerFlux.error(logger.logExceptionAsError(
-                    new NullPointerException("'modelIds' cannot be null or empty")));
+                return PollerFlux
+                    .error(logger.logExceptionAsError(new NullPointerException("'modelIds' cannot be null or empty")));
             }
             creatComposeModelOptions = getCreateComposeModelOptions(creatComposeModelOptions);
 
-            final ComposeRequest composeRequest = new ComposeRequest()
-                .setModelIds(modelIds.stream()
-                    .map(UUID::fromString).collect(Collectors.toList()))
-                .setModelName(creatComposeModelOptions.getModelName());
+            final ComposeRequest composeRequest
+                = new ComposeRequest().setModelIds(modelIds.stream().map(UUID::fromString).collect(Collectors.toList()))
+                    .setModelName(creatComposeModelOptions.getModelName());
 
             return new PollerFlux<>(DEFAULT_POLL_INTERVAL,
-                urlActivationOperation(() -> service.composeCustomModelsAsyncWithResponseAsync(composeRequest, context)
-                    .map(response -> new FormRecognizerOperationResult(parseModelId(
-                        response.getDeserializedHeaders().getLocation()))), logger), createModelPollOperation(context),
-                (activationResponse, pollingContext)
-                    -> Mono.error(new RuntimeException("Cancellation is not supported")),
+                urlActivationOperation(() -> customModelsImpl.composeWithResponseAsync(composeRequest, context)
+                    .map(response -> new FormRecognizerOperationResult(
+                        parseModelId(response.getDeserializedHeaders().getLocation()))),
+                    logger),
+                createModelPollOperation(context), (activationResponse, pollingContext) -> Mono
+                    .error(new RuntimeException("Cancellation is not supported")),
                 fetchModelResultOperation(context));
         } catch (RuntimeException ex) {
             return PollerFlux.error(ex);
@@ -830,18 +835,19 @@ public final class FormTrainingAsyncClient {
         if (resourceRegion == null) {
             return monoError(logger, new NullPointerException("'resourceRegion' cannot be null."));
         }
-        return service.generateModelCopyAuthorizationWithResponseAsync(context)
+        return customModelsImpl.authorizeModelCopyWithResponseAsync(context)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(response -> {
                 CopyAuthorizationResult copyAuthorizationResult = response.getValue();
-                return new SimpleResponse<>(response, new CopyAuthorization(copyAuthorizationResult.getModelId(),
-                    copyAuthorizationResult.getAccessToken(), resourceId, resourceRegion,
-                    copyAuthorizationResult.getExpirationDateTimeTicks()));
+                return new SimpleResponse<>(response,
+                    new CopyAuthorization(copyAuthorizationResult.getModelId(),
+                        copyAuthorizationResult.getAccessToken(), resourceId, resourceRegion,
+                        copyAuthorizationResult.getExpirationDateTimeTicks()));
             });
     }
 
     private Mono<PagedResponse<CustomFormModelInfo>> listFirstPageModelInfo(Context context) {
-        return service.listCustomModelsSinglePageAsync(context)
+        return customModelsImpl.listSinglePageAsync(context)
             .doOnRequest(ignoredValue -> logger.info("Listing information for all models"))
             .doOnSuccess(response -> logger.info("Listed all models"))
             .doOnError(error -> logger.warning("Failed to list all models information", error))
@@ -854,11 +860,11 @@ public final class FormTrainingAsyncClient {
         if (CoreUtils.isNullOrEmpty(nextPageLink)) {
             return Mono.empty();
         }
-        return service.listCustomModelsNextSinglePageAsync(nextPageLink, context)
+        return customModelsImpl.listNextSinglePageAsync(nextPageLink, context)
             .doOnSubscribe(ignoredValue -> logger.info("Retrieving the next listing page - Page {}", nextPageLink))
             .doOnSuccess(response -> logger.info("Retrieved the next listing page - Page {}", nextPageLink))
-            .doOnError(error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink,
-                error))
+            .doOnError(
+                error -> logger.warning("Failed to retrieve the next listing page - Page {}", nextPageLink, error))
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 toCustomFormModelInfo(res.getValue()), res.getContinuationToken(), null));
@@ -872,15 +878,13 @@ public final class FormTrainingAsyncClient {
                 if (modelId == null) {
                     return Mono.error(new NullPointerException("'modelId' cannot be null."));
                 }
-                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), resultUid, context)
-                    .map(modelSimpleResponse -> {
-                        CopyOperationResult copyOperationResult = modelSimpleResponse.getValue();
+                return customModelsImpl.getCopyResultAsync(UUID.fromString(modelId), resultUid, context)
+                    .map(copyOperationResult -> {
                         return new CustomFormModelInfo(copyModelId,
                             copyOperationResult.getStatus() == OperationStatus.SUCCEEDED
                                 ? CustomFormModelStatus.READY
                                 : CustomFormModelStatus.fromString(copyOperationResult.getStatus().toString()),
-                            copyOperationResult.getCreatedDateTime(),
-                            copyOperationResult.getLastUpdatedDateTime());
+                            copyOperationResult.getCreatedDateTime(), copyOperationResult.getLastUpdatedDateTime());
                     })
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
@@ -893,12 +897,12 @@ public final class FormTrainingAsyncClient {
         createCopyPollOperation(String modelId, Context context) {
         return (pollingContext) -> {
             try {
-                PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                PollResponse<FormRecognizerOperationResult> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 UUID targetId = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getCustomModelCopyResultWithResponseAsync(UUID.fromString(modelId), targetId, context)
-                    .flatMap(modelSimpleResponse ->
-                        processCopyModelResponse(modelSimpleResponse, operationResultPollResponse))
+                return customModelsImpl.getCopyResultWithResponseAsync(UUID.fromString(modelId), targetId, context)
+                    .flatMap(modelSimpleResponse -> processCopyModelResponse(modelSimpleResponse,
+                        operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (HttpResponseException ex) {
                 return monoError(logger, ex);
@@ -916,17 +920,14 @@ public final class FormTrainingAsyncClient {
                 if (target == null) {
                     return Mono.error(new NullPointerException("'target' cannot be null."));
                 }
-                CopyRequest copyRequest = new CopyRequest()
-                    .setTargetResourceId(target.getResourceId())
+                CopyRequest copyRequest = new CopyRequest().setTargetResourceId(target.getResourceId())
                     .setTargetResourceRegion(target.getResourceRegion())
-                    .setCopyAuthorization(new CopyAuthorizationResult()
-                        .setModelId(target.getModelId())
+                    .setCopyAuthorization(new CopyAuthorizationResult().setModelId(target.getModelId())
                         .setAccessToken(target.getAccessToken())
                         .setExpirationDateTimeTicks(target.getExpiresOn().toEpochSecond()));
-                return service.copyCustomModelWithResponseAsync(UUID.fromString(modelId), copyRequest, context)
-                    .map(response ->
-                        new FormRecognizerOperationResult(
-                            parseModelId(response.getDeserializedHeaders().getOperationLocation())))
+                return customModelsImpl.copyWithResponseAsync(UUID.fromString(modelId), copyRequest, context)
+                    .map(response -> new FormRecognizerOperationResult(
+                        parseModelId(response.getDeserializedHeaders().getOperationLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
                 return monoError(logger, ex);
@@ -943,15 +944,22 @@ public final class FormTrainingAsyncClient {
             case RUNNING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
+
             case SUCCEEDED:
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
+
             case FAILED:
-                return monoError(logger, new FormRecognizerException("Copy operation failed",
-                    copyModel.getValue().getCopyResult().getErrors().stream()
-                        .map(errorInformation -> new FormRecognizerErrorInformation(errorInformation.getCode(),
-                            errorInformation.getMessage()))
-                        .collect(Collectors.toList())));
+                return monoError(logger,
+                    new FormRecognizerException("Copy operation failed",
+                        copyModel.getValue()
+                            .getCopyResult()
+                            .getErrors()
+                            .stream()
+                            .map(errorInformation -> new FormRecognizerErrorInformation(errorInformation.getCode(),
+                                errorInformation.getMessage()))
+                            .collect(Collectors.toList())));
+
             default:
                 status = LongRunningOperationStatus.fromString(copyModel.getValue().getStatus().toString(), true);
                 break;
@@ -959,12 +967,12 @@ public final class FormTrainingAsyncClient {
         return Mono.just(new PollResponse<>(status, copyModelOperationResponse.getValue()));
     }
 
-    private Function<PollingContext<FormRecognizerOperationResult>, Mono<CustomFormModel>> fetchModelResultOperation(
-        Context context) {
+    private Function<PollingContext<FormRecognizerOperationResult>, Mono<CustomFormModel>>
+        fetchModelResultOperation(Context context) {
         return (pollingContext) -> {
             try {
                 final UUID modelUid = UUID.fromString(pollingContext.getLatestResponse().getValue().getResultId());
-                return service.getCustomModelWithResponseAsync(modelUid, true, context)
+                return customModelsImpl.getWithResponseAsync(modelUid, true, context)
                     .map(modelSimpleResponse -> toCustomFormModel(modelSimpleResponse.getValue()))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
             } catch (RuntimeException ex) {
@@ -977,14 +985,14 @@ public final class FormTrainingAsyncClient {
         createModelPollOperation(Context context) {
         return (pollingContext) -> {
             try {
-                PollResponse<FormRecognizerOperationResult> operationResultPollResponse =
-                    pollingContext.getLatestResponse();
+                PollResponse<FormRecognizerOperationResult> operationResultPollResponse
+                    = pollingContext.getLatestResponse();
                 UUID modelUid = UUID.fromString(operationResultPollResponse.getValue().getResultId());
-                return service.getCustomModelWithResponseAsync(modelUid, true, context)
-                    .flatMap(modelSimpleResponse ->
-                        processTrainingModelResponse(modelSimpleResponse, operationResultPollResponse))
+                return customModelsImpl.getWithResponseAsync(modelUid, true, context)
+                    .flatMap(modelSimpleResponse -> processTrainingModelResponse(modelSimpleResponse,
+                        operationResultPollResponse))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
-            }  catch (HttpResponseException ex) {
+            } catch (HttpResponseException ex) {
                 return monoError(logger, ex);
             }
         };
@@ -992,21 +1000,19 @@ public final class FormTrainingAsyncClient {
 
     private Function<PollingContext<FormRecognizerOperationResult>, Mono<FormRecognizerOperationResult>>
         getTrainingActivationOperation(String trainingFilesUrl, boolean useTrainingLabels, boolean includeSubfolders,
-        String filePrefix, String modelName, Context context) {
+            String filePrefix, String modelName, Context context) {
         return (pollingContext) -> {
             try {
                 if (trainingFilesUrl == null) {
                     return Mono.error(new NullPointerException("'trainingFilesUrl' cannot be null."));
                 }
-                TrainSourceFilter trainSourceFilter = new TrainSourceFilter()
-                    .setIncludeSubFolders(includeSubfolders)
-                    .setPrefix(filePrefix);
-                TrainRequest serviceTrainRequest = new TrainRequest()
-                    .setSource(trainingFilesUrl)
+                TrainSourceFilter trainSourceFilter
+                    = new TrainSourceFilter().setIncludeSubFolders(includeSubfolders).setPrefix(filePrefix);
+                TrainRequest serviceTrainRequest = new TrainRequest().setSource(trainingFilesUrl)
                     .setSourceFilter(trainSourceFilter)
                     .setUseLabelFile(useTrainingLabels)
                     .setModelName(modelName);
-                return service.trainCustomModelAsyncWithResponseAsync(serviceTrainRequest, context)
+                return customModelsImpl.trainWithResponseAsync(serviceTrainRequest, context)
                     .map(response -> new FormRecognizerOperationResult(
                         parseModelId(response.getDeserializedHeaders().getLocation())))
                     .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
@@ -1017,33 +1023,35 @@ public final class FormTrainingAsyncClient {
     }
 
     private Mono<PollResponse<FormRecognizerOperationResult>> processTrainingModelResponse(
-        Response<Model> trainingModel,
-        PollResponse<FormRecognizerOperationResult> trainingModelOperationResponse) {
+        Response<Model> trainingModel, PollResponse<FormRecognizerOperationResult> trainingModelOperationResponse) {
         LongRunningOperationStatus status;
         switch (trainingModel.getValue().getModelInfo().getStatus()) {
             case CREATING:
                 status = LongRunningOperationStatus.IN_PROGRESS;
                 break;
+
             case READY:
                 status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
                 break;
+
             case INVALID:
-                return monoError(logger, new FormRecognizerException(String.format("Invalid model created"
-                    + " with model Id %s", trainingModel.getValue().getModelInfo().getModelId()),
-                    trainingModel.getValue().getTrainResult().getErrors().stream()
-                        .map(errorInformation -> new FormRecognizerErrorInformation(errorInformation.getCode(),
-                            errorInformation.getMessage()))
-                        .collect(Collectors.toList())));
+                return monoError(logger,
+                    new FormRecognizerException(
+                        String.format("Invalid model created" + " with model Id %s",
+                            trainingModel.getValue().getModelInfo().getModelId()),
+                        trainingModel.getValue()
+                            .getTrainResult()
+                            .getErrors()
+                            .stream()
+                            .map(errorInformation -> new FormRecognizerErrorInformation(errorInformation.getCode(),
+                                errorInformation.getMessage()))
+                            .collect(Collectors.toList())));
+
             default:
-                status = LongRunningOperationStatus.fromString(
-                    trainingModel.getValue().getModelInfo().getStatus().toString(), true);
+                status = LongRunningOperationStatus
+                    .fromString(trainingModel.getValue().getModelInfo().getStatus().toString(), true);
                 break;
         }
         return Mono.just(new PollResponse<>(status, trainingModelOperationResponse.getValue()));
-    }
-
-    private static CreateComposedModelOptions
-        getCreateComposeModelOptions(CreateComposedModelOptions userProvidedOptions) {
-        return userProvidedOptions == null ? new CreateComposedModelOptions() : userProvidedOptions;
     }
 }

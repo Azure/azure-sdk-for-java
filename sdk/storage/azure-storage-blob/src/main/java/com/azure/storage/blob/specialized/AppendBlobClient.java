@@ -21,10 +21,10 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRange;
@@ -48,7 +48,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
-import static com.azure.storage.blob.implementation.util.ModelHelper.wrapTimeoutServiceCallWithExceptionMapping;
 import static com.azure.storage.common.implementation.StorageImplUtils.sendRequest;
 
 /**
@@ -86,17 +85,17 @@ public final class AppendBlobClient extends BlobClientBase {
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      */
-    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW = 4 * Constants.MB;
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW = BlobConstants.MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW;
 
     /**
      * Indicates the maximum number of bytes that can be sent in a call to appendBlock.
      * For versions 2022-11-02 and above.
      */
-    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE = 100 * Constants.MB;
+    static final int MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE = BlobConstants.MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE;
     /**
      * Indicates the maximum number of blocks allowed in an append blob.
      */
-    static final int MAX_APPEND_BLOCKS = 50000;
+    static final int MAX_APPEND_BLOCKS = BlobConstants.MAX_BLOCKS;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.
@@ -339,15 +338,14 @@ public final class AppendBlobClient extends BlobClientBase {
         Context finalContext = context == null ? Context.NONE : context;
         BlobImmutabilityPolicy immutabilityPolicy = finalOptions.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : finalOptions.getImmutabilityPolicy();
-        Callable<ResponseBase<AppendBlobsCreateHeaders, Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(
-            () ->
+        Callable<ResponseBase<AppendBlobsCreateHeaders, Void>> operation = () ->
             this.azureBlobStorage.getAppendBlobs().createWithResponse(containerName, blobName, 0, null,
                 finalOptions.getMetadata(), requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
                 requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
                 ModelHelper.tagsToString(finalOptions.getTags()), immutabilityPolicy.getExpiryTime(),
                 immutabilityPolicy.getPolicyMode(), finalOptions.hasLegalHold(), finalOptions.getHeaders(),
-                getCustomerProvidedKey(), encryptionScope, finalContext));
+                getCustomerProvidedKey(), encryptionScope, finalContext);
         ResponseBase<AppendBlobsCreateHeaders, Void> response = sendRequest(operation, timeout,
             BlobStorageException.class);
         AppendBlobsCreateHeaders hd = response.getDeserializedHeaders();
@@ -417,8 +415,7 @@ public final class AppendBlobClient extends BlobClientBase {
         try {
             return createWithResponse(finalOptions, timeout, context);
         } catch (BlobStorageException e) {
-            if (e.getStatusCode() == 409 && (e.getErrorCode().equals(BlobErrorCode.BLOB_ALREADY_EXISTS)
-                || e.getErrorCode().equals(BlobErrorCode.RESOURCE_ALREADY_EXISTS))) {
+            if (e.getStatusCode() == 409) {
                 HttpResponse res = e.getResponse();
                 return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
             } else {
@@ -672,11 +669,11 @@ public final class AppendBlobClient extends BlobClientBase {
             ? new AppendBlobRequestConditions() : finalOptions.getRequestConditions();
         Context finalContext = context == null ? Context.NONE : context;
 
-        Callable<Response<Void>> operation = wrapTimeoutServiceCallWithExceptionMapping(() ->
+        Callable<Response<Void>> operation = () ->
             this.azureBlobStorage.getAppendBlobs().sealNoCustomHeadersWithResponse(containerName, blobName, null, null,
                 requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
                 requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(), finalContext));
+                requestConditions.getIfNoneMatch(), requestConditions.getAppendPosition(), finalContext);
         return sendRequest(operation, timeout, BlobStorageException.class);
     }
 

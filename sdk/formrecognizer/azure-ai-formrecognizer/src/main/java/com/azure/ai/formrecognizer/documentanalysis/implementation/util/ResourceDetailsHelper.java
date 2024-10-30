@@ -20,10 +20,10 @@ public final class ResourceDetailsHelper {
      */
     public interface ResourceDetailsAccessor {
         void setDocumentModelCount(ResourceDetails resourceDetails, int documentModelCount);
+
         void setDocumentModelLimit(ResourceDetails resourceDetails, int documentModelLimit);
 
-        void setCustomNeuralDocumentModelBuilds(
-            ResourceDetails resourceDetails, QuotaDetails quotaDetails);
+        void setCustomNeuralDocumentModelBuilds(ResourceDetails resourceDetails, QuotaDetails quotaDetails);
     }
 
     /**

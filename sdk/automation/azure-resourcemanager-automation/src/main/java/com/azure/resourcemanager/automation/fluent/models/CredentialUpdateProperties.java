@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of the Update credential. */
+/**
+ * The properties of the Update credential.
+ */
 @Fluent
-public final class CredentialUpdateProperties {
+public final class CredentialUpdateProperties implements JsonSerializable<CredentialUpdateProperties> {
     /*
      * Gets or sets the user name of the credential.
      */
-    @JsonProperty(value = "userName")
     private String username;
 
     /*
      * Gets or sets the password of the credential.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /*
      * Gets or sets the description of the credential.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of CredentialUpdateProperties class.
+     */
+    public CredentialUpdateProperties() {
+    }
+
+    /**
      * Get the username property: Gets or sets the user name of the credential.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -39,7 +48,7 @@ public final class CredentialUpdateProperties {
 
     /**
      * Set the username property: Gets or sets the user name of the credential.
-     *
+     * 
      * @param username the username value to set.
      * @return the CredentialUpdateProperties object itself.
      */
@@ -50,7 +59,7 @@ public final class CredentialUpdateProperties {
 
     /**
      * Get the password property: Gets or sets the password of the credential.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -59,7 +68,7 @@ public final class CredentialUpdateProperties {
 
     /**
      * Set the password property: Gets or sets the password of the credential.
-     *
+     * 
      * @param password the password value to set.
      * @return the CredentialUpdateProperties object itself.
      */
@@ -70,7 +79,7 @@ public final class CredentialUpdateProperties {
 
     /**
      * Get the description property: Gets or sets the description of the credential.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -79,7 +88,7 @@ public final class CredentialUpdateProperties {
 
     /**
      * Set the description property: Gets or sets the description of the credential.
-     *
+     * 
      * @param description the description value to set.
      * @return the CredentialUpdateProperties object itself.
      */
@@ -90,9 +99,51 @@ public final class CredentialUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CredentialUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CredentialUpdateProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CredentialUpdateProperties.
+     */
+    public static CredentialUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CredentialUpdateProperties deserializedCredentialUpdateProperties = new CredentialUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userName".equals(fieldName)) {
+                    deserializedCredentialUpdateProperties.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedCredentialUpdateProperties.password = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedCredentialUpdateProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentialUpdateProperties;
+        });
     }
 }

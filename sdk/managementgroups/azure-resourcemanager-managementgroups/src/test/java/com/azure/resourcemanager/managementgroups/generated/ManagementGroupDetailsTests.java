@@ -15,57 +15,43 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagementGroupDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagementGroupDetails model =
-            BinaryData
-                .fromString(
-                    "{\"version\":1818222173,\"updatedTime\":\"2021-01-21T06:57:24Z\",\"updatedBy\":\"ulngsntn\",\"parent\":{\"id\":\"kzgcwrwcl\",\"name\":\"wrljdouskc\",\"displayName\":\"kocrcjdkwtnhx\"},\"path\":[{\"name\":\"iksqr\",\"displayName\":\"ssainqpjwnzll\"},{\"name\":\"mppeebvmgxs\",\"displayName\":\"kyqduujit\"},{\"name\":\"czdzev\",\"displayName\":\"hkr\"},{\"name\":\"d\",\"displayName\":\"p\"}],\"managementGroupAncestors\":[\"dkvwrwjfe\",\"snhu\",\"je\"],\"managementGroupAncestorsChain\":[{\"name\":\"ldhugjzzdatqxh\",\"displayName\":\"dgeablgphu\"},{\"name\":\"cndvkaozwyiftyhx\",\"displayName\":\"rokft\"}]}")
-                .toObject(ManagementGroupDetails.class);
-        Assertions.assertEquals(1818222173, model.version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T06:57:24Z"), model.updatedTime());
-        Assertions.assertEquals("ulngsntn", model.updatedBy());
-        Assertions.assertEquals("kzgcwrwcl", model.parent().id());
-        Assertions.assertEquals("wrljdouskc", model.parent().name());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.parent().displayName());
-        Assertions.assertEquals("iksqr", model.path().get(0).name());
-        Assertions.assertEquals("ssainqpjwnzll", model.path().get(0).displayName());
-        Assertions.assertEquals("dkvwrwjfe", model.managementGroupAncestors().get(0));
-        Assertions.assertEquals("ldhugjzzdatqxh", model.managementGroupAncestorsChain().get(0).name());
-        Assertions.assertEquals("dgeablgphu", model.managementGroupAncestorsChain().get(0).displayName());
+        ManagementGroupDetails model = BinaryData.fromString(
+            "{\"version\":293333183,\"updatedTime\":\"2021-02-17T00:45:22Z\",\"updatedBy\":\"mkljavb\",\"parent\":{\"id\":\"tqajzyulpkudjkrl\",\"name\":\"bzhfepgzgqexz\",\"displayName\":\"c\"},\"path\":[{\"name\":\"aierhhb\",\"displayName\":\"glu\"}],\"managementGroupAncestors\":[\"jtjaodxobnbdxkq\"],\"managementGroupAncestorsChain\":[{\"name\":\"ajionpimexgstxg\",\"displayName\":\"odgmaajrmvdjwz\"}]}")
+            .toObject(ManagementGroupDetails.class);
+        Assertions.assertEquals(293333183, model.version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T00:45:22Z"), model.updatedTime());
+        Assertions.assertEquals("mkljavb", model.updatedBy());
+        Assertions.assertEquals("tqajzyulpkudjkrl", model.parent().id());
+        Assertions.assertEquals("bzhfepgzgqexz", model.parent().name());
+        Assertions.assertEquals("c", model.parent().displayName());
+        Assertions.assertEquals("aierhhb", model.path().get(0).name());
+        Assertions.assertEquals("glu", model.path().get(0).displayName());
+        Assertions.assertEquals("jtjaodxobnbdxkq", model.managementGroupAncestors().get(0));
+        Assertions.assertEquals("ajionpimexgstxg", model.managementGroupAncestorsChain().get(0).name());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.managementGroupAncestorsChain().get(0).displayName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagementGroupDetails model =
-            new ManagementGroupDetails()
-                .withVersion(1818222173)
-                .withUpdatedTime(OffsetDateTime.parse("2021-01-21T06:57:24Z"))
-                .withUpdatedBy("ulngsntn")
-                .withParent(
-                    new ParentGroupInfo().withId("kzgcwrwcl").withName("wrljdouskc").withDisplayName("kocrcjdkwtnhx"))
-                .withPath(
-                    Arrays
-                        .asList(
-                            new ManagementGroupPathElement().withName("iksqr").withDisplayName("ssainqpjwnzll"),
-                            new ManagementGroupPathElement().withName("mppeebvmgxs").withDisplayName("kyqduujit"),
-                            new ManagementGroupPathElement().withName("czdzev").withDisplayName("hkr"),
-                            new ManagementGroupPathElement().withName("d").withDisplayName("p")))
-                .withManagementGroupAncestors(Arrays.asList("dkvwrwjfe", "snhu", "je"))
-                .withManagementGroupAncestorsChain(
-                    Arrays
-                        .asList(
-                            new ManagementGroupPathElement().withName("ldhugjzzdatqxh").withDisplayName("dgeablgphu"),
-                            new ManagementGroupPathElement().withName("cndvkaozwyiftyhx").withDisplayName("rokft")));
+        ManagementGroupDetails model = new ManagementGroupDetails().withVersion(293333183)
+            .withUpdatedTime(OffsetDateTime.parse("2021-02-17T00:45:22Z"))
+            .withUpdatedBy("mkljavb")
+            .withParent(new ParentGroupInfo().withId("tqajzyulpkudjkrl").withName("bzhfepgzgqexz").withDisplayName("c"))
+            .withPath(Arrays.asList(new ManagementGroupPathElement().withName("aierhhb").withDisplayName("glu")))
+            .withManagementGroupAncestors(Arrays.asList("jtjaodxobnbdxkq"))
+            .withManagementGroupAncestorsChain(Arrays.asList(
+                new ManagementGroupPathElement().withName("ajionpimexgstxg").withDisplayName("odgmaajrmvdjwz")));
         model = BinaryData.fromObject(model).toObject(ManagementGroupDetails.class);
-        Assertions.assertEquals(1818222173, model.version());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T06:57:24Z"), model.updatedTime());
-        Assertions.assertEquals("ulngsntn", model.updatedBy());
-        Assertions.assertEquals("kzgcwrwcl", model.parent().id());
-        Assertions.assertEquals("wrljdouskc", model.parent().name());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.parent().displayName());
-        Assertions.assertEquals("iksqr", model.path().get(0).name());
-        Assertions.assertEquals("ssainqpjwnzll", model.path().get(0).displayName());
-        Assertions.assertEquals("dkvwrwjfe", model.managementGroupAncestors().get(0));
-        Assertions.assertEquals("ldhugjzzdatqxh", model.managementGroupAncestorsChain().get(0).name());
-        Assertions.assertEquals("dgeablgphu", model.managementGroupAncestorsChain().get(0).displayName());
+        Assertions.assertEquals(293333183, model.version());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T00:45:22Z"), model.updatedTime());
+        Assertions.assertEquals("mkljavb", model.updatedBy());
+        Assertions.assertEquals("tqajzyulpkudjkrl", model.parent().id());
+        Assertions.assertEquals("bzhfepgzgqexz", model.parent().name());
+        Assertions.assertEquals("c", model.parent().displayName());
+        Assertions.assertEquals("aierhhb", model.path().get(0).name());
+        Assertions.assertEquals("glu", model.path().get(0).displayName());
+        Assertions.assertEquals("jtjaodxobnbdxkq", model.managementGroupAncestors().get(0));
+        Assertions.assertEquals("ajionpimexgstxg", model.managementGroupAncestorsChain().get(0).name());
+        Assertions.assertEquals("odgmaajrmvdjwz", model.managementGroupAncestorsChain().get(0).displayName());
     }
 }

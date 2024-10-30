@@ -41,4 +41,3 @@ public enum ContainerRegistryServiceVersion implements ServiceVersion {
         return V2021_07_01;
     }
 }
-

@@ -52,8 +52,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @param client the instance of the service client containing this operation class.
      */
     MyWorkbooksClientImpl(ApplicationInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(MyWorkbooksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(MyWorkbooksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,116 +64,81 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
     @Host("{$host}")
     @ServiceInterface(name = "ApplicationInsightsM")
     public interface MyWorkbooksService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorDefinitionException.class)
-        Mono<Response<MyWorkbooksListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MyWorkbooksListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("category") CategoryType category,
-            @QueryParam("tags") String tags,
-            @QueryParam("sourceId") String sourceId,
-            @QueryParam("canFetchContent") Boolean canFetchContent,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("category") CategoryType category,
+            @QueryParam("tags") String tags, @QueryParam("sourceId") String sourceId,
+            @QueryParam("canFetchContent") Boolean canFetchContent, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/myWorkbooks")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorDefinitionException.class)
-        Mono<Response<MyWorkbooksListResult>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MyWorkbooksListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("category") CategoryType category,
+            @QueryParam("tags") String tags, @QueryParam("canFetchContent") Boolean canFetchContent,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorDefinitionException.class)
+        Mono<Response<MyWorkbookInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("category") CategoryType category,
-            @QueryParam("tags") String tags,
-            @QueryParam("canFetchContent") Boolean canFetchContent,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(ErrorDefinitionException.class)
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ErrorDefinitionException.class)
+        Mono<Response<MyWorkbookInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("sourceId") String sourceId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MyWorkbookInner workbookProperties, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ErrorDefinitionException.class)
-        Mono<Response<MyWorkbookInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MyWorkbookInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
+            @QueryParam("sourceId") String sourceId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") MyWorkbookInner workbookProperties, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ErrorDefinitionException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ErrorDefinitionException.class)
-        Mono<Response<MyWorkbookInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("sourceId") String sourceId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") MyWorkbookInner workbookProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/myWorkbooks/{resourceName}")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(ErrorDefinitionException.class)
-        Mono<Response<MyWorkbookInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("resourceName") String resourceName,
-            @QueryParam("sourceId") String sourceId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") MyWorkbookInner workbookProperties,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorDefinitionException.class)
         Mono<Response<MyWorkbooksListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorDefinitionException.class)
         Mono<Response<MyWorkbooksListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -192,19 +157,15 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MyWorkbookInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, CategoryType category, List<String> tags, String sourceId, Boolean canFetchContent) {
+    private Mono<PagedResponse<MyWorkbookInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        CategoryType category, List<String> tags, String sourceId, Boolean canFetchContent) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -215,37 +176,17 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         }
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
-        String tagsConverted =
-            (tags == null)
-                ? null
-                : tags
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String tagsConverted = (tags == null)
+            ? null
+            : tags.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            category,
-                            tagsConverted,
-                            sourceId,
-                            canFetchContent,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<MyWorkbookInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, category, tagsConverted, sourceId, canFetchContent, apiVersion, accept, context))
+            .<PagedResponse<MyWorkbookInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -266,24 +207,15 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MyWorkbookInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName,
-        CategoryType category,
-        List<String> tags,
-        String sourceId,
-        Boolean canFetchContent,
-        Context context) {
+    private Mono<PagedResponse<MyWorkbookInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        CategoryType category, List<String> tags, String sourceId, Boolean canFetchContent, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -294,35 +226,17 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         }
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
-        String tagsConverted =
-            (tags == null)
-                ? null
-                : tags
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String tagsConverted = (tags == null)
+            ? null
+            : tags.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                category,
-                tagsConverted,
-                sourceId,
-                canFetchContent,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                category, tagsConverted, sourceId, canFetchContent, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -341,8 +255,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MyWorkbookInner> listByResourceGroupAsync(
-        String resourceGroupName, CategoryType category, List<String> tags, String sourceId, Boolean canFetchContent) {
+    private PagedFlux<MyWorkbookInner> listByResourceGroupAsync(String resourceGroupName, CategoryType category,
+        List<String> tags, String sourceId, Boolean canFetchContent) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, category, tags, sourceId, canFetchContent),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
@@ -386,18 +300,10 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MyWorkbookInner> listByResourceGroupAsync(
-        String resourceGroupName,
-        CategoryType category,
-        List<String> tags,
-        String sourceId,
-        Boolean canFetchContent,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByResourceGroupSinglePageAsync(
-                    resourceGroupName, category, tags, sourceId, canFetchContent, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    private PagedFlux<MyWorkbookInner> listByResourceGroupAsync(String resourceGroupName, CategoryType category,
+        List<String> tags, String sourceId, Boolean canFetchContent, Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, category, tags, sourceId,
+            canFetchContent, context), nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -437,13 +343,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MyWorkbookInner> listByResourceGroup(
-        String resourceGroupName,
-        CategoryType category,
-        List<String> tags,
-        String sourceId,
-        Boolean canFetchContent,
-        Context context) {
+    public PagedIterable<MyWorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category,
+        List<String> tags, String sourceId, Boolean canFetchContent, Context context) {
         return new PagedIterable<>(
             listByResourceGroupAsync(resourceGroupName, category, tags, sourceId, canFetchContent, context));
     }
@@ -462,54 +363,31 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MyWorkbookInner>> listSinglePageAsync(
-        CategoryType category, List<String> tags, Boolean canFetchContent) {
+    private Mono<PagedResponse<MyWorkbookInner>> listSinglePageAsync(CategoryType category, List<String> tags,
+        Boolean canFetchContent) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (category == null) {
             return Mono.error(new IllegalArgumentException("Parameter category is required and cannot be null."));
         }
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
-        String tagsConverted =
-            (tags == null)
-                ? null
-                : tags
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String tagsConverted = (tags == null)
+            ? null
+            : tags.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            category,
-                            tagsConverted,
-                            canFetchContent,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<MyWorkbookInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), category,
+                tagsConverted, canFetchContent, apiVersion, accept, context))
+            .<PagedResponse<MyWorkbookInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -528,52 +406,32 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MyWorkbookInner>> listSinglePageAsync(
-        CategoryType category, List<String> tags, Boolean canFetchContent, Context context) {
+    private Mono<PagedResponse<MyWorkbookInner>> listSinglePageAsync(CategoryType category, List<String> tags,
+        Boolean canFetchContent, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (category == null) {
             return Mono.error(new IllegalArgumentException("Parameter category is required and cannot be null."));
         }
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
-        String tagsConverted =
-            (tags == null)
-                ? null
-                : tags
-                    .stream()
-                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                    .collect(Collectors.joining(","));
+        String tagsConverted = (tags == null)
+            ? null
+            : tags.stream()
+                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                .collect(Collectors.joining(","));
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                category,
-                tagsConverted,
-                canFetchContent,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), category, tagsConverted, canFetchContent,
+                apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -591,8 +449,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listAsync(CategoryType category, List<String> tags, Boolean canFetchContent) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(category, tags, canFetchContent),
+        return new PagedFlux<>(() -> listSinglePageAsync(category, tags, canFetchContent),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
@@ -610,8 +467,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
     private PagedFlux<MyWorkbookInner> listAsync(CategoryType category) {
         final List<String> tags = null;
         final Boolean canFetchContent = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(category, tags, canFetchContent),
+        return new PagedFlux<>(() -> listSinglePageAsync(category, tags, canFetchContent),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
@@ -630,10 +486,9 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MyWorkbookInner> listAsync(
-        CategoryType category, List<String> tags, Boolean canFetchContent, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(category, tags, canFetchContent, context),
+    private PagedFlux<MyWorkbookInner> listAsync(CategoryType category, List<String> tags, Boolean canFetchContent,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(category, tags, canFetchContent, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
@@ -669,8 +524,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MyWorkbookInner> list(
-        CategoryType category, List<String> tags, Boolean canFetchContent, Context context) {
+    public PagedIterable<MyWorkbookInner> list(CategoryType category, List<String> tags, Boolean canFetchContent,
+        Context context) {
         return new PagedIterable<>(listAsync(category, tags, canFetchContent, context));
     }
 
@@ -686,19 +541,15 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MyWorkbookInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName) {
+    private Mono<Response<MyWorkbookInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -710,17 +561,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, resourceName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -737,19 +579,15 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MyWorkbookInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<MyWorkbookInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -761,15 +599,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                apiVersion,
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, apiVersion, accept, context);
     }
 
     /**
@@ -800,8 +631,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @return a single private workbook by its resourceName along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MyWorkbookInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
+    public Response<MyWorkbookInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
@@ -833,16 +664,12 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -854,17 +681,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -880,19 +698,15 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -904,15 +718,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, apiVersion, accept, context);
     }
 
     /**
@@ -974,19 +781,15 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MyWorkbookInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String resourceName, MyWorkbookInner workbookProperties, String sourceId) {
+    private Mono<Response<MyWorkbookInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, MyWorkbookInner workbookProperties, String sourceId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1004,19 +807,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            sourceId,
-                            apiVersion,
-                            workbookProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, sourceId, apiVersion, workbookProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1035,23 +827,15 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MyWorkbookInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        MyWorkbookInner workbookProperties,
-        String sourceId,
-        Context context) {
+    private Mono<Response<MyWorkbookInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String resourceName, MyWorkbookInner workbookProperties, String sourceId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1069,17 +853,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                sourceId,
-                apiVersion,
-                workbookProperties,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, sourceId, apiVersion, workbookProperties, accept, context);
     }
 
     /**
@@ -1094,8 +869,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @return an Application Insights private workbook definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MyWorkbookInner> createOrUpdateAsync(
-        String resourceGroupName, String resourceName, MyWorkbookInner workbookProperties) {
+    private Mono<MyWorkbookInner> createOrUpdateAsync(String resourceGroupName, String resourceName,
+        MyWorkbookInner workbookProperties) {
         final String sourceId = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, workbookProperties, sourceId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1115,12 +890,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @return an Application Insights private workbook definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MyWorkbookInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        MyWorkbookInner workbookProperties,
-        String sourceId,
-        Context context) {
+    public Response<MyWorkbookInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
+        MyWorkbookInner workbookProperties, String sourceId, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, workbookProperties, sourceId, context)
             .block();
     }
@@ -1137,8 +908,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @return an Application Insights private workbook definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MyWorkbookInner createOrUpdate(
-        String resourceGroupName, String resourceName, MyWorkbookInner workbookProperties) {
+    public MyWorkbookInner createOrUpdate(String resourceGroupName, String resourceName,
+        MyWorkbookInner workbookProperties) {
         final String sourceId = null;
         return createOrUpdateWithResponse(resourceGroupName, resourceName, workbookProperties, sourceId, Context.NONE)
             .getValue();
@@ -1158,19 +929,15 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MyWorkbookInner>> updateWithResponseAsync(
-        String resourceGroupName, String resourceName, MyWorkbookInner workbookProperties, String sourceId) {
+    private Mono<Response<MyWorkbookInner>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        MyWorkbookInner workbookProperties, String sourceId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1188,19 +955,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            resourceName,
-                            sourceId,
-                            apiVersion,
-                            workbookProperties,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, resourceName, sourceId, apiVersion, workbookProperties, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1219,23 +975,15 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<MyWorkbookInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String resourceName,
-        MyWorkbookInner workbookProperties,
-        String sourceId,
-        Context context) {
+    private Mono<Response<MyWorkbookInner>> updateWithResponseAsync(String resourceGroupName, String resourceName,
+        MyWorkbookInner workbookProperties, String sourceId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1253,17 +1001,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         final String apiVersion = "2021-03-08";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                resourceName,
-                sourceId,
-                apiVersion,
-                workbookProperties,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            resourceName, sourceId, apiVersion, workbookProperties, accept, context);
     }
 
     /**
@@ -1278,8 +1017,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @return an Application Insights private workbook definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<MyWorkbookInner> updateAsync(
-        String resourceGroupName, String resourceName, MyWorkbookInner workbookProperties) {
+    private Mono<MyWorkbookInner> updateAsync(String resourceGroupName, String resourceName,
+        MyWorkbookInner workbookProperties) {
         final String sourceId = null;
         return updateWithResponseAsync(resourceGroupName, resourceName, workbookProperties, sourceId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1299,12 +1038,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @return an Application Insights private workbook definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MyWorkbookInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        MyWorkbookInner workbookProperties,
-        String sourceId,
-        Context context) {
+    public Response<MyWorkbookInner> updateWithResponse(String resourceGroupName, String resourceName,
+        MyWorkbookInner workbookProperties, String sourceId, Context context) {
         return updateWithResponseAsync(resourceGroupName, resourceName, workbookProperties, sourceId, context).block();
     }
 
@@ -1342,24 +1077,15 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MyWorkbookInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<MyWorkbookInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1375,30 +1101,20 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @return workbook list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MyWorkbookInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<MyWorkbookInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -1417,24 +1133,15 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MyWorkbookInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<MyWorkbookInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1450,29 +1157,19 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @return workbook list result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MyWorkbookInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<MyWorkbookInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

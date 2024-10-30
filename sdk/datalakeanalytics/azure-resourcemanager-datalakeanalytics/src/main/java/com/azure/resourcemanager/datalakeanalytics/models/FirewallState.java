@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.datalakeanalytics.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The current state of the IP address firewall for this account. */
+/**
+ * The current state of the IP address firewall for this account.
+ */
 public enum FirewallState {
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled"),
 
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled");
 
-    /** The actual serialized value for a FirewallState instance. */
+    /**
+     * The actual serialized value for a FirewallState instance.
+     */
     private final String value;
 
     FirewallState(String value) {
@@ -24,11 +29,10 @@ public enum FirewallState {
 
     /**
      * Parses a serialized value to a FirewallState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FirewallState object, or null if unable to parse.
      */
-    @JsonCreator
     public static FirewallState fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum FirewallState {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

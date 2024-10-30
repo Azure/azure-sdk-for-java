@@ -74,14 +74,12 @@ public final class AadProfileProperties {
      */
     public void validate() {
         if (serverId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property serverId in model AadProfileProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property serverId in model AadProfileProperties"));
         }
         if (tenantId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tenantId in model AadProfileProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tenantId in model AadProfileProperties"));
         }
     }
 

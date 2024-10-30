@@ -6,68 +6,37 @@ package com.azure.resourcemanager.vmwarecloudsimple.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager;
 import com.azure.resourcemanager.vmwarecloudsimple.models.DedicatedCloudService;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DedicatedCloudServicesListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"gatewaySubnet\":\"cqiosmgbza\",\"isAccountOnboarded\":\"onBoarding\",\"nodes\":348009513,\"serviceURL\":\"yrtltlaprltzkat\"},\"location\":\"hjm\",\"tags\":{\"vlagun\":\"bsoqeqala\",\"mhyreeudz\":\"tgfebwln\",\"pdqmjxlyyzglgouw\":\"av\"},\"id\":\"lmjjyuo\",\"name\":\"qtobaxkjeyt\",\"type\":\"nlb\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"gatewaySubnet\":\"dxeclzedqbcvh\",\"isAccountOnboarded\":\"notOnBoarded\",\"nodes\":1149174942,\"serviceURL\":\"dqkdlwwqfbu\"},\"location\":\"lkxt\",\"tags\":{\"rtawcoezb\":\"fsmlmbtxhwgfw\",\"kqfqjbvl\":\"hubskhudygooo\",\"zf\":\"orfmluiqt\",\"ryeu\":\"vyvnqqyb\"},\"id\":\"yjkqabqgzslesjcb\",\"name\":\"ernntiewdjcvbquw\",\"type\":\"behwagohb\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        VMwareCloudSimpleManager manager = VMwareCloudSimpleManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<DedicatedCloudService> response = manager.dedicatedCloudServices()
+            .listByResourceGroup("ztrksxwpndf", "pfnznthjtwkj", 23086677, "srxuzvoam",
+                com.azure.core.util.Context.NONE);
 
-        VMwareCloudSimpleManager manager =
-            VMwareCloudSimpleManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<DedicatedCloudService> response =
-            manager
-                .dedicatedCloudServices()
-                .listByResourceGroup(
-                    "kpyklyhp", "uodpv", 838547302, "udlgzibthostgkts", com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("lkxt", response.iterator().next().location());
-        Assertions.assertEquals("fsmlmbtxhwgfw", response.iterator().next().tags().get("rtawcoezb"));
-        Assertions.assertEquals("dxeclzedqbcvh", response.iterator().next().gatewaySubnet());
+        Assertions.assertEquals("hjm", response.iterator().next().location());
+        Assertions.assertEquals("bsoqeqala", response.iterator().next().tags().get("vlagun"));
+        Assertions.assertEquals("cqiosmgbza", response.iterator().next().gatewaySubnet());
     }
 }

@@ -19,10 +19,8 @@ import java.util.Map;
 /** Implementation of {@link VirtualNetworkLink}. */
 class VirtualNetworkLinkImpl
     extends ExternalChildResourceImpl<VirtualNetworkLink, VirtualNetworkLinkInner, PrivateDnsZoneImpl, PrivateDnsZone>
-    implements VirtualNetworkLink,
-        VirtualNetworkLink.Definition<PrivateDnsZone.DefinitionStages.WithCreate>,
-        VirtualNetworkLink.UpdateDefinition<PrivateDnsZone.Update>,
-        VirtualNetworkLink.Update {
+    implements VirtualNetworkLink, VirtualNetworkLink.Definition<PrivateDnsZone.DefinitionStages.WithCreate>,
+    VirtualNetworkLink.UpdateDefinition<PrivateDnsZone.Update>, VirtualNetworkLink.Update {
 
     private final ETagState etagState = new ETagState();
     private VirtualNetworkLinkInner linkToRemove;
@@ -134,7 +132,9 @@ class VirtualNetworkLinkImpl
 
     @Override
     public Mono<VirtualNetworkLink> updateResourceAsync() {
-        return parent().manager().serviceClient().getVirtualNetworkLinks()
+        return parent().manager()
+            .serviceClient()
+            .getVirtualNetworkLinks()
             .getAsync(parent().resourceGroupName(), parent().name(), name())
             .map(virtualNetworkLinkInner -> prepareForUpdate(virtualNetworkLinkInner))
             .flatMap(virtualNetworkLinkInner -> createOrUpdateAsync(virtualNetworkLinkInner));
@@ -142,13 +142,17 @@ class VirtualNetworkLinkImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return parent().manager().serviceClient().getVirtualNetworkLinks()
+        return parent().manager()
+            .serviceClient()
+            .getVirtualNetworkLinks()
             .deleteAsync(parent().resourceGroupName(), parent().name(), name(), etagState.ifMatchValueOnDelete());
     }
 
     @Override
     protected Mono<VirtualNetworkLinkInner> getInnerAsync() {
-        return parent().manager().serviceClient().getVirtualNetworkLinks()
+        return parent().manager()
+            .serviceClient()
+            .getVirtualNetworkLinks()
             .getAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
@@ -164,14 +168,11 @@ class VirtualNetworkLinkImpl
 
     private Mono<VirtualNetworkLink> createOrUpdateAsync(VirtualNetworkLinkInner resource) {
         final VirtualNetworkLinkImpl self = this;
-        return parent().manager().serviceClient().getVirtualNetworkLinks()
-            .createOrUpdateAsync(
-                parent().resourceGroupName(),
-                parent().name(),
-                name(),
-                resource,
-                etagState.ifMatchValueOnUpdate(resource.etag()),
-                etagState.ifNonMatchValueOnCreate())
+        return parent().manager()
+            .serviceClient()
+            .getVirtualNetworkLinks()
+            .createOrUpdateAsync(parent().resourceGroupName(), parent().name(), name(), resource,
+                etagState.ifMatchValueOnUpdate(resource.etag()), etagState.ifNonMatchValueOnCreate())
             .map(virtualNetworkLinkInner -> {
                 setInner(virtualNetworkLinkInner);
                 self.etagState.clear();

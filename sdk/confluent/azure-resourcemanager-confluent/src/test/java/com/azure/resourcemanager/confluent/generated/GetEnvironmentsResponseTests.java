@@ -30,13 +30,16 @@ public final class GetEnvironmentsResponseTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GetEnvironmentsResponse model
-            = new GetEnvironmentsResponse().withValue(Arrays.asList(
-                new SCEnvironmentRecordInner().withKind("dsytgadgvr").withId("aeneqnzarrwl").withName("dlqiyntorzih")
-                    .withMetadata(new SCMetadataEntity().withSelf("jfqka").withResourceName("wiipfpub")
-                        .withCreatedTimestamp("bwwift").withUpdatedTimestamp("qkvpuvksgplsakn")
-                        .withDeletedTimestamp("fsynljphuop"))))
-                .withNextLink("osjswsr");
+        GetEnvironmentsResponse model = new GetEnvironmentsResponse()
+            .withValue(Arrays.asList(new SCEnvironmentRecordInner().withKind("dsytgadgvr")
+                .withId("aeneqnzarrwl")
+                .withName("dlqiyntorzih")
+                .withMetadata(new SCMetadataEntity().withSelf("jfqka")
+                    .withResourceName("wiipfpub")
+                    .withCreatedTimestamp("bwwift")
+                    .withUpdatedTimestamp("qkvpuvksgplsakn")
+                    .withDeletedTimestamp("fsynljphuop"))))
+            .withNextLink("osjswsr");
         model = BinaryData.fromObject(model).toObject(GetEnvironmentsResponse.class);
         Assertions.assertEquals("dsytgadgvr", model.value().get(0).kind());
         Assertions.assertEquals("aeneqnzarrwl", model.value().get(0).id());

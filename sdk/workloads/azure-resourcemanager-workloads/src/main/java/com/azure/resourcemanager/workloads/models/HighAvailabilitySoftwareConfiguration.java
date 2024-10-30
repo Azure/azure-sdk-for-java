@@ -77,17 +77,12 @@ public final class HighAvailabilitySoftwareConfiguration {
      */
     public void validate() {
         if (fencingClientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fencingClientId in model HighAvailabilitySoftwareConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property fencingClientId in model HighAvailabilitySoftwareConfiguration"));
         }
         if (fencingClientPassword() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fencingClientPassword in model"
-                            + " HighAvailabilitySoftwareConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property fencingClientPassword in model" + " HighAvailabilitySoftwareConfiguration"));
         }
     }
 

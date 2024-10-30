@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-class PrivateDnsZoneGroupImpl extends IndependentChildImpl<
-    PrivateDnsZoneGroup, PrivateEndpoint, PrivateDnsZoneGroupInner, PrivateDnsZoneGroupImpl, NetworkManager>
+class PrivateDnsZoneGroupImpl extends
+    IndependentChildImpl<PrivateDnsZoneGroup, PrivateEndpoint, PrivateDnsZoneGroupInner, PrivateDnsZoneGroupImpl, NetworkManager>
     implements PrivateDnsZoneGroup, PrivateDnsZoneGroup.Definition, PrivateDnsZoneGroup.Update {
 
     private final PrivateEndpointImpl parent;
@@ -28,15 +28,12 @@ class PrivateDnsZoneGroupImpl extends IndependentChildImpl<
     }
 
     @Override
-    public PrivateDnsZoneGroupImpl withPrivateDnsZoneConfigure(
-        String name, String privateDnsZoneId) {
+    public PrivateDnsZoneGroupImpl withPrivateDnsZoneConfigure(String name, String privateDnsZoneId) {
         if (innerModel().privateDnsZoneConfigs() == null) {
             innerModel().withPrivateDnsZoneConfigs(new ArrayList<>());
         }
-        innerModel().privateDnsZoneConfigs().add(
-            new PrivateDnsZoneConfig()
-                .withName(name)
-                .withPrivateDnsZoneId(privateDnsZoneId));
+        innerModel().privateDnsZoneConfigs()
+            .add(new PrivateDnsZoneConfig().withName(name).withPrivateDnsZoneId(privateDnsZoneId));
         return this;
     }
 
@@ -55,14 +52,18 @@ class PrivateDnsZoneGroupImpl extends IndependentChildImpl<
 
     @Override
     protected Mono<PrivateDnsZoneGroup> createChildResourceAsync() {
-        return this.manager().serviceClient().getPrivateDnsZoneGroups()
+        return this.manager()
+            .serviceClient()
+            .getPrivateDnsZoneGroups()
             .createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<PrivateDnsZoneGroupInner> getInnerAsync() {
-        return this.manager().serviceClient().getPrivateDnsZoneGroups()
+        return this.manager()
+            .serviceClient()
+            .getPrivateDnsZoneGroups()
             .getAsync(parent.resourceGroupName(), parent.name(), this.name());
     }
 

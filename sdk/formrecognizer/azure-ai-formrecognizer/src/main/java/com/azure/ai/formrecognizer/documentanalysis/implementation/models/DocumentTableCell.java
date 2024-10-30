@@ -189,6 +189,9 @@ public final class DocumentTableCell implements JsonSerializable<DocumentTableCe
         return this.spans;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

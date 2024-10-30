@@ -32,42 +32,31 @@ public final class SpacecraftsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"canceled\",\"noradId\":\"m\",\"titleLine\":\"yqupedeojnabckh\",\"tleLine1\":\"mtxpsiebtfh\",\"tleLine2\":\"pesapskrdqmhjj\",\"links\":[]},\"location\":\"ldwkyzxuutkn\",\"tags\":{\"wrupqsxvnmicykvc\":\"cwsvlxotog\",\"eil\":\"o\"},\"id\":\"vnotyfjfcnj\",\"name\":\"k\",\"type\":\"nxdhbt\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"canceled\",\"noradId\":\"m\",\"titleLine\":\"yqupedeojnabckh\",\"tleLine1\":\"mtxpsiebtfh\",\"tleLine2\":\"pesapskrdqmhjj\",\"links\":[]},\"location\":\"ldwkyzxuutkn\",\"tags\":{\"wrupqsxvnmicykvc\":\"cwsvlxotog\",\"eil\":\"o\"},\"id\":\"vnotyfjfcnj\",\"name\":\"k\",\"type\":\"nxdhbt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        OrbitalManager manager =
-            OrbitalManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        OrbitalManager manager = OrbitalManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Spacecraft> response = manager.spacecrafts().list("wzbaiue", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ldwkyzxuutkn", response.iterator().next().location());
         Assertions.assertEquals("cwsvlxotog", response.iterator().next().tags().get("wrupqsxvnmicykvc"));
-        Assertions
-            .assertEquals(
-                SpacecraftsPropertiesProvisioningState.CANCELED, response.iterator().next().provisioningState());
+        Assertions.assertEquals(SpacecraftsPropertiesProvisioningState.CANCELED,
+            response.iterator().next().provisioningState());
         Assertions.assertEquals("m", response.iterator().next().noradId());
         Assertions.assertEquals("yqupedeojnabckh", response.iterator().next().titleLine());
         Assertions.assertEquals("mtxpsiebtfh", response.iterator().next().tleLine1());

@@ -31,47 +31,28 @@ public final class ServiceFabricsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"externalServiceFabricId\":\"dxwhieproqksmfx\",\"environmentId\":\"vprstv\",\"applicableSchedule\":{\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"location\":\"b\",\"tags\":{\"qxwetjtd\":\"dyotnplfacqoccq\",\"padkmdzgsszxvct\":\"hutfdoadtxopge\",\"clabv\":\"bbxuharlsirn\"},\"id\":\"yngsuxxcz\",\"name\":\"myqjog\",\"type\":\"dsaidjanormovdxx\"},\"labVmsStartup\":{\"properties\":{},\"location\":\"ntujmoilunwemhd\",\"tags\":{\"rhrhtsl\":\"jslkyozdsfzjue\",\"j\":\"jtv\",\"bpnjodf\":\"xvgjbfi\"},\"id\":\"bj\",\"name\":\"qwm\",\"type\":\"q\"}},\"location\":\"moxsa\",\"tags\":{\"ywnfyszzaczs\":\"ejgwe\"},\"id\":\"nqbdnddbboz\",\"name\":\"yvrmkjm\",\"type\":\"it\"},\"provisioningState\":\"hwudlxeei\",\"uniqueIdentifier\":\"pmnoejhqlf\"},\"location\":\"sibz\",\"tags\":{\"vmtywhlakxp\":\"fgxkydpmypgf\",\"m\":\"jpewpyjlfx\"},\"id\":\"qcrzgeuqxbpia\",\"name\":\"w\",\"type\":\"aujegqdtadra\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"externalServiceFabricId\":\"dxwhieproqksmfx\",\"environmentId\":\"vprstv\",\"applicableSchedule\":{\"properties\":{\"labVmsShutdown\":{\"properties\":{},\"location\":\"b\",\"tags\":{\"qxwetjtd\":\"dyotnplfacqoccq\",\"padkmdzgsszxvct\":\"hutfdoadtxopge\",\"clabv\":\"bbxuharlsirn\"},\"id\":\"yngsuxxcz\",\"name\":\"myqjog\",\"type\":\"dsaidjanormovdxx\"},\"labVmsStartup\":{\"properties\":{},\"location\":\"ntujmoilunwemhd\",\"tags\":{\"rhrhtsl\":\"jslkyozdsfzjue\",\"j\":\"jtv\",\"bpnjodf\":\"xvgjbfi\"},\"id\":\"bj\",\"name\":\"qwm\",\"type\":\"q\"}},\"location\":\"moxsa\",\"tags\":{\"ywnfyszzaczs\":\"ejgwe\"},\"id\":\"nqbdnddbboz\",\"name\":\"yvrmkjm\",\"type\":\"it\"},\"provisioningState\":\"hwudlxeei\",\"uniqueIdentifier\":\"pmnoejhqlf\"},\"location\":\"sibz\",\"tags\":{\"vmtywhlakxp\":\"fgxkydpmypgf\",\"m\":\"jpewpyjlfx\"},\"id\":\"qcrzgeuqxbpia\",\"name\":\"w\",\"type\":\"aujegqdtadra\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ServiceFabric> response =
-            manager
-                .serviceFabrics()
-                .list(
-                    "oxudnmckap",
-                    "hknqiijge",
-                    "cdgmoqu",
-                    "qih",
-                    "kyow",
-                    1032764094,
-                    "jouw",
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<ServiceFabric> response = manager.serviceFabrics()
+            .list("oxudnmckap", "hknqiijge", "cdgmoqu", "qih", "kyow", 1032764094, "jouw",
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("sibz", response.iterator().next().location());
         Assertions.assertEquals("fgxkydpmypgf", response.iterator().next().tags().get("vmtywhlakxp"));

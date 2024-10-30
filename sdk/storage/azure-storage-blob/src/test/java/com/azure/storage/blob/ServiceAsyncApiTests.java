@@ -7,6 +7,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.paging.ContinuablePage;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -16,10 +17,12 @@ import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerListDetails;
 import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobErrorCode;
+import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobMetrics;
 import com.azure.storage.blob.models.BlobRetentionPolicy;
 import com.azure.storage.blob.models.BlobServiceProperties;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.GeoReplicationStatus;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
@@ -41,6 +44,7 @@ import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
@@ -83,6 +87,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         // We shouldn't be getting to the network layer anyway
         anonymousClient = new BlobServiceClientBuilder()
             .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint())
+            .httpClient(getHttpClient())
             .buildAsyncClient();
 
         tagKey = testResourceNamer.randomName(prefix, 20);
@@ -102,21 +107,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .setLogging(new BlobAnalyticsLogging().setVersion("1.0")
                 .setRetentionPolicy(disabled))
             .setDefaultServiceVersion("2018-03-28"));
-    }
-
-    private void resetProperties() {
-        BlobRetentionPolicy disabled = new BlobRetentionPolicy().setEnabled(false);
-        primaryBlobServiceAsyncClient.setProperties(new BlobServiceProperties()
-            .setStaticWebsite(new StaticWebsite().setEnabled(false))
-            .setDeleteRetentionPolicy(disabled)
-            .setCors(null)
-            .setHourMetrics(new BlobMetrics().setVersion("1.0").setEnabled(false)
-                .setRetentionPolicy(disabled))
-            .setMinuteMetrics(new BlobMetrics().setVersion("1.0").setEnabled(false)
-                .setRetentionPolicy(disabled))
-            .setLogging(new BlobAnalyticsLogging().setVersion("1.0")
-                .setRetentionPolicy(disabled))
-            .setDefaultServiceVersion("2018-03-28")).block();
     }
 
     @Test
@@ -149,21 +139,31 @@ public class ServiceAsyncApiTests extends BlobTestBase {
 
     @Test
     public void listContainersMarker() {
-        for (int i = 0; i < 10; i++) {
-            primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
-        }
+        Flux<BlobContainerAsyncClient> createContainers = Flux.range(0, 10)
+            .flatMap(i -> primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()));
 
         ListBlobContainersOptions options = new ListBlobContainersOptions().setMaxResultsPerPage(5);
-        PagedResponse<BlobContainerItem> firstPage = primaryBlobServiceAsyncClient.listBlobContainers(options)
-            .byPage().blockFirst();
-        String marker = firstPage.getContinuationToken();
-        String firstContainerName = firstPage.getValue().get(0).getName();
 
-        PagedResponse<BlobContainerItem> secondPage = primaryBlobServiceAsyncClient.listBlobContainers()
-            .byPage(marker).blockLast();
+        Flux<PagedResponse<BlobContainerItem>> pagedFlux = primaryBlobServiceAsyncClient.listBlobContainers(options)
+            .byPage();
 
-        // Assert that the second segment is indeed after the first alphabetically
-        assertTrue(firstContainerName.compareTo(secondPage.getValue().get(0).getName()) < 0);
+        Mono<String> firstContainerNameMono = pagedFlux.next()
+            .flatMap(firstPage -> {
+                String marker = firstPage.getContinuationToken();
+                String firstContainerName = firstPage.getValue().get(0).getName();
+
+                return primaryBlobServiceAsyncClient.listBlobContainers()
+                    .byPage(marker)
+                    .next()
+                    .map(secondPage -> {
+                        assertTrue(firstContainerName.compareTo(secondPage.getValue().get(0).getName()) < 0);
+                        return firstContainerName;
+                    });
+            });
+
+        StepVerifier.create(createContainers.then(firstContainerNameMono))
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
     @Test
@@ -171,13 +171,16 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         Map<String, String> metadata = new HashMap<>();
         metadata.put("foo", "bar");
         String containerName = generateContainerName();
-        ccAsync = primaryBlobServiceAsyncClient.createBlobContainerWithResponse(containerName, metadata,
-            null, null)
-            .block().getValue();
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
-            .setDetails(new BlobContainerListDetails().setRetrieveMetadata(true))
-            .setPrefix(containerName)))
+        Flux<BlobContainerItem> response = primaryBlobServiceAsyncClient.createBlobContainerWithResponse(containerName, metadata,
+            null, null).flatMapMany(r -> {
+                ccAsync = r.getValue();
+                return primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
+                    .setDetails(new BlobContainerListDetails().setRetrieveMetadata(true))
+                    .setPrefix(containerName));
+            });
+
+        StepVerifier.create(response)
             .assertNext(r -> assertEquals(metadata, r.getMetadata()))
             .verifyComplete();
     }
@@ -188,21 +191,15 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         int pageResults = 3;
         String containerNamePrefix = generateContainerName();
 
-        List<BlobContainerAsyncClient> containers = new ArrayList<>();
-        for (int i = 0; i < numContainers; i++) {
-            containers.add(primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i).block());
-        }
+        Mono<List<BlobContainerAsyncClient>> containersMono = Flux.range(0, numContainers)
+            .flatMap(i -> primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i))
+            .collectList();
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(
-            new ListBlobContainersOptions().setPrefix(containerNamePrefix).setMaxResultsPerPage(pageResults)).byPage())
+        StepVerifier.create(containersMono.flatMapMany(containers -> primaryBlobServiceAsyncClient.listBlobContainers(
+            new ListBlobContainersOptions().setPrefix(containerNamePrefix).setMaxResultsPerPage(pageResults)).byPage()))
             .assertNext(r -> assertEquals(pageResults, r.getValue().size()))
             .expectNextCount(1)
             .verifyComplete();
-
-        // cleanup:
-        for (BlobContainerAsyncClient container : containers) {
-            container.delete().block();
-        }
     }
 
     @Test
@@ -211,23 +208,17 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         int pageResults = 3;
         String containerNamePrefix = generateContainerName();
 
-        List<BlobContainerAsyncClient> containers = new ArrayList<>();
-        for (int i = 0; i < numContainers; i++) {
-            containers.add(primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i).block());
-        }
+        Mono<List<BlobContainerAsyncClient>> containersMono = Flux.range(0, numContainers)
+            .flatMap(i -> primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i))
+            .collectList();
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(
-            new ListBlobContainersOptions().setPrefix(containerNamePrefix)).byPage(pageResults))
+        StepVerifier.create(containersMono.flatMapMany(containers -> primaryBlobServiceAsyncClient.listBlobContainers(
+            new ListBlobContainersOptions().setPrefix(containerNamePrefix)).byPage(pageResults)))
             .thenConsumeWhile(r -> {
                 assertTrue(r.getValue().size() <= pageResults);
                 return true;
             })
             .verifyComplete();
-
-        // cleanup:
-        for (BlobContainerAsyncClient container : containers) {
-            container.delete().block();
-        }
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -236,18 +227,16 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         int numContainers = 5;
         String containerNamePrefix = generateContainerName();
 
-        List<BlobContainerAsyncClient> containers = new ArrayList<>();
-        for (int i = 0; i < numContainers; i++) {
-            containers.add(primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i).block());
-        }
+        Mono<List<BlobContainerAsyncClient>> containersMono = Flux.range(0, numContainers)
+            .flatMap(i -> primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i))
+            .collectList();
 
-        // delete each container
-        for (BlobContainerAsyncClient container : containers) {
-            container.delete().block();
-        }
+        Flux<BlobContainerItem> response = containersMono.flatMapMany(containers ->
+            Flux.fromIterable(containers).flatMap(BlobContainerAsyncClient::delete)
+                .thenMany(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
+                    .setPrefix(containerNamePrefix).setDetails(new BlobContainerListDetails().setRetrieveDeleted(true)))));
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
-            .setPrefix(containerNamePrefix).setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))))
+        StepVerifier.create(response)
             .thenConsumeWhile(r -> {
                 assertTrue(r.isDeleted());
                 return true;
@@ -266,20 +255,17 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         int numContainers = 5;
         String containerNamePrefix = generateContainerName();
 
-        List<BlobContainerAsyncClient> containers = new ArrayList<>();
-        for (int i = 0; i < numContainers; i++) {
-            containers.add(primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i).block());
-        }
+        Mono<List<BlobContainerAsyncClient>> containersMono = Flux.range(0, numContainers)
+            .flatMap(i -> primaryBlobServiceAsyncClient.createBlobContainer(containerNamePrefix + i))
+            .collectList();
 
-        // delete each container
-        for (BlobContainerAsyncClient container : containers) {
-            container.delete().block();
-        }
+        Flux<BlobContainerItem> response = containersMono.flatMapMany(containers ->
+            Flux.fromIterable(containers).flatMap(BlobContainerAsyncClient::delete)
+                .thenMany(primaryBlobServiceAsyncClient.listBlobContainers(
+                    new ListBlobContainersOptions().setPrefix(containerNamePrefix).setDetails(new BlobContainerListDetails()
+                        .setRetrieveDeleted(true).setRetrieveMetadata(true)))));
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainers(
-            new ListBlobContainersOptions().setPrefix(containerNamePrefix).setDetails(new BlobContainerListDetails()
-                .setRetrieveDeleted(true)
-                .setRetrieveMetadata(true))))
+        StepVerifier.create(response)
             .thenConsumeWhile(r -> {
                 assertTrue(r.isDeleted());
                 return true;
@@ -312,49 +298,40 @@ public class ServiceAsyncApiTests extends BlobTestBase {
         int numContainers = 5;
         int pageResults = 3;
 
-        List<BlobContainerAsyncClient> containers = new ArrayList<>();
-        for (int i = 0; i < numContainers; i++) {
-            containers.add(primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block());
-        }
+        Mono<List<BlobContainerAsyncClient>> containersMono = Flux.range(0, numContainers)
+            .flatMap(i -> primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()))
+            .collectList();
 
-        // when: "Consume results by page, then should still have paging functionality""
-        StepVerifier.create(primaryBlobServiceAsyncClient.listBlobContainersWithOptionalTimeout(
-            new ListBlobContainersOptions().setMaxResultsPerPage(pageResults),
-            Duration.ofSeconds(10)).byPage().count())
+        StepVerifier.create(containersMono.flatMapMany(containers ->
+            primaryBlobServiceAsyncClient.listBlobContainersWithOptionalTimeout(new ListBlobContainersOptions()
+                .setMaxResultsPerPage(pageResults), Duration.ofSeconds(10)).byPage().count()))
             .expectNextCount(1)
             .verifyComplete();
-
-        // cleanup:
-        for (BlobContainerAsyncClient container : containers) {
-            container.delete().block();
-        }
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-10-02")
     @Test
     @ResourceLock("ServiceProperties")
     public void listSystemContainers() {
-        try {
-            BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
-            BlobAnalyticsLogging logging =
-                new BlobAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
-            BlobServiceProperties serviceProps = new BlobServiceProperties().setLogging(logging);
+        BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
+        BlobAnalyticsLogging logging =
+            new BlobAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
+        BlobServiceProperties serviceProps = new BlobServiceProperties().setLogging(logging);
 
-            // Ensure $logs container exists. These will be reverted in test cleanup
-            Flux<BlobContainerItem> response = setInitialProperties()
-                .then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(serviceProps))
-                .then(Mono.delay(Duration.ofSeconds(30)))
-                .thenMany(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
-                    .setDetails(new BlobContainerListDetails().setRetrieveSystemContainers(true))));
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 30000L;
 
-            StepVerifier.create(response)
-                .recordWith(ArrayList::new)
-                .thenConsumeWhile(x -> true)
-                .consumeRecordedWith(r -> assertTrue(r.stream().anyMatch(c -> c.getName().equals("$logs"))))
-                .verifyComplete();
-        } finally {
-            resetProperties();
-        }
+        // Ensure $logs container exists. These will be reverted in test cleanup
+        Flux<BlobContainerItem> response = setInitialProperties()
+            .then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(serviceProps))
+            .then(Mono.delay(Duration.ofMillis(delay)))
+            .thenMany(primaryBlobServiceAsyncClient.listBlobContainers(new ListBlobContainersOptions()
+                .setDetails(new BlobContainerListDetails().setRetrieveSystemContainers(true))));
+
+        StepVerifier.create(response)
+            .recordWith(ArrayList::new)
+            .thenConsumeWhile(x -> true)
+            .consumeRecordedWith(r -> assertTrue(r.stream().anyMatch(c -> c.getName().equals("$logs"))))
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -365,112 +342,118 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2020-04-08")
     @Test
     public void findBlobsQuery() {
-        BlobContainerAsyncClient containerClient = primaryBlobServiceAsyncClient
-            .createBlobContainer(generateContainerName()).block();
-        BlobAsyncClient blobClient = containerClient.getBlobAsyncClient(generateBlobName());
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("key", "value"))).block();
-        blobClient = containerClient.getBlobAsyncClient(generateBlobName());
-        blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
-            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("bar", "foo"))).block();
-        blobClient = containerClient.getBlobAsyncClient(generateBlobName());
-        blobClient.upload(DATA.getDefaultFlux(), null).block();
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 10000L;
 
-        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
+        Flux<TaggedBlobItem> response = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName())
+            .flatMapMany(cc -> {
+                BlobAsyncClient blobClient = cc.getBlobAsyncClient(generateBlobName());
+                return blobClient.uploadWithResponse(new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
+                    DATA.getDefaultDataSize()).setTags(Collections.singletonMap("key", "value")))
+                    .then(cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                        new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
+                            DATA.getDefaultDataSize()).setTags(Collections.singletonMap("bar", "foo"))))
+                    .then(cc.getBlobAsyncClient(generateBlobName()).upload(DATA.getDefaultFlux(), null))
+                    .then(Mono.delay(Duration.ofMillis(delay)))
+                    .thenMany(primaryBlobServiceAsyncClient.findBlobsByTags(
+                        String.format("@container='%s' AND \"bar\"='foo'", cc.getBlobContainerName())));
+            });
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.findBlobsByTags(
-            String.format("@container='%s' AND \"bar\"='foo'", containerClient.getBlobContainerName())))
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertEquals(1, r.getTags().size());
                 assertEquals("foo", r.getTags().get("bar"));
             })
             .verifyComplete();
-
-        // cleanup:
-        containerClient.delete().block();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMarker() {
-        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
+        Mono<BlobContainerAsyncClient> containerMono = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName());
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
-        for (int i = 0; i < 10; i++) {
-            cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)).block();
-        }
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 10000L;
 
-        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
-
-        PagedResponse<TaggedBlobItem> firstPage = primaryBlobServiceAsyncClient.findBlobsByTags(
+        Flux<BlobContainerAsyncClient> response = containerMono.flatMapMany(cc -> {
+            Flux<Response<BlockBlobItem>> upload = Flux.range(0, 10).flatMap(i ->
+                cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(new BlobParallelUploadOptions(
+                    DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)));
+            return upload.then(Mono.just(cc));
+        }).flatMap(cc -> Mono.delay(Duration.ofMillis(delay)).then(primaryBlobServiceAsyncClient.findBlobsByTags(
             new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))
-                .setMaxResultsPerPage(5), null, Context.NONE).byPage().blockFirst();
-        String marker = firstPage.getContinuationToken();
-        String firstBlobName = firstPage.getValue().get(0).getName();
+                .setMaxResultsPerPage(5), null, Context.NONE).byPage().next())
+            .flatMap(firstPage -> {
+                String marker = firstPage.getContinuationToken();
+                String firstBlobName = firstPage.getValue().get(0).getName();
+                return primaryBlobServiceAsyncClient.findBlobsByTags(
+                    new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,
+                    Context.NONE).byPage(marker).next()
+                    .map(secondPage -> {
+                        assertTrue(firstBlobName.compareTo(secondPage.getValue().get(0).getName()) < 0);
+                        return cc;
+                    });
+            }));
 
-        PagedResponse<TaggedBlobItem> secondPage = primaryBlobServiceAsyncClient.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(5), null,
-            Context.NONE).byPage(marker).blockLast();
-
-        // Assert that the second segment is indeed after the first alphabetically
-        assertTrue(firstBlobName.compareTo(secondPage.getValue().get(0).getName()) < 0);
-
-        // cleanup:
-        cc.delete().block();
+        StepVerifier.create(response)
+            .expectNextCount(1)
+            .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMaxResults() {
         int numBlobs = 7;
         int pageResults = 3;
-        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
-        for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)).block();
-        }
+        Flux<PagedResponse<TaggedBlobItem>> response = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName())
+            .flatMapMany(cc -> {
+                Flux<Response<BlockBlobItem>> upload = Flux.range(0, numBlobs).flatMap(i ->
+                    cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                        new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
+                            DATA.getDefaultDataSize()).setTags(tags)));
+                return upload.thenMany(primaryBlobServiceAsyncClient.findBlobsByTags(
+                    new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults),
+                    null, Context.NONE).byPage());
+            });
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults),
-            null, Context.NONE).byPage())
+        StepVerifier.create(response)
             .thenConsumeWhile(r -> {
                 assertTrue(r.getValue().size() <= pageResults);
                 return true;
             })
             .verifyComplete();
-
-        // cleanup:
-        cc.delete().block();
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsMaxResultsByPage() {
         int numBlobs = 7;
         int pageResults = 3;
-        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
-        for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)).block();
-        }
+        Flux<PagedResponse<TaggedBlobItem>> response = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName())
+            .flatMapMany(cc -> {
+                Flux<Response<BlockBlobItem>> upload = Flux.range(0, numBlobs).flatMap(i ->
+                    cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                        new BlobParallelUploadOptions(DATA.getDefaultInputStream(),
+                            DATA.getDefaultDataSize()).setTags(tags)));
+                return upload.thenMany(primaryBlobServiceAsyncClient.findBlobsByTags(
+                    new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))).byPage(pageResults));
+            });
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.findBlobsByTags(
-            new FindBlobsOptions(String.format("\"%s\"='%s'", tagKey, tagValue))).byPage(pageResults))
+        StepVerifier.create(response)
             .thenConsumeWhile(r -> {
                 assertTrue(r.getValue().size() <= pageResults);
                 return true;
             })
             .verifyComplete();
-
-        // cleanup:
-        cc.delete().block();
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
@@ -478,32 +461,38 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     public void findBlobsByPageAsync() {
         BlobContainerAsyncClient containerAsyncClient =
             primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-        containerAsyncClient.create().block();
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 10000L;
 
-        for (int i = 0; i < 15; i++) {
+        Mono<Void> createContainer = containerAsyncClient.create();
+
+        Flux<Response<BlockBlobItem>> upload = Flux.range(0, 15).flatMap(i ->
             ccAsync.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)).block();
-        }
-        sleepIfRunningAgainstService(10 * 1000); // To allow tags to index
+                new BlobParallelUploadOptions(DATA.getDefaultInputStream()).setTags(tags)));
+
         String query = String.format("\"%s\"='%s'", tagKey, tagValue);
         FindBlobsOptions searchOptions = new FindBlobsOptions(query).setMaxResultsPerPage(12);
 
-        List<TaggedBlobItem> list = primaryBlobServiceAsyncClient
-            .findBlobsByTags(searchOptions)
-            .byPage(10) // byPage should take precedence
-            .take(1, true)
-            .concatMapIterable(ContinuablePage::getElements).collectList().block();
+        Mono<List<TaggedBlobItem>> list = Mono.delay(Duration.ofMillis(delay))
+            .then(primaryBlobServiceAsyncClient
+                .findBlobsByTags(searchOptions)
+                .byPage(10) // byPage should take precedence
+                .take(1, true)
+                .concatMapIterable(ContinuablePage::getElements).collectList());
 
-        assertEquals(10, list.size());
-
-        List<TaggedBlobItem> list2 = primaryBlobServiceAsyncClient
+        Mono<List<TaggedBlobItem>> list2 = primaryBlobServiceAsyncClient
             .findBlobsByTags(searchOptions)
             .byPage() // since no number is specified, it should use the max number specified in options
             .take(1, true)
-            .concatMapIterable(ContinuablePage::getElements).collectList().block();
+            .concatMapIterable(ContinuablePage::getElements).collectList();
 
-        assertEquals(12, list2.size());
+        StepVerifier.create(createContainer.thenMany(upload).then(list))
+            .assertNext(r -> assertEquals(10, r.size()))
+            .verifyComplete();
+
+        StepVerifier.create(list2)
+            .assertNext(r -> assertEquals(12, r.size()))
+            .verifyComplete();
     }
 
     @Test
@@ -519,27 +508,27 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyError(IllegalStateException.class);
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void findBlobsWithTimeoutStillBackedByPagedFlux() {
         int numBlobs = 5;
         int pageResults = 3;
-        BlobContainerAsyncClient cc = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
         Map<String, String> tags = Collections.singletonMap(tagKey, tagValue);
 
-        for (int i = 0; i < numBlobs; i++) {
-            cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
-                new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)).block();
-        }
+        Mono<Long> response =  primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName())
+            .flatMap(cc -> {
+                Flux<Response<BlockBlobItem>> upload = Flux.range(0, numBlobs).flatMap(i ->
+                    cc.getBlobAsyncClient(generateBlobName()).uploadWithResponse(
+                        new BlobParallelUploadOptions(DATA.getDefaultInputStream(), DATA.getDefaultDataSize()).setTags(tags)));
+                // when: "Consume results by page, then still have paging functionality"
+                return upload.then(primaryBlobServiceAsyncClient.findBlobsByTags(new FindBlobsOptions(
+                    String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults)).byPage().count());
+            });
 
-        // when: "Consume results by page, then still have paging functionality"
-        StepVerifier.create(primaryBlobServiceAsyncClient.findBlobsByTags(new FindBlobsOptions(
-            String.format("\"%s\"='%s'", tagKey, tagValue)).setMaxResultsPerPage(pageResults)).byPage().count())
+        StepVerifier.create(response)
             .expectNextCount(1)
             .verifyComplete();
-
-        // cleanup:
-        cc.delete().block();
     }
 
     private static void validatePropsSet(BlobServiceProperties sent, BlobServiceProperties received) {
@@ -583,154 +572,147 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     @ResourceLock("ServiceProperties")
     public void setGetProperties() {
-        try {
-            BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
-            BlobAnalyticsLogging logging =
-                new BlobAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
-            List<BlobCorsRule> corsRules = new ArrayList<>();
-            corsRules.add(new BlobCorsRule()
-                .setAllowedMethods("GET,PUT,HEAD")
-                .setAllowedOrigins("*")
-                .setAllowedHeaders("x-ms-version")
-                .setExposedHeaders("x-ms-client-request-id")
-                .setMaxAgeInSeconds(10));
-            String defaultServiceVersion = "2016-05-31";
-            BlobMetrics hourMetrics = new BlobMetrics()
-                .setEnabled(true)
-                .setVersion("1.0")
-                .setRetentionPolicy(retentionPolicy)
-                .setIncludeApis(true);
-            BlobMetrics minuteMetrics = new BlobMetrics()
-                .setEnabled(true)
-                .setVersion("1.0")
-                .setRetentionPolicy(retentionPolicy)
-                .setIncludeApis(true);
-            StaticWebsite website = new StaticWebsite().setEnabled(true).setIndexDocument("myIndex.html")
-                .setErrorDocument404Path("custom/error/path.html");
+        BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
+        BlobAnalyticsLogging logging =
+            new BlobAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
+        List<BlobCorsRule> corsRules = new ArrayList<>();
+        corsRules.add(new BlobCorsRule()
+            .setAllowedMethods("GET,PUT,HEAD")
+            .setAllowedOrigins("*")
+            .setAllowedHeaders("x-ms-version")
+            .setExposedHeaders("x-ms-client-request-id")
+            .setMaxAgeInSeconds(10));
+        String defaultServiceVersion = "2016-05-31";
+        BlobMetrics hourMetrics = new BlobMetrics()
+            .setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+        BlobMetrics minuteMetrics = new BlobMetrics()
+            .setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+        StaticWebsite website = new StaticWebsite().setEnabled(true).setIndexDocument("myIndex.html")
+            .setErrorDocument404Path("custom/error/path.html");
 
-            BlobServiceProperties sentProperties = new BlobServiceProperties()
-                .setLogging(logging)
-                .setCors(corsRules)
-                .setDefaultServiceVersion(defaultServiceVersion)
-                .setMinuteMetrics(minuteMetrics)
-                .setHourMetrics(hourMetrics)
-                .setDeleteRetentionPolicy(retentionPolicy)
-                .setStaticWebsite(website);
+        BlobServiceProperties sentProperties = new BlobServiceProperties()
+            .setLogging(logging)
+            .setCors(corsRules)
+            .setDefaultServiceVersion(defaultServiceVersion)
+            .setMinuteMetrics(minuteMetrics)
+            .setHourMetrics(hourMetrics)
+            .setDeleteRetentionPolicy(retentionPolicy)
+            .setStaticWebsite(website);
 
-            StepVerifier.create(setInitialProperties()
-                .then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties)))
-                .assertNext(r -> {
-                    assertNotNull(r.getHeaders().getValue(X_MS_REQUEST_ID));
-                    assertNotNull(r.getHeaders().getValue(X_MS_VERSION));
-                })
-                .verifyComplete();
+        StepVerifier.create(setInitialProperties()
+            .then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties)))
+            .assertNext(r -> {
+                assertNotNull(r.getHeaders().getValue(X_MS_REQUEST_ID));
+                assertNotNull(r.getHeaders().getValue(X_MS_VERSION));
+            })
+            .verifyComplete();
 
-            StepVerifier.create(Mono.delay(Duration.ofSeconds(30)).then(primaryBlobServiceAsyncClient.getProperties()))
-                .assertNext(r -> validatePropsSet(sentProperties, r))
-                .verifyComplete();
-        } finally {
-            resetProperties();
-        }
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 30000L;
+
+        Mono<BlobServiceProperties> response = Mono.delay(Duration.ofMillis(delay))
+            .then(primaryBlobServiceAsyncClient.getProperties());
+
+        StepVerifier.create(response)
+            .assertNext(r -> validatePropsSet(sentProperties, r))
+            .verifyComplete();
     }
 
     // In java, we don't have support from the validator for checking the bounds on days. The service will catch these.
     @Test
     @ResourceLock("ServiceProperties")
     public void setPropsMin() {
-        try {
-            BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
-            BlobAnalyticsLogging logging =
-                new BlobAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
-            List<BlobCorsRule> corsRules = new ArrayList<>();
-            corsRules.add(new BlobCorsRule()
-                .setAllowedMethods("GET,PUT,HEAD")
-                .setAllowedOrigins("*")
-                .setAllowedHeaders("x-ms-version")
-                .setExposedHeaders("x-ms-client-request-id")
-                .setMaxAgeInSeconds(10));
-            String defaultServiceVersion = "2016-05-31";
-            BlobMetrics hourMetrics = new BlobMetrics()
-                .setEnabled(true)
-                .setVersion("1.0")
-                .setRetentionPolicy(retentionPolicy)
-                .setIncludeApis(true);
-            BlobMetrics minuteMetrics = new BlobMetrics()
-                .setEnabled(true)
-                .setVersion("1.0")
-                .setRetentionPolicy(retentionPolicy)
-                .setIncludeApis(true);
-            StaticWebsite website = new StaticWebsite().setEnabled(true).setIndexDocument("myIndex.html")
-                .setErrorDocument404Path("custom/error/path.html");
+        BlobRetentionPolicy retentionPolicy = new BlobRetentionPolicy().setDays(5).setEnabled(true);
+        BlobAnalyticsLogging logging =
+            new BlobAnalyticsLogging().setRead(true).setVersion("1.0").setRetentionPolicy(retentionPolicy);
+        List<BlobCorsRule> corsRules = new ArrayList<>();
+        corsRules.add(new BlobCorsRule()
+            .setAllowedMethods("GET,PUT,HEAD")
+            .setAllowedOrigins("*")
+            .setAllowedHeaders("x-ms-version")
+            .setExposedHeaders("x-ms-client-request-id")
+            .setMaxAgeInSeconds(10));
+        String defaultServiceVersion = "2016-05-31";
+        BlobMetrics hourMetrics = new BlobMetrics()
+            .setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+        BlobMetrics minuteMetrics = new BlobMetrics()
+            .setEnabled(true)
+            .setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+            .setIncludeApis(true);
+        StaticWebsite website = new StaticWebsite().setEnabled(true).setIndexDocument("myIndex.html")
+            .setErrorDocument404Path("custom/error/path.html");
 
-            BlobServiceProperties sentProperties = new BlobServiceProperties()
-                .setLogging(logging)
-                .setCors(corsRules)
-                .setDefaultServiceVersion(defaultServiceVersion)
-                .setMinuteMetrics(minuteMetrics)
-                .setHourMetrics(hourMetrics)
-                .setDeleteRetentionPolicy(retentionPolicy)
-                .setStaticWebsite(website);
+        BlobServiceProperties sentProperties = new BlobServiceProperties()
+            .setLogging(logging)
+            .setCors(corsRules)
+            .setDefaultServiceVersion(defaultServiceVersion)
+            .setMinuteMetrics(minuteMetrics)
+            .setHourMetrics(hourMetrics)
+            .setDeleteRetentionPolicy(retentionPolicy)
+            .setStaticWebsite(website);
 
-            assertAsyncResponseStatusCode(setInitialProperties().
-                then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties)), 202);
-        } finally {
-            resetProperties();
-        }
+        Mono<Response<Void>> response = setInitialProperties().
+            then(primaryBlobServiceAsyncClient.setPropertiesWithResponse(sentProperties));
+
+        assertAsyncResponseStatusCode(response, 202);
     }
 
     @Test
     @ResourceLock("ServiceProperties")
     public void setPropsCorsCheck() {
-        try {
-            // Some properties are not set and this test validates that they are not null when sent to the service
-            BlobCorsRule rule = new BlobCorsRule()
-                .setAllowedOrigins("microsoft.com")
-                .setMaxAgeInSeconds(60)
-                .setAllowedMethods("GET")
-                .setAllowedHeaders("x-ms-version");
+        // Some properties are not set and this test validates that they are not null when sent to the service
+        BlobCorsRule rule = new BlobCorsRule()
+            .setAllowedOrigins("microsoft.com")
+            .setMaxAgeInSeconds(60)
+            .setAllowedMethods("GET")
+            .setAllowedHeaders("x-ms-version");
 
-            Mono<Response<Void>> response = setInitialProperties()
-                .then(primaryBlobServiceAsyncClient.getProperties())
-                .flatMap(r -> {
-                    r.setCors(Collections.singletonList(rule));
-                    return primaryBlobServiceAsyncClient.setPropertiesWithResponse(r);
-                });
+        Mono<Response<Void>> response = setInitialProperties()
+            .then(primaryBlobServiceAsyncClient.getProperties())
+            .flatMap(r -> {
+                r.setCors(Collections.singletonList(rule));
+                return primaryBlobServiceAsyncClient.setPropertiesWithResponse(r);
+            });
 
-            assertAsyncResponseStatusCode(response, 202);
-        } finally {
-            resetProperties();
-        }
+        assertAsyncResponseStatusCode(response, 202);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     @ResourceLock("ServiceProperties")
     public void setPropsStaticWebsite() {
-        try {
-            String errorDocument404Path = "error/404.html";
-            String defaultIndexDocumentPath = "index.html";
+        String errorDocument404Path = "error/404.html";
+        String defaultIndexDocumentPath = "index.html";
 
-            Mono<Response<Void>> response = setInitialProperties().then(primaryBlobServiceAsyncClient.getProperties())
-                .flatMap(r -> {
-                    r.setStaticWebsite(new StaticWebsite()
-                        .setEnabled(true)
-                        .setErrorDocument404Path(errorDocument404Path)
-                        .setDefaultIndexDocumentPath(defaultIndexDocumentPath));
-                    return primaryBlobServiceAsyncClient.setPropertiesWithResponse(r);
-                });
+        Mono<Response<Void>> response = setInitialProperties().then(primaryBlobServiceAsyncClient.getProperties())
+            .flatMap(r -> {
+                r.setStaticWebsite(new StaticWebsite()
+                    .setEnabled(true)
+                    .setErrorDocument404Path(errorDocument404Path)
+                    .setDefaultIndexDocumentPath(defaultIndexDocumentPath));
+                return primaryBlobServiceAsyncClient.setPropertiesWithResponse(r);
+            });
 
-            assertAsyncResponseStatusCode(response, 202);
+        assertAsyncResponseStatusCode(response, 202);
 
-            StepVerifier.create(primaryBlobServiceAsyncClient.getProperties())
-                .assertNext(r -> {
-                    assertTrue(r.getStaticWebsite().isEnabled());
-                    assertEquals(errorDocument404Path, r.getStaticWebsite().getErrorDocument404Path());
-                    assertEquals(defaultIndexDocumentPath, r.getStaticWebsite().getDefaultIndexDocumentPath());
-                })
-                .verifyComplete();
-        } finally {
-            resetProperties();
-        }
+        Mono<BlobServiceProperties> response2 = primaryBlobServiceAsyncClient.getProperties();
+
+        StepVerifier.create(response2)
+            .assertNext(r -> {
+                assertTrue(r.getStaticWebsite().isEnabled());
+                assertEquals(errorDocument404Path, r.getStaticWebsite().getErrorDocument404Path());
+                assertEquals(defaultIndexDocumentPath, r.getStaticWebsite().getDefaultIndexDocumentPath());
+            })
+            .verifyComplete();
     }
 
     @Test
@@ -751,12 +733,9 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     @ResourceLock("ServiceProperties")
     public void getPropsMin() {
-        try {
-            assertAsyncResponseStatusCode(setInitialProperties()
-                .then(primaryBlobServiceAsyncClient.getPropertiesWithResponse()), 200);
-        } finally {
-            resetProperties();
-        }
+        Mono<Response<BlobServiceProperties>> response = setInitialProperties()
+            .then(primaryBlobServiceAsyncClient.getPropertiesWithResponse());
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @Test
@@ -968,20 +947,20 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     public void restoreContainerIntoOtherContainer() {
         BlobContainerAsyncClient cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-        cc1.create().block();
         String blobName = generateBlobName();
-        cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), null).block();
-        cc1.delete().block();
-        BlobContainerItem blobContainerItem = primaryBlobServiceAsyncClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))).blockFirst();
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 30000L;
 
-        sleepIfRunningAgainstService(30000);
+        Mono<List<BlobItem>> response = cc1.create().then(cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), null))
+            .then(primaryBlobServiceAsyncClient.listBlobContainers(
+                new ListBlobContainersOptions()
+                    .setPrefix(cc1.getBlobContainerName())
+                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))).next())
+            .flatMap(blobContainerItem -> Mono.delay(Duration.ofMillis(delay))
+                .then(primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
+                    new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())))
+                    .flatMap(r -> r.getValue().listBlobs().collectList()));
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
-                new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion()))
-            .flatMap(r -> r.getValue().listBlobs().collectList()))
+        StepVerifier.create(response)
             .assertNext(r -> {
                 assertEquals(1, r.size());
                 assertEquals(blobName, r.get(0).getName());
@@ -1026,25 +1005,27 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .verifyError(BlobStorageException.class);
     }
 
+    @SuppressWarnings("deprecation")
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @Test
     public void restoreContainerIntoExistingContainerError() {
         BlobContainerAsyncClient cc1 = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
-        cc1.create().block();
         String blobName = generateBlobName();
-        cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), null).block();
-        cc1.delete().block();
-        BlobContainerItem blobContainerItem = primaryBlobServiceAsyncClient.listBlobContainers(
-            new ListBlobContainersOptions()
-                .setPrefix(cc1.getBlobContainerName())
-                .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))).blockFirst();
+        long delay = ENVIRONMENT.getTestMode() == TestMode.PLAYBACK ? 0L : 30000L;
 
-        sleepIfRunningAgainstService(30000);
+        Mono<Response<BlobContainerAsyncClient>> response = cc1.create()
+            .then(cc1.getBlobAsyncClient(blobName).upload(DATA.getDefaultFlux(), null))
+            .then(cc1.delete()).then(primaryBlobServiceAsyncClient.listBlobContainers(
+                new ListBlobContainersOptions()
+                    .setPrefix(cc1.getBlobContainerName())
+                    .setDetails(new BlobContainerListDetails().setRetrieveDeleted(true))).next())
+            .flatMap(blobContainerItem -> Mono.delay(Duration.ofMillis(delay))
+                .then(primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()))
+                    .flatMap(cc2 -> primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
+                        new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
+                            .setDestinationContainerName(cc2.getBlobContainerName()))));
 
-        BlobContainerAsyncClient cc2 = primaryBlobServiceAsyncClient.createBlobContainer(generateContainerName()).block();
-        StepVerifier.create(primaryBlobServiceAsyncClient.undeleteBlobContainerWithResponse(
-            new UndeleteBlobContainerOptions(blobContainerItem.getName(), blobContainerItem.getVersion())
-            .setDestinationContainerName(cc2.getBlobContainerName())))
+        StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
     }
 
@@ -1068,7 +1049,8 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             "?sv=2019-10-10&ss=b&srt=sco&sp=r&se=2019-06-04T12:04:58Z&st=2090-05-04T04:04:58Z&spr=http&sig=doesntmatter";
 
         IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> {
-            BlobServiceAsyncClient client = new BlobServiceClientBuilder().endpoint(service).sasToken(mockSas).buildAsyncClient();
+            BlobServiceAsyncClient client = new BlobServiceClientBuilder().endpoint(service).sasToken(mockSas)
+                .httpClient(new NoOpHttpClient()).buildAsyncClient();
             client.getBlobContainerAsyncClient(container).getBlobAsyncClient("blobname");
         });
 
@@ -1110,9 +1092,9 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     public void deleteContainerIfExists() {
         String containerName = generateContainerName();
-        primaryBlobServiceAsyncClient.createBlobContainer(containerName).block();
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse(containerName))
+        StepVerifier.create(primaryBlobServiceAsyncClient.createBlobContainer(containerName)
+            .then(primaryBlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse(containerName)))
             .assertNext(r -> {
                 assertTrue(r.getValue());
                 assertResponseStatusCode(r, 202);
@@ -1123,9 +1105,9 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     public void deleteContainerIfExistsMin() {
         String containerName = generateContainerName();
-        primaryBlobServiceAsyncClient.createBlobContainer(containerName).block();
 
-        StepVerifier.create(primaryBlobServiceAsyncClient.deleteBlobContainerIfExists(containerName))
+        StepVerifier.create(primaryBlobServiceAsyncClient.createBlobContainer(containerName)
+            .then(primaryBlobServiceAsyncClient.deleteBlobContainerIfExists(containerName)))
             .expectNext(true)
             .verifyComplete();
     }
@@ -1142,10 +1124,10 @@ public class ServiceAsyncApiTests extends BlobTestBase {
     @Test
     public void deleteContainerIfExistsAlreadyDeleted() {
         String containerName = generateContainerName();
-        primaryBlobServiceAsyncClient.createBlobContainer(containerName).block();
 
-        assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse(
-            containerName), 202);
+        assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.createBlobContainer(containerName)
+            .then(primaryBlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse(
+            containerName)), 202);
         // Confirming the behavior of the api when the container is in the deleting state.
         // After delete has been called once but before it has been garbage collected
         assertAsyncResponseStatusCode(primaryBlobServiceAsyncClient.deleteBlobContainerIfExistsWithResponse(
@@ -1161,15 +1143,15 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .addPolicy(new ServiceTimeoutPolicy(Duration.ofSeconds(1)))
             .buildAsyncClient();
 
-        BlobContainerAsyncClient blobContainerClient = serviceClient.getBlobContainerAsyncClient(generateContainerName());
-        blobContainerClient.createIfNotExists().block();
-        BlobAsyncClient blobClient = blobContainerClient.getBlobAsyncClient(generateBlobName());
-
         // testing with large dataset that is guaranteed to take longer than the specified timeout (1 second)
         byte[] randomData = getRandomByteArray(256 * Constants.MB);
         ByteArrayInputStream input = new ByteArrayInputStream(randomData);
 
-        StepVerifier.create(blobClient.uploadWithResponse(new BlobParallelUploadOptions(input)))
+        BlobContainerAsyncClient blobContainerClient = serviceClient.getBlobContainerAsyncClient(generateContainerName());
+        BlobAsyncClient blobClient = blobContainerClient.getBlobAsyncClient(generateBlobName());
+
+        StepVerifier.create(blobContainerClient.createIfNotExists()
+            .then(blobClient.uploadWithResponse(new BlobParallelUploadOptions(input))))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
                 assertEquals(BlobErrorCode.OPERATION_TIMED_OUT, e.getErrorCode());
@@ -1183,7 +1165,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -1194,7 +1176,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -1210,7 +1192,7 @@ public class ServiceAsyncApiTests extends BlobTestBase {
                 .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
 
@@ -1224,6 +1206,6 @@ public class ServiceAsyncApiTests extends BlobTestBase {
             .buildAsyncClient();
 
         StepVerifier.create(aadService.getProperties())
-            .assertNext(r -> assertNotNull(r))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();        }
 }

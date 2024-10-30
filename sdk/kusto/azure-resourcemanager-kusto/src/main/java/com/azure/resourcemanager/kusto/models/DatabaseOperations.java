@@ -22,12 +22,8 @@ public interface DatabaseOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a follower invitation generation request along with {@link Response}.
      */
-    Response<DatabaseInviteFollowerResult> inviteFollowerWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInviteFollowerRequest parameters,
-        Context context);
+    Response<DatabaseInviteFollowerResult> inviteFollowerWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInviteFollowerRequest parameters, Context context);
 
     /**
      * Generates an invitation token that allows attaching a follower database to this database.
@@ -41,6 +37,6 @@ public interface DatabaseOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a follower invitation generation request.
      */
-    DatabaseInviteFollowerResult inviteFollower(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInviteFollowerRequest parameters);
+    DatabaseInviteFollowerResult inviteFollower(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInviteFollowerRequest parameters);
 }

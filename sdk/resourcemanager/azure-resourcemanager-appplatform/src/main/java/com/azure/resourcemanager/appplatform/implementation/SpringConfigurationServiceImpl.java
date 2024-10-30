@@ -18,10 +18,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class SpringConfigurationServiceImpl
-    extends ExternalChildResourceImpl<SpringConfigurationService, ConfigurationServiceResourceInner, SpringServiceImpl, SpringService>
+public class SpringConfigurationServiceImpl extends
+    ExternalChildResourceImpl<SpringConfigurationService, ConfigurationServiceResourceInner, SpringServiceImpl, SpringService>
     implements SpringConfigurationService {
-    protected SpringConfigurationServiceImpl(String name, SpringServiceImpl parent, ConfigurationServiceResourceInner innerObject) {
+    protected SpringConfigurationServiceImpl(String name, SpringServiceImpl parent,
+        ConfigurationServiceResourceInner innerObject) {
         super(name, parent, innerObject);
     }
 
@@ -37,22 +38,16 @@ public class SpringConfigurationServiceImpl
 
     @Override
     public String gitUri() {
-        return findDefaultRepository()
-            .map(ConfigurationServiceGitRepository::uri)
-            .orElse(null);
+        return findDefaultRepository().map(ConfigurationServiceGitRepository::uri).orElse(null);
     }
 
     @Override
     public List<String> filePatterns() {
-        return findDefaultRepository()
-            .map(ConfigurationServiceGitRepository::patterns)
-            .orElse(Collections.emptyList());
+        return findDefaultRepository().map(ConfigurationServiceGitRepository::patterns).orElse(Collections.emptyList());
     }
 
     public String branch() {
-        return findDefaultRepository()
-            .map(ConfigurationServiceGitRepository::label)
-            .orElse(null);
+        return findDefaultRepository().map(ConfigurationServiceGitRepository::label).orElse(null);
     }
 
     @Override
@@ -66,7 +61,11 @@ public class SpringConfigurationServiceImpl
 
     @Override
     public List<SpringApp> getAppBindings() {
-        return parent().apps().list().stream().filter(SpringApp::hasConfigurationServiceBinding).collect(Collectors.toList());
+        return parent().apps()
+            .list()
+            .stream()
+            .filter(SpringApp::hasConfigurationServiceBinding)
+            .collect(Collectors.toList());
     }
 
     private Optional<ConfigurationServiceGitRepository> findRepository(String name) {
@@ -75,10 +74,7 @@ public class SpringConfigurationServiceImpl
         }
         ConfigurationServiceGitProperty property = innerModel().properties().settings().gitProperty();
         if (property != null && property.repositories() != null) {
-            return property.repositories()
-                .stream()
-                .filter(repository -> name.equals(repository.name()))
-                .findFirst();
+            return property.repositories().stream().filter(repository -> name.equals(repository.name())).findFirst();
         } else {
             return Optional.empty();
         }
@@ -91,7 +87,8 @@ public class SpringConfigurationServiceImpl
 
     @Override
     public Mono<SpringConfigurationService> createResourceAsync() {
-        return manager().serviceClient().getConfigurationServices()
+        return manager().serviceClient()
+            .getConfigurationServices()
             .createOrUpdateAsync(parent().resourceGroupName(), parent().name(), name(), innerModel())
             .map(inner -> {
                 setInner(inner);
@@ -106,12 +103,16 @@ public class SpringConfigurationServiceImpl
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return manager().serviceClient().getConfigurationServices().deleteAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient()
+            .getConfigurationServices()
+            .deleteAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override
     protected Mono<ConfigurationServiceResourceInner> getInnerAsync() {
-        return manager().serviceClient().getConfigurationServices().getAsync(parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient()
+            .getConfigurationServices()
+            .getAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     public AppPlatformManager manager() {

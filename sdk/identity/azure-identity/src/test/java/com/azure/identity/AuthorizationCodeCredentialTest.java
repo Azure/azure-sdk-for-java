@@ -41,25 +41,30 @@ public class AuthorizationCodeCredentialTest {
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        try (MockedConstruction<IdentityClient> identityclientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithAuthorizationCode(eq(request1), eq(authCode1), eq(redirectUri)))
-                .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-            when(identityClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> {
+        try (MockedConstruction<IdentityClient> identityclientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAuthorizationCode(eq(request1), eq(authCode1), eq(redirectUri)))
+                    .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+                when(identityClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
-                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                         return TestUtils.getMockMsalToken(token2, expiresAt);
-                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         return Mono.error(new UnsupportedOperationException("nothing cached"));
                     } else {
-                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-        })) {
+            })) {
 
             // test
-            AuthorizationCodeCredential credential = new AuthorizationCodeCredentialBuilder()
-                .clientId(clientId).authorizationCode(authCode1).redirectUrl(redirectUri.toString()).build();
+            AuthorizationCodeCredential credential = new AuthorizationCodeCredentialBuilder().clientId(clientId)
+                .authorizationCode(authCode1)
+                .redirectUrl(redirectUri.toString())
+                .build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -79,15 +84,19 @@ public class AuthorizationCodeCredentialTest {
         String authCode1 = "authCode1";
         URI redirectUri = new URI("http://foo.com/bar");
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        AuthorizationCodeCredential credential =
-            new AuthorizationCodeCredentialBuilder().tenantId("tenant").clientId("clientId").clientSecret(badSecret)
-                .redirectUrl(redirectUri.toString()).authorizationCode(authCode1)
-                .additionallyAllowedTenants("RANDOM").build();
+        AuthorizationCodeCredential credential = new AuthorizationCodeCredentialBuilder().tenantId("tenant")
+            .clientId("clientId")
+            .clientSecret(badSecret)
+            .redirectUrl(redirectUri.toString())
+            .authorizationCode(authCode1)
+            .additionallyAllowedTenants("RANDOM")
+            .build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException
+                && (e.getMessage().startsWith("The current credential is not configured to")))
             .verify();
     }
 
@@ -98,14 +107,18 @@ public class AuthorizationCodeCredentialTest {
         String authCode1 = "authCode1";
         URI redirectUri = new URI("http://foo.com/bar");
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        AuthorizationCodeCredential credential =
-            new AuthorizationCodeCredentialBuilder().tenantId("tenant").clientId("clientId").clientSecret(badSecret)
-                .authorizationCode(authCode1).redirectUrl(redirectUri.toString()).build();
+        AuthorizationCodeCredential credential = new AuthorizationCodeCredentialBuilder().tenantId("tenant")
+            .clientId("clientId")
+            .clientSecret(badSecret)
+            .authorizationCode(authCode1)
+            .redirectUrl(redirectUri.toString())
+            .build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException
+                && (e.getMessage().startsWith("The current credential is not configured to")))
             .verify();
     }
 
@@ -116,13 +129,16 @@ public class AuthorizationCodeCredentialTest {
         String authCode1 = "authCode1";
         URI redirectUri = new URI("http://foo.com/bar");
 
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        AuthorizationCodeCredential credential =
-            new AuthorizationCodeCredentialBuilder().tenantId("tenant").clientId("clientId").clientSecret(badSecret)
-                .additionallyAllowedTenants("*").authorizationCode(authCode1)
-                .redirectUrl(redirectUri.toString()).build();
+        AuthorizationCodeCredential credential = new AuthorizationCodeCredentialBuilder().tenantId("tenant")
+            .clientId("clientId")
+            .clientSecret(badSecret)
+            .additionallyAllowedTenants("*")
+            .authorizationCode(authCode1)
+            .redirectUrl(redirectUri.toString())
+            .build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(e -> e.getCause() instanceof MsalServiceException)
             .verify();

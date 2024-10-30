@@ -51,8 +51,8 @@ public interface GenerateCostDetailsReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of the long running operation for cost details Api.
      */
-    CostDetailsOperationResults createOperation(
-        String scope, GenerateCostDetailsReportRequestDefinition parameters, Context context);
+    CostDetailsOperationResults createOperation(String scope, GenerateCostDetailsReportRequestDefinition parameters,
+        Context context);
 
     /**
      * Get the result of the specified operation. This link is provided in the CostDetails creation request response

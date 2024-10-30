@@ -30,31 +30,13 @@ public class MessageTemplateAsyncClientTest extends CommunicationMessagesTestBas
     public void shouldReturnWhatsTemplateListAsync(HttpClient httpClient) {
         messageTemplateClient = buildMessageTemplateAsyncClient(httpClient);
 
-        messageTemplateClient.listTemplates(CHANNEL_REGISTRATION_ID)
-            .toStream()
-            .forEach(template -> {
-                assertNotNull(template.getName());
-                assertNotNull(template.getLanguage());
-                assertNotNull(template.getStatus());
-                assertInstanceOf(WhatsAppMessageTemplateItem.class, template);
-                assertNotNull(((WhatsAppMessageTemplateItem) template).getContent());
-            });
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void shouldReturnWhatsTemplateListWithTokenCredentialAsyncClient(HttpClient httpClient) {
-        messageTemplateClient = buildMessageTemplateAsyncClientWithTokenCredential(httpClient);
-
-        messageTemplateClient.listTemplates(CHANNEL_REGISTRATION_ID)
-            .toStream()
-            .forEach(template -> {
-                assertNotNull(template.getName());
-                assertNotNull(template.getLanguage());
-                assertNotNull(template.getStatus());
-                assertInstanceOf(WhatsAppMessageTemplateItem.class, template);
-                assertNotNull(((WhatsAppMessageTemplateItem) template).getContent());
-            });
+        messageTemplateClient.listTemplates(CHANNEL_REGISTRATION_ID).toStream().forEach(template -> {
+            assertNotNull(template.getName());
+            assertNotNull(template.getLanguage());
+            assertNotNull(template.getStatus());
+            assertInstanceOf(WhatsAppMessageTemplateItem.class, template);
+            assertNotNull(((WhatsAppMessageTemplateItem) template).getContent());
+        });
     }
 
     @ParameterizedTest
@@ -62,9 +44,7 @@ public class MessageTemplateAsyncClientTest extends CommunicationMessagesTestBas
     public void shouldThrowExceptionForInvalidChannelIdAsync(HttpClient httpClient) {
         messageTemplateClient = buildMessageTemplateAsyncClient(httpClient);
         assertThrows(HttpResponseException.class,
-            () -> messageTemplateClient.listTemplates("INVALID_CHANNEL_ID")
-                .toStream()
-                .collect(Collectors.toList()));
+            () -> messageTemplateClient.listTemplates("INVALID_CHANNEL_ID").toStream().collect(Collectors.toList()));
     }
 
     private MessageTemplateAsyncClient buildMessageTemplateAsyncClient(HttpClient httpClient) {
@@ -79,7 +59,7 @@ public class MessageTemplateAsyncClientTest extends CommunicationMessagesTestBas
             tokenCredential = new DefaultAzureCredentialBuilder().build();
         }
 
-        return  getMessageTemplateClientBuilder(httpClient, tokenCredential)
+        return getMessageTemplateClientBuilder(httpClient, tokenCredential)
             .addPolicy((context, next) -> logHeaders(next))
             .buildAsyncClient();
     }

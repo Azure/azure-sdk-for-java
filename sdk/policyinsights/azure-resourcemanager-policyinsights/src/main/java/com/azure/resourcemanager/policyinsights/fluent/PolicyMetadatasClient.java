@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.policyinsights.fluent.models.PolicyMetadataInner;
 import com.azure.resourcemanager.policyinsights.fluent.models.SlimPolicyMetadataInner;
 
-/** An instance of this class provides access to all the operations defined in PolicyMetadatasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PolicyMetadatasClient.
+ */
 public interface PolicyMetadatasClient {
     /**
      * Get policy metadata resource.
-     *
+     * 
      * @param resourceName The name of the policy metadata resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -29,7 +31,7 @@ public interface PolicyMetadatasClient {
 
     /**
      * Get policy metadata resource.
-     *
+     * 
      * @param resourceName The name of the policy metadata resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,7 +43,7 @@ public interface PolicyMetadatasClient {
 
     /**
      * Get a list of the policy metadata resources.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the policy metadata resources as paginated response with {@link PagedIterable}.
@@ -51,7 +53,7 @@ public interface PolicyMetadatasClient {
 
     /**
      * Get a list of the policy metadata resources.
-     *
+     * 
      * @param top Maximum number of records to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

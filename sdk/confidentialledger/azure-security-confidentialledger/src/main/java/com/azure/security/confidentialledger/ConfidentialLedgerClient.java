@@ -20,7 +20,8 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous ConfidentialLedgerClient type. */
 @ServiceClient(builder = ConfidentialLedgerClientBuilder.class)
 public final class ConfidentialLedgerClient {
-    @Generated private final ConfidentialLedgerAsyncClient client;
+    @Generated
+    private final ConfidentialLedgerAsyncClient client;
 
     /**
      * Initializes an instance of ConfidentialLedgerClient class.
@@ -466,8 +467,8 @@ public final class ConfidentialLedgerClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateUserWithResponse(
-            String userId, BinaryData userDetails, RequestOptions requestOptions) {
+    public Response<BinaryData> createOrUpdateUserWithResponse(String userId, BinaryData userDetails,
+        RequestOptions requestOptions) {
         return this.client.createOrUpdateUserWithResponse(userId, userDetails, requestOptions).block();
     }
 }

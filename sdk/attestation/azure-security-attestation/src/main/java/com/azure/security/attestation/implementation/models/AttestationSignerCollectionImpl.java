@@ -19,6 +19,7 @@ public class AttestationSignerCollectionImpl implements AttestationSignerCollect
     public AttestationSignerCollectionImpl(List<AttestationSigner> newSigners) {
         signers = newSigners;
     }
+
     /**
      * Retrieve the list of attestation signers in the collection.
      * @return a {@link List} of {@link AttestationSigner} objects.

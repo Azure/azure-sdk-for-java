@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationDefinitionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationDefinitionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"pgrjbz\",\"isDataAction\":true,\"display\":{\"provider\":\"xv\",\"resource\":\"byxqabn\",\"operation\":\"cpc\",\"description\":\"hurzafblj\"},\"origin\":\"pbtoqcjmkl\",\"properties\":{}},{\"name\":\"qidtqajzyu\",\"isDataAction\":true,\"display\":{\"provider\":\"jkrlkhbzhfepg\",\"resource\":\"qex\",\"operation\":\"ocxscpaierhhbcs\",\"description\":\"ummajtjaod\"},\"origin\":\"bnbdxkqpxokajion\",\"properties\":{}},{\"name\":\"xg\",\"isDataAction\":false,\"display\":{\"provider\":\"po\",\"resource\":\"maajrmvdjwzrlo\",\"operation\":\"clwhijcoejctbz\",\"description\":\"s\"},\"origin\":\"y\",\"properties\":{}}],\"nextLink\":\"fkgukdkexxppof\"}")
-                .toObject(OperationDefinitionListResult.class);
+        OperationDefinitionListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"pgrjbz\",\"isDataAction\":true,\"display\":{\"provider\":\"xv\",\"resource\":\"byxqabn\",\"operation\":\"cpc\",\"description\":\"hurzafblj\"},\"origin\":\"pbtoqcjmkl\",\"properties\":{}},{\"name\":\"qidtqajzyu\",\"isDataAction\":true,\"display\":{\"provider\":\"jkrlkhbzhfepg\",\"resource\":\"qex\",\"operation\":\"ocxscpaierhhbcs\",\"description\":\"ummajtjaod\"},\"origin\":\"bnbdxkqpxokajion\",\"properties\":{}},{\"name\":\"xg\",\"isDataAction\":false,\"display\":{\"provider\":\"po\",\"resource\":\"maajrmvdjwzrlo\",\"operation\":\"clwhijcoejctbz\",\"description\":\"s\"},\"origin\":\"y\",\"properties\":{}}],\"nextLink\":\"fkgukdkexxppof\"}")
+            .toObject(OperationDefinitionListResult.class);
         Assertions.assertEquals("pgrjbz", model.value().get(0).name());
         Assertions.assertEquals(true, model.value().get(0).isDataAction());
         Assertions.assertEquals("byxqabn", model.value().get(0).display().resource());
@@ -31,42 +29,29 @@ public final class OperationDefinitionListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationDefinitionListResult model =
-            new OperationDefinitionListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new OperationDefinitionInner()
-                                .withName("pgrjbz")
-                                .withIsDataAction(true)
-                                .withDisplay(
-                                    new OperationDefinitionDisplay()
-                                        .withResource("byxqabn")
-                                        .withOperation("cpc")
-                                        .withDescription("hurzafblj"))
-                                .withOrigin("pbtoqcjmkl")
-                                .withProperties(new OperationProperties()),
-                            new OperationDefinitionInner()
-                                .withName("qidtqajzyu")
-                                .withIsDataAction(true)
-                                .withDisplay(
-                                    new OperationDefinitionDisplay()
-                                        .withResource("qex")
-                                        .withOperation("ocxscpaierhhbcs")
-                                        .withDescription("ummajtjaod"))
-                                .withOrigin("bnbdxkqpxokajion")
-                                .withProperties(new OperationProperties()),
-                            new OperationDefinitionInner()
-                                .withName("xg")
-                                .withIsDataAction(false)
-                                .withDisplay(
-                                    new OperationDefinitionDisplay()
-                                        .withResource("maajrmvdjwzrlo")
-                                        .withOperation("clwhijcoejctbz")
-                                        .withDescription("s"))
-                                .withOrigin("y")
-                                .withProperties(new OperationProperties())))
-                .withNextLink("fkgukdkexxppof");
+        OperationDefinitionListResult model = new OperationDefinitionListResult().withValue(Arrays.asList(
+            new OperationDefinitionInner().withName("pgrjbz")
+                .withIsDataAction(true)
+                .withDisplay(new OperationDefinitionDisplay().withResource("byxqabn")
+                    .withOperation("cpc")
+                    .withDescription("hurzafblj"))
+                .withOrigin("pbtoqcjmkl")
+                .withProperties(new OperationProperties()),
+            new OperationDefinitionInner().withName("qidtqajzyu")
+                .withIsDataAction(true)
+                .withDisplay(new OperationDefinitionDisplay().withResource("qex")
+                    .withOperation("ocxscpaierhhbcs")
+                    .withDescription("ummajtjaod"))
+                .withOrigin("bnbdxkqpxokajion")
+                .withProperties(new OperationProperties()),
+            new OperationDefinitionInner().withName("xg")
+                .withIsDataAction(false)
+                .withDisplay(new OperationDefinitionDisplay().withResource("maajrmvdjwzrlo")
+                    .withOperation("clwhijcoejctbz")
+                    .withDescription("s"))
+                .withOrigin("y")
+                .withProperties(new OperationProperties())))
+            .withNextLink("fkgukdkexxppof");
         model = BinaryData.fromObject(model).toObject(OperationDefinitionListResult.class);
         Assertions.assertEquals("pgrjbz", model.value().get(0).name());
         Assertions.assertEquals(true, model.value().get(0).isDataAction());

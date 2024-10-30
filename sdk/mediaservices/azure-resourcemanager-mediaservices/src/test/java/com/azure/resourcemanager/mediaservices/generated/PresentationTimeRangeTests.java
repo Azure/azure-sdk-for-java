@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PresentationTimeRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PresentationTimeRange model =
-            BinaryData
-                .fromString(
-                    "{\"startTimestamp\":8620711774108455397,\"endTimestamp\":2115374097438254062,\"presentationWindowDuration\":5606993477274811025,\"liveBackoffDuration\":3412578426964637128,\"timescale\":5597579256870764074,\"forceEndTimestamp\":false}")
-                .toObject(PresentationTimeRange.class);
+        PresentationTimeRange model = BinaryData.fromString(
+            "{\"startTimestamp\":8620711774108455397,\"endTimestamp\":2115374097438254062,\"presentationWindowDuration\":5606993477274811025,\"liveBackoffDuration\":3412578426964637128,\"timescale\":5597579256870764074,\"forceEndTimestamp\":false}")
+            .toObject(PresentationTimeRange.class);
         Assertions.assertEquals(8620711774108455397L, model.startTimestamp());
         Assertions.assertEquals(2115374097438254062L, model.endTimestamp());
         Assertions.assertEquals(5606993477274811025L, model.presentationWindowDuration());
@@ -26,14 +24,12 @@ public final class PresentationTimeRangeTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PresentationTimeRange model =
-            new PresentationTimeRange()
-                .withStartTimestamp(8620711774108455397L)
-                .withEndTimestamp(2115374097438254062L)
-                .withPresentationWindowDuration(5606993477274811025L)
-                .withLiveBackoffDuration(3412578426964637128L)
-                .withTimescale(5597579256870764074L)
-                .withForceEndTimestamp(false);
+        PresentationTimeRange model = new PresentationTimeRange().withStartTimestamp(8620711774108455397L)
+            .withEndTimestamp(2115374097438254062L)
+            .withPresentationWindowDuration(5606993477274811025L)
+            .withLiveBackoffDuration(3412578426964637128L)
+            .withTimescale(5597579256870764074L)
+            .withForceEndTimestamp(false);
         model = BinaryData.fromObject(model).toObject(PresentationTimeRange.class);
         Assertions.assertEquals(8620711774108455397L, model.startTimestamp());
         Assertions.assertEquals(2115374097438254062L, model.endTimestamp());

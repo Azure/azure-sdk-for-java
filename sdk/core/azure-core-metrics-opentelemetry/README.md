@@ -19,7 +19,7 @@ documentation][OpenTelemetry] | [Samples][samples]
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-metrics-opentelemetry</artifactId>
-  <version>1.0.0-beta.21</version>
+  <version>1.0.0-beta.23</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -33,7 +33,7 @@ Check out [Metrics in OpenTelemetry](https://opentelemetry.io/docs/concepts/sign
 The following sections provide several code snippets covering some of the most common client configuration scenarios.
 
 - [Default configuration: agent](#default-configuration-agent)
-- [Default configuration: Opentelemtery SDK](#default-configuration-agent)
+- [Default configuration: OpenTelemetry SDK](#default-configuration-agent)
 - [Custom configuration](#custom-configuration)
 
 You can find more samples [here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-metrics-opentelemetry/src/samples/).

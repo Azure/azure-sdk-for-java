@@ -12,19 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AutoScaleSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutoScaleSettings model
-            = BinaryData.fromString("{\"formula\":\"ygtdsslswt\",\"evaluationInterval\":\"PT197H4M32S\"}")
-                .toObject(AutoScaleSettings.class);
-        Assertions.assertEquals("ygtdsslswt", model.formula());
-        Assertions.assertEquals(Duration.parse("PT197H4M32S"), model.evaluationInterval());
+        AutoScaleSettings model = BinaryData.fromString("{\"formula\":\"xozap\",\"evaluationInterval\":\"PT3H57M21S\"}")
+            .toObject(AutoScaleSettings.class);
+        Assertions.assertEquals("xozap", model.formula());
+        Assertions.assertEquals(Duration.parse("PT3H57M21S"), model.evaluationInterval());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutoScaleSettings model
-            = new AutoScaleSettings().withFormula("ygtdsslswt").withEvaluationInterval(Duration.parse("PT197H4M32S"));
+            = new AutoScaleSettings().withFormula("xozap").withEvaluationInterval(Duration.parse("PT3H57M21S"));
         model = BinaryData.fromObject(model).toObject(AutoScaleSettings.class);
-        Assertions.assertEquals("ygtdsslswt", model.formula());
-        Assertions.assertEquals(Duration.parse("PT197H4M32S"), model.evaluationInterval());
+        Assertions.assertEquals("xozap", model.formula());
+        Assertions.assertEquals(Duration.parse("PT3H57M21S"), model.evaluationInterval());
     }
 }

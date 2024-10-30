@@ -5,47 +5,56 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Describes automation rule triggering logic. */
+/**
+ * Describes automation rule triggering logic.
+ */
 @Fluent
-public final class AutomationRuleTriggeringLogic {
+public final class AutomationRuleTriggeringLogic implements JsonSerializable<AutomationRuleTriggeringLogic> {
     /*
      * Determines whether the automation rule is enabled or disabled.
      */
-    @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
 
     /*
      * Determines when the automation rule should automatically expire and be disabled.
      */
-    @JsonProperty(value = "expirationTimeUtc")
     private OffsetDateTime expirationTimeUtc;
 
     /*
      * The triggersOn property.
      */
-    @JsonProperty(value = "triggersOn", required = true)
     private TriggersOn triggersOn;
 
     /*
      * The triggersWhen property.
      */
-    @JsonProperty(value = "triggersWhen", required = true)
     private TriggersWhen triggersWhen;
 
     /*
      * The conditions to evaluate to determine if the automation rule should be triggered on a given object.
      */
-    @JsonProperty(value = "conditions")
     private List<AutomationRuleCondition> conditions;
 
     /**
+     * Creates an instance of AutomationRuleTriggeringLogic class.
+     */
+    public AutomationRuleTriggeringLogic() {
+    }
+
+    /**
      * Get the isEnabled property: Determines whether the automation rule is enabled or disabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -54,7 +63,7 @@ public final class AutomationRuleTriggeringLogic {
 
     /**
      * Set the isEnabled property: Determines whether the automation rule is enabled or disabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the AutomationRuleTriggeringLogic object itself.
      */
@@ -66,7 +75,7 @@ public final class AutomationRuleTriggeringLogic {
     /**
      * Get the expirationTimeUtc property: Determines when the automation rule should automatically expire and be
      * disabled.
-     *
+     * 
      * @return the expirationTimeUtc value.
      */
     public OffsetDateTime expirationTimeUtc() {
@@ -76,7 +85,7 @@ public final class AutomationRuleTriggeringLogic {
     /**
      * Set the expirationTimeUtc property: Determines when the automation rule should automatically expire and be
      * disabled.
-     *
+     * 
      * @param expirationTimeUtc the expirationTimeUtc value to set.
      * @return the AutomationRuleTriggeringLogic object itself.
      */
@@ -87,7 +96,7 @@ public final class AutomationRuleTriggeringLogic {
 
     /**
      * Get the triggersOn property: The triggersOn property.
-     *
+     * 
      * @return the triggersOn value.
      */
     public TriggersOn triggersOn() {
@@ -96,7 +105,7 @@ public final class AutomationRuleTriggeringLogic {
 
     /**
      * Set the triggersOn property: The triggersOn property.
-     *
+     * 
      * @param triggersOn the triggersOn value to set.
      * @return the AutomationRuleTriggeringLogic object itself.
      */
@@ -107,7 +116,7 @@ public final class AutomationRuleTriggeringLogic {
 
     /**
      * Get the triggersWhen property: The triggersWhen property.
-     *
+     * 
      * @return the triggersWhen value.
      */
     public TriggersWhen triggersWhen() {
@@ -116,7 +125,7 @@ public final class AutomationRuleTriggeringLogic {
 
     /**
      * Set the triggersWhen property: The triggersWhen property.
-     *
+     * 
      * @param triggersWhen the triggersWhen value to set.
      * @return the AutomationRuleTriggeringLogic object itself.
      */
@@ -128,7 +137,7 @@ public final class AutomationRuleTriggeringLogic {
     /**
      * Get the conditions property: The conditions to evaluate to determine if the automation rule should be triggered
      * on a given object.
-     *
+     * 
      * @return the conditions value.
      */
     public List<AutomationRuleCondition> conditions() {
@@ -138,7 +147,7 @@ public final class AutomationRuleTriggeringLogic {
     /**
      * Set the conditions property: The conditions to evaluate to determine if the automation rule should be triggered
      * on a given object.
-     *
+     * 
      * @param conditions the conditions value to set.
      * @return the AutomationRuleTriggeringLogic object itself.
      */
@@ -149,21 +158,19 @@ public final class AutomationRuleTriggeringLogic {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (triggersOn() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property triggersOn in model AutomationRuleTriggeringLogic"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property triggersOn in model AutomationRuleTriggeringLogic"));
         }
         if (triggersWhen() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property triggersWhen in model AutomationRuleTriggeringLogic"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property triggersWhen in model AutomationRuleTriggeringLogic"));
         }
         if (conditions() != null) {
             conditions().forEach(e -> e.validate());
@@ -171,4 +178,61 @@ public final class AutomationRuleTriggeringLogic {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AutomationRuleTriggeringLogic.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isEnabled", this.isEnabled);
+        jsonWriter.writeStringField("triggersOn", this.triggersOn == null ? null : this.triggersOn.toString());
+        jsonWriter.writeStringField("triggersWhen", this.triggersWhen == null ? null : this.triggersWhen.toString());
+        jsonWriter.writeStringField("expirationTimeUtc",
+            this.expirationTimeUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationTimeUtc));
+        jsonWriter.writeArrayField("conditions", this.conditions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutomationRuleTriggeringLogic from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutomationRuleTriggeringLogic if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutomationRuleTriggeringLogic.
+     */
+    public static AutomationRuleTriggeringLogic fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutomationRuleTriggeringLogic deserializedAutomationRuleTriggeringLogic
+                = new AutomationRuleTriggeringLogic();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isEnabled".equals(fieldName)) {
+                    deserializedAutomationRuleTriggeringLogic.isEnabled = reader.getBoolean();
+                } else if ("triggersOn".equals(fieldName)) {
+                    deserializedAutomationRuleTriggeringLogic.triggersOn = TriggersOn.fromString(reader.getString());
+                } else if ("triggersWhen".equals(fieldName)) {
+                    deserializedAutomationRuleTriggeringLogic.triggersWhen
+                        = TriggersWhen.fromString(reader.getString());
+                } else if ("expirationTimeUtc".equals(fieldName)) {
+                    deserializedAutomationRuleTriggeringLogic.expirationTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("conditions".equals(fieldName)) {
+                    List<AutomationRuleCondition> conditions
+                        = reader.readArray(reader1 -> AutomationRuleCondition.fromJson(reader1));
+                    deserializedAutomationRuleTriggeringLogic.conditions = conditions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutomationRuleTriggeringLogic;
+        });
+    }
 }

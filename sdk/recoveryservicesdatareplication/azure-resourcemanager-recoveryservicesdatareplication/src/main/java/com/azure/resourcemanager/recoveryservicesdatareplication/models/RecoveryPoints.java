@@ -25,12 +25,8 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the recovery point of a protected item along with {@link Response}.
      */
-    Response<RecoveryPointModel> getWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        String recoveryPointName,
-        Context context);
+    Response<RecoveryPointModel> getWithResponse(String resourceGroupName, String vaultName, String protectedItemName,
+        String recoveryPointName, Context context);
 
     /**
      * Gets the recovery point.
@@ -46,8 +42,8 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the recovery point of a protected item.
      */
-    RecoveryPointModel get(
-        String resourceGroupName, String vaultName, String protectedItemName, String recoveryPointName);
+    RecoveryPointModel get(String resourceGroupName, String vaultName, String protectedItemName,
+        String recoveryPointName);
 
     /**
      * Lists the recovery points.
@@ -78,6 +74,6 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of recovery points of the given protected item as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RecoveryPointModel> list(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context);
+    PagedIterable<RecoveryPointModel> list(String resourceGroupName, String vaultName, String protectedItemName,
+        Context context);
 }

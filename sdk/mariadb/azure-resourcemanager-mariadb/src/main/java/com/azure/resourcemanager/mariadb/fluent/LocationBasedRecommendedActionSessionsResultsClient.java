@@ -17,7 +17,7 @@ import com.azure.resourcemanager.mariadb.fluent.models.RecommendationActionInner
 public interface LocationBasedRecommendedActionSessionsResultsClient {
     /**
      * Recommendation action session operation result.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +30,7 @@ public interface LocationBasedRecommendedActionSessionsResultsClient {
 
     /**
      * Recommendation action session operation result.
-     *
+     * 
      * @param locationName The name of the location.
      * @param operationId The operation identifier.
      * @param context The context to associate with this operation.

@@ -35,8 +35,8 @@ public interface IdentityProviders {
      * @return list of all the Identity Providers configured on the service instance as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<IdentityProviderContract> listByService(
-        String resourceGroupName, String serviceName, Context context);
+    PagedIterable<IdentityProviderContract> listByService(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the identityProvider specified by its identifier.
@@ -50,8 +50,8 @@ public interface IdentityProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the identityProvider specified by its identifier.
      */
-    IdentityProvidersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context);
+    IdentityProvidersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, Context context);
 
     /**
      * Gets the entity state (Etag) version of the identityProvider specified by its identifier.
@@ -77,8 +77,8 @@ public interface IdentityProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configuration details of the identity Provider configured in specified service instance.
      */
-    Response<IdentityProviderContract> getWithResponse(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context);
+    Response<IdentityProviderContract> getWithResponse(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, Context context);
 
     /**
      * Gets the configuration details of the identity Provider configured in specified service instance.
@@ -91,8 +91,8 @@ public interface IdentityProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configuration details of the identity Provider configured in specified service instance.
      */
-    IdentityProviderContract get(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName);
+    IdentityProviderContract get(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName);
 
     /**
      * Deletes the specified identity provider configuration.
@@ -108,12 +108,8 @@ public interface IdentityProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        IdentityProviderType identityProviderName,
-        String ifMatch,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, String ifMatch, Context context);
 
     /**
      * Deletes the specified identity provider configuration.
@@ -127,8 +123,8 @@ public interface IdentityProviders {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, String ifMatch);
+    void delete(String resourceGroupName, String serviceName, IdentityProviderType identityProviderName,
+        String ifMatch);
 
     /**
      * Gets the client secret details of the Identity Provider.
@@ -142,8 +138,8 @@ public interface IdentityProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the client secret details of the Identity Provider.
      */
-    Response<ClientSecretContract> listSecretsWithResponse(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName, Context context);
+    Response<ClientSecretContract> listSecretsWithResponse(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName, Context context);
 
     /**
      * Gets the client secret details of the Identity Provider.
@@ -156,8 +152,8 @@ public interface IdentityProviders {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the client secret details of the Identity Provider.
      */
-    ClientSecretContract listSecrets(
-        String resourceGroupName, String serviceName, IdentityProviderType identityProviderName);
+    ClientSecretContract listSecrets(String resourceGroupName, String serviceName,
+        IdentityProviderType identityProviderName);
 
     /**
      * Gets the configuration details of the identity Provider configured in specified service instance.

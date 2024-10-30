@@ -32,39 +32,27 @@ public final class SqlPoolsResumeMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"sku\":{\"tier\":\"xwgiks\",\"name\":\"vtooxrpo\",\"capacity\":1965828924},\"properties\":{\"maxSizeBytes\":5459654282928424634,\"collation\":\"t\",\"sourceDatabaseId\":\"tukfacih\",\"recoverableDatabaseId\":\"fntumeezbxvqx\",\"provisioningState\":\"Succeeded\",\"status\":\"sgomtmjz\",\"restorePointInTime\":\"2021-10-20T22:57:09Z\",\"createMode\":\"Recovery\",\"creationDate\":\"2021-07-29T00:46:34Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-07-02T06:01:53Z\"},\"location\":\"wztjfmk\",\"tags\":{\"ll\":\"gfredmlscg\",\"azhpabacoml\":\"cnaovjo\",\"nmvceb\":\"otgkwsxnsrqorcg\",\"dcqjkedwqurc\":\"eetqujxcxxq\"},\"id\":\"ojmrvvxwjongzse\",\"name\":\"qqrsil\",\"type\":\"chskxxka\"}";
+        String responseStr
+            = "{\"sku\":{\"tier\":\"xwgiks\",\"name\":\"vtooxrpo\",\"capacity\":1965828924},\"properties\":{\"maxSizeBytes\":5459654282928424634,\"collation\":\"t\",\"sourceDatabaseId\":\"tukfacih\",\"recoverableDatabaseId\":\"fntumeezbxvqx\",\"provisioningState\":\"Succeeded\",\"status\":\"sgomtmjz\",\"restorePointInTime\":\"2021-10-20T22:57:09Z\",\"createMode\":\"Recovery\",\"creationDate\":\"2021-07-29T00:46:34Z\",\"storageAccountType\":\"GRS\",\"sourceDatabaseDeletionDate\":\"2021-07-02T06:01:53Z\"},\"location\":\"wztjfmk\",\"tags\":{\"ll\":\"gfredmlscg\",\"azhpabacoml\":\"cnaovjo\",\"nmvceb\":\"otgkwsxnsrqorcg\",\"dcqjkedwqurc\":\"eetqujxcxxq\"},\"id\":\"ojmrvvxwjongzse\",\"name\":\"qqrsil\",\"type\":\"chskxxka\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SynapseManager manager =
-            SynapseManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SynapseManager manager = SynapseManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SqlPool response =
-            manager
-                .sqlPools()
-                .resume("zfbmjxuv", "ipfdvhaxdvwzaehp", "hthdklmvetatlakf", com.azure.core.util.Context.NONE);
+        SqlPool response = manager.sqlPools()
+            .resume("zfbmjxuv", "ipfdvhaxdvwzaehp", "hthdklmvetatlakf", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("wztjfmk", response.location());
         Assertions.assertEquals("gfredmlscg", response.tags().get("ll"));

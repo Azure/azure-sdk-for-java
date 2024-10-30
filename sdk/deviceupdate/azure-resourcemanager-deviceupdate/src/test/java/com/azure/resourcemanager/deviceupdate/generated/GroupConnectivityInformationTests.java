@@ -24,7 +24,8 @@ public final class GroupConnectivityInformationTests {
     public void testSerialize() throws Exception {
         GroupConnectivityInformation model
             = new GroupConnectivityInformation().withCustomerVisibleFqdns(Arrays.asList("eqz", "ppriol", "or"))
-                .withRedirectMapId("mncwsobqwcsdb").withPrivateLinkServiceArmRegion("dcfhucqdpf");
+                .withRedirectMapId("mncwsobqwcsdb")
+                .withPrivateLinkServiceArmRegion("dcfhucqdpf");
         model = BinaryData.fromObject(model).toObject(GroupConnectivityInformation.class);
         Assertions.assertEquals("eqz", model.customerVisibleFqdns().get(0));
         Assertions.assertEquals("mncwsobqwcsdb", model.redirectMapId());

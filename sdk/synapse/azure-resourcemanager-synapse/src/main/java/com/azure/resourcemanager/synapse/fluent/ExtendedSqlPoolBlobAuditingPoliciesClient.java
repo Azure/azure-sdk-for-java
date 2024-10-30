@@ -28,8 +28,8 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
      * @return an extended Sql pool's blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtendedSqlPoolBlobAuditingPolicyInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    Response<ExtendedSqlPoolBlobAuditingPolicyInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 
     /**
      * Gets an extended Sql pool's blob auditing policy.
@@ -59,12 +59,8 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
      * @return an extended Sql pool blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtendedSqlPoolBlobAuditingPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ExtendedSqlPoolBlobAuditingPolicyInner parameters,
-        Context context);
+    Response<ExtendedSqlPoolBlobAuditingPolicyInner> createOrUpdateWithResponse(String resourceGroupName,
+        String workspaceName, String sqlPoolName, ExtendedSqlPoolBlobAuditingPolicyInner parameters, Context context);
 
     /**
      * Creates or updates an extended Sql pool's blob auditing policy.
@@ -79,11 +75,8 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
      * @return an extended Sql pool blob auditing policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtendedSqlPoolBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        ExtendedSqlPoolBlobAuditingPolicyInner parameters);
+    ExtendedSqlPoolBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String workspaceName,
+        String sqlPoolName, ExtendedSqlPoolBlobAuditingPolicyInner parameters);
 
     /**
      * Lists extended auditing settings of a Sql pool.
@@ -97,8 +90,8 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
      * @return a list of sql pool extended auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExtendedSqlPoolBlobAuditingPolicyInner> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName);
+    PagedIterable<ExtendedSqlPoolBlobAuditingPolicyInner> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName);
 
     /**
      * Lists extended auditing settings of a Sql pool.
@@ -113,6 +106,6 @@ public interface ExtendedSqlPoolBlobAuditingPoliciesClient {
      * @return a list of sql pool extended auditing settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExtendedSqlPoolBlobAuditingPolicyInner> listBySqlPool(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<ExtendedSqlPoolBlobAuditingPolicyInner> listBySqlPool(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context);
 }

@@ -53,8 +53,6 @@ public final class SeverityCondition {
         return this;
     }
 
-
-
     /**
      * Sets the maximum severity value.
      *

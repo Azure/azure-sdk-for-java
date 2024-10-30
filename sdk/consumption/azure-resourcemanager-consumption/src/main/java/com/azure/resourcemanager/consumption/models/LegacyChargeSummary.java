@@ -6,36 +6,101 @@ package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.fluent.models.LegacyChargeSummaryProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.math.BigDecimal;
 
-/** Legacy charge summary. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("legacy")
+/**
+ * Legacy charge summary.
+ */
 @Fluent
 public final class LegacyChargeSummary extends ChargeSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyChargeSummary.class);
+    /*
+     * Specifies the kind of charge summary.
+     */
+    private ChargeSummaryKind kind = ChargeSummaryKind.LEGACY;
 
     /*
      * Properties for legacy charge summary
      */
-    @JsonProperty(value = "properties", required = true)
     private LegacyChargeSummaryProperties innerProperties = new LegacyChargeSummaryProperties();
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LegacyChargeSummary class.
+     */
+    public LegacyChargeSummary() {
+    }
+
+    /**
+     * Get the kind property: Specifies the kind of charge summary.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public ChargeSummaryKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: Properties for legacy charge summary.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LegacyChargeSummaryProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LegacyChargeSummary withEtag(String etag) {
         super.withEtag(etag);
@@ -44,7 +109,7 @@ public final class LegacyChargeSummary extends ChargeSummary {
 
     /**
      * Get the billingPeriodId property: The id of the billing period resource that the charge belongs to.
-     *
+     * 
      * @return the billingPeriodId value.
      */
     public String billingPeriodId() {
@@ -53,7 +118,7 @@ public final class LegacyChargeSummary extends ChargeSummary {
 
     /**
      * Get the usageStart property: Usage start date.
-     *
+     * 
      * @return the usageStart value.
      */
     public String usageStart() {
@@ -62,7 +127,7 @@ public final class LegacyChargeSummary extends ChargeSummary {
 
     /**
      * Get the usageEnd property: Usage end date.
-     *
+     * 
      * @return the usageEnd value.
      */
     public String usageEnd() {
@@ -71,7 +136,7 @@ public final class LegacyChargeSummary extends ChargeSummary {
 
     /**
      * Get the azureCharges property: Azure Charges.
-     *
+     * 
      * @return the azureCharges value.
      */
     public BigDecimal azureCharges() {
@@ -80,7 +145,7 @@ public final class LegacyChargeSummary extends ChargeSummary {
 
     /**
      * Get the chargesBilledSeparately property: Charges Billed separately.
-     *
+     * 
      * @return the chargesBilledSeparately value.
      */
     public BigDecimal chargesBilledSeparately() {
@@ -88,17 +153,17 @@ public final class LegacyChargeSummary extends ChargeSummary {
     }
 
     /**
-     * Get the marketplaceCharges property: Marketplace Charges.
-     *
-     * @return the marketplaceCharges value.
+     * Get the azureMarketplaceCharges property: Marketplace Charges.
+     * 
+     * @return the azureMarketplaceCharges value.
      */
-    public BigDecimal marketplaceCharges() {
-        return this.innerProperties() == null ? null : this.innerProperties().marketplaceCharges();
+    public BigDecimal azureMarketplaceCharges() {
+        return this.innerProperties() == null ? null : this.innerProperties().azureMarketplaceCharges();
     }
 
     /**
      * Get the currency property: Currency Code.
-     *
+     * 
      * @return the currency value.
      */
     public String currency() {
@@ -107,19 +172,68 @@ public final class LegacyChargeSummary extends ChargeSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LegacyChargeSummary"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model LegacyChargeSummary"));
         } else {
             innerProperties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LegacyChargeSummary.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eTag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LegacyChargeSummary from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LegacyChargeSummary if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LegacyChargeSummary.
+     */
+    public static LegacyChargeSummary fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LegacyChargeSummary deserializedLegacyChargeSummary = new LegacyChargeSummary();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLegacyChargeSummary.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLegacyChargeSummary.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLegacyChargeSummary.type = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedLegacyChargeSummary.withEtag(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLegacyChargeSummary.innerProperties = LegacyChargeSummaryProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedLegacyChargeSummary.kind = ChargeSummaryKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLegacyChargeSummary;
+        });
     }
 }

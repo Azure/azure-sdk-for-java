@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "@type",
     defaultImpl = AudioEncoderBase.class)
 @JsonTypeName("AudioEncoderBase")
-@JsonSubTypes({@JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.AudioEncoderAac", value = AudioEncoderAac.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "#Microsoft.VideoAnalyzer.AudioEncoderAac", value = AudioEncoderAac.class) })
 @Fluent
 public class AudioEncoderBase {
     /*

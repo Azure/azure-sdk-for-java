@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -61,9 +62,9 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -71,9 +72,9 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of DatabaseAccountGetResultsInner class.
@@ -140,13 +141,13 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -160,13 +161,13 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -931,8 +932,8 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @return the enableBurstCapacity value.
      */
@@ -941,8 +942,8 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
     }
 
     /**
-     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
-     * the account.
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity feature on the
+     * account.
      * 
      * @param enableBurstCapacity the enableBurstCapacity value to set.
      * @return the DatabaseAccountGetResultsInner object itself.
@@ -987,14 +988,20 @@ public final class DatabaseAccountGetResultsInner extends ArmResourceProperties 
      */
     @Override
     public void validate() {
-        super.validate();
         if (identity() != null) {
             identity().validate();
         }
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model DatabaseAccountGetResultsInner"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabaseAccountGetResultsInner.class);
 
     /**
      * {@inheritDoc}

@@ -48,10 +48,8 @@ public final class CreateSqlPoolRestorePointDefinition {
      */
     public void validate() {
         if (restorePointLabel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property restorePointLabel in model CreateSqlPoolRestorePointDefinition"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property restorePointLabel in model CreateSqlPoolRestorePointDefinition"));
         }
     }
 

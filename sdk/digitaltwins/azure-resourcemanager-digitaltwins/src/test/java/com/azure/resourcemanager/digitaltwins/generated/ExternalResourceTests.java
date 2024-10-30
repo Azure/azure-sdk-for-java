@@ -10,9 +10,8 @@ import com.azure.resourcemanager.digitaltwins.models.ExternalResource;
 public final class ExternalResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExternalResource model =
-            BinaryData
-                .fromString("{\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}")
+        ExternalResource model
+            = BinaryData.fromString("{\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}")
                 .toObject(ExternalResource.class);
     }
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.43.0-beta.1 (Unreleased)
+## 2.45.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,24 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.44.0 (2024-10-25)
+
+### Features Added
+
+- Supported creating `GalleryImageVersion` from source virtual machine by specifying `withSourceVirtualMachine`.
+
+### Bugs Fixed
+
+- Fixed a bug that VM state not refreshed after calling `VirtualMachine.deallocate`.
+
+## 2.43.0 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.42.0 (2024-08-23)
 

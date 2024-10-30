@@ -6,61 +6,63 @@ package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Details of a single deployment created by the remediation. */
+/**
+ * Details of a single deployment created by the remediation.
+ */
 @Immutable
-public final class RemediationDeploymentInner {
+public final class RemediationDeploymentInner implements JsonSerializable<RemediationDeploymentInner> {
     /*
      * Resource ID of the resource that is being remediated by the deployment.
      */
-    @JsonProperty(value = "remediatedResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String remediatedResourceId;
 
     /*
      * Resource ID of the template deployment that will remediate the resource.
      */
-    @JsonProperty(value = "deploymentId", access = JsonProperty.Access.WRITE_ONLY)
     private String deploymentId;
 
     /*
      * Status of the remediation deployment.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private String status;
 
     /*
      * Location of the resource that is being remediated.
      */
-    @JsonProperty(value = "resourceLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceLocation;
 
     /*
      * Error encountered while remediated the resource.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ManagementError error;
 
     /*
      * The time at which the remediation was created.
      */
-    @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
     /*
      * The time at which the remediation deployment was last updated.
      */
-    @JsonProperty(value = "lastUpdatedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedOn;
 
-    /** Creates an instance of RemediationDeploymentInner class. */
+    /**
+     * Creates an instance of RemediationDeploymentInner class.
+     */
     public RemediationDeploymentInner() {
     }
 
     /**
      * Get the remediatedResourceId property: Resource ID of the resource that is being remediated by the deployment.
-     *
+     * 
      * @return the remediatedResourceId value.
      */
     public String remediatedResourceId() {
@@ -69,7 +71,7 @@ public final class RemediationDeploymentInner {
 
     /**
      * Get the deploymentId property: Resource ID of the template deployment that will remediate the resource.
-     *
+     * 
      * @return the deploymentId value.
      */
     public String deploymentId() {
@@ -78,7 +80,7 @@ public final class RemediationDeploymentInner {
 
     /**
      * Get the status property: Status of the remediation deployment.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -87,7 +89,7 @@ public final class RemediationDeploymentInner {
 
     /**
      * Get the resourceLocation property: Location of the resource that is being remediated.
-     *
+     * 
      * @return the resourceLocation value.
      */
     public String resourceLocation() {
@@ -96,7 +98,7 @@ public final class RemediationDeploymentInner {
 
     /**
      * Get the error property: Error encountered while remediated the resource.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -105,7 +107,7 @@ public final class RemediationDeploymentInner {
 
     /**
      * Get the createdOn property: The time at which the remediation was created.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -114,7 +116,7 @@ public final class RemediationDeploymentInner {
 
     /**
      * Get the lastUpdatedOn property: The time at which the remediation deployment was last updated.
-     *
+     * 
      * @return the lastUpdatedOn value.
      */
     public OffsetDateTime lastUpdatedOn() {
@@ -123,9 +125,58 @@ public final class RemediationDeploymentInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemediationDeploymentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemediationDeploymentInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RemediationDeploymentInner.
+     */
+    public static RemediationDeploymentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemediationDeploymentInner deserializedRemediationDeploymentInner = new RemediationDeploymentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("remediatedResourceId".equals(fieldName)) {
+                    deserializedRemediationDeploymentInner.remediatedResourceId = reader.getString();
+                } else if ("deploymentId".equals(fieldName)) {
+                    deserializedRemediationDeploymentInner.deploymentId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedRemediationDeploymentInner.status = reader.getString();
+                } else if ("resourceLocation".equals(fieldName)) {
+                    deserializedRemediationDeploymentInner.resourceLocation = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedRemediationDeploymentInner.error = ManagementError.fromJson(reader);
+                } else if ("createdOn".equals(fieldName)) {
+                    deserializedRemediationDeploymentInner.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdatedOn".equals(fieldName)) {
+                    deserializedRemediationDeploymentInner.lastUpdatedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemediationDeploymentInner;
+        });
     }
 }

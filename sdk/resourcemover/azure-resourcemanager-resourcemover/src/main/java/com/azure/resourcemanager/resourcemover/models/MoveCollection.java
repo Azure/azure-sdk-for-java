@@ -104,11 +104,8 @@ public interface MoveCollection {
     MoveCollectionInner innerModel();
 
     /** The entirety of the MoveCollection definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithResourceGroup,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
 
     /** The MoveCollection definition stages. */

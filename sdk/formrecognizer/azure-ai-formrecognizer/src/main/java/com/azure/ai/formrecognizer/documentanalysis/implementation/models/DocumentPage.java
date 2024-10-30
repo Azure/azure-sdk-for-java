@@ -39,8 +39,8 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
     private Float height;
 
     /*
-     * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit
-     * is "inch".
+     * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit is
+     * "inch".
      */
     private LengthUnit unit;
 
@@ -287,6 +287,9 @@ public final class DocumentPage implements JsonSerializable<DocumentPage> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

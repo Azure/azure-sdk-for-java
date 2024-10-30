@@ -13,32 +13,29 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateComputePolicyWithAccountParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateComputePolicyWithAccountParameters model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"jf\",\"properties\":{\"objectId\":\"55cad992-f814-4a9d-9ac7-0effd1523924\",\"objectType\":\"ServicePrincipal\",\"maxDegreeOfParallelismPerJob\":910788688,\"minPriorityPerJob\":1688727412}}")
-                .toObject(UpdateComputePolicyWithAccountParameters.class);
-        Assertions.assertEquals("jf", model.name());
-        Assertions.assertEquals(UUID.fromString("55cad992-f814-4a9d-9ac7-0effd1523924"), model.objectId());
+        UpdateComputePolicyWithAccountParameters model = BinaryData.fromString(
+            "{\"name\":\"watkpnpulexxb\",\"properties\":{\"objectId\":\"3b3cf44b-2756-41d2-988b-13899ccaeb20\",\"objectType\":\"ServicePrincipal\",\"maxDegreeOfParallelismPerJob\":1520989721,\"minPriorityPerJob\":223654021}}")
+            .toObject(UpdateComputePolicyWithAccountParameters.class);
+        Assertions.assertEquals("watkpnpulexxb", model.name());
+        Assertions.assertEquals(UUID.fromString("3b3cf44b-2756-41d2-988b-13899ccaeb20"), model.objectId());
         Assertions.assertEquals(AadObjectType.SERVICE_PRINCIPAL, model.objectType());
-        Assertions.assertEquals(910788688, model.maxDegreeOfParallelismPerJob());
-        Assertions.assertEquals(1688727412, model.minPriorityPerJob());
+        Assertions.assertEquals(1520989721, model.maxDegreeOfParallelismPerJob());
+        Assertions.assertEquals(223654021, model.minPriorityPerJob());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateComputePolicyWithAccountParameters model =
-            new UpdateComputePolicyWithAccountParameters()
-                .withName("jf")
-                .withObjectId(UUID.fromString("55cad992-f814-4a9d-9ac7-0effd1523924"))
+        UpdateComputePolicyWithAccountParameters model
+            = new UpdateComputePolicyWithAccountParameters().withName("watkpnpulexxb")
+                .withObjectId(UUID.fromString("3b3cf44b-2756-41d2-988b-13899ccaeb20"))
                 .withObjectType(AadObjectType.SERVICE_PRINCIPAL)
-                .withMaxDegreeOfParallelismPerJob(910788688)
-                .withMinPriorityPerJob(1688727412);
+                .withMaxDegreeOfParallelismPerJob(1520989721)
+                .withMinPriorityPerJob(223654021);
         model = BinaryData.fromObject(model).toObject(UpdateComputePolicyWithAccountParameters.class);
-        Assertions.assertEquals("jf", model.name());
-        Assertions.assertEquals(UUID.fromString("55cad992-f814-4a9d-9ac7-0effd1523924"), model.objectId());
+        Assertions.assertEquals("watkpnpulexxb", model.name());
+        Assertions.assertEquals(UUID.fromString("3b3cf44b-2756-41d2-988b-13899ccaeb20"), model.objectId());
         Assertions.assertEquals(AadObjectType.SERVICE_PRINCIPAL, model.objectType());
-        Assertions.assertEquals(910788688, model.maxDegreeOfParallelismPerJob());
-        Assertions.assertEquals(1688727412, model.minPriorityPerJob());
+        Assertions.assertEquals(1520989721, model.maxDegreeOfParallelismPerJob());
+        Assertions.assertEquals(223654021, model.minPriorityPerJob());
     }
 }

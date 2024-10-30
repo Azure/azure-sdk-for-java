@@ -6,31 +6,37 @@ package com.azure.resourcemanager.datalakeanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Azure Storage account properties to use when adding a new Azure Storage account. */
+/**
+ * The Azure Storage account properties to use when adding a new Azure Storage account.
+ */
 @Fluent
-public final class AddStorageAccountProperties {
+public final class AddStorageAccountProperties implements JsonSerializable<AddStorageAccountProperties> {
     /*
      * The access key associated with this Azure Storage account that will be used to connect to it.
      */
-    @JsonProperty(value = "accessKey", required = true)
     private String accessKey;
 
     /*
      * The optional suffix for the storage account.
      */
-    @JsonProperty(value = "suffix")
     private String suffix;
 
-    /** Creates an instance of AddStorageAccountProperties class. */
+    /**
+     * Creates an instance of AddStorageAccountProperties class.
+     */
     public AddStorageAccountProperties() {
     }
 
     /**
      * Get the accessKey property: The access key associated with this Azure Storage account that will be used to
      * connect to it.
-     *
+     * 
      * @return the accessKey value.
      */
     public String accessKey() {
@@ -40,7 +46,7 @@ public final class AddStorageAccountProperties {
     /**
      * Set the accessKey property: The access key associated with this Azure Storage account that will be used to
      * connect to it.
-     *
+     * 
      * @param accessKey the accessKey value to set.
      * @return the AddStorageAccountProperties object itself.
      */
@@ -51,7 +57,7 @@ public final class AddStorageAccountProperties {
 
     /**
      * Get the suffix property: The optional suffix for the storage account.
-     *
+     * 
      * @return the suffix value.
      */
     public String suffix() {
@@ -60,7 +66,7 @@ public final class AddStorageAccountProperties {
 
     /**
      * Set the suffix property: The optional suffix for the storage account.
-     *
+     * 
      * @param suffix the suffix value to set.
      * @return the AddStorageAccountProperties object itself.
      */
@@ -71,17 +77,56 @@ public final class AddStorageAccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (accessKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property accessKey in model AddStorageAccountProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property accessKey in model AddStorageAccountProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AddStorageAccountProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("accessKey", this.accessKey);
+        jsonWriter.writeStringField("suffix", this.suffix);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddStorageAccountProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddStorageAccountProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddStorageAccountProperties.
+     */
+    public static AddStorageAccountProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddStorageAccountProperties deserializedAddStorageAccountProperties = new AddStorageAccountProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accessKey".equals(fieldName)) {
+                    deserializedAddStorageAccountProperties.accessKey = reader.getString();
+                } else if ("suffix".equals(fieldName)) {
+                    deserializedAddStorageAccountProperties.suffix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddStorageAccountProperties;
+        });
+    }
 }

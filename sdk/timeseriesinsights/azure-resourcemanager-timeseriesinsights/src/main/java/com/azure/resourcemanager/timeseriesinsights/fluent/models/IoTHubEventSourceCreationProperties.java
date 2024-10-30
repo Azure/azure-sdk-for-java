@@ -112,10 +112,8 @@ public final class IoTHubEventSourceCreationProperties extends IoTHubEventSource
     public void validate() {
         super.validate();
         if (sharedAccessKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sharedAccessKey in model IoTHubEventSourceCreationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sharedAccessKey in model IoTHubEventSourceCreationProperties"));
         }
     }
 

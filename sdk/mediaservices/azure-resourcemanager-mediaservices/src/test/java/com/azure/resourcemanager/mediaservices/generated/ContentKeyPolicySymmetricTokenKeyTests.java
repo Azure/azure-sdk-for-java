@@ -10,9 +10,8 @@ import com.azure.resourcemanager.mediaservices.models.ContentKeyPolicySymmetricT
 public final class ContentKeyPolicySymmetricTokenKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContentKeyPolicySymmetricTokenKey model =
-            BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicySymmetricTokenKey\"}")
+        ContentKeyPolicySymmetricTokenKey model
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicySymmetricTokenKey\"}")
                 .toObject(ContentKeyPolicySymmetricTokenKey.class);
     }
 

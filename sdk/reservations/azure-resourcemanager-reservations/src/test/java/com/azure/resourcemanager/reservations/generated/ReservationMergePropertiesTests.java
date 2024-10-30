@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ReservationMergePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReservationMergeProperties model =
-            BinaryData
-                .fromString("{\"mergeDestination\":\"tgrhpdjpjumas\",\"mergeSources\":[\"jpqyegu\"]}")
+        ReservationMergeProperties model
+            = BinaryData.fromString("{\"mergeDestination\":\"tgrhpdjpjumas\",\"mergeSources\":[\"jpqyegu\"]}")
                 .toObject(ReservationMergeProperties.class);
         Assertions.assertEquals("tgrhpdjpjumas", model.mergeDestination());
         Assertions.assertEquals("jpqyegu", model.mergeSources().get(0));
@@ -22,10 +21,8 @@ public final class ReservationMergePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReservationMergeProperties model =
-            new ReservationMergeProperties()
-                .withMergeDestination("tgrhpdjpjumas")
-                .withMergeSources(Arrays.asList("jpqyegu"));
+        ReservationMergeProperties model = new ReservationMergeProperties().withMergeDestination("tgrhpdjpjumas")
+            .withMergeSources(Arrays.asList("jpqyegu"));
         model = BinaryData.fromObject(model).toObject(ReservationMergeProperties.class);
         Assertions.assertEquals("tgrhpdjpjumas", model.mergeDestination());
         Assertions.assertEquals("jpqyegu", model.mergeSources().get(0));

@@ -13,29 +13,26 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskPoolCreatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskPoolCreateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"availabilityZones\":[\"dfgiot\",\"ftutqxlngxlefgu\"],\"disks\":[{\"id\":\"krxd\"},{\"id\":\"mi\"}],\"subnetId\":\"tthzrvqd\",\"additionalCapabilities\":[\"hjybigehoqfbo\"]}")
-                .toObject(DiskPoolCreateProperties.class);
-        Assertions.assertEquals("dfgiot", model.availabilityZones().get(0));
-        Assertions.assertEquals("krxd", model.disks().get(0).id());
-        Assertions.assertEquals("tthzrvqd", model.subnetId());
-        Assertions.assertEquals("hjybigehoqfbo", model.additionalCapabilities().get(0));
+        DiskPoolCreateProperties model = BinaryData.fromString(
+            "{\"availabilityZones\":[\"cuiywgqyw\",\"ndrvynhzg\",\"phrcgyncoc\",\"ecfvmm\"],\"disks\":[{\"id\":\"fsxlzevgbmqjqa\"}],\"subnetId\":\"c\",\"additionalCapabilities\":[\"ivkwlzuvccfwnfnb\",\"cfionl\",\"bxetqgtzxdpn\"]}")
+            .toObject(DiskPoolCreateProperties.class);
+        Assertions.assertEquals("cuiywgqyw", model.availabilityZones().get(0));
+        Assertions.assertEquals("fsxlzevgbmqjqa", model.disks().get(0).id());
+        Assertions.assertEquals("c", model.subnetId());
+        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.additionalCapabilities().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskPoolCreateProperties model =
-            new DiskPoolCreateProperties()
-                .withAvailabilityZones(Arrays.asList("dfgiot", "ftutqxlngxlefgu"))
-                .withDisks(Arrays.asList(new Disk().withId("krxd"), new Disk().withId("mi")))
-                .withSubnetId("tthzrvqd")
-                .withAdditionalCapabilities(Arrays.asList("hjybigehoqfbo"));
+        DiskPoolCreateProperties model = new DiskPoolCreateProperties()
+            .withAvailabilityZones(Arrays.asList("cuiywgqyw", "ndrvynhzg", "phrcgyncoc", "ecfvmm"))
+            .withDisks(Arrays.asList(new Disk().withId("fsxlzevgbmqjqa")))
+            .withSubnetId("c")
+            .withAdditionalCapabilities(Arrays.asList("ivkwlzuvccfwnfnb", "cfionl", "bxetqgtzxdpn"));
         model = BinaryData.fromObject(model).toObject(DiskPoolCreateProperties.class);
-        Assertions.assertEquals("dfgiot", model.availabilityZones().get(0));
-        Assertions.assertEquals("krxd", model.disks().get(0).id());
-        Assertions.assertEquals("tthzrvqd", model.subnetId());
-        Assertions.assertEquals("hjybigehoqfbo", model.additionalCapabilities().get(0));
+        Assertions.assertEquals("cuiywgqyw", model.availabilityZones().get(0));
+        Assertions.assertEquals("fsxlzevgbmqjqa", model.disks().get(0).id());
+        Assertions.assertEquals("c", model.subnetId());
+        Assertions.assertEquals("ivkwlzuvccfwnfnb", model.additionalCapabilities().get(0));
     }
 }

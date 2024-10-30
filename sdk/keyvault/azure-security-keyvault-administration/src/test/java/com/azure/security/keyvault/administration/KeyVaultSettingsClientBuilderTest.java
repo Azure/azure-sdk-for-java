@@ -3,6 +3,7 @@
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -34,10 +35,10 @@ public class KeyVaultSettingsClientBuilderTest {
 
     @Test
     public void buildSyncClientTest() {
-        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder().vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(keyVaultSettingsClient);
@@ -46,9 +47,9 @@ public class KeyVaultSettingsClientBuilderTest {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(keyVaultSettingsClient);
@@ -57,25 +58,29 @@ public class KeyVaultSettingsClientBuilderTest {
 
     @Test
     public void buildAsyncClientTest() {
-        KeyVaultSettingsAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultSettingsClientBuilder()
-            .vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .credential(new TestUtils.TestCredential())
-            .buildAsyncClient();
+        KeyVaultSettingsAsyncClient keyVaultAccessControlAsyncClient
+            = new KeyVaultSettingsClientBuilder().vaultUrl(vaultUrl)
+                .serviceVersion(serviceVersion)
+                .credential(new TestUtils.TestCredential())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildAsyncClient();
 
         assertNotNull(keyVaultAccessControlAsyncClient);
-        assertEquals(KeyVaultSettingsAsyncClient.class.getSimpleName(), keyVaultAccessControlAsyncClient.getClass().getSimpleName());
+        assertEquals(KeyVaultSettingsAsyncClient.class.getSimpleName(),
+            keyVaultAccessControlAsyncClient.getClass().getSimpleName());
     }
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        KeyVaultSettingsAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultSettingsClientBuilder()
-            .vaultUrl(vaultUrl)
-            .credential(new TestUtils.TestCredential())
-            .buildAsyncClient();
+        KeyVaultSettingsAsyncClient keyVaultAccessControlAsyncClient
+            = new KeyVaultSettingsClientBuilder().vaultUrl(vaultUrl)
+                .credential(new TestUtils.TestCredential())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildAsyncClient();
 
         assertNotNull(keyVaultAccessControlAsyncClient);
-        assertEquals(KeyVaultSettingsAsyncClient.class.getSimpleName(), keyVaultAccessControlAsyncClient.getClass().getSimpleName());
+        assertEquals(KeyVaultSettingsAsyncClient.class.getSimpleName(),
+            keyVaultAccessControlAsyncClient.getClass().getSimpleName());
     }
 
     @Test
@@ -90,13 +95,12 @@ public class KeyVaultSettingsClientBuilderTest {
 
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
             .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                assertTrue(httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("aNewApplication"));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
             })
             .buildClient();
@@ -106,12 +110,11 @@ public class KeyVaultSettingsClientBuilderTest {
 
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                assertTrue(httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("anOldApplication"));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
             })
             .buildClient();
@@ -121,13 +124,12 @@ public class KeyVaultSettingsClientBuilderTest {
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder()
-            .vaultUrl(vaultUrl)
+        KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
-            .clientOptions(new ClientOptions()
-                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .clientOptions(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .httpClient(httpRequest -> {
-                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                assertEquals("custom", httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
             })
             .buildClient();
@@ -137,13 +139,13 @@ public class KeyVaultSettingsClientBuilderTest {
 
     @Test
     public void bothRetryOptionsAndRetryPolicySpecified() {
-        assertThrows(RuntimeException.class, () ->
-            new KeyVaultSettingsClientBuilder()
-                .vaultUrl(vaultUrl)
+        assertThrows(RuntimeException.class,
+            () -> new KeyVaultSettingsClientBuilder().vaultUrl(vaultUrl)
                 .serviceVersion(serviceVersion)
                 .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
                 .retryPolicy(new RetryPolicy())
                 .credential(new TestUtils.TestCredential())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
                 .buildClient());
     }
 
@@ -151,12 +153,13 @@ public class KeyVaultSettingsClientBuilderTest {
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        KeyVaultSettingsAsyncClient keyVaultAccessControlAsyncClient = new KeyVaultSettingsClientBuilder()
-            .vaultUrl(vaultUrl)
-            .credential(new TestUtils.TestCredential())
-            .addPolicy(new TestUtils.PerCallPolicy())
-            .addPolicy(new TestUtils.PerRetryPolicy())
-            .buildAsyncClient();
+        KeyVaultSettingsAsyncClient keyVaultAccessControlAsyncClient
+            = new KeyVaultSettingsClientBuilder().vaultUrl(vaultUrl)
+                .credential(new TestUtils.TestCredential())
+                .addPolicy(new TestUtils.PerCallPolicy())
+                .addPolicy(new TestUtils.PerRetryPolicy())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildAsyncClient();
 
         HttpPipeline pipeline = keyVaultAccessControlAsyncClient.getHttpPipeline();
 

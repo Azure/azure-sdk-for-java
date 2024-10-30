@@ -72,15 +72,13 @@ AuthenticationRecord authenticationRecord = null;
 try {
     // If we have an existing record, deserialize it.
     if (Files.exists(new File(authenticationRecordPath).toPath())) {
-         authenticationRecord = AuthenticationRecord.deserialize(new FileInputStream(authenticationRecordPath));
+        authenticationRecord = AuthenticationRecord.deserialize(new FileInputStream(authenticationRecordPath));
     }
 } catch (FileNotFoundException e) {
     // Handle error as appropriate.
 }
 
-DeviceCodeCredentialBuilder builder = new DeviceCodeCredentialBuilder()
-    .clientId(clientId)
-    .tenantId(tenantId);
+DeviceCodeCredentialBuilder builder = new DeviceCodeCredentialBuilder().clientId(clientId).tenantId(tenantId);
 if (authenticationRecord != null) {
     // As we have a record, configure the builder to use it.
     builder.authenticationRecord(authenticationRecord);

@@ -5,32 +5,51 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VideoEncoding. */
+/**
+ * The video codec used by the Media Profile.
+ */
 public final class VideoEncoding extends ExpandableStringEnum<VideoEncoding> {
-    /** Static value JPEG for VideoEncoding. */
+    /**
+     * The Media Profile uses JPEG encoding.
+     */
     public static final VideoEncoding JPEG = fromString("JPEG");
 
-    /** Static value H264 for VideoEncoding. */
+    /**
+     * The Media Profile uses H264 encoding.
+     */
     public static final VideoEncoding H264 = fromString("H264");
 
-    /** Static value MPEG4 for VideoEncoding. */
+    /**
+     * The Media Profile uses MPEG4 encoding.
+     */
     public static final VideoEncoding MPEG4 = fromString("MPEG4");
 
     /**
+     * Creates a new instance of VideoEncoding value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VideoEncoding() {
+    }
+
+    /**
      * Creates or finds a VideoEncoding from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VideoEncoding.
      */
-    @JsonCreator
     public static VideoEncoding fromString(String name) {
         return fromString(name, VideoEncoding.class);
     }
 
-    /** @return known VideoEncoding values. */
+    /**
+     * Gets known VideoEncoding values.
+     * 
+     * @return known VideoEncoding values.
+     */
     public static Collection<VideoEncoding> values() {
         return values(VideoEncoding.class);
     }

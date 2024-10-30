@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class SapLandscapeMonitorMetricThresholdsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapLandscapeMonitorMetricThresholds model =
-            BinaryData
-                .fromString("{\"name\":\"osx\",\"green\":88.55184,\"yellow\":65.27517,\"red\":5.093771}")
+        SapLandscapeMonitorMetricThresholds model
+            = BinaryData.fromString("{\"name\":\"osx\",\"green\":88.55184,\"yellow\":65.27517,\"red\":5.093771}")
                 .toObject(SapLandscapeMonitorMetricThresholds.class);
         Assertions.assertEquals("osx", model.name());
         Assertions.assertEquals(88.55184F, model.green());
@@ -23,12 +22,10 @@ public final class SapLandscapeMonitorMetricThresholdsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapLandscapeMonitorMetricThresholds model =
-            new SapLandscapeMonitorMetricThresholds()
-                .withName("osx")
-                .withGreen(88.55184F)
-                .withYellow(65.27517F)
-                .withRed(5.093771F);
+        SapLandscapeMonitorMetricThresholds model = new SapLandscapeMonitorMetricThresholds().withName("osx")
+            .withGreen(88.55184F)
+            .withYellow(65.27517F)
+            .withRed(5.093771F);
         model = BinaryData.fromObject(model).toObject(SapLandscapeMonitorMetricThresholds.class);
         Assertions.assertEquals("osx", model.name());
         Assertions.assertEquals(88.55184F, model.green());

@@ -15,8 +15,8 @@ public final class OperationResourceImpl implements OperationResource {
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    OperationResourceImpl(
-        OperationResourceInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
+    OperationResourceImpl(OperationResourceInner innerObject,
+        com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

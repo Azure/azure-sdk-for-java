@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Test;
 public final class OutboundEnvironmentEndpointCollectionTests {
     @Test
     public void testDeserialize() throws Exception {
-        OutboundEnvironmentEndpointCollection model =
-            BinaryData
-                .fromString("{\"value\":[{\"category\":\"pymzidnsezcxtbzs\",\"endpoints\":[]}],\"nextLink\":\"cs\"}")
-                .toObject(OutboundEnvironmentEndpointCollection.class);
+        OutboundEnvironmentEndpointCollection model = BinaryData
+            .fromString("{\"value\":[{\"category\":\"pymzidnsezcxtbzs\",\"endpoints\":[]}],\"nextLink\":\"cs\"}")
+            .toObject(OutboundEnvironmentEndpointCollection.class);
         Assertions.assertEquals("cs", model.nextLink());
     }
 

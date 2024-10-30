@@ -12,7 +12,8 @@ import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
 public final class RecognizePiiEntitiesActionResultPropertiesHelper {
     private static RecognizePiiEntitiesActionResultAccessor accessor;
 
-    private RecognizePiiEntitiesActionResultPropertiesHelper() { }
+    private RecognizePiiEntitiesActionResultPropertiesHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link RecognizePiiEntitiesActionResult}
@@ -28,8 +29,8 @@ public final class RecognizePiiEntitiesActionResultPropertiesHelper {
      *
      * @param recognizePiiEntitiesActionResultAccessor The accessor.
      */
-    public static void setAccessor(
-        final RecognizePiiEntitiesActionResultAccessor recognizePiiEntitiesActionResultAccessor) {
+    public static void
+        setAccessor(final RecognizePiiEntitiesActionResultAccessor recognizePiiEntitiesActionResultAccessor) {
         accessor = recognizePiiEntitiesActionResultAccessor;
     }
 

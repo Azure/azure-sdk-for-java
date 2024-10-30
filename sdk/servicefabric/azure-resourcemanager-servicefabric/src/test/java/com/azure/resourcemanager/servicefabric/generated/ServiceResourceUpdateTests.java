@@ -49,14 +49,20 @@ public final class ServiceResourceUpdateTests {
                 new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY)
                     .withServiceName("dcfhucqdpf")))
             .withServiceLoadMetrics(Arrays.asList(
-                new ServiceLoadMetricDescription().withName("lsbjjcanvxbv").withWeight(ServiceLoadMetricWeight.LOW)
-                    .withPrimaryDefaultLoad(1741162391).withSecondaryDefaultLoad(1347837415)
+                new ServiceLoadMetricDescription().withName("lsbjjcanvxbv")
+                    .withWeight(ServiceLoadMetricWeight.LOW)
+                    .withPrimaryDefaultLoad(1741162391)
+                    .withSecondaryDefaultLoad(1347837415)
                     .withDefaultLoad(1940918804),
-                new ServiceLoadMetricDescription().withName("rmrlxqtvcof").withWeight(ServiceLoadMetricWeight.ZERO)
-                    .withPrimaryDefaultLoad(573023383).withSecondaryDefaultLoad(360831817).withDefaultLoad(264333959)))
+                new ServiceLoadMetricDescription().withName("rmrlxqtvcof")
+                    .withWeight(ServiceLoadMetricWeight.ZERO)
+                    .withPrimaryDefaultLoad(573023383)
+                    .withSecondaryDefaultLoad(360831817)
+                    .withDefaultLoad(264333959)))
             .withServicePlacementPolicies(
                 Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
-            .withDefaultMoveCost(MoveCost.MEDIUM)).withLocation("nqvsaznqnto")
+            .withDefaultMoveCost(MoveCost.MEDIUM))
+            .withLocation("nqvsaznqnto")
             .withTags(mapOf("uwjuetaeburuvdmo", "sgsahmkycgr"));
         model = BinaryData.fromObject(model).toObject(ServiceResourceUpdate.class);
         Assertions.assertEquals("priolx", model.properties().placementConstraints());

@@ -11,8 +11,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -30,6 +30,7 @@ import com.azure.resourcemanager.batch.implementation.BatchAccountsImpl;
 import com.azure.resourcemanager.batch.implementation.BatchManagementClientBuilder;
 import com.azure.resourcemanager.batch.implementation.CertificatesImpl;
 import com.azure.resourcemanager.batch.implementation.LocationsImpl;
+import com.azure.resourcemanager.batch.implementation.NetworkSecurityPerimetersImpl;
 import com.azure.resourcemanager.batch.implementation.OperationsImpl;
 import com.azure.resourcemanager.batch.implementation.PoolsImpl;
 import com.azure.resourcemanager.batch.implementation.PrivateEndpointConnectionsImpl;
@@ -39,6 +40,7 @@ import com.azure.resourcemanager.batch.models.Applications;
 import com.azure.resourcemanager.batch.models.BatchAccounts;
 import com.azure.resourcemanager.batch.models.Certificates;
 import com.azure.resourcemanager.batch.models.Locations;
+import com.azure.resourcemanager.batch.models.NetworkSecurityPerimeters;
 import com.azure.resourcemanager.batch.models.Operations;
 import com.azure.resourcemanager.batch.models.Pools;
 import com.azure.resourcemanager.batch.models.PrivateEndpointConnections;
@@ -73,14 +75,18 @@ public final class BatchManager {
 
     private Pools pools;
 
+    private NetworkSecurityPerimeters networkSecurityPerimeters;
+
     private final BatchManagementClient clientObject;
 
     private BatchManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
         this.clientObject = new BatchManagementClientBuilder().pipeline(httpPipeline)
-            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
-            .defaultPollInterval(defaultPollInterval).buildClient();
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -231,12 +237,19 @@ public final class BatchManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.batch").append("/")
-                .append("1.1.0-beta.4");
+            userAgentBuilder.append("azsdk-java")
+                .append("-")
+                .append("com.azure.resourcemanager.batch")
+                .append("/")
+                .append("2.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
+                userAgentBuilder.append(" (")
+                    .append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.name"))
+                    .append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version"))
+                    .append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -255,18 +268,21 @@ public final class BatchManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                 .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
             policies.addAll(this.policies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
-                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new BatchManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -378,6 +394,19 @@ public final class BatchManager {
             this.pools = new PoolsImpl(clientObject.getPools(), this);
         }
         return pools;
+    }
+
+    /**
+     * Gets the resource collection API of NetworkSecurityPerimeters.
+     * 
+     * @return Resource collection API of NetworkSecurityPerimeters.
+     */
+    public NetworkSecurityPerimeters networkSecurityPerimeters() {
+        if (this.networkSecurityPerimeters == null) {
+            this.networkSecurityPerimeters
+                = new NetworkSecurityPerimetersImpl(clientObject.getNetworkSecurityPerimeters(), this);
+        }
+        return networkSecurityPerimeters;
     }
 
     /**

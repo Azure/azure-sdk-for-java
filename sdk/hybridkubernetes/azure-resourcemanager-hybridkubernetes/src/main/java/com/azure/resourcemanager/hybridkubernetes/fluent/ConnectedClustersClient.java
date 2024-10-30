@@ -16,13 +16,15 @@ import com.azure.resourcemanager.hybridkubernetes.fluent.models.CredentialResult
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedClusterPatch;
 import com.azure.resourcemanager.hybridkubernetes.models.ListClusterUserCredentialProperties;
 
-/** An instance of this class provides access to all the operations defined in ConnectedClustersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConnectedClustersClient.
+ */
 public interface ConnectedClustersClient {
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
-     *
-     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
-     *
+     * 
+     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @param connectedCluster Parameters supplied to Create a Connected Cluster.
@@ -32,14 +34,14 @@ public interface ConnectedClustersClient {
      * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(
-        String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster);
+    SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(String resourceGroupName,
+        String clusterName, ConnectedClusterInner connectedCluster);
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
-     *
-     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
-     *
+     * 
+     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @param connectedCluster Parameters supplied to Create a Connected Cluster.
@@ -50,14 +52,14 @@ public interface ConnectedClustersClient {
      * @return the {@link SyncPoller} for polling of represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(
-        String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster, Context context);
+    SyncPoller<PollResult<ConnectedClusterInner>, ConnectedClusterInner> beginCreate(String resourceGroupName,
+        String clusterName, ConnectedClusterInner connectedCluster, Context context);
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
-     *
-     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
-     *
+     * 
+     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @param connectedCluster Parameters supplied to Create a Connected Cluster.
@@ -71,9 +73,9 @@ public interface ConnectedClustersClient {
 
     /**
      * Register a new Kubernetes cluster with Azure Resource Manager.
-     *
-     * <p>API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
-     *
+     * 
+     * API to register a new Kubernetes cluster and create a tracked resource in Azure Resource Manager (ARM).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @param connectedCluster Parameters supplied to Create a Connected Cluster.
@@ -84,14 +86,14 @@ public interface ConnectedClustersClient {
      * @return represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectedClusterInner create(
-        String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster, Context context);
+    ConnectedClusterInner create(String resourceGroupName, String clusterName, ConnectedClusterInner connectedCluster,
+        Context context);
 
     /**
      * Updates a connected cluster.
-     *
-     * <p>API to update certain properties of the connected cluster resource.
-     *
+     * 
+     * API to update certain properties of the connected cluster resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @param connectedClusterPatch Parameters supplied to update Connected Cluster.
@@ -102,14 +104,14 @@ public interface ConnectedClustersClient {
      * @return represents a connected cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectedClusterInner> updateWithResponse(
-        String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch, Context context);
+    Response<ConnectedClusterInner> updateWithResponse(String resourceGroupName, String clusterName,
+        ConnectedClusterPatch connectedClusterPatch, Context context);
 
     /**
      * Updates a connected cluster.
-     *
-     * <p>API to update certain properties of the connected cluster resource.
-     *
+     * 
+     * API to update certain properties of the connected cluster resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @param connectedClusterPatch Parameters supplied to update Connected Cluster.
@@ -119,15 +121,15 @@ public interface ConnectedClustersClient {
      * @return represents a connected cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectedClusterInner update(
-        String resourceGroupName, String clusterName, ConnectedClusterPatch connectedClusterPatch);
+    ConnectedClusterInner update(String resourceGroupName, String clusterName,
+        ConnectedClusterPatch connectedClusterPatch);
 
     /**
      * Get the properties of the specified connected cluster.
-     *
-     * <p>Returns the properties of the specified connected cluster, including name, identity, properties, and
-     * additional cluster details.
-     *
+     * 
+     * Returns the properties of the specified connected cluster, including name, identity, properties, and additional
+     * cluster details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @param context The context to associate with this operation.
@@ -137,15 +139,15 @@ public interface ConnectedClustersClient {
      * @return represents a connected cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectedClusterInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String clusterName, Context context);
+    Response<ConnectedClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Get the properties of the specified connected cluster.
-     *
-     * <p>Returns the properties of the specified connected cluster, including name, identity, properties, and
-     * additional cluster details.
-     *
+     * 
+     * Returns the properties of the specified connected cluster, including name, identity, properties, and additional
+     * cluster details.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -158,9 +160,9 @@ public interface ConnectedClustersClient {
 
     /**
      * Delete a connected cluster.
-     *
-     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
-     *
+     * 
+     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,9 +175,9 @@ public interface ConnectedClustersClient {
 
     /**
      * Delete a connected cluster.
-     *
-     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
-     *
+     * 
+     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @param context The context to associate with this operation.
@@ -189,9 +191,9 @@ public interface ConnectedClustersClient {
 
     /**
      * Delete a connected cluster.
-     *
-     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
-     *
+     * 
+     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,9 +205,9 @@ public interface ConnectedClustersClient {
 
     /**
      * Delete a connected cluster.
-     *
-     * <p>Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
-     *
+     * 
+     * Delete a connected cluster, removing the tracked resource in Azure Resource Manager (ARM).
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @param context The context to associate with this operation.
@@ -218,9 +220,9 @@ public interface ConnectedClustersClient {
 
     /**
      * Gets cluster user credentials of a connected cluster
-     *
-     * <p>Gets cluster user credentials of the connected cluster with a specified resource group and name.
-     *
+     * 
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @param properties ListClusterUserCredential properties.
@@ -229,17 +231,17 @@ public interface ConnectedClustersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cluster user credentials of the connected cluster with a specified resource group and name along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CredentialResultsInner> listClusterUserCredentialWithResponse(
-        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties, Context context);
+    Response<CredentialResultsInner> listClusterUserCredentialWithResponse(String resourceGroupName, String clusterName,
+        ListClusterUserCredentialProperties properties, Context context);
 
     /**
      * Gets cluster user credentials of a connected cluster
-     *
-     * <p>Gets cluster user credentials of the connected cluster with a specified resource group and name.
-     *
+     * 
+     * Gets cluster user credentials of the connected cluster with a specified resource group and name.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the Kubernetes cluster on which get is called.
      * @param properties ListClusterUserCredential properties.
@@ -249,14 +251,14 @@ public interface ConnectedClustersClient {
      * @return cluster user credentials of the connected cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CredentialResultsInner listClusterUserCredential(
-        String resourceGroupName, String clusterName, ListClusterUserCredentialProperties properties);
+    CredentialResultsInner listClusterUserCredential(String resourceGroupName, String clusterName,
+        ListClusterUserCredentialProperties properties);
 
     /**
      * Lists all connected clusters
-     *
-     * <p>API to enumerate registered connected K8s clusters under a Resource Group.
-     *
+     * 
+     * API to enumerate registered connected K8s clusters under a Resource Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -268,9 +270,9 @@ public interface ConnectedClustersClient {
 
     /**
      * Lists all connected clusters
-     *
-     * <p>API to enumerate registered connected K8s clusters under a Resource Group.
-     *
+     * 
+     * API to enumerate registered connected K8s clusters under a Resource Group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,9 +285,9 @@ public interface ConnectedClustersClient {
 
     /**
      * Lists all connected clusters
-     *
-     * <p>API to enumerate registered connected K8s clusters under a Subscription.
-     *
+     * 
+     * API to enumerate registered connected K8s clusters under a Subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the paginated list of connected Clusters as paginated response with {@link PagedIterable}.
@@ -295,9 +297,9 @@ public interface ConnectedClustersClient {
 
     /**
      * Lists all connected clusters
-     *
-     * <p>API to enumerate registered connected K8s clusters under a Subscription.
-     *
+     * 
+     * API to enumerate registered connected K8s clusters under a Subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

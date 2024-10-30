@@ -6,71 +6,42 @@ package com.azure.resourcemanager.storagepool.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storagepool.StoragePoolManager;
 import com.azure.resourcemanager.storagepool.models.DiskPool;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class DiskPoolsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"sku\":{\"name\":\"aabjyvayffimrz\",\"tier\":\"uzqogsexnevf\"},\"properties\":{\"provisioningState\":\"Failed\",\"availabilityZones\":[\"nw\",\"ewzsyyceuzsoib\"],\"status\":\"Invalid\",\"disks\":[{\"id\":\"frxtrthzvaytdwk\"},{\"id\":\"brqubp\"},{\"id\":\"xhexiilivpdti\"}],\"subnetId\":\"r\",\"additionalCapabilities\":[\"qoaxoruzfgs\"]},\"managedBy\":\"yfxrx\",\"managedByExtended\":[\"ptramxj\",\"zwl\"],\"systemData\":{\"createdBy\":\"xuqlcvydypat\",\"createdByType\":\"User\",\"createdAt\":\"2021-02-04T04:21:30Z\",\"lastModifiedBy\":\"kniod\",\"lastModifiedByType\":\"ManagedIdentity\",\"lastModifiedAt\":\"2021-09-16T01:10:50Z\"},\"location\":\"wnujhemmsbvdk\",\"tags\":{\"lfltka\":\"dtjinfw\",\"gaowpulpqblylsyx\":\"jvefkdlfoakggkfp\"},\"id\":\"qjnsjervtia\",\"name\":\"xsdszuempsb\",\"type\":\"kfzbeyvpnqicvi\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"sku\":{\"name\":\"indoygmifthnzd\",\"tier\":\"sl\"},\"properties\":{\"provisioningState\":\"Failed\",\"availabilityZones\":[\"yq\",\"gynduha\",\"hqlkthumaqo\"],\"status\":\"Stopped"
-                + " (deallocated)\",\"disks\":[],\"subnetId\":\"cdui\",\"additionalCapabilities\":[\"gccymvaolpssl\",\"lfmmdnbbglzpswi\",\"d\",\"cwyhzdxssa\"]},\"managedBy\":\"zmnvdfznudaod\",\"managedByExtended\":[\"bncblylpstdbhhx\"],\"systemData\":{\"createdBy\":\"dzu\",\"createdByType\":\"User\",\"createdAt\":\"2021-04-11T21:32:26Z\",\"lastModifiedBy\":\"ntnev\",\"lastModifiedByType\":\"User\",\"lastModifiedAt\":\"2021-02-26T00:24:19Z\"},\"location\":\"ygtdsslswt\",\"tags\":{\"wab\":\"riofzpyqse\",\"hszhedplvwiwu\":\"ets\",\"dnkwwtppjflcxog\":\"mwmbes\"},\"id\":\"okonzmnsikvmkqz\",\"name\":\"qqkdltfzxmhhvhgu\",\"type\":\"eodkwobda\"}]}";
-
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
-
-        StoragePoolManager manager =
-            StoragePoolManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        StoragePoolManager manager = StoragePoolManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DiskPool> response = manager.diskPools().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ygtdsslswt", response.iterator().next().location());
-        Assertions.assertEquals("riofzpyqse", response.iterator().next().tags().get("wab"));
-        Assertions.assertEquals("indoygmifthnzd", response.iterator().next().nameSkuName());
-        Assertions.assertEquals("sl", response.iterator().next().tier());
-        Assertions.assertEquals("yq", response.iterator().next().availabilityZones().get(0));
-        Assertions.assertEquals(OperationalStatus.STOPPED_DEALLOCATED, response.iterator().next().status());
-        Assertions.assertEquals("cdui", response.iterator().next().subnetId());
-        Assertions.assertEquals("gccymvaolpssl", response.iterator().next().additionalCapabilities().get(0));
+        Assertions.assertEquals("wnujhemmsbvdk", response.iterator().next().location());
+        Assertions.assertEquals("dtjinfw", response.iterator().next().tags().get("lfltka"));
+        Assertions.assertEquals("aabjyvayffimrz", response.iterator().next().nameSkuName());
+        Assertions.assertEquals("uzqogsexnevf", response.iterator().next().tier());
+        Assertions.assertEquals("nw", response.iterator().next().availabilityZones().get(0));
+        Assertions.assertEquals(OperationalStatus.INVALID, response.iterator().next().status());
+        Assertions.assertEquals("frxtrthzvaytdwk", response.iterator().next().disks().get(0).id());
+        Assertions.assertEquals("r", response.iterator().next().subnetId());
+        Assertions.assertEquals("qoaxoruzfgs", response.iterator().next().additionalCapabilities().get(0));
     }
 }

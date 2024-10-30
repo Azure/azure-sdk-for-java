@@ -10,6 +10,22 @@
 
 ### Other Changes
 
+## 1.3.2 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
+## 1.3.1 (2024-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+
 ## 1.3.0 (2024-07-31)
 
 ### Features Added
@@ -381,7 +397,7 @@
 
 ## 1.0.0-beta.3 (2020-08-12)
 
-- Changed `GsonJsonSerializer` to implement `azure-core`'s `JsonSerialzer` instead of `azure-core-experimental`'s.
+- Changed `GsonJsonSerializer` to implement `azure-core`'s `JsonSerializer` instead of `azure-core-experimental`'s.
 - Removed JSON tree models and APIs.
 - `GsonJsonSerializer` now implements the interface `MemberNameConverter`.
 

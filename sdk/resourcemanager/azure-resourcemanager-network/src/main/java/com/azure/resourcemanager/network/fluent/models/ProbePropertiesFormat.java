@@ -286,7 +286,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
         jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
         jsonWriter.writeIntField("port", this.port);
         jsonWriter.writeNumberField("intervalInSeconds", this.intervalInSeconds);
-        jsonWriter.writeStringField("NoHealthyBackendsBehavior",
+        jsonWriter.writeStringField("noHealthyBackendsBehavior",
             this.noHealthyBackendsBehavior == null ? null : this.noHealthyBackendsBehavior.toString());
         jsonWriter.writeNumberField("numberOfProbes", this.numberOfProbes);
         jsonWriter.writeNumberField("probeThreshold", this.probeThreshold);
@@ -319,7 +319,7 @@ public final class ProbePropertiesFormat implements JsonSerializable<ProbeProper
                     deserializedProbePropertiesFormat.loadBalancingRules = loadBalancingRules;
                 } else if ("intervalInSeconds".equals(fieldName)) {
                     deserializedProbePropertiesFormat.intervalInSeconds = reader.getNullable(JsonReader::getInt);
-                } else if ("NoHealthyBackendsBehavior".equals(fieldName)) {
+                } else if ("noHealthyBackendsBehavior".equals(fieldName)) {
                     deserializedProbePropertiesFormat.noHealthyBackendsBehavior
                         = ProbeNoHealthyBackendsBehavior.fromString(reader.getString());
                 } else if ("numberOfProbes".equals(fieldName)) {

@@ -14,14 +14,14 @@ public final class TableErrorCode extends ExpandableStringEnum<TableErrorCode> {
     /**
      * Static value {@code AuthorizationResourceTypeMismatch}.
      */
-    public static final TableErrorCode AUTHORIZATION_RESOURCE_TYPE_MISMATCH =
-        fromString("AuthorizationResourceTypeMismatch");
+    public static final TableErrorCode AUTHORIZATION_RESOURCE_TYPE_MISMATCH
+        = fromString("AuthorizationResourceTypeMismatch");
 
     /**
      * Static value {@code AuthorizationPermissionMismatch}.
      */
-    public static final TableErrorCode AUTHORIZATION_PERMISSION_MISMATCH =
-        fromString("AuthorizationPermissionMismatch");
+    public static final TableErrorCode AUTHORIZATION_PERMISSION_MISMATCH
+        = fromString("AuthorizationPermissionMismatch");
 
     /**
      * Static value {@code XMethodNotUsingPost}.
@@ -46,8 +46,7 @@ public final class TableErrorCode extends ExpandableStringEnum<TableErrorCode> {
     /**
      * Static value {@code DuplicatePropertiesSpecified}.
      */
-    public static final TableErrorCode DUPLICATE_PROPERTIES_SPECIFIED =
-        fromString("DuplicatePropertiesSpecified");
+    public static final TableErrorCode DUPLICATE_PROPERTIES_SPECIFIED = fromString("DuplicatePropertiesSpecified");
 
     /**
      * Static value {@code TableHasNoSuchProperty}.
@@ -57,8 +56,7 @@ public final class TableErrorCode extends ExpandableStringEnum<TableErrorCode> {
     /**
      * Static value {@code DuplicateKeyPropertySpecified}.
      */
-    public static final TableErrorCode DUPLICATE_KEY_PROPERTY_SPECIFIED =
-        fromString("DuplicateKeyPropertySpecified");
+    public static final TableErrorCode DUPLICATE_KEY_PROPERTY_SPECIFIED = fromString("DuplicateKeyPropertySpecified");
 
     /**
      * Static value {@code TableAlreadyExists}.
@@ -108,8 +106,8 @@ public final class TableErrorCode extends ExpandableStringEnum<TableErrorCode> {
     /**
      * Static value {@code PartitionKeyPropertyCannotBeUpdated}.
      */
-    public static final TableErrorCode PARTITION_KEY_PROPERTY_CANNOT_BE_UPDATED =
-        fromString("PartitionKeyPropertyCannotBeUpdated");
+    public static final TableErrorCode PARTITION_KEY_PROPERTY_CANNOT_BE_UPDATED
+        = fromString("PartitionKeyPropertyCannotBeUpdated");
 
     /**
      * Static value {@code TooManyProperties}.
@@ -144,8 +142,8 @@ public final class TableErrorCode extends ExpandableStringEnum<TableErrorCode> {
     /**
      * Static value {@code PrimaryKeyPropertyIsInvalidType}.
      */
-    public static final TableErrorCode PRIMARY_KEY_PROPERTY_IS_INVALID_TYPE =
-        fromString("PrimaryKeyPropertyIsInvalidType");
+    public static final TableErrorCode PRIMARY_KEY_PROPERTY_IS_INVALID_TYPE
+        = fromString("PrimaryKeyPropertyIsInvalidType");
 
     /**
      * Static value {@code PropertyNameTooLong}.
@@ -165,8 +163,8 @@ public final class TableErrorCode extends ExpandableStringEnum<TableErrorCode> {
     /**
      * Static value {@code CommandsInBatchActOnDifferentPartitions}.
      */
-    public static final TableErrorCode COMMANDS_IN_BATCH_ACT_ON_DIFFERENT_PARTITIONS =
-        fromString("CommandsInBatchActOnDifferentPartitions");
+    public static final TableErrorCode COMMANDS_IN_BATCH_ACT_ON_DIFFERENT_PARTITIONS
+        = fromString("CommandsInBatchActOnDifferentPartitions");
 
     /**
      * Static value {@code JsonFormatNotSupported}.
@@ -181,8 +179,7 @@ public final class TableErrorCode extends ExpandableStringEnum<TableErrorCode> {
     /**
      * Static value {@code JsonVerboseFormatNotSupported}.
      */
-    public static final TableErrorCode JSON_VERBOSE_FORMAT_NOT_SUPPORTED =
-        fromString("JsonVerboseFormatNotSupported");
+    public static final TableErrorCode JSON_VERBOSE_FORMAT_NOT_SUPPORTED = fromString("JsonVerboseFormatNotSupported");
 
     /**
      * Static value {@code MediaTypeNotSupported}.
@@ -207,38 +204,38 @@ public final class TableErrorCode extends ExpandableStringEnum<TableErrorCode> {
     /**
      * Static value {@code CannotCreateTableWithIOPSGreaterThanMaxAllowedPerTable}.
      */
-    public static final TableErrorCode CANNOT_CREATE_TABLE_WITH_IOPS_GREATER_THAN_MAX_ALLOWED_PER_TABLE =
-        fromString("CannotCreateTableWithIOPSGreaterThanMaxAllowedPerTable");
+    public static final TableErrorCode CANNOT_CREATE_TABLE_WITH_IOPS_GREATER_THAN_MAX_ALLOWED_PER_TABLE
+        = fromString("CannotCreateTableWithIOPSGreaterThanMaxAllowedPerTable");
 
     /**
      * Static value {@code PerTableIOPSIncrementLimitReached}.
      */
-    public static final TableErrorCode PER_TABLE_IOPS_INCREMENT_LIMIT_REACHED =
-        fromString("PerTableIOPSIncrementLimitReached");
+    public static final TableErrorCode PER_TABLE_IOPS_INCREMENT_LIMIT_REACHED
+        = fromString("PerTableIOPSIncrementLimitReached");
 
     /**
      * Static value {@code PerTableIOPSDecrementLimitReached}.
      */
-    public static final TableErrorCode PER_TABLE_IOPS_DECREMENT_LIMIT_REACHED =
-        fromString("PerTableIOPSDecrementLimitReached");
+    public static final TableErrorCode PER_TABLE_IOPS_DECREMENT_LIMIT_REACHED
+        = fromString("PerTableIOPSDecrementLimitReached");
 
     /**
      * Static value {@code SettingIOPSForATableInProvisioningNotAllowed}.
      */
-    public static final TableErrorCode SETTING_IOPS_FOR_A_TABLE_IN_PROVISIONING_NOT_ALLOWED =
-        fromString("SettingIOPSForATableInProvisioningNotAllowed");
+    public static final TableErrorCode SETTING_IOPS_FOR_A_TABLE_IN_PROVISIONING_NOT_ALLOWED
+        = fromString("SettingIOPSForATableInProvisioningNotAllowed");
 
     /**
      * Static value {@code PartitionKeyEqualityComparisonExpected}.
      */
-    public static final TableErrorCode PARTITION_KEY_EQUALITY_COMPARISON_EXPECTED =
-        fromString("PartitionKeyEqualityComparisonExpected");
+    public static final TableErrorCode PARTITION_KEY_EQUALITY_COMPARISON_EXPECTED
+        = fromString("PartitionKeyEqualityComparisonExpected");
 
     /**
      * Static value {@code PartitionKeySpecifiedMoreThanOnce}.
      */
-    public static final TableErrorCode PARTITION_KEY_SPECIFIED_MORE_THAN_ONCE =
-        fromString("PartitionKeySpecifiedMoreThanOnce");
+    public static final TableErrorCode PARTITION_KEY_SPECIFIED_MORE_THAN_ONCE
+        = fromString("PartitionKeySpecifiedMoreThanOnce");
 
     /**
      * Static value {@code InvalidInput}.

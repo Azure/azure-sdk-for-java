@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.advisor.generated;
 
-/** Samples for Configurations ListByResourceGroup. */
+/**
+ * Samples for Configurations ListByResourceGroup.
+ */
 public final class ConfigurationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListConfigurations.json
+     * x-ms-original-file:
+     * specification/advisor/resource-manager/Microsoft.Advisor/stable/2020-01-01/examples/ListConfigurations.json
      */
     /**
      * Sample code: GetConfigurations.
-     *
+     * 
      * @param manager Entry point to AdvisorManager.
      */
     public static void getConfigurations(com.azure.resourcemanager.advisor.AdvisorManager manager) {

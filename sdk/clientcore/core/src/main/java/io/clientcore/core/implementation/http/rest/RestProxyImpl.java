@@ -12,7 +12,7 @@ import io.clientcore.core.http.models.ResponseBodyMode;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.implementation.http.HttpResponseAccessHelper;
-import io.clientcore.core.implementation.util.Base64Url;
+import io.clientcore.core.implementation.util.Base64Uri;
 import io.clientcore.core.util.binarydata.BinaryData;
 import io.clientcore.core.util.serializer.ObjectSerializer;
 
@@ -36,7 +36,7 @@ public class RestProxyImpl extends RestProxyBase {
      * to be used.
      */
     public RestProxyImpl(HttpPipeline httpPipeline, ObjectSerializer serializer,
-                         SwaggerInterfaceParser interfaceParser) {
+        SwaggerInterfaceParser interfaceParser) {
         super(httpPipeline, serializer, interfaceParser);
     }
 
@@ -51,7 +51,7 @@ public class RestProxyImpl extends RestProxyBase {
         return httpPipeline.send(request);
     }
 
-    @SuppressWarnings({"try", "unused"})
+    @SuppressWarnings({ "try", "unused" })
     @Override
     public Object invoke(Object proxy, SwaggerMethodParser methodParser, HttpRequest request) {
         // If there is 'RequestOptions' apply its request callback operations before validating the body.
@@ -93,8 +93,8 @@ public class RestProxyImpl extends RestProxyBase {
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
         if (response.getBody() == null || response.getBody().toBytes().length == 0) {
             // No body, create an exception response with an empty body.
-            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                response, null, null);
+            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode), response,
+                null, null);
         } else {
             // Create an exception response containing the decoded response body.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode), response,
@@ -103,7 +103,7 @@ public class RestProxyImpl extends RestProxyBase {
     }
 
     private Object handleRestResponseReturnType(Response<?> response, SwaggerMethodParser methodParser,
-                                                Type entityType) {
+        Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
@@ -127,8 +127,8 @@ public class RestProxyImpl extends RestProxyBase {
                     HttpResponseAccessHelper.setValue((HttpResponse<?>) response,
                         handleResponseBody(response, methodParser, bodyType, response.getBody()));
                 } else {
-                    HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response, (body) ->
-                        handleResponseBody(response, methodParser, bodyType, body));
+                    HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response,
+                        (body) -> handleResponseBody(response, methodParser, bodyType, body));
                 }
 
                 Response<?> responseToReturn = createResponseIfNecessary(response, entityType, response.getBody());
@@ -147,7 +147,7 @@ public class RestProxyImpl extends RestProxyBase {
     }
 
     private Object handleResponseBody(Response<?> response, SwaggerMethodParser methodParser, Type entityType,
-                                      BinaryData responseBody) {
+        BinaryData responseBody) {
         final int responseStatusCode = response.getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
@@ -161,8 +161,8 @@ public class RestProxyImpl extends RestProxyBase {
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
 
-            if (returnValueWireType == Base64Url.class) {
-                responseBodyBytes = new Base64Url(responseBodyBytes).decodedBytes();
+            if (returnValueWireType == Base64Uri.class) {
+                responseBodyBytes = new Base64Uri(responseBodyBytes).decodedBytes();
             }
 
             result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;

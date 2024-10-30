@@ -21,8 +21,9 @@ public final class InMageUnplannedFailoverInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageUnplannedFailoverInput model = new InMageUnplannedFailoverInput()
-            .withRecoveryPointType(RecoveryPointType.LATEST_TAG).withRecoveryPointId("aadcndazabundt");
+        InMageUnplannedFailoverInput model
+            = new InMageUnplannedFailoverInput().withRecoveryPointType(RecoveryPointType.LATEST_TAG)
+                .withRecoveryPointId("aadcndazabundt");
         model = BinaryData.fromObject(model).toObject(InMageUnplannedFailoverInput.class);
         Assertions.assertEquals(RecoveryPointType.LATEST_TAG, model.recoveryPointType());
         Assertions.assertEquals("aadcndazabundt", model.recoveryPointId());

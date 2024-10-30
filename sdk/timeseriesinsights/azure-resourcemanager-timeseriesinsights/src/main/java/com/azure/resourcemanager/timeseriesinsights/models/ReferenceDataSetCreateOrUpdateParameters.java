@@ -91,8 +91,8 @@ public final class ReferenceDataSetCreateOrUpdateParameters extends CreateOrUpda
      * @param dataStringComparisonBehavior the dataStringComparisonBehavior value to set.
      * @return the ReferenceDataSetCreateOrUpdateParameters object itself.
      */
-    public ReferenceDataSetCreateOrUpdateParameters withDataStringComparisonBehavior(
-        DataStringComparisonBehavior dataStringComparisonBehavior) {
+    public ReferenceDataSetCreateOrUpdateParameters
+        withDataStringComparisonBehavior(DataStringComparisonBehavior dataStringComparisonBehavior) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ReferenceDataSetCreationProperties();
         }
@@ -109,10 +109,8 @@ public final class ReferenceDataSetCreateOrUpdateParameters extends CreateOrUpda
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ReferenceDataSetCreateOrUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model ReferenceDataSetCreateOrUpdateParameters"));
         } else {
             innerProperties().validate();
         }

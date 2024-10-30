@@ -44,9 +44,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(AgriFoodManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,36 +56,28 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @Host("{$host}")
     @ServiceInterface(name = "AgriFoodManagementCl")
     private interface PrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-                + "/farmBeats/{farmBeatsResourceName}/privateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
+            + "/farmBeats/{farmBeatsResourceName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceListResult>> listByResource(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateLinkResourceListResult>> listByResource(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("farmBeatsResourceName") String farmBeatsResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
-                + "/farmBeats/{farmBeatsResourceName}/privateLinkResources/{subResourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AgFoodPlatform"
+            + "/farmBeats/{farmBeatsResourceName}/privateLinkResources/{subResourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateLinkResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("farmBeatsResourceName") String farmBeatsResourceName,
-            @PathParam("subResourceName") String subResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subResourceName") String subResourceName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -100,19 +91,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return list of Private link resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listByResourceSinglePageAsync(
-        String resourceGroupName, String farmBeatsResourceName) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listByResourceSinglePageAsync(String resourceGroupName,
+        String farmBeatsResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -124,21 +111,10 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResource(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            farmBeatsResourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<PrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByResource(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, farmBeatsResourceName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -154,19 +130,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return list of Private link resources along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listByResourceSinglePageAsync(
-        String resourceGroupName, String farmBeatsResourceName, Context context) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listByResourceSinglePageAsync(String resourceGroupName,
+        String farmBeatsResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,18 +151,10 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResource(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                farmBeatsResourceName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByResource(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                farmBeatsResourceName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
@@ -204,8 +168,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return list of Private link resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listByResourceAsync(
-        String resourceGroupName, String farmBeatsResourceName) {
+    private PagedFlux<PrivateLinkResourceInner> listByResourceAsync(String resourceGroupName,
+        String farmBeatsResourceName) {
         return new PagedFlux<>(() -> listByResourceSinglePageAsync(resourceGroupName, farmBeatsResourceName));
     }
 
@@ -221,8 +185,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return list of Private link resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listByResourceAsync(
-        String resourceGroupName, String farmBeatsResourceName, Context context) {
+    private PagedFlux<PrivateLinkResourceInner> listByResourceAsync(String resourceGroupName,
+        String farmBeatsResourceName, Context context) {
         return new PagedFlux<>(() -> listByResourceSinglePageAsync(resourceGroupName, farmBeatsResourceName, context));
     }
 
@@ -237,8 +201,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return list of Private link resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> listByResource(
-        String resourceGroupName, String farmBeatsResourceName) {
+    public PagedIterable<PrivateLinkResourceInner> listByResource(String resourceGroupName,
+        String farmBeatsResourceName) {
         return new PagedIterable<>(listByResourceAsync(resourceGroupName, farmBeatsResourceName));
     }
 
@@ -254,8 +218,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return list of Private link resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> listByResource(
-        String resourceGroupName, String farmBeatsResourceName, Context context) {
+    public PagedIterable<PrivateLinkResourceInner> listByResource(String resourceGroupName,
+        String farmBeatsResourceName, Context context) {
         return new PagedIterable<>(listByResourceAsync(resourceGroupName, farmBeatsResourceName, context));
     }
 
@@ -271,19 +235,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return private link resource object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String farmBeatsResourceName, String subResourceName) {
+    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String farmBeatsResourceName, String subResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -300,17 +260,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            farmBeatsResourceName,
-                            subResourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    farmBeatsResourceName, subResourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -327,19 +278,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return private link resource object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String farmBeatsResourceName, String subResourceName, Context context) {
+    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String farmBeatsResourceName, String subResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -355,16 +302,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                farmBeatsResourceName,
-                subResourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            farmBeatsResourceName, subResourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -379,8 +318,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return private link resource object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateLinkResourceInner> getAsync(
-        String resourceGroupName, String farmBeatsResourceName, String subResourceName) {
+    private Mono<PrivateLinkResourceInner> getAsync(String resourceGroupName, String farmBeatsResourceName,
+        String subResourceName) {
         return getWithResponseAsync(resourceGroupName, farmBeatsResourceName, subResourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -397,8 +336,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return private link resource object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceInner get(
-        String resourceGroupName, String farmBeatsResourceName, String subResourceName) {
+    public PrivateLinkResourceInner get(String resourceGroupName, String farmBeatsResourceName,
+        String subResourceName) {
         return getAsync(resourceGroupName, farmBeatsResourceName, subResourceName).block();
     }
 
@@ -415,8 +354,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return private link resource object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String subResourceName, Context context) {
+    public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String subResourceName, Context context) {
         return getWithResponseAsync(resourceGroupName, farmBeatsResourceName, subResourceName, context).block();
     }
 }

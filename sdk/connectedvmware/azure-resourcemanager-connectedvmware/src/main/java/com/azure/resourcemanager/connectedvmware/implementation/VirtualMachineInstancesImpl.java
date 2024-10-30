@@ -23,8 +23,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    public VirtualMachineInstancesImpl(
-        VirtualMachineInstancesClient innerClient,
+    public VirtualMachineInstancesImpl(VirtualMachineInstancesClient innerClient,
         com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -39,8 +38,8 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
         }
     }
 
-    public VirtualMachineInstance createOrUpdate(
-        String resourceUri, VirtualMachineInstanceInner body, Context context) {
+    public VirtualMachineInstance createOrUpdate(String resourceUri, VirtualMachineInstanceInner body,
+        Context context) {
         VirtualMachineInstanceInner inner = this.serviceClient().createOrUpdate(resourceUri, body, context);
         if (inner != null) {
             return new VirtualMachineInstanceImpl(inner, this.manager());
@@ -52,10 +51,7 @@ public final class VirtualMachineInstancesImpl implements VirtualMachineInstance
     public Response<VirtualMachineInstance> getWithResponse(String resourceUri, Context context) {
         Response<VirtualMachineInstanceInner> inner = this.serviceClient().getWithResponse(resourceUri, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VirtualMachineInstanceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

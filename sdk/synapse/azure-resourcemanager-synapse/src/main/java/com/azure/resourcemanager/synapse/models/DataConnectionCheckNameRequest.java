@@ -75,10 +75,8 @@ public final class DataConnectionCheckNameRequest {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model DataConnectionCheckNameRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model DataConnectionCheckNameRequest"));
         }
     }
 

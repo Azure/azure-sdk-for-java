@@ -21,12 +21,8 @@ public final class ApiWikisCreateOrUpdateResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public ApiWikisCreateOrUpdateResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        WikiContractInner value,
-        ApiWikisCreateOrUpdateHeaders headers) {
+    public ApiWikisCreateOrUpdateResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        WikiContractInner value, ApiWikisCreateOrUpdateHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 

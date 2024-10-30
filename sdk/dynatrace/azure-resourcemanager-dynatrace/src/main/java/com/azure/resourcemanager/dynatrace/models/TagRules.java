@@ -22,8 +22,8 @@ public interface TagRules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a TagRule along with {@link Response}.
      */
-    Response<TagRule> getWithResponse(
-        String resourceGroupName, String monitorName, String ruleSetName, Context context);
+    Response<TagRule> getWithResponse(String resourceGroupName, String monitorName, String ruleSetName,
+        Context context);
 
     /**
      * Get a TagRule.

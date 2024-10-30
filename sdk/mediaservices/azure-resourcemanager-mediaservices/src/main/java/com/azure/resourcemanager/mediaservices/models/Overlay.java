@@ -21,8 +21,7 @@ import java.time.Duration;
 @JsonTypeName("Overlay")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "#Microsoft.Media.AudioOverlay", value = AudioOverlay.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.VideoOverlay", value = VideoOverlay.class)
-})
+    @JsonSubTypes.Type(name = "#Microsoft.Media.VideoOverlay", value = VideoOverlay.class) })
 @Fluent
 public class Overlay {
     /*
@@ -230,9 +229,8 @@ public class Overlay {
      */
     public void validate() {
         if (inputLabel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property inputLabel in model Overlay"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property inputLabel in model Overlay"));
         }
     }
 

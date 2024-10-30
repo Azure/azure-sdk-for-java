@@ -24,11 +24,8 @@ public interface IntegrationRuntimeAuthKeysOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys along with {@link Response}.
      */
-    Response<IntegrationRuntimeAuthKeys> regenerateWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
+    Response<IntegrationRuntimeAuthKeys> regenerateWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters,
         Context context);
 
     /**
@@ -45,10 +42,7 @@ public interface IntegrationRuntimeAuthKeysOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys.
      */
-    IntegrationRuntimeAuthKeys regenerate(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
+    IntegrationRuntimeAuthKeys regenerate(String resourceGroupName, String workspaceName, String integrationRuntimeName,
         IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters);
 
     /**
@@ -65,8 +59,8 @@ public interface IntegrationRuntimeAuthKeysOperations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the integration runtime authentication keys along with {@link Response}.
      */
-    Response<IntegrationRuntimeAuthKeys> listWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeAuthKeys> listWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
      * List integration runtime authentication keys

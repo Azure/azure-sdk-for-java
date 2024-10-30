@@ -5,66 +5,83 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The MigrateSqlServerSqlMITaskOutputLoginLevel model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resultType")
-@JsonTypeName("LoginLevelOutput")
+/**
+ * The MigrateSqlServerSqlMITaskOutputLoginLevel model.
+ */
 @Immutable
 public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlServerSqlMITaskOutput {
     /*
+     * Result type
+     */
+    private String resultType = "LoginLevelOutput";
+
+    /*
      * Login name.
      */
-    @JsonProperty(value = "loginName", access = JsonProperty.Access.WRITE_ONLY)
     private String loginName;
 
     /*
      * Current state of login
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationState state;
 
     /*
      * Current stage of login
      */
-    @JsonProperty(value = "stage", access = JsonProperty.Access.WRITE_ONLY)
     private LoginMigrationStage stage;
 
     /*
      * Login migration start time
      */
-    @JsonProperty(value = "startedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startedOn;
 
     /*
      * Login migration end time
      */
-    @JsonProperty(value = "endedOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endedOn;
 
     /*
      * Login migration progress message
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Login migration errors and warnings per login
      */
-    @JsonProperty(value = "exceptionsAndWarnings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> exceptionsAndWarnings;
 
-    /** Creates an instance of MigrateSqlServerSqlMITaskOutputLoginLevel class. */
+    /*
+     * Result identifier
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MigrateSqlServerSqlMITaskOutputLoginLevel class.
+     */
     public MigrateSqlServerSqlMITaskOutputLoginLevel() {
     }
 
     /**
+     * Get the resultType property: Result type.
+     * 
+     * @return the resultType value.
+     */
+    @Override
+    public String resultType() {
+        return this.resultType;
+    }
+
+    /**
      * Get the loginName property: Login name.
-     *
+     * 
      * @return the loginName value.
      */
     public String loginName() {
@@ -73,7 +90,7 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlS
 
     /**
      * Get the state property: Current state of login.
-     *
+     * 
      * @return the state value.
      */
     public MigrationState state() {
@@ -82,7 +99,7 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlS
 
     /**
      * Get the stage property: Current stage of login.
-     *
+     * 
      * @return the stage value.
      */
     public LoginMigrationStage stage() {
@@ -91,7 +108,7 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlS
 
     /**
      * Get the startedOn property: Login migration start time.
-     *
+     * 
      * @return the startedOn value.
      */
     public OffsetDateTime startedOn() {
@@ -100,7 +117,7 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlS
 
     /**
      * Get the endedOn property: Login migration end time.
-     *
+     * 
      * @return the endedOn value.
      */
     public OffsetDateTime endedOn() {
@@ -109,7 +126,7 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlS
 
     /**
      * Get the message property: Login migration progress message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -118,7 +135,7 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlS
 
     /**
      * Get the exceptionsAndWarnings property: Login migration errors and warnings per login.
-     *
+     * 
      * @return the exceptionsAndWarnings value.
      */
     public List<ReportableException> exceptionsAndWarnings() {
@@ -126,15 +143,83 @@ public final class MigrateSqlServerSqlMITaskOutputLoginLevel extends MigrateSqlS
     }
 
     /**
+     * Get the id property: Result identifier.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (exceptionsAndWarnings() != null) {
             exceptionsAndWarnings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resultType", this.resultType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MigrateSqlServerSqlMITaskOutputLoginLevel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MigrateSqlServerSqlMITaskOutputLoginLevel if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MigrateSqlServerSqlMITaskOutputLoginLevel.
+     */
+    public static MigrateSqlServerSqlMITaskOutputLoginLevel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MigrateSqlServerSqlMITaskOutputLoginLevel deserializedMigrateSqlServerSqlMITaskOutputLoginLevel
+                = new MigrateSqlServerSqlMITaskOutputLoginLevel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.id = reader.getString();
+                } else if ("resultType".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.resultType = reader.getString();
+                } else if ("loginName".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.loginName = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.state
+                        = MigrationState.fromString(reader.getString());
+                } else if ("stage".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.stage
+                        = LoginMigrationStage.fromString(reader.getString());
+                } else if ("startedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.startedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endedOn".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.endedOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("message".equals(fieldName)) {
+                    deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.message = reader.getString();
+                } else if ("exceptionsAndWarnings".equals(fieldName)) {
+                    List<ReportableException> exceptionsAndWarnings
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedMigrateSqlServerSqlMITaskOutputLoginLevel.exceptionsAndWarnings = exceptionsAndWarnings;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMigrateSqlServerSqlMITaskOutputLoginLevel;
+        });
     }
 }

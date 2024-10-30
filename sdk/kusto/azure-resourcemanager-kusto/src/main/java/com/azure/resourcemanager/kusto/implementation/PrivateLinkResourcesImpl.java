@@ -21,8 +21,8 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,20 +33,17 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
     }
 
     public PagedIterable<PrivateLinkResource> list(String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, clusterName, context);
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String clusterName, String privateLinkResourceName, Context context) {
-        Response<PrivateLinkResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, clusterName, privateLinkResourceName, context);
+    public Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String clusterName,
+        String privateLinkResourceName, Context context) {
+        Response<PrivateLinkResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, clusterName, privateLinkResourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -54,8 +51,8 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
     }
 
     public PrivateLinkResource get(String resourceGroupName, String clusterName, String privateLinkResourceName) {
-        PrivateLinkResourceInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, privateLinkResourceName);
+        PrivateLinkResourceInner inner
+            = this.serviceClient().get(resourceGroupName, clusterName, privateLinkResourceName);
         if (inner != null) {
             return new PrivateLinkResourceImpl(inner, this.manager());
         } else {

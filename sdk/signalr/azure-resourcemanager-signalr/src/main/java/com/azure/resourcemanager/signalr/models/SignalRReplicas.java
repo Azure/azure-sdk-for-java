@@ -47,8 +47,8 @@ public interface SignalRReplicas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the replica and its properties along with {@link Response}.
      */
-    Response<Replica> getWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context);
+    Response<Replica> getWithResponse(String resourceGroupName, String resourceName, String replicaName,
+        Context context);
 
     /**
      * Get the replica and its properties.
@@ -75,8 +75,8 @@ public interface SignalRReplicas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String replicaName,
+        Context context);
 
     /**
      * Operation to delete a replica.

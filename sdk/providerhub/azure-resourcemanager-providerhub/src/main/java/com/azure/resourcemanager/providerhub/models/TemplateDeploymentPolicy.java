@@ -74,16 +74,12 @@ public class TemplateDeploymentPolicy {
      */
     public void validate() {
         if (capabilities() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property capabilities in model TemplateDeploymentPolicy"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property capabilities in model TemplateDeploymentPolicy"));
         }
         if (preflightOptions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property preflightOptions in model TemplateDeploymentPolicy"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property preflightOptions in model TemplateDeploymentPolicy"));
         }
     }
 

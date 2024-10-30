@@ -117,8 +117,8 @@ public interface VolumesClient {
      *     running on the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(
-        String resourceGroupName, String volumeName, VolumeInner volumeParameters);
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(String resourceGroupName, String volumeName,
+        VolumeInner volumeParameters);
 
     /**
      * Create or update the volume.
@@ -136,8 +136,8 @@ public interface VolumesClient {
      *     running on the cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(
-        String resourceGroupName, String volumeName, VolumeInner volumeParameters, Context context);
+    SyncPoller<PollResult<VolumeInner>, VolumeInner> beginCreateOrUpdate(String resourceGroupName, String volumeName,
+        VolumeInner volumeParameters, Context context);
 
     /**
      * Create or update the volume.
@@ -170,8 +170,8 @@ public interface VolumesClient {
      * @return volume represents storage made available for use by resources running on the cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VolumeInner createOrUpdate(
-        String resourceGroupName, String volumeName, VolumeInner volumeParameters, Context context);
+    VolumeInner createOrUpdate(String resourceGroupName, String volumeName, VolumeInner volumeParameters,
+        Context context);
 
     /**
      * Delete the volume.
@@ -249,8 +249,8 @@ public interface VolumesClient {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VolumeInner> updateWithResponse(
-        String resourceGroupName, String volumeName, VolumePatchParameters volumeUpdateParameters, Context context);
+    Response<VolumeInner> updateWithResponse(String resourceGroupName, String volumeName,
+        VolumePatchParameters volumeUpdateParameters, Context context);
 
     /**
      * Patch the volume.

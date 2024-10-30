@@ -6,32 +6,56 @@ package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.models.ContentSource;
 import com.azure.resourcemanager.automation.models.DscConfigurationParameter;
 import com.azure.resourcemanager.automation.models.DscConfigurationProvisioningState;
 import com.azure.resourcemanager.automation.models.DscConfigurationState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Definition of the configuration type. */
+/**
+ * Definition of the configuration type.
+ */
 @Fluent
 public final class DscConfigurationInner extends Resource {
     /*
      * Gets or sets the configuration properties.
      */
-    @JsonProperty(value = "properties")
     private DscConfigurationProperties innerProperties;
 
     /*
      * Gets or sets the etag of the resource.
      */
-    @JsonProperty(value = "etag")
     private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DscConfigurationInner class.
+     */
+    public DscConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: Gets or sets the configuration properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DscConfigurationProperties innerProperties() {
@@ -40,7 +64,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Get the etag property: Gets or sets the etag of the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -49,7 +73,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Set the etag property: Gets or sets the etag of the resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the DscConfigurationInner object itself.
      */
@@ -58,14 +82,48 @@ public final class DscConfigurationInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DscConfigurationInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DscConfigurationInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -74,7 +132,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Get the provisioningState property: Gets or sets the provisioning state of the configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DscConfigurationProvisioningState provisioningState() {
@@ -83,7 +141,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Set the provisioningState property: Gets or sets the provisioning state of the configuration.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the DscConfigurationInner object itself.
      */
@@ -97,7 +155,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Get the jobCount property: Gets or sets the job count of the configuration.
-     *
+     * 
      * @return the jobCount value.
      */
     public Integer jobCount() {
@@ -106,7 +164,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Set the jobCount property: Gets or sets the job count of the configuration.
-     *
+     * 
      * @param jobCount the jobCount value to set.
      * @return the DscConfigurationInner object itself.
      */
@@ -120,7 +178,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Get the parameters property: Gets or sets the configuration parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, DscConfigurationParameter> parameters() {
@@ -129,7 +187,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Set the parameters property: Gets or sets the configuration parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DscConfigurationInner object itself.
      */
@@ -143,7 +201,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Get the source property: Gets or sets the source.
-     *
+     * 
      * @return the source value.
      */
     public ContentSource source() {
@@ -152,7 +210,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Set the source property: Gets or sets the source.
-     *
+     * 
      * @param source the source value to set.
      * @return the DscConfigurationInner object itself.
      */
@@ -166,7 +224,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Get the state property: Gets or sets the state of the configuration.
-     *
+     * 
      * @return the state value.
      */
     public DscConfigurationState state() {
@@ -175,7 +233,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Set the state property: Gets or sets the state of the configuration.
-     *
+     * 
      * @param state the state value to set.
      * @return the DscConfigurationInner object itself.
      */
@@ -189,7 +247,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Get the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @return the logVerbose value.
      */
     public Boolean logVerbose() {
@@ -198,7 +256,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Set the logVerbose property: Gets or sets verbose log option.
-     *
+     * 
      * @param logVerbose the logVerbose value to set.
      * @return the DscConfigurationInner object itself.
      */
@@ -212,7 +270,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Get the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -221,7 +279,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Set the creationTime property: Gets or sets the creation time.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the DscConfigurationInner object itself.
      */
@@ -235,7 +293,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Get the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -244,7 +302,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Set the lastModifiedTime property: Gets or sets the last modified time.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the DscConfigurationInner object itself.
      */
@@ -258,7 +316,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Get the nodeConfigurationCount property: Gets the number of compiled node configurations.
-     *
+     * 
      * @return the nodeConfigurationCount value.
      */
     public Integer nodeConfigurationCount() {
@@ -267,7 +325,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Set the nodeConfigurationCount property: Gets the number of compiled node configurations.
-     *
+     * 
      * @param nodeConfigurationCount the nodeConfigurationCount value to set.
      * @return the DscConfigurationInner object itself.
      */
@@ -281,7 +339,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Get the description property: Gets or sets the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -290,7 +348,7 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Set the description property: Gets or sets the description.
-     *
+     * 
      * @param description the description value to set.
      * @return the DscConfigurationInner object itself.
      */
@@ -304,12 +362,65 @@ public final class DscConfigurationInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DscConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DscConfigurationInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DscConfigurationInner.
+     */
+    public static DscConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DscConfigurationInner deserializedDscConfigurationInner = new DscConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDscConfigurationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDscConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDscConfigurationInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDscConfigurationInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDscConfigurationInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDscConfigurationInner.innerProperties = DscConfigurationProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDscConfigurationInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDscConfigurationInner;
+        });
     }
 }

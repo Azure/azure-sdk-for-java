@@ -8,32 +8,52 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationInner;
 import com.azure.resourcemanager.batch.models.ListApplicationsResult;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 
 public final class ListApplicationsResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ListApplicationsResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"displayName\":\"qfou\",\"allowUpdates\":true,\"defaultVersion\":\"nkzsmodmglou\"},\"etag\":\"b\",\"id\":\"wtmutduq\",\"name\":\"ta\",\"type\":\"spwgcuertumkdosv\"},{\"properties\":{\"displayName\":\"bmdg\",\"allowUpdates\":true,\"defaultVersion\":\"ddgmb\"},\"etag\":\"ex\",\"id\":\"pbhtqqrolfpfpsa\",\"name\":\"gbquxigj\",\"type\":\"jgzjaoyfhrtx\"},{\"properties\":{\"displayName\":\"erkujys\",\"allowUpdates\":false,\"defaultVersion\":\"uvfqawrlyxwj\"},\"etag\":\"prbnwbxgjvtbv\",\"id\":\"ysszdnrujqguh\",\"name\":\"uouq\",\"type\":\"prwzwbnguitnwui\"}],\"nextLink\":\"a\"}")
+            "{\"value\":[{\"properties\":{\"displayName\":\"osfqpteehzzv\",\"allowUpdates\":false,\"defaultVersion\":\"rimz\"},\"etag\":\"pvswjdkirso\",\"tags\":{\"nohjt\":\"xhcr\",\"soifiyipjxsqw\":\"kwh\"},\"id\":\"gr\",\"name\":\"bznorcjxvsnby\",\"type\":\"qabnmoc\"},{\"properties\":{\"displayName\":\"shurzafbljjgpbto\",\"allowUpdates\":true,\"defaultVersion\":\"klj\"},\"etag\":\"bqidtqaj\",\"tags\":{\"kudjkrlkhb\":\"l\",\"locx\":\"hfepgzgqex\",\"aierhhb\":\"c\"},\"id\":\"sglumma\",\"name\":\"tjaodxobnb\",\"type\":\"xkqpxo\"}],\"nextLink\":\"jionpimexgstxgc\"}")
             .toObject(ListApplicationsResult.class);
-        Assertions.assertEquals("qfou", model.value().get(0).displayName());
-        Assertions.assertEquals(true, model.value().get(0).allowUpdates());
-        Assertions.assertEquals("nkzsmodmglou", model.value().get(0).defaultVersion());
-        Assertions.assertEquals("a", model.nextLink());
+        Assertions.assertEquals("xhcr", model.value().get(0).tags().get("nohjt"));
+        Assertions.assertEquals("osfqpteehzzv", model.value().get(0).displayName());
+        Assertions.assertEquals(false, model.value().get(0).allowUpdates());
+        Assertions.assertEquals("rimz", model.value().get(0).defaultVersion());
+        Assertions.assertEquals("jionpimexgstxgc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ListApplicationsResult model = new ListApplicationsResult().withValue(Arrays.asList(
-            new ApplicationInner().withDisplayName("qfou").withAllowUpdates(true).withDefaultVersion("nkzsmodmglou"),
-            new ApplicationInner().withDisplayName("bmdg").withAllowUpdates(true).withDefaultVersion("ddgmb"),
-            new ApplicationInner().withDisplayName("erkujys").withAllowUpdates(false)
-                .withDefaultVersion("uvfqawrlyxwj")))
-            .withNextLink("a");
+            new ApplicationInner().withTags(mapOf("nohjt", "xhcr", "soifiyipjxsqw", "kwh"))
+                .withDisplayName("osfqpteehzzv")
+                .withAllowUpdates(false)
+                .withDefaultVersion("rimz"),
+            new ApplicationInner().withTags(mapOf("kudjkrlkhb", "l", "locx", "hfepgzgqex", "aierhhb", "c"))
+                .withDisplayName("shurzafbljjgpbto")
+                .withAllowUpdates(true)
+                .withDefaultVersion("klj")))
+            .withNextLink("jionpimexgstxgc");
         model = BinaryData.fromObject(model).toObject(ListApplicationsResult.class);
-        Assertions.assertEquals("qfou", model.value().get(0).displayName());
-        Assertions.assertEquals(true, model.value().get(0).allowUpdates());
-        Assertions.assertEquals("nkzsmodmglou", model.value().get(0).defaultVersion());
-        Assertions.assertEquals("a", model.nextLink());
+        Assertions.assertEquals("xhcr", model.value().get(0).tags().get("nohjt"));
+        Assertions.assertEquals("osfqpteehzzv", model.value().get(0).displayName());
+        Assertions.assertEquals(false, model.value().get(0).allowUpdates());
+        Assertions.assertEquals("rimz", model.value().get(0).defaultVersion());
+        Assertions.assertEquals("jionpimexgstxgc", model.nextLink());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

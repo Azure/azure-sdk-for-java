@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DeploymentPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DeploymentProperties model =
-            BinaryData
-                .fromString(
-                    "{\"manifestType\":\"helm\",\"kubeManifestLocations\":[\"tjaodxobnb\",\"xkqpxo\",\"ajionpimexgstxg\",\"po\"],\"helmChartPath\":\"maajrmvdjwzrlo\",\"helmValues\":\"clwhijcoejctbz\",\"overrides\":{\"dkexxppofm\":\"qsycbkbfkgu\"}}")
-                .toObject(DeploymentProperties.class);
+        DeploymentProperties model = BinaryData.fromString(
+            "{\"manifestType\":\"helm\",\"kubeManifestLocations\":[\"tjaodxobnb\",\"xkqpxo\",\"ajionpimexgstxg\",\"po\"],\"helmChartPath\":\"maajrmvdjwzrlo\",\"helmValues\":\"clwhijcoejctbz\",\"overrides\":{\"dkexxppofm\":\"qsycbkbfkgu\"}}")
+            .toObject(DeploymentProperties.class);
         Assertions.assertEquals(ManifestType.HELM, model.manifestType());
         Assertions.assertEquals("tjaodxobnb", model.kubeManifestLocations().get(0));
         Assertions.assertEquals("maajrmvdjwzrlo", model.helmChartPath());
@@ -29,13 +27,11 @@ public final class DeploymentPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeploymentProperties model =
-            new DeploymentProperties()
-                .withManifestType(ManifestType.HELM)
-                .withKubeManifestLocations(Arrays.asList("tjaodxobnb", "xkqpxo", "ajionpimexgstxg", "po"))
-                .withHelmChartPath("maajrmvdjwzrlo")
-                .withHelmValues("clwhijcoejctbz")
-                .withOverrides(mapOf("dkexxppofm", "qsycbkbfkgu"));
+        DeploymentProperties model = new DeploymentProperties().withManifestType(ManifestType.HELM)
+            .withKubeManifestLocations(Arrays.asList("tjaodxobnb", "xkqpxo", "ajionpimexgstxg", "po"))
+            .withHelmChartPath("maajrmvdjwzrlo")
+            .withHelmValues("clwhijcoejctbz")
+            .withOverrides(mapOf("dkexxppofm", "qsycbkbfkgu"));
         model = BinaryData.fromObject(model).toObject(DeploymentProperties.class);
         Assertions.assertEquals(ManifestType.HELM, model.manifestType());
         Assertions.assertEquals("tjaodxobnb", model.kubeManifestLocations().get(0));

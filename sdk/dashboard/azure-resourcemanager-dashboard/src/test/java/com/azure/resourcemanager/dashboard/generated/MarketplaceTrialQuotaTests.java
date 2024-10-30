@@ -25,7 +25,8 @@ public final class MarketplaceTrialQuotaTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MarketplaceTrialQuota model = new MarketplaceTrialQuota().withAvailablePromotion(AvailablePromotion.NONE)
-            .withGrafanaResourceId("objoghmewu").withTrialStartAt(OffsetDateTime.parse("2021-01-02T08:53:50Z"))
+            .withGrafanaResourceId("objoghmewu")
+            .withTrialStartAt(OffsetDateTime.parse("2021-01-02T08:53:50Z"))
             .withTrialEndAt(OffsetDateTime.parse("2021-01-27T21:23:24Z"));
         model = BinaryData.fromObject(model).toObject(MarketplaceTrialQuota.class);
         Assertions.assertEquals(AvailablePromotion.NONE, model.availablePromotion());

@@ -18,7 +18,7 @@ import java.util.Arrays;
 public final class MachinesInstallPatchesSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2024-05-20-preview/examples/machine/
+     * specification/hybridcompute/resource-manager/Microsoft.HybridCompute/stable/2024-07-10/examples/machine/
      * Machine_InstallPatches.json
      */
     /**

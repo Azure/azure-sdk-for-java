@@ -127,10 +127,8 @@ public final class GlobalSchemaContractProperties {
      */
     public void validate() {
         if (schemaType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schemaType in model GlobalSchemaContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property schemaType in model GlobalSchemaContractProperties"));
         }
     }
 

@@ -37,8 +37,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
  *
  * <!-- src_embed com.azure.identity.credential.clientsecretcredential.construct -->
  * <pre>
- * TokenCredential clientSecretCredential = new ClientSecretCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential clientSecretCredential = new ClientSecretCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientSecret&#40;clientSecret&#41;
  *     .build&#40;&#41;;
@@ -56,8 +55,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
  *
  * <!-- src_embed com.azure.identity.credential.clientsecretcredential.constructwithproxy -->
  * <pre>
- * TokenCredential secretCredential = new ClientSecretCredentialBuilder&#40;&#41;
- *     .tenantId&#40;tenantId&#41;
+ * TokenCredential secretCredential = new ClientSecretCredentialBuilder&#40;&#41;.tenantId&#40;tenantId&#41;
  *     .clientId&#40;clientId&#41;
  *     .clientSecret&#40;clientSecret&#41;
  *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
@@ -121,8 +119,8 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      * @param tokenCachePersistenceOptions the token cache configuration options
      * @return An updated instance of this builder with the token cache options configured.
      */
-    public ClientSecretCredentialBuilder tokenCachePersistenceOptions(TokenCachePersistenceOptions
-                                                                                tokenCachePersistenceOptions) {
+    public ClientSecretCredentialBuilder
+        tokenCachePersistenceOptions(TokenCachePersistenceOptions tokenCachePersistenceOptions) {
         this.identityClientOptions.setTokenCacheOptions(tokenCachePersistenceOptions);
         return this;
     }
@@ -133,8 +131,8 @@ public class ClientSecretCredentialBuilder extends AadCredentialBuilderBase<Clie
      * @return a {@link ClientSecretCredentialBuilder} with the current configurations.
      */
     public ClientSecretCredential build() {
-        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId,
-            "clientSecret", clientSecret);
+        ValidationUtil.validate(CLASS_NAME, LOGGER, "clientId", clientId, "tenantId", tenantId, "clientSecret",
+            clientSecret);
 
         return new ClientSecretCredential(tenantId, clientId, clientSecret, identityClientOptions);
     }

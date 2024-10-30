@@ -26,7 +26,6 @@ import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
 import com.azure.storage.common.sas.AccountSasService;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -82,7 +81,7 @@ public class VersioningAsyncTests extends BlobTestBase {
             .assertNext(r -> {
                 assertNotNull(r.getT1().getVersionId());
                 assertNotNull(r.getT2().getVersionId());
-                assertFalse(StringUtils.equals(r.getT1().getVersionId(), r.getT2().getVersionId()));
+                assertNotEquals(r.getT1().getVersionId(), r.getT2().getVersionId());
             })
             .verifyComplete();
     }
@@ -96,7 +95,7 @@ public class VersioningAsyncTests extends BlobTestBase {
             .assertNext(r -> {
                 assertNotNull(r.getT1().getVersionId());
                 assertNotNull(r.getT2().getVersionId());
-                assertFalse(StringUtils.equals(r.getT1().getVersionId(), r.getT2().getVersionId()));
+                assertNotEquals(r.getT1().getVersionId(), r.getT2().getVersionId());
             })
             .verifyComplete();
     }
@@ -110,11 +109,12 @@ public class VersioningAsyncTests extends BlobTestBase {
             .assertNext(r -> {
                 assertNotNull(r.getT1().getVersionId());
                 assertNotNull(r.getT2().getVersionId());
-                assertFalse(StringUtils.equals(r.getT1().getVersionId(), r.getT2().getVersionId()));
+                assertNotEquals(r.getT1().getVersionId(), r.getT2().getVersionId());
             })
             .verifyComplete();
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void downloadBlobByVersion() {
         Flux<ByteBuffer> inputV1 = Flux.just(ByteBuffer.wrap(contentV1.getBytes(StandardCharsets.UTF_8)));
@@ -382,16 +382,15 @@ public class VersioningAsyncTests extends BlobTestBase {
     @Test
     public void copyFromUrlBlobsWithVersion() {
         BlobAsyncClient sourceBlob = blobContainerClient.getBlobAsyncClient(generateBlobName());
+        String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
 
-        Mono<Tuple2<Response<String>, BlockBlobItem>> response = sourceBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
-            .then(blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(),
-                DATA.getDefaultDataSize()))
-            .flatMap(r -> {
-                String sas = sourceBlob.generateSas(new BlobServiceSasSignatureValues(testResourceNamer.now().plusDays(1),
-                    new BlobSasPermission().setTagsPermission(true).setReadPermission(true)));
-                return Mono.zip(blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas,
-                    null, null, null, null), Mono.just(r));
-            });
+        Mono<Tuple2<Response<String>, BlockBlobItem>> response =
+            blobClient.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+                .flatMap(blobItemV1 ->
+                    sourceBlob.getBlockBlobAsyncClient().upload(DATA.getDefaultFlux(), DATA.getDefaultDataSize())
+                        .then(Mono.zip(blobClient.copyFromUrlWithResponse(sourceBlob.getBlobUrl() + "?" + sas,
+                            null, null, null, null), Mono.just(blobItemV1))));
 
         StepVerifier.create(response)
             .assertNext(r -> {

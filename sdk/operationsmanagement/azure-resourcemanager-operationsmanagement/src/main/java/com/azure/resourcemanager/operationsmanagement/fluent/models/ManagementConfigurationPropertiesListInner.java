@@ -5,25 +5,33 @@
 package com.azure.resourcemanager.operationsmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** the list of ManagementConfiguration response. */
+/**
+ * the list of ManagementConfiguration response.
+ */
 @Fluent
-public final class ManagementConfigurationPropertiesListInner {
+public final class ManagementConfigurationPropertiesListInner
+    implements JsonSerializable<ManagementConfigurationPropertiesListInner> {
     /*
      * List of Management Configuration properties within the subscription.
      */
-    @JsonProperty(value = "value")
     private List<ManagementConfigurationInner> value;
 
-    /** Creates an instance of ManagementConfigurationPropertiesListInner class. */
+    /**
+     * Creates an instance of ManagementConfigurationPropertiesListInner class.
+     */
     public ManagementConfigurationPropertiesListInner() {
     }
 
     /**
      * Get the value property: List of Management Configuration properties within the subscription.
-     *
+     * 
      * @return the value value.
      */
     public List<ManagementConfigurationInner> value() {
@@ -32,7 +40,7 @@ public final class ManagementConfigurationPropertiesListInner {
 
     /**
      * Set the value property: List of Management Configuration properties within the subscription.
-     *
+     * 
      * @param value the value value to set.
      * @return the ManagementConfigurationPropertiesListInner object itself.
      */
@@ -43,12 +51,51 @@ public final class ManagementConfigurationPropertiesListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagementConfigurationPropertiesListInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagementConfigurationPropertiesListInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagementConfigurationPropertiesListInner.
+     */
+    public static ManagementConfigurationPropertiesListInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagementConfigurationPropertiesListInner deserializedManagementConfigurationPropertiesListInner
+                = new ManagementConfigurationPropertiesListInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ManagementConfigurationInner> value
+                        = reader.readArray(reader1 -> ManagementConfigurationInner.fromJson(reader1));
+                    deserializedManagementConfigurationPropertiesListInner.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagementConfigurationPropertiesListInner;
+        });
     }
 }

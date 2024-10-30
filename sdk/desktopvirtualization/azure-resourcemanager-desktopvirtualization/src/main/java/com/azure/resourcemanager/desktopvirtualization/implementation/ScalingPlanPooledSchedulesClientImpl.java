@@ -35,24 +35,28 @@ import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledS
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlanPooledSchedulePatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ScalingPlanPooledSchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ScalingPlanPooledSchedulesClient.
+ */
 public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPooledSchedulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ScalingPlanPooledSchedulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DesktopVirtualizationApiClientImpl client;
 
     /**
      * Initializes an instance of ScalingPlanPooledSchedulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ScalingPlanPooledSchedulesClientImpl(DesktopVirtualizationApiClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ScalingPlanPooledSchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ScalingPlanPooledSchedulesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,99 +67,75 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
     @Host("{$host}")
     @ServiceInterface(name = "DesktopVirtualizatio")
     public interface ScalingPlanPooledSchedulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScalingPlanPooledScheduleInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ScalingPlanPooledScheduleInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("scalingPlanName") String scalingPlanName,
-            @PathParam("scalingPlanScheduleName") String scalingPlanScheduleName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("scalingPlanScheduleName") String scalingPlanScheduleName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScalingPlanPooledScheduleInner>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ScalingPlanPooledScheduleInner>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("scalingPlanName") String scalingPlanName,
             @PathParam("scalingPlanScheduleName") String scalingPlanScheduleName,
             @BodyParam("application/json") ScalingPlanPooledScheduleInner scalingPlanSchedule,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("scalingPlanName") String scalingPlanName,
-            @PathParam("scalingPlanScheduleName") String scalingPlanScheduleName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("scalingPlanScheduleName") String scalingPlanScheduleName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules/{scalingPlanScheduleName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScalingPlanPooledScheduleInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ScalingPlanPooledScheduleInner>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("scalingPlanName") String scalingPlanName,
             @PathParam("scalingPlanScheduleName") String scalingPlanScheduleName,
             @BodyParam("application/json") ScalingPlanPooledSchedulePatch scalingPlanSchedule,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DesktopVirtualization/scalingPlans/{scalingPlanName}/pooledSchedules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ScalingPlanPooledScheduleList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ScalingPlanPooledScheduleList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("scalingPlanName") String scalingPlanName,
-            @QueryParam("pageSize") Integer pageSize,
-            @QueryParam("isDescending") Boolean isDescending,
-            @QueryParam("initialSkip") Integer initialSkip,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("scalingPlanName") String scalingPlanName, @QueryParam("pageSize") Integer pageSize,
+            @QueryParam("isDescending") Boolean isDescending, @QueryParam("initialSkip") Integer initialSkip,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ScalingPlanPooledScheduleList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -165,19 +145,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return a ScalingPlanPooledSchedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ScalingPlanPooledScheduleInner>> getWithResponseAsync(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName) {
+    public Mono<Response<ScalingPlanPooledScheduleInner>> getWithResponseAsync(String resourceGroupName,
+        String scalingPlanName, String scalingPlanScheduleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -188,30 +164,20 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
                 .error(new IllegalArgumentException("Parameter scalingPlanName is required and cannot be null."));
         }
         if (scalingPlanScheduleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            scalingPlanName,
-                            scalingPlanScheduleName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, scalingPlanName, scalingPlanScheduleName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -222,19 +188,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return a ScalingPlanPooledSchedule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScalingPlanPooledScheduleInner>> getWithResponseAsync(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName, Context context) {
+    private Mono<Response<ScalingPlanPooledScheduleInner>> getWithResponseAsync(String resourceGroupName,
+        String scalingPlanName, String scalingPlanScheduleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -245,27 +207,18 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
                 .error(new IllegalArgumentException("Parameter scalingPlanName is required and cannot be null."));
         }
         if (scalingPlanScheduleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                scalingPlanName,
-                scalingPlanScheduleName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, scalingPlanName, scalingPlanScheduleName, accept, context);
     }
 
     /**
      * Get a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -275,15 +228,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return a ScalingPlanPooledSchedule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ScalingPlanPooledScheduleInner> getAsync(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName) {
+    public Mono<ScalingPlanPooledScheduleInner> getAsync(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName) {
         return getWithResponseAsync(resourceGroupName, scalingPlanName, scalingPlanScheduleName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -294,14 +247,14 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return a ScalingPlanPooledSchedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScalingPlanPooledScheduleInner> getWithResponse(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName, Context context) {
+    public Response<ScalingPlanPooledScheduleInner> getWithResponse(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, Context context) {
         return getWithResponseAsync(resourceGroupName, scalingPlanName, scalingPlanScheduleName, context).block();
     }
 
     /**
      * Get a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -311,14 +264,14 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return a ScalingPlanPooledSchedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScalingPlanPooledScheduleInner get(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName) {
+    public ScalingPlanPooledScheduleInner get(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName) {
         return getWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, Context.NONE).getValue();
     }
 
     /**
      * Create or update a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -327,25 +280,18 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a ScalingPlanPooledSchedule definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ScalingPlanPooledScheduleInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPooledScheduleInner scalingPlanSchedule) {
+    public Mono<Response<ScalingPlanPooledScheduleInner>> createWithResponseAsync(String resourceGroupName,
+        String scalingPlanName, String scalingPlanScheduleName, ScalingPlanPooledScheduleInner scalingPlanSchedule) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -356,9 +302,8 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
                 .error(new IllegalArgumentException("Parameter scalingPlanName is required and cannot be null."));
         }
         if (scalingPlanScheduleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
         }
         if (scalingPlanSchedule == null) {
             return Mono
@@ -368,25 +313,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            scalingPlanName,
-                            scalingPlanScheduleName,
-                            scalingPlanSchedule,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, scalingPlanName, scalingPlanScheduleName,
+                scalingPlanSchedule, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -396,26 +331,19 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a ScalingPlanPooledSchedule definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScalingPlanPooledScheduleInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPooledScheduleInner scalingPlanSchedule,
+    private Mono<Response<ScalingPlanPooledScheduleInner>> createWithResponseAsync(String resourceGroupName,
+        String scalingPlanName, String scalingPlanScheduleName, ScalingPlanPooledScheduleInner scalingPlanSchedule,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -426,9 +354,8 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
                 .error(new IllegalArgumentException("Parameter scalingPlanName is required and cannot be null."));
         }
         if (scalingPlanScheduleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
         }
         if (scalingPlanSchedule == null) {
             return Mono
@@ -438,22 +365,13 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                scalingPlanName,
-                scalingPlanScheduleName,
-                scalingPlanSchedule,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule, accept, context);
     }
 
     /**
      * Create or update a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -464,18 +382,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return represents a ScalingPlanPooledSchedule definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ScalingPlanPooledScheduleInner> createAsync(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPooledScheduleInner scalingPlanSchedule) {
+    public Mono<ScalingPlanPooledScheduleInner> createAsync(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, ScalingPlanPooledScheduleInner scalingPlanSchedule) {
         return createWithResponseAsync(resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -487,20 +402,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return represents a ScalingPlanPooledSchedule definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScalingPlanPooledScheduleInner> createWithResponse(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPooledScheduleInner scalingPlanSchedule,
-        Context context) {
-        return createWithResponseAsync(
-                resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule, context)
-            .block();
+    public Response<ScalingPlanPooledScheduleInner> createWithResponse(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, ScalingPlanPooledScheduleInner scalingPlanSchedule, Context context) {
+        return createWithResponseAsync(resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule,
+            context).block();
     }
 
     /**
      * Create or update a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -511,19 +421,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return represents a ScalingPlanPooledSchedule definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScalingPlanPooledScheduleInner create(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPooledScheduleInner scalingPlanSchedule) {
-        return createWithResponse(
-                resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule, Context.NONE)
-            .getValue();
+    public ScalingPlanPooledScheduleInner create(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, ScalingPlanPooledScheduleInner scalingPlanSchedule) {
+        return createWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule,
+            Context.NONE).getValue();
     }
 
     /**
      * Remove a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -533,19 +439,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -556,30 +458,20 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
                 .error(new IllegalArgumentException("Parameter scalingPlanName is required and cannot be null."));
         }
         if (scalingPlanScheduleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            scalingPlanName,
-                            scalingPlanScheduleName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, scalingPlanName, scalingPlanScheduleName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Remove a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -590,19 +482,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -613,27 +501,18 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
                 .error(new IllegalArgumentException("Parameter scalingPlanName is required and cannot be null."));
         }
         if (scalingPlanScheduleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                scalingPlanName,
-                scalingPlanScheduleName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, scalingPlanName, scalingPlanScheduleName, accept, context);
     }
 
     /**
      * Remove a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -650,7 +529,7 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
 
     /**
      * Remove a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -661,14 +540,14 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, scalingPlanName, scalingPlanScheduleName, context).block();
     }
 
     /**
      * Remove a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -683,7 +562,7 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
 
     /**
      * Update a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -692,25 +571,18 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a ScalingPlanPooledSchedule definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ScalingPlanPooledScheduleInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPooledSchedulePatch scalingPlanSchedule) {
+    public Mono<Response<ScalingPlanPooledScheduleInner>> updateWithResponseAsync(String resourceGroupName,
+        String scalingPlanName, String scalingPlanScheduleName, ScalingPlanPooledSchedulePatch scalingPlanSchedule) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -721,34 +593,23 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
                 .error(new IllegalArgumentException("Parameter scalingPlanName is required and cannot be null."));
         }
         if (scalingPlanScheduleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
         }
         if (scalingPlanSchedule != null) {
             scalingPlanSchedule.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            scalingPlanName,
-                            scalingPlanScheduleName,
-                            scalingPlanSchedule,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, scalingPlanName, scalingPlanScheduleName,
+                scalingPlanSchedule, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -758,26 +619,19 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a ScalingPlanPooledSchedule definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ScalingPlanPooledScheduleInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPooledSchedulePatch scalingPlanSchedule,
+    private Mono<Response<ScalingPlanPooledScheduleInner>> updateWithResponseAsync(String resourceGroupName,
+        String scalingPlanName, String scalingPlanScheduleName, ScalingPlanPooledSchedulePatch scalingPlanSchedule,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -788,31 +642,21 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
                 .error(new IllegalArgumentException("Parameter scalingPlanName is required and cannot be null."));
         }
         if (scalingPlanScheduleName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter scalingPlanScheduleName is required and cannot be null."));
         }
         if (scalingPlanSchedule != null) {
             scalingPlanSchedule.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                scalingPlanName,
-                scalingPlanScheduleName,
-                scalingPlanSchedule,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule, accept, context);
     }
 
     /**
      * Update a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -822,8 +666,8 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return represents a ScalingPlanPooledSchedule definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ScalingPlanPooledScheduleInner> updateAsync(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName) {
+    public Mono<ScalingPlanPooledScheduleInner> updateAsync(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName) {
         final ScalingPlanPooledSchedulePatch scalingPlanSchedule = null;
         return updateWithResponseAsync(resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -831,7 +675,7 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
 
     /**
      * Update a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -843,20 +687,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return represents a ScalingPlanPooledSchedule definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ScalingPlanPooledScheduleInner> updateWithResponse(
-        String resourceGroupName,
-        String scalingPlanName,
-        String scalingPlanScheduleName,
-        ScalingPlanPooledSchedulePatch scalingPlanSchedule,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule, context)
-            .block();
+    public Response<ScalingPlanPooledScheduleInner> updateWithResponse(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName, ScalingPlanPooledSchedulePatch scalingPlanSchedule, Context context) {
+        return updateWithResponseAsync(resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule,
+            context).block();
     }
 
     /**
      * Update a ScalingPlanPooledSchedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param scalingPlanScheduleName The name of the ScalingPlanSchedule.
@@ -866,17 +705,16 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return represents a ScalingPlanPooledSchedule definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ScalingPlanPooledScheduleInner update(
-        String resourceGroupName, String scalingPlanName, String scalingPlanScheduleName) {
+    public ScalingPlanPooledScheduleInner update(String resourceGroupName, String scalingPlanName,
+        String scalingPlanScheduleName) {
         final ScalingPlanPooledSchedulePatch scalingPlanSchedule = null;
-        return updateWithResponse(
-                resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule, Context.NONE)
-            .getValue();
+        return updateWithResponse(resourceGroupName, scalingPlanName, scalingPlanScheduleName, scalingPlanSchedule,
+            Context.NONE).getValue();
     }
 
     /**
      * List ScalingPlanPooledSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param pageSize Number of items per page.
@@ -888,19 +726,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return scalingPlanPooledScheduleList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScalingPlanPooledScheduleInner>> listSinglePageAsync(
-        String resourceGroupName, String scalingPlanName, Integer pageSize, Boolean isDescending, Integer initialSkip) {
+    private Mono<PagedResponse<ScalingPlanPooledScheduleInner>> listSinglePageAsync(String resourceGroupName,
+        String scalingPlanName, Integer pageSize, Boolean isDescending, Integer initialSkip) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -912,35 +746,17 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            scalingPlanName,
-                            pageSize,
-                            isDescending,
-                            initialSkip,
-                            accept,
-                            context))
-            .<PagedResponse<ScalingPlanPooledScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, scalingPlanName, pageSize, isDescending,
+                initialSkip, accept, context))
+            .<PagedResponse<ScalingPlanPooledScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List ScalingPlanPooledSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param pageSize Number of items per page.
@@ -953,24 +769,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return scalingPlanPooledScheduleList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScalingPlanPooledScheduleInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String scalingPlanName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
+    private Mono<PagedResponse<ScalingPlanPooledScheduleInner>> listSinglePageAsync(String resourceGroupName,
+        String scalingPlanName, Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -983,31 +790,15 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                scalingPlanName,
-                pageSize,
-                isDescending,
-                initialSkip,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, scalingPlanName, pageSize, isDescending, initialSkip, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List ScalingPlanPooledSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param pageSize Number of items per page.
@@ -1019,8 +810,8 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return scalingPlanPooledScheduleList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ScalingPlanPooledScheduleInner> listAsync(
-        String resourceGroupName, String scalingPlanName, Integer pageSize, Boolean isDescending, Integer initialSkip) {
+    public PagedFlux<ScalingPlanPooledScheduleInner> listAsync(String resourceGroupName, String scalingPlanName,
+        Integer pageSize, Boolean isDescending, Integer initialSkip) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, scalingPlanName, pageSize, isDescending, initialSkip),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -1028,7 +819,7 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
 
     /**
      * List ScalingPlanPooledSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1048,7 +839,7 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
 
     /**
      * List ScalingPlanPooledSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param pageSize Number of items per page.
@@ -1061,13 +852,8 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return scalingPlanPooledScheduleList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ScalingPlanPooledScheduleInner> listAsync(
-        String resourceGroupName,
-        String scalingPlanName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
+    private PagedFlux<ScalingPlanPooledScheduleInner> listAsync(String resourceGroupName, String scalingPlanName,
+        Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, scalingPlanName, pageSize, isDescending, initialSkip, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -1075,7 +861,7 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
 
     /**
      * List ScalingPlanPooledSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1093,7 +879,7 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
 
     /**
      * List ScalingPlanPooledSchedules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scalingPlanName The name of the scaling plan.
      * @param pageSize Number of items per page.
@@ -1106,22 +892,16 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return scalingPlanPooledScheduleList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ScalingPlanPooledScheduleInner> list(
-        String resourceGroupName,
-        String scalingPlanName,
-        Integer pageSize,
-        Boolean isDescending,
-        Integer initialSkip,
-        Context context) {
+    public PagedIterable<ScalingPlanPooledScheduleInner> list(String resourceGroupName, String scalingPlanName,
+        Integer pageSize, Boolean isDescending, Integer initialSkip, Context context) {
         return new PagedIterable<>(
             listAsync(resourceGroupName, scalingPlanName, pageSize, isDescending, initialSkip, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1133,31 +913,20 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ScalingPlanPooledScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ScalingPlanPooledScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1165,29 +934,19 @@ public final class ScalingPlanPooledSchedulesClientImpl implements ScalingPlanPo
      * @return scalingPlanPooledScheduleList along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ScalingPlanPooledScheduleInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ScalingPlanPooledScheduleInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -44,12 +44,14 @@ public final class NetworkFunctionDefinitionGroupsGetWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         NetworkFunctionDefinitionGroup response = manager.networkFunctionDefinitionGroups()
-            .getWithResponse("unin", "udbchaqdtv", "ec", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("unin", "udbchaqdtv", "ec", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("tx", response.location());
         Assertions.assertEquals("zna", response.tags().get("xbannovvoxc"));

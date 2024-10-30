@@ -33,8 +33,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class TimeZoneClientTestBase extends TestProxyTestBase {
     TimeZoneClientBuilder getTimeZoneAsyncClientBuilder(HttpClient httpClient, TimeZoneServiceVersion serviceVersion) {
-        TimeZoneClientBuilder builder = modifyBuilder(httpClient, new TimeZoneClientBuilder()).serviceVersion(
-            serviceVersion);
+        TimeZoneClientBuilder builder
+            = modifyBuilder(httpClient, new TimeZoneClientBuilder()).serviceVersion(serviceVersion);
 
         if (interceptorManager.isPlaybackMode()) {
             builder.endpoint("https://localhost:8080");
@@ -52,8 +52,8 @@ public class TimeZoneClientTestBase extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
 
-            customMatchers.add(
-                new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
+            customMatchers
+                .add(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("subscription-key")));
             interceptorManager.addMatchers(customMatchers);
         }
 
@@ -65,15 +65,14 @@ public class TimeZoneClientTestBase extends TestProxyTestBase {
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .timezoneClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         } else if (interceptorManager.isPlaybackMode()) {
-            builder.credential(new MockTokenCredential())
-                .timezoneClientId("timezoneClientId");
+            builder.credential(new MockTokenCredential()).timezoneClientId("timezoneClientId");
         } else {
             builder.credential(new AzurePowerShellCredentialBuilder().build())
                 .timezoneClientId(Configuration.getGlobalConfiguration().get("MAPS_CLIENT_ID"));
         }
 
-        return builder.httpClient(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
+        return builder
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
     }
 
     static void validateGetTimezoneById(TimeZoneResult actual, TimeZoneResult expected) {

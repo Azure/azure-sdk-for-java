@@ -14,10 +14,7 @@ import com.azure.resourcemanager.resources.fluent.models.LocationInner;
  * An immutable client-side representation of an Azure location.
  */
 @Fluent
-public interface Location extends
-        Indexable,
-        HasInnerModel<LocationInner>,
-        HasName {
+public interface Location extends Indexable, HasInnerModel<LocationInner>, HasName {
     /**
      * @return the subscription UUID
      */

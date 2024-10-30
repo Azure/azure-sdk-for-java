@@ -90,24 +90,19 @@ public final class KeyValueImpl implements KeyValue, KeyValue.Definition, KeyVal
     }
 
     public KeyValue create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeyValues()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, configStoreName, keyValueName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeyValues()
+            .createOrUpdateWithResponse(resourceGroupName, configStoreName, keyValueName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public KeyValue create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeyValues()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, configStoreName, keyValueName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeyValues()
+            .createOrUpdateWithResponse(resourceGroupName, configStoreName, keyValueName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -122,29 +117,24 @@ public final class KeyValueImpl implements KeyValue, KeyValue.Definition, KeyVal
     }
 
     public KeyValue apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeyValues()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, configStoreName, keyValueName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeyValues()
+            .createOrUpdateWithResponse(resourceGroupName, configStoreName, keyValueName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public KeyValue apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeyValues()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, configStoreName, keyValueName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeyValues()
+            .createOrUpdateWithResponse(resourceGroupName, configStoreName, keyValueName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    KeyValueImpl(
-        KeyValueInner innerObject, com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
+    KeyValueImpl(KeyValueInner innerObject,
+        com.azure.resourcemanager.appconfiguration.AppConfigurationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -153,22 +143,18 @@ public final class KeyValueImpl implements KeyValue, KeyValue.Definition, KeyVal
     }
 
     public KeyValue refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeyValues()
-                .getWithResponse(resourceGroupName, configStoreName, keyValueName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeyValues()
+            .getWithResponse(resourceGroupName, configStoreName, keyValueName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public KeyValue refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getKeyValues()
-                .getWithResponse(resourceGroupName, configStoreName, keyValueName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getKeyValues()
+            .getWithResponse(resourceGroupName, configStoreName, keyValueName, context)
+            .getValue();
         return this;
     }
 

@@ -98,13 +98,15 @@ public class KeyVaultClientTest {
             String certificateListResultStringNext = JsonConverterUtil.toJson(certificateListResultNext);
 
             utilities.when(() -> HttpUtil.get(notNull(), anyMap())).thenReturn(certificateListResultString);
-            utilities.when(() -> HttpUtil.get(eq("fakeNextLint"), anyMap())).thenReturn(certificateListResultStringNext);
+            utilities.when(() -> HttpUtil.get(eq("fakeNextLint"), anyMap()))
+                .thenReturn(certificateListResultStringNext);
 
             KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
             List<String> result = keyVaultClient.getAliases();
 
             assertEquals(result.size(), 3);
-            assertTrue(result.containsAll(Arrays.asList("fakeCertificateItem1", "fakeCertificateItem2", "fakeCertificateItem3")));
+            assertTrue(result
+                .containsAll(Arrays.asList("fakeCertificateItem1", "fakeCertificateItem2", "fakeCertificateItem3")));
         }
     }
 
@@ -133,13 +135,12 @@ public class KeyVaultClientTest {
         String tenantId = System.getProperty("azure.keyvault.tenant-id");
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
-        boolean disableChallengeResourceVerification =
-            Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
+        boolean disableChallengeResourceVerification
+            = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
 
         return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, null,
             disableChallengeResourceVerification);
     }
-
 
     @Test
     public void testCacheToken() {
@@ -152,7 +153,8 @@ public class KeyVaultClientTest {
             AccessToken cacheToken = new AccessToken();
             cacheToken.setExpiresIn(300); // 300 seconds.
 
-            tokenUtilMockedStatic.when(() -> AccessTokenUtil.getAccessToken(anyString(), anyString())).thenReturn(cacheToken);
+            tokenUtilMockedStatic.when(() -> AccessTokenUtil.getAccessToken(anyString(), anyString()))
+                .thenReturn(cacheToken);
 
             CertificateItem fakeCertificateItem = new CertificateItem();
             fakeCertificateItem.setId("certificates/fakeCertificateItem");
@@ -161,14 +163,14 @@ public class KeyVaultClientTest {
             certificateListResult.setValue(Arrays.asList(fakeCertificateItem));
 
             String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
-            httpUtilMockedStatic.when(() -> HttpUtil.get(anyString(), anyMap())).thenReturn(certificateListResultString);
+            httpUtilMockedStatic.when(() -> HttpUtil.get(anyString(), anyMap()))
+                .thenReturn(certificateListResultString);
 
             KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, "");
             keyVaultClient.getAliases();
             keyVaultClient.getAliases(); // Get aliases the second time.
 
-            tokenUtilMockedStatic.verify(() ->
-                AccessTokenUtil.getAccessToken(anyString(), anyString()), times(1));
+            tokenUtilMockedStatic.verify(() -> AccessTokenUtil.getAccessToken(anyString(), anyString()), times(1));
         }
     }
 
@@ -183,7 +185,8 @@ public class KeyVaultClientTest {
             AccessToken cacheToken = new AccessToken();
             cacheToken.setExpiresIn(50); // 50 seconds.
 
-            tokenUtilMockedStatic.when(() -> AccessTokenUtil.getAccessToken(anyString(), anyString())).thenReturn(cacheToken);
+            tokenUtilMockedStatic.when(() -> AccessTokenUtil.getAccessToken(anyString(), anyString()))
+                .thenReturn(cacheToken);
 
             CertificateItem fakeCertificateItem = new CertificateItem();
             fakeCertificateItem.setId("certificates/fakeCertificateItem");
@@ -192,14 +195,14 @@ public class KeyVaultClientTest {
             certificateListResult.setValue(Arrays.asList(fakeCertificateItem));
 
             String certificateListResultString = JsonConverterUtil.toJson(certificateListResult);
-            httpUtilMockedStatic.when(() -> HttpUtil.get(anyString(), anyMap())).thenReturn(certificateListResultString);
+            httpUtilMockedStatic.when(() -> HttpUtil.get(anyString(), anyMap()))
+                .thenReturn(certificateListResultString);
 
             KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, "");
             keyVaultClient.getAliases();
             keyVaultClient.getAliases(); // Get aliases the second time.
 
-            tokenUtilMockedStatic.verify(() ->
-                AccessTokenUtil.getAccessToken(anyString(), anyString()), times(2));
+            tokenUtilMockedStatic.verify(() -> AccessTokenUtil.getAccessToken(anyString(), anyString()), times(2));
         }
     }
 }

@@ -33,8 +33,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PrivateEndpointConnection> listByConfigurationStore(
-        String resourceGroupName, String configStoreName, Context context);
+    PagedIterable<PrivateEndpointConnection> listByConfigurationStore(String resourceGroupName, String configStoreName,
+        Context context);
 
     /**
      * Gets the specified private endpoint connection associated with the configuration store.
@@ -49,8 +49,8 @@ public interface PrivateEndpointConnections {
      * @return the specified private endpoint connection associated with the configuration store along with {@link
      *     Response}.
      */
-    Response<PrivateEndpointConnection> getWithResponse(
-        String resourceGroupName, String configStoreName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnection> getWithResponse(String resourceGroupName, String configStoreName,
+        String privateEndpointConnectionName, Context context);
 
     /**
      * Gets the specified private endpoint connection associated with the configuration store.
@@ -63,8 +63,8 @@ public interface PrivateEndpointConnections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified private endpoint connection associated with the configuration store.
      */
-    PrivateEndpointConnection get(
-        String resourceGroupName, String configStoreName, String privateEndpointConnectionName);
+    PrivateEndpointConnection get(String resourceGroupName, String configStoreName,
+        String privateEndpointConnectionName);
 
     /**
      * Deletes a private endpoint connection.
@@ -89,8 +89,8 @@ public interface PrivateEndpointConnections {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String configStoreName, String privateEndpointConnectionName, Context context);
+    void delete(String resourceGroupName, String configStoreName, String privateEndpointConnectionName,
+        Context context);
 
     /**
      * Gets the specified private endpoint connection associated with the configuration store.

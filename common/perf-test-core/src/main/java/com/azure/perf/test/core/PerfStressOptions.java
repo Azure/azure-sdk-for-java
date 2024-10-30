@@ -1,6 +1,3 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
-
 package com.azure.perf.test.core;
 
 import com.azure.core.util.ExpandableStringEnum;
@@ -22,7 +19,10 @@ public class PerfStressOptions {
     @Parameter(names = { "--insecure" }, description = "Allow untrusted SSL server certs")
     private boolean insecure = false;
 
-    @Parameter(names = { "-x", "--test-proxies" }, splitter = SemiColonSplitter.class, description = "URIs of TestProxy Servers (separated by ';')")
+    @Parameter(
+        names = { "-x", "--test-proxies" },
+        splitter = SemiColonSplitter.class,
+        description = "URIs of TestProxy Servers (separated by ';')")
     private List<URI> testProxies;
 
     @Parameter(names = { "-i", "--iterations" }, description = "Number of iterations of main test loop")
@@ -46,8 +46,28 @@ public class PerfStressOptions {
     @Parameter(names = { "-c", "--count" }, description = "Number of items")
     private int count = 10;
 
-    @Parameter(names = { "--http-client" }, description = "The http client to use. Can be netty, okhttp, jdk, vertx or a full name of HttpClientProvider implementation class.")
+    @Parameter(
+        names = { "--http-client" },
+        description = "The http client to use. Can be netty, okhttp, jdk, vertx or a full name of HttpClientProvider implementation class.")
     private String httpClient = HttpClientType.NETTY.toString();
+
+    @Parameter(
+        names = { "--completeablefuture" },
+        help = true,
+        description = "Runs the performance test asynchronously as a CompletableFuture.")
+    private boolean completeablefuture = false;
+
+    @Parameter(
+        names = { "--executorservice" },
+        help = true,
+        description = "Runs the performance test asynchronously with an ExecutorService.")
+    private boolean executorservice = false;
+
+    @Parameter(
+        names = { "--virtualthread" },
+        help = true,
+        description = "Runs the performance test asynchronously with a virtual thread.")
+    private boolean virtualthread = false;
 
     /**
      * Get the configured count for performance test.
@@ -127,6 +147,30 @@ public class PerfStressOptions {
      */
     public boolean isSync() {
         return sync;
+    }
+
+    /**
+     * Get the configured CompletableFuture status for performance test.
+     * @return The CompletableFuture status.
+     */
+    public boolean isCompletableFuture() {
+        return completeablefuture;
+    }
+
+    /**
+     * Get the configured ExecutorService status for performance test.
+     * @return The ExecutorService status.
+     */
+    public boolean isExecutorService() {
+        return executorservice;
+    }
+
+    /**
+     * Get the configured VirtualThread status for performance test.
+     * @return The VirtualThread status.
+     */
+    public boolean isVirtualThread() {
+        return virtualthread;
     }
 
     /**

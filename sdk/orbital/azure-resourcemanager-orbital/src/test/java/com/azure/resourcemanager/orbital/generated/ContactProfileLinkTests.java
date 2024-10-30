@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ContactProfileLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContactProfileLink model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"pgacftadehxnlty\",\"polarization\":\"RHCP\",\"direction\":\"Downlink\",\"gainOverTemperature\":41.25828,\"eirpdBW\":40.80089,\"channels\":[{\"name\":\"esnzwde\",\"centerFrequencyMHz\":20.416248,\"bandwidthMHz\":13.988966,\"endPoint\":{\"ipAddress\":\"vorxzdmohct\",\"endPointName\":\"qvudwxdndnvowgu\",\"port\":\"jugwdkcglhsl\",\"protocol\":\"TCP\"},\"modulationConfiguration\":\"dyggdtjixhbku\",\"demodulationConfiguration\":\"qweykhmenev\",\"encodingConfiguration\":\"exfwhy\",\"decodingConfiguration\":\"i\"},{\"name\":\"vyvdcs\",\"centerFrequencyMHz\":88.85056,\"bandwidthMHz\":33.80321,\"endPoint\":{\"ipAddress\":\"nnaamdectehfiqsc\",\"endPointName\":\"eypvhezrkg\",\"port\":\"hcjrefovgmk\",\"protocol\":\"TCP\"},\"modulationConfiguration\":\"eyyvxyqjpkcat\",\"demodulationConfiguration\":\"ngj\",\"encodingConfiguration\":\"cczsq\",\"decodingConfiguration\":\"hvmdajvnysounq\"},{\"name\":\"canoaeupf\",\"centerFrequencyMHz\":75.87674,\"bandwidthMHz\":97.245766,\"endPoint\":{\"ipAddress\":\"ltrpmopj\",\"endPointName\":\"cma\",\"port\":\"u\",\"protocol\":\"TCP\"},\"modulationConfiguration\":\"hfuiuaodsfc\",\"demodulationConfiguration\":\"vxodpu\",\"encodingConfiguration\":\"myzydagfuaxbez\",\"decodingConfiguration\":\"uokktwhrdxwz\"},{\"name\":\"wqsmbsur\",\"centerFrequencyMHz\":17.700737,\"bandwidthMHz\":85.49606,\"endPoint\":{\"ipAddress\":\"moryocfsfksym\",\"endPointName\":\"dystkiiuxhqyud\",\"port\":\"o\",\"protocol\":\"TCP\"},\"modulationConfiguration\":\"nbpoczvyifqrvkdv\",\"demodulationConfiguration\":\"llr\",\"encodingConfiguration\":\"vdfwatkpn\",\"decodingConfiguration\":\"lexxbczwtru\"}]}")
-                .toObject(ContactProfileLink.class);
+        ContactProfileLink model = BinaryData.fromString(
+            "{\"name\":\"pgacftadehxnlty\",\"polarization\":\"RHCP\",\"direction\":\"Downlink\",\"gainOverTemperature\":41.25828,\"eirpdBW\":40.80089,\"channels\":[{\"name\":\"esnzwde\",\"centerFrequencyMHz\":20.416248,\"bandwidthMHz\":13.988966,\"endPoint\":{\"ipAddress\":\"vorxzdmohct\",\"endPointName\":\"qvudwxdndnvowgu\",\"port\":\"jugwdkcglhsl\",\"protocol\":\"TCP\"},\"modulationConfiguration\":\"dyggdtjixhbku\",\"demodulationConfiguration\":\"qweykhmenev\",\"encodingConfiguration\":\"exfwhy\",\"decodingConfiguration\":\"i\"},{\"name\":\"vyvdcs\",\"centerFrequencyMHz\":88.85056,\"bandwidthMHz\":33.80321,\"endPoint\":{\"ipAddress\":\"nnaamdectehfiqsc\",\"endPointName\":\"eypvhezrkg\",\"port\":\"hcjrefovgmk\",\"protocol\":\"TCP\"},\"modulationConfiguration\":\"eyyvxyqjpkcat\",\"demodulationConfiguration\":\"ngj\",\"encodingConfiguration\":\"cczsq\",\"decodingConfiguration\":\"hvmdajvnysounq\"},{\"name\":\"canoaeupf\",\"centerFrequencyMHz\":75.87674,\"bandwidthMHz\":97.245766,\"endPoint\":{\"ipAddress\":\"ltrpmopj\",\"endPointName\":\"cma\",\"port\":\"u\",\"protocol\":\"TCP\"},\"modulationConfiguration\":\"hfuiuaodsfc\",\"demodulationConfiguration\":\"vxodpu\",\"encodingConfiguration\":\"myzydagfuaxbez\",\"decodingConfiguration\":\"uokktwhrdxwz\"},{\"name\":\"wqsmbsur\",\"centerFrequencyMHz\":17.700737,\"bandwidthMHz\":85.49606,\"endPoint\":{\"ipAddress\":\"moryocfsfksym\",\"endPointName\":\"dystkiiuxhqyud\",\"port\":\"o\",\"protocol\":\"TCP\"},\"modulationConfiguration\":\"nbpoczvyifqrvkdv\",\"demodulationConfiguration\":\"llr\",\"encodingConfiguration\":\"vdfwatkpn\",\"decodingConfiguration\":\"lexxbczwtru\"}]}")
+            .toObject(ContactProfileLink.class);
         Assertions.assertEquals("pgacftadehxnlty", model.name());
         Assertions.assertEquals(Polarization.RHCP, model.polarization());
         Assertions.assertEquals(Direction.DOWNLINK, model.direction());
@@ -42,72 +40,56 @@ public final class ContactProfileLinkTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContactProfileLink model =
-            new ContactProfileLink()
-                .withName("pgacftadehxnlty")
-                .withPolarization(Polarization.RHCP)
-                .withDirection(Direction.DOWNLINK)
-                .withGainOverTemperature(41.25828F)
-                .withEirpdBW(40.80089F)
-                .withChannels(
-                    Arrays
-                        .asList(
-                            new ContactProfileLinkChannel()
-                                .withName("esnzwde")
-                                .withCenterFrequencyMHz(20.416248f)
-                                .withBandwidthMHz(13.988966f)
-                                .withEndPoint(
-                                    new EndPoint()
-                                        .withIpAddress("vorxzdmohct")
-                                        .withEndPointName("qvudwxdndnvowgu")
-                                        .withPort("jugwdkcglhsl")
-                                        .withProtocol(Protocol.TCP))
-                                .withModulationConfiguration("dyggdtjixhbku")
-                                .withDemodulationConfiguration("qweykhmenev")
-                                .withEncodingConfiguration("exfwhy")
-                                .withDecodingConfiguration("i"),
-                            new ContactProfileLinkChannel()
-                                .withName("vyvdcs")
-                                .withCenterFrequencyMHz(88.85056f)
-                                .withBandwidthMHz(33.80321f)
-                                .withEndPoint(
-                                    new EndPoint()
-                                        .withIpAddress("nnaamdectehfiqsc")
-                                        .withEndPointName("eypvhezrkg")
-                                        .withPort("hcjrefovgmk")
-                                        .withProtocol(Protocol.TCP))
-                                .withModulationConfiguration("eyyvxyqjpkcat")
-                                .withDemodulationConfiguration("ngj")
-                                .withEncodingConfiguration("cczsq")
-                                .withDecodingConfiguration("hvmdajvnysounq"),
-                            new ContactProfileLinkChannel()
-                                .withName("canoaeupf")
-                                .withCenterFrequencyMHz(75.87674f)
-                                .withBandwidthMHz(97.245766f)
-                                .withEndPoint(
-                                    new EndPoint()
-                                        .withIpAddress("ltrpmopj")
-                                        .withEndPointName("cma")
-                                        .withPort("u")
-                                        .withProtocol(Protocol.TCP))
-                                .withModulationConfiguration("hfuiuaodsfc")
-                                .withDemodulationConfiguration("vxodpu")
-                                .withEncodingConfiguration("myzydagfuaxbez")
-                                .withDecodingConfiguration("uokktwhrdxwz"),
-                            new ContactProfileLinkChannel()
-                                .withName("wqsmbsur")
-                                .withCenterFrequencyMHz(17.700737f)
-                                .withBandwidthMHz(85.49606f)
-                                .withEndPoint(
-                                    new EndPoint()
-                                        .withIpAddress("moryocfsfksym")
-                                        .withEndPointName("dystkiiuxhqyud")
-                                        .withPort("o")
-                                        .withProtocol(Protocol.TCP))
-                                .withModulationConfiguration("nbpoczvyifqrvkdv")
-                                .withDemodulationConfiguration("llr")
-                                .withEncodingConfiguration("vdfwatkpn")
-                                .withDecodingConfiguration("lexxbczwtru")));
+        ContactProfileLink model = new ContactProfileLink().withName("pgacftadehxnlty")
+            .withPolarization(Polarization.RHCP)
+            .withDirection(Direction.DOWNLINK)
+            .withGainOverTemperature(41.25828F)
+            .withEirpdBW(40.80089F)
+            .withChannels(Arrays.asList(
+                new ContactProfileLinkChannel().withName("esnzwde")
+                    .withCenterFrequencyMHz(20.416248f)
+                    .withBandwidthMHz(13.988966f)
+                    .withEndPoint(new EndPoint().withIpAddress("vorxzdmohct")
+                        .withEndPointName("qvudwxdndnvowgu")
+                        .withPort("jugwdkcglhsl")
+                        .withProtocol(Protocol.TCP))
+                    .withModulationConfiguration("dyggdtjixhbku")
+                    .withDemodulationConfiguration("qweykhmenev")
+                    .withEncodingConfiguration("exfwhy")
+                    .withDecodingConfiguration("i"),
+                new ContactProfileLinkChannel().withName("vyvdcs")
+                    .withCenterFrequencyMHz(88.85056f)
+                    .withBandwidthMHz(33.80321f)
+                    .withEndPoint(new EndPoint().withIpAddress("nnaamdectehfiqsc")
+                        .withEndPointName("eypvhezrkg")
+                        .withPort("hcjrefovgmk")
+                        .withProtocol(Protocol.TCP))
+                    .withModulationConfiguration("eyyvxyqjpkcat")
+                    .withDemodulationConfiguration("ngj")
+                    .withEncodingConfiguration("cczsq")
+                    .withDecodingConfiguration("hvmdajvnysounq"),
+                new ContactProfileLinkChannel().withName("canoaeupf")
+                    .withCenterFrequencyMHz(75.87674f)
+                    .withBandwidthMHz(97.245766f)
+                    .withEndPoint(new EndPoint().withIpAddress("ltrpmopj")
+                        .withEndPointName("cma")
+                        .withPort("u")
+                        .withProtocol(Protocol.TCP))
+                    .withModulationConfiguration("hfuiuaodsfc")
+                    .withDemodulationConfiguration("vxodpu")
+                    .withEncodingConfiguration("myzydagfuaxbez")
+                    .withDecodingConfiguration("uokktwhrdxwz"),
+                new ContactProfileLinkChannel().withName("wqsmbsur")
+                    .withCenterFrequencyMHz(17.700737f)
+                    .withBandwidthMHz(85.49606f)
+                    .withEndPoint(new EndPoint().withIpAddress("moryocfsfksym")
+                        .withEndPointName("dystkiiuxhqyud")
+                        .withPort("o")
+                        .withProtocol(Protocol.TCP))
+                    .withModulationConfiguration("nbpoczvyifqrvkdv")
+                    .withDemodulationConfiguration("llr")
+                    .withEncodingConfiguration("vdfwatkpn")
+                    .withDecodingConfiguration("lexxbczwtru")));
         model = BinaryData.fromObject(model).toObject(ContactProfileLink.class);
         Assertions.assertEquals("pgacftadehxnlty", model.name());
         Assertions.assertEquals(Polarization.RHCP, model.polarization());

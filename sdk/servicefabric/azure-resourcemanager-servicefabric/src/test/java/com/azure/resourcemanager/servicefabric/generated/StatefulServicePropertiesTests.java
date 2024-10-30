@@ -58,17 +58,26 @@ public final class StatefulServicePropertiesTests {
                 new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY)
                     .withServiceName("t")))
             .withServiceLoadMetrics(Arrays.asList(
-                new ServiceLoadMetricDescription().withName("mfpgv").withWeight(ServiceLoadMetricWeight.HIGH)
-                    .withPrimaryDefaultLoad(299337354).withSecondaryDefaultLoad(1000390440).withDefaultLoad(753407395),
-                new ServiceLoadMetricDescription().withName("aqfxss").withWeight(ServiceLoadMetricWeight.ZERO)
-                    .withPrimaryDefaultLoad(1174161651).withSecondaryDefaultLoad(1781178234)
+                new ServiceLoadMetricDescription().withName("mfpgv")
+                    .withWeight(ServiceLoadMetricWeight.HIGH)
+                    .withPrimaryDefaultLoad(299337354)
+                    .withSecondaryDefaultLoad(1000390440)
+                    .withDefaultLoad(753407395),
+                new ServiceLoadMetricDescription().withName("aqfxss")
+                    .withWeight(ServiceLoadMetricWeight.ZERO)
+                    .withPrimaryDefaultLoad(1174161651)
+                    .withSecondaryDefaultLoad(1781178234)
                     .withDefaultLoad(1417218644)))
             .withServicePlacementPolicies(
                 Arrays.asList(new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
-            .withDefaultMoveCost(MoveCost.MEDIUM).withServiceTypeName("xbkzbzkdvncj")
+            .withDefaultMoveCost(MoveCost.MEDIUM)
+            .withServiceTypeName("xbkzbzkdvncj")
             .withPartitionDescription(new PartitionSchemeDescription())
-            .withServicePackageActivationMode(ArmServicePackageActivationMode.EXCLUSIVE_PROCESS).withServiceDnsName("r")
-            .withHasPersistedState(true).withTargetReplicaSetSize(1117462910).withMinReplicaSetSize(394204922)
+            .withServicePackageActivationMode(ArmServicePackageActivationMode.EXCLUSIVE_PROCESS)
+            .withServiceDnsName("r")
+            .withHasPersistedState(true)
+            .withTargetReplicaSetSize(1117462910)
+            .withMinReplicaSetSize(394204922)
             .withReplicaRestartWaitDuration(OffsetDateTime.parse("2021-08-30T01:40:48Z"))
             .withQuorumLossWaitDuration(OffsetDateTime.parse("2021-03-14T13:52:20Z"))
             .withStandByReplicaKeepDuration(OffsetDateTime.parse("2021-09-22T23:43:14Z"));

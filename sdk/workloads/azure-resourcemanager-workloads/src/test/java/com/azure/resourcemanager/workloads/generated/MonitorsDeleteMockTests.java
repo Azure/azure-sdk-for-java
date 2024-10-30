@@ -30,37 +30,27 @@ public final class MonitorsDeleteMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"smgbzahgxqdl\",\"name\":\"tlt\",\"status\":\"ap\",\"percentComplete\":8.252752,\"startTime\":\"2021-01-18T16:57:33Z\",\"endTime\":\"2021-06-30T17:25:30Z\",\"operations\":[{\"id\":\"mznnbsoqeqalarvl\",\"name\":\"un\",\"status\":\"tgfebwln\",\"percentComplete\":36.78445,\"startTime\":\"2021-02-09T00:26:12Z\",\"endTime\":\"2021-12-01T07:49:22Z\",\"operations\":[]}]}";
+        String responseStr
+            = "{\"id\":\"smgbzahgxqdl\",\"name\":\"tlt\",\"status\":\"ap\",\"percentComplete\":8.252752,\"startTime\":\"2021-01-18T16:57:33Z\",\"endTime\":\"2021-06-30T17:25:30Z\",\"operations\":[{\"id\":\"mznnbsoqeqalarvl\",\"name\":\"un\",\"status\":\"tgfebwln\",\"percentComplete\":36.78445,\"startTime\":\"2021-02-09T00:26:12Z\",\"endTime\":\"2021-12-01T07:49:22Z\",\"operations\":[]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationStatusResult response =
-            manager.monitors().delete("aosrxuz", "oamktcq", com.azure.core.util.Context.NONE);
+        OperationStatusResult response
+            = manager.monitors().delete("aosrxuz", "oamktcq", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("smgbzahgxqdl", response.id());
         Assertions.assertEquals("tlt", response.name());

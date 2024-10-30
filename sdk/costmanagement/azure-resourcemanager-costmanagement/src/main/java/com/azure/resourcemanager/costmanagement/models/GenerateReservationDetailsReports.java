@@ -54,8 +54,8 @@ public interface GenerateReservationDetailsReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the long running operation.
      */
-    OperationStatus byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate);
+    OperationStatus byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate);
 
     /**
      * Generates the reservations details report for provided date range asynchronously by billing profile. The
@@ -73,6 +73,6 @@ public interface GenerateReservationDetailsReports {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the long running operation.
      */
-    OperationStatus byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context);
+    OperationStatus byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate, Context context);
 }

@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CreateOrUpdateTrackedResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateOrUpdateTrackedResourceProperties model =
-            BinaryData
-                .fromString("{\"location\":\"b\",\"tags\":{\"wgcu\":\"mutduqktaps\"}}")
+        CreateOrUpdateTrackedResourceProperties model
+            = BinaryData.fromString("{\"location\":\"b\",\"tags\":{\"wgcu\":\"mutduqktaps\"}}")
                 .toObject(CreateOrUpdateTrackedResourceProperties.class);
         Assertions.assertEquals("b", model.location());
         Assertions.assertEquals("mutduqktaps", model.tags().get("wgcu"));
@@ -23,8 +22,8 @@ public final class CreateOrUpdateTrackedResourcePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateOrUpdateTrackedResourceProperties model =
-            new CreateOrUpdateTrackedResourceProperties().withLocation("b").withTags(mapOf("wgcu", "mutduqktaps"));
+        CreateOrUpdateTrackedResourceProperties model
+            = new CreateOrUpdateTrackedResourceProperties().withLocation("b").withTags(mapOf("wgcu", "mutduqktaps"));
         model = BinaryData.fromObject(model).toObject(CreateOrUpdateTrackedResourceProperties.class);
         Assertions.assertEquals("b", model.location());
         Assertions.assertEquals("mutduqktaps", model.tags().get("wgcu"));

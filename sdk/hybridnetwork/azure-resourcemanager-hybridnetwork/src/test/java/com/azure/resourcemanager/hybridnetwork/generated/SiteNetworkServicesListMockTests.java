@@ -47,9 +47,10 @@ public final class SiteNetworkServicesListMockTests {
             return Mono.just(httpResponse);
         }));
 
-        HybridNetworkManager manager = HybridNetworkManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        HybridNetworkManager manager = HybridNetworkManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SiteNetworkService> response
             = manager.siteNetworkServices().list(com.azure.core.util.Context.NONE);
@@ -61,8 +62,13 @@ public final class SiteNetworkServicesListMockTests {
         Assertions.assertEquals("qiuasigrows",
             response.iterator().next().properties().managedResourceGroupConfiguration().location());
         Assertions.assertEquals("equygdjboqgrmtq", response.iterator().next().properties().siteReference().id());
-        Assertions.assertEquals("ccek", response.iterator().next().properties()
-            .desiredStateConfigurationGroupValueReferences().get("ztdsbeza").id());
+        Assertions.assertEquals("ccek",
+            response.iterator()
+                .next()
+                .properties()
+                .desiredStateConfigurationGroupValueReferences()
+                .get("ztdsbeza")
+                .id());
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
         Assertions.assertEquals(SkuName.BASIC, response.iterator().next().sku().name());
     }

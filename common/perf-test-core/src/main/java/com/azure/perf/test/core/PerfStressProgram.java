@@ -11,12 +11,16 @@ import reactor.core.scheduler.Schedulers;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -40,7 +44,8 @@ public class PerfStressProgram {
     private static double getOperationsPerSecond(PerfTestBase<?>[] tests) {
         double operationsPerSecond = 0.0D;
         for (PerfTestBase<?> test : tests) {
-            double temp = test.getCompletedOperations() / (((double) test.lastCompletionNanoTime) / NANOSECONDS_PER_SECOND);
+            double temp
+                = test.getCompletedOperations() / (((double) test.lastCompletionNanoTime) / NANOSECONDS_PER_SECOND);
             if (!Double.isNaN(temp)) {
                 operationsPerSecond += temp;
             }
@@ -70,8 +75,7 @@ public class PerfStressProgram {
             throw new RuntimeException(e);
         }
 
-        String[] commands = classList.stream().map(c -> getCommandName(c.getSimpleName()))
-            .toArray(i -> new String[i]);
+        String[] commands = classList.stream().map(c -> getCommandName(c.getSimpleName())).toArray(i -> new String[i]);
 
         PerfStressOptions[] options = classList.stream().map(c -> {
             try {
@@ -156,7 +160,8 @@ public class PerfStressProgram {
                 }
 
                 if (options.getWarmup() > 0) {
-                    runTests(tests, options.isSync(), options.getParallel(), options.getWarmup(), "Warmup");
+                    runTests(tests, options.isSync(), options.isCompletableFuture(), options.isExecutorService(),
+                        options.isVirtualThread(), options.getParallel(), options.getWarmup(), "Warmup");
                 }
 
                 for (int i = 0; i < options.getIterations(); i++) {
@@ -164,7 +169,8 @@ public class PerfStressProgram {
                     if (options.getIterations() > 1) {
                         title += " " + (i + 1);
                     }
-                    runTests(tests, options.isSync(), options.getParallel(), options.getDuration(), title);
+                    runTests(tests, options.isSync(), options.isCompletableFuture(), options.isExecutorService(),
+                        startedPlayback, options.getParallel(), options.getDuration(), title);
                 }
             } finally {
                 try {
@@ -207,8 +213,7 @@ public class PerfStressProgram {
             Map<String, Object> parameters = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
             for (Method method : options.getClass().getMethods()) {
                 String methodName = method.getName();
-                if ((!methodName.startsWith("get") && !methodName.startsWith("is"))
-                    || methodName.equals("getClass")) {
+                if ((!methodName.startsWith("get") && !methodName.startsWith("is")) || methodName.equals("getClass")) {
                     continue;
                 }
 
@@ -253,19 +258,24 @@ public class PerfStressProgram {
      *
      * @param tests the performance tests to be executed.
      * @param sync indicate if synchronous test should be run.
+     * @param completableFuture indicate if completable future test should be run.
+     * @param executorService indicate if executor service test should be run.
+     * @param virtualThread indicate if virtual thread test should be run.
      * @param parallel the number of parallel threads to run the performance test on.
      * @param durationSeconds the duration for which performance test should be run on.
      * @param title the title of the performance tests.
+     *
      * @throws RuntimeException if the execution fails.
      * @throws IllegalStateException if zero operations completed of the performance test.
      */
-    public static void runTests(PerfTestBase<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
+    public static void runTests(PerfTestBase<?>[] tests, boolean sync, boolean completableFuture,
+        boolean executorService, boolean virtualThread, int parallel, int durationSeconds, String title) {
 
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
-        long[] lastCompleted = new long[]{0};
-        Timer progressStatus = printStatus(
-            "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
+        long[] lastCompleted = new long[] { 0 };
+        Timer progressStatus
+            = printStatus("=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
                 long totalCompleted = getCompletedOperations(tests);
                 long currentCompleted = totalCompleted - lastCompleted[0];
                 double averageCompleted = getOperationsPerSecond(tests);
@@ -288,6 +298,37 @@ public class PerfStressProgram {
                 forkJoinPool.invokeAll(operations);
 
                 forkJoinPool.awaitQuiescence(durationSeconds + 1, TimeUnit.SECONDS);
+            } else if (completableFuture) {
+                List<CompletableFuture<Void>> futures = new LinkedList<>();
+                for (PerfTestBase<?> test : tests) {
+                    futures.add(test.runAllAsyncWithCompletableFuture(endNanoTime));
+                }
+                CompletableFuture<Void> allFutures
+                    = CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
+                allFutures.get(); // Wait for all futures to complete
+            } else if (executorService) {
+                // when updated to concurrentTaskLimit, the performance drops?
+                ExecutorService executor = Executors.newFixedThreadPool(tests.length);
+                try {
+                    for (PerfTestBase<?> test : tests) {
+                        Runnable task = test.runAllAsyncWithExecutorService(endNanoTime);
+                        executor.submit(task);
+                    }
+                } finally {
+                    executor.shutdown();
+                    try {
+                        if (!executor.awaitTermination(durationSeconds + 1, TimeUnit.SECONDS)) {
+                            executor.shutdownNow();
+                        }
+                    } catch (InterruptedException e) {
+                        executor.shutdownNow();
+                        Thread.currentThread().interrupt();
+                    }
+                }
+            } else if (virtualThread) {
+                for (PerfTestBase<?> test : tests) {
+                    test.runAllAsyncWithVirtualThread(endNanoTime);
+                }
             } else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
@@ -324,17 +365,16 @@ public class PerfStressProgram {
         double weightedAverageSeconds = totalOperations / operationsPerSecond;
 
         System.out.printf("Completed %,d operations in a weighted-average of %ss (%s ops/s, %s s/op)%n",
-            totalOperations,
-            NumberFormatter.Format(weightedAverageSeconds, 4),
-            NumberFormatter.Format(operationsPerSecond, 4),
-            NumberFormatter.Format(secondsPerOperation, 4));
+            totalOperations, NumberFormatter.Format(weightedAverageSeconds, 4),
+            NumberFormatter.Format(operationsPerSecond, 4), NumberFormatter.Format(secondsPerOperation, 4));
         System.out.println();
     }
 
-    private static Timer printStatus(String header, Supplier<Object> status, boolean newLine, boolean printFinalStatus) {
+    private static Timer printStatus(String header, Supplier<Object> status, boolean newLine,
+        boolean printFinalStatus) {
         System.out.println(header);
 
-        boolean[] needsExtraNewline = new boolean[]{false};
+        boolean[] needsExtraNewline = new boolean[] { false };
 
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(new TimerTask() {

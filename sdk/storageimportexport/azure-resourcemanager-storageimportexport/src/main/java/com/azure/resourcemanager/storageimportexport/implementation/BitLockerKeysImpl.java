@@ -19,8 +19,7 @@ public final class BitLockerKeysImpl implements BitLockerKeys {
 
     private final com.azure.resourcemanager.storageimportexport.StorageImportExportManager serviceManager;
 
-    public BitLockerKeysImpl(
-        BitLockerKeysClient innerClient,
+    public BitLockerKeysImpl(BitLockerKeysClient innerClient,
         com.azure.resourcemanager.storageimportexport.StorageImportExportManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class BitLockerKeysImpl implements BitLockerKeys {
 
     public PagedIterable<DriveBitLockerKey> list(String jobName, String resourceGroupName) {
         PagedIterable<DriveBitLockerKeyInner> inner = this.serviceClient().list(jobName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DriveBitLockerKeyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DriveBitLockerKeyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DriveBitLockerKey> list(String jobName, String resourceGroupName, Context context) {
         PagedIterable<DriveBitLockerKeyInner> inner = this.serviceClient().list(jobName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new DriveBitLockerKeyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DriveBitLockerKeyImpl(inner1, this.manager()));
     }
 
     private BitLockerKeysClient serviceClient() {

@@ -45,15 +45,21 @@ public final class TransformationsCreateOrReplaceWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        StreamAnalyticsManager manager = StreamAnalyticsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        StreamAnalyticsManager manager = StreamAnalyticsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Transformation response = manager.transformations().define("vgtrdcnifmzzs")
-            .withExistingStreamingjob("hihfrbbcevqagtlt", "hlfkqojpy").withName("fwafqrouda")
+        Transformation response = manager.transformations()
+            .define("vgtrdcnifmzzs")
+            .withExistingStreamingjob("hihfrbbcevqagtlt", "hlfkqojpy")
+            .withName("fwafqrouda")
             .withStreamingUnits(599707965)
             .withValidStreamingUnits(Arrays.asList(1235749271, 1977061992, 44176896, 1995074524))
-            .withQuery("prafwgckhoc").withIfMatch("cdyuibhmfdnbzyd").withIfNoneMatch("f").create();
+            .withQuery("prafwgckhoc")
+            .withIfMatch("cdyuibhmfdnbzyd")
+            .withIfNoneMatch("f")
+            .create();
 
         Assertions.assertEquals("qlqhycavodg", response.id());
         Assertions.assertEquals("tg", response.name());

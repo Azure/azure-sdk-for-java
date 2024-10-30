@@ -29,10 +29,8 @@ public class WindowsVMDiskEncryptionConfiguration
      * @param aadClientId client ID of an AAD application which has permission to the key vault
      * @param aadSecret client secret corresponding to the aadClientId
      */
-    public WindowsVMDiskEncryptionConfiguration(String keyVaultId,
-                                                String vaultUri,
-                                                String aadClientId,
-                                                String aadSecret) {
+    public WindowsVMDiskEncryptionConfiguration(String keyVaultId, String vaultUri, String aadClientId,
+        String aadSecret) {
         super(keyVaultId, vaultUri, aadClientId, aadSecret, null);
     }
 
@@ -46,10 +44,8 @@ public class WindowsVMDiskEncryptionConfiguration
      * @param aadSecret client secret corresponding to the aadClientId
      * @param azureEnvironment Azure environment
      */
-    public WindowsVMDiskEncryptionConfiguration(String keyVaultId,
-                                                String aadClientId,
-                                                String aadSecret,
-                                                AzureEnvironment azureEnvironment) {
+    public WindowsVMDiskEncryptionConfiguration(String keyVaultId, String aadClientId, String aadSecret,
+        AzureEnvironment azureEnvironment) {
         super(keyVaultId, null, aadClientId, aadSecret, azureEnvironment);
     }
 
@@ -70,8 +66,7 @@ public class WindowsVMDiskEncryptionConfiguration
      * @param keyVaultId the resource ID of the key vault to store the disk encryption key
      * @param vaultUri URI of the key vault data-plane endpoint
      */
-    public WindowsVMDiskEncryptionConfiguration(String keyVaultId,
-                                                String vaultUri) {
+    public WindowsVMDiskEncryptionConfiguration(String keyVaultId, String vaultUri) {
         super(keyVaultId, vaultUri, null);
     }
 
@@ -83,8 +78,7 @@ public class WindowsVMDiskEncryptionConfiguration
      * @param keyVaultId the resource ID of the key vault to store the disk encryption key
      * @param azureEnvironment Azure environment
      */
-    public WindowsVMDiskEncryptionConfiguration(String keyVaultId,
-                                                AzureEnvironment azureEnvironment) {
+    public WindowsVMDiskEncryptionConfiguration(String keyVaultId, AzureEnvironment azureEnvironment) {
         super(keyVaultId, null, azureEnvironment);
     }
 

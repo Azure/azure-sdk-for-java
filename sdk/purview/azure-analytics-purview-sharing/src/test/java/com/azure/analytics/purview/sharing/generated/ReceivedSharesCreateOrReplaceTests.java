@@ -16,14 +16,12 @@ public final class ReceivedSharesCreateOrReplaceTests extends PurviewShareClient
     @Test
     @Disabled
     public void testReceivedSharesCreateOrReplaceTests() {
-        BinaryData receivedShare =
-                BinaryData.fromString(
-                        "{\"properties\":{\"displayName\":\"updatedReceivedShareName\",\"sink\":{\"properties\":{\"containerName\":\"receivingContainer\",\"folder\":\"receivingFolder\",\"mountPath\":\"path\"},\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/4D8FD81D-431D-4B1D-B46C-C770CFC034FC/resourceGroups/contoso-rg/providers/Microsoft.Storage/storageAccounts/blobAccount\"}}},\"shareKind\":\"InPlace\"}");
+        BinaryData receivedShare = BinaryData.fromString(
+            "{\"properties\":{\"displayName\":\"updatedReceivedShareName\",\"sink\":{\"properties\":{\"containerName\":\"receivingContainer\",\"folder\":\"receivingFolder\",\"mountPath\":\"path\"},\"storeKind\":\"BlobAccount\",\"storeReference\":{\"type\":\"ArmResourceReference\",\"referenceName\":\"/subscriptions/4D8FD81D-431D-4B1D-B46C-C770CFC034FC/resourceGroups/contoso-rg/providers/Microsoft.Storage/storageAccounts/blobAccount\"}}},\"shareKind\":\"InPlace\"}");
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response =
-                receivedSharesClient.beginCreateOrReplaceReceivedShare(
-                        "0D67B9C8-A6C6-4990-9EDE-12EA059D3002", receivedShare, requestOptions);
-        Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+        SyncPoller<BinaryData, BinaryData> response = setPlaybackSyncPollerPollInterval(receivedSharesClient
+            .beginCreateOrReplaceReceivedShare("0D67B9C8-A6C6-4990-9EDE-12EA059D3002", receivedShare, requestOptions));
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+            response.waitForCompletion().getStatus());
     }
 }

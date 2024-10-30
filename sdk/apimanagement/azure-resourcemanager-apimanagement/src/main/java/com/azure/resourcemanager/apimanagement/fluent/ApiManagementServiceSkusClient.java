@@ -41,6 +41,6 @@ public interface ApiManagementServiceSkusClient {
      * @return all available SKU for a given API Management service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ResourceSkuResultInner> listAvailableServiceSkus(
-        String resourceGroupName, String serviceName, Context context);
+    PagedIterable<ResourceSkuResultInner> listAvailableServiceSkus(String resourceGroupName, String serviceName,
+        Context context);
 }

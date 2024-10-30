@@ -38,8 +38,8 @@ public interface PrivateLinkResourcesClient {
      * @return list of Private link resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PrivateLinkResourceInner> listByResource(
-        String resourceGroupName, String farmBeatsResourceName, Context context);
+    PagedIterable<PrivateLinkResourceInner> listByResource(String resourceGroupName, String farmBeatsResourceName,
+        Context context);
 
     /**
      * Get Private link resource object.
@@ -68,6 +68,6 @@ public interface PrivateLinkResourcesClient {
      * @return private link resource object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String farmBeatsResourceName, String subResourceName, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String farmBeatsResourceName,
+        String subResourceName, Context context);
 }

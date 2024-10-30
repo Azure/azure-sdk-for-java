@@ -24,12 +24,8 @@ import java.util.Map;
 
 /** An immutable client-side representation of an Azure SQL Server Database. */
 @Fluent
-public interface SqlDatabase
-    extends ExternalChildResource<SqlDatabase, SqlServer>,
-        HasInnerModel<DatabaseInner>,
-        HasResourceGroup,
-        Refreshable<SqlDatabase>,
-        Updatable<SqlDatabase.Update> {
+public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServer>, HasInnerModel<DatabaseInner>,
+    HasResourceGroup, Refreshable<SqlDatabase>, Updatable<SqlDatabase.Update> {
 
     /** @return name of the SQL Server to which this database belongs */
     String sqlServerName();
@@ -139,8 +135,8 @@ public interface SqlDatabase
      * @param fileName the exported database file name
      * @return response object
      */
-    SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword exportTo(
-        StorageAccount storageAccount, String containerName, String fileName);
+    SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+        exportTo(StorageAccount storageAccount, String containerName, String fileName);
 
     /**
      * Exports the current database to a new storage account and relative path.
@@ -150,8 +146,8 @@ public interface SqlDatabase
      * @param fileName the exported database file name
      * @return response object
      */
-    SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword exportTo(
-        Creatable<StorageAccount> storageAccountCreatable, String containerName, String fileName);
+    SqlDatabaseExportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+        exportTo(Creatable<StorageAccount> storageAccountCreatable, String containerName, String fileName);
 
     /**
      * Imports into the current database from a specified URI path; the current database must be empty.
@@ -170,8 +166,8 @@ public interface SqlDatabase
      * @param fileName the exported database file name
      * @return response object
      */
-    SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword importBacpac(
-        StorageAccount storageAccount, String containerName, String fileName);
+    SqlDatabaseImportRequest.DefinitionStages.WithAuthenticationTypeAndLoginPassword
+        importBacpac(StorageAccount storageAccount, String containerName, String fileName);
 
     /**
      * Begins a definition for a security alert policy.
@@ -189,7 +185,8 @@ public interface SqlDatabase
      * @param policyName the name of the security alert policy
      * @return the first stage of the SqlDatabaseThreatDetectionPolicy definition
      */
-    SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank defineThreatDetectionPolicy(SecurityAlertPolicyName policyName);
+    SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank
+        defineThreatDetectionPolicy(SecurityAlertPolicyName policyName);
 
     /**
      * Gets a SQL database threat detection policy.
@@ -257,19 +254,17 @@ public interface SqlDatabase
      *
      * @param <ParentT> the stage of the parent definition to return to after attaching this definition
      */
-    interface SqlDatabaseDefinition<ParentT>
-        extends SqlDatabase.DefinitionStages.Blank<ParentT>,
-            SqlDatabase.DefinitionStages.WithAllDifferentOptions<ParentT>,
-            SqlDatabase.DefinitionStages.WithElasticPoolName<ParentT>,
-            SqlDatabase.DefinitionStages.WithRestorableDroppedDatabase<ParentT>,
-            SqlDatabase.DefinitionStages.WithImportFrom<ParentT>,
-            SqlDatabase.DefinitionStages.WithStorageKey<ParentT>,
-            SqlDatabase.DefinitionStages.WithAuthentication<ParentT>,
-            SqlDatabase.DefinitionStages.WithRestorePointDatabase<ParentT>,
-            SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
-            SqlDatabase.DefinitionStages.WithCreateMode<ParentT>,
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT>,
-            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
+    interface SqlDatabaseDefinition<ParentT> extends SqlDatabase.DefinitionStages.Blank<ParentT>,
+        SqlDatabase.DefinitionStages.WithAllDifferentOptions<ParentT>,
+        SqlDatabase.DefinitionStages.WithElasticPoolName<ParentT>,
+        SqlDatabase.DefinitionStages.WithRestorableDroppedDatabase<ParentT>,
+        SqlDatabase.DefinitionStages.WithImportFrom<ParentT>, SqlDatabase.DefinitionStages.WithStorageKey<ParentT>,
+        SqlDatabase.DefinitionStages.WithAuthentication<ParentT>,
+        SqlDatabase.DefinitionStages.WithRestorePointDatabase<ParentT>,
+        SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
+        SqlDatabase.DefinitionStages.WithCreateMode<ParentT>,
+        SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT>,
+        SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
     }
 
     /** Grouping of all the SQL Database definition stages. */
@@ -287,15 +282,14 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAllDifferentOptions<ParentT>
-            extends SqlDatabase.DefinitionStages.WithElasticPoolName<ParentT>,
-                SqlDatabase.DefinitionStages.WithRestorableDroppedDatabase<ParentT>,
-                SqlDatabase.DefinitionStages.WithImportFrom<ParentT>,
-                SqlDatabase.DefinitionStages.WithRestorePointDatabase<ParentT>,
-                SqlDatabase.DefinitionStages.WithSampleDatabase<ParentT>,
-                SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
-                SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>,
-                SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> {
+        interface WithAllDifferentOptions<ParentT> extends SqlDatabase.DefinitionStages.WithElasticPoolName<ParentT>,
+            SqlDatabase.DefinitionStages.WithRestorableDroppedDatabase<ParentT>,
+            SqlDatabase.DefinitionStages.WithImportFrom<ParentT>,
+            SqlDatabase.DefinitionStages.WithRestorePointDatabase<ParentT>,
+            SqlDatabase.DefinitionStages.WithSampleDatabase<ParentT>,
+            SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
+            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>,
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> {
         }
 
         /**
@@ -345,10 +339,10 @@ public interface SqlDatabase
          */
         interface WithExistingDatabaseAfterElasticPool<ParentT>
             extends SqlDatabase.DefinitionStages.WithImportFromAfterElasticPool<ParentT>,
-                SqlDatabase.DefinitionStages.WithRestorePointDatabaseAfterElasticPool<ParentT>,
-                SqlDatabase.DefinitionStages.WithSampleDatabaseAfterElasticPool<ParentT>,
-                SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
-                SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT> {
+            SqlDatabase.DefinitionStages.WithRestorePointDatabaseAfterElasticPool<ParentT>,
+            SqlDatabase.DefinitionStages.WithSampleDatabaseAfterElasticPool<ParentT>,
+            SqlDatabase.DefinitionStages.WithSourceDatabaseId<ParentT>,
+            SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT> {
         }
 
         /**
@@ -373,8 +367,8 @@ public interface SqlDatabase
              * @param fileName the exported database file name
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAuthentication<ParentT> importFrom(
-                StorageAccount storageAccount, String containerName, String fileName);
+            SqlDatabase.DefinitionStages.WithAuthentication<ParentT> importFrom(StorageAccount storageAccount,
+                String containerName, String fileName);
         }
 
         /**
@@ -407,16 +401,16 @@ public interface SqlDatabase
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withSqlAdministratorLoginAndPassword(
-                String administratorLogin, String administratorPassword);
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT>
+                withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> withActiveDirectoryLoginAndPassword(
-                String administratorLogin, String administratorPassword);
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT>
+                withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
         }
 
         /**
@@ -441,8 +435,8 @@ public interface SqlDatabase
              * @param fileName the exported database file name
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT> importFrom(
-                StorageAccount storageAccount, String containerName, String fileName);
+            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT>
+                importFrom(StorageAccount storageAccount, String containerName, String fileName);
         }
 
         /**
@@ -455,15 +449,15 @@ public interface SqlDatabase
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT> withStorageAccessKey(
-                String storageAccessKey);
+            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT>
+                withStorageAccessKey(String storageAccessKey);
 
             /**
              * @param sharedAccessKey the shared access key to use; it must be preceded with a "?."
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT> withSharedAccessKey(
-                String sharedAccessKey);
+            SqlDatabase.DefinitionStages.WithAuthenticationAfterElasticPool<ParentT>
+                withSharedAccessKey(String sharedAccessKey);
         }
 
         /**
@@ -477,16 +471,16 @@ public interface SqlDatabase
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> withSqlAdministratorLoginAndPassword(
-                String administratorLogin, String administratorPassword);
+            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT>
+                withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage
              */
-            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> withActiveDirectoryLoginAndPassword(
-                String administratorLogin, String administratorPassword);
+            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT>
+                withActiveDirectoryLoginAndPassword(String administratorLogin, String administratorPassword);
         }
 
         /**
@@ -504,8 +498,8 @@ public interface SqlDatabase
              * @param restorableDroppedDatabase the restorable dropped database
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> fromRestorableDroppedDatabase(
-                SqlRestorableDroppedDatabase restorableDroppedDatabase);
+            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT>
+                fromRestorableDroppedDatabase(SqlRestorableDroppedDatabase restorableDroppedDatabase);
         }
 
         /**
@@ -520,8 +514,8 @@ public interface SqlDatabase
              * @param restorePoint the restore point
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT> fromRestorePoint(
-                RestorePoint restorePoint);
+            SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT>
+                fromRestorePoint(RestorePoint restorePoint);
 
             /**
              * Creates a new database from a restore point.
@@ -530,8 +524,8 @@ public interface SqlDatabase
              * @param restorePointDateTime date and time to restore from
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT> fromRestorePoint(
-                RestorePoint restorePoint, OffsetDateTime restorePointDateTime);
+            SqlDatabase.DefinitionStages.WithAttachAfterElasticPoolOptions<ParentT>
+                fromRestorePoint(RestorePoint restorePoint, OffsetDateTime restorePointDateTime);
         }
 
         /**
@@ -555,8 +549,8 @@ public interface SqlDatabase
              * @param restorePointDateTime date and time to restore from
              * @return The next stage of the definition.
              */
-            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> fromRestorePoint(
-                RestorePoint restorePoint, OffsetDateTime restorePointDateTime);
+            SqlDatabase.DefinitionStages.WithAttachAllOptions<ParentT> fromRestorePoint(RestorePoint restorePoint,
+                OffsetDateTime restorePointDateTime);
         }
 
         /**
@@ -641,8 +635,8 @@ public interface SqlDatabase
          */
         interface WithAttachAfterElasticPoolOptions<ParentT>
             extends SqlDatabase.DefinitionStages.WithCollationAfterElasticPoolOptions<ParentT>,
-                SqlDatabase.DefinitionStages.WithMaxSizeBytesAfterElasticPoolOptions<ParentT>,
-                SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
+            SqlDatabase.DefinitionStages.WithMaxSizeBytesAfterElasticPoolOptions<ParentT>,
+            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
         }
 
         /**
@@ -720,8 +714,8 @@ public interface SqlDatabase
              * @param maxStorageCapacity the maximum storage capacity
              * @return The next stage of the definition
              */
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withBasicEdition(
-                SqlDatabaseBasicStorage maxStorageCapacity);
+            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>
+                withBasicEdition(SqlDatabaseBasicStorage maxStorageCapacity);
 
             /**
              * Sets a "Standard" edition for the SQL Database.
@@ -729,8 +723,8 @@ public interface SqlDatabase
              * @param serviceObjective edition to be set for database
              * @return The next stage of the definition
              */
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withStandardEdition(
-                SqlDatabaseStandardServiceObjective serviceObjective);
+            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>
+                withStandardEdition(SqlDatabaseStandardServiceObjective serviceObjective);
 
             /**
              * Sets a "Standard" edition and maximum storage capacity for the SQL Database.
@@ -748,8 +742,8 @@ public interface SqlDatabase
              * @param serviceObjective edition to be set for database
              * @return The next stage of the definition
              */
-            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT> withPremiumEdition(
-                SqlDatabasePremiumServiceObjective serviceObjective);
+            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>
+                withPremiumEdition(SqlDatabasePremiumServiceObjective serviceObjective);
 
             /**
              * Sets a "Premium" edition and maximum storage capacity for the SQL Database.
@@ -799,12 +793,10 @@ public interface SqlDatabase
          *
          * @param <ParentT> the stage of the parent definition to return to after attaching this definition
          */
-        interface WithAttachAllOptions<ParentT>
-            extends SqlDatabase.DefinitionStages.WithSku<ParentT>,
-                SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>,
-                SqlDatabase.DefinitionStages.WithCollation<ParentT>,
-                SqlDatabase.DefinitionStages.WithMaxSizeBytes<ParentT>,
-                SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
+        interface WithAttachAllOptions<ParentT> extends SqlDatabase.DefinitionStages.WithSku<ParentT>,
+            SqlDatabase.DefinitionStages.WithEditionDefaults<ParentT>,
+            SqlDatabase.DefinitionStages.WithCollation<ParentT>, SqlDatabase.DefinitionStages.WithMaxSizeBytes<ParentT>,
+            SqlDatabase.DefinitionStages.WithAttachFinal<ParentT> {
         }
 
         /**
@@ -820,12 +812,8 @@ public interface SqlDatabase
     }
 
     /** The template for a SqlDatabase update operation, containing all the settings that can be modified. */
-    interface Update
-        extends UpdateStages.WithEdition,
-            UpdateStages.WithElasticPoolName,
-            UpdateStages.WithMaxSizeBytes,
-            Resource.UpdateWithTags<SqlDatabase.Update>,
-            Appliable<SqlDatabase> {
+    interface Update extends UpdateStages.WithEdition, UpdateStages.WithElasticPoolName, UpdateStages.WithMaxSizeBytes,
+        Resource.UpdateWithTags<SqlDatabase.Update>, Appliable<SqlDatabase> {
     }
 
     /** Grouping of all the SqlDatabase update stages. */
@@ -880,8 +868,8 @@ public interface SqlDatabase
              * @param maxStorageCapacity edition to be set for database
              * @return The next stage of the definition
              */
-            Update withStandardEdition(
-                SqlDatabaseStandardServiceObjective serviceObjective, SqlDatabaseStandardStorage maxStorageCapacity);
+            Update withStandardEdition(SqlDatabaseStandardServiceObjective serviceObjective,
+                SqlDatabaseStandardStorage maxStorageCapacity);
 
             /**
              * Sets a "Premium" edition for the SQL Database.
@@ -898,8 +886,8 @@ public interface SqlDatabase
              * @param maxStorageCapacity edition to be set for database
              * @return The next stage of the definition
              */
-            Update withPremiumEdition(
-                SqlDatabasePremiumServiceObjective serviceObjective, SqlDatabasePremiumStorage maxStorageCapacity);
+            Update withPremiumEdition(SqlDatabasePremiumServiceObjective serviceObjective,
+                SqlDatabasePremiumStorage maxStorageCapacity);
         }
 
         /** The SQL Database definition to set the Max Size in Bytes for database. */

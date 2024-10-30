@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabasePrincipalPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabasePrincipalProperties model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"ybwptda\",\"role\":\"Monitor\",\"tenantId\":\"vvlfntymtp\",\"principalType\":\"Group\",\"tenantName\":\"enazerohzrsqals\",\"principalName\":\"dnwqapfg\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"vessm\"}")
-                .toObject(DatabasePrincipalProperties.class);
+        DatabasePrincipalProperties model = BinaryData.fromString(
+            "{\"principalId\":\"ybwptda\",\"role\":\"Monitor\",\"tenantId\":\"vvlfntymtp\",\"principalType\":\"Group\",\"tenantName\":\"enazerohzrsqals\",\"principalName\":\"dnwqapfg\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"vessm\"}")
+            .toObject(DatabasePrincipalProperties.class);
         Assertions.assertEquals("ybwptda", model.principalId());
         Assertions.assertEquals(DatabasePrincipalRole.MONITOR, model.role());
         Assertions.assertEquals("vvlfntymtp", model.tenantId());
@@ -26,12 +24,10 @@ public final class DatabasePrincipalPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabasePrincipalProperties model =
-            new DatabasePrincipalProperties()
-                .withPrincipalId("ybwptda")
-                .withRole(DatabasePrincipalRole.MONITOR)
-                .withTenantId("vvlfntymtp")
-                .withPrincipalType(PrincipalType.GROUP);
+        DatabasePrincipalProperties model = new DatabasePrincipalProperties().withPrincipalId("ybwptda")
+            .withRole(DatabasePrincipalRole.MONITOR)
+            .withTenantId("vvlfntymtp")
+            .withPrincipalType(PrincipalType.GROUP);
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalProperties.class);
         Assertions.assertEquals("ybwptda", model.principalId());
         Assertions.assertEquals(DatabasePrincipalRole.MONITOR, model.role());

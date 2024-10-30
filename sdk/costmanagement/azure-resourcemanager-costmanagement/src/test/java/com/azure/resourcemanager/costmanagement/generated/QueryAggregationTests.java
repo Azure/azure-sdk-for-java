@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryAggregationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryAggregation model =
-            BinaryData.fromString("{\"name\":\"tddckcb\",\"function\":\"Sum\"}").toObject(QueryAggregation.class);
+        QueryAggregation model
+            = BinaryData.fromString("{\"name\":\"tddckcb\",\"function\":\"Sum\"}").toObject(QueryAggregation.class);
         Assertions.assertEquals("tddckcb", model.name());
         Assertions.assertEquals(FunctionType.SUM, model.function());
     }

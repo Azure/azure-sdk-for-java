@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.VariableUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters supplied to the update variable operation. */
+/**
+ * The parameters supplied to the update variable operation.
+ */
 @Fluent
-public final class VariableUpdateParameters {
+public final class VariableUpdateParameters implements JsonSerializable<VariableUpdateParameters> {
     /*
      * Gets or sets the name of the variable.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Gets or sets the value of the variable.
      */
-    @JsonProperty(value = "properties")
     private VariableUpdateProperties innerProperties;
 
     /**
+     * Creates an instance of VariableUpdateParameters class.
+     */
+    public VariableUpdateParameters() {
+    }
+
+    /**
      * Get the name property: Gets or sets the name of the variable.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -34,7 +44,7 @@ public final class VariableUpdateParameters {
 
     /**
      * Set the name property: Gets or sets the name of the variable.
-     *
+     * 
      * @param name the name value to set.
      * @return the VariableUpdateParameters object itself.
      */
@@ -45,7 +55,7 @@ public final class VariableUpdateParameters {
 
     /**
      * Get the innerProperties property: Gets or sets the value of the variable.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VariableUpdateProperties innerProperties() {
@@ -54,7 +64,7 @@ public final class VariableUpdateParameters {
 
     /**
      * Get the value property: Gets or sets the value of the variable.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -63,7 +73,7 @@ public final class VariableUpdateParameters {
 
     /**
      * Set the value property: Gets or sets the value of the variable.
-     *
+     * 
      * @param value the value value to set.
      * @return the VariableUpdateParameters object itself.
      */
@@ -77,7 +87,7 @@ public final class VariableUpdateParameters {
 
     /**
      * Get the description property: Gets or sets the description of the variable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -86,7 +96,7 @@ public final class VariableUpdateParameters {
 
     /**
      * Set the description property: Gets or sets the description of the variable.
-     *
+     * 
      * @param description the description value to set.
      * @return the VariableUpdateParameters object itself.
      */
@@ -100,12 +110,51 @@ public final class VariableUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VariableUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VariableUpdateParameters if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VariableUpdateParameters.
+     */
+    public static VariableUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VariableUpdateParameters deserializedVariableUpdateParameters = new VariableUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVariableUpdateParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVariableUpdateParameters.innerProperties = VariableUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVariableUpdateParameters;
+        });
     }
 }

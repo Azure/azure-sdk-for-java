@@ -57,8 +57,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
     @Test
     public void canCRUDKubernetesCluster() {
         // enable preview feature of ACR Teleport for AKS
-        Context context = new Context(
-            AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
+        Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
             new HttpHeaders().set("EnableACRTeleport", "true"));
 
         String aksName = generateRandomResourceName("aks", 15);
@@ -75,35 +74,33 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
          */
 
         // create
-        KubernetesCluster kubernetesCluster =
-            containerServiceManager
-                .kubernetesClusters()
-                .define(aksName)
-                .withRegion(Region.US_WEST2)
-                .withExistingResourceGroup(rgName)
-                .withDefaultVersion()
-                .withRootUsername("testaks")
-                .withSshKey(SSH_KEY)
-                .withSystemAssignedManagedServiceIdentity()
-                .defineAgentPool(agentPoolName)
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
-                    .withAgentPoolVirtualMachineCount(1)
-                    .withOSDiskSizeInGB(30)
-                    .withOSDiskType(OSDiskType.EPHEMERAL)
-                    .withKubeletDiskType(KubeletDiskType.TEMPORARY)
-                    .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                    .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                    .withTag("pool.name", agentPoolName)
-                    .attach()
-                .defineAgentPool(agentPoolName1)
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
-                    .withAgentPoolVirtualMachineCount(1)
-                    .withTag("pool.name", agentPoolName1)
-                    .attach()
-                .withDnsPrefix("mp1" + dnsPrefix)
-                .withTag("tag1", "value1")
-                .withAgentPoolResourceGroup(agentPoolResourceGroupName)
-                .create(context);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_WEST2)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(agentPoolName)
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withOSDiskSizeInGB(30)
+            .withOSDiskType(OSDiskType.EPHEMERAL)
+            .withKubeletDiskType(KubeletDiskType.TEMPORARY)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .withTag("pool.name", agentPoolName)
+            .attach()
+            .defineAgentPool(agentPoolName1)
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withTag("pool.name", agentPoolName1)
+            .attach()
+            .withDnsPrefix("mp1" + dnsPrefix)
+            .withTag("tag1", "value1")
+            .withAgentPoolResourceGroup(agentPoolResourceGroupName)
+            .create(context);
 
         Assertions.assertNotNull(kubernetesCluster.id());
         Assertions.assertEquals(Region.US_WEST2, kubernetesCluster.region());
@@ -111,7 +108,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(2, kubernetesCluster.agentPools().size());
         Assertions.assertEquals(agentPoolResourceGroupName, kubernetesCluster.agentPoolResourceGroup());
 
-        Assertions.assertEquals(agentPoolResourceGroupName, resourceManager.resourceGroups().getByName(agentPoolResourceGroupName).name());
+        Assertions.assertEquals(agentPoolResourceGroupName,
+            resourceManager.resourceGroups().getByName(agentPoolResourceGroupName).name());
 
         KubernetesClusterAgentPool agentPool = kubernetesCluster.agentPools().get(agentPoolName);
         Assertions.assertNotNull(agentPool);
@@ -151,32 +149,30 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         nodeTaints.add("key=value:NoSchedule");
 
         // update
-        kubernetesCluster =
-            kubernetesCluster
-                .update()
-                .updateAgentPool(agentPoolName1)
-                    .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                    .withAgentPoolVirtualMachineCount(2)
-                    .withKubeletDiskType(KubeletDiskType.OS)
-                    .withoutTag("pool.name")
-                    .withTags(Collections.singletonMap("state", "updated"))
-                    .parent()
-                .defineAgentPool(agentPoolName2)
-                    .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
-                    .withAgentPoolVirtualMachineCount(1)
-                    .withOSDiskSizeInGB(30)
-                    .withAgentPoolMode(AgentPoolMode.USER)
-                    .withOSDiskType(OSDiskType.MANAGED)
-                    .withKubeletDiskType(KubeletDiskType.TEMPORARY)
-                    .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                    .withNodeLabels(Collections.unmodifiableMap(nodeLables))
-                    .withNodeTaints(Collections.unmodifiableList(nodeTaints))
-                    .withTags(Collections.singletonMap("state", "created"))
-                    .attach()
-                .withTag("tag2", "value2")
-                .withTag("tag3", "value3")
-                .withoutTag("tag1")
-                .apply(context);
+        kubernetesCluster = kubernetesCluster.update()
+            .updateAgentPool(agentPoolName1)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .withAgentPoolVirtualMachineCount(2)
+            .withKubeletDiskType(KubeletDiskType.OS)
+            .withoutTag("pool.name")
+            .withTags(Collections.singletonMap("state", "updated"))
+            .parent()
+            .defineAgentPool(agentPoolName2)
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withOSDiskSizeInGB(30)
+            .withAgentPoolMode(AgentPoolMode.USER)
+            .withOSDiskType(OSDiskType.MANAGED)
+            .withKubeletDiskType(KubeletDiskType.TEMPORARY)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withNodeLabels(Collections.unmodifiableMap(nodeLables))
+            .withNodeTaints(Collections.unmodifiableList(nodeTaints))
+            .withTags(Collections.singletonMap("state", "created"))
+            .attach()
+            .withTag("tag2", "value2")
+            .withTag("tag3", "value3")
+            .withoutTag("tag1")
+            .apply(context);
 
         Assertions.assertEquals(3, kubernetesCluster.agentPools().size());
 
@@ -201,13 +197,13 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertFalse(kubernetesCluster.tags().containsKey("tag1"));
 
         // preview feature
-//        // stop agent pool
-//        agentPool.stop();
-//        Assertions.assertEquals(Code.STOPPED, agentPool.powerState().code());
-//
-//        // start agent pool
-//        agentPool.start();
-//        Assertions.assertEquals(Code.RUNNING, agentPool.powerState().code());
+        //        // stop agent pool
+        //        agentPool.stop();
+        //        Assertions.assertEquals(Code.STOPPED, agentPool.powerState().code());
+        //
+        //        // start agent pool
+        //        agentPool.start();
+        //        Assertions.assertEquals(Code.RUNNING, agentPool.powerState().code());
     }
 
     @Test
@@ -227,34 +223,35 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         nodeTaints.add("key=value:NoSchedule");
 
         // create cluster
-        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
             .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withSystemAssignedManagedServiceIdentity()
             // zone redundancy
             .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(3)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .withAvailabilityZones(1, 2, 3)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(3)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .withAvailabilityZones(1, 2, 3)
+            .attach()
             // auto-scaling
             // labels and taints
             .defineAgentPool(agentPoolName1)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAutoScaling(1, 3)
-                .withNodeLabels(Collections.unmodifiableMap(nodeLables))
-                .withNodeTaints(Collections.unmodifiableList(nodeTaints))
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAutoScaling(1, 3)
+            .withNodeLabels(Collections.unmodifiableMap(nodeLables))
+            .withNodeTaints(Collections.unmodifiableList(nodeTaints))
+            .attach()
             // number of nodes = 0
             .defineAgentPool(agentPoolName2)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
-                .withAgentPoolVirtualMachineCount(0)
-                .withMaxPodsCount(10)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+            .withAgentPoolVirtualMachineCount(0)
+            .withMaxPodsCount(10)
+            .attach()
             .withDnsPrefix("mp1" + dnsPrefix)
             .withAutoScalerProfile(new ManagedClusterPropertiesAutoScalerProfile().withScanInterval("30s"))
             .create();
@@ -284,11 +281,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(10, agentPoolProfile2.maximumPodsPerNode());
 
         // disable auto-scaling
-        kubernetesCluster.update()
-            .updateAgentPool(agentPoolName1)
-                .withoutAutoScaling()
-                .parent()
-            .apply();
+        kubernetesCluster.update().updateAgentPool(agentPoolName1).withoutAutoScaling().parent().apply();
 
         Assertions.assertFalse(agentPoolProfile1.isAutoScalingEnabled());
 
@@ -297,9 +290,9 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withoutAgentPool(agentPoolName1)
             .withoutAgentPool(agentPoolName2)
             .defineAgentPool(agentPoolName3)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
-                .withAgentPoolVirtualMachineCount(0)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+            .withAgentPoolVirtualMachineCount(0)
+            .attach()
             .apply();
 
         Assertions.assertEquals(2, kubernetesCluster.agentPools().size());
@@ -317,7 +310,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String agentPoolName2 = generateRandomResourceName("ap2", 10);
 
         // create cluster
-        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
             .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
@@ -325,17 +319,17 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
             .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
             // spot vm
             .defineAgentPool(agentPoolName1)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withSpotPriorityVirtualMachine()
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withSpotPriorityVirtualMachine()
+            .attach()
             .withDnsPrefix("mp1" + dnsPrefix)
             .create();
 
@@ -344,7 +338,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             () -> new String(kubernetesCluster.adminKubeConfigContent(), StandardCharsets.UTF_8));
 
         KubernetesClusterAgentPool agentPoolProfile = kubernetesCluster.agentPools().get(agentPoolName);
-        Assertions.assertTrue(agentPoolProfile.virtualMachinePriority() == null || agentPoolProfile.virtualMachinePriority() == ScaleSetPriority.REGULAR);
+        Assertions.assertTrue(agentPoolProfile.virtualMachinePriority() == null
+            || agentPoolProfile.virtualMachinePriority() == ScaleSetPriority.REGULAR);
 
         KubernetesClusterAgentPool agentPoolProfile1 = kubernetesCluster.agentPools().get(agentPoolName1);
         Assertions.assertEquals(ScaleSetPriority.SPOT, agentPoolProfile1.virtualMachinePriority());
@@ -353,11 +348,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         kubernetesCluster.update()
             .defineAgentPool(agentPoolName2)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withSpotPriorityVirtualMachine(ScaleSetEvictionPolicy.DEALLOCATE)
-                .withVirtualMachineMaximumPrice(100.0)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withSpotPriorityVirtualMachine(ScaleSetEvictionPolicy.DEALLOCATE)
+            .withVirtualMachineMaximumPrice(100.0)
+            .attach()
             .apply();
 
         KubernetesClusterAgentPool agentPoolProfile2 = kubernetesCluster.agentPools().get(agentPoolName2);
@@ -373,7 +368,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String agentPoolName = generateRandomResourceName("ap0", 10);
 
         // create cluster
-        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
             .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
@@ -381,11 +377,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
             .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
             .withDnsPrefix("mp1" + dnsPrefix)
             .create();
 
@@ -416,8 +412,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         final String agentPoolName = generateRandomResourceName("ap0", 10);
 
         // Azure AD integration with Azure RBAC
-        KubernetesCluster kubernetesCluster = containerServiceManager
-            .kubernetesClusters()
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(aksName)
             .withRegion(Region.US_WEST3)
             .withExistingResourceGroup(rgName)
@@ -426,11 +421,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .enableAzureRbac()
             .disableLocalAccounts()
             .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .withOSDiskSizeInGB(30)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V3)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .withOSDiskSizeInGB(30)
+            .attach()
             .withDnsPrefix("mp1" + dnsPrefix)
             .create();
 
@@ -444,7 +439,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
     public void canListOrchestrators() {
         List<OrchestratorVersionProfile> profiles = containerServiceManager.kubernetesClusters()
             .listOrchestrators(Region.US_WEST3, ContainerServiceResourceTypes.MANAGED_CLUSTERS)
-            .stream().collect(Collectors.toList());
+            .stream()
+            .collect(Collectors.toList());
         Assertions.assertFalse(profiles.isEmpty());
         Assertions.assertEquals("Kubernetes", profiles.iterator().next().orchestratorType());
     }
@@ -457,7 +453,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String agentPoolName1 = generateRandomResourceName("ap1", 10);
 
         // create cluster
-        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
             .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
@@ -465,17 +462,16 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
             .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
             .withDnsPrefix("mp1" + dnsPrefix)
             .create();
 
         Accepted<AgentPool> acceptedAgentPool = kubernetesCluster.beginCreateAgentPool(agentPoolName1,
-            new AgentPoolData()
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            new AgentPoolData().withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
                 .withAgentPoolMode(AgentPoolMode.USER)
                 .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
                 .withAgentPoolVirtualMachineCount(1));
@@ -504,7 +500,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String agentPoolName2 = generateRandomResourceName("ap2", 10);
 
         // create cluster
-        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters().define(aksName)
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
             .withRegion(Region.US_SOUTH_CENTRAL)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
@@ -512,18 +509,18 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
             .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
             .defineAgentPool(agentPoolName1)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.USER)
-                .withFipsEnabled() // enable FIPS
-                .attach()
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.USER)
+            .withFipsEnabled() // enable FIPS
+            .attach()
             .withDnsPrefix("mp1" + dnsPrefix)
             .create();
 
@@ -531,8 +528,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertTrue(kubernetesCluster.agentPools().get(agentPoolName1).isFipsEnabled());
 
         // create a new agent pool with FIPS enabled
-        AgentPoolData request = new AgentPoolData()
-            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+        AgentPoolData request = new AgentPoolData().withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
             .withAgentPoolVirtualMachineCount(1)
             .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
             .withAgentPoolMode(AgentPoolMode.USER)
@@ -550,7 +546,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(generateRandomResourceName("aks", 15))
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withExistingResourceGroup(rgName)
             .withDefaultVersion()
             .withRootUsername("testaks")
@@ -574,9 +570,9 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(generateRandomResourceName("aks", 15))
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withExistingResourceGroup(rgName)
-            .withVersion("1.27.9")
+            .withVersion("1.29.7")
             .withRootUsername("testaks")
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
@@ -590,11 +586,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .create();
 
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.27.9", kubernetesCluster.version());
+        Assertions.assertEquals("1.29.7", kubernetesCluster.version());
 
-        kubernetesCluster.update().withVersion("1.28.5").apply();
+        kubernetesCluster.update().withVersion("1.30.3").apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.28.5", kubernetesCluster.version());
+        Assertions.assertEquals("1.30.3", kubernetesCluster.version());
     }
 
     @Test
@@ -603,9 +599,9 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(aksName)
-            .withRegion(Region.US_EAST)
+            .withRegion(Region.US_WEST2)
             .withExistingResourceGroup(rgName)
-            .withDefaultVersion()
+            .withVersion("1.30.3")
             .withRootUsername("testaks")
             .withSshKey(SSH_KEY)
             .withSystemAssignedManagedServiceIdentity()
@@ -621,22 +617,26 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         kubernetesCluster.update().withPremiumSku().apply();
         kubernetesCluster.refresh();
         Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.sku().tier());
-        Assertions.assertEquals(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT, kubernetesCluster.innerModel().supportPlan());
+        Assertions.assertEquals(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT,
+            kubernetesCluster.innerModel().supportPlan());
 
         kubernetesCluster.update().withStandardSku().apply();
         kubernetesCluster.refresh();
         Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.sku().tier());
-        Assertions.assertEquals(KubernetesSupportPlan.KUBERNETES_OFFICIAL, kubernetesCluster.innerModel().supportPlan());
+        Assertions.assertEquals(KubernetesSupportPlan.KUBERNETES_OFFICIAL,
+            kubernetesCluster.innerModel().supportPlan());
 
         kubernetesCluster.update().withPremiumSku().apply();
         kubernetesCluster.refresh();
         Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.sku().tier());
-        Assertions.assertEquals(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT, kubernetesCluster.innerModel().supportPlan());
+        Assertions.assertEquals(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT,
+            kubernetesCluster.innerModel().supportPlan());
 
         kubernetesCluster.update().withFreeSku().apply();
         kubernetesCluster.refresh();
         Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.sku().tier());
-        Assertions.assertEquals(KubernetesSupportPlan.KUBERNETES_OFFICIAL, kubernetesCluster.innerModel().supportPlan());
+        Assertions.assertEquals(KubernetesSupportPlan.KUBERNETES_OFFICIAL,
+            kubernetesCluster.innerModel().supportPlan());
     }
 
     @Test
@@ -646,23 +646,23 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String agentPoolName = generateRandomResourceName("ap0", 10);
 
         // create
-        KubernetesCluster kubernetesCluster =
-            containerServiceManager.kubernetesClusters().define(aksName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .withExistingResourceGroup(rgName)
-                .withDefaultVersion()
-                .withRootUsername("testaks")
-                .withSshKey(SSH_KEY)
-                .withSystemAssignedManagedServiceIdentity()
-                .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .attach()
-                .withDnsPrefix("mp1" + dnsPrefix)
-                .disablePublicNetworkAccess()
-                .create();
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(agentPoolName)
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix("mp1" + dnsPrefix)
+            .disablePublicNetworkAccess()
+            .create();
 
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, kubernetesCluster.publicNetworkAccess());
     }
@@ -674,22 +674,22 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String agentPoolName = generateRandomResourceName("ap0", 10);
 
         // create
-        KubernetesCluster kubernetesCluster =
-            containerServiceManager.kubernetesClusters().define(aksName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .withExistingResourceGroup(rgName)
-                .withDefaultVersion()
-                .withRootUsername("testaks")
-                .withSshKey(SSH_KEY)
-                .withSystemAssignedManagedServiceIdentity()
-                .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .attach()
-                .withDnsPrefix("mp1" + dnsPrefix)
-                .create();
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(agentPoolName)
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix("mp1" + dnsPrefix)
+            .create();
 
         kubernetesCluster.update().disablePublicNetworkAccess().apply();
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, kubernetesCluster.publicNetworkAccess());
@@ -705,29 +705,29 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String agentPoolName = generateRandomResourceName("ap0", 10);
 
         // create
-        KubernetesCluster kubernetesCluster =
-            containerServiceManager.kubernetesClusters().define(aksName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .withExistingResourceGroup(rgName)
-                .withDefaultVersion()
-                .withRootUsername("testaks")
-                .withSshKey(SSH_KEY)
-                .withSystemAssignedManagedServiceIdentity()
-                .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .attach()
-                .defineNetworkProfile()
-                .withNetworkPlugin(NetworkPlugin.AZURE)
-                .withNetworkPluginMode(NetworkPluginMode.OVERLAY)
-                .withNetworkPolicy(NetworkPolicy.AZURE)
-                .withNetworkMode(NetworkMode.TRANSPARENT)
-                .withNetworkDataPlan(NetworkDataplane.AZURE)
-                .attach()
-                .withDnsPrefix("mp1" + dnsPrefix)
-                .create();
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_SOUTH_CENTRAL)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(agentPoolName)
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .defineNetworkProfile()
+            .withNetworkPlugin(NetworkPlugin.AZURE)
+            .withNetworkPluginMode(NetworkPluginMode.OVERLAY)
+            .withNetworkPolicy(NetworkPolicy.AZURE)
+            .withNetworkMode(NetworkMode.TRANSPARENT)
+            .withNetworkDataPlan(NetworkDataplane.AZURE)
+            .attach()
+            .withDnsPrefix("mp1" + dnsPrefix)
+            .create();
 
         kubernetesCluster.refresh();
         Assertions.assertEquals(NetworkPlugin.AZURE, kubernetesCluster.networkProfile().networkPlugin());
@@ -736,11 +736,11 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals(NetworkMode.TRANSPARENT, kubernetesCluster.networkProfile().networkMode());
         Assertions.assertEquals(NetworkDataplane.AZURE, kubernetesCluster.networkProfile().networkDataplane());
 
-        kubernetesCluster.update().withNetworkProfile(
-            kubernetesCluster.networkProfile()
+        kubernetesCluster.update()
+            .withNetworkProfile(kubernetesCluster.networkProfile()
                 .withNetworkPolicy(NetworkPolicy.CILIUM)
-                .withNetworkDataplane(NetworkDataplane.CILIUM)
-            ).apply();
+                .withNetworkDataplane(NetworkDataplane.CILIUM))
+            .apply();
 
         kubernetesCluster.refresh();
         Assertions.assertEquals(NetworkPolicy.CILIUM, kubernetesCluster.networkProfile().networkPolicy());

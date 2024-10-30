@@ -24,10 +24,13 @@ public final class A2ACrossClusterMigrationReplicationDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2ACrossClusterMigrationReplicationDetails model = new A2ACrossClusterMigrationReplicationDetails()
-            .withFabricObjectId("sknxrwzawnvsbcf").withPrimaryFabricLocation("agxnvhycvdimw")
-            .withOsType("regzgyufutrwpwer").withVmProtectionState("kzkdhmeott")
-            .withVmProtectionStateDescription("jyosxwwh").withLifecycleId("jtfvpndpmiljpn");
+        A2ACrossClusterMigrationReplicationDetails model
+            = new A2ACrossClusterMigrationReplicationDetails().withFabricObjectId("sknxrwzawnvsbcf")
+                .withPrimaryFabricLocation("agxnvhycvdimw")
+                .withOsType("regzgyufutrwpwer")
+                .withVmProtectionState("kzkdhmeott")
+                .withVmProtectionStateDescription("jyosxwwh")
+                .withLifecycleId("jtfvpndpmiljpn");
         model = BinaryData.fromObject(model).toObject(A2ACrossClusterMigrationReplicationDetails.class);
         Assertions.assertEquals("sknxrwzawnvsbcf", model.fabricObjectId());
         Assertions.assertEquals("agxnvhycvdimw", model.primaryFabricLocation());

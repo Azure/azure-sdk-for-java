@@ -16,9 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
-public class SpringAppsImpl
-    extends ExternalChildResourcesNonCachedImpl<
-        SpringAppImpl, SpringApp, AppResourceInner, SpringServiceImpl, SpringService>
+public class SpringAppsImpl extends
+    ExternalChildResourcesNonCachedImpl<SpringAppImpl, SpringApp, AppResourceInner, SpringServiceImpl, SpringService>
     implements SpringApps {
 
     SpringAppsImpl(SpringServiceImpl parent) {
@@ -42,8 +41,7 @@ public class SpringAppsImpl
 
     @Override
     public Mono<SpringApp> getByNameAsync(String name) {
-        return inner().getAsync(parent().resourceGroupName(), parent().name(), name)
-            .map(this::wrapModel);
+        return inner().getAsync(parent().resourceGroupName(), parent().name(), name).map(this::wrapModel);
     }
 
     @Override

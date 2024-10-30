@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 import java.util.Random;
 
-public class AzureChangeAnalysisManagerTest extends TestBase {
+public class AzureChangeAnalysisManagerTest extends TestProxyTestBase {
 
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_WEST2;
@@ -35,13 +35,11 @@ public class AzureChangeAnalysisManagerTest extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        azureChangeAnalysisManager = AzureChangeAnalysisManager
-            .configure()
+        azureChangeAnalysisManager = AzureChangeAnalysisManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -52,10 +50,7 @@ public class AzureChangeAnalysisManagerTest extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -71,8 +66,8 @@ public class AzureChangeAnalysisManagerTest extends TestBase {
     public void test() {
         // @embedmeStart
         OffsetDateTime nowDateTime = OffsetDateTime.now();
-        Assertions.assertTrue(azureChangeAnalysisManager.changes()
-            .list(nowDateTime.minusWeeks(2), nowDateTime).stream().count() > 0);
+        Assertions.assertTrue(
+            azureChangeAnalysisManager.changes().list(nowDateTime.minusWeeks(2), nowDateTime).stream().count() > 0);
         // @embedmeEnd
     }
 

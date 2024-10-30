@@ -32,46 +32,32 @@ public final class ResourceProvidersCheckSkuAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"kind\":\"petogebjox\",\"type\":\"hvnh\",\"skuName\":\"brqnkkzjcjb\",\"skuAvailable\":true,\"reason\":\"ehvvib\",\"message\":\"jj\"}]}";
+        String responseStr
+            = "{\"value\":[{\"kind\":\"petogebjox\",\"type\":\"hvnh\",\"skuName\":\"brqnkkzjcjb\",\"skuAvailable\":true,\"reason\":\"ehvvib\",\"message\":\"jj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CognitiveServicesManager manager =
-            CognitiveServicesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CognitiveServicesManager manager = CognitiveServicesManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SkuAvailabilityListResult response =
-            manager
-                .resourceProviders()
-                .checkSkuAvailabilityWithResponse(
-                    "u",
-                    new CheckSkuAvailabilityParameter()
-                        .withSkus(Arrays.asList("gqibrtalmetttw"))
-                        .withKind("dslqxihhrmooizqs")
-                        .withType("ypxiutcxap"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        SkuAvailabilityListResult response = manager.resourceProviders()
+            .checkSkuAvailabilityWithResponse("u",
+                new CheckSkuAvailabilityParameter().withSkus(Arrays.asList("gqibrtalmetttw"))
+                    .withKind("dslqxihhrmooizqs")
+                    .withType("ypxiutcxap"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("petogebjox", response.value().get(0).kind());
         Assertions.assertEquals("hvnh", response.value().get(0).type());

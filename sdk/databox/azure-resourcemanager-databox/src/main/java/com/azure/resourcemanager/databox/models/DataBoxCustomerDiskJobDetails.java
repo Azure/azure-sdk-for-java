@@ -77,8 +77,8 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
      * @param importDiskDetailsCollection the importDiskDetailsCollection value to set.
      * @return the DataBoxCustomerDiskJobDetails object itself.
      */
-    public DataBoxCustomerDiskJobDetails withImportDiskDetailsCollection(
-        Map<String, ImportDiskDetails> importDiskDetailsCollection) {
+    public DataBoxCustomerDiskJobDetails
+        withImportDiskDetailsCollection(Map<String, ImportDiskDetails> importDiskDetailsCollection) {
         this.importDiskDetailsCollection = importDiskDetailsCollection;
         return this;
     }
@@ -126,8 +126,8 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
      * @param returnToCustomerPackageDetails the returnToCustomerPackageDetails value to set.
      * @return the DataBoxCustomerDiskJobDetails object itself.
      */
-    public DataBoxCustomerDiskJobDetails withReturnToCustomerPackageDetails(
-        PackageCarrierDetails returnToCustomerPackageDetails) {
+    public DataBoxCustomerDiskJobDetails
+        withReturnToCustomerPackageDetails(PackageCarrierDetails returnToCustomerPackageDetails) {
         this.returnToCustomerPackageDetails = returnToCustomerPackageDetails;
         return this;
     }
@@ -219,24 +219,18 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
     public void validate() {
         super.validate();
         if (importDiskDetailsCollection() != null) {
-            importDiskDetailsCollection()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            importDiskDetailsCollection().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (exportDiskDetailsCollection() != null) {
-            exportDiskDetailsCollection()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            exportDiskDetailsCollection().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (copyProgress() != null) {
             copyProgress().forEach(e -> e.validate());
@@ -245,11 +239,9 @@ public final class DataBoxCustomerDiskJobDetails extends JobDetails {
             deliverToDcPackageDetails().validate();
         }
         if (returnToCustomerPackageDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property returnToCustomerPackageDetails in model"
-                            + " DataBoxCustomerDiskJobDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property returnToCustomerPackageDetails in model"
+                    + " DataBoxCustomerDiskJobDetails"));
         } else {
             returnToCustomerPackageDetails().validate();
         }

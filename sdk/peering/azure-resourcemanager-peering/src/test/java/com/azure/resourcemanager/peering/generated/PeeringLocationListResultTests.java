@@ -6,59 +6,79 @@ package com.azure.resourcemanager.peering.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.peering.fluent.models.PeeringLocationInner;
+import com.azure.resourcemanager.peering.models.DirectPeeringFacility;
+import com.azure.resourcemanager.peering.models.ExchangePeeringFacility;
 import com.azure.resourcemanager.peering.models.Kind;
+import com.azure.resourcemanager.peering.models.PeeringBandwidthOffer;
 import com.azure.resourcemanager.peering.models.PeeringLocationListResult;
+import com.azure.resourcemanager.peering.models.PeeringLocationPropertiesDirect;
+import com.azure.resourcemanager.peering.models.PeeringLocationPropertiesExchange;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class PeeringLocationListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PeeringLocationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"kind\":\"Exchange\",\"properties\":{\"peeringLocation\":\"qyeg\",\"country\":\"lhbxxhejjzzvdud\",\"azureRegion\":\"dslfhotwmcy\"},\"id\":\"pwlbjnpg\",\"name\":\"cftadeh\",\"type\":\"nltyfsoppusuesnz\"},{\"kind\":\"Direct\",\"properties\":{\"peeringLocation\":\"orxzdmohctbqvud\",\"country\":\"dndnvow\",\"azureRegion\":\"jjugwdkcglhslaz\"},\"id\":\"dyggdtjixhbku\",\"name\":\"fqweykhmene\",\"type\":\"fyexfwhy\"},{\"kind\":\"Direct\",\"properties\":{\"peeringLocation\":\"dcsi\",\"country\":\"nnaamdectehfiqsc\",\"azureRegion\":\"ypvhezrkg\"},\"id\":\"hcjrefovgmk\",\"name\":\"sle\",\"type\":\"yvxyqjp\"},{\"kind\":\"Exchange\",\"properties\":{\"peeringLocation\":\"gjcrcczsqpjhvm\",\"country\":\"jvnysounqe\",\"azureRegion\":\"noae\"},\"id\":\"pfhyhl\",\"name\":\"rpmopjmc\",\"type\":\"atuokthfuiu\"}],\"nextLink\":\"dsfcpkvxodpuoz\"}")
-                .toObject(PeeringLocationListResult.class);
-        Assertions.assertEquals(Kind.EXCHANGE, model.value().get(0).kind());
-        Assertions.assertEquals("qyeg", model.value().get(0).peeringLocation());
-        Assertions.assertEquals("lhbxxhejjzzvdud", model.value().get(0).country());
-        Assertions.assertEquals("dslfhotwmcy", model.value().get(0).azureRegion());
-        Assertions.assertEquals("dsfcpkvxodpuoz", model.nextLink());
+        PeeringLocationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"kind\":\"Direct\",\"properties\":{\"direct\":{\"peeringFacilities\":[{},{},{}],\"bandwidthOffers\":[{}]},\"exchange\":{\"peeringFacilities\":[{}]},\"peeringLocation\":\"ysou\",\"country\":\"e\",\"azureRegion\":\"noae\"},\"id\":\"pfhyhl\",\"name\":\"rpmopjmc\",\"type\":\"atuokthfuiu\"},{\"kind\":\"Exchange\",\"properties\":{\"direct\":{\"peeringFacilities\":[{}],\"bandwidthOffers\":[{},{}]},\"exchange\":{\"peeringFacilities\":[{},{}]},\"peeringLocation\":\"uozmyzydagfua\",\"country\":\"ezyiuokktwhrdxw\",\"azureRegion\":\"wqsmbsur\"},\"id\":\"xim\",\"name\":\"ryocfsfksymdd\",\"type\":\"stkiiuxhqyud\"},{\"kind\":\"Exchange\",\"properties\":{\"direct\":{\"peeringFacilities\":[{}],\"bandwidthOffers\":[{},{}]},\"exchange\":{\"peeringFacilities\":[{},{},{},{}]},\"peeringLocation\":\"i\",\"country\":\"rvkdvjsllrm\",\"azureRegion\":\"d\"},\"id\":\"watkpnpulexxb\",\"name\":\"zwtruwiqzbqjvsov\",\"type\":\"yokacspkw\"},{\"kind\":\"Exchange\",\"properties\":{\"direct\":{\"peeringFacilities\":[{},{},{},{}],\"bandwidthOffers\":[{},{},{}]},\"exchange\":{\"peeringFacilities\":[{}]},\"peeringLocation\":\"vvnchrkcc\",\"country\":\"wzjuqk\",\"azureRegion\":\"sa\"},\"id\":\"iwkuofos\",\"name\":\"ghsauuimjmvxied\",\"type\":\"ugidyjrr\"}],\"nextLink\":\"y\"}")
+            .toObject(PeeringLocationListResult.class);
+        Assertions.assertEquals(Kind.DIRECT, model.value().get(0).kind());
+        Assertions.assertEquals("ysou", model.value().get(0).peeringLocation());
+        Assertions.assertEquals("e", model.value().get(0).country());
+        Assertions.assertEquals("noae", model.value().get(0).azureRegion());
+        Assertions.assertEquals("y", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PeeringLocationListResult model =
-            new PeeringLocationListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PeeringLocationInner()
-                                .withKind(Kind.EXCHANGE)
-                                .withPeeringLocation("qyeg")
-                                .withCountry("lhbxxhejjzzvdud")
-                                .withAzureRegion("dslfhotwmcy"),
-                            new PeeringLocationInner()
-                                .withKind(Kind.DIRECT)
-                                .withPeeringLocation("orxzdmohctbqvud")
-                                .withCountry("dndnvow")
-                                .withAzureRegion("jjugwdkcglhslaz"),
-                            new PeeringLocationInner()
-                                .withKind(Kind.DIRECT)
-                                .withPeeringLocation("dcsi")
-                                .withCountry("nnaamdectehfiqsc")
-                                .withAzureRegion("ypvhezrkg"),
-                            new PeeringLocationInner()
-                                .withKind(Kind.EXCHANGE)
-                                .withPeeringLocation("gjcrcczsqpjhvm")
-                                .withCountry("jvnysounqe")
-                                .withAzureRegion("noae")))
-                .withNextLink("dsfcpkvxodpuoz");
+        PeeringLocationListResult model
+            = new PeeringLocationListResult().withValue(Arrays.asList(
+                new PeeringLocationInner().withKind(Kind.DIRECT)
+                    .withDirect(new PeeringLocationPropertiesDirect()
+                        .withPeeringFacilities(Arrays.asList(new DirectPeeringFacility(), new DirectPeeringFacility(),
+                            new DirectPeeringFacility()))
+                        .withBandwidthOffers(Arrays.asList(new PeeringBandwidthOffer())))
+                    .withExchange(new PeeringLocationPropertiesExchange()
+                        .withPeeringFacilities(Arrays.asList(new ExchangePeeringFacility())))
+                    .withPeeringLocation("ysou")
+                    .withCountry("e")
+                    .withAzureRegion("noae"),
+                new PeeringLocationInner().withKind(Kind.EXCHANGE)
+                    .withDirect(new PeeringLocationPropertiesDirect()
+                        .withPeeringFacilities(Arrays.asList(new DirectPeeringFacility()))
+                        .withBandwidthOffers(Arrays.asList(new PeeringBandwidthOffer(), new PeeringBandwidthOffer())))
+                    .withExchange(new PeeringLocationPropertiesExchange().withPeeringFacilities(
+                        Arrays.asList(new ExchangePeeringFacility(), new ExchangePeeringFacility())))
+                    .withPeeringLocation("uozmyzydagfua")
+                    .withCountry("ezyiuokktwhrdxw")
+                    .withAzureRegion("wqsmbsur"),
+                new PeeringLocationInner().withKind(Kind.EXCHANGE)
+                    .withDirect(new PeeringLocationPropertiesDirect()
+                        .withPeeringFacilities(Arrays.asList(new DirectPeeringFacility()))
+                        .withBandwidthOffers(Arrays.asList(new PeeringBandwidthOffer(), new PeeringBandwidthOffer())))
+                    .withExchange(new PeeringLocationPropertiesExchange().withPeeringFacilities(
+                        Arrays.asList(new ExchangePeeringFacility(), new ExchangePeeringFacility(),
+                            new ExchangePeeringFacility(), new ExchangePeeringFacility())))
+                    .withPeeringLocation("i")
+                    .withCountry("rvkdvjsllrm")
+                    .withAzureRegion("d"),
+                new PeeringLocationInner().withKind(Kind.EXCHANGE)
+                    .withDirect(new PeeringLocationPropertiesDirect()
+                        .withPeeringFacilities(Arrays.asList(new DirectPeeringFacility(), new DirectPeeringFacility(),
+                            new DirectPeeringFacility(), new DirectPeeringFacility()))
+                        .withBandwidthOffers(Arrays.asList(new PeeringBandwidthOffer(), new PeeringBandwidthOffer(),
+                            new PeeringBandwidthOffer())))
+                    .withExchange(new PeeringLocationPropertiesExchange()
+                        .withPeeringFacilities(Arrays.asList(new ExchangePeeringFacility())))
+                    .withPeeringLocation("vvnchrkcc")
+                    .withCountry("wzjuqk")
+                    .withAzureRegion("sa")))
+                .withNextLink("y");
         model = BinaryData.fromObject(model).toObject(PeeringLocationListResult.class);
-        Assertions.assertEquals(Kind.EXCHANGE, model.value().get(0).kind());
-        Assertions.assertEquals("qyeg", model.value().get(0).peeringLocation());
-        Assertions.assertEquals("lhbxxhejjzzvdud", model.value().get(0).country());
-        Assertions.assertEquals("dslfhotwmcy", model.value().get(0).azureRegion());
-        Assertions.assertEquals("dsfcpkvxodpuoz", model.nextLink());
+        Assertions.assertEquals(Kind.DIRECT, model.value().get(0).kind());
+        Assertions.assertEquals("ysou", model.value().get(0).peeringLocation());
+        Assertions.assertEquals("e", model.value().get(0).country());
+        Assertions.assertEquals("noae", model.value().get(0).azureRegion());
+        Assertions.assertEquals("y", model.nextLink());
     }
 }

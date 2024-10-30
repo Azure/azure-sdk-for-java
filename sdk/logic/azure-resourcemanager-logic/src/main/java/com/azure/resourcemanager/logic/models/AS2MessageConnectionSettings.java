@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AS2 agreement message connection settings. */
+/**
+ * The AS2 agreement message connection settings.
+ */
 @Fluent
-public final class AS2MessageConnectionSettings {
+public final class AS2MessageConnectionSettings implements JsonSerializable<AS2MessageConnectionSettings> {
     /*
      * The value indicating whether to ignore mismatch in certificate name.
      */
-    @JsonProperty(value = "ignoreCertificateNameMismatch", required = true)
     private boolean ignoreCertificateNameMismatch;
 
     /*
      * The value indicating whether to support HTTP status code 'CONTINUE'.
      */
-    @JsonProperty(value = "supportHttpStatusCodeContinue", required = true)
     private boolean supportHttpStatusCodeContinue;
 
     /*
      * The value indicating whether to keep the connection alive.
      */
-    @JsonProperty(value = "keepHttpConnectionAlive", required = true)
     private boolean keepHttpConnectionAlive;
 
     /*
      * The value indicating whether to unfold the HTTP headers.
      */
-    @JsonProperty(value = "unfoldHttpHeaders", required = true)
     private boolean unfoldHttpHeaders;
 
-    /** Creates an instance of AS2MessageConnectionSettings class. */
+    /**
+     * Creates an instance of AS2MessageConnectionSettings class.
+     */
     public AS2MessageConnectionSettings() {
     }
 
     /**
      * Get the ignoreCertificateNameMismatch property: The value indicating whether to ignore mismatch in certificate
      * name.
-     *
+     * 
      * @return the ignoreCertificateNameMismatch value.
      */
     public boolean ignoreCertificateNameMismatch() {
@@ -51,7 +55,7 @@ public final class AS2MessageConnectionSettings {
     /**
      * Set the ignoreCertificateNameMismatch property: The value indicating whether to ignore mismatch in certificate
      * name.
-     *
+     * 
      * @param ignoreCertificateNameMismatch the ignoreCertificateNameMismatch value to set.
      * @return the AS2MessageConnectionSettings object itself.
      */
@@ -63,7 +67,7 @@ public final class AS2MessageConnectionSettings {
     /**
      * Get the supportHttpStatusCodeContinue property: The value indicating whether to support HTTP status code
      * 'CONTINUE'.
-     *
+     * 
      * @return the supportHttpStatusCodeContinue value.
      */
     public boolean supportHttpStatusCodeContinue() {
@@ -73,7 +77,7 @@ public final class AS2MessageConnectionSettings {
     /**
      * Set the supportHttpStatusCodeContinue property: The value indicating whether to support HTTP status code
      * 'CONTINUE'.
-     *
+     * 
      * @param supportHttpStatusCodeContinue the supportHttpStatusCodeContinue value to set.
      * @return the AS2MessageConnectionSettings object itself.
      */
@@ -84,7 +88,7 @@ public final class AS2MessageConnectionSettings {
 
     /**
      * Get the keepHttpConnectionAlive property: The value indicating whether to keep the connection alive.
-     *
+     * 
      * @return the keepHttpConnectionAlive value.
      */
     public boolean keepHttpConnectionAlive() {
@@ -93,7 +97,7 @@ public final class AS2MessageConnectionSettings {
 
     /**
      * Set the keepHttpConnectionAlive property: The value indicating whether to keep the connection alive.
-     *
+     * 
      * @param keepHttpConnectionAlive the keepHttpConnectionAlive value to set.
      * @return the AS2MessageConnectionSettings object itself.
      */
@@ -104,7 +108,7 @@ public final class AS2MessageConnectionSettings {
 
     /**
      * Get the unfoldHttpHeaders property: The value indicating whether to unfold the HTTP headers.
-     *
+     * 
      * @return the unfoldHttpHeaders value.
      */
     public boolean unfoldHttpHeaders() {
@@ -113,7 +117,7 @@ public final class AS2MessageConnectionSettings {
 
     /**
      * Set the unfoldHttpHeaders property: The value indicating whether to unfold the HTTP headers.
-     *
+     * 
      * @param unfoldHttpHeaders the unfoldHttpHeaders value to set.
      * @return the AS2MessageConnectionSettings object itself.
      */
@@ -124,9 +128,55 @@ public final class AS2MessageConnectionSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("ignoreCertificateNameMismatch", this.ignoreCertificateNameMismatch);
+        jsonWriter.writeBooleanField("supportHttpStatusCodeContinue", this.supportHttpStatusCodeContinue);
+        jsonWriter.writeBooleanField("keepHttpConnectionAlive", this.keepHttpConnectionAlive);
+        jsonWriter.writeBooleanField("unfoldHttpHeaders", this.unfoldHttpHeaders);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AS2MessageConnectionSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AS2MessageConnectionSettings if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AS2MessageConnectionSettings.
+     */
+    public static AS2MessageConnectionSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AS2MessageConnectionSettings deserializedAS2MessageConnectionSettings = new AS2MessageConnectionSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ignoreCertificateNameMismatch".equals(fieldName)) {
+                    deserializedAS2MessageConnectionSettings.ignoreCertificateNameMismatch = reader.getBoolean();
+                } else if ("supportHttpStatusCodeContinue".equals(fieldName)) {
+                    deserializedAS2MessageConnectionSettings.supportHttpStatusCodeContinue = reader.getBoolean();
+                } else if ("keepHttpConnectionAlive".equals(fieldName)) {
+                    deserializedAS2MessageConnectionSettings.keepHttpConnectionAlive = reader.getBoolean();
+                } else if ("unfoldHttpHeaders".equals(fieldName)) {
+                    deserializedAS2MessageConnectionSettings.unfoldHttpHeaders = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAS2MessageConnectionSettings;
+        });
     }
 }

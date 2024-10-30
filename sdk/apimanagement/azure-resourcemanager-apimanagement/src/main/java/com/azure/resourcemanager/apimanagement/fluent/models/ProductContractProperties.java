@@ -94,10 +94,8 @@ public final class ProductContractProperties extends ProductEntityBaseParameters
     public void validate() {
         super.validate();
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model ProductContractProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model ProductContractProperties"));
         }
     }
 

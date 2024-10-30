@@ -48,14 +48,19 @@ public final class DeploymentsCreateOrUpdateWithResponseMockTests {
             return Mono.just(httpResponse);
         }));
 
-        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Deployment response = manager.deployments().define("bizikayuhq")
+        Deployment response = manager.deployments()
+            .define("bizikayuhq")
             .withExistingApi("vncjabudurgk", "kmokz", "jjklff", "mouwqlgzrfzeey")
-            .withProperties(new DeploymentProperties().withTitle("bs").withDescription("bqwrvtldgm")
-                .withEnvironmentId("gvmpipaslthaqfx").withDefinitionId("mwutwbdsre").withState(DeploymentState.INACTIVE)
+            .withProperties(new DeploymentProperties().withTitle("bs")
+                .withDescription("bqwrvtldgm")
+                .withEnvironmentId("gvmpipaslthaqfx")
+                .withDefinitionId("mwutwbdsre")
+                .withState(DeploymentState.INACTIVE)
                 .withServer(new DeploymentServer().withRuntimeUri(Arrays.asList("euyowqkd", "ytisibir")))
                 .withCustomProperties("datapikpz"))
             .create();

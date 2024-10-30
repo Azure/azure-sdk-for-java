@@ -31,10 +31,14 @@ public final class LiftrBaseDataPartnerOrganizationPropertiesUpdateTests {
     public void testSerialize() throws Exception {
         LiftrBaseDataPartnerOrganizationPropertiesUpdate model
             = new LiftrBaseDataPartnerOrganizationPropertiesUpdate().withOrganizationId("gual")
-                .withWorkspaceId("xxhejjzzvd").withOrganizationName("gwdslfhotwm").withWorkspaceName("npwlbjnpg")
-                .withSingleSignOnProperties(new LiftrBaseSingleSignOnProperties()
-                    .withSingleSignOnState(SingleSignOnStates.ENABLE).withEnterpriseAppId("dehxnltyfsoppu")
-                    .withSingleSignOnUrl("esnzwde").withAadDomains(Arrays.asList("vorxzdmohct")));
+                .withWorkspaceId("xxhejjzzvd")
+                .withOrganizationName("gwdslfhotwm")
+                .withWorkspaceName("npwlbjnpg")
+                .withSingleSignOnProperties(
+                    new LiftrBaseSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.ENABLE)
+                        .withEnterpriseAppId("dehxnltyfsoppu")
+                        .withSingleSignOnUrl("esnzwde")
+                        .withAadDomains(Arrays.asList("vorxzdmohct")));
         model = BinaryData.fromObject(model).toObject(LiftrBaseDataPartnerOrganizationPropertiesUpdate.class);
         Assertions.assertEquals("gual", model.organizationId());
         Assertions.assertEquals("xxhejjzzvd", model.workspaceId());

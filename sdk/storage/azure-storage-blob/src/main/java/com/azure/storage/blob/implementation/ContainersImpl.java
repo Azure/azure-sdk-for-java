@@ -904,7 +904,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<ResponseBase<ContainersGetAccountInfoHeaders, Void>> getAccountInfo(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
-            @QueryParam("comp") String comp, @HeaderParam("x-ms-version") String version,
+            @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{containerName}")
@@ -912,7 +913,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Mono<Response<Void>> getAccountInfoNoCustomHeaders(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
-            @QueryParam("comp") String comp, @HeaderParam("x-ms-version") String version,
+            @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{containerName}")
@@ -920,7 +922,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         ResponseBase<ContainersGetAccountInfoHeaders, Void> getAccountInfoSync(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
-            @QueryParam("comp") String comp, @HeaderParam("x-ms-version") String version,
+            @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{containerName}")
@@ -928,7 +931,8 @@ public final class ContainersImpl {
         @UnexpectedResponseExceptionType(BlobStorageExceptionInternal.class)
         Response<Void> getAccountInfoNoCustomHeadersSync(@HostParam("url") String url,
             @PathParam("containerName") String containerName, @QueryParam("restype") String restype,
-            @QueryParam("comp") String comp, @HeaderParam("x-ms-version") String version,
+            @QueryParam("comp") String comp, @QueryParam("timeout") Integer timeout,
+            @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("Accept") String accept, Context context);
     }
 
@@ -1215,20 +1219,20 @@ public final class ContainersImpl {
     public ResponseBase<ContainersCreateHeaders, Void> createWithResponse(String containerName, Integer timeout,
         Map<String, String> metadata, PublicAccessType access, String requestId,
         BlobContainerEncryptionScope blobContainerEncryptionScope, Context context) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        String defaultEncryptionScopeInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            defaultEncryptionScopeInternal = blobContainerEncryptionScope.getDefaultEncryptionScope();
-        }
-        String defaultEncryptionScope = defaultEncryptionScopeInternal;
-        Boolean encryptionScopeOverridePreventedInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            encryptionScopeOverridePreventedInternal
-                = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
-        }
-        Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
         try {
+            final String restype = "container";
+            final String accept = "application/xml";
+            String defaultEncryptionScopeInternal = null;
+            if (blobContainerEncryptionScope != null) {
+                defaultEncryptionScopeInternal = blobContainerEncryptionScope.getDefaultEncryptionScope();
+            }
+            String defaultEncryptionScope = defaultEncryptionScopeInternal;
+            Boolean encryptionScopeOverridePreventedInternal = null;
+            if (blobContainerEncryptionScope != null) {
+                encryptionScopeOverridePreventedInternal
+                    = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
+            }
+            Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
             return service.createSync(this.client.getUrl(), containerName, restype, timeout, metadata, access,
                 this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented, accept,
                 context);
@@ -1294,20 +1298,20 @@ public final class ContainersImpl {
     public Response<Void> createNoCustomHeadersWithResponse(String containerName, Integer timeout,
         Map<String, String> metadata, PublicAccessType access, String requestId,
         BlobContainerEncryptionScope blobContainerEncryptionScope, Context context) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        String defaultEncryptionScopeInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            defaultEncryptionScopeInternal = blobContainerEncryptionScope.getDefaultEncryptionScope();
-        }
-        String defaultEncryptionScope = defaultEncryptionScopeInternal;
-        Boolean encryptionScopeOverridePreventedInternal = null;
-        if (blobContainerEncryptionScope != null) {
-            encryptionScopeOverridePreventedInternal
-                = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
-        }
-        Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
         try {
+            final String restype = "container";
+            final String accept = "application/xml";
+            String defaultEncryptionScopeInternal = null;
+            if (blobContainerEncryptionScope != null) {
+                defaultEncryptionScopeInternal = blobContainerEncryptionScope.getDefaultEncryptionScope();
+            }
+            String defaultEncryptionScope = defaultEncryptionScopeInternal;
+            Boolean encryptionScopeOverridePreventedInternal = null;
+            if (blobContainerEncryptionScope != null) {
+                encryptionScopeOverridePreventedInternal
+                    = blobContainerEncryptionScope.isEncryptionScopeOverridePrevented();
+            }
+            Boolean encryptionScopeOverridePrevented = encryptionScopeOverridePreventedInternal;
             return service.createNoCustomHeadersSync(this.client.getUrl(), containerName, restype, timeout, metadata,
                 access, this.client.getVersion(), requestId, defaultEncryptionScope, encryptionScopeOverridePrevented,
                 accept, context);
@@ -1494,9 +1498,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ContainersGetPropertiesHeaders, Void> getPropertiesWithResponse(String containerName,
         Integer timeout, String leaseId, String requestId, Context context) {
-        final String restype = "container";
-        final String accept = "application/xml";
         try {
+            final String restype = "container";
+            final String accept = "application/xml";
             return service.getPropertiesSync(this.client.getUrl(), containerName, restype, timeout, leaseId,
                 this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -1544,9 +1548,9 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getPropertiesNoCustomHeadersWithResponse(String containerName, Integer timeout,
         String leaseId, String requestId, Context context) {
-        final String restype = "container";
-        final String accept = "application/xml";
         try {
+            final String restype = "container";
+            final String accept = "application/xml";
             return service.getPropertiesNoCustomHeadersSync(this.client.getUrl(), containerName, restype, timeout,
                 leaseId, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -1780,13 +1784,13 @@ public final class ContainersImpl {
     public ResponseBase<ContainersDeleteHeaders, Void> deleteWithResponse(String containerName, Integer timeout,
         String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         Context context) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String restype = "container";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.deleteSync(this.client.getUrl(), containerName, restype, timeout, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
                 context);
@@ -1845,13 +1849,13 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteNoCustomHeadersWithResponse(String containerName, Integer timeout, String leaseId,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
-        final String restype = "container";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String restype = "container";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.deleteNoCustomHeadersSync(this.client.getUrl(), containerName, restype, timeout, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
                 context);
@@ -2105,12 +2109,12 @@ public final class ContainersImpl {
     public ResponseBase<ContainersSetMetadataHeaders, Void> setMetadataWithResponse(String containerName,
         Integer timeout, String leaseId, Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId,
         Context context) {
-        final String restype = "container";
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         try {
+            final String restype = "container";
+            final String comp = "metadata";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
             return service.setMetadataSync(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
                 metadata, ifModifiedSinceConverted, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -2173,12 +2177,12 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setMetadataNoCustomHeadersWithResponse(String containerName, Integer timeout, String leaseId,
         Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId, Context context) {
-        final String restype = "container";
-        final String comp = "metadata";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
         try {
+            final String restype = "container";
+            final String comp = "metadata";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
             return service.setMetadataNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
                 leaseId, metadata, ifModifiedSinceConverted, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -2374,10 +2378,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ContainersGetAccessPolicyHeaders, BlobSignedIdentifierWrapper> getAccessPolicyWithResponse(
         String containerName, Integer timeout, String leaseId, String requestId, Context context) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
         try {
+            final String restype = "container";
+            final String comp = "acl";
+            final String accept = "application/xml";
             return service.getAccessPolicySync(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
                 this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -2431,10 +2435,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlobSignedIdentifierWrapper> getAccessPolicyNoCustomHeadersWithResponse(String containerName,
         Integer timeout, String leaseId, String requestId, Context context) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
         try {
+            final String restype = "container";
+            final String comp = "acl";
+            final String accept = "application/xml";
             return service.getAccessPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
                 timeout, leaseId, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -2700,15 +2704,15 @@ public final class ContainersImpl {
     public ResponseBase<ContainersSetAccessPolicyHeaders, Void> setAccessPolicyWithResponse(String containerName,
         Integer timeout, String leaseId, PublicAccessType access, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId, List<BlobSignedIdentifier> containerAcl, Context context) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
         try {
+            final String restype = "container";
+            final String comp = "acl";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
             return service.setAccessPolicySync(this.client.getUrl(), containerName, restype, comp, timeout, leaseId,
                 access, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
                 containerAclConverted, accept, context);
@@ -2773,15 +2777,15 @@ public final class ContainersImpl {
     public Response<Void> setAccessPolicyNoCustomHeadersWithResponse(String containerName, Integer timeout,
         String leaseId, PublicAccessType access, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String requestId, List<BlobSignedIdentifier> containerAcl, Context context) {
-        final String restype = "container";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
         try {
+            final String restype = "container";
+            final String comp = "acl";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
+            BlobSignedIdentifierWrapper containerAclConverted = new BlobSignedIdentifierWrapper(containerAcl);
             return service.setAccessPolicyNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
                 timeout, leaseId, access, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 this.client.getVersion(), requestId, containerAclConverted, accept, context);
@@ -2990,10 +2994,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ContainersRestoreHeaders, Void> restoreWithResponse(String containerName, Integer timeout,
         String requestId, String deletedContainerName, String deletedContainerVersion, Context context) {
-        final String restype = "container";
-        final String comp = "undelete";
-        final String accept = "application/xml";
         try {
+            final String restype = "container";
+            final String comp = "undelete";
+            final String accept = "application/xml";
             return service.restoreSync(this.client.getUrl(), containerName, restype, comp, timeout,
                 this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3047,10 +3051,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> restoreNoCustomHeadersWithResponse(String containerName, Integer timeout, String requestId,
         String deletedContainerName, String deletedContainerVersion, Context context) {
-        final String restype = "container";
-        final String comp = "undelete";
-        final String accept = "application/xml";
         try {
+            final String restype = "container";
+            final String comp = "undelete";
+            final String accept = "application/xml";
             return service.restoreNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
                 this.client.getVersion(), requestId, deletedContainerName, deletedContainerVersion, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3248,10 +3252,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ContainersRenameHeaders, Void> renameWithResponse(String containerName,
         String sourceContainerName, Integer timeout, String requestId, String sourceLeaseId, Context context) {
-        final String restype = "container";
-        final String comp = "rename";
-        final String accept = "application/xml";
         try {
+            final String restype = "container";
+            final String comp = "rename";
+            final String accept = "application/xml";
             return service.renameSync(this.client.getUrl(), containerName, restype, comp, timeout,
                 this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3302,10 +3306,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameNoCustomHeadersWithResponse(String containerName, String sourceContainerName,
         Integer timeout, String requestId, String sourceLeaseId, Context context) {
-        final String restype = "container";
-        final String comp = "rename";
-        final String accept = "application/xml";
         try {
+            final String restype = "container";
+            final String comp = "rename";
+            final String accept = "application/xml";
             return service.renameNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
                 this.client.getVersion(), requestId, sourceContainerName, sourceLeaseId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3690,10 +3694,10 @@ public final class ContainersImpl {
     public ResponseBase<ContainersSubmitBatchHeaders, InputStream> submitBatchWithResponse(String containerName,
         long contentLength, String multipartContentType, BinaryData body, Integer timeout, String requestId,
         Context context) {
-        final String restype = "container";
-        final String comp = "batch";
-        final String accept = "application/xml";
         try {
+            final String restype = "container";
+            final String comp = "batch";
+            final String accept = "application/xml";
             return service.submitBatchSync(this.client.getUrl(), containerName, restype, comp, contentLength,
                 multipartContentType, timeout, this.client.getVersion(), requestId, body, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -3752,10 +3756,10 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<InputStream> submitBatchNoCustomHeadersWithResponse(String containerName, long contentLength,
         String multipartContentType, BinaryData body, Integer timeout, String requestId, Context context) {
-        final String restype = "container";
-        final String comp = "batch";
-        final String accept = "application/xml";
         try {
+            final String restype = "container";
+            final String comp = "batch";
+            final String accept = "application/xml";
             return service.submitBatchNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
                 contentLength, multipartContentType, timeout, this.client.getVersion(), requestId, body, accept,
                 context);
@@ -4053,15 +4057,15 @@ public final class ContainersImpl {
     public ResponseBase<ContainersFilterBlobsHeaders, FilterBlobSegment> filterBlobsWithResponse(String containerName,
         Integer timeout, String requestId, String where, String marker, Integer maxresults,
         List<FilterBlobsIncludeItem> include, Context context) {
-        final String restype = "container";
-        final String comp = "blobs";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         try {
+            final String restype = "container";
+            final String comp = "blobs";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
             return service.filterBlobsSync(this.client.getUrl(), containerName, restype, comp, timeout,
                 this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -4139,15 +4143,15 @@ public final class ContainersImpl {
     public Response<FilterBlobSegment> filterBlobsNoCustomHeadersWithResponse(String containerName, Integer timeout,
         String requestId, String where, String marker, Integer maxresults, List<FilterBlobsIncludeItem> include,
         Context context) {
-        final String restype = "container";
-        final String comp = "blobs";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         try {
+            final String restype = "container";
+            final String comp = "blobs";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
             return service.filterBlobsNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp, timeout,
                 this.client.getVersion(), requestId, where, marker, maxresults, includeConverted, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -4432,15 +4436,15 @@ public final class ContainersImpl {
     public ResponseBase<ContainersAcquireLeaseHeaders, Void> acquireLeaseWithResponse(String containerName,
         Integer timeout, Integer duration, String proposedLeaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "acquire";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String restype = "container";
+            final String action = "acquire";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.acquireLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout,
                 duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 this.client.getVersion(), requestId, accept, context);
@@ -4510,15 +4514,15 @@ public final class ContainersImpl {
     public Response<Void> acquireLeaseNoCustomHeadersWithResponse(String containerName, Integer timeout,
         Integer duration, String proposedLeaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String requestId, Context context) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "acquire";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String restype = "container";
+            final String action = "acquire";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.acquireLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
                 timeout, duration, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 this.client.getVersion(), requestId, accept, context);
@@ -4764,15 +4768,15 @@ public final class ContainersImpl {
     public ResponseBase<ContainersReleaseLeaseHeaders, Void> releaseLeaseWithResponse(String containerName,
         String leaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String requestId, Context context) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "release";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String restype = "container";
+            final String action = "release";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.releaseLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout,
                 leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
                 accept, context);
@@ -4831,15 +4835,15 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> releaseLeaseNoCustomHeadersWithResponse(String containerName, String leaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "release";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String restype = "container";
+            final String action = "release";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.releaseLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
                 timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
                 requestId, accept, context);
@@ -5085,15 +5089,15 @@ public final class ContainersImpl {
     public ResponseBase<ContainersRenewLeaseHeaders, Void> renewLeaseWithResponse(String containerName, String leaseId,
         Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         Context context) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "renew";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String restype = "container";
+            final String action = "renew";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.renewLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId, accept,
                 context);
@@ -5152,15 +5156,15 @@ public final class ContainersImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renewLeaseNoCustomHeadersWithResponse(String containerName, String leaseId, Integer timeout,
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "renew";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String restype = "container";
+            final String action = "renew";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.renewLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
                 timeout, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
                 requestId, accept, context);
@@ -5441,15 +5445,15 @@ public final class ContainersImpl {
     public ResponseBase<ContainersBreakLeaseHeaders, Void> breakLeaseWithResponse(String containerName, Integer timeout,
         Integer breakPeriod, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         Context context) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "break";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String restype = "container";
+            final String action = "break";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.breakLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout,
                 breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(), requestId,
                 accept, context);
@@ -5519,15 +5523,15 @@ public final class ContainersImpl {
     public Response<Void> breakLeaseNoCustomHeadersWithResponse(String containerName, Integer timeout,
         Integer breakPeriod, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId,
         Context context) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "break";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String restype = "container";
+            final String action = "break";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.breakLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
                 timeout, breakPeriod, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
                 requestId, accept, context);
@@ -5799,15 +5803,15 @@ public final class ContainersImpl {
     public ResponseBase<ContainersChangeLeaseHeaders, Void> changeLeaseWithResponse(String containerName,
         String leaseId, String proposedLeaseId, Integer timeout, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "change";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String restype = "container";
+            final String action = "change";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.changeLeaseSync(this.client.getUrl(), containerName, comp, restype, action, timeout, leaseId,
                 proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, this.client.getVersion(),
                 requestId, accept, context);
@@ -5873,15 +5877,15 @@ public final class ContainersImpl {
     public Response<Void> changeLeaseNoCustomHeadersWithResponse(String containerName, String leaseId,
         String proposedLeaseId, Integer timeout, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String requestId, Context context) {
-        final String comp = "lease";
-        final String restype = "container";
-        final String action = "change";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         try {
+            final String comp = "lease";
+            final String restype = "container";
+            final String action = "change";
+            final String accept = "application/xml";
+            DateTimeRfc1123 ifModifiedSinceConverted
+                = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
+            DateTimeRfc1123 ifUnmodifiedSinceConverted
+                = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
             return service.changeLeaseNoCustomHeadersSync(this.client.getUrl(), containerName, comp, restype, action,
                 timeout, leaseId, proposedLeaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 this.client.getVersion(), requestId, accept, context);
@@ -6171,15 +6175,15 @@ public final class ContainersImpl {
     public ResponseBase<ContainersListBlobFlatSegmentHeaders, ListBlobsFlatSegmentResponse>
         listBlobFlatSegmentWithResponse(String containerName, String prefix, String marker, Integer maxresults,
             List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         try {
+            final String restype = "container";
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
             return service.listBlobFlatSegmentSync(this.client.getUrl(), containerName, restype, comp, prefix, marker,
                 maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
@@ -6255,15 +6259,15 @@ public final class ContainersImpl {
     public Response<ListBlobsFlatSegmentResponse> listBlobFlatSegmentNoCustomHeadersWithResponse(String containerName,
         String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout,
         String requestId, Context context) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         try {
+            final String restype = "container";
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
             return service.listBlobFlatSegmentNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
                 prefix, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
                 context);
@@ -6579,15 +6583,15 @@ public final class ContainersImpl {
         listBlobHierarchySegmentWithResponse(String containerName, String delimiter, String prefix, String marker,
             Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId,
             Context context) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         try {
+            final String restype = "container";
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
             return service.listBlobHierarchySegmentSync(this.client.getUrl(), containerName, restype, comp, prefix,
                 delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(), requestId, accept,
                 context);
@@ -6671,15 +6675,15 @@ public final class ContainersImpl {
     public Response<ListBlobsHierarchySegmentResponse> listBlobHierarchySegmentNoCustomHeadersWithResponse(
         String containerName, String delimiter, String prefix, String marker, Integer maxresults,
         List<ListBlobsIncludeItem> include, Integer timeout, String requestId, Context context) {
-        final String restype = "container";
-        final String comp = "list";
-        final String accept = "application/xml";
-        String includeConverted = (include == null)
-            ? null
-            : include.stream()
-                .map(paramItemValue -> Objects.toString(paramItemValue, ""))
-                .collect(Collectors.joining(","));
         try {
+            final String restype = "container";
+            final String comp = "list";
+            final String accept = "application/xml";
+            String includeConverted = (include == null)
+                ? null
+                : include.stream()
+                    .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+                    .collect(Collectors.joining(","));
             return service.listBlobHierarchySegmentNoCustomHeadersSync(this.client.getUrl(), containerName, restype,
                 comp, prefix, delimiter, marker, maxresults, includeConverted, timeout, this.client.getVersion(),
                 requestId, accept, context);
@@ -6692,6 +6696,11 @@ public final class ContainersImpl {
      * Returns the sku name and account kind.
      *
      * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6699,13 +6708,13 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersGetAccountInfoHeaders, Void>>
-        getAccountInfoWithResponseAsync(String containerName) {
+        getAccountInfoWithResponseAsync(String containerName, Integer timeout, String requestId) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getAccountInfo(this.client.getUrl(), containerName, restype, comp,
-                this.client.getVersion(), accept, context))
+            .withContext(context -> service.getAccountInfo(this.client.getUrl(), containerName, restype, comp, timeout,
+                this.client.getVersion(), requestId, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6713,6 +6722,11 @@ public final class ContainersImpl {
      * Returns the sku name and account kind.
      *
      * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -6721,13 +6735,13 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<ContainersGetAccountInfoHeaders, Void>>
-        getAccountInfoWithResponseAsync(String containerName, Context context) {
+        getAccountInfoWithResponseAsync(String containerName, Integer timeout, String requestId, Context context) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
         return service
-            .getAccountInfo(this.client.getUrl(), containerName, restype, comp, this.client.getVersion(), accept,
-                context)
+            .getAccountInfo(this.client.getUrl(), containerName, restype, comp, timeout, this.client.getVersion(),
+                requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6735,14 +6749,19 @@ public final class ContainersImpl {
      * Returns the sku name and account kind.
      *
      * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getAccountInfoAsync(String containerName) {
-        return getAccountInfoWithResponseAsync(containerName)
+    public Mono<Void> getAccountInfoAsync(String containerName, Integer timeout, String requestId) {
+        return getAccountInfoWithResponseAsync(containerName, timeout, requestId)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -6751,6 +6770,11 @@ public final class ContainersImpl {
      * Returns the sku name and account kind.
      *
      * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -6758,8 +6782,8 @@ public final class ContainersImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getAccountInfoAsync(String containerName, Context context) {
-        return getAccountInfoWithResponseAsync(containerName, context)
+    public Mono<Void> getAccountInfoAsync(String containerName, Integer timeout, String requestId, Context context) {
+        return getAccountInfoWithResponseAsync(containerName, timeout, requestId, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
             .flatMap(ignored -> Mono.empty());
     }
@@ -6768,19 +6792,25 @@ public final class ContainersImpl {
      * Returns the sku name and account kind.
      *
      * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(String containerName) {
+    public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
+        String requestId) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
         return FluxUtil
             .withContext(context -> service.getAccountInfoNoCustomHeaders(this.client.getUrl(), containerName, restype,
-                comp, this.client.getVersion(), accept, context))
+                comp, timeout, this.client.getVersion(), requestId, accept, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6788,6 +6818,11 @@ public final class ContainersImpl {
      * Returns the sku name and account kind.
      *
      * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -6795,13 +6830,14 @@ public final class ContainersImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(String containerName, Context context) {
+    public Mono<Response<Void>> getAccountInfoNoCustomHeadersWithResponseAsync(String containerName, Integer timeout,
+        String requestId, Context context) {
         final String restype = "account";
         final String comp = "properties";
         final String accept = "application/xml";
         return service
-            .getAccountInfoNoCustomHeaders(this.client.getUrl(), containerName, restype, comp, this.client.getVersion(),
-                accept, context)
+            .getAccountInfoNoCustomHeaders(this.client.getUrl(), containerName, restype, comp, timeout,
+                this.client.getVersion(), requestId, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -6809,6 +6845,11 @@ public final class ContainersImpl {
      * Returns the sku name and account kind.
      *
      * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -6817,13 +6858,13 @@ public final class ContainersImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ResponseBase<ContainersGetAccountInfoHeaders, Void> getAccountInfoWithResponse(String containerName,
-        Context context) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
+        Integer timeout, String requestId, Context context) {
         try {
-            return service.getAccountInfoSync(this.client.getUrl(), containerName, restype, comp,
-                this.client.getVersion(), accept, context);
+            final String restype = "account";
+            final String comp = "properties";
+            final String accept = "application/xml";
+            return service.getAccountInfoSync(this.client.getUrl(), containerName, restype, comp, timeout,
+                this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -6833,19 +6874,29 @@ public final class ContainersImpl {
      * Returns the sku name and account kind.
      *
      * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getAccountInfo(String containerName) {
-        getAccountInfoWithResponse(containerName, Context.NONE);
+    public void getAccountInfo(String containerName, Integer timeout, String requestId) {
+        getAccountInfoWithResponse(containerName, timeout, requestId, Context.NONE);
     }
 
     /**
      * Returns the sku name and account kind.
      *
      * @param containerName The container name.
+     * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
+     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * Timeouts for Blob Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     * analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws BlobStorageExceptionInternal thrown if the request is rejected by server.
@@ -6853,13 +6904,14 @@ public final class ContainersImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getAccountInfoNoCustomHeadersWithResponse(String containerName, Context context) {
-        final String restype = "account";
-        final String comp = "properties";
-        final String accept = "application/xml";
+    public Response<Void> getAccountInfoNoCustomHeadersWithResponse(String containerName, Integer timeout,
+        String requestId, Context context) {
         try {
+            final String restype = "account";
+            final String comp = "properties";
+            final String accept = "application/xml";
             return service.getAccountInfoNoCustomHeadersSync(this.client.getUrl(), containerName, restype, comp,
-                this.client.getVersion(), accept, context);
+                timeout, this.client.getVersion(), requestId, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

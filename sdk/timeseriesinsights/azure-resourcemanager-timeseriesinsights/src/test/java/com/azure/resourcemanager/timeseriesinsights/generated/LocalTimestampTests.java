@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LocalTimestampTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LocalTimestamp model =
-            BinaryData
-                .fromString("{\"format\":\"Embedded\",\"timeZoneOffset\":{\"propertyName\":\"gstxgcp\"}}")
+        LocalTimestamp model
+            = BinaryData.fromString("{\"format\":\"Embedded\",\"timeZoneOffset\":{\"propertyName\":\"gstxgcp\"}}")
                 .toObject(LocalTimestamp.class);
         Assertions.assertEquals(LocalTimestampFormat.EMBEDDED, model.format());
         Assertions.assertEquals("gstxgcp", model.timeZoneOffset().propertyName());
@@ -23,10 +22,8 @@ public final class LocalTimestampTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocalTimestamp model =
-            new LocalTimestamp()
-                .withFormat(LocalTimestampFormat.EMBEDDED)
-                .withTimeZoneOffset(new LocalTimestampTimeZoneOffset().withPropertyName("gstxgcp"));
+        LocalTimestamp model = new LocalTimestamp().withFormat(LocalTimestampFormat.EMBEDDED)
+            .withTimeZoneOffset(new LocalTimestampTimeZoneOffset().withPropertyName("gstxgcp"));
         model = BinaryData.fromObject(model).toObject(LocalTimestamp.class);
         Assertions.assertEquals(LocalTimestampFormat.EMBEDDED, model.format());
         Assertions.assertEquals("gstxgcp", model.timeZoneOffset().propertyName());

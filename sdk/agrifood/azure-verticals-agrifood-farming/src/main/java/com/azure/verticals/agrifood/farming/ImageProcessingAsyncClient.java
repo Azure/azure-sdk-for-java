@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous FarmBeatsClient type. */
 @ServiceClient(builder = ImageProcessingClientBuilder.class, isAsync = true)
 public final class ImageProcessingAsyncClient {
-    @Generated private final ImageProcessingsImpl serviceClient;
+    @Generated
+    private final ImageProcessingsImpl serviceClient;
 
     /**
      * Initializes an instance of ImageProcessingAsyncClient class.
@@ -104,8 +105,8 @@ public final class ImageProcessingAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateRasterizeJob(
-            String jobId, BinaryData job, RequestOptions requestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginCreateRasterizeJob(String jobId, BinaryData job,
+        RequestOptions requestOptions) {
         return this.serviceClient.beginCreateRasterizeJobAsync(jobId, job, requestOptions);
     }
 

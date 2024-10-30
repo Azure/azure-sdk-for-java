@@ -13,7 +13,6 @@ import com.azure.security.keyvault.administration.models.KeyVaultSettingType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The Setting model.
@@ -84,12 +83,15 @@ public final class Setting implements JsonSerializable<Setting> {
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("value", this.value);
-        jsonWriter.writeStringField("type", Objects.toString(this.type, null));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.alertsmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Identifier. */
+/**
+ * Defines values for Identifier.
+ */
 public final class Identifier extends ExpandableStringEnum<Identifier> {
-    /** Static value MonitorServiceList for Identifier. */
+    /**
+     * Static value MonitorServiceList for Identifier.
+     */
     public static final Identifier MONITOR_SERVICE_LIST = fromString("MonitorServiceList");
 
     /**
+     * Creates a new instance of Identifier value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Identifier() {
+    }
+
+    /**
      * Creates or finds a Identifier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Identifier.
      */
-    @JsonCreator
     public static Identifier fromString(String name) {
         return fromString(name, Identifier.class);
     }
 
     /**
      * Gets known Identifier values.
-     *
+     * 
      * @return known Identifier values.
      */
     public static Collection<Identifier> values() {

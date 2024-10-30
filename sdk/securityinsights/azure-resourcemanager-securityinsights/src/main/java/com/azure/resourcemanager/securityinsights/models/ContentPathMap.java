@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The mapping of content type to a repo path. */
+/**
+ * The mapping of content type to a repo path.
+ */
 @Fluent
-public final class ContentPathMap {
+public final class ContentPathMap implements JsonSerializable<ContentPathMap> {
     /*
      * Content type.
      */
-    @JsonProperty(value = "contentType")
     private ContentType contentType;
 
     /*
      * The path to the content.
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /**
+     * Creates an instance of ContentPathMap class.
+     */
+    public ContentPathMap() {
+    }
+
+    /**
      * Get the contentType property: Content type.
-     *
+     * 
      * @return the contentType value.
      */
     public ContentType contentType() {
@@ -33,7 +43,7 @@ public final class ContentPathMap {
 
     /**
      * Set the contentType property: Content type.
-     *
+     * 
      * @param contentType the contentType value to set.
      * @return the ContentPathMap object itself.
      */
@@ -44,7 +54,7 @@ public final class ContentPathMap {
 
     /**
      * Get the path property: The path to the content.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -53,7 +63,7 @@ public final class ContentPathMap {
 
     /**
      * Set the path property: The path to the content.
-     *
+     * 
      * @param path the path value to set.
      * @return the ContentPathMap object itself.
      */
@@ -64,9 +74,48 @@ public final class ContentPathMap {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("contentType", this.contentType == null ? null : this.contentType.toString());
+        jsonWriter.writeStringField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentPathMap from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentPathMap if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentPathMap.
+     */
+    public static ContentPathMap fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentPathMap deserializedContentPathMap = new ContentPathMap();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contentType".equals(fieldName)) {
+                    deserializedContentPathMap.contentType = ContentType.fromString(reader.getString());
+                } else if ("path".equals(fieldName)) {
+                    deserializedContentPathMap.path = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentPathMap;
+        });
     }
 }

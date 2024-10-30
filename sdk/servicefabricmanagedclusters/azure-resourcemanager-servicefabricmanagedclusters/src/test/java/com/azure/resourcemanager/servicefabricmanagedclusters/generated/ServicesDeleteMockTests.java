@@ -27,7 +27,9 @@ public final class ServicesDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.services().delete("jtszcof", "zehtdhgb", "k", "reljeamur", com.azure.core.util.Context.NONE);
+        manager.services()
+            .delete("fuqyrxpdlcgqlsi", "mjqfrddgamquhio", "rsjuivfcdisyir", "xzhczexrxz",
+                com.azure.core.util.Context.NONE);
 
     }
 }

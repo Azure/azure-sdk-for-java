@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageListResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"mohctb\",\"value\":[{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"ndnvo\",\"localizedValue\":\"ujjugwdkcglh\"},\"quotaPeriod\":\"azjdyggd\",\"limit\":92.2174087854439,\"currentValue\":3.8497339257224095,\"nextResetTime\":\"ofqweykhmenevfye\",\"status\":\"Blocked\"},{\"unit\":\"Bytes\",\"name\":{\"value\":\"i\",\"localizedValue\":\"yvdcsitynnaa\"},\"quotaPeriod\":\"ectehf\",\"limit\":43.32844185113748,\"currentValue\":61.13135450146281,\"nextResetTime\":\"vhezrkgqhcj\",\"status\":\"Unknown\"},{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"kqsleyyvxy\",\"localizedValue\":\"pkc\"},\"quotaPeriod\":\"tpngjcrcczsqpjh\",\"limit\":15.683771184024254,\"currentValue\":5.670664395942426,\"nextResetTime\":\"sounqecanoaeu\",\"status\":\"Included\"},{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"rpmopjmc\",\"localizedValue\":\"tuo\"},\"quotaPeriod\":\"hfuiuaodsfc\",\"limit\":36.548139076292394,\"currentValue\":48.52450589513511,\"nextResetTime\":\"ozmyzydagfu\",\"status\":\"Included\"}]}")
-                .toObject(UsageListResultInner.class);
+        UsageListResultInner model = BinaryData.fromString(
+            "{\"nextLink\":\"mohctb\",\"value\":[{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"ndnvo\",\"localizedValue\":\"ujjugwdkcglh\"},\"quotaPeriod\":\"azjdyggd\",\"limit\":92.2174087854439,\"currentValue\":3.8497339257224095,\"nextResetTime\":\"ofqweykhmenevfye\",\"status\":\"Blocked\"},{\"unit\":\"Bytes\",\"name\":{\"value\":\"i\",\"localizedValue\":\"yvdcsitynnaa\"},\"quotaPeriod\":\"ectehf\",\"limit\":43.32844185113748,\"currentValue\":61.13135450146281,\"nextResetTime\":\"vhezrkgqhcj\",\"status\":\"Unknown\"},{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"kqsleyyvxy\",\"localizedValue\":\"pkc\"},\"quotaPeriod\":\"tpngjcrcczsqpjh\",\"limit\":15.683771184024254,\"currentValue\":5.670664395942426,\"nextResetTime\":\"sounqecanoaeu\",\"status\":\"Included\"},{\"unit\":\"BytesPerSecond\",\"name\":{\"value\":\"rpmopjmc\",\"localizedValue\":\"tuo\"},\"quotaPeriod\":\"hfuiuaodsfc\",\"limit\":36.548139076292394,\"currentValue\":48.52450589513511,\"nextResetTime\":\"ozmyzydagfu\",\"status\":\"Included\"}]}")
+            .toObject(UsageListResultInner.class);
         Assertions.assertEquals("mohctb", model.nextLink());
         Assertions.assertEquals(UnitType.BYTES_PER_SECOND, model.value().get(0).unit());
         Assertions.assertEquals("ndnvo", model.value().get(0).name().value());
@@ -34,44 +32,36 @@ public final class UsageListResultInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageListResultInner model =
-            new UsageListResultInner()
-                .withNextLink("mohctb")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new UsageInner()
-                                .withUnit(UnitType.BYTES_PER_SECOND)
-                                .withName(new MetricName().withValue("ndnvo").withLocalizedValue("ujjugwdkcglh"))
-                                .withQuotaPeriod("azjdyggd")
-                                .withLimit(92.2174087854439D)
-                                .withCurrentValue(3.8497339257224095D)
-                                .withNextResetTime("ofqweykhmenevfye")
-                                .withStatus(QuotaUsageStatus.BLOCKED),
-                            new UsageInner()
-                                .withUnit(UnitType.BYTES)
-                                .withName(new MetricName().withValue("i").withLocalizedValue("yvdcsitynnaa"))
-                                .withQuotaPeriod("ectehf")
-                                .withLimit(43.32844185113748D)
-                                .withCurrentValue(61.13135450146281D)
-                                .withNextResetTime("vhezrkgqhcj")
-                                .withStatus(QuotaUsageStatus.UNKNOWN),
-                            new UsageInner()
-                                .withUnit(UnitType.MILLISECONDS)
-                                .withName(new MetricName().withValue("kqsleyyvxy").withLocalizedValue("pkc"))
-                                .withQuotaPeriod("tpngjcrcczsqpjh")
-                                .withLimit(15.683771184024254D)
-                                .withCurrentValue(5.670664395942426D)
-                                .withNextResetTime("sounqecanoaeu")
-                                .withStatus(QuotaUsageStatus.INCLUDED),
-                            new UsageInner()
-                                .withUnit(UnitType.BYTES_PER_SECOND)
-                                .withName(new MetricName().withValue("rpmopjmc").withLocalizedValue("tuo"))
-                                .withQuotaPeriod("hfuiuaodsfc")
-                                .withLimit(36.548139076292394D)
-                                .withCurrentValue(48.52450589513511D)
-                                .withNextResetTime("ozmyzydagfu")
-                                .withStatus(QuotaUsageStatus.INCLUDED)));
+        UsageListResultInner model = new UsageListResultInner().withNextLink("mohctb")
+            .withValue(Arrays.asList(
+                new UsageInner().withUnit(UnitType.BYTES_PER_SECOND)
+                    .withName(new MetricName().withValue("ndnvo").withLocalizedValue("ujjugwdkcglh"))
+                    .withQuotaPeriod("azjdyggd")
+                    .withLimit(92.2174087854439D)
+                    .withCurrentValue(3.8497339257224095D)
+                    .withNextResetTime("ofqweykhmenevfye")
+                    .withStatus(QuotaUsageStatus.BLOCKED),
+                new UsageInner().withUnit(UnitType.BYTES)
+                    .withName(new MetricName().withValue("i").withLocalizedValue("yvdcsitynnaa"))
+                    .withQuotaPeriod("ectehf")
+                    .withLimit(43.32844185113748D)
+                    .withCurrentValue(61.13135450146281D)
+                    .withNextResetTime("vhezrkgqhcj")
+                    .withStatus(QuotaUsageStatus.UNKNOWN),
+                new UsageInner().withUnit(UnitType.MILLISECONDS)
+                    .withName(new MetricName().withValue("kqsleyyvxy").withLocalizedValue("pkc"))
+                    .withQuotaPeriod("tpngjcrcczsqpjh")
+                    .withLimit(15.683771184024254D)
+                    .withCurrentValue(5.670664395942426D)
+                    .withNextResetTime("sounqecanoaeu")
+                    .withStatus(QuotaUsageStatus.INCLUDED),
+                new UsageInner().withUnit(UnitType.BYTES_PER_SECOND)
+                    .withName(new MetricName().withValue("rpmopjmc").withLocalizedValue("tuo"))
+                    .withQuotaPeriod("hfuiuaodsfc")
+                    .withLimit(36.548139076292394D)
+                    .withCurrentValue(48.52450589513511D)
+                    .withNextResetTime("ozmyzydagfu")
+                    .withStatus(QuotaUsageStatus.INCLUDED)));
         model = BinaryData.fromObject(model).toObject(UsageListResultInner.class);
         Assertions.assertEquals("mohctb", model.nextLink());
         Assertions.assertEquals(UnitType.BYTES_PER_SECOND, model.value().get(0).unit());

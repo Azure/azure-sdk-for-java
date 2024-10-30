@@ -16,8 +16,7 @@ import java.math.BigDecimal;
  * to applications, adds shared internal methods that sub-classes
  * can use and adds some abstract methods sub-classes must implement.
  */
-public abstract class GeneratorBase extends JsonGenerator
-{
+public abstract class GeneratorBase extends JsonGenerator {
     public final static int SURR1_FIRST = 0xD800;
     public final static int SURR1_LAST = 0xDBFF;
     public final static int SURR2_FIRST = 0xDC00;
@@ -30,11 +29,8 @@ public abstract class GeneratorBase extends JsonGenerator
      * @since 2.5
      */
     @SuppressWarnings("deprecation")
-    protected final static int DERIVED_FEATURES_MASK =
-            Feature.WRITE_NUMBERS_AS_STRINGS.getMask()
-            | Feature.ESCAPE_NON_ASCII.getMask()
-            | Feature.STRICT_DUPLICATE_DETECTION.getMask()
-            ;
+    protected final static int DERIVED_FEATURES_MASK = Feature.WRITE_NUMBERS_AS_STRINGS.getMask()
+        | Feature.ESCAPE_NON_ASCII.getMask() | Feature.STRICT_DUPLICATE_DETECTION.getMask();
 
     // // // Constants for validation messages (since 2.6)
 
@@ -107,8 +103,8 @@ public abstract class GeneratorBase extends JsonGenerator
         super();
         _features = features;
         _objectCodec = codec;
-        DupDetector dups = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features)
-                ? DupDetector.rootDetector(this) : null;
+        DupDetector dups
+            = Feature.STRICT_DUPLICATE_DETECTION.enabledIn(features) ? DupDetector.rootDetector(this) : null;
         _writeContext = JsonWriteContext.createRootContext(dups);
         _cfgNumbersAsStrings = Feature.WRITE_NUMBERS_AS_STRINGS.enabledIn(features);
     }
@@ -131,7 +127,10 @@ public abstract class GeneratorBase extends JsonGenerator
      * @return Version number of the generator (version of the jar that contains
      *     generator implementation class)
      */
-    @Override public Version version() { return PackageVersion.VERSION; }
+    @Override
+    public Version version() {
+        return PackageVersion.VERSION;
+    }
 
     @Override
     public Object getCurrentValue() {
@@ -151,9 +150,15 @@ public abstract class GeneratorBase extends JsonGenerator
     /**********************************************************
      */
 
+    @Override
+    public final boolean isEnabled(Feature f) {
+        return (_features & f.getMask()) != 0;
+    }
 
-    @Override public final boolean isEnabled(Feature f) { return (_features & f.getMask()) != 0; }
-    @Override public int getFeatureMask() { return _features; }
+    @Override
+    public int getFeatureMask() {
+        return _features;
+    }
 
     //public JsonGenerator configure(Feature f, boolean state) { }
 
@@ -227,8 +232,7 @@ public abstract class GeneratorBase extends JsonGenerator
      * @since 2.7
      */
     @SuppressWarnings("deprecation")
-    protected void _checkStdFeatureChanges(int newFeatureFlags, int changedFeatures)
-    {
+    protected void _checkStdFeatureChanges(int newFeatureFlags, int changedFeatures) {
         if ((changedFeatures & DERIVED_FEATURES_MASK) == 0) {
             return;
         }
@@ -251,7 +255,8 @@ public abstract class GeneratorBase extends JsonGenerator
         }
     }
 
-    @Override public JsonGenerator useDefaultPrettyPrinter() {
+    @Override
+    public JsonGenerator useDefaultPrettyPrinter() {
         // Should not override a pretty printer if one already assigned.
         if (getPrettyPrinter() != null) {
             return this;
@@ -259,12 +264,16 @@ public abstract class GeneratorBase extends JsonGenerator
         return setPrettyPrinter(_constructDefaultPrettyPrinter());
     }
 
-    @Override public JsonGenerator setCodec(ObjectCodec oc) {
+    @Override
+    public JsonGenerator setCodec(ObjectCodec oc) {
         _objectCodec = oc;
         return this;
     }
 
-    @Override public ObjectCodec getCodec() { return _objectCodec; }
+    @Override
+    public ObjectCodec getCodec() {
+        return _objectCodec;
+    }
 
     /*
     /**********************************************************
@@ -277,7 +286,10 @@ public abstract class GeneratorBase extends JsonGenerator
      * base type in 2.8 to allow for overriding by subtypes that use
      * custom context type.
      */
-    @Override public JsonStreamContext getOutputContext() { return _writeContext; }
+    @Override
+    public JsonStreamContext getOutputContext() {
+        return _writeContext;
+    }
 
     /*
     /**********************************************************
@@ -291,8 +303,7 @@ public abstract class GeneratorBase extends JsonGenerator
     //public void writeEndObject() throws IOException
 
     @Override // since 2.8
-    public void writeStartObject(Object forValue) throws IOException
-    {
+    public void writeStartObject(Object forValue) throws IOException {
         writeStartObject();
         if (forValue != null) {
             setCurrentValue(forValue);
@@ -305,7 +316,8 @@ public abstract class GeneratorBase extends JsonGenerator
     /**********************************************************
      */
 
-    @Override public void writeFieldName(SerializableString name) throws IOException {
+    @Override
+    public void writeFieldName(SerializableString name) throws IOException {
         writeFieldName(name.getValue());
     }
 
@@ -324,22 +336,26 @@ public abstract class GeneratorBase extends JsonGenerator
         writeString(text.getValue());
     }
 
-    @Override public void writeRawValue(String text) throws IOException {
+    @Override
+    public void writeRawValue(String text) throws IOException {
         _verifyValueWrite("write raw value");
         writeRaw(text);
     }
 
-    @Override public void writeRawValue(String text, int offset, int len) throws IOException {
+    @Override
+    public void writeRawValue(String text, int offset, int len) throws IOException {
         _verifyValueWrite("write raw value");
         writeRaw(text, offset, len);
     }
 
-    @Override public void writeRawValue(char[] text, int offset, int len) throws IOException {
+    @Override
+    public void writeRawValue(char[] text, int offset, int len) throws IOException {
         _verifyValueWrite("write raw value");
         writeRaw(text, offset, len);
     }
 
-    @Override public void writeRawValue(SerializableString text) throws IOException {
+    @Override
+    public void writeRawValue(SerializableString text) throws IOException {
         _verifyValueWrite("write raw value");
         writeRaw(text);
     }
@@ -359,7 +375,7 @@ public abstract class GeneratorBase extends JsonGenerator
 
     // Not implemented at this level, added as placeholders
 
-     /*
+    /*
     public abstract void writeNumber(int i)
     public abstract void writeNumber(long l)
     public abstract void writeNumber(double d)
@@ -413,9 +429,18 @@ public abstract class GeneratorBase extends JsonGenerator
     /**********************************************************
      */
 
-    @Override public abstract void flush() throws IOException;
-    @Override public void close() throws IOException { _closed = true; }
-    @Override public boolean isClosed() { return _closed; }
+    @Override
+    public abstract void flush() throws IOException;
+
+    @Override
+    public void close() throws IOException {
+        _closed = true;
+    }
+
+    @Override
+    public boolean isClosed() {
+        return _closed;
+    }
 
     /*
     /**********************************************************
@@ -472,8 +497,8 @@ public abstract class GeneratorBase extends JsonGenerator
             int scale = value.scale();
             if ((scale < -MAX_BIG_DECIMAL_SCALE) || (scale > MAX_BIG_DECIMAL_SCALE)) {
                 _reportError(String.format(
-"Attempt to write plain `java.math.BigDecimal` (see JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN) with illegal scale (%d): needs to be between [-%d, %d]",
-scale, MAX_BIG_DECIMAL_SCALE, MAX_BIG_DECIMAL_SCALE));
+                    "Attempt to write plain `java.math.BigDecimal` (see JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN) with illegal scale (%d): needs to be between [-%d, %d]",
+                    scale, MAX_BIG_DECIMAL_SCALE, MAX_BIG_DECIMAL_SCALE));
             }
             return value.toPlainString();
         }
@@ -487,12 +512,10 @@ scale, MAX_BIG_DECIMAL_SCALE, MAX_BIG_DECIMAL_SCALE));
      */
 
     // @since 2.5
-    protected final int _decodeSurrogate(int surr1, int surr2) throws IOException
-    {
+    protected final int _decodeSurrogate(int surr1, int surr2) throws IOException {
         // First is known to be valid, but how about the other?
         if (surr2 < SURR2_FIRST || surr2 > SURR2_LAST) {
-            String msg = String.format(
-"Incomplete surrogate pair: first char 0x%04X, second 0x%04X", surr1, surr2);
+            String msg = String.format("Incomplete surrogate pair: first char 0x%04X, second 0x%04X", surr1, surr2);
             _reportError(msg);
         }
         int c = 0x10000 + ((surr1 - SURR1_FIRST) << 10) + (surr2 - SURR2_FIRST);

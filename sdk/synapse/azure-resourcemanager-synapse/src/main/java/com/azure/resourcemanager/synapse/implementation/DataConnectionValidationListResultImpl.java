@@ -15,8 +15,7 @@ public final class DataConnectionValidationListResultImpl implements DataConnect
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    DataConnectionValidationListResultImpl(
-        DataConnectionValidationListResultInner innerObject,
+    DataConnectionValidationListResultImpl(DataConnectionValidationListResultInner innerObject,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

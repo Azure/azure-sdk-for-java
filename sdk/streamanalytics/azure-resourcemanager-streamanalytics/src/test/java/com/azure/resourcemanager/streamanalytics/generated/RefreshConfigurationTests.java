@@ -24,8 +24,11 @@ public final class RefreshConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RefreshConfiguration model = new RefreshConfiguration().withPathPattern("mcl").withDateFormat("ijcoejctb")
-            .withTimeFormat("qsqsy").withRefreshInterval("kbfkg").withRefreshType(UpdatableUdfRefreshType.NONBLOCKING);
+        RefreshConfiguration model = new RefreshConfiguration().withPathPattern("mcl")
+            .withDateFormat("ijcoejctb")
+            .withTimeFormat("qsqsy")
+            .withRefreshInterval("kbfkg")
+            .withRefreshType(UpdatableUdfRefreshType.NONBLOCKING);
         model = BinaryData.fromObject(model).toObject(RefreshConfiguration.class);
         Assertions.assertEquals("mcl", model.pathPattern());
         Assertions.assertEquals("ijcoejctb", model.dateFormat());

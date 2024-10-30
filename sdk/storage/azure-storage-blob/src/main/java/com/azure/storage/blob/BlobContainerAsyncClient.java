@@ -28,6 +28,7 @@ import com.azure.storage.blob.implementation.models.ContainersListBlobHierarchyS
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.models.ListBlobsFlatSegmentResponse;
 import com.azure.storage.blob.implementation.models.ListBlobsHierarchySegmentResponse;
+import com.azure.storage.blob.implementation.util.BlobConstants;
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -93,17 +94,17 @@ public final class BlobContainerAsyncClient {
     /**
      * Special container name for the root container in the Storage account.
      */
-    public static final String ROOT_CONTAINER_NAME = "$root";
+    public static final String ROOT_CONTAINER_NAME = BlobConstants.ROOT_CONTAINER_NAME;
 
     /**
      * Special container name for the static website container in the Storage account.
      */
-    public static final String STATIC_WEBSITE_CONTAINER_NAME = "$web";
+    public static final String STATIC_WEBSITE_CONTAINER_NAME = BlobConstants.STATIC_WEBSITE_CONTAINER_NAME;
 
     /**
      * Special container name for the logs container in the Storage account.
      */
-    public static final String LOG_CONTAINER_NAME = "$logs";
+    public static final String LOG_CONTAINER_NAME = BlobConstants.LOG_CONTAINER_NAME;
 
     private static final ClientLogger LOGGER = new ClientLogger(BlobContainerAsyncClient.class);
     private final AzureBlobStorageImpl azureBlobStorage;
@@ -313,19 +314,6 @@ public final class BlobContainerAsyncClient {
         }
         return encryptionScope.getEncryptionScope();
     }
-
-    /**
-     * Gets the {@link EncryptionScope} used to encrypt this blob's content on the server.
-     *
-     * @return the encryption scope used for encryption.
-     */
-    BlobContainerEncryptionScope getBlobContainerEncryptionScope() {
-        if (blobContainerEncryptionScope == null) {
-            return null;
-        }
-        return blobContainerEncryptionScope;
-    }
-
 
     /**
      * Gets if the container this client represents exists in the cloud.
@@ -1514,10 +1502,12 @@ public final class BlobContainerAsyncClient {
 
     Mono<Response<StorageAccountInfo>> getAccountInfoWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, context)
+        return this.azureBlobStorage.getContainers().getAccountInfoWithResponseAsync(containerName, null,
+            null, context)
             .map(rb -> {
                 ContainersGetAccountInfoHeaders hd = rb.getDeserializedHeaders();
-                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind()));
+                return new SimpleResponse<>(rb, new StorageAccountInfo(hd.getXMsSkuName(), hd.getXMsAccountKind(),
+                    hd.isXMsIsHnsEnabled()));
             });
     }
 

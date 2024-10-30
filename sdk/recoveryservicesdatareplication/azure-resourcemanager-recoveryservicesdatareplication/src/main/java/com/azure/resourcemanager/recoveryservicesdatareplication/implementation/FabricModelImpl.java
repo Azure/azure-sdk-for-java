@@ -17,8 +17,7 @@ import java.util.Map;
 public final class FabricModelImpl implements FabricModel, FabricModel.Definition, FabricModel.Update {
     private FabricModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -85,27 +84,21 @@ public final class FabricModelImpl implements FabricModel, FabricModel.Definitio
     }
 
     public FabricModel create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFabrics()
-                .create(resourceGroupName, fabricName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFabrics()
+            .create(resourceGroupName, fabricName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FabricModel create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFabrics()
-                .create(resourceGroupName, fabricName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getFabrics()
+            .create(resourceGroupName, fabricName, this.innerModel(), context);
         return this;
     }
 
-    FabricModelImpl(
-        String name,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    FabricModelImpl(String name,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = new FabricModelInner();
         this.serviceManager = serviceManager;
         this.fabricName = name;
@@ -117,21 +110,20 @@ public final class FabricModelImpl implements FabricModel, FabricModel.Definitio
     }
 
     public FabricModel apply() {
-        this.innerObject =
-            serviceManager.serviceClient().getFabrics().update(resourceGroupName, fabricName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getFabrics()
+            .update(resourceGroupName, fabricName, updateBody, Context.NONE);
         return this;
     }
 
     public FabricModel apply(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getFabrics().update(resourceGroupName, fabricName, updateBody, context);
+        this.innerObject
+            = serviceManager.serviceClient().getFabrics().update(resourceGroupName, fabricName, updateBody, context);
         return this;
     }
 
-    FabricModelImpl(
-        FabricModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    FabricModelImpl(FabricModelInner innerObject,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -139,22 +131,18 @@ public final class FabricModelImpl implements FabricModel, FabricModel.Definitio
     }
 
     public FabricModel refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFabrics()
-                .getByResourceGroupWithResponse(resourceGroupName, fabricName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFabrics()
+            .getByResourceGroupWithResponse(resourceGroupName, fabricName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public FabricModel refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFabrics()
-                .getByResourceGroupWithResponse(resourceGroupName, fabricName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getFabrics()
+            .getByResourceGroupWithResponse(resourceGroupName, fabricName, context)
+            .getValue();
         return this;
     }
 

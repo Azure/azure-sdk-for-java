@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.subscription.generated;
 
-/** Samples for Tenants List. */
+/**
+ * Samples for Tenants List.
+ */
 public final class TenantsListSamples {
     /*
-     * x-ms-original-file: specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/listTenants.json
+     * x-ms-original-file:
+     * specification/subscription/resource-manager/Microsoft.Subscription/stable/2016-06-01/examples/listTenants.json
      */
     /**
      * Sample code: listTenants.
-     *
+     * 
      * @param manager Entry point to SubscriptionManager.
      */
     public static void listTenants(com.azure.resourcemanager.subscription.SubscriptionManager manager) {

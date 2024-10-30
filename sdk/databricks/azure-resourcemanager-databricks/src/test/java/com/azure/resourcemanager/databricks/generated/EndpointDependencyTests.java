@@ -13,51 +13,33 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointDependency model =
-            BinaryData
-                .fromString(
-                    "{\"domainName\":\"xyqj\",\"endpointDetails\":[{\"ipAddress\":\"t\",\"port\":738552235,\"latency\":89.54885021656311,\"isAccessible\":false},{\"ipAddress\":\"zsqpjhvmdajvny\",\"port\":340667292,\"latency\":0.19355568935980338,\"isAccessible\":false},{\"ipAddress\":\"oaeupfhyhltrpmo\",\"port\":1593902435,\"latency\":34.71437790880483,\"isAccessible\":false},{\"ipAddress\":\"kthfui\",\"port\":1958511129,\"latency\":82.85533213384883,\"isAccessible\":false}]}")
-                .toObject(EndpointDependency.class);
-        Assertions.assertEquals("xyqj", model.domainName());
-        Assertions.assertEquals("t", model.endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(738552235, model.endpointDetails().get(0).port());
-        Assertions.assertEquals(89.54885021656311D, model.endpointDetails().get(0).latency());
-        Assertions.assertEquals(false, model.endpointDetails().get(0).isAccessible());
+        EndpointDependency model = BinaryData.fromString(
+            "{\"domainName\":\"nlebxetqgtzxd\",\"endpointDetails\":[{\"ipAddress\":\"qqwx\",\"port\":19464895,\"latency\":7.9074598312850135,\"isAccessible\":true},{\"ipAddress\":\"sub\",\"port\":1455725061,\"latency\":48.13331797377744,\"isAccessible\":true}]}")
+            .toObject(EndpointDependency.class);
+        Assertions.assertEquals("nlebxetqgtzxd", model.domainName());
+        Assertions.assertEquals("qqwx", model.endpointDetails().get(0).ipAddress());
+        Assertions.assertEquals(19464895, model.endpointDetails().get(0).port());
+        Assertions.assertEquals(7.9074598312850135D, model.endpointDetails().get(0).latency());
+        Assertions.assertEquals(true, model.endpointDetails().get(0).isAccessible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointDependency model =
-            new EndpointDependency()
-                .withDomainName("xyqj")
-                .withEndpointDetails(
-                    Arrays
-                        .asList(
-                            new EndpointDetail()
-                                .withIpAddress("t")
-                                .withPort(738552235)
-                                .withLatency(89.54885021656311D)
-                                .withIsAccessible(false),
-                            new EndpointDetail()
-                                .withIpAddress("zsqpjhvmdajvny")
-                                .withPort(340667292)
-                                .withLatency(0.19355568935980338D)
-                                .withIsAccessible(false),
-                            new EndpointDetail()
-                                .withIpAddress("oaeupfhyhltrpmo")
-                                .withPort(1593902435)
-                                .withLatency(34.71437790880483D)
-                                .withIsAccessible(false),
-                            new EndpointDetail()
-                                .withIpAddress("kthfui")
-                                .withPort(1958511129)
-                                .withLatency(82.85533213384883D)
-                                .withIsAccessible(false)));
+        EndpointDependency model = new EndpointDependency().withDomainName("nlebxetqgtzxd")
+            .withEndpointDetails(Arrays.asList(
+                new EndpointDetail().withIpAddress("qqwx")
+                    .withPort(19464895)
+                    .withLatency(7.9074598312850135D)
+                    .withIsAccessible(true),
+                new EndpointDetail().withIpAddress("sub")
+                    .withPort(1455725061)
+                    .withLatency(48.13331797377744D)
+                    .withIsAccessible(true)));
         model = BinaryData.fromObject(model).toObject(EndpointDependency.class);
-        Assertions.assertEquals("xyqj", model.domainName());
-        Assertions.assertEquals("t", model.endpointDetails().get(0).ipAddress());
-        Assertions.assertEquals(738552235, model.endpointDetails().get(0).port());
-        Assertions.assertEquals(89.54885021656311D, model.endpointDetails().get(0).latency());
-        Assertions.assertEquals(false, model.endpointDetails().get(0).isAccessible());
+        Assertions.assertEquals("nlebxetqgtzxd", model.domainName());
+        Assertions.assertEquals("qqwx", model.endpointDetails().get(0).ipAddress());
+        Assertions.assertEquals(19464895, model.endpointDetails().get(0).port());
+        Assertions.assertEquals(7.9074598312850135D, model.endpointDetails().get(0).latency());
+        Assertions.assertEquals(true, model.endpointDetails().get(0).isAccessible());
     }
 }

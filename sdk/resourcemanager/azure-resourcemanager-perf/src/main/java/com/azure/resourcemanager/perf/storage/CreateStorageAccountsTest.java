@@ -17,7 +17,8 @@ public class CreateStorageAccountsTest extends ResourceGroupTestBase<PerfStressO
 
     @Override
     public void run() {
-        azureResourceManager.storageAccounts().define(RESOURCE_NAMER.randomName("sastress", 24))
+        azureResourceManager.storageAccounts()
+            .define(RESOURCE_NAMER.randomName("sastress", 24))
             .withRegion(Region.US_WEST)
             .withExistingResourceGroup(RESOURCE_GROUP_NAME)
             .create();
@@ -25,7 +26,8 @@ public class CreateStorageAccountsTest extends ResourceGroupTestBase<PerfStressO
 
     @Override
     public Mono<Void> runAsync() {
-        return azureResourceManager.storageAccounts().define(RESOURCE_NAMER.randomName("sastress", 24))
+        return azureResourceManager.storageAccounts()
+            .define(RESOURCE_NAMER.randomName("sastress", 24))
             .withRegion(Region.US_WEST)
             .withExistingResourceGroup(RESOURCE_GROUP_NAME)
             .createAsync()

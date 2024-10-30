@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.webpubsub.fluent.models.ReplicaInner;
 
-/** An instance of this class provides access to all the operations defined in WebPubSubReplicasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WebPubSubReplicasClient.
+ */
 public interface WebPubSubReplicasClient {
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface WebPubSubReplicasClient {
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface WebPubSubReplicasClient {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -55,12 +57,12 @@ public interface WebPubSubReplicasClient {
      * @return the replica and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReplicaInner> getWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context);
+    Response<ReplicaInner> getWithResponse(String resourceGroupName, String resourceName, String replicaName,
+        Context context);
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -74,7 +76,7 @@ public interface WebPubSubReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -85,12 +87,12 @@ public interface WebPubSubReplicasClient {
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters);
+    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters);
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -102,12 +104,12 @@ public interface WebPubSubReplicasClient {
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context);
+    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, String replicaName, ReplicaInner parameters, Context context);
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -118,12 +120,12 @@ public interface WebPubSubReplicasClient {
      * @return a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicaInner createOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters);
+    ReplicaInner createOrUpdate(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters);
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -135,12 +137,12 @@ public interface WebPubSubReplicasClient {
      * @return a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicaInner createOrUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context);
+    ReplicaInner createOrUpdate(String resourceGroupName, String resourceName, String replicaName,
+        ReplicaInner parameters, Context context);
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -151,12 +153,12 @@ public interface WebPubSubReplicasClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String replicaName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String replicaName,
+        Context context);
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -169,7 +171,7 @@ public interface WebPubSubReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -180,12 +182,12 @@ public interface WebPubSubReplicasClient {
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters);
+    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(String resourceGroupName, String resourceName,
+        String replicaName, ReplicaInner parameters);
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -197,12 +199,12 @@ public interface WebPubSubReplicasClient {
      * @return the {@link SyncPoller} for polling of a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context);
+    SyncPoller<PollResult<ReplicaInner>, ReplicaInner> beginUpdate(String resourceGroupName, String resourceName,
+        String replicaName, ReplicaInner parameters, Context context);
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -217,7 +219,7 @@ public interface WebPubSubReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -229,12 +231,12 @@ public interface WebPubSubReplicasClient {
      * @return a class represent a replica resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicaInner update(
-        String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters, Context context);
+    ReplicaInner update(String resourceGroupName, String resourceName, String replicaName, ReplicaInner parameters,
+        Context context);
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -248,7 +250,7 @@ public interface WebPubSubReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -259,12 +261,12 @@ public interface WebPubSubReplicasClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String resourceName, String replicaName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName, String replicaName,
+        Context context);
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -277,7 +279,7 @@ public interface WebPubSubReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.

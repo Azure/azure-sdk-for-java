@@ -109,25 +109,21 @@ public final class IpPrefixImpl implements IpPrefix, IpPrefix.Definition, IpPref
     }
 
     public IpPrefix create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpPrefixes()
-                .create(resourceGroupName, ipPrefixName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpPrefixes()
+            .create(resourceGroupName, ipPrefixName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IpPrefix create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpPrefixes()
-                .create(resourceGroupName, ipPrefixName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpPrefixes()
+            .create(resourceGroupName, ipPrefixName, this.innerModel(), context);
         return this;
     }
 
-    IpPrefixImpl(
-        String name, com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
+    IpPrefixImpl(String name,
+        com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = new IpPrefixInner();
         this.serviceManager = serviceManager;
         this.ipPrefixName = name;
@@ -139,22 +135,20 @@ public final class IpPrefixImpl implements IpPrefix, IpPrefix.Definition, IpPref
     }
 
     public IpPrefix apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpPrefixes()
-                .update(resourceGroupName, ipPrefixName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpPrefixes()
+            .update(resourceGroupName, ipPrefixName, updateBody, Context.NONE);
         return this;
     }
 
     public IpPrefix apply(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getIpPrefixes().update(resourceGroupName, ipPrefixName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getIpPrefixes()
+            .update(resourceGroupName, ipPrefixName, updateBody, context);
         return this;
     }
 
-    IpPrefixImpl(
-        IpPrefixInner innerObject,
+    IpPrefixImpl(IpPrefixInner innerObject,
         com.azure.resourcemanager.managednetworkfabric.ManagedNetworkFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -163,22 +157,18 @@ public final class IpPrefixImpl implements IpPrefix, IpPrefix.Definition, IpPref
     }
 
     public IpPrefix refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpPrefixes()
-                .getByResourceGroupWithResponse(resourceGroupName, ipPrefixName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIpPrefixes()
+            .getByResourceGroupWithResponse(resourceGroupName, ipPrefixName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IpPrefix refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIpPrefixes()
-                .getByResourceGroupWithResponse(resourceGroupName, ipPrefixName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIpPrefixes()
+            .getByResourceGroupWithResponse(resourceGroupName, ipPrefixName, context)
+            .getValue();
         return this;
     }
 

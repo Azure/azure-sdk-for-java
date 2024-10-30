@@ -24,6 +24,24 @@ jobs:
             - 'sdk/boms/spring-cloud-azure-dependencies'
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/jdbc'
+            - 'sdk/servicebus'
+            - 'sdk/eventhubs'
+            - 'common/perf-test-core'
+            - 'sdk/monitor/azure-monitor-opentelemetry-exporter'
+            - 'sdk/parents/azure-perf-test-parent'
+            - 'sdk/parents/azure-sdk-parent'
+            - 'eng/code-quality-reports'
+      - task: Maven@4
+        displayName: 'Install Unreleased Dependencies'
+        inputs:
+          mavenPomFile: sdk/spring/pipeline/ClientFromSourcePom.xml
+          goals: 'install'
+          options: $(DefaultOptions) -DskipTests $(DefaultSkipOptions) -Djacoco.skip=true ${{ parameters.BuildOptions }} -T ${{ parameters.BuildParallelization }}
+          mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
+          javaHomeOption: 'JDKVersion'
+          jdkVersionOption: $(JavaTestVersion)
+          jdkArchitectureOption: 'x64'
+          publishJUnitResults: false
       - script: |
           python -m pip install termcolor
         displayName: 'Install python module'

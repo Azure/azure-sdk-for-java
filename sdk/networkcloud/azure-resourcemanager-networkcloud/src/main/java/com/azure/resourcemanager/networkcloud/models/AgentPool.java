@@ -207,14 +207,9 @@ public interface AgentPool {
     AgentPoolInner innerModel();
 
     /** The entirety of the AgentPool definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCount,
-            DefinitionStages.WithMode,
-            DefinitionStages.WithVmSkuName,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCount, DefinitionStages.WithMode,
+        DefinitionStages.WithVmSkuName, DefinitionStages.WithCreate {
     }
 
     /** The AgentPool definition stages. */
@@ -298,16 +293,10 @@ public interface AgentPool {
          * The stage of the AgentPool definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithExtendedLocation,
-                DefinitionStages.WithAdministratorConfiguration,
-                DefinitionStages.WithAgentOptions,
-                DefinitionStages.WithAttachedNetworkConfiguration,
-                DefinitionStages.WithAvailabilityZones,
-                DefinitionStages.WithLabels,
-                DefinitionStages.WithTaints,
-                DefinitionStages.WithUpgradeSettings {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation,
+            DefinitionStages.WithAdministratorConfiguration, DefinitionStages.WithAgentOptions,
+            DefinitionStages.WithAttachedNetworkConfiguration, DefinitionStages.WithAvailabilityZones,
+            DefinitionStages.WithLabels, DefinitionStages.WithTaints, DefinitionStages.WithUpgradeSettings {
             /**
              * Executes the create request.
              *

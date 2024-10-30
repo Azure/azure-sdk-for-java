@@ -3,7 +3,6 @@
 
 package com.azure.storage.blob.implementation.util;
 
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
@@ -32,7 +31,6 @@ import com.azure.storage.blob.models.BlobCorsRule;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobDownloadResponse;
-import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobItem;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -66,8 +64,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.function.Supplier;
 
 /**
  * This class provides helper methods for common model patterns.
@@ -490,44 +486,6 @@ public final class ModelHelper {
             : ChunkedDownloadUtils.extractTotalBlobLength(headers.getContentRange());
     }
 
-    public static boolean checkBlobDoesNotExistStatusCode(Throwable t) {
-        if (t instanceof BlobStorageException) {
-            BlobStorageException s = (BlobStorageException) t;
-            return s.getStatusCode() == 404
-                && (s.getErrorCode() == BlobErrorCode.RESOURCE_NOT_FOUND
-                || s.getErrorCode() == BlobErrorCode.BLOB_NOT_FOUND);
-            /* HttpResponseException - file get properties is a head request so a body is not returned. Error
-             conversion logic does not properly handle errors that don't return XML. */
-        } else if (t instanceof HttpResponseException) {
-            HttpResponseException h = (HttpResponseException) t;
-            String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
-            return h.getResponse().getStatusCode() == 404
-                && (BlobErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
-                || BlobErrorCode.BLOB_NOT_FOUND.toString().equals(errorCode));
-        } else {
-            return false;
-        }
-    }
-
-    public static boolean checkContainerDoesNotExistStatusCode(Throwable t) {
-        if (t instanceof BlobStorageException) {
-            BlobStorageException s = (BlobStorageException) t;
-            return s.getStatusCode() == 404
-                && (s.getErrorCode() == BlobErrorCode.RESOURCE_NOT_FOUND
-                || s.getErrorCode() == BlobErrorCode.CONTAINER_NOT_FOUND);
-            /* HttpResponseException - file get properties is a head request so a body is not returned. Error
-             conversion logic does not properly handle errors that don't return XML. */
-        } else if (t instanceof HttpResponseException) {
-            HttpResponseException h = (HttpResponseException) t;
-            String errorCode = h.getResponse().getHeaderValue(X_MS_ERROR_CODE);
-            return h.getResponse().getStatusCode() == 404
-                && (BlobErrorCode.RESOURCE_NOT_FOUND.toString().equals(errorCode)
-                || BlobErrorCode.CONTAINER_NOT_FOUND.toString().equals(errorCode));
-        } else {
-            return false;
-        }
-    }
-
     public static String tagsToString(Map<String, String> tags) {
         if (tags == null || tags.isEmpty()) {
             return null;
@@ -694,24 +652,6 @@ public final class ModelHelper {
      */
     public static BlobStorageException mapToBlobStorageException(BlobStorageExceptionInternal internal) {
         return new BlobStorageException(internal.getMessage(), internal.getResponse(), internal.getValue());
-    }
-
-    public static <T> Callable<T> wrapTimeoutServiceCallWithExceptionMapping(Supplier<T> serviceCall) {
-        return () -> {
-            try {
-                return serviceCall.get();
-            } catch (BlobStorageExceptionInternal internal) {
-                throw mapToBlobStorageException(internal);
-            }
-        };
-    }
-
-    public static <T> T wrapServiceCallWithExceptionMapping(Supplier<T> serviceCall) {
-        try {
-            return serviceCall.get();
-        } catch (BlobStorageExceptionInternal internal) {
-            throw mapToBlobStorageException(internal);
-        }
     }
 
     private ModelHelper() {

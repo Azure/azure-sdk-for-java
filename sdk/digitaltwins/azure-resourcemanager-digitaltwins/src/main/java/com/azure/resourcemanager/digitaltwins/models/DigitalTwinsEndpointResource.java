@@ -60,17 +60,16 @@ public interface DigitalTwinsEndpointResource {
     DigitalTwinsEndpointResourceInner innerModel();
 
     /** The entirety of the DigitalTwinsEndpointResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithParentResource,
+        DefinitionStages.WithProperties, DefinitionStages.WithCreate {
     }
+
     /** The DigitalTwinsEndpointResource definition stages. */
     interface DefinitionStages {
         /** The first stage of the DigitalTwinsEndpointResource definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the DigitalTwinsEndpointResource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -82,6 +81,7 @@ public interface DigitalTwinsEndpointResource {
              */
             WithProperties withExistingDigitalTwinsInstance(String resourceGroupName, String resourceName);
         }
+
         /** The stage of the DigitalTwinsEndpointResource definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -92,6 +92,7 @@ public interface DigitalTwinsEndpointResource {
              */
             WithCreate withProperties(DigitalTwinsEndpointResourceProperties properties);
         }
+
         /**
          * The stage of the DigitalTwinsEndpointResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
@@ -113,6 +114,7 @@ public interface DigitalTwinsEndpointResource {
             DigitalTwinsEndpointResource create(Context context);
         }
     }
+
     /**
      * Begins update for the DigitalTwinsEndpointResource resource.
      *
@@ -137,6 +139,7 @@ public interface DigitalTwinsEndpointResource {
          */
         DigitalTwinsEndpointResource apply(Context context);
     }
+
     /** The DigitalTwinsEndpointResource update stages. */
     interface UpdateStages {
         /** The stage of the DigitalTwinsEndpointResource update allowing to specify properties. */
@@ -150,6 +153,7 @@ public interface DigitalTwinsEndpointResource {
             Update withProperties(DigitalTwinsEndpointResourceProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

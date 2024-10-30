@@ -11,15 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class VMResourcesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMResourcesInner model =
-            BinaryData.fromString("{\"vmResourceId\":\"axcfjpgddtocjjx\"}").toObject(VMResourcesInner.class);
-        Assertions.assertEquals("axcfjpgddtocjjx", model.vmResourceId());
+        VMResourcesInner model = BinaryData.fromString("{\"vmResourceId\":\"zf\"}").toObject(VMResourcesInner.class);
+        Assertions.assertEquals("zf", model.vmResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMResourcesInner model = new VMResourcesInner().withVmResourceId("axcfjpgddtocjjx");
+        VMResourcesInner model = new VMResourcesInner().withVmResourceId("zf");
         model = BinaryData.fromObject(model).toObject(VMResourcesInner.class);
-        Assertions.assertEquals("axcfjpgddtocjjx", model.vmResourceId());
+        Assertions.assertEquals("zf", model.vmResourceId());
     }
 }

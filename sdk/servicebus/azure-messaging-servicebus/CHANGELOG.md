@@ -4,16 +4,43 @@
 
 ### Features Added
 
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 7.17.5 (2024-10-16)
+
+### Bugs Fixed
+
+- Fixes the thread unsafe use of javax.crypto.Mac instance in ServiceBusSharedKeyCredential. ([42353](https://github.com/Azure/azure-sdk-for-java/pull/42353))
+- Fixed issue where `SubscriptionProperties.UserMetadata` was set to `null` when updating its value. ([#42332](https://github.com/Azure/azure-sdk-for-java/pull/42332))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+- Upgraded `azure-core-amqp` from `2.9.9` to `2.9.10`.
+- Upgraded `azure-identity` from `1.13.3` to `1.14.0`.
+
+## 7.17.4 (2024-09-27)
+
+### Features Added
+
 - Added runtime inspection for cores, pool size and Processor concurrency and a log statement linking to troubleshooting guideline on resourcing. This is based on the discussion here ([41489](https://github.com/Azure/azure-sdk-for-java/issues/41489))
 - Integrated RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache, these caches are activated when the configuration `com.azure.core.amqp.cache` is opted-in. ([39107](https://github.com/Azure/azure-sdk-for-java/pull/39107))
-
-### Breaking Changes
 
 ### Bugs Fixed
 
 - Fixes the message size computation in ServiceBusMessageSerializer to include size of delivery annotations. ([41605](https://github.com/Azure/azure-sdk-for-java/issues/41605))
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+- Upgraded `azure-core-amqp` from `2.9.8` to `2.9.9`.
+- Upgraded `azure-identity` from `1.13.2` to `1.13.3`.
 
 ## 7.17.3 (2024-08-24)
 

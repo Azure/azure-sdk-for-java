@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class WorkspaceRepositoryConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WorkspaceRepositoryConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"pqfrtqlkz\",\"hostName\":\"gnitgvkxlzyq\",\"accountName\":\"fegcea\",\"projectName\":\"xwh\",\"repositoryName\":\"nsymoyqhlwigd\",\"collaborationBranch\":\"bkbxgomfa\",\"rootFolder\":\"wasqvdaeyyg\",\"lastCommitId\":\"akjsqz\",\"tenantId\":\"3702a1d4-9dbe-4cc4-9101-bcd4a55fa392\"}")
-                .toObject(WorkspaceRepositoryConfiguration.class);
+        WorkspaceRepositoryConfiguration model = BinaryData.fromString(
+            "{\"type\":\"pqfrtqlkz\",\"hostName\":\"gnitgvkxlzyq\",\"accountName\":\"fegcea\",\"projectName\":\"xwh\",\"repositoryName\":\"nsymoyqhlwigd\",\"collaborationBranch\":\"bkbxgomfa\",\"rootFolder\":\"wasqvdaeyyg\",\"lastCommitId\":\"akjsqz\",\"tenantId\":\"3702a1d4-9dbe-4cc4-9101-bcd4a55fa392\"}")
+            .toObject(WorkspaceRepositoryConfiguration.class);
         Assertions.assertEquals("pqfrtqlkz", model.type());
         Assertions.assertEquals("gnitgvkxlzyq", model.hostname());
         Assertions.assertEquals("fegcea", model.accountName());
@@ -30,17 +28,15 @@ public final class WorkspaceRepositoryConfigurationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceRepositoryConfiguration model =
-            new WorkspaceRepositoryConfiguration()
-                .withType("pqfrtqlkz")
-                .withHostname("gnitgvkxlzyq")
-                .withAccountName("fegcea")
-                .withProjectName("xwh")
-                .withRepositoryName("nsymoyqhlwigd")
-                .withCollaborationBranch("bkbxgomfa")
-                .withRootFolder("wasqvdaeyyg")
-                .withLastCommitId("akjsqz")
-                .withTenantId(UUID.fromString("3702a1d4-9dbe-4cc4-9101-bcd4a55fa392"));
+        WorkspaceRepositoryConfiguration model = new WorkspaceRepositoryConfiguration().withType("pqfrtqlkz")
+            .withHostname("gnitgvkxlzyq")
+            .withAccountName("fegcea")
+            .withProjectName("xwh")
+            .withRepositoryName("nsymoyqhlwigd")
+            .withCollaborationBranch("bkbxgomfa")
+            .withRootFolder("wasqvdaeyyg")
+            .withLastCommitId("akjsqz")
+            .withTenantId(UUID.fromString("3702a1d4-9dbe-4cc4-9101-bcd4a55fa392"));
         model = BinaryData.fromObject(model).toObject(WorkspaceRepositoryConfiguration.class);
         Assertions.assertEquals("pqfrtqlkz", model.type());
         Assertions.assertEquals("gnitgvkxlzyq", model.hostname());

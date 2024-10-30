@@ -61,7 +61,8 @@ public final class AzureCliToken implements JsonSerializable<AzureCliToken> {
         // parse the incoming date: 2024-02-28 12:05:53.000000
         tokenExpiry = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))
             .atZone(ZoneId.systemDefault())
-            .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
+            .toOffsetDateTime()
+            .withOffsetSameInstant(ZoneOffset.UTC);
         return tokenExpiry;
     }
 
@@ -101,7 +102,8 @@ public final class AzureCliToken implements JsonSerializable<AzureCliToken> {
             }
 
             if (tokenHolder.expiresOnUnixTime != null) {
-                tokenHolder.tokenExpiry = Instant.ofEpochSecond(tokenHolder.getExpiresOnUnixTime()).atOffset(ZoneOffset.UTC);
+                tokenHolder.tokenExpiry
+                    = Instant.ofEpochSecond(tokenHolder.getExpiresOnUnixTime()).atOffset(ZoneOffset.UTC);
             } else {
                 tokenHolder.tokenExpiry = parseExpiresOnTime(tokenHolder.getExpiresOn());
             }

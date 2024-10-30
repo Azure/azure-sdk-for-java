@@ -10,11 +10,10 @@ import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationIn
 public final class ApplicationInsightsComponentQuotaStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentQuotaStatusInner model =
-            BinaryData
-                .fromString(
-                    "{\"AppId\":\"wnzlljfmppeeb\",\"ShouldBeThrottled\":false,\"ExpirationTime\":\"sabkyqduujitcjcz\"}")
-                .toObject(ApplicationInsightsComponentQuotaStatusInner.class);
+        ApplicationInsightsComponentQuotaStatusInner model = BinaryData
+            .fromString(
+                "{\"AppId\":\"wnzlljfmppeeb\",\"ShouldBeThrottled\":false,\"ExpirationTime\":\"sabkyqduujitcjcz\"}")
+            .toObject(ApplicationInsightsComponentQuotaStatusInner.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.automation.fluent.models.SourceControlSyncJobStreamInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The response model for the list source control sync job streams operation. */
+/**
+ * The response model for the list source control sync job streams operation.
+ */
 @Fluent
-public final class SourceControlSyncJobStreamsListBySyncJob {
+public final class SourceControlSyncJobStreamsListBySyncJob
+    implements JsonSerializable<SourceControlSyncJobStreamsListBySyncJob> {
     /*
      * The list of source control sync job streams.
      */
-    @JsonProperty(value = "value")
     private List<SourceControlSyncJobStreamInner> value;
 
     /*
      * The next link.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of SourceControlSyncJobStreamsListBySyncJob class.
+     */
+    public SourceControlSyncJobStreamsListBySyncJob() {
+    }
+
+    /**
      * Get the value property: The list of source control sync job streams.
-     *
+     * 
      * @return the value value.
      */
     public List<SourceControlSyncJobStreamInner> value() {
@@ -35,7 +46,7 @@ public final class SourceControlSyncJobStreamsListBySyncJob {
 
     /**
      * Set the value property: The list of source control sync job streams.
-     *
+     * 
      * @param value the value value to set.
      * @return the SourceControlSyncJobStreamsListBySyncJob object itself.
      */
@@ -46,7 +57,7 @@ public final class SourceControlSyncJobStreamsListBySyncJob {
 
     /**
      * Get the nextLink property: The next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,12 +66,53 @@ public final class SourceControlSyncJobStreamsListBySyncJob {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceControlSyncJobStreamsListBySyncJob from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceControlSyncJobStreamsListBySyncJob if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceControlSyncJobStreamsListBySyncJob.
+     */
+    public static SourceControlSyncJobStreamsListBySyncJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceControlSyncJobStreamsListBySyncJob deserializedSourceControlSyncJobStreamsListBySyncJob
+                = new SourceControlSyncJobStreamsListBySyncJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SourceControlSyncJobStreamInner> value
+                        = reader.readArray(reader1 -> SourceControlSyncJobStreamInner.fromJson(reader1));
+                    deserializedSourceControlSyncJobStreamsListBySyncJob.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedSourceControlSyncJobStreamsListBySyncJob.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceControlSyncJobStreamsListBySyncJob;
+        });
     }
 }

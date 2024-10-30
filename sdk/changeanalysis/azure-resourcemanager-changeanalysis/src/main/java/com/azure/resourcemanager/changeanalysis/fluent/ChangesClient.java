@@ -25,8 +25,8 @@ public interface ChangesClient {
      * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ChangeInner> listByResourceGroup(
-        String resourceGroupName, OffsetDateTime startTime, OffsetDateTime endTime);
+    PagedIterable<ChangeInner> listByResourceGroup(String resourceGroupName, OffsetDateTime startTime,
+        OffsetDateTime endTime);
 
     /**
      * List the changes of a resource group within the specified time range. Customer data will always be masked.
@@ -44,8 +44,8 @@ public interface ChangesClient {
      * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ChangeInner> listByResourceGroup(
-        String resourceGroupName, OffsetDateTime startTime, OffsetDateTime endTime, String skipToken, Context context);
+    PagedIterable<ChangeInner> listByResourceGroup(String resourceGroupName, OffsetDateTime startTime,
+        OffsetDateTime endTime, String skipToken, Context context);
 
     /**
      * List the changes of a subscription within the specified time range. Customer data will always be masked.
@@ -75,6 +75,6 @@ public interface ChangesClient {
      * @return the list of detected changes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ChangeInner> list(
-        OffsetDateTime startTime, OffsetDateTime endTime, String skipToken, Context context);
+    PagedIterable<ChangeInner> list(OffsetDateTime startTime, OffsetDateTime endTime, String skipToken,
+        Context context);
 }
