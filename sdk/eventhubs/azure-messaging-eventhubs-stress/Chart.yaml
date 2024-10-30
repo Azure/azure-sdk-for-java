@@ -1,5 +1,5 @@
 apiVersion: v2
-name: java
+name: java-eventhubs
 description: stress test for azure event hubs client in java
 version: 0.1.1
 appVersion: v0.2
