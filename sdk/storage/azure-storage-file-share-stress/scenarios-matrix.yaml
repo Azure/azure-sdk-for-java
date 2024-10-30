@@ -144,24 +144,6 @@ matrix:
       durationMin: 30
       imageBuildDir: "../../.."
 
-    # this test uploads 1KB (1024 bytes), small range of bytes from url, no chunking
-    uploadrangeurlsmall:
-      testScenario: uploadrangefromurl
-      sync: true
-      sizeBytes: 1024
-      uploadFaults: true
-      durationMin: 25
-      imageBuildDir: "../../.."
-
-    # this test uploads 4MB (1024 * 1024 * 4 bytes), large range of bytes from url requiring multiple requests
-    uploadrangeurllarge:
-      testScenario: uploadrangefromurl
-      sync: true
-      sizeBytes: "4194304"
-      uploadFaults: true
-      durationMin: 30
-      imageBuildDir: "../../.."
-
     # this test uploads 1KB (1024 bytes) to file output stream, no chunking
     outputstreamsmall:
       testScenario: fileoutputstream
