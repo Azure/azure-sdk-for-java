@@ -5,9 +5,6 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.StatsbeatTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricsData;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomDimensions;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.OperatingSystem;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.ResourceProvider;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.SystemInformation;
 import org.junit.jupiter.api.Test;
 

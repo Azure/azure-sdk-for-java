@@ -5,8 +5,6 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.utils;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.ContextTagKeys;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.HostName;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.ResourceParser;
 import io.opentelemetry.sdk.autoconfigure.ResourceConfiguration;
 import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
 import io.opentelemetry.sdk.autoconfigure.spi.internal.DefaultConfigProperties;

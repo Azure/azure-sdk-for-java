@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.logging;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.logging.NetworkFriendlyExceptions;
 import org.junit.jupiter.api.Test;
 
 import javax.net.ssl.SSLHandshakeException;

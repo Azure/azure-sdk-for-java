@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.NetworkStatsbeat;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Constant;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

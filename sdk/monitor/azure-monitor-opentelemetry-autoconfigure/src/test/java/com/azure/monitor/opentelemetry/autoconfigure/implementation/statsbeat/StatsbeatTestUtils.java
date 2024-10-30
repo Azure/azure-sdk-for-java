@@ -3,8 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.Feature;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;

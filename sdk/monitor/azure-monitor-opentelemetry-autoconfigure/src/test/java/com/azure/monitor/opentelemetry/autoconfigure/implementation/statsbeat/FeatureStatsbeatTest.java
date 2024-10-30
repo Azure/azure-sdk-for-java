@@ -3,10 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomDimensions;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.Feature;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.FeatureStatsbeat;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.FeatureType;
 import org.junit.jupiter.api.Test;
 
 import java.util.BitSet;

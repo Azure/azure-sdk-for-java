@@ -3,8 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.FileUtil;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.localstorage.LocalFileCache;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

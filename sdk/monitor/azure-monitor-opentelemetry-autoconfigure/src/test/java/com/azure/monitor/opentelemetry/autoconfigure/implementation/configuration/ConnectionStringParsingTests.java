@@ -3,9 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionStringBuilder;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.DefaultEndpoints;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;

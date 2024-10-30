@@ -4,7 +4,6 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
 import com.azure.core.http.HttpResponse;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.QuickPulseNetworkHelper;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 

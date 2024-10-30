@@ -4,9 +4,6 @@
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat;
 
 import com.azure.core.test.annotation.LiveOnly;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.DefaultHeartBeatPropertyProvider;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.HeartbeatDefaultPayload;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.heartbeat.HeartbeatExporter;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricsData;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.TelemetryItem;
 import org.junit.jupiter.api.Test;

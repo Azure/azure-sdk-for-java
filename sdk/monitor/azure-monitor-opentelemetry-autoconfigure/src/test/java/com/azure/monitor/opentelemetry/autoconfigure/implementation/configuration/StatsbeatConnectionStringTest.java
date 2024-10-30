@@ -3,8 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.ConnectionString;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.configuration.StatsbeatConnectionString;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

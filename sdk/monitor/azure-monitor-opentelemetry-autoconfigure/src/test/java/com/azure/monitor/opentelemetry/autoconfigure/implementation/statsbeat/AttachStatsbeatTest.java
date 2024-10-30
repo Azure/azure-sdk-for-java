@@ -5,10 +5,6 @@ package com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat;
 
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.builders.StatsbeatTelemetryBuilder;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.models.MetricsData;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.AttachStatsbeat;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.AzureMetadataService;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.CustomDimensions;
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.ResourceProvider;
 import okio.BufferedSource;
 import okio.Okio;
 import org.junit.jupiter.api.BeforeEach;

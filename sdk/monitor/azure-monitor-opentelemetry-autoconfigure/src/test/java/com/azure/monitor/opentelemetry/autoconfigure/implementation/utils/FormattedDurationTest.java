@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.utils;
 
-import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.FormattedDuration;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
