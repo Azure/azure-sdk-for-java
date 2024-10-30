@@ -18,6 +18,7 @@ Trying to figure out how we can best integrate the realtime spec into a Java SDK
 
 ### Remaining larger TODOs
 
-- `TokenCredential` type support for Azure. This should be easily accomplished by having a mechanism similar to `clientAccessUrlProvider`. The challenge in our case is that we need to also inject specific header values.
-- Convenience layer that allows for message grouping by their type. We could have convenience layer wrapper types for specific event types. Grouping `RealtimeServerResponse` subtypes like (`created` and `done` for example).
-- `ConnectionId` seems to be a WebPubSub specific concept. Adapt the async client to account for this.
+- [x] `TokenCredential` type support for Azure. This should be easily accomplished by having a mechanism similar to `clientAccessUrlProvider`. The challenge in our case is that we need to also inject specific header values.
+  - Solved by adding `AuthenticationProvider`
+- [ ] Convenience layer that allows for message grouping by their type. We could have convenience layer wrapper types for specific event types. Grouping `RealtimeServerResponse` subtypes like (`created` and `done` for example).
+- [ ] `ConnectionId` seems to be a WebPubSub specific concept. Adapt the async client to account for this.
