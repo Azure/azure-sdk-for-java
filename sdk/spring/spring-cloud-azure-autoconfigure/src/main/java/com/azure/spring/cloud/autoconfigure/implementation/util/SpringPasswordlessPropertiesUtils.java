@@ -56,7 +56,7 @@ public final class SpringPasswordlessPropertiesUtils {
     public static void enhancePasswordlessProperties(String passwordlessPropertiesPrefix,
                                                      PasswordlessProperties passwordlessProperties,
                                                      Map<String, String> result) {
-        Properties properties = new Properties();
+        Properties properties = passwordlessProperties.toPasswordlessProperties();
         result.forEach(properties::setProperty);
         enhancePasswordlessProperties(passwordlessPropertiesPrefix, passwordlessProperties, properties);
         properties.forEach((key, value) -> result.put((String) key, (String) value));
