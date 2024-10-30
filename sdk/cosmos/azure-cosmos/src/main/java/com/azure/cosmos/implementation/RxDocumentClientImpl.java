@@ -479,11 +479,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         this.sessionRetryOptions = sessionRetryOptions;
         this.defaultCustomSerializer = defaultCustomSerializer;
 
-        // TODO: too many arguments, should something additional be added to the log message?
         logger.info(
             "Initializing DocumentClient [{}] with"
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}]",
-            this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
+            this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel);
 
         try {
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;

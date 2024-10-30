@@ -568,22 +568,6 @@ public class JsonSerializable {
     }
 
     /**
-     * Gets a ObjectNode collection.
-     *
-     * @param propertyName the property to get.
-     * @return the ObjectNode collection.
-     */
-    Collection<ObjectNode> getCollection(String propertyName) {
-        return getWithMapping(propertyName, n -> {
-            Collection<ObjectNode> result = new ArrayList<>();
-            for (JsonNode node : n) {
-                result.add((ObjectNode) node);
-            }
-            return result;
-        });
-    }
-
-    /**
      * Gets the value of a property identified by an array of property names that forms the path.
      *
      * @param propertyNames that form the path to the property to get.

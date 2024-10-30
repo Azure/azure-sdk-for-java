@@ -54,8 +54,7 @@ public class OpenConnectionAndInitCachesRetryPolicy implements IRetryPolicy {
                     Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT)) {
 
                 if (this.queryPlanAddressRefreshCount.getAndIncrement() > MAX_ADDRESS_RETRY_COUNT) {
-                    // TODO: logging with exception doesn't use formatting, this should be changed slightly
-                    logger.warn("Received {} after exhausted all retry.", e);
+                    logger.warn("Received exception after exhausting all retries.", e);
                     return Mono.just(ShouldRetryResult.NO_RETRY);
                 }
 

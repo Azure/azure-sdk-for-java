@@ -272,9 +272,8 @@ public class AddressResolver implements IAddressResolver {
             return addressesObs.flatMap(addressesValueHolder -> {
 
                 if (addressesValueHolder.v == null) {
-                    // TODO: Too few arguments for the log string
                     logger.info(
-                        "Could not resolve addresses for identity {}/{}. Potentially collection cache or routing map cache is outdated. Return empty - upper logic will refresh and retry. ",
+                        "Could not resolve addresses for identity {}. Potentially collection cache or routing map cache is outdated. Return empty - upper logic will refresh and retry. ",
                         new PartitionKeyRangeIdentity(collection.getResourceId(), range.getId()));
                     return Mono.just(new Utils.ValueHolder<>(null));
                 }
