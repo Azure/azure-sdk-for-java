@@ -35,7 +35,6 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
 import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.enhancePasswordlessProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.registerTokenCredentialBean;
 
 
 /**
@@ -143,7 +142,6 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     private Map<String, String> buildEnhancedProperties(String passwordlessPropertiesPrefix,
                                                         DatabaseType databaseType,
                                                         AzureJdbcPasswordlessProperties properties) {
-        registerTokenCredentialBean(applicationContext, passwordlessPropertiesPrefix, properties);
         Map<String, String> result = new HashMap<>();
         enhancePasswordlessProperties(passwordlessPropertiesPrefix, properties, result);
         databaseType.setDefaultEnhancedProperties(result);

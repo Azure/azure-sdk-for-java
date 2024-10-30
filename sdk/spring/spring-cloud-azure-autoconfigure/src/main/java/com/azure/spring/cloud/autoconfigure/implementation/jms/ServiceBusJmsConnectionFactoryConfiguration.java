@@ -22,8 +22,6 @@ import org.springframework.jms.connection.CachingConnectionFactory;
 
 import java.util.stream.Collectors;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.registerTokenCredentialBean;
-
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(ConnectionFactory.class)
 public class ServiceBusJmsConnectionFactoryConfiguration  {
@@ -36,7 +34,6 @@ public class ServiceBusJmsConnectionFactoryConfiguration  {
 
     private ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties serviceBusJmsProperties,
                                                                              ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
-        registerTokenCredentialBean(applicationContext, AzureServiceBusJmsProperties.PREFIX, serviceBusJmsProperties);
         return new ServiceBusJmsConnectionFactoryFactory(serviceBusJmsProperties,
             factoryCustomizers.orderedStream().collect(Collectors.toList()))
             .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
