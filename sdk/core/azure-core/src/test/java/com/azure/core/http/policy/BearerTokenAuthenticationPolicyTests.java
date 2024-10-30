@@ -14,6 +14,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MockHttpResponse;
+import com.azure.core.implementation.http.policy.AuthorizationChallengeParser;
 import com.azure.core.util.Context;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -45,6 +46,14 @@ public class BearerTokenAuthenticationPolicyTests {
             .assertNext(response -> assertEquals(expectedStatusCode, response.getStatusCode()))
             .verifyComplete();
         assertEquals(expectedClaims, claims.get());
+
+        if (expectedClaims != null) {
+            String actualEncodedClaims = AuthorizationChallengeParser
+                .getChallengeParameterFromResponse(new MockHttpResponse(null, 401,
+                new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge)),
+                    "Bearer", "claims");
+            assertEquals(encodedClaims, actualEncodedClaims);
+        }
     }
 
     @ParameterizedTest
@@ -64,6 +73,14 @@ public class BearerTokenAuthenticationPolicyTests {
             assertEquals(expectedStatusCode, response.getStatusCode());
         }
         assertEquals(expectedClaims, claims.get());
+
+        if (expectedClaims != null) {
+            String actualEncodedClaims = AuthorizationChallengeParser
+                .getChallengeParameterFromResponse(new MockHttpResponse(null, 401,
+                        new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge)),
+                    "Bearer", "claims");
+            assertEquals(encodedClaims, actualEncodedClaims);
+        }
     }
 
     // A fake token credential that lets us keep track of what got parsed out of a CAE claim for assertion.
