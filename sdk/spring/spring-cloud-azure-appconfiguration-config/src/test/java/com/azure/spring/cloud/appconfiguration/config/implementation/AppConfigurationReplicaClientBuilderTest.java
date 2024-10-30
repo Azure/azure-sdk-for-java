@@ -25,6 +25,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.MockitoSession;
+import org.mockito.quality.Strictness;
 import org.springframework.core.env.Environment;
 
 import com.azure.core.credential.TokenCredential;
@@ -54,13 +56,12 @@ public class AppConfigurationReplicaClientBuilderTest {
     @Mock
     private Environment envMock;
 
-    // private MockitoSession session;
+    private MockitoSession session;
 
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        // TODO (mametcal) broken till Azure Spring update
-        //session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
+        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
 
         configStore = new ConfigStore();
         configStore.setEndpoint(TEST_ENDPOINT);
@@ -68,13 +69,12 @@ public class AppConfigurationReplicaClientBuilderTest {
         configStore.validateAndInit();
 
         clientBuilder = null;
-        when(envMock.getActiveProfiles()).thenReturn(new String[0]);
     }
 
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
-        //session.finishMocking();
+        session.finishMocking();
     }
 
     @Test
