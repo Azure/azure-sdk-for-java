@@ -3,7 +3,6 @@
 
 package io.clientcore.http.okhttp3.implementation;
 
-import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
@@ -39,7 +38,7 @@ public final class ProxyAuthenticator implements Authenticator {
     /**
      * Header representing additional information a proxy server is expecting during future authentication requests.
      */
-    public static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
+    private static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
 
     /*
      * Proxies use 'CONNECT' as the HTTP method.
@@ -65,7 +64,7 @@ public final class ProxyAuthenticator implements Authenticator {
 
     private final ChallengeHandler compositeChallengeHandler;
     private final ProxyAuthenticationInfoInterceptor proxyInterceptor;
-    private String lastAuthorizationHeader;
+    private volatile String lastAuthorizationHeader;
 
     /**
      * Constructs a {@link ProxyAuthenticator} which handles authenticating against proxy servers.
@@ -119,13 +118,13 @@ public final class ProxyAuthenticator implements Authenticator {
             String proxyAuthenticateHeader = httpResponse.getHeaders().get(HttpHeaderName.PROXY_AUTHENTICATE).getValue();
 
             if (proxyAuthenticateHeader != null) {
-                // Replace the old nonce with the updated nonce in the header
+                // Replace the old nonce with the updated nonce in the header for security against replay-attacks
                 String updatedHeader = replaceNonceInHeader(proxyAuthenticateHeader, updatedNonce);
                 httpResponse.getHeaders().set(HttpHeaderName.PROXY_AUTHENTICATE, updatedHeader);
             }
         }
-
-        compositeChallengeHandler.handleChallenge(httpRequest, httpResponse);
+        // set isProxy true to indicate proxy authentication
+        compositeChallengeHandler.handleChallenge(httpRequest, httpResponse, true);
         authorizationHeader = httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
 
         if (authorizationHeader != null) {

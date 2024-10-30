@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package io.clientcore.core.implementation.util.auth;
+package io.clientcore.core.util.auth;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.util.auth.ChallengeHandler;
 import io.clientcore.core.util.binarydata.BinaryData;
 
 import java.security.SecureRandom;
@@ -82,16 +81,15 @@ public class DigestChallengeHandler implements ChallengeHandler {
     }
 
     @Override
-    public void handleChallenge(HttpRequest request, Response<?> response) {
-        String authHeader = null;
-        if (response.getHeaders() != null && response.getHeaders().get(HttpHeaderName.WWW_AUTHENTICATE) != null) {
-            authHeader = response.getHeaders().get(HttpHeaderName.WWW_AUTHENTICATE).getValue();
-        }
-        if (!canHandle(response)) {
+    public void handleChallenge(HttpRequest request, Response<?> response, boolean isProxy) {
+        if (!canHandle(response, isProxy)) {
             return;
         }
 
-        if (authHeader.contains(NONCE)) {
+        HttpHeaderName authHeaderName = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
+        String authHeader = response.getHeaders() != null ? response.getHeaders().getValue(authHeaderName) : null;
+
+        if (authHeader != null && authHeader.contains(NONCE)) {
             updateDigestCache(authHeader);
         }
 
@@ -117,18 +115,31 @@ public class DigestChallengeHandler implements ChallengeHandler {
                 response.getBody()
             );
 
-            request.getHeaders().set(HttpHeaderName.AUTHORIZATION, digestAuthHeader);
+            synchronized (request.getHeaders()) {
+                HttpHeaderName headerName = isProxy ? HttpHeaderName.fromString(AuthUtils.PROXY_AUTHORIZATION) : HttpHeaderName.AUTHORIZATION;
+                request.getHeaders().set(headerName, digestAuthHeader);
+            }
         }
     }
 
     @Override
-    public boolean canHandle(Response<?> response) {
-        String authHeader = null;
-        if (response.getHeaders() != null && response.getHeaders().get(HttpHeaderName.WWW_AUTHENTICATE) != null) {
-            authHeader = response.getHeaders().get(HttpHeaderName.WWW_AUTHENTICATE).getValue();
+    public boolean canHandle(Response<?> response, boolean isProxy) {
+        String authHeader;
+        if (response.getHeaders() != null) {
+            HttpHeaderName authHeaderName = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
+            authHeader = response.getHeaders().getValue(authHeaderName);
+
+            if (authHeader != null) {
+                // Split by commas to handle multiple authentication methods in the header.
+                String[] challenges = authHeader.split(",");
+                for (String challenge : challenges) {
+                    if (challenge.trim().regionMatches(true, 0, DIGEST, 0, DIGEST.length())) {
+                        return true;
+                    }
+                }
+            }
         }
-        // Ensure that only Digest challenges are handled
-        return authHeader != null && authHeader.startsWith(DIGEST);  // Not a Digest authentication challenge
+        return false;
     }
 
     private void updateDigestCache(String authHeader) {

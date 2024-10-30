@@ -21,7 +21,6 @@ module io.clientcore.core {
     exports io.clientcore.core.util.configuration;
     exports io.clientcore.core.util.serializer;
     exports io.clientcore.core.util.auth;
-    exports io.clientcore.core.implementation.util.auth;
 
     uses HttpClientProvider;
 }

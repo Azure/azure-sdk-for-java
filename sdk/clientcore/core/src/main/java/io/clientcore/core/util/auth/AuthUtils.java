@@ -29,7 +29,7 @@ public final class AuthUtils {
     public static final String SHA_512_256 = "SHA-512-256";
     public static final String ALGORITHM = "algorithm";
     public static final String NEXT_NONCE = "nextnonce";
-    public static final String BASIC = "Basic ";
+    public static final String BASIC = "Basic";
     public static final String DIGEST = "Digest";
 
     /**

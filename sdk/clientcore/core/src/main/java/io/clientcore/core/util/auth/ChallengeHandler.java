@@ -1,12 +1,10 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+//  Copyright (c) Microsoft Corporation. All rights reserved.
+//  Licensed under the MIT License.
 
 package io.clientcore.core.util.auth;
 
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.implementation.util.auth.DigestChallengeHandler;
-import io.clientcore.core.implementation.util.auth.DigestProxyChallengeHandler;
 import io.clientcore.core.util.ClientLogger;
 
 import java.util.Arrays;
@@ -20,18 +18,22 @@ public interface ChallengeHandler {
 
     /**
      * Handles the authentication challenge based on the HTTP request and response.
+     *
      * @param request The HTTP request to be updated with authentication info.
      * @param response The HTTP response containing the authentication challenge.
+     * @param isProxy Indicates if the challenge is for a proxy.
      */
-    void handleChallenge(HttpRequest request, Response<?> response);
+    void handleChallenge(HttpRequest request, Response<?> response, boolean isProxy);
 
     /**
      * Validate if this ChallengeHandler can handle the provided challenge
      * by inspecting the 'Proxy-Authenticate' or 'WWW-Authenticate' headers.
+     *
      * @param response The HTTP response containing the authentication challenge.
+     * @param isProxy boolean indicating if it is a proxy challenge handler.
      * @return boolean indicating if the challenge can be handled.
      */
-    boolean canHandle(Response<?> response);
+    boolean canHandle(Response<?> response, boolean isProxy);
 
     /**
      * Factory method for creating composite handlers.
@@ -49,14 +51,14 @@ public interface ChallengeHandler {
     class CompositeChallengeHandler implements ChallengeHandler {
         private final List<ChallengeHandler> challengeHandlers;
 
-        private CompositeChallengeHandler(List<ChallengeHandler> challengeHandlers) {
+        CompositeChallengeHandler(List<ChallengeHandler> challengeHandlers) {
             this.challengeHandlers = challengeHandlers;
         }
 
         @Override
-        public boolean canHandle(Response<?> response) {
+        public boolean canHandle(Response<?> response, boolean isProxy) {
             for (ChallengeHandler handler : challengeHandlers) {
-                if (handler.canHandle(response)) {
+                if (handler.canHandle(response, isProxy)) {
                     return true;
                 }
             }
@@ -64,24 +66,24 @@ public interface ChallengeHandler {
         }
 
         @Override
-        public void handleChallenge(HttpRequest request, Response<?> response) {
-            // Check for DigestChallengeHandler or DigestProxyChallengeHandler first
+        public void handleChallenge(HttpRequest request, Response<?> response, boolean isProxy) {
+            // First, try to handle with DigestChallengeHandler, giving it priority
             for (ChallengeHandler handler : challengeHandlers) {
-                if (handler.canHandle(response)
-                    && (handler instanceof DigestChallengeHandler || handler instanceof DigestProxyChallengeHandler)) {
-                    handler.handleChallenge(request, response);
+                if (handler.canHandle(response, isProxy) && handler instanceof DigestChallengeHandler) {
+                    handler.handleChallenge(request, response, isProxy);
                     return;
                 }
             }
 
-            // If no digest handler was able to handle, check for other handlers (e.g., Basic)
+            // If no DigestChallengeHandler was able to handle, try other handlers (e.g., Basic)
             for (ChallengeHandler handler : challengeHandlers) {
-                if (handler.canHandle(response)) {
-                    handler.handleChallenge(request, response);
+                if (handler.canHandle(response, isProxy)) {
+                    handler.handleChallenge(request, response, isProxy);
                     return;
                 }
             }
 
+            // Log an error if no handler could handle the challenge
             LOGGER.logThrowableAsError(new UnsupportedOperationException("None of the challenge handlers could handle the challenge."));
         }
     }

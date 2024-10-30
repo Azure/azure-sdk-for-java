@@ -4,6 +4,9 @@
 package io.clientcore.core.http.models;
 
 import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.util.auth.BasicChallengeHandler;
+import io.clientcore.core.util.auth.ChallengeHandler;
+import io.clientcore.core.util.auth.DigestChallengeHandler;
 import io.clientcore.core.util.configuration.Configuration;
 import io.clientcore.core.util.configuration.ConfigurationProperty;
 import io.clientcore.core.util.configuration.ConfigurationPropertyBuilder;
@@ -90,6 +93,7 @@ public class ProxyOptions {
     private String username;
     private String password;
     private String nonProxyHosts;
+    private ChallengeHandler challengeHandler;
 
     /**
      * Creates ProxyOptions.
@@ -107,11 +111,16 @@ public class ProxyOptions {
      *
      * @param username proxy user name
      * @param password proxy password
-     * @return the updated ProxyOptions object
+     * @return the updated ProxyOptions object and generates a composite challenge handler with basic and
+     * digest authentication.
      */
     public ProxyOptions setCredentials(String username, String password) {
         this.username = Objects.requireNonNull(username, "'username' cannot be null.");
         this.password = Objects.requireNonNull(password, "'password' cannot be null.");
+        this.challengeHandler = ChallengeHandler.of(
+            new BasicChallengeHandler(username, password),
+            new DigestChallengeHandler(username, password)
+        );
         return this;
     }
 
@@ -126,6 +135,17 @@ public class ProxyOptions {
      */
     public ProxyOptions setNonProxyHosts(String nonProxyHosts) {
         this.nonProxyHosts = sanitizeJavaHttpNonProxyHosts(nonProxyHosts);
+        return this;
+    }
+
+    /**
+     * Sets a custom ChallengeHandler.
+     *
+     * @param challengeHandler the custom ChallengeHandler to use.
+     * @return the updated ProxyOptions object.
+     */
+    public ProxyOptions setChallengeHandler(ChallengeHandler challengeHandler) {
+        this.challengeHandler = Objects.requireNonNull(challengeHandler, "'challengeHandler' cannot be null.");
         return this;
     }
 
@@ -488,6 +508,15 @@ public class ProxyOptions {
         }
 
         return sanitizedBuilder.toString();
+    }
+
+    /**
+     * Gets the `ChallengeHandler` instance associated with the proxy options.
+     *
+     * @return The `ChallengeHandler` instance.
+     */
+    public ChallengeHandler getChallengeHandler() {
+        return this.challengeHandler;
     }
 
     /**

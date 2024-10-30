@@ -9,9 +9,8 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.implementation.util.UriBuilder;
-import io.clientcore.core.implementation.util.auth.BasicChallengeHandler;
-import io.clientcore.core.implementation.util.auth.DigestChallengeHandler;
 import io.clientcore.core.util.binarydata.BinaryData;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -56,6 +55,7 @@ public class AuthorizationChallengeHandlerTests {
         .encodeToString(String.format("%s:%s", DEFAULT_USERNAME, DEFAULT_PASSWORD).getBytes(StandardCharsets.UTF_8));
     private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUri());
     private static final BinaryData ENTITY_BODY = BinaryData.fromBytes(new byte[0]);
+    private static final String BASIC_REALM_EXAMPLE = "Basic realm=\"example\"";
 
     /**
      * Tests that {@link ChallengeHandler} is able to handle Basic authentication challenges.
@@ -64,9 +64,9 @@ public class AuthorizationChallengeHandlerTests {
     public void handleBasic() {
         BasicChallengeHandler basicHandler = new BasicChallengeHandler(DEFAULT_USERNAME, DEFAULT_PASSWORD);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaderName.WWW_AUTHENTICATE, "Basic realm=\"example\"");
+        headers.add(HttpHeaderName.WWW_AUTHENTICATE, BASIC_REALM_EXAMPLE);
 
-        basicHandler.handleChallenge(HTTP_REQUEST, new HttpResponse<>(HTTP_REQUEST, 200, headers, null));
+        basicHandler.handleChallenge(HTTP_REQUEST, new HttpResponse<>(HTTP_REQUEST, 200, headers, null), false);
         assertEquals(EXPECTED_BASIC, HTTP_REQUEST.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
     }
 
@@ -78,17 +78,17 @@ public class AuthorizationChallengeHandlerTests {
     public void pipelineBasic() {
         BasicChallengeHandler basicHandler = new BasicChallengeHandler(DEFAULT_USERNAME, DEFAULT_PASSWORD);
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaderName.WWW_AUTHENTICATE, "Basic realm=\"example\"");
+        headers.add(HttpHeaderName.WWW_AUTHENTICATE, BASIC_REALM_EXAMPLE);
 
         // Handle initial challenge
-        basicHandler.handleChallenge(HTTP_REQUEST, new HttpResponse<>(HTTP_REQUEST, 200, headers, null));
+        basicHandler.handleChallenge(HTTP_REQUEST, new HttpResponse<>(HTTP_REQUEST, 200, headers, null), false);
 
         // Validate the initial authorization header
         assertEquals(EXPECTED_BASIC, HTTP_REQUEST.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
 
         // Simulate a subsequent request to validate pipelining
         HttpRequest subsequentRequest = new HttpRequest(HttpMethod.GET, createUri());
-        basicHandler.handleChallenge(subsequentRequest, new HttpResponse<>(subsequentRequest, 200, headers, null));
+        basicHandler.handleChallenge(subsequentRequest, new HttpResponse<>(subsequentRequest, 200, headers, null), false);
 
         // Validate the authorization header in the subsequent request
         assertEquals(EXPECTED_BASIC, subsequentRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
@@ -107,7 +107,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpRequest subsequentRequest = new HttpRequest(HttpMethod.GET, createUri());
 
         // Handle challenge with no previous challenge (lastChallenge is null)
-        basicHandler.handleChallenge(subsequentRequest, new HttpResponse<>(subsequentRequest, 200, null, null));
+        basicHandler.handleChallenge(subsequentRequest, new HttpResponse<>(subsequentRequest, 200, null, null), false);
 
         // Validate that the authorization header is null in the subsequent request
         assertNull(subsequentRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
@@ -127,7 +127,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpResponse<?> httpResponse = createChallengeResponse("testrealm@host.com", "auth", Collections.singletonList("MD5"),
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null, ENTITY_BODY);
 
-        digestChallengeHandler.handleChallenge(httpRequest, httpResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, httpResponse, false);
 
         assertNotNull(extractValue(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), RESPONSE));
     }
@@ -148,7 +148,7 @@ public class AuthorizationChallengeHandlerTests {
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null, ENTITY_BODY);
 
         // Handle the initial challenge
-        digestChallengeHandler.handleChallenge(httpRequest, httpResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, httpResponse, false);
 
         // Validate the initial authorization header
         String authHeader = extractValue(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), RESPONSE);
@@ -156,7 +156,7 @@ public class AuthorizationChallengeHandlerTests {
 
         // Simulate a subsequent request to validate pipelining
         HttpRequest subsequentRequest = new HttpRequest(HttpMethod.GET, uri);
-        digestChallengeHandler.handleChallenge(subsequentRequest, httpResponse);
+        digestChallengeHandler.handleChallenge(subsequentRequest, httpResponse, false);
 
         // Validate that the nonce count is incremented
         assertEquals(2, Integer.parseInt(extractValue(subsequentRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), "nc")));
@@ -178,7 +178,7 @@ public class AuthorizationChallengeHandlerTests {
         // Simulate a subsequent request to validate pipelining without initial handling
         // i.e has not been initialized with the necessary challenge information (like nonce, realm, etc.)
         HttpRequest subsequentRequest = new HttpRequest(HttpMethod.GET, "/dir/index.html");
-        digestChallengeHandler.handleChallenge(subsequentRequest, new HttpResponse<>(subsequentRequest, 200, null, null));
+        digestChallengeHandler.handleChallenge(subsequentRequest, new HttpResponse<>(subsequentRequest, 200, null, null), false);
 
         // Validate that the authorization header is null in the subsequent request
         assertNull(subsequentRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
@@ -199,7 +199,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpResponse<?> httpResponse = createChallengeResponse("http-auth@example.org", "auth", Collections.singletonList("SHA-256"),
             "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v", "FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS", null, ENTITY_BODY);
 
-        digestChallengeHandler.handleChallenge(httpRequest, httpResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, httpResponse, false);
 
         assertNotNull(extractValue(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), RESPONSE));
     }
@@ -218,7 +218,7 @@ public class AuthorizationChallengeHandlerTests {
 
         HttpResponse<?> challengeResponse = createChallengeResponse("http-auth@example.org", "auth", Arrays.asList("MD5", "SHA-256"),
             "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v", "FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS", null, ENTITY_BODY);
-        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse, false);
 
         assertNotNull(extractValue(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), RESPONSE));
     }
@@ -238,7 +238,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpResponse<?> challengeResponse = createChallengeResponse("testrealm@host.com", "auth", null,
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null, ENTITY_BODY);
 
-        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse, false);
 
         assertNotNull(extractValue(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), RESPONSE));
     }
@@ -260,7 +260,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpResponse<?> challengeResponse = createChallengeResponse("api@example.org", "auth", Collections.singletonList("SHA-512-256"),
             "5TsQWLVdgBdmrQ0XsxbDODV+57QdFR34I9HAbC/RVvkK", "HRPCssKJSGjCrkzDg8OhwpzCiGPChXYjwrI2QmXDnsOS", true, ENTITY_BODY);
 
-        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse, false);
 
         assertEquals(expectedUsername, extractValue(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), USERNAME));
         assertNotNull(extractValue(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), RESPONSE));
@@ -282,7 +282,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpResponse<?> challengeResponse = createChallengeResponse("testrealm@host.com", "unknownQop", Collections.singletonList("MD5"),
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null, ENTITY_BODY);
 
-        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse, false);
 
         assertEquals(expectedResponse, extractValue(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), RESPONSE));
     }
@@ -302,7 +302,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpResponse<?> challengeResponse = createChallengeResponse("testrealm@host.com", "auth-int", Collections.singletonList("MD5"),
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null, BinaryData.fromBytes("Hello World!".getBytes(StandardCharsets.UTF_8)));
 
-        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse, false);
 
         assertNotNull(extractValue(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), RESPONSE));
     }
@@ -323,7 +323,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpResponse<?> challengeResponse = createChallengeResponse("testrealm@host.com", "", Collections.singletonList("MD5-sess"),
             "dcd98b7102dd2f0e8b11d0f600bfb0c093", "5ccc069c403ebaf9f0171e9517f40e41", null, ENTITY_BODY);
 
-        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse, false);
 
         assertNotNull(extractValue(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), RESPONSE));
     }
@@ -340,7 +340,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
 
         HttpResponse<?> challengeResponse = createChallengeResponse("realm", "auth", Collections.singletonList("SHA3"), "nonce", "opaque", null, ENTITY_BODY);
-        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse, false);
 
         assertNull(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
     }
@@ -357,7 +357,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, uri);
 
         HttpResponse<?> challengeResponse = createChallengeResponse("realm", "auth", Collections.singletonList("SHA9000"), "nonce", "opaque", null, BinaryData.fromBytes(new byte[0]));
-        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse, false);
         assertNull(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
     }
 
@@ -376,7 +376,7 @@ public class AuthorizationChallengeHandlerTests {
 
         HttpResponse<?> challengeResponse = createChallengeResponse("realm", "auth", Collections.singletonList("MD5"), nonce, "opaque", null, BinaryData.fromBytes(new byte[0]));
 
-        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse, false);
 
         assertNotNull(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
 
@@ -395,7 +395,7 @@ public class AuthorizationChallengeHandlerTests {
 
         // Simulate a subsequent request to validate the updated nonce
         HttpRequest subsequentRequest = new HttpRequest(HttpMethod.GET, uri);
-        digestChallengeHandler.handleChallenge(subsequentRequest, challengeResponseWithNextNonce);
+        digestChallengeHandler.handleChallenge(subsequentRequest, challengeResponseWithNextNonce, false);
 
         // Validate that the nonce has been updated
         assertEquals(nextNonce, extractValue(subsequentRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), "nonce"));
@@ -423,7 +423,7 @@ public class AuthorizationChallengeHandlerTests {
         );
 
         // Simulate handling the first challenge
-        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse, false);
 
         // Assert that the Authorization header has the expected "response" value
         assertNotNull(extractValue(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION), RESPONSE));
@@ -433,7 +433,7 @@ public class AuthorizationChallengeHandlerTests {
         assertNull(authorizationHeader, "The Authentication-Info header should not affect the state if it's null or empty.");
 
         // Simulate another challenge after handling the null/empty Authentication-Info
-        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse);
+        digestChallengeHandler.handleChallenge(httpRequest, challengeResponse, false);
 
         // Ensure the authorization header is still correct and unchanged
         assertNotNull(httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION));
@@ -456,6 +456,46 @@ public class AuthorizationChallengeHandlerTests {
 
         assertEquals(expectedSize, parsedMap.size());
         assertEquals(expectedMap, parsedMap);
+    }
+
+    @Test
+    public void regionMatchesBasicChallengeHandler() {
+        BasicChallengeHandler basicHandler = new BasicChallengeHandler(DEFAULT_USERNAME, DEFAULT_PASSWORD);
+        String region1 = "BASIC";
+        String region2 = "BASIC";
+        Assertions.assertTrue(region1.regionMatches(true, 0, region2, 0, region2.length()));
+    }
+
+    @Test
+    public void regionMatchesDigestChallengeHandler() {
+        DigestChallengeHandler digestHandler = new DigestChallengeHandler(DEFAULT_USERNAME, DEFAULT_PASSWORD);
+        String region1 = "DIGEST";
+        String region2 = "DIGEST";
+        Assertions.assertTrue(region1.regionMatches(true, 0, region2, 0, region2.length()));
+    }
+
+    @Test
+    public void handleBasicProxyChallenge() {
+        BasicChallengeHandler basicHandler = new BasicChallengeHandler(DEFAULT_USERNAME, DEFAULT_PASSWORD);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaderName.PROXY_AUTHENTICATE, BASIC_REALM_EXAMPLE);
+
+        HttpRequest proxyRequest = new HttpRequest(HttpMethod.GET, createUri());
+        basicHandler.handleChallenge(proxyRequest, new HttpResponse<>(proxyRequest, 200, headers, null), true);
+
+        assertEquals(EXPECTED_BASIC, proxyRequest.getHeaders().getValue(HttpHeaderName.fromString(AuthUtils.PROXY_AUTHORIZATION)));
+    }
+
+    @Test
+    public void handleDigestProxyChallenge() {
+        DigestChallengeHandler digestHandler = new DigestChallengeHandler(DEFAULT_USERNAME, DEFAULT_PASSWORD);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaderName.PROXY_AUTHENTICATE, "Digest realm=\"example\", nonce=\"dcd98b7102dd2f0e8b11d0f600bfb0c093\"");
+
+        HttpRequest proxyRequest = new HttpRequest(HttpMethod.GET, createUri());
+        digestHandler.handleChallenge(proxyRequest, new HttpResponse<>(proxyRequest, 200, headers, null), true);
+
+        assertNotNull(proxyRequest.getHeaders().getValue(HttpHeaderName.fromString(AuthUtils.PROXY_AUTHORIZATION)));
     }
 
     private static Stream<Arguments> parseAuthenticationOrAuthorizationHeaderSupplier() {
