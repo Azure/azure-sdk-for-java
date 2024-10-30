@@ -132,7 +132,6 @@ final class StateHolder {
     /**
      * @param originEndpoint the configuration store connected to.
      * @param loaded true if the configuration store was loaded.
-     * @param failFast application started after it failed to load from a store.
      */
     void setLoadState(String originEndpoint, Boolean loaded) {
         loadState.put(originEndpoint, loaded);
