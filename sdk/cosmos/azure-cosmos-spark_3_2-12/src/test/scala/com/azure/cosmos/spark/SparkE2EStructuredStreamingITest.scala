@@ -16,7 +16,7 @@ import org.scalatest.Retries
 import org.scalatest.tagobjects.Retryable
 
 import java.util.UUID
-import java.util.concurrent.atomic.AtomicLong
+import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong}
 import java.util.regex.Pattern
 import scala.util.matching.Regex
 
@@ -102,11 +102,8 @@ class SparkE2EStructuredStreamingITest
     logInfo(s"RecordCount in source container after first execution: $sourceCount")
     var targetCount: Long = getRecordCountOfContainer(targetContainer)
     logInfo(s"RecordCount in target container after first execution: $targetCount")
-    var endLSNs = getEndLSNInOffset(microBatchQuery.lastProgress.sources(0).endOffset)
-    var totalChanges = 0L
-    endLSNs.foreach(endLSN =>
-      totalChanges += endLSN - 1L
-    )
+    var totalChanges = getTotalChanges(microBatchQuery.lastProgress.sources(0).endOffset)
+
 
     processedRecordCount.get() shouldEqual 1L
     sourceCount shouldEqual 1L
@@ -143,11 +140,7 @@ class SparkE2EStructuredStreamingITest
     logInfo(s"RecordCount in source container after second execution: $sourceCount")
     targetCount = getRecordCountOfContainer(targetContainer)
     logInfo(s"RecordCount in target container after second execution: $targetCount")
-    endLSNs = getEndLSNInOffset(secondMicroBatchQuery.lastProgress.sources(0).endOffset)
-    totalChanges = 0L
-    endLSNs.foreach(endLSN =>
-      totalChanges += endLSN - 1L
-    )
+    totalChanges = getTotalChanges(secondMicroBatchQuery.lastProgress.sources(0).endOffset)
 
     sourceCount shouldEqual 21L
     targetCount shouldEqual sourceCount
@@ -159,8 +152,9 @@ class SparkE2EStructuredStreamingITest
   "spark change feed micro batch (incremental)" can
     "have child partitions with more changes than endLSN " in {
 
+    val validateEndLSN = new AtomicBoolean()
     val processedRecordCount = new AtomicLong()
-    var spark = this.createSparkSession(processedRecordCount)
+    var spark = this.createSparkSession(processedRecordCount, validateEndLSN)
     val cosmosEndpoint = TestConfigurations.HOST
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
     val testId = UUID.randomUUID().toString
@@ -189,7 +183,7 @@ class SparkE2EStructuredStreamingITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> sourceContainer.getId,
-      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "1",
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "10",
     )
 
     val writeCfg = Map(
@@ -218,7 +212,7 @@ class SparkE2EStructuredStreamingITest
       .outputMode("append")
       .start()
 
-    Thread.sleep(30000)
+    microBatchQuery.processAllAvailable()
     microBatchQuery.stop()
 
     val sourceCount: Long = getRecordCountOfContainer(sourceContainer)
@@ -226,16 +220,9 @@ class SparkE2EStructuredStreamingITest
     val targetCount: Long = getRecordCountOfContainer(targetContainer)
     logInfo(s"RecordCount in target container after first execution: $targetCount")
 
-    val endLSNs = getEndLSNInOffset(microBatchQuery.lastProgress.sources(0).endOffset)
-    var totalChanges = 0L
-    endLSNs.foreach(endLSN =>
-      totalChanges += endLSN - 1L
-    )
-
     sourceCount shouldEqual 200L
-    targetCount shouldEqual totalChanges
-    processedRecordCount.get() shouldEqual totalChanges
-
+    targetCount shouldEqual sourceCount
+    validateEndLSN.get() shouldEqual true
   }
 
   "spark change feed micro batch (incremental)" can
@@ -887,6 +874,26 @@ class SparkE2EStructuredStreamingITest
     spark
   }
 
+  private[this] def createSparkSession(processedRecordCount:AtomicLong, validateEndLSN: AtomicBoolean) = {
+    val spark = SparkSession.builder()
+     .appName("spark connector sample for recovering structure streaming query")
+     .master("local")
+     .getOrCreate()
+
+    LocalJavaFileSystem.applyToSparkSession(spark)
+    spark.streams.addListener(new StreamingQueryListener() {
+      override def onQueryStarted(queryStarted: QueryStartedEvent): Unit = {}
+      override def onQueryTerminated(queryTerminated: QueryTerminatedEvent): Unit = {}
+      override def onQueryProgress(queryProgress: QueryProgressEvent): Unit = {
+        processedRecordCount.addAndGet(queryProgress.progress.numInputRows)
+        validateEndLSN.set(processedRecordCount.get() ==
+         getTotalChanges(queryProgress.progress.sources(0).endOffset))
+      }
+    })
+
+    spark
+  }
+
   private[this] def getPartitionCountInOffset(text: String): Long = {
     text should not be null
 
@@ -898,11 +905,15 @@ class SparkE2EStructuredStreamingITest
     count
   }
 
-  private[this] def getEndLSNInOffset(text: String): List[Long] = {
+  private[this] def getTotalChanges(text: String): Long = {
     text should not be null
     val pattern: Regex = "\"endLsn\"\\s*:\\s*(\\d+)".r
     val endLSNs = pattern.findAllMatchIn(text).map(_.group(1).toLong).toList
-    endLSNs
+    var totalChanges = 0L
+    endLSNs.foreach(endLSN =>
+      totalChanges += endLSN - 1L
+    )
+    totalChanges
   }
 
   private[this] def getRecordCountOfContainer(container: CosmosAsyncContainer): Long = {
