@@ -10,7 +10,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.endpoint.RefreshEndpoint;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationPullRefresh;
@@ -26,37 +25,24 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
 @EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })
 @AutoConfiguration
-public class AppConfigurationAutoConfiguration {
+@ConditionalOnClass(RefreshEndpoint.class)
+public class AppConfigurationWatchAutoConfiguration {
 
     /**
-     * Creates an instance of {@link AppConfigurationAutoConfiguration}
+     * Creates an instance of {@link AppConfigurationWatchAutoConfiguration}
      */
-    public AppConfigurationAutoConfiguration() {
+    public AppConfigurationWatchAutoConfiguration() {
     }
 
-    /**
-     * Auto Watch
-     */
-    @Configuration
-    @ConditionalOnClass(RefreshEndpoint.class)
-    public static class AppConfigurationWatchAutoConfiguration {
+    @Bean
+    @ConditionalOnMissingBean
+    AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
+        AppConfigurationProviderProperties appProperties, BootstrapContext context) {
+        AppConfigurationReplicaClientFactory clientFactory = context
+            .get(AppConfigurationReplicaClientFactory.class);
+        ReplicaLookUp replicaLookUp = context.get(ReplicaLookUp.class);
 
-        /**
-         * Creates an instance of {@link AppConfigurationWatchAutoConfiguration}
-         */
-        public AppConfigurationWatchAutoConfiguration() {
-        }
-
-        @Bean
-        @ConditionalOnMissingBean
-        AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
-            AppConfigurationProviderProperties appProperties, BootstrapContext context) {
-            AppConfigurationReplicaClientFactory clientFactory = context
-                .get(AppConfigurationReplicaClientFactory.class);
-            ReplicaLookUp replicaLookUp = context.get(ReplicaLookUp.class);
-            
-            return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
-                appProperties.getDefaultMinBackoff(), replicaLookUp);
-        }
+        return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
+            appProperties.getDefaultMinBackoff(), replicaLookUp);
     }
 }
