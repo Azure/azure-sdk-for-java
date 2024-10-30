@@ -40,14 +40,19 @@ public class BreakingChange {
             return "";
         }
         StringBuilder builder = new StringBuilder();
-        builder.append(String.format("#### `%s` was %s\n", className, type.getDisplayName()));
+        builder.append(String.format("#### `%s` was %s\n\n", className, type.getDisplayName()));
+        int count = 0;
         for (String methodChange : methodChanges) {
             builder
                 .append("* ")
                 .append(methodChange)
                 .append("\n");
+            count++;
+            if (count == methodChanges.size()) {
+                builder.append("\n");
+            }
         }
-        return builder.append("\n").toString();
+        return builder.toString();
     }
 
     public Collection<String> getItems() {
