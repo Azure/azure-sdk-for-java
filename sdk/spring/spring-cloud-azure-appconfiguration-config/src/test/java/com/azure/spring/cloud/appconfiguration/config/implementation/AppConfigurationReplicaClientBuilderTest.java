@@ -20,7 +20,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -117,9 +116,8 @@ public class AppConfigurationReplicaClientBuilderTest {
     }
 
     @Test
-    @Disabled("Broken till Azure Spring update")
     public void modifyClientTest() {
-        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, null, modifierMock, false, false, false);
+        clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, modifierMock, false, false, false);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
