@@ -19,7 +19,7 @@ public final class VersionGenerator {
     private static final String sdkVersionString;
 
     static {
-        Map<String, String> properties = CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
+        Map<String, String> properties = CoreUtils.getProperties("azure-monitor-opentelemetry-autoconfigure.properties");
 
         artifactName = properties.get("name");
         artifactVersion = properties.get("version");
