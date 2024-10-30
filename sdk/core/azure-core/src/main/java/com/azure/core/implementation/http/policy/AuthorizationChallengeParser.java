@@ -60,7 +60,6 @@ public class AuthorizationChallengeParser {
 
         // Extract the parameters starting after the scheme
         String parameters = challenge.substring(schemeIndex + challengeScheme.length()).trim();
-
         return parameters;
     }
 

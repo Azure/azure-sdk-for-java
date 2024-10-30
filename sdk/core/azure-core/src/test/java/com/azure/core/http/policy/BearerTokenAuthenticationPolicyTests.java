@@ -48,10 +48,9 @@ public class BearerTokenAuthenticationPolicyTests {
         assertEquals(expectedClaims, claims.get());
 
         if (expectedClaims != null) {
-            String actualEncodedClaims = AuthorizationChallengeParser
-                .getChallengeParameterFromResponse(new MockHttpResponse(null, 401,
-                new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge)),
-                    "Bearer", "claims");
+            String actualEncodedClaims = AuthorizationChallengeParser.getChallengeParameterFromResponse(
+                new MockHttpResponse(null, 401, new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge)),
+                "Bearer", "claims");
             assertEquals(encodedClaims, actualEncodedClaims);
         }
     }
@@ -75,10 +74,9 @@ public class BearerTokenAuthenticationPolicyTests {
         assertEquals(expectedClaims, claims.get());
 
         if (expectedClaims != null) {
-            String actualEncodedClaims = AuthorizationChallengeParser
-                .getChallengeParameterFromResponse(new MockHttpResponse(null, 401,
-                        new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge)),
-                    "Bearer", "claims");
+            String actualEncodedClaims = AuthorizationChallengeParser.getChallengeParameterFromResponse(
+                new MockHttpResponse(null, 401, new HttpHeaders().add(HttpHeaderName.WWW_AUTHENTICATE, challenge)),
+                "Bearer", "claims");
             assertEquals(encodedClaims, actualEncodedClaims);
         }
     }
