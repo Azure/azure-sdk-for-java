@@ -1,6 +1,9 @@
 package com.azure.resourcemanager.tools.changelog;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.tools.changelog.utils.BreakingChange;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -27,11 +30,16 @@ public class BreakingChangeTests {
     }
 
     @Test
-    public void testCompareJars() throws Exception {
+    public void testCompareJars() {
         URL oldJar = BreakingChangeTests.class.getResource("/old.jar");
         URL newJar = BreakingChangeTests.class.getResource("/new.jar");
         System.setProperty("OLD_JAR", oldJar.getFile());
         System.setProperty("NEW_JAR", newJar.getFile());
-        Main.main(new String[]{});
+        JSONObject jsonObject = Main.getChangelog();
+
+        JSONArray breakingChanges = (JSONArray) jsonObject.get("breakingChanges");
+        String changelog = (String) jsonObject.get("changelog");
+        Assertions.assertFalse(CoreUtils.isNullOrEmpty(changelog));
+        Assertions.assertFalse(breakingChanges.isEmpty());
     }
 }

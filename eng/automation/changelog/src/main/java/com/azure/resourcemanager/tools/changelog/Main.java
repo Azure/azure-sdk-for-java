@@ -25,6 +25,12 @@ public class Main {
     private final static String NEW_FEATURE_TITLE = "### Features Added\n\n";
 
     public static void main(String[] args) throws Exception {
+        JSONObject json = getChangelog();
+
+        System.out.println(json.toString());
+    }
+
+    static JSONObject getChangelog() {
         String oldJar = System.getProperty("OLD_JAR");
         if (oldJar == null || oldJar.isEmpty()) {
             System.err.println("Cannot found OLD_JAR property");
@@ -93,7 +99,6 @@ public class Main {
         JSONObject json = new JSONObject();
         json.put("breakingChanges", breakingChangeItems);
         json.put("changelog", changelog);
-
-        System.out.println(json.toString());
+        return json;
     }
 }
