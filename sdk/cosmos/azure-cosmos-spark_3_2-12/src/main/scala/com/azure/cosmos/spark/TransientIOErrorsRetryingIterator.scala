@@ -161,7 +161,10 @@ private class TransientIOErrorsRetryingIterator[TSparkRow]
         }
         val iteratorCandidate = feedResponse.getResults.iterator().asScala.buffered
         lastContinuationToken.set(feedResponse.getContinuationToken)
-        if (iteratorCandidate.hasNext && validateNextLsn(iteratorCandidate)) {
+        if (!validateNextLsn(iteratorCandidate)) {
+          return Some(false)
+        }
+        if (iteratorCandidate.hasNext) {
           currentItemIterator = Some(iteratorCandidate)
           Some(true)
         } else {

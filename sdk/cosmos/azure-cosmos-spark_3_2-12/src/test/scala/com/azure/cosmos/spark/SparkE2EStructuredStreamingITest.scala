@@ -23,7 +23,7 @@ import scala.util.matching.Regex
 class SparkE2EStructuredStreamingITest
   extends IntegrationSpec
     with CosmosClient
-    with CosmosContainerWithRetention
+    with CosmosContainer
     with BasicLoggingTrait
     with Retries {
 
@@ -200,7 +200,7 @@ class SparkE2EStructuredStreamingITest
     val microBatchQuery = changeFeedDF
       .writeStream
       .format("cosmos.oltp")
-      .trigger(Trigger.ProcessingTime("100 milliseconds"))
+      .trigger(Trigger.ProcessingTime("500 milliseconds"))
       .queryName(testId)
       .options(writeCfg)
       .outputMode("append")
@@ -216,13 +216,13 @@ class SparkE2EStructuredStreamingITest
 
     val endLSNs = getEndLSNInOffset(microBatchQuery.lastProgress.sources(0).endOffset)
     var totalChanges = 0L
-    endLSNs.foreach(endLSN => {
+    endLSNs.foreach(endLSN =>
       totalChanges += endLSN - 1L
-    }
     )
 
     sourceCount shouldEqual 200L
     targetCount shouldEqual totalChanges
+    processedRecordCount.get() shouldEqual totalChanges
 
   }
 
