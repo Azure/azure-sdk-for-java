@@ -40,7 +40,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ApplicationManager. ARM applications. */
+/**
+ * Entry point to ApplicationManager.
+ * ARM applications.
+ */
 public final class ApplicationManager {
     private ResourceProviders resourceProviders;
 
@@ -64,7 +67,7 @@ public final class ApplicationManager {
 
     /**
      * Creates an instance of Application service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Application service API instance.
@@ -77,7 +80,7 @@ public final class ApplicationManager {
 
     /**
      * Creates an instance of Application service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Application service API instance.
@@ -90,14 +93,16 @@ public final class ApplicationManager {
 
     /**
      * Gets a Configurable instance that can be used to create ApplicationManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ApplicationManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -169,8 +174,8 @@ public final class ApplicationManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -212,7 +217,7 @@ public final class ApplicationManager {
                 .append("-")
                 .append("com.azure.resourcemanager.managedapplications")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -260,7 +265,7 @@ public final class ApplicationManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -272,7 +277,7 @@ public final class ApplicationManager {
 
     /**
      * Gets the resource collection API of Applications. It manages Application.
-     *
+     * 
      * @return Resource collection API of Applications.
      */
     public Applications applications() {
@@ -284,7 +289,7 @@ public final class ApplicationManager {
 
     /**
      * Gets the resource collection API of ApplicationDefinitions. It manages ApplicationDefinition.
-     *
+     * 
      * @return Resource collection API of ApplicationDefinitions.
      */
     public ApplicationDefinitions applicationDefinitions() {
@@ -297,7 +302,7 @@ public final class ApplicationManager {
 
     /**
      * Gets the resource collection API of JitRequests. It manages JitRequestDefinition.
-     *
+     * 
      * @return Resource collection API of JitRequests.
      */
     public JitRequests jitRequests() {
@@ -310,7 +315,7 @@ public final class ApplicationManager {
     /**
      * Gets wrapped service client ApplicationClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client ApplicationClient.
      */
     public ApplicationClient serviceClient() {
