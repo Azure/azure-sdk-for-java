@@ -25,17 +25,23 @@ import com.azure.resourcemanager.mediaservices.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.mediaservices.fluent.models.AssetTrackOperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationStatusesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationStatusesClient.
+ */
 public final class OperationStatusesClientImpl implements OperationStatusesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationStatusesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of OperationStatusesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationStatusesClientImpl(AzureMediaServicesImpl client) {
@@ -52,8 +58,7 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
     @ServiceInterface(name = "AzureMediaServicesOp")
     public interface OperationStatusesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/assets/{assetName}/tracks/{trackName}/operationStatuses/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/assets/{assetName}/tracks/{trackName}/operationStatuses/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssetTrackOperationStatusInner>> get(@HostParam("$host") String endpoint,
@@ -66,9 +71,9 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -116,9 +121,9 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -166,9 +171,9 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -188,9 +193,9 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -210,9 +215,9 @@ public final class OperationStatusesClientImpl implements OperationStatusesClien
 
     /**
      * Get operation status.
-     *
-     * <p>Get asset track operation status.
-     *
+     * 
+     * Get asset track operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.

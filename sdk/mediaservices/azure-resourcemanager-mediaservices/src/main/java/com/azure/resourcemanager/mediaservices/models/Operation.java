@@ -6,54 +6,56 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An operation. */
+/**
+ * An operation.
+ */
 @Fluent
-public final class Operation {
+public final class Operation implements JsonSerializable<Operation> {
     /*
      * The operation name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The operation display name.
      */
-    @JsonProperty(value = "display")
     private OperationDisplay display;
 
     /*
      * Origin of the operation.
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
     /*
      * Operation properties format.
      */
-    @JsonProperty(value = "properties")
     private Properties properties;
 
     /*
      * Whether the operation applies to data-plane.
      */
-    @JsonProperty(value = "isDataAction")
     private Boolean isDataAction;
 
     /*
      * Indicates the action type.
      */
-    @JsonProperty(value = "actionType")
     private ActionType actionType;
 
-    /** Creates an instance of Operation class. */
+    /**
+     * Creates an instance of Operation class.
+     */
     public Operation() {
     }
 
     /**
      * Get the name property: The operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +64,7 @@ public final class Operation {
 
     /**
      * Set the name property: The operation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Operation object itself.
      */
@@ -73,7 +75,7 @@ public final class Operation {
 
     /**
      * Get the display property: The operation display name.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -82,7 +84,7 @@ public final class Operation {
 
     /**
      * Set the display property: The operation display name.
-     *
+     * 
      * @param display the display value to set.
      * @return the Operation object itself.
      */
@@ -93,7 +95,7 @@ public final class Operation {
 
     /**
      * Get the origin property: Origin of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -102,7 +104,7 @@ public final class Operation {
 
     /**
      * Set the origin property: Origin of the operation.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the Operation object itself.
      */
@@ -113,7 +115,7 @@ public final class Operation {
 
     /**
      * Get the properties property: Operation properties format.
-     *
+     * 
      * @return the properties value.
      */
     public Properties properties() {
@@ -122,7 +124,7 @@ public final class Operation {
 
     /**
      * Set the properties property: Operation properties format.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the Operation object itself.
      */
@@ -133,7 +135,7 @@ public final class Operation {
 
     /**
      * Get the isDataAction property: Whether the operation applies to data-plane.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -142,7 +144,7 @@ public final class Operation {
 
     /**
      * Set the isDataAction property: Whether the operation applies to data-plane.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the Operation object itself.
      */
@@ -153,7 +155,7 @@ public final class Operation {
 
     /**
      * Get the actionType property: Indicates the action type.
-     *
+     * 
      * @return the actionType value.
      */
     public ActionType actionType() {
@@ -162,7 +164,7 @@ public final class Operation {
 
     /**
      * Set the actionType property: Indicates the action type.
-     *
+     * 
      * @param actionType the actionType value to set.
      * @return the Operation object itself.
      */
@@ -173,13 +175,13 @@ public final class Operation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Operation"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model Operation"));
         }
         if (display() != null) {
             display().validate();
@@ -190,4 +192,56 @@ public final class Operation {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Operation.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("origin", this.origin);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeBooleanField("isDataAction", this.isDataAction);
+        jsonWriter.writeStringField("actionType", this.actionType == null ? null : this.actionType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Operation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Operation if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Operation.
+     */
+    public static Operation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Operation deserializedOperation = new Operation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedOperation.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperation.display = OperationDisplay.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedOperation.origin = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperation.properties = Properties.fromJson(reader);
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedOperation.isDataAction = reader.getNullable(JsonReader::getBoolean);
+                } else if ("actionType".equals(fieldName)) {
+                    deserializedOperation.actionType = ActionType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperation;
+        });
+    }
 }

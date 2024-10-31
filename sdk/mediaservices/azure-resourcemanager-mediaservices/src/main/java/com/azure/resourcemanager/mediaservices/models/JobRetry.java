@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * Portal.
  */
 public final class JobRetry extends ExpandableStringEnum<JobRetry> {
-    /** Static value DoNotRetry for JobRetry. */
+    /**
+     * Static value DoNotRetry for JobRetry.
+     */
     public static final JobRetry DO_NOT_RETRY = fromString("DoNotRetry");
 
-    /** Static value MayRetry for JobRetry. */
+    /**
+     * Static value MayRetry for JobRetry.
+     */
     public static final JobRetry MAY_RETRY = fromString("MayRetry");
 
     /**
      * Creates a new instance of JobRetry value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class JobRetry extends ExpandableStringEnum<JobRetry> {
 
     /**
      * Creates or finds a JobRetry from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobRetry.
      */
-    @JsonCreator
     public static JobRetry fromString(String name) {
         return fromString(name, JobRetry.class);
     }
 
     /**
      * Gets known JobRetry values.
-     *
+     * 
      * @return known JobRetry values.
      */
     public static Collection<JobRetry> values() {

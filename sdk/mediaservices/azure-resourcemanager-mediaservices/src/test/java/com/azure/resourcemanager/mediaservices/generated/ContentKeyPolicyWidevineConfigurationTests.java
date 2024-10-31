@@ -12,16 +12,16 @@ public final class ContentKeyPolicyWidevineConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContentKeyPolicyWidevineConfiguration model = BinaryData.fromString(
-            "{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyWidevineConfiguration\",\"widevineTemplate\":\"ajjziuxxpshne\"}")
+            "{\"@odata.type\":\"#Microsoft.Media.ContentKeyPolicyWidevineConfiguration\",\"widevineTemplate\":\"fukiscvwmzhw\"}")
             .toObject(ContentKeyPolicyWidevineConfiguration.class);
-        Assertions.assertEquals("ajjziuxxpshne", model.widevineTemplate());
+        Assertions.assertEquals("fukiscvwmzhw", model.widevineTemplate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContentKeyPolicyWidevineConfiguration model
-            = new ContentKeyPolicyWidevineConfiguration().withWidevineTemplate("ajjziuxxpshne");
+            = new ContentKeyPolicyWidevineConfiguration().withWidevineTemplate("fukiscvwmzhw");
         model = BinaryData.fromObject(model).toObject(ContentKeyPolicyWidevineConfiguration.class);
-        Assertions.assertEquals("ajjziuxxpshne", model.widevineTemplate());
+        Assertions.assertEquals("fukiscvwmzhw", model.widevineTemplate());
     }
 }

@@ -12,23 +12,22 @@ public final class RectangleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Rectangle model = BinaryData
-            .fromString(
-                "{\"left\":\"pjxxkzb\",\"top\":\"sgeivsiy\",\"width\":\"kdncj\",\"height\":\"onbzoggculapzwy\"}")
+            .fromString("{\"left\":\"gqdnfwqzd\",\"top\":\"tilaxh\",\"width\":\"hqlyvijo\",\"height\":\"iv\"}")
             .toObject(Rectangle.class);
-        Assertions.assertEquals("pjxxkzb", model.left());
-        Assertions.assertEquals("sgeivsiy", model.top());
-        Assertions.assertEquals("kdncj", model.width());
-        Assertions.assertEquals("onbzoggculapzwy", model.height());
+        Assertions.assertEquals("gqdnfwqzd", model.left());
+        Assertions.assertEquals("tilaxh", model.top());
+        Assertions.assertEquals("hqlyvijo", model.width());
+        Assertions.assertEquals("iv", model.height());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Rectangle model
-            = new Rectangle().withLeft("pjxxkzb").withTop("sgeivsiy").withWidth("kdncj").withHeight("onbzoggculapzwy");
+            = new Rectangle().withLeft("gqdnfwqzd").withTop("tilaxh").withWidth("hqlyvijo").withHeight("iv");
         model = BinaryData.fromObject(model).toObject(Rectangle.class);
-        Assertions.assertEquals("pjxxkzb", model.left());
-        Assertions.assertEquals("sgeivsiy", model.top());
-        Assertions.assertEquals("kdncj", model.width());
-        Assertions.assertEquals("onbzoggculapzwy", model.height());
+        Assertions.assertEquals("gqdnfwqzd", model.left());
+        Assertions.assertEquals("tilaxh", model.top());
+        Assertions.assertEquals("hqlyvijo", model.width());
+        Assertions.assertEquals("iv", model.height());
     }
 }

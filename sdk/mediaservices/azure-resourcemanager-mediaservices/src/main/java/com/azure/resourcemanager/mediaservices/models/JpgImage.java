@@ -5,39 +5,57 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** Describes the properties for producing a series of JPEG images from the input video. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.JpgImage")
+/**
+ * Describes the properties for producing a series of JPEG images from the input video.
+ */
 @Fluent
 public final class JpgImage extends Image {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.JpgImage";
+
+    /*
      * A collection of output JPEG image layers to be produced by the encoder.
      */
-    @JsonProperty(value = "layers")
     private List<JpgLayer> layers;
 
     /*
-     * Sets the number of columns used in thumbnail sprite image.  The number of rows are automatically calculated and
-     * a VTT file is generated with the coordinate mappings for each thumbnail in the sprite. Note: this value should
-     * be a positive integer and a proper value is recommended so that the output image resolution will not go beyond
-     * JPEG maximum pixel resolution limit 65535x65535.
+     * Sets the number of columns used in thumbnail sprite image. The number of rows are automatically calculated and a
+     * VTT file is generated with the coordinate mappings for each thumbnail in the sprite. Note: this value should be a
+     * positive integer and a proper value is recommended so that the output image resolution will not go beyond JPEG
+     * maximum pixel resolution limit 65535x65535.
      */
-    @JsonProperty(value = "spriteColumn")
     private Integer spriteColumn;
 
-    /** Creates an instance of JpgImage class. */
+    /**
+     * Creates an instance of JpgImage class.
+     */
     public JpgImage() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the layers property: A collection of output JPEG image layers to be produced by the encoder.
-     *
+     * 
      * @return the layers value.
      */
     public List<JpgLayer> layers() {
@@ -46,7 +64,7 @@ public final class JpgImage extends Image {
 
     /**
      * Set the layers property: A collection of output JPEG image layers to be produced by the encoder.
-     *
+     * 
      * @param layers the layers value to set.
      * @return the JpgImage object itself.
      */
@@ -60,7 +78,7 @@ public final class JpgImage extends Image {
      * automatically calculated and a VTT file is generated with the coordinate mappings for each thumbnail in the
      * sprite. Note: this value should be a positive integer and a proper value is recommended so that the output image
      * resolution will not go beyond JPEG maximum pixel resolution limit 65535x65535.
-     *
+     * 
      * @return the spriteColumn value.
      */
     public Integer spriteColumn() {
@@ -72,7 +90,7 @@ public final class JpgImage extends Image {
      * automatically calculated and a VTT file is generated with the coordinate mappings for each thumbnail in the
      * sprite. Note: this value should be a positive integer and a proper value is recommended so that the output image
      * resolution will not go beyond JPEG maximum pixel resolution limit 65535x65535.
-     *
+     * 
      * @param spriteColumn the spriteColumn value to set.
      * @return the JpgImage object itself.
      */
@@ -81,49 +99,63 @@ public final class JpgImage extends Image {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpgImage withStart(String start) {
         super.withStart(start);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpgImage withStep(String step) {
         super.withStep(step);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpgImage withRange(String range) {
         super.withRange(range);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpgImage withKeyFrameInterval(Duration keyFrameInterval) {
         super.withKeyFrameInterval(keyFrameInterval);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpgImage withStretchMode(StretchMode stretchMode) {
         super.withStretchMode(stretchMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpgImage withSyncMode(VideoSyncMode syncMode) {
         super.withSyncMode(syncMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JpgImage withLabel(String label) {
         super.withLabel(label);
@@ -132,14 +164,85 @@ public final class JpgImage extends Image {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (layers() != null) {
             layers().forEach(e -> e.validate());
         }
+        if (start() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property start in model JpgImage"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JpgImage.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("start", start());
+        jsonWriter.writeStringField("label", label());
+        jsonWriter.writeStringField("keyFrameInterval", CoreUtils.durationToStringWithDays(keyFrameInterval()));
+        jsonWriter.writeStringField("stretchMode", stretchMode() == null ? null : stretchMode().toString());
+        jsonWriter.writeStringField("syncMode", syncMode() == null ? null : syncMode().toString());
+        jsonWriter.writeStringField("step", step());
+        jsonWriter.writeStringField("range", range());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeArrayField("layers", this.layers, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("spriteColumn", this.spriteColumn);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JpgImage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JpgImage if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the JpgImage.
+     */
+    public static JpgImage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JpgImage deserializedJpgImage = new JpgImage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("start".equals(fieldName)) {
+                    deserializedJpgImage.withStart(reader.getString());
+                } else if ("label".equals(fieldName)) {
+                    deserializedJpgImage.withLabel(reader.getString());
+                } else if ("keyFrameInterval".equals(fieldName)) {
+                    deserializedJpgImage.withKeyFrameInterval(
+                        reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString())));
+                } else if ("stretchMode".equals(fieldName)) {
+                    deserializedJpgImage.withStretchMode(StretchMode.fromString(reader.getString()));
+                } else if ("syncMode".equals(fieldName)) {
+                    deserializedJpgImage.withSyncMode(VideoSyncMode.fromString(reader.getString()));
+                } else if ("step".equals(fieldName)) {
+                    deserializedJpgImage.withStep(reader.getString());
+                } else if ("range".equals(fieldName)) {
+                    deserializedJpgImage.withRange(reader.getString());
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedJpgImage.odataType = reader.getString();
+                } else if ("layers".equals(fieldName)) {
+                    List<JpgLayer> layers = reader.readArray(reader1 -> JpgLayer.fromJson(reader1));
+                    deserializedJpgImage.layers = layers;
+                } else if ("spriteColumn".equals(fieldName)) {
+                    deserializedJpgImage.spriteColumn = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJpgImage;
+        });
     }
 }

@@ -7,25 +7,27 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.resourcemanager.mediaservices.fluent.models.ListPathsResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of ListPathsResponse. */
+/**
+ * An immutable client-side representation of ListPathsResponse.
+ */
 public interface ListPathsResponse {
     /**
      * Gets the streamingPaths property: Streaming Paths supported by current Streaming Locator.
-     *
+     * 
      * @return the streamingPaths value.
      */
     List<StreamingPath> streamingPaths();
 
     /**
      * Gets the downloadPaths property: Download Paths supported by current Streaming Locator.
-     *
+     * 
      * @return the downloadPaths value.
      */
     List<String> downloadPaths();
 
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.ListPathsResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ListPathsResponseInner innerModel();
