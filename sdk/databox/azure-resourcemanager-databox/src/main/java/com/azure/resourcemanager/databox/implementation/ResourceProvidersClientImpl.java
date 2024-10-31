@@ -26,17 +26,23 @@ import com.azure.resourcemanager.databox.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.databox.models.MitigateJobRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ResourceProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ResourceProvidersClient.
+ */
 public final class ResourceProvidersClientImpl implements ResourceProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ResourceProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataBoxManagementClientImpl client;
 
     /**
      * Initializes an instance of ResourceProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ResourceProvidersClientImpl(DataBoxManagementClientImpl client) {
@@ -65,9 +71,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,9 +115,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @param context The context to associate with this operation.
@@ -152,9 +158,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,9 +176,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @param context The context to associate with this operation.
@@ -189,9 +195,9 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
 
     /**
      * Request to mitigate for a given job.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param mitigateJobRequest Mitigation Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

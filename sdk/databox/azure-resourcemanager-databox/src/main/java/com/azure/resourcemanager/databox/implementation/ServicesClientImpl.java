@@ -39,17 +39,23 @@ import com.azure.resourcemanager.databox.models.ValidateAddress;
 import com.azure.resourcemanager.databox.models.ValidationRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServicesClient.
+ */
 public final class ServicesClientImpl implements ServicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataBoxManagementClientImpl client;
 
     /**
      * Initializes an instance of ServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ServicesClientImpl(DataBoxManagementClientImpl client) {
@@ -138,15 +144,15 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>> listAvailableSkusByResourceGroupSinglePageAsync(
@@ -184,7 +190,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -192,8 +198,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>> listAvailableSkusByResourceGroupSinglePageAsync(
@@ -230,7 +236,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -249,7 +255,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -269,7 +275,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -287,7 +293,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -307,14 +313,14 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the address validation api along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of the address validation api along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AddressValidationOutputInner>> validateAddressWithResponseAsync(String location,
@@ -346,15 +352,15 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of the address validation api along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of the address validation api along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AddressValidationOutputInner>> validateAddressWithResponseAsync(String location,
@@ -385,7 +391,7 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -402,7 +408,7 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @param context The context to associate with this operation.
@@ -420,7 +426,7 @@ public final class ServicesClientImpl implements ServicesClient {
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,15 +441,15 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidationResponseInner>> validateInputsByResourceGroupWithResponseAsync(
@@ -479,7 +485,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -487,8 +493,8 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidationResponseInner>> validateInputsByResourceGroupWithResponseAsync(
@@ -522,7 +528,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -540,7 +546,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -559,7 +565,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -577,14 +583,14 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidationResponseInner>> validateInputsWithResponseAsync(String location,
@@ -615,15 +621,15 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of pre job creation validations along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return response of pre job creation validations along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidationResponseInner>> validateInputsWithResponseAsync(String location,
@@ -653,7 +659,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -669,7 +675,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @param context The context to associate with this operation.
@@ -686,7 +692,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -701,14 +707,14 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationWithResponseAsync(String location,
@@ -740,7 +746,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @param context The context to associate with this operation.
@@ -748,7 +754,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationWithResponseAsync(String location,
@@ -778,7 +784,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -795,7 +801,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @param context The context to associate with this operation.
@@ -812,7 +818,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -828,7 +834,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -836,7 +842,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationByResourceGroupWithResponseAsync(
@@ -872,7 +878,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -881,7 +887,7 @@ public final class ServicesClientImpl implements ServicesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return configuration response specific to a region along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RegionConfigurationResponseInner>> regionConfigurationByResourceGroupWithResponseAsync(
@@ -916,7 +922,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -934,7 +940,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -954,7 +960,7 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -972,14 +978,13 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>>
@@ -1002,15 +1007,14 @@ public final class ServicesClientImpl implements ServicesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available skus operation response along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the available skus operation response along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuInformationInner>>

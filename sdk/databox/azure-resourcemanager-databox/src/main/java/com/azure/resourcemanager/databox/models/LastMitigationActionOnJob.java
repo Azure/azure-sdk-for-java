@@ -5,38 +5,45 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Last Mitigation Action Performed On Job. */
+/**
+ * Last Mitigation Action Performed On Job.
+ */
 @Fluent
-public final class LastMitigationActionOnJob {
+public final class LastMitigationActionOnJob implements JsonSerializable<LastMitigationActionOnJob> {
     /*
      * Action performed date time
      */
-    @JsonProperty(value = "actionDateTimeInUtc")
     private OffsetDateTime actionDateTimeInUtc;
 
     /*
      * Action performed by customer,
      * possibility is that mitigation might happen by customer or service or by ops
      */
-    @JsonProperty(value = "isPerformedByCustomer")
     private Boolean isPerformedByCustomer;
 
     /*
      * Resolution code provided by customer
      */
-    @JsonProperty(value = "customerResolution")
     private CustomerResolutionCode customerResolution;
 
-    /** Creates an instance of LastMitigationActionOnJob class. */
+    /**
+     * Creates an instance of LastMitigationActionOnJob class.
+     */
     public LastMitigationActionOnJob() {
     }
 
     /**
      * Get the actionDateTimeInUtc property: Action performed date time.
-     *
+     * 
      * @return the actionDateTimeInUtc value.
      */
     public OffsetDateTime actionDateTimeInUtc() {
@@ -45,7 +52,7 @@ public final class LastMitigationActionOnJob {
 
     /**
      * Set the actionDateTimeInUtc property: Action performed date time.
-     *
+     * 
      * @param actionDateTimeInUtc the actionDateTimeInUtc value to set.
      * @return the LastMitigationActionOnJob object itself.
      */
@@ -55,9 +62,9 @@ public final class LastMitigationActionOnJob {
     }
 
     /**
-     * Get the isPerformedByCustomer property: Action performed by customer, possibility is that mitigation might happen
-     * by customer or service or by ops.
-     *
+     * Get the isPerformedByCustomer property: Action performed by customer,
+     * possibility is that mitigation might happen by customer or service or by ops.
+     * 
      * @return the isPerformedByCustomer value.
      */
     public Boolean isPerformedByCustomer() {
@@ -65,9 +72,9 @@ public final class LastMitigationActionOnJob {
     }
 
     /**
-     * Set the isPerformedByCustomer property: Action performed by customer, possibility is that mitigation might happen
-     * by customer or service or by ops.
-     *
+     * Set the isPerformedByCustomer property: Action performed by customer,
+     * possibility is that mitigation might happen by customer or service or by ops.
+     * 
      * @param isPerformedByCustomer the isPerformedByCustomer value to set.
      * @return the LastMitigationActionOnJob object itself.
      */
@@ -78,7 +85,7 @@ public final class LastMitigationActionOnJob {
 
     /**
      * Get the customerResolution property: Resolution code provided by customer.
-     *
+     * 
      * @return the customerResolution value.
      */
     public CustomerResolutionCode customerResolution() {
@@ -87,7 +94,7 @@ public final class LastMitigationActionOnJob {
 
     /**
      * Set the customerResolution property: Resolution code provided by customer.
-     *
+     * 
      * @param customerResolution the customerResolution value to set.
      * @return the LastMitigationActionOnJob object itself.
      */
@@ -98,9 +105,58 @@ public final class LastMitigationActionOnJob {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("actionDateTimeInUtc",
+            this.actionDateTimeInUtc == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.actionDateTimeInUtc));
+        jsonWriter.writeBooleanField("isPerformedByCustomer", this.isPerformedByCustomer);
+        jsonWriter.writeStringField("customerResolution",
+            this.customerResolution == null ? null : this.customerResolution.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LastMitigationActionOnJob from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LastMitigationActionOnJob if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LastMitigationActionOnJob.
+     */
+    public static LastMitigationActionOnJob fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LastMitigationActionOnJob deserializedLastMitigationActionOnJob = new LastMitigationActionOnJob();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionDateTimeInUtc".equals(fieldName)) {
+                    deserializedLastMitigationActionOnJob.actionDateTimeInUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("isPerformedByCustomer".equals(fieldName)) {
+                    deserializedLastMitigationActionOnJob.isPerformedByCustomer
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("customerResolution".equals(fieldName)) {
+                    deserializedLastMitigationActionOnJob.customerResolution
+                        = CustomerResolutionCode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLastMitigationActionOnJob;
+        });
     }
 }

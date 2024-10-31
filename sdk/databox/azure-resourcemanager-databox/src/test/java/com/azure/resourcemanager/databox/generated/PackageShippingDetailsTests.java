@@ -11,8 +11,7 @@ public final class PackageShippingDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PackageShippingDetails model = BinaryData
-            .fromString(
-                "{\"trackingUrl\":\"bnbdxkqpxokajion\",\"carrierName\":\"mexgstxgcp\",\"trackingId\":\"gmaajrm\"}")
+            .fromString("{\"trackingUrl\":\"gpbkwtmut\",\"carrierName\":\"qktapspwgcuert\",\"trackingId\":\"kdosvqw\"}")
             .toObject(PackageShippingDetails.class);
     }
 
