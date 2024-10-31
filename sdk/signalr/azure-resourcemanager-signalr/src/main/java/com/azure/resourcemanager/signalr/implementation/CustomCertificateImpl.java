@@ -114,9 +114,9 @@ public final class CustomCertificateImpl
         com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "signalR");
-        this.certificateName = Utils.getValueFromIdByName(innerObject.id(), "customCertificates");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "signalR");
+        this.certificateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "customCertificates");
     }
 
     public CustomCertificate refresh() {

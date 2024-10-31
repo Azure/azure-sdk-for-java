@@ -29,12 +29,12 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
 
     public PagedIterable<Replica> list(String resourceGroupName, String resourceName) {
         PagedIterable<ReplicaInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Replica> list(String resourceGroupName, String resourceName, Context context) {
         PagedIterable<ReplicaInner> inner = this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicaImpl(inner1, this.manager()));
     }
 
     public Response<Replica> getWithResponse(String resourceGroupName, String resourceName, String replicaName,
@@ -76,17 +76,17 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
     }
 
     public Replica getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
-        String replicaName = Utils.getValueFromIdByName(id, "replicas");
+        String replicaName = ResourceManagerUtils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
@@ -95,17 +95,17 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
     }
 
     public Response<Replica> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
-        String replicaName = Utils.getValueFromIdByName(id, "replicas");
+        String replicaName = ResourceManagerUtils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
@@ -114,17 +114,17 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
-        String replicaName = Utils.getValueFromIdByName(id, "replicas");
+        String replicaName = ResourceManagerUtils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));
@@ -133,17 +133,17 @@ public final class SignalRReplicasImpl implements SignalRReplicas {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
-        String replicaName = Utils.getValueFromIdByName(id, "replicas");
+        String replicaName = ResourceManagerUtils.getValueFromIdByName(id, "replicas");
         if (replicaName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'replicas'.", id)));

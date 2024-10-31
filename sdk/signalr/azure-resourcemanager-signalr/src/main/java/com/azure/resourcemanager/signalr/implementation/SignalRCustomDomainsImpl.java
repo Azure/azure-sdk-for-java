@@ -29,12 +29,12 @@ public final class SignalRCustomDomainsImpl implements SignalRCustomDomains {
 
     public PagedIterable<CustomDomain> list(String resourceGroupName, String resourceName) {
         PagedIterable<CustomDomainInner> inner = this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new CustomDomainImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomDomainImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CustomDomain> list(String resourceGroupName, String resourceName, Context context) {
         PagedIterable<CustomDomainInner> inner = this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new CustomDomainImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CustomDomainImpl(inner1, this.manager()));
     }
 
     public Response<CustomDomain> getWithResponse(String resourceGroupName, String resourceName, String name,
@@ -67,17 +67,17 @@ public final class SignalRCustomDomainsImpl implements SignalRCustomDomains {
     }
 
     public CustomDomain getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "customDomains");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "customDomains");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'customDomains'.", id)));
@@ -86,17 +86,17 @@ public final class SignalRCustomDomainsImpl implements SignalRCustomDomains {
     }
 
     public Response<CustomDomain> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "customDomains");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "customDomains");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'customDomains'.", id)));
@@ -105,17 +105,17 @@ public final class SignalRCustomDomainsImpl implements SignalRCustomDomains {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "customDomains");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "customDomains");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'customDomains'.", id)));
@@ -124,17 +124,17 @@ public final class SignalRCustomDomainsImpl implements SignalRCustomDomains {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "customDomains");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "customDomains");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'customDomains'.", id)));

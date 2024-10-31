@@ -18,11 +18,13 @@ import com.azure.resourcemanager.signalr.fluent.models.SkuListInner;
 import com.azure.resourcemanager.signalr.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.signalr.models.RegenerateKeyParameters;
 
-/** An instance of this class provides access to all the operations defined in SignalRsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SignalRsClient.
+ */
 public interface SignalRsClient {
     /**
      * Checks that the resource name is valid and is not already in use.
-     *
+     * 
      * @param location the region.
      * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface SignalRsClient {
 
     /**
      * Checks that the resource name is valid and is not already in use.
-     *
+     * 
      * @param location the region.
      * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,58 +52,58 @@ public interface SignalRsClient {
 
     /**
      * Handles requests to list all resources in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SignalRResourceInner> list();
 
     /**
      * Handles requests to list all resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SignalRResourceInner> list(Context context);
 
     /**
      * Handles requests to list all resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SignalRResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Handles requests to list all resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SignalRResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Get the resource and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -116,7 +118,7 @@ public interface SignalRsClient {
 
     /**
      * Get the resource and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +131,7 @@ public interface SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -144,7 +146,7 @@ public interface SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -160,7 +162,7 @@ public interface SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -174,7 +176,7 @@ public interface SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -190,7 +192,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,7 +205,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -217,7 +219,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,7 +231,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -242,7 +244,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -257,7 +259,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -273,7 +275,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -287,7 +289,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -303,7 +305,7 @@ public interface SignalRsClient {
 
     /**
      * Get the access keys of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -317,7 +319,7 @@ public interface SignalRsClient {
 
     /**
      * Get the access keys of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,7 +332,7 @@ public interface SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -345,7 +347,7 @@ public interface SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -361,7 +363,7 @@ public interface SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -375,7 +377,7 @@ public interface SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -391,7 +393,7 @@ public interface SignalRsClient {
 
     /**
      * List all available skus of the replica resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -407,7 +409,7 @@ public interface SignalRsClient {
 
     /**
      * List all available skus of the replica resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -421,7 +423,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -434,7 +436,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -448,7 +450,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -460,7 +462,7 @@ public interface SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -473,7 +475,7 @@ public interface SignalRsClient {
 
     /**
      * List all available skus of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -487,7 +489,7 @@ public interface SignalRsClient {
 
     /**
      * List all available skus of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
