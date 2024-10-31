@@ -10,7 +10,12 @@ import com.azure.core.util.CoreUtils;
 /**
  * Parses Authorization challenges from the {@link HttpResponse}.
  */
-public class AuthorizationChallengeParser {
+public final class AuthorizationChallengeParser {
+
+    /**
+     * Creates an instance of the AuthorizationChallengeParser.
+     */
+    private AuthorizationChallengeParser() { }
 
     /**
      * Examines a {@link HttpResponse} to see if it is a CAE challenge.
@@ -53,14 +58,36 @@ public class AuthorizationChallengeParser {
             return null;
         }
 
-        int schemeIndex = challenge.indexOf(challengeScheme + " ");
+        int schemeIndex = -1;
+        int length = challenge.length();
+        int schemeLength = challengeScheme.length();
+
+        for (int i = 0; i <= length - schemeLength - 1; i++) {
+            // Check if the scheme matches and is followed by a space
+            if (challenge.startsWith(challengeScheme, i) && (i + schemeLength < length) && challenge.charAt(i + schemeLength) == ' ') {
+                schemeIndex = i;
+                break;
+            }
+        }
+
         if (schemeIndex == -1) {
             return null; // Scheme not found
         }
 
-        // Extract the parameters starting after the scheme
-        String parameters = challenge.substring(schemeIndex + challengeScheme.length()).trim();
-        return parameters;
+        int startIndex = schemeIndex + challengeScheme.length();
+        int endIndex = challenge.length();
+
+        // Skip whitespace after the scheme to avoid unnecessary trim
+        while (startIndex < endIndex && Character.isWhitespace(challenge.charAt(startIndex))) {
+            startIndex++;
+        }
+
+        // Skip trailing whitespace
+        while (endIndex > startIndex && Character.isWhitespace(challenge.charAt(endIndex - 1))) {
+            endIndex--;
+        }
+
+        return startIndex < endIndex ? challenge.substring(startIndex, endIndex) : null;
     }
 
     /**
@@ -79,9 +106,9 @@ public class AuthorizationChallengeParser {
             int equalsIndex = pair.indexOf('=');
             if (equalsIndex != -1) {
                 String key = pair.substring(0, equalsIndex).trim();
-                String value = pair.substring(equalsIndex + 1).replace("\"", "").trim();
 
                 if (key.equals(parameter)) {
+                    String value = pair.substring(equalsIndex + 1).replace("\"", "").trim();
                     return value;
                 }
             }
