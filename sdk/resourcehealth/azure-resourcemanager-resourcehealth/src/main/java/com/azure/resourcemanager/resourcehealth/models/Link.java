@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Useful links for service health event. */
+/**
+ * Useful links for service health event.
+ */
 @Fluent
-public final class Link {
+public final class Link implements JsonSerializable<Link> {
     /*
      * Type of link.
      */
-    @JsonProperty(value = "type")
     private LinkTypeValues type;
 
     /*
      * Display text of link.
      */
-    @JsonProperty(value = "displayText")
     private LinkDisplayText displayText;
 
     /*
      * It provides the name of portal extension to produce link for given service health event.
      */
-    @JsonProperty(value = "extensionName")
     private String extensionName;
 
     /*
      * It provides the name of portal extension blade to produce link for given service health event.
      */
-    @JsonProperty(value = "bladeName")
     private String bladeName;
 
     /*
      * It provides a map of parameter name and value for portal extension blade to produce lik for given service health
      * event.
      */
-    @JsonProperty(value = "parameters")
     private Object parameters;
 
-    /** Creates an instance of Link class. */
+    /**
+     * Creates an instance of Link class.
+     */
     public Link() {
     }
 
     /**
      * Get the type property: Type of link.
-     *
+     * 
      * @return the type value.
      */
     public LinkTypeValues type() {
@@ -56,7 +59,7 @@ public final class Link {
 
     /**
      * Set the type property: Type of link.
-     *
+     * 
      * @param type the type value to set.
      * @return the Link object itself.
      */
@@ -67,7 +70,7 @@ public final class Link {
 
     /**
      * Get the displayText property: Display text of link.
-     *
+     * 
      * @return the displayText value.
      */
     public LinkDisplayText displayText() {
@@ -76,7 +79,7 @@ public final class Link {
 
     /**
      * Set the displayText property: Display text of link.
-     *
+     * 
      * @param displayText the displayText value to set.
      * @return the Link object itself.
      */
@@ -88,7 +91,7 @@ public final class Link {
     /**
      * Get the extensionName property: It provides the name of portal extension to produce link for given service health
      * event.
-     *
+     * 
      * @return the extensionName value.
      */
     public String extensionName() {
@@ -98,7 +101,7 @@ public final class Link {
     /**
      * Set the extensionName property: It provides the name of portal extension to produce link for given service health
      * event.
-     *
+     * 
      * @param extensionName the extensionName value to set.
      * @return the Link object itself.
      */
@@ -110,7 +113,7 @@ public final class Link {
     /**
      * Get the bladeName property: It provides the name of portal extension blade to produce link for given service
      * health event.
-     *
+     * 
      * @return the bladeName value.
      */
     public String bladeName() {
@@ -120,7 +123,7 @@ public final class Link {
     /**
      * Set the bladeName property: It provides the name of portal extension blade to produce link for given service
      * health event.
-     *
+     * 
      * @param bladeName the bladeName value to set.
      * @return the Link object itself.
      */
@@ -132,7 +135,7 @@ public final class Link {
     /**
      * Get the parameters property: It provides a map of parameter name and value for portal extension blade to produce
      * lik for given service health event.
-     *
+     * 
      * @return the parameters value.
      */
     public Object parameters() {
@@ -142,7 +145,7 @@ public final class Link {
     /**
      * Set the parameters property: It provides a map of parameter name and value for portal extension blade to produce
      * lik for given service health event.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the Link object itself.
      */
@@ -153,12 +156,60 @@ public final class Link {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayText() != null) {
             displayText().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("displayText", this.displayText);
+        jsonWriter.writeStringField("extensionName", this.extensionName);
+        jsonWriter.writeStringField("bladeName", this.bladeName);
+        jsonWriter.writeUntypedField("parameters", this.parameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Link from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Link if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Link.
+     */
+    public static Link fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Link deserializedLink = new Link();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedLink.type = LinkTypeValues.fromString(reader.getString());
+                } else if ("displayText".equals(fieldName)) {
+                    deserializedLink.displayText = LinkDisplayText.fromJson(reader);
+                } else if ("extensionName".equals(fieldName)) {
+                    deserializedLink.extensionName = reader.getString();
+                } else if ("bladeName".equals(fieldName)) {
+                    deserializedLink.bladeName = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedLink.parameters = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLink;
+        });
     }
 }
