@@ -22,7 +22,7 @@ public class KafkaCosmosUtils {
     public static CosmosClientMetadataCachesSnapshot getCosmosClientMetadataFromString(String metadataCacheString) {
         if (StringUtils.isNotEmpty(metadataCacheString)) {
             byte[] inputByteArray = Base64.getDecoder().decode(metadataCacheString);
-            try (final ObjectInputStream objectInputStream =
+            try (ObjectInputStream objectInputStream =
                      new ObjectInputStream(new ByteArrayInputStream(inputByteArray))) {
 
                 return (CosmosClientMetadataCachesSnapshot) objectInputStream.readObject();
@@ -42,7 +42,7 @@ public class KafkaCosmosUtils {
 
         CosmosClientMetadataCachesSnapshot clientMetadataCachesSnapshot = new CosmosClientMetadataCachesSnapshot();
         clientMetadataCachesSnapshot.serialize(client);
-        try (final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             ObjectOutputStream outputStream = new ObjectOutputStream(byteArrayOutputStream);
             outputStream.writeObject(clientMetadataCachesSnapshot);
             return Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray());

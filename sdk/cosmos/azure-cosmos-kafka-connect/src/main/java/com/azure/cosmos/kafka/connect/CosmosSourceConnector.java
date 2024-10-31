@@ -508,9 +508,12 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
         List<String> containerNames =
             this.monitorThread
                 .getAllContainers()
-                .block()
-                .stream().map(CosmosContainerProperties::getId)
-                .collect(Collectors.toList());;
+                .map(cosmosContainerProperties ->
+                    cosmosContainerProperties
+                        .stream()
+                        .map(CosmosContainerProperties::getId)
+                        .collect(Collectors.toList()))
+                .block();
         CosmosAsyncDatabase database = this.cosmosClient.getDatabase(containersConfig.getDatabaseName());
 
         // read a random item from each container to populate the collection cache
