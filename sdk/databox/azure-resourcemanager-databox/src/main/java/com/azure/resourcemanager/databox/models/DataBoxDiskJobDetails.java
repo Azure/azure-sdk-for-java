@@ -5,67 +5,132 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** DataBox Disk Job Details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobDetailsType")
-@JsonTypeName("DataBoxDisk")
+/**
+ * DataBox Disk Job Details.
+ */
 @Fluent
 public final class DataBoxDiskJobDetails extends JobDetails {
+    /*
+     * Indicates the type of job details.
+     */
+    private ClassDiscriminator jobDetailsType = ClassDiscriminator.DATA_BOX_DISK;
+
     /*
      * User preference on what size disks are needed for the job. The map is from the disk size in TB to the count. Eg.
      * {2,5} means 5 disks of 2 TB size. Key is string but will be checked against an int.
      */
-    @JsonProperty(value = "preferredDisks")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Integer> preferredDisks;
 
     /*
      * Copy progress per disk.
      */
-    @JsonProperty(value = "copyProgress", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataBoxDiskCopyProgress> copyProgress;
 
     /*
      * Copy progress per disk.
      */
-    @JsonProperty(value = "granularCopyProgress", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataBoxDiskGranularCopyProgress> granularCopyProgress;
 
     /*
      * Copy progress per disk.
      */
-    @JsonProperty(value = "granularCopyLogDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataBoxDiskGranularCopyLogDetails> granularCopyLogDetails;
 
     /*
      * Contains the map of disk serial number to the disk size being used for the job. Is returned only after the disks
      * are shipped to the customer.
      */
-    @JsonProperty(value = "disksAndSizeDetails", access = JsonProperty.Access.WRITE_ONLY)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Integer> disksAndSizeDetails;
 
     /*
      * User entered passkey for DataBox Disk job.
      */
-    @JsonProperty(value = "passkey")
     private String passkey;
 
-    /** Creates an instance of DataBoxDiskJobDetails class. */
+    /*
+     * DataCenter code.
+     */
+    private DataCenterCode dataCenterCode;
+
+    /*
+     * Datacenter address to ship to, for the given sku and storage location.
+     */
+    private DatacenterAddressResponse datacenterAddress;
+
+    /*
+     * Last mitigation action performed on the job.
+     */
+    private LastMitigationActionOnJob lastMitigationActionOnJob;
+
+    /*
+     * Available actions on the job.
+     */
+    private List<CustomerResolutionCode> actions;
+
+    /*
+     * Holds device data erasure details
+     */
+    private DeviceErasureDetails deviceErasureDetails;
+
+    /*
+     * Shared access key to download the chain of custody logs
+     */
+    private String chainOfCustodySasKey;
+
+    /*
+     * Shared access key to download the return shipment label
+     */
+    private String reverseShipmentLabelSasKey;
+
+    /*
+     * List of copy log details.
+     */
+    private List<CopyLogDetails> copyLogDetails;
+
+    /*
+     * Return package shipping details.
+     */
+    private PackageShippingDetails returnPackage;
+
+    /*
+     * Delivery package shipping details.
+     */
+    private PackageShippingDetails deliveryPackage;
+
+    /*
+     * List of stages that run in the job.
+     */
+    private List<JobStages> jobStages;
+
+    /**
+     * Creates an instance of DataBoxDiskJobDetails class.
+     */
     public DataBoxDiskJobDetails() {
+    }
+
+    /**
+     * Get the jobDetailsType property: Indicates the type of job details.
+     * 
+     * @return the jobDetailsType value.
+     */
+    @Override
+    public ClassDiscriminator jobDetailsType() {
+        return this.jobDetailsType;
     }
 
     /**
      * Get the preferredDisks property: User preference on what size disks are needed for the job. The map is from the
      * disk size in TB to the count. Eg. {2,5} means 5 disks of 2 TB size. Key is string but will be checked against an
      * int.
-     *
+     * 
      * @return the preferredDisks value.
      */
     public Map<String, Integer> preferredDisks() {
@@ -76,7 +141,7 @@ public final class DataBoxDiskJobDetails extends JobDetails {
      * Set the preferredDisks property: User preference on what size disks are needed for the job. The map is from the
      * disk size in TB to the count. Eg. {2,5} means 5 disks of 2 TB size. Key is string but will be checked against an
      * int.
-     *
+     * 
      * @param preferredDisks the preferredDisks value to set.
      * @return the DataBoxDiskJobDetails object itself.
      */
@@ -87,7 +152,7 @@ public final class DataBoxDiskJobDetails extends JobDetails {
 
     /**
      * Get the copyProgress property: Copy progress per disk.
-     *
+     * 
      * @return the copyProgress value.
      */
     public List<DataBoxDiskCopyProgress> copyProgress() {
@@ -96,7 +161,7 @@ public final class DataBoxDiskJobDetails extends JobDetails {
 
     /**
      * Get the granularCopyProgress property: Copy progress per disk.
-     *
+     * 
      * @return the granularCopyProgress value.
      */
     public List<DataBoxDiskGranularCopyProgress> granularCopyProgress() {
@@ -105,7 +170,7 @@ public final class DataBoxDiskJobDetails extends JobDetails {
 
     /**
      * Get the granularCopyLogDetails property: Copy progress per disk.
-     *
+     * 
      * @return the granularCopyLogDetails value.
      */
     public List<DataBoxDiskGranularCopyLogDetails> granularCopyLogDetails() {
@@ -115,7 +180,7 @@ public final class DataBoxDiskJobDetails extends JobDetails {
     /**
      * Get the disksAndSizeDetails property: Contains the map of disk serial number to the disk size being used for the
      * job. Is returned only after the disks are shipped to the customer.
-     *
+     * 
      * @return the disksAndSizeDetails value.
      */
     public Map<String, Integer> disksAndSizeDetails() {
@@ -124,7 +189,7 @@ public final class DataBoxDiskJobDetails extends JobDetails {
 
     /**
      * Get the passkey property: User entered passkey for DataBox Disk job.
-     *
+     * 
      * @return the passkey value.
      */
     public String passkey() {
@@ -133,7 +198,7 @@ public final class DataBoxDiskJobDetails extends JobDetails {
 
     /**
      * Set the passkey property: User entered passkey for DataBox Disk job.
-     *
+     * 
      * @param passkey the passkey value to set.
      * @return the DataBoxDiskJobDetails object itself.
      */
@@ -142,56 +207,182 @@ public final class DataBoxDiskJobDetails extends JobDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the dataCenterCode property: DataCenter code.
+     * 
+     * @return the dataCenterCode value.
+     */
+    @Override
+    public DataCenterCode dataCenterCode() {
+        return this.dataCenterCode;
+    }
+
+    /**
+     * Get the datacenterAddress property: Datacenter address to ship to, for the given sku and storage location.
+     * 
+     * @return the datacenterAddress value.
+     */
+    @Override
+    public DatacenterAddressResponse datacenterAddress() {
+        return this.datacenterAddress;
+    }
+
+    /**
+     * Get the lastMitigationActionOnJob property: Last mitigation action performed on the job.
+     * 
+     * @return the lastMitigationActionOnJob value.
+     */
+    @Override
+    public LastMitigationActionOnJob lastMitigationActionOnJob() {
+        return this.lastMitigationActionOnJob;
+    }
+
+    /**
+     * Get the actions property: Available actions on the job.
+     * 
+     * @return the actions value.
+     */
+    @Override
+    public List<CustomerResolutionCode> actions() {
+        return this.actions;
+    }
+
+    /**
+     * Get the deviceErasureDetails property: Holds device data erasure details.
+     * 
+     * @return the deviceErasureDetails value.
+     */
+    @Override
+    public DeviceErasureDetails deviceErasureDetails() {
+        return this.deviceErasureDetails;
+    }
+
+    /**
+     * Get the chainOfCustodySasKey property: Shared access key to download the chain of custody logs.
+     * 
+     * @return the chainOfCustodySasKey value.
+     */
+    @Override
+    public String chainOfCustodySasKey() {
+        return this.chainOfCustodySasKey;
+    }
+
+    /**
+     * Get the reverseShipmentLabelSasKey property: Shared access key to download the return shipment label.
+     * 
+     * @return the reverseShipmentLabelSasKey value.
+     */
+    @Override
+    public String reverseShipmentLabelSasKey() {
+        return this.reverseShipmentLabelSasKey;
+    }
+
+    /**
+     * Get the copyLogDetails property: List of copy log details.
+     * 
+     * @return the copyLogDetails value.
+     */
+    @Override
+    public List<CopyLogDetails> copyLogDetails() {
+        return this.copyLogDetails;
+    }
+
+    /**
+     * Get the returnPackage property: Return package shipping details.
+     * 
+     * @return the returnPackage value.
+     */
+    @Override
+    public PackageShippingDetails returnPackage() {
+        return this.returnPackage;
+    }
+
+    /**
+     * Get the deliveryPackage property: Delivery package shipping details.
+     * 
+     * @return the deliveryPackage value.
+     */
+    @Override
+    public PackageShippingDetails deliveryPackage() {
+        return this.deliveryPackage;
+    }
+
+    /**
+     * Get the jobStages property: List of stages that run in the job.
+     * 
+     * @return the jobStages value.
+     */
+    @Override
+    public List<JobStages> jobStages() {
+        return this.jobStages;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxDiskJobDetails withContactDetails(ContactDetails contactDetails) {
         super.withContactDetails(contactDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxDiskJobDetails withShippingAddress(ShippingAddress shippingAddress) {
         super.withShippingAddress(shippingAddress);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxDiskJobDetails withDataImportDetails(List<DataImportDetails> dataImportDetails) {
         super.withDataImportDetails(dataImportDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxDiskJobDetails withDataExportDetails(List<DataExportDetails> dataExportDetails) {
         super.withDataExportDetails(dataExportDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxDiskJobDetails withPreferences(Preferences preferences) {
         super.withPreferences(preferences);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxDiskJobDetails withReverseShippingDetails(ReverseShippingDetails reverseShippingDetails) {
         super.withReverseShippingDetails(reverseShippingDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxDiskJobDetails withKeyEncryptionKey(KeyEncryptionKey keyEncryptionKey) {
         super.withKeyEncryptionKey(keyEncryptionKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataBoxDiskJobDetails withExpectedDataSizeInTeraBytes(Integer expectedDataSizeInTeraBytes) {
         super.withExpectedDataSizeInTeraBytes(expectedDataSizeInTeraBytes);
@@ -200,12 +391,11 @@ public final class DataBoxDiskJobDetails extends JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (copyProgress() != null) {
             copyProgress().forEach(e -> e.validate());
         }
@@ -215,5 +405,173 @@ public final class DataBoxDiskJobDetails extends JobDetails {
         if (granularCopyLogDetails() != null) {
             granularCopyLogDetails().forEach(e -> e.validate());
         }
+        if (jobStages() != null) {
+            jobStages().forEach(e -> e.validate());
+        }
+        if (contactDetails() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property contactDetails in model DataBoxDiskJobDetails"));
+        } else {
+            contactDetails().validate();
+        }
+        if (shippingAddress() != null) {
+            shippingAddress().validate();
+        }
+        if (deliveryPackage() != null) {
+            deliveryPackage().validate();
+        }
+        if (returnPackage() != null) {
+            returnPackage().validate();
+        }
+        if (dataImportDetails() != null) {
+            dataImportDetails().forEach(e -> e.validate());
+        }
+        if (dataExportDetails() != null) {
+            dataExportDetails().forEach(e -> e.validate());
+        }
+        if (preferences() != null) {
+            preferences().validate();
+        }
+        if (reverseShippingDetails() != null) {
+            reverseShippingDetails().validate();
+        }
+        if (copyLogDetails() != null) {
+            copyLogDetails().forEach(e -> e.validate());
+        }
+        if (deviceErasureDetails() != null) {
+            deviceErasureDetails().validate();
+        }
+        if (keyEncryptionKey() != null) {
+            keyEncryptionKey().validate();
+        }
+        if (lastMitigationActionOnJob() != null) {
+            lastMitigationActionOnJob().validate();
+        }
+        if (datacenterAddress() != null) {
+            datacenterAddress().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataBoxDiskJobDetails.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("contactDetails", contactDetails());
+        jsonWriter.writeJsonField("shippingAddress", shippingAddress());
+        jsonWriter.writeArrayField("dataImportDetails", dataImportDetails(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dataExportDetails", dataExportDetails(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("preferences", preferences());
+        jsonWriter.writeJsonField("reverseShippingDetails", reverseShippingDetails());
+        jsonWriter.writeJsonField("keyEncryptionKey", keyEncryptionKey());
+        jsonWriter.writeNumberField("expectedDataSizeInTeraBytes", expectedDataSizeInTeraBytes());
+        jsonWriter.writeStringField("jobDetailsType",
+            this.jobDetailsType == null ? null : this.jobDetailsType.toString());
+        jsonWriter.writeMapField("preferredDisks", this.preferredDisks, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeStringField("passkey", this.passkey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxDiskJobDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxDiskJobDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataBoxDiskJobDetails.
+     */
+    public static DataBoxDiskJobDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxDiskJobDetails deserializedDataBoxDiskJobDetails = new DataBoxDiskJobDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactDetails".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.withContactDetails(ContactDetails.fromJson(reader));
+                } else if ("jobStages".equals(fieldName)) {
+                    List<JobStages> jobStages = reader.readArray(reader1 -> JobStages.fromJson(reader1));
+                    deserializedDataBoxDiskJobDetails.jobStages = jobStages;
+                } else if ("shippingAddress".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.withShippingAddress(ShippingAddress.fromJson(reader));
+                } else if ("deliveryPackage".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.deliveryPackage = PackageShippingDetails.fromJson(reader);
+                } else if ("returnPackage".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.returnPackage = PackageShippingDetails.fromJson(reader);
+                } else if ("dataImportDetails".equals(fieldName)) {
+                    List<DataImportDetails> dataImportDetails
+                        = reader.readArray(reader1 -> DataImportDetails.fromJson(reader1));
+                    deserializedDataBoxDiskJobDetails.withDataImportDetails(dataImportDetails);
+                } else if ("dataExportDetails".equals(fieldName)) {
+                    List<DataExportDetails> dataExportDetails
+                        = reader.readArray(reader1 -> DataExportDetails.fromJson(reader1));
+                    deserializedDataBoxDiskJobDetails.withDataExportDetails(dataExportDetails);
+                } else if ("preferences".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.withPreferences(Preferences.fromJson(reader));
+                } else if ("reverseShippingDetails".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails
+                        .withReverseShippingDetails(ReverseShippingDetails.fromJson(reader));
+                } else if ("copyLogDetails".equals(fieldName)) {
+                    List<CopyLogDetails> copyLogDetails = reader.readArray(reader1 -> CopyLogDetails.fromJson(reader1));
+                    deserializedDataBoxDiskJobDetails.copyLogDetails = copyLogDetails;
+                } else if ("reverseShipmentLabelSasKey".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.reverseShipmentLabelSasKey = reader.getString();
+                } else if ("chainOfCustodySasKey".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.chainOfCustodySasKey = reader.getString();
+                } else if ("deviceErasureDetails".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.deviceErasureDetails = DeviceErasureDetails.fromJson(reader);
+                } else if ("keyEncryptionKey".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.withKeyEncryptionKey(KeyEncryptionKey.fromJson(reader));
+                } else if ("expectedDataSizeInTeraBytes".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails
+                        .withExpectedDataSizeInTeraBytes(reader.getNullable(JsonReader::getInt));
+                } else if ("actions".equals(fieldName)) {
+                    List<CustomerResolutionCode> actions
+                        = reader.readArray(reader1 -> CustomerResolutionCode.fromString(reader1.getString()));
+                    deserializedDataBoxDiskJobDetails.actions = actions;
+                } else if ("lastMitigationActionOnJob".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.lastMitigationActionOnJob
+                        = LastMitigationActionOnJob.fromJson(reader);
+                } else if ("datacenterAddress".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.datacenterAddress = DatacenterAddressResponse.fromJson(reader);
+                } else if ("dataCenterCode".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.dataCenterCode = DataCenterCode.fromString(reader.getString());
+                } else if ("jobDetailsType".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.jobDetailsType
+                        = ClassDiscriminator.fromString(reader.getString());
+                } else if ("preferredDisks".equals(fieldName)) {
+                    Map<String, Integer> preferredDisks = reader.readMap(reader1 -> reader1.getInt());
+                    deserializedDataBoxDiskJobDetails.preferredDisks = preferredDisks;
+                } else if ("copyProgress".equals(fieldName)) {
+                    List<DataBoxDiskCopyProgress> copyProgress
+                        = reader.readArray(reader1 -> DataBoxDiskCopyProgress.fromJson(reader1));
+                    deserializedDataBoxDiskJobDetails.copyProgress = copyProgress;
+                } else if ("granularCopyProgress".equals(fieldName)) {
+                    List<DataBoxDiskGranularCopyProgress> granularCopyProgress
+                        = reader.readArray(reader1 -> DataBoxDiskGranularCopyProgress.fromJson(reader1));
+                    deserializedDataBoxDiskJobDetails.granularCopyProgress = granularCopyProgress;
+                } else if ("granularCopyLogDetails".equals(fieldName)) {
+                    List<DataBoxDiskGranularCopyLogDetails> granularCopyLogDetails
+                        = reader.readArray(reader1 -> DataBoxDiskGranularCopyLogDetails.fromJson(reader1));
+                    deserializedDataBoxDiskJobDetails.granularCopyLogDetails = granularCopyLogDetails;
+                } else if ("disksAndSizeDetails".equals(fieldName)) {
+                    Map<String, Integer> disksAndSizeDetails = reader.readMap(reader1 -> reader1.getInt());
+                    deserializedDataBoxDiskJobDetails.disksAndSizeDetails = disksAndSizeDetails;
+                } else if ("passkey".equals(fieldName)) {
+                    deserializedDataBoxDiskJobDetails.passkey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxDiskJobDetails;
+        });
     }
 }

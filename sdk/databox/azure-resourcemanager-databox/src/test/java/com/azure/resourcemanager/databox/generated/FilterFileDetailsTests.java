@@ -13,18 +13,18 @@ public final class FilterFileDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FilterFileDetails model
-            = BinaryData.fromString("{\"filterFileType\":\"AzureFile\",\"filterFilePath\":\"vfyexfw\"}")
+            = BinaryData.fromString("{\"filterFileType\":\"AzureFile\",\"filterFilePath\":\"zdmohctbqvu\"}")
                 .toObject(FilterFileDetails.class);
         Assertions.assertEquals(FilterFileType.AZURE_FILE, model.filterFileType());
-        Assertions.assertEquals("vfyexfw", model.filterFilePath());
+        Assertions.assertEquals("zdmohctbqvu", model.filterFilePath());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FilterFileDetails model
-            = new FilterFileDetails().withFilterFileType(FilterFileType.AZURE_FILE).withFilterFilePath("vfyexfw");
+            = new FilterFileDetails().withFilterFileType(FilterFileType.AZURE_FILE).withFilterFilePath("zdmohctbqvu");
         model = BinaryData.fromObject(model).toObject(FilterFileDetails.class);
         Assertions.assertEquals(FilterFileType.AZURE_FILE, model.filterFileType());
-        Assertions.assertEquals("vfyexfw", model.filterFilePath());
+        Assertions.assertEquals("zdmohctbqvu", model.filterFilePath());
     }
 }

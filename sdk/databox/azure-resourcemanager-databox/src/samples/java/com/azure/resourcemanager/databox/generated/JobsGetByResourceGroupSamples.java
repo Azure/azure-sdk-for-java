@@ -4,80 +4,82 @@
 
 package com.azure.resourcemanager.databox.generated;
 
-/** Samples for Jobs GetByResourceGroup. */
+/**
+ * Samples for Jobs GetByResourceGroup.
+ */
 public final class JobsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGet.json
+     * x-ms-original-file:
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGet.json
      */
     /**
      * Sample code: JobsGet.
-     *
+     * 
      * @param manager Entry point to DataBoxManager.
      */
     public static void jobsGet(com.azure.resourcemanager.databox.DataBoxManager manager) {
-        manager
-            .jobs()
-            .getByResourceGroupWithResponse(
-                "YourResourceGroupName", "TestJobName1", "details", com.azure.core.util.Context.NONE);
+        manager.jobs()
+            .getByResourceGroupWithResponse("YourResourceGroupName", "TestJobName1", "details",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetCmk.json
+     * x-ms-original-file:
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetCmk.json
      */
     /**
      * Sample code: JobsGetCmk.
-     *
+     * 
      * @param manager Entry point to DataBoxManager.
      */
     public static void jobsGetCmk(com.azure.resourcemanager.databox.DataBoxManager manager) {
-        manager
-            .jobs()
-            .getByResourceGroupWithResponse(
-                "YourResourceGroupName", "TestJobName1", "details", com.azure.core.util.Context.NONE);
+        manager.jobs()
+            .getByResourceGroupWithResponse("YourResourceGroupName", "TestJobName1", "details",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetExport.json
+     * x-ms-original-file:
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetExport.json
      */
     /**
      * Sample code: JobsGetExport.
-     *
+     * 
      * @param manager Entry point to DataBoxManager.
      */
     public static void jobsGetExport(com.azure.resourcemanager.databox.DataBoxManager manager) {
-        manager
-            .jobs()
-            .getByResourceGroupWithResponse(
-                "YourResourceGroupName", "TestJobName1", "details", com.azure.core.util.Context.NONE);
+        manager.jobs()
+            .getByResourceGroupWithResponse("YourResourceGroupName", "TestJobName1", "details",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetCopyStuck.json
+     * x-ms-original-file:
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetCopyStuck.json
      */
     /**
      * Sample code: JobsGetCopyStuck.
-     *
+     * 
      * @param manager Entry point to DataBoxManager.
      */
     public static void jobsGetCopyStuck(com.azure.resourcemanager.databox.DataBoxManager manager) {
-        manager
-            .jobs()
-            .getByResourceGroupWithResponse(
-                "YourResourceGroupName", "TestJobName1", "details", com.azure.core.util.Context.NONE);
+        manager.jobs()
+            .getByResourceGroupWithResponse("YourResourceGroupName", "TestJobName1", "details",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetWaitingForAction.json
+     * x-ms-original-file:
+     * specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsGetWaitingForAction.json
      */
     /**
      * Sample code: JobsGetWaitingForAction.
-     *
+     * 
      * @param manager Entry point to DataBoxManager.
      */
     public static void jobsGetWaitingForAction(com.azure.resourcemanager.databox.DataBoxManager manager) {
-        manager
-            .jobs()
-            .getByResourceGroupWithResponse(
-                "YourResourceGroupName", "TestJobName1", "details", com.azure.core.util.Context.NONE);
+        manager.jobs()
+            .getByResourceGroupWithResponse("YourResourceGroupName", "TestJobName1", "details",
+                com.azure.core.util.Context.NONE);
     }
 }
