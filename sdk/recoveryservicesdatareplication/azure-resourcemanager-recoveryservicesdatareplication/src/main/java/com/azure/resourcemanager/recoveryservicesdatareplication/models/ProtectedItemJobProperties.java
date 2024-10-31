@@ -5,61 +5,63 @@
 package com.azure.resourcemanager.recoveryservicesdatareplication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Protected item job properties. */
+/**
+ * Protected item job properties.
+ */
 @Immutable
-public class ProtectedItemJobProperties {
+public class ProtectedItemJobProperties implements JsonSerializable<ProtectedItemJobProperties> {
     /*
      * Gets or sets protection scenario name.
      */
-    @JsonProperty(value = "scenarioName", access = JsonProperty.Access.WRITE_ONLY)
     private String scenarioName;
 
     /*
      * Gets or sets workflow Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Gets or sets workflow name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Gets or sets the workflow friendly display name.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
     private String displayName;
 
     /*
      * Gets or sets workflow state.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
     /*
      * Gets or sets start time of the workflow.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * Gets or sets end time of the workflow.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
-    /** Creates an instance of ProtectedItemJobProperties class. */
+    /**
+     * Creates an instance of ProtectedItemJobProperties class.
+     */
     public ProtectedItemJobProperties() {
     }
 
     /**
      * Get the scenarioName property: Gets or sets protection scenario name.
-     *
+     * 
      * @return the scenarioName value.
      */
     public String scenarioName() {
@@ -67,8 +69,19 @@ public class ProtectedItemJobProperties {
     }
 
     /**
+     * Set the scenarioName property: Gets or sets protection scenario name.
+     * 
+     * @param scenarioName the scenarioName value to set.
+     * @return the ProtectedItemJobProperties object itself.
+     */
+    ProtectedItemJobProperties withScenarioName(String scenarioName) {
+        this.scenarioName = scenarioName;
+        return this;
+    }
+
+    /**
      * Get the id property: Gets or sets workflow Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,8 +89,19 @@ public class ProtectedItemJobProperties {
     }
 
     /**
+     * Set the id property: Gets or sets workflow Id.
+     * 
+     * @param id the id value to set.
+     * @return the ProtectedItemJobProperties object itself.
+     */
+    ProtectedItemJobProperties withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the name property: Gets or sets workflow name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -85,8 +109,19 @@ public class ProtectedItemJobProperties {
     }
 
     /**
+     * Set the name property: Gets or sets workflow name.
+     * 
+     * @param name the name value to set.
+     * @return the ProtectedItemJobProperties object itself.
+     */
+    ProtectedItemJobProperties withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the displayName property: Gets or sets the workflow friendly display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -94,8 +129,19 @@ public class ProtectedItemJobProperties {
     }
 
     /**
+     * Set the displayName property: Gets or sets the workflow friendly display name.
+     * 
+     * @param displayName the displayName value to set.
+     * @return the ProtectedItemJobProperties object itself.
+     */
+    ProtectedItemJobProperties withDisplayName(String displayName) {
+        this.displayName = displayName;
+        return this;
+    }
+
+    /**
      * Get the state property: Gets or sets workflow state.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -103,8 +149,19 @@ public class ProtectedItemJobProperties {
     }
 
     /**
+     * Set the state property: Gets or sets workflow state.
+     * 
+     * @param state the state value to set.
+     * @return the ProtectedItemJobProperties object itself.
+     */
+    ProtectedItemJobProperties withState(String state) {
+        this.state = state;
+        return this;
+    }
+
+    /**
      * Get the startTime property: Gets or sets start time of the workflow.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -112,8 +169,19 @@ public class ProtectedItemJobProperties {
     }
 
     /**
+     * Set the startTime property: Gets or sets start time of the workflow.
+     * 
+     * @param startTime the startTime value to set.
+     * @return the ProtectedItemJobProperties object itself.
+     */
+    ProtectedItemJobProperties withStartTime(OffsetDateTime startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    /**
      * Get the endTime property: Gets or sets end time of the workflow.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -121,10 +189,70 @@ public class ProtectedItemJobProperties {
     }
 
     /**
+     * Set the endTime property: Gets or sets end time of the workflow.
+     * 
+     * @param endTime the endTime value to set.
+     * @return the ProtectedItemJobProperties object itself.
+     */
+    ProtectedItemJobProperties withEndTime(OffsetDateTime endTime) {
+        this.endTime = endTime;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProtectedItemJobProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProtectedItemJobProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProtectedItemJobProperties.
+     */
+    public static ProtectedItemJobProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProtectedItemJobProperties deserializedProtectedItemJobProperties = new ProtectedItemJobProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scenarioName".equals(fieldName)) {
+                    deserializedProtectedItemJobProperties.scenarioName = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedProtectedItemJobProperties.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProtectedItemJobProperties.name = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedProtectedItemJobProperties.displayName = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedProtectedItemJobProperties.state = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedProtectedItemJobProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedProtectedItemJobProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProtectedItemJobProperties;
+        });
     }
 }

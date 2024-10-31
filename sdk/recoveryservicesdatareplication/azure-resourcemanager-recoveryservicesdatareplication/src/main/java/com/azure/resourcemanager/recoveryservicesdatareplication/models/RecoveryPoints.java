@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RecoveryPoints. */
+/**
+ * Resource collection API of RecoveryPoints.
+ */
 public interface RecoveryPoints {
     /**
      * Gets the recovery point.
-     *
-     * <p>Gets the details of the recovery point of a protected item.
-     *
+     * 
+     * Gets the details of the recovery point of a protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -30,9 +32,9 @@ public interface RecoveryPoints {
 
     /**
      * Gets the recovery point.
-     *
-     * <p>Gets the details of the recovery point of a protected item.
-     *
+     * 
+     * Gets the details of the recovery point of a protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -47,9 +49,9 @@ public interface RecoveryPoints {
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.
@@ -62,9 +64,9 @@ public interface RecoveryPoints {
 
     /**
      * Lists the recovery points.
-     *
-     * <p>Gets the list of recovery points of the given protected item.
-     *
+     * 
+     * Gets the list of recovery points of the given protected item.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The vault name.
      * @param protectedItemName The protected item name.

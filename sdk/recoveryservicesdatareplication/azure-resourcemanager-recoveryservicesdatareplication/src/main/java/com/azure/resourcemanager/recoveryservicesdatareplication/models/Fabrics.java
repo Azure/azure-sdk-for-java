@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Fabrics. */
+/**
+ * Resource collection API of Fabrics.
+ */
 public interface Fabrics {
     /**
      * Gets the fabric.
-     *
-     * <p>Gets the details of the fabric.
-     *
+     * 
+     * Gets the details of the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param context The context to associate with this operation.
@@ -27,9 +29,9 @@ public interface Fabrics {
 
     /**
      * Gets the fabric.
-     *
-     * <p>Gets the details of the fabric.
-     *
+     * 
+     * Gets the details of the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,9 +43,9 @@ public interface Fabrics {
 
     /**
      * Deletes the fabric.
-     *
-     * <p>Removes the fabric.
-     *
+     * 
+     * Removes the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -54,9 +56,9 @@ public interface Fabrics {
 
     /**
      * Deletes the fabric.
-     *
-     * <p>Removes the fabric.
-     *
+     * 
+     * Removes the fabric.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param fabricName The fabric name.
      * @param context The context to associate with this operation.
@@ -68,9 +70,9 @@ public interface Fabrics {
 
     /**
      * Lists the fabrics.
-     *
-     * <p>Gets the list of fabrics in the given subscription.
-     *
+     * 
+     * Gets the list of fabrics in the given subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of fabrics in the given subscription as paginated response with {@link PagedIterable}.
@@ -79,9 +81,9 @@ public interface Fabrics {
 
     /**
      * Lists the fabrics.
-     *
-     * <p>Gets the list of fabrics in the given subscription.
-     *
+     * 
+     * Gets the list of fabrics in the given subscription.
+     * 
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -93,39 +95,39 @@ public interface Fabrics {
 
     /**
      * Lists the fabrics.
-     *
-     * <p>Gets the list of fabrics in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of fabrics in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of fabrics in the given subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of fabrics in the given subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<FabricModel> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists the fabrics.
-     *
-     * <p>Gets the list of fabrics in the given subscription and resource group.
-     *
+     * 
+     * Gets the list of fabrics in the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param continuationToken Continuation token from the previous call.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of fabrics in the given subscription and resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of fabrics in the given subscription and resource group as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<FabricModel> listByResourceGroup(String resourceGroupName, String continuationToken, Context context);
 
     /**
      * Gets the fabric.
-     *
-     * <p>Gets the details of the fabric.
-     *
+     * 
+     * Gets the details of the fabric.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -136,9 +138,9 @@ public interface Fabrics {
 
     /**
      * Gets the fabric.
-     *
-     * <p>Gets the details of the fabric.
-     *
+     * 
+     * Gets the details of the fabric.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,9 +152,9 @@ public interface Fabrics {
 
     /**
      * Deletes the fabric.
-     *
-     * <p>Removes the fabric.
-     *
+     * 
+     * Removes the fabric.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -162,9 +164,9 @@ public interface Fabrics {
 
     /**
      * Deletes the fabric.
-     *
-     * <p>Removes the fabric.
-     *
+     * 
+     * Removes the fabric.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -175,7 +177,7 @@ public interface Fabrics {
 
     /**
      * Begins definition for a new FabricModel resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new FabricModel definition.
      */
