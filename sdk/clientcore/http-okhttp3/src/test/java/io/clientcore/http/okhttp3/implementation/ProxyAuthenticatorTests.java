@@ -57,9 +57,8 @@ public class ProxyAuthenticatorTests {
         + "nonce=\"7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v\", "
         + "opaque=\"FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS\"";
 
-    private static final Headers DIGEST_CHALLENGE_HEADERS = new Headers.Builder()
-        .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
-        .build();
+    private static final Headers DIGEST_CHALLENGE_HEADERS
+        = new Headers.Builder().add("Proxy-Authenticate: " + DIGEST_CHALLENGE).build();
 
     private static final Predicate<String> BASIC_PREDICATE = "Basic MTox"::equals;
     private static final Predicate<String> DIGEST_PREDICATE = (authHeader) -> authHeader.startsWith("Digest ");
@@ -78,7 +77,8 @@ public class ProxyAuthenticatorTests {
      */
     @Test
     public void preemptiveChallengesAreIgnored() {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
+        ProxyAuthenticator proxyAuthenticator
+            = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
 
         Response response = mockResponse(PREEMPTIVE_AUTHENTICATE, new Headers.Builder().build());
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -111,21 +111,16 @@ public class ProxyAuthenticatorTests {
     public static Stream<Arguments> authorizationIsAppliedSupplier() {
         return Stream.of(
             // ChallengeHolder only containing Basic challenge.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: Basic ")
-                .build(), BASIC_PREDICATE),
+            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic ").build(), BASIC_PREDICATE),
 
             // ChallengeHolder only containing Digest challenge.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
-                .build(), DIGEST_PREDICATE),
+            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: " + DIGEST_CHALLENGE).build(),
+                DIGEST_PREDICATE),
 
             // ChallengeHolder containing both Basic and Digest challenge.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: Basic")
+            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic")
                 .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
-                .build(), DIGEST_PREDICATE)
-        );
+                .build(), DIGEST_PREDICATE));
     }
 
     /**
@@ -135,7 +130,8 @@ public class ProxyAuthenticatorTests {
     @ParameterizedTest
     @MethodSource("authorizationCanBePipelinedSupplier")
     public void authorizationCanBePipelined(Headers challengeHeaders, Predicate<String> expectedPredicate) {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1"), new BasicChallengeHandler("1", "1")));
+        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(
+            ChallengeHandler.of(new DigestChallengeHandler("1", "1"), new BasicChallengeHandler("1", "1")));
 
         Response response = mockResponse("This is a test", challengeHeaders);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -158,15 +154,11 @@ public class ProxyAuthenticatorTests {
     public static Stream<Arguments> authorizationCanBePipelinedSupplier() {
         return Stream.of(
             // Pipelined Basic authorization.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: Basic")
-                .build(), BASIC_PREDICATE),
+            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: Basic").build(), BASIC_PREDICATE),
 
             // Pipelined Digest authorization.
-            Arguments.of(new Headers.Builder()
-                .add("Proxy-Authenticate: " + DIGEST_CHALLENGE)
-                .build(), DIGEST_PREDICATE)
-        );
+            Arguments.of(new Headers.Builder().add("Proxy-Authenticate: " + DIGEST_CHALLENGE).build(),
+                DIGEST_PREDICATE));
     }
 
     /**
@@ -175,7 +167,8 @@ public class ProxyAuthenticatorTests {
      */
     @Test
     public void nullOrEmptyProxyAuthenticateInfoIsIgnored() throws IOException {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
+        ProxyAuthenticator proxyAuthenticator
+            = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
 
         Response response = mockResponse("This is a test", DIGEST_CHALLENGE_HEADERS);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -195,9 +188,9 @@ public class ProxyAuthenticatorTests {
         authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
 
-        String nonce = AuthUtils
-            .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
-            .get("nonce");
+        String nonce
+            = AuthUtils.parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
+                .get("nonce");
         assertEquals(ORIGINAL_NONCE, nonce);
     }
 
@@ -207,7 +200,8 @@ public class ProxyAuthenticatorTests {
      */
     @Test
     public void proxyAuthenticateInfoValidatesProxyAuthorization() throws IOException {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
+        ProxyAuthenticator proxyAuthenticator
+            = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
 
         Response response = mockResponse("This is a test", DIGEST_CHALLENGE_HEADERS);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -217,17 +211,15 @@ public class ProxyAuthenticatorTests {
         assertNotNull(authenticateRequest);
         assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
 
-        String cnonce = AuthUtils
-            .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
-            .get("cnonce");
+        String cnonce
+            = AuthUtils.parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
+                .get("cnonce");
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
         Interceptor.Chain chain = mock(Interceptor.Chain.class);
         when(chain.proceed(any())).thenReturn(mockResponse("This is a test",
-            new Headers.Builder()
-                .add("Proxy-Authentication-Info: nc=00000001, cnonce=\"" + cnonce + "\"")
-                .build()));
+            new Headers.Builder().add("Proxy-Authentication-Info: nc=00000001, cnonce=\"" + cnonce + "\"").build()));
         when(chain.request()).thenReturn(authenticateRequest);
 
         interceptor.intercept(chain);
@@ -235,9 +227,9 @@ public class ProxyAuthenticatorTests {
         authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
 
-        String nonce = AuthUtils
-            .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
-            .get("nonce");
+        String nonce
+            = AuthUtils.parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
+                .get("nonce");
         assertEquals(ORIGINAL_NONCE, nonce);
     }
 
@@ -247,7 +239,8 @@ public class ProxyAuthenticatorTests {
      */
     @Test
     public void proxyAuthenticateInfoFailsValidation() throws IOException {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
+        ProxyAuthenticator proxyAuthenticator
+            = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
 
         Response response = mockResponse("This is a test", DIGEST_CHALLENGE_HEADERS);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -261,9 +254,7 @@ public class ProxyAuthenticatorTests {
 
         Interceptor.Chain chain = mock(Interceptor.Chain.class);
         when(chain.proceed(any())).thenReturn(mockResponse("This is a test",
-            new Headers.Builder()
-                .add("Proxy-Authentication-Info: nc=00000001, cnonce=\"incorrectCnonce\"")
-                .build()));
+            new Headers.Builder().add("Proxy-Authentication-Info: nc=00000001, cnonce=\"incorrectCnonce\"").build()));
         when(chain.request()).thenReturn(authenticateRequest);
 
         assertThrows(IllegalStateException.class, () -> interceptor.intercept(chain));
@@ -275,7 +266,8 @@ public class ProxyAuthenticatorTests {
      */
     @Test
     public void proxyAuthenticateInfoUpdatesNonce() throws IOException {
-        ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
+        ProxyAuthenticator proxyAuthenticator
+            = new ProxyAuthenticator(ChallengeHandler.of(new DigestChallengeHandler("1", "1")));
 
         Response response = mockResponse("This is a test", DIGEST_CHALLENGE_HEADERS);
         Route route = new Route(DEFAULT_ADDRESS, new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)),
@@ -289,9 +281,7 @@ public class ProxyAuthenticatorTests {
 
         Interceptor.Chain chain = mock(Interceptor.Chain.class);
         when(chain.proceed(any())).thenReturn(mockResponse("This is a test",
-            new Headers.Builder()
-                .add("Proxy-Authentication-Info: nextnonce=\"" + UPDATED_NONCE + "\"")
-                .build()));
+            new Headers.Builder().add("Proxy-Authentication-Info: nextnonce=\"" + UPDATED_NONCE + "\"").build()));
         when(chain.request()).thenReturn(authenticateRequest);
 
         interceptor.intercept(chain);
@@ -299,9 +289,9 @@ public class ProxyAuthenticatorTests {
         authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
 
-        String nonce = AuthUtils
-            .parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
-            .get("nonce");
+        String nonce
+            = AuthUtils.parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
+                .get("nonce");
         assertEquals(UPDATED_NONCE, nonce);
     }
 

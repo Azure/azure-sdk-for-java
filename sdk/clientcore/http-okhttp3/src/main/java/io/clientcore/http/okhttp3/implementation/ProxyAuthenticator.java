@@ -98,9 +98,7 @@ public final class ProxyAuthenticator implements Authenticator {
         if (PREEMPTIVE_AUTHENTICATE.equalsIgnoreCase(response.message())) {
             // If we have already authenticated, apply the stored Proxy-Authorization header.
             if (lastAuthorizationHeader != null) {
-                return response.request().newBuilder()
-                    .header(PROXY_AUTHORIZATION, lastAuthorizationHeader)
-                    .build();
+                return response.request().newBuilder().header(PROXY_AUTHORIZATION, lastAuthorizationHeader).build();
             }
             // If no previous authorization, return the request unchanged.
             return response.request();
@@ -108,14 +106,16 @@ public final class ProxyAuthenticator implements Authenticator {
 
         Request.Builder requestBuilder = response.request().newBuilder();
         HttpRequest httpRequest = new HttpRequest(HttpMethod.valueOf(PROXY_METHOD), PROXY_URI_PATH);
-        HttpResponse<?> httpResponse = new HttpResponse<>(httpRequest, response.code(), OkHttpResponse.fromOkHttpHeaders(response.headers()), NO_BODY);
+        HttpResponse<?> httpResponse = new HttpResponse<>(httpRequest, response.code(),
+            OkHttpResponse.fromOkHttpHeaders(response.headers()), NO_BODY);
         String authorizationHeader;
         // Replace nonce value in the PROXY_AUTHENTICATE header with the updated nonce
         ConcurrentHashMap<String, String> lastChallengeMap = proxyInterceptor.getLastChallenge();
         String updatedNonce = lastChallengeMap.get(NONCE);
 
         if (updatedNonce != null) {
-            String proxyAuthenticateHeader = httpResponse.getHeaders().get(HttpHeaderName.PROXY_AUTHENTICATE).getValue();
+            String proxyAuthenticateHeader
+                = httpResponse.getHeaders().get(HttpHeaderName.PROXY_AUTHENTICATE).getValue();
 
             if (proxyAuthenticateHeader != null) {
                 // Replace the old nonce with the updated nonce in the header for security against replay-attacks
@@ -192,10 +192,10 @@ public final class ProxyAuthenticator implements Authenticator {
             String proxyAuthenticationInfoHeader = response.header(PROXY_AUTHENTICATION_INFO);
 
             if (!AuthUtils.isNullOrEmpty(proxyAuthenticationInfoHeader)) {
-                Map<String, String> authenticationInfoPieces = AuthUtils
-                    .parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
-                Map<String, String> authorizationPieces = AuthUtils
-                    .parseAuthenticationOrAuthorizationHeader(chain.request().header(PROXY_AUTHORIZATION));
+                Map<String, String> authenticationInfoPieces
+                    = AuthUtils.parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
+                Map<String, String> authorizationPieces
+                    = AuthUtils.parseAuthenticationOrAuthorizationHeader(chain.request().header(PROXY_AUTHORIZATION));
 
                 /*
                  * If the authentication info response contains a cnonce or nc value it MUST match the value sent in the
@@ -227,15 +227,14 @@ public final class ProxyAuthenticator implements Authenticator {
      * outlining that the values didn't match.
      */
     private static void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
-                                                             Map<String, String> authorizationPieces) {
+        Map<String, String> authorizationPieces) {
         if (authenticationInfoPieces.containsKey(name)) {
             String sentValue = authorizationPieces.get(name);
             String receivedValue = authenticationInfoPieces.get(name);
 
             if (!receivedValue.equalsIgnoreCase(sentValue)) {
-                throw LOGGER.logThrowableAsError(
-                    new IllegalStateException(
-                        String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
+                throw LOGGER.logThrowableAsError(new IllegalStateException(
+                    String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
             }
         }
     }
