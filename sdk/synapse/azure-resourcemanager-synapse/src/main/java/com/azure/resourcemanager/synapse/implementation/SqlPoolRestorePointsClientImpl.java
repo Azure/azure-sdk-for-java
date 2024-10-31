@@ -39,17 +39,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolRestorePointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolRestorePointsClient.
+ */
 public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePointsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolRestorePointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolRestorePointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolRestorePointsClientImpl(SynapseManagementClientImpl client) {
@@ -66,8 +72,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolRestorePointsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorePointListResult>> list(@HostParam("$host") String endpoint,
@@ -76,8 +81,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
             @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
@@ -88,8 +92,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorePointInner>> get(@HostParam("$host") String endpoint,
@@ -99,8 +102,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/restorePoints/{restorePointName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
@@ -119,9 +121,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Get SQL pool backup
-     *
-     * <p>Get SQL pool backup information.
-     *
+     * 
+     * Get SQL pool backup information.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -163,9 +165,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Get SQL pool backup
-     *
-     * <p>Get SQL pool backup information.
-     *
+     * 
+     * Get SQL pool backup information.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -208,9 +210,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Get SQL pool backup
-     *
-     * <p>Get SQL pool backup information.
-     *
+     * 
+     * Get SQL pool backup information.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -227,9 +229,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Get SQL pool backup
-     *
-     * <p>Get SQL pool backup information.
-     *
+     * 
+     * Get SQL pool backup information.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -248,9 +250,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Get SQL pool backup
-     *
-     * <p>Get SQL pool backup information.
-     *
+     * 
+     * Get SQL pool backup information.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -266,9 +268,9 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Get SQL pool backup
-     *
-     * <p>Get SQL pool backup information.
-     *
+     * 
+     * Get SQL pool backup information.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -286,7 +288,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -333,7 +335,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -379,7 +381,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -400,7 +402,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -423,7 +425,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -441,7 +443,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -461,7 +463,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -480,7 +482,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -500,7 +502,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -518,7 +520,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -537,7 +539,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -582,7 +584,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -627,7 +629,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -646,7 +648,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -665,7 +667,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Gets a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -684,7 +686,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -729,7 +731,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -773,7 +775,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -792,7 +794,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -812,7 +814,7 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -828,14 +830,13 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listNextSinglePageAsync(String nextLink) {
@@ -855,15 +856,14 @@ public final class SqlPoolRestorePointsClientImpl implements SqlPoolRestorePoint
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of long term retention backups along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorePointInner>> listNextSinglePageAsync(String nextLink, Context context) {

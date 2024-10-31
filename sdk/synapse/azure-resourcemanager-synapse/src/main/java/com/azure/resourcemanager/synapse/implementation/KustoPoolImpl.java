@@ -191,9 +191,9 @@ public final class KustoPoolImpl implements KustoPool, KustoPool.Definition, Kus
     KustoPoolImpl(KustoPoolInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.kustoPoolName = Utils.getValueFromIdByName(innerObject.id(), "kustoPools");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.kustoPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "kustoPools");
     }
 
     public KustoPool refresh() {

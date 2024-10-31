@@ -102,9 +102,9 @@ public final class KeyImpl implements Key, Key.Definition, Key.Update {
     KeyImpl(KeyInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.keyName = Utils.getValueFromIdByName(innerObject.id(), "keys");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.keyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "keys");
     }
 
     public Key refresh() {

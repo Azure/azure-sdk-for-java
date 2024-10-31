@@ -11,7 +11,7 @@ public final class DataWarehouseUserActivitiesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataWarehouseUserActivitiesInner model = BinaryData.fromString(
-            "{\"properties\":{\"activeQueriesCount\":297001975},\"id\":\"nalaulppg\",\"name\":\"dtpnapnyiropuhp\",\"type\":\"gvpgy\"}")
+            "{\"properties\":{\"activeQueriesCount\":883294723},\"id\":\"uwz\",\"name\":\"zxb\",\"type\":\"pgcjefuzmuvp\"}")
             .toObject(DataWarehouseUserActivitiesInner.class);
     }
 

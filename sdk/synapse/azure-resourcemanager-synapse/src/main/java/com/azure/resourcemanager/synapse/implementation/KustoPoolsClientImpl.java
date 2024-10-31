@@ -51,17 +51,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KustoPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KustoPoolsClient.
+ */
 public final class KustoPoolsClientImpl implements KustoPoolsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KustoPoolsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of KustoPoolsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KustoPoolsClientImpl(SynapseManagementClientImpl client) {
@@ -86,8 +92,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/locations/{location}"
-            + "/kustoPoolCheckNameAvailability")
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Synapse/locations/{location}/kustoPoolCheckNameAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
@@ -97,8 +102,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<KustoPoolListResultInner>> listByWorkspace(@HostParam("$host") String endpoint,
@@ -107,8 +111,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<KustoPoolInner>> get(@HostParam("$host") String endpoint,
@@ -118,8 +121,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -130,8 +132,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
@@ -142,8 +143,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
@@ -152,8 +152,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/stop")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/stop")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("$host") String endpoint,
@@ -163,8 +162,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/start")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/start")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
@@ -174,8 +172,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/skus")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/skus")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListResourceSkusResult>> listSkusByResource(@HostParam("$host") String endpoint,
@@ -185,8 +182,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/listLanguageExtensions")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/listLanguageExtensions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LanguageExtensionsList>> listLanguageExtensions(@HostParam("$host") String endpoint,
@@ -196,8 +192,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/addLanguageExtensions")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/addLanguageExtensions")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> addLanguageExtensions(@HostParam("$host") String endpoint,
@@ -208,8 +203,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/removeLanguageExtensions")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/removeLanguageExtensions")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> removeLanguageExtensions(@HostParam("$host") String endpoint,
@@ -220,8 +214,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/listFollowerDatabases")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/listFollowerDatabases")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FollowerDatabaseListResult>> listFollowerDatabases(@HostParam("$host") String endpoint,
@@ -231,8 +224,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/detachFollowerDatabases")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/detachFollowerDatabases")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> detachFollowerDatabases(@HostParam("$host") String endpoint,
@@ -245,11 +237,11 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Lists eligible SKUs for Kusto Pool resource.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the SKU descriptions along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of the SKU descriptions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuDescriptionInner>> listSinglePageAsync() {
@@ -273,13 +265,13 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Lists eligible SKUs for Kusto Pool resource.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the SKU descriptions along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the list of the SKU descriptions along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SkuDescriptionInner>> listSinglePageAsync(Context context) {
@@ -301,7 +293,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Lists eligible SKUs for Kusto Pool resource.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the SKU descriptions as paginated response with {@link PagedFlux}.
@@ -313,7 +305,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Lists eligible SKUs for Kusto Pool resource.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -327,7 +319,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Lists eligible SKUs for Kusto Pool resource.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the SKU descriptions as paginated response with {@link PagedIterable}.
@@ -339,7 +331,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Lists eligible SKUs for Kusto Pool resource.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -353,14 +345,14 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Checks that the kusto pool name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param kustoPoolName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String location,
@@ -391,7 +383,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Checks that the kusto pool name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param kustoPoolName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -399,7 +391,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String location,
@@ -429,7 +421,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Checks that the kusto pool name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param kustoPoolName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -446,7 +438,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Checks that the kusto pool name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param kustoPoolName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -463,7 +455,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Checks that the kusto pool name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param kustoPoolName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -478,16 +470,16 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * List Kusto pools
-     *
-     * <p>List all Kusto pools.
-     *
+     * 
+     * List all Kusto pools.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto pools operation response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the list Kusto pools operation response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<KustoPoolListResultInner>> listByWorkspaceWithResponseAsync(String resourceGroupName,
@@ -517,17 +509,17 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * List Kusto pools
-     *
-     * <p>List all Kusto pools.
-     *
+     * 
+     * List all Kusto pools.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto pools operation response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the list Kusto pools operation response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<KustoPoolListResultInner>> listByWorkspaceWithResponseAsync(String resourceGroupName,
@@ -556,9 +548,9 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * List Kusto pools
-     *
-     * <p>List all Kusto pools.
-     *
+     * 
+     * List all Kusto pools.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -574,9 +566,9 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * List Kusto pools
-     *
-     * <p>List all Kusto pools.
-     *
+     * 
+     * List all Kusto pools.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -593,9 +585,9 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * List Kusto pools
-     *
-     * <p>List all Kusto pools.
-     *
+     * 
+     * List all Kusto pools.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -610,7 +602,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Gets a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -650,7 +642,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Gets a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -690,7 +682,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Gets a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -707,7 +699,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Gets a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -725,7 +717,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Gets a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -741,20 +733,20 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Kusto Pool to be created, but to prevent updating an existing Kusto
-     *     Pool. Other values will result in a 412 Pre-condition Failed response.
+     * Pool. Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto kusto pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing a Kusto kusto pool along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String workspaceName,
@@ -793,21 +785,21 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Kusto Pool to be created, but to prevent updating an existing Kusto
-     *     Pool. Other values will result in a 412 Pre-condition Failed response.
+     * Pool. Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto kusto pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing a Kusto kusto pool along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String workspaceName,
@@ -845,15 +837,15 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Kusto Pool to be created, but to prevent updating an existing Kusto
-     *     Pool. Other values will result in a 412 Pre-condition Failed response.
+     * Pool. Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -870,7 +862,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -893,15 +885,15 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Kusto Pool to be created, but to prevent updating an existing Kusto
-     *     Pool. Other values will result in a 412 Pre-condition Failed response.
+     * Pool. Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -921,7 +913,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -943,15 +935,15 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Kusto Pool to be created, but to prevent updating an existing Kusto
-     *     Pool. Other values will result in a 412 Pre-condition Failed response.
+     * Pool. Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -970,15 +962,15 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Kusto Pool to be created, but to prevent updating an existing Kusto
-     *     Pool. Other values will result in a 412 Pre-condition Failed response.
+     * Pool. Other values will result in a 412 Pre-condition Failed response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -993,7 +985,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1014,15 +1006,15 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Kusto Pool to be created, but to prevent updating an existing Kusto
-     *     Pool. Other values will result in a 412 Pre-condition Failed response.
+     * Pool. Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1038,7 +1030,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1059,15 +1051,15 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Create or update a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Kusto Pool to be created, but to prevent updating an existing Kusto
-     *     Pool. Other values will result in a 412 Pre-condition Failed response.
+     * Pool. Other values will result in a 412 Pre-condition Failed response.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1083,18 +1075,18 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto kusto pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing a Kusto kusto pool along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String workspaceName, String resourceGroupName,
@@ -1132,19 +1124,19 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto kusto pool along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing a Kusto kusto pool along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String workspaceName, String resourceGroupName,
@@ -1181,13 +1173,13 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1204,7 +1196,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1226,13 +1218,13 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1251,7 +1243,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1271,13 +1263,13 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1293,13 +1285,13 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1314,7 +1306,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1334,13 +1326,13 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1356,7 +1348,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1375,13 +1367,13 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Update a Kusto Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
      * @param parameters The Kusto pool parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Kusto Pool. Omit this value to always overwrite the current Kusto Pool. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1396,7 +1388,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1436,7 +1428,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1476,7 +1468,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1496,7 +1488,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1518,7 +1510,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1535,7 +1527,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1553,7 +1545,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1570,7 +1562,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1589,7 +1581,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1604,7 +1596,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1620,7 +1612,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1660,7 +1652,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1700,7 +1692,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1719,7 +1711,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1741,7 +1733,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1758,7 +1750,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1776,7 +1768,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1793,7 +1785,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1812,7 +1804,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1827,7 +1819,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1843,7 +1835,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1883,7 +1875,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1923,7 +1915,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1942,7 +1934,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1964,7 +1956,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1981,7 +1973,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -1999,7 +1991,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2016,7 +2008,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2035,7 +2027,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2050,7 +2042,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2066,7 +2058,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2074,7 +2066,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available SKUs for a Kusto Pool along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureResourceSkuInner>> listSkusByResourceSinglePageAsync(String workspaceName,
@@ -2109,7 +2101,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2118,7 +2110,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of available SKUs for a Kusto Pool along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureResourceSkuInner>> listSkusByResourceSinglePageAsync(String workspaceName,
@@ -2153,7 +2145,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2171,7 +2163,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2190,7 +2182,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2207,7 +2199,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2225,7 +2217,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2233,7 +2225,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of language extension objects along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LanguageExtensionInner>> listLanguageExtensionsSinglePageAsync(String workspaceName,
@@ -2268,7 +2260,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2277,7 +2269,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of language extension objects along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LanguageExtensionInner>> listLanguageExtensionsSinglePageAsync(String workspaceName,
@@ -2312,7 +2304,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2330,7 +2322,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2349,7 +2341,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2366,7 +2358,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2385,7 +2377,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2433,7 +2425,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2481,7 +2473,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2502,7 +2494,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2526,7 +2518,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2546,7 +2538,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2568,7 +2560,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2588,7 +2580,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2608,7 +2600,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2625,7 +2617,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2644,7 +2636,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2692,7 +2684,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2741,7 +2733,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2762,7 +2754,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2786,7 +2778,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2807,7 +2799,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2829,7 +2821,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2848,7 +2840,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2868,7 +2860,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2886,7 +2878,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2905,7 +2897,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2913,7 +2905,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FollowerDatabaseDefinitionInner>>
@@ -2948,7 +2940,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -2957,7 +2949,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto database principals operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FollowerDatabaseDefinitionInner>> listFollowerDatabasesSinglePageAsync(
@@ -2992,7 +2984,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3010,7 +3002,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3029,7 +3021,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3046,7 +3038,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3065,7 +3057,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3113,7 +3105,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3161,7 +3153,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3182,7 +3174,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3206,7 +3198,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3227,7 +3219,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3249,7 +3241,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3268,7 +3260,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3288,7 +3280,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -3305,7 +3297,7 @@ public final class KustoPoolsClientImpl implements KustoPoolsClient {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

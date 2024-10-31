@@ -8,11 +8,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowsInner;
 
-/** Resource collection API of SqlPoolMaintenanceWindows. */
+/**
+ * Resource collection API of SqlPoolMaintenanceWindows.
+ */
 public interface SqlPoolMaintenanceWindows {
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -28,7 +30,7 @@ public interface SqlPoolMaintenanceWindows {
 
     /**
      * Get a SQL pool's Maintenance Windows.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -43,7 +45,7 @@ public interface SqlPoolMaintenanceWindows {
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -60,7 +62,7 @@ public interface SqlPoolMaintenanceWindows {
 
     /**
      * Creates or updates a Sql pool's maintenance windows settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

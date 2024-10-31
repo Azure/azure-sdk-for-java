@@ -32,17 +32,23 @@ import com.azure.resourcemanager.synapse.fluent.models.SqlPoolBlobAuditingPolicy
 import com.azure.resourcemanager.synapse.models.SqlPoolBlobAuditingPolicyListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolBlobAuditingPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolBlobAuditingPoliciesClient.
+ */
 public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobAuditingPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolBlobAuditingPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolBlobAuditingPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolBlobAuditingPoliciesClientImpl(SynapseManagementClientImpl client) {
@@ -59,8 +65,7 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolBlobAuditingPoliciesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/auditingSettings/{blobAuditingPolicyName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/auditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlPoolBlobAuditingPolicyInner>> get(@HostParam("$host") String endpoint,
@@ -71,8 +76,7 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/auditingSettings/{blobAuditingPolicyName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/auditingSettings/{blobAuditingPolicyName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlPoolBlobAuditingPolicyInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -84,8 +88,7 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/auditingSettings")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/auditingSettings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlPoolBlobAuditingPolicyListResult>> listBySqlPool(@HostParam("$host") String endpoint,
@@ -104,9 +107,9 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Get a SQL pool's blob auditing policy
-     *
-     * <p>Get a SQL pool's blob auditing policy.
-     *
+     * 
+     * Get a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -147,9 +150,9 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Get a SQL pool's blob auditing policy
-     *
-     * <p>Get a SQL pool's blob auditing policy.
-     *
+     * 
+     * Get a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -190,9 +193,9 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Get a SQL pool's blob auditing policy
-     *
-     * <p>Get a SQL pool's blob auditing policy.
-     *
+     * 
+     * Get a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -210,9 +213,9 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Get a SQL pool's blob auditing policy
-     *
-     * <p>Get a SQL pool's blob auditing policy.
-     *
+     * 
+     * Get a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -230,9 +233,9 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Get a SQL pool's blob auditing policy
-     *
-     * <p>Get a SQL pool's blob auditing policy.
-     *
+     * 
+     * Get a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -248,9 +251,9 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Creates or updates a SQL pool's blob auditing policy
-     *
-     * <p>Creates or updates a SQL pool's blob auditing policy.
-     *
+     * 
+     * Creates or updates a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -298,9 +301,9 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Creates or updates a SQL pool's blob auditing policy
-     *
-     * <p>Creates or updates a SQL pool's blob auditing policy.
-     *
+     * 
+     * Creates or updates a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -347,9 +350,9 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Creates or updates a SQL pool's blob auditing policy
-     *
-     * <p>Creates or updates a SQL pool's blob auditing policy.
-     *
+     * 
+     * Creates or updates a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -368,9 +371,9 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Creates or updates a SQL pool's blob auditing policy
-     *
-     * <p>Creates or updates a SQL pool's blob auditing policy.
-     *
+     * 
+     * Creates or updates a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -390,9 +393,9 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Creates or updates a SQL pool's blob auditing policy
-     *
-     * <p>Creates or updates a SQL pool's blob auditing policy.
-     *
+     * 
+     * Creates or updates a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -411,15 +414,15 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Lists auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool auditing settings along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of Sql pool auditing settings along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolBlobAuditingPolicyInner>> listBySqlPoolSinglePageAsync(String resourceGroupName,
@@ -454,7 +457,7 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Lists auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -462,8 +465,8 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool auditing settings along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of Sql pool auditing settings along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolBlobAuditingPolicyInner>> listBySqlPoolSinglePageAsync(String resourceGroupName,
@@ -498,7 +501,7 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Lists auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -516,7 +519,7 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Lists auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -536,7 +539,7 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Lists auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -553,7 +556,7 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Lists auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -571,14 +574,13 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool auditing settings along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of Sql pool auditing settings along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolBlobAuditingPolicyInner>> listBySqlPoolNextSinglePageAsync(String nextLink) {
@@ -599,15 +601,14 @@ public final class SqlPoolBlobAuditingPoliciesClientImpl implements SqlPoolBlobA
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool auditing settings along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of Sql pool auditing settings along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SqlPoolBlobAuditingPolicyInner>> listBySqlPoolNextSinglePageAsync(String nextLink,

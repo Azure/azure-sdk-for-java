@@ -5,51 +5,55 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.DatabaseStatistics;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 
-/** Class representing the Kusto database properties. */
+/**
+ * Class representing the Kusto database properties.
+ */
 @Fluent
-public final class ReadWriteDatabaseProperties {
+public final class ReadWriteDatabaseProperties implements JsonSerializable<ReadWriteDatabaseProperties> {
     /*
      * The provisioned state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceProvisioningState provisioningState;
 
     /*
      * The time the data should be kept before it stops being accessible to queries in TimeSpan.
      */
-    @JsonProperty(value = "softDeletePeriod")
     private Duration softDeletePeriod;
 
     /*
      * The time the data should be kept in cache for fast queries in TimeSpan.
      */
-    @JsonProperty(value = "hotCachePeriod")
     private Duration hotCachePeriod;
 
     /*
      * The statistics of the database.
      */
-    @JsonProperty(value = "statistics", access = JsonProperty.Access.WRITE_ONLY)
     private DatabaseStatistics statistics;
 
     /*
      * Indicates whether the database is followed.
      */
-    @JsonProperty(value = "isFollowed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isFollowed;
 
-    /** Creates an instance of ReadWriteDatabaseProperties class. */
+    /**
+     * Creates an instance of ReadWriteDatabaseProperties class.
+     */
     public ReadWriteDatabaseProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceProvisioningState provisioningState() {
@@ -59,7 +63,7 @@ public final class ReadWriteDatabaseProperties {
     /**
      * Get the softDeletePeriod property: The time the data should be kept before it stops being accessible to queries
      * in TimeSpan.
-     *
+     * 
      * @return the softDeletePeriod value.
      */
     public Duration softDeletePeriod() {
@@ -69,7 +73,7 @@ public final class ReadWriteDatabaseProperties {
     /**
      * Set the softDeletePeriod property: The time the data should be kept before it stops being accessible to queries
      * in TimeSpan.
-     *
+     * 
      * @param softDeletePeriod the softDeletePeriod value to set.
      * @return the ReadWriteDatabaseProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class ReadWriteDatabaseProperties {
 
     /**
      * Get the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
-     *
+     * 
      * @return the hotCachePeriod value.
      */
     public Duration hotCachePeriod() {
@@ -89,7 +93,7 @@ public final class ReadWriteDatabaseProperties {
 
     /**
      * Set the hotCachePeriod property: The time the data should be kept in cache for fast queries in TimeSpan.
-     *
+     * 
      * @param hotCachePeriod the hotCachePeriod value to set.
      * @return the ReadWriteDatabaseProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class ReadWriteDatabaseProperties {
 
     /**
      * Get the statistics property: The statistics of the database.
-     *
+     * 
      * @return the statistics value.
      */
     public DatabaseStatistics statistics() {
@@ -109,7 +113,7 @@ public final class ReadWriteDatabaseProperties {
 
     /**
      * Get the isFollowed property: Indicates whether the database is followed.
-     *
+     * 
      * @return the isFollowed value.
      */
     public Boolean isFollowed() {
@@ -118,12 +122,60 @@ public final class ReadWriteDatabaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (statistics() != null) {
             statistics().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("softDeletePeriod", CoreUtils.durationToStringWithDays(this.softDeletePeriod));
+        jsonWriter.writeStringField("hotCachePeriod", CoreUtils.durationToStringWithDays(this.hotCachePeriod));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReadWriteDatabaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReadWriteDatabaseProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReadWriteDatabaseProperties.
+     */
+    public static ReadWriteDatabaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReadWriteDatabaseProperties deserializedReadWriteDatabaseProperties = new ReadWriteDatabaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedReadWriteDatabaseProperties.provisioningState
+                        = ResourceProvisioningState.fromString(reader.getString());
+                } else if ("softDeletePeriod".equals(fieldName)) {
+                    deserializedReadWriteDatabaseProperties.softDeletePeriod
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("hotCachePeriod".equals(fieldName)) {
+                    deserializedReadWriteDatabaseProperties.hotCachePeriod
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedReadWriteDatabaseProperties.statistics = DatabaseStatistics.fromJson(reader);
+                } else if ("isFollowed".equals(fieldName)) {
+                    deserializedReadWriteDatabaseProperties.isFollowed = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReadWriteDatabaseProperties;
+        });
     }
 }
