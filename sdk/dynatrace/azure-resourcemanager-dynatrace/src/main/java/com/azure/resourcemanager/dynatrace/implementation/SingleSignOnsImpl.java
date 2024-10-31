@@ -52,28 +52,30 @@ public final class SingleSignOnsImpl implements SingleSignOns {
     public PagedIterable<DynatraceSingleSignOnResource> list(String resourceGroupName, String monitorName) {
         PagedIterable<DynatraceSingleSignOnResourceInner> inner
             = this.serviceClient().list(resourceGroupName, monitorName);
-        return Utils.mapPage(inner, inner1 -> new DynatraceSingleSignOnResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DynatraceSingleSignOnResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DynatraceSingleSignOnResource> list(String resourceGroupName, String monitorName,
         Context context) {
         PagedIterable<DynatraceSingleSignOnResourceInner> inner
             = this.serviceClient().list(resourceGroupName, monitorName, context);
-        return Utils.mapPage(inner, inner1 -> new DynatraceSingleSignOnResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new DynatraceSingleSignOnResourceImpl(inner1, this.manager()));
     }
 
     public DynatraceSingleSignOnResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
-        String configurationName = Utils.getValueFromIdByName(id, "singleSignOnConfigurations");
+        String configurationName = ResourceManagerUtils.getValueFromIdByName(id, "singleSignOnConfigurations");
         if (configurationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'singleSignOnConfigurations'.", id)));
@@ -82,17 +84,17 @@ public final class SingleSignOnsImpl implements SingleSignOns {
     }
 
     public Response<DynatraceSingleSignOnResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String monitorName = Utils.getValueFromIdByName(id, "monitors");
+        String monitorName = ResourceManagerUtils.getValueFromIdByName(id, "monitors");
         if (monitorName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'monitors'.", id)));
         }
-        String configurationName = Utils.getValueFromIdByName(id, "singleSignOnConfigurations");
+        String configurationName = ResourceManagerUtils.getValueFromIdByName(id, "singleSignOnConfigurations");
         if (configurationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'singleSignOnConfigurations'.", id)));
