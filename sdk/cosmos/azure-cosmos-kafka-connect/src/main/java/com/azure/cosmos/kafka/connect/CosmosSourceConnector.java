@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosMasterKeyAuthConfig;
@@ -255,12 +256,18 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
                     "source",
                     this.connectorName,
                     RandomUtils.nextInt(1, 9999999)));
-            taskConfigs.put(
-                CosmosSourceTaskConfig.COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
-                clientMetadataCachesString);
-            taskConfigs.put(
-                CosmosSourceTaskConfig.THROUGHPUT_CONTROL_COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
-                throughputControlClientMetadataCachesString);
+            if (StringUtils.isNotEmpty(clientMetadataCachesString)) {
+                taskConfigs.put(
+                    CosmosSourceTaskConfig.COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
+                    clientMetadataCachesString);
+            }
+
+            if (StringUtils.isNotEmpty(throughputControlClientMetadataCachesString)) {
+                taskConfigs.put(
+                    CosmosSourceTaskConfig.THROUGHPUT_CONTROL_COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
+                    throughputControlClientMetadataCachesString);
+            }
+
             feedRangeTaskConfigs.add(taskConfigs);
         });
 

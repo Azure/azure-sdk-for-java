@@ -50,7 +50,7 @@ CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR=3
 CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR=3
 CONNECT_STATUS_STORAGE_REPLICATION_FACTOR=3
 ```
-Please follow [Confluent_Cloud_Setup]<!--(Confluent_Cloud_Setup.md)--> to setup a confluent cloud cluster.
+Please follow [Confluent_Cloud_Setup](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/Confluent_Cloud_Setup.md) to setup a confluent cloud cluster.
 Integration tests are having ITest suffix. Use following command to run integration tests:
 ```bash
 mvn -e -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-kafka-connect test package -Pkafka-integration
@@ -58,8 +58,8 @@ mvn -e -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.s
 
 ### Configure Confluent Platform, Cosmos DB and validate Kafka Connectors
 
-- [Confluent Platform Setup]<!--(Confluent_Platform_Setup.md)-->
-- [Confluent Cloud Setup]<!--(Confluent_Cloud_Setup.md)-->
-- [Setting up an Azure Cosmos DB Instance]<!--(CosmosDB_Setup.md)-->
-- [Kafka Connect Cosmos DB Sink Connector]<!--(README_Sink.md)-->
-- [Kafka Connect Cosmos DB Source Connector]<!--(README_Source.md)-->
+- [Confluent Platform Setup](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/Confluent_Platform_Setup.md)
+- [Confluent Cloud Setup](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/Confluent_Cloud_Setup.md)
+- [Setting up an Azure Cosmos DB Instance](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/CosmosDB_Setup.md)
+- [Kafka Connect Cosmos DB Sink Connector](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/README_Sink.md)
+- [Kafka Connect Cosmos DB Source Connector](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/README_Source.md)

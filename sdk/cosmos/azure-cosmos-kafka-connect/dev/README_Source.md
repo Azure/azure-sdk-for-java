@@ -14,7 +14,7 @@ The Azure Cosmos DB Source connector provides the capability to read data from t
 
 - It is recommended to start with the Confluent Platform (recommended to use this setup) as this gives you a complete environment to work with.
     - If you do not wish to use Confluent Platform, then you need to install and configure Zookeper, Apache Kafka, Kafka Connect, yourself. You will also need to install and configure the Cosmos DB connectors manually.
-- Cosmos DB Instance ([setup guide]<!--(CosmosDB_Setup.md-->)
+- Cosmos DB Instance ([setup guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/CosmosDB_Setup.md)
 - Bash shell
   - Will not work in Cloud Shell or WSL1
 - Java 11+ ([download](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html))
@@ -49,7 +49,7 @@ To create a topic inside Control Center, see [here](https://docs.confluent.io/pl
 
 The following JSON body defines the config for the Cosmos DB Source Connector.
 
->Note: You will need to replace placeholder values for below properties which you should have saved from the [Cosmos DB setup guide]<!--(CosmosDB_Setup.md)-->.  
+>Note: You will need to replace placeholder values for below properties which you should have saved from the [Cosmos DB setup guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/CosmosDB_Setup.md).  
 >`azure.cosmos.account.endpoint`  
 >`azure.cosmos.account.key`  
 
@@ -104,7 +104,7 @@ curl -H "Content-Type: application/json" -X POST -d @<path-to-JSON-config-file> 
 
 ### Insert document in to Cosmos DB
 
-Use [Cosmos DB setup guide]<!--(CosmosDB_Setup.md)--> to create and set up Cosmos DB Instance.
+Use [Cosmos DB setup guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/CosmosDB_Setup.md) to create and set up Cosmos DB Instance.
 
 - Sign into the [Azure portal](https://portal.azure.com/learn.docs.microsoft.com) using the account you activated.
 - On the Azure portal menu (left hand side blue lines at the top), select All services.
@@ -157,11 +157,11 @@ curl -X DELETE http://localhost:8083/connectors/cosmosdb-source-connector
 
 ```
 
-To delete the created Azure Cosmos DB service and its resource group using Azure CLI, refer to these [steps]<!--(CosmosDB_Setup.md#cleanup)-->.
+To delete the created Azure Cosmos DB service and its resource group using Azure CLI, refer to these [steps](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/CosmosDB_Setup.md#cleanup).
 
 ## Source configuration properties
 
-The following settings are used to configure the Cosmos DB Kafka Source Connector. These configuration values determine which Cosmos DB container is consumed, which Kafka topics data is written into and formats to serialize the data. For an example configuration file with the default values, refer to [this config]<!--(../src/docker/resources/source.example.json)-->.
+The following settings are used to configure the Cosmos DB Kafka Source Connector. These configuration values determine which Cosmos DB container is consumed, which Kafka topics data is written into and formats to serialize the data. For an example configuration file with the default values, refer to [this config](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/src/docker/resources/source.example.json).
 
-- [Generic Configs For Sink And Source]<!--(/doc/configuration-reference.md#generic-configurations)-->
-- [Configs only for Source]<!--(/doc/configuration-reference.md#source-connector-configurations)-->
+- [Generic Configs For Sink And Source](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/doc/configuration-reference.md#generic-configurations)
+- [Configs only for Source](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/doc/configuration-reference.md#source-connector-configurations)

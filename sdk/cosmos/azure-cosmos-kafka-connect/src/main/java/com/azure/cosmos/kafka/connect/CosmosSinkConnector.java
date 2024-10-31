@@ -7,6 +7,7 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.implementation.apachecommons.lang.RandomUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
@@ -84,12 +85,17 @@ public final class CosmosSinkConnector extends SinkConnector {
                     "sink",
                     this.connectorName,
                     RandomUtils.nextInt(1, 9999999)));
-            taskConfigs.put(
-                CosmosSinkTaskConfig.COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
-                clientMetadataCachesString);
-            taskConfigs.put(
-                CosmosSinkTaskConfig.THROUGHPUT_CONTROL_COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
-                throughputControlClientMetadataCachesString);
+            if (StringUtils.isNotEmpty(clientMetadataCachesString)) {
+                taskConfigs.put(
+                    CosmosSinkTaskConfig.COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
+                    clientMetadataCachesString);
+            }
+
+            if (StringUtils.isNotEmpty(clientMetadataCachesString)) {
+                taskConfigs.put(
+                    CosmosSinkTaskConfig.THROUGHPUT_CONTROL_COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
+                    throughputControlClientMetadataCachesString);
+            }
             configs.add(taskConfigs);
         }
 
