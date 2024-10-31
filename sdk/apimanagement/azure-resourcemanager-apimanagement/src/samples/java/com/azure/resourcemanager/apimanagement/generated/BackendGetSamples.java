@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for Backend Get. */
+/**
+ * Samples for Backend Get.
+ */
 public final class BackendGetSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementGetBackend.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementGetBackend.json
      */
     /**
      * Sample code: ApiManagementGetBackend.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementGetBackend(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {

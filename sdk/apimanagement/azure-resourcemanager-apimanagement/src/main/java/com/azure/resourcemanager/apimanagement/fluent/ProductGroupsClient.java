@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.GroupContractInner;
 
-/** An instance of this class provides access to all the operations defined in ProductGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProductGroupsClient.
+ */
 public interface ProductGroupsClient {
     /**
      * Lists the collection of developer groups associated with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -29,14 +31,14 @@ public interface ProductGroupsClient {
 
     /**
      * Lists the collection of developer groups associated with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | |&lt;/br&gt;| displayName | filter | eq, ne | |&lt;/br&gt;| description | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -51,7 +53,7 @@ public interface ProductGroupsClient {
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -68,7 +70,7 @@ public interface ProductGroupsClient {
 
     /**
      * Checks that Group entity specified by identifier is associated with the Product entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -82,7 +84,7 @@ public interface ProductGroupsClient {
 
     /**
      * Adds the association between the specified developer group with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -99,7 +101,7 @@ public interface ProductGroupsClient {
 
     /**
      * Adds the association between the specified developer group with the specified product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -114,7 +116,7 @@ public interface ProductGroupsClient {
 
     /**
      * Deletes the association between the specified group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.
@@ -131,7 +133,7 @@ public interface ProductGroupsClient {
 
     /**
      * Deletes the association between the specified group and product.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param productId Product identifier. Must be unique in the current API Management service instance.

@@ -7,81 +7,83 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.DiagnosticContractInner;
 
-/** An immutable client-side representation of DiagnosticContract. */
+/**
+ * An immutable client-side representation of DiagnosticContract.
+ */
 public interface DiagnosticContract {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the alwaysLog property: Specifies for what type of messages sampling settings should not apply.
-     *
+     * 
      * @return the alwaysLog value.
      */
     AlwaysLog alwaysLog();
 
     /**
      * Gets the loggerId property: Resource Id of a target logger.
-     *
+     * 
      * @return the loggerId value.
      */
     String loggerId();
 
     /**
      * Gets the sampling property: Sampling settings for Diagnostic.
-     *
+     * 
      * @return the sampling value.
      */
     SamplingSettings sampling();
 
     /**
      * Gets the frontend property: Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
-     *
+     * 
      * @return the frontend value.
      */
     PipelineDiagnosticSettings frontend();
 
     /**
      * Gets the backend property: Diagnostic settings for incoming/outgoing HTTP messages to the Backend.
-     *
+     * 
      * @return the backend value.
      */
     PipelineDiagnosticSettings backend();
 
     /**
      * Gets the logClientIp property: Log the ClientIP. Default is false.
-     *
+     * 
      * @return the logClientIp value.
      */
     Boolean logClientIp();
 
     /**
      * Gets the httpCorrelationProtocol property: Sets correlation protocol to use for Application Insights diagnostics.
-     *
+     * 
      * @return the httpCorrelationProtocol value.
      */
     HttpCorrelationProtocol httpCorrelationProtocol();
 
     /**
      * Gets the verbosity property: The verbosity level applied to traces emitted by trace policies.
-     *
+     * 
      * @return the verbosity value.
      */
     Verbosity verbosity();
@@ -89,7 +91,7 @@ public interface DiagnosticContract {
     /**
      * Gets the operationNameFormat property: The format of the Operation Name for Application Insights telemetries.
      * Default is Name.
-     *
+     * 
      * @return the operationNameFormat value.
      */
     OperationNameFormat operationNameFormat();
@@ -97,41 +99,49 @@ public interface DiagnosticContract {
     /**
      * Gets the metrics property: Emit custom metrics via emit-metric policy. Applicable only to Application Insights
      * diagnostic settings.
-     *
+     * 
      * @return the metrics value.
      */
     Boolean metrics();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.DiagnosticContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     DiagnosticContractInner innerModel();
 
-    /** The entirety of the DiagnosticContract definition. */
+    /**
+     * The entirety of the DiagnosticContract definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The DiagnosticContract definition stages. */
+    /**
+     * The DiagnosticContract definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the DiagnosticContract definition. */
+        /**
+         * The first stage of the DiagnosticContract definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify parent resource. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, serviceName, apiId.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param serviceName The name of the API Management service.
              * @param apiId API identifier. Must be unique in the current API Management service instance.
@@ -151,144 +161,166 @@ public interface DiagnosticContract {
             DefinitionStages.WithOperationNameFormat, DefinitionStages.WithMetrics, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             DiagnosticContract create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             DiagnosticContract create(Context context);
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify alwaysLog. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify alwaysLog.
+         */
         interface WithAlwaysLog {
             /**
              * Specifies the alwaysLog property: Specifies for what type of messages sampling settings should not
              * apply..
-             *
+             * 
              * @param alwaysLog Specifies for what type of messages sampling settings should not apply.
              * @return the next definition stage.
              */
             WithCreate withAlwaysLog(AlwaysLog alwaysLog);
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify loggerId. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify loggerId.
+         */
         interface WithLoggerId {
             /**
              * Specifies the loggerId property: Resource Id of a target logger..
-             *
+             * 
              * @param loggerId Resource Id of a target logger.
              * @return the next definition stage.
              */
             WithCreate withLoggerId(String loggerId);
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify sampling. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify sampling.
+         */
         interface WithSampling {
             /**
              * Specifies the sampling property: Sampling settings for Diagnostic..
-             *
+             * 
              * @param sampling Sampling settings for Diagnostic.
              * @return the next definition stage.
              */
             WithCreate withSampling(SamplingSettings sampling);
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify frontend. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify frontend.
+         */
         interface WithFrontend {
             /**
              * Specifies the frontend property: Diagnostic settings for incoming/outgoing HTTP messages to the Gateway..
-             *
+             * 
              * @param frontend Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
              * @return the next definition stage.
              */
             WithCreate withFrontend(PipelineDiagnosticSettings frontend);
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify backend. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify backend.
+         */
         interface WithBackend {
             /**
              * Specifies the backend property: Diagnostic settings for incoming/outgoing HTTP messages to the Backend.
-             *
+             * 
              * @param backend Diagnostic settings for incoming/outgoing HTTP messages to the Backend.
              * @return the next definition stage.
              */
             WithCreate withBackend(PipelineDiagnosticSettings backend);
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify logClientIp. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify logClientIp.
+         */
         interface WithLogClientIp {
             /**
              * Specifies the logClientIp property: Log the ClientIP. Default is false..
-             *
+             * 
              * @param logClientIp Log the ClientIP. Default is false.
              * @return the next definition stage.
              */
             WithCreate withLogClientIp(Boolean logClientIp);
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify httpCorrelationProtocol. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify httpCorrelationProtocol.
+         */
         interface WithHttpCorrelationProtocol {
             /**
              * Specifies the httpCorrelationProtocol property: Sets correlation protocol to use for Application Insights
              * diagnostics..
-             *
+             * 
              * @param httpCorrelationProtocol Sets correlation protocol to use for Application Insights diagnostics.
              * @return the next definition stage.
              */
             WithCreate withHttpCorrelationProtocol(HttpCorrelationProtocol httpCorrelationProtocol);
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify verbosity. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify verbosity.
+         */
         interface WithVerbosity {
             /**
              * Specifies the verbosity property: The verbosity level applied to traces emitted by trace policies..
-             *
+             * 
              * @param verbosity The verbosity level applied to traces emitted by trace policies.
              * @return the next definition stage.
              */
             WithCreate withVerbosity(Verbosity verbosity);
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify operationNameFormat. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify operationNameFormat.
+         */
         interface WithOperationNameFormat {
             /**
              * Specifies the operationNameFormat property: The format of the Operation Name for Application Insights
              * telemetries. Default is Name..
-             *
+             * 
              * @param operationNameFormat The format of the Operation Name for Application Insights telemetries. Default
-             *     is Name.
+             * is Name.
              * @return the next definition stage.
              */
             WithCreate withOperationNameFormat(OperationNameFormat operationNameFormat);
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify metrics. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify metrics.
+         */
         interface WithMetrics {
             /**
              * Specifies the metrics property: Emit custom metrics via emit-metric policy. Applicable only to
              * Application Insights diagnostic settings..
-             *
+             * 
              * @param metrics Emit custom metrics via emit-metric policy. Applicable only to Application Insights
-             *     diagnostic settings.
+             * diagnostic settings.
              * @return the next definition stage.
              */
             WithCreate withMetrics(Boolean metrics);
         }
 
-        /** The stage of the DiagnosticContract definition allowing to specify ifMatch. */
+        /**
+         * The stage of the DiagnosticContract definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity, but required
              * when updating an entity..
-             *
+             * 
              * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an
-             *     entity.
+             * entity.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
@@ -297,158 +329,184 @@ public interface DiagnosticContract {
 
     /**
      * Begins update for the DiagnosticContract resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     DiagnosticContract.Update update();
 
-    /** The template for DiagnosticContract update. */
+    /**
+     * The template for DiagnosticContract update.
+     */
     interface Update extends UpdateStages.WithAlwaysLog, UpdateStages.WithLoggerId, UpdateStages.WithSampling,
         UpdateStages.WithFrontend, UpdateStages.WithBackend, UpdateStages.WithLogClientIp,
         UpdateStages.WithHttpCorrelationProtocol, UpdateStages.WithVerbosity, UpdateStages.WithOperationNameFormat,
         UpdateStages.WithMetrics, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         DiagnosticContract apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         DiagnosticContract apply(Context context);
     }
 
-    /** The DiagnosticContract update stages. */
+    /**
+     * The DiagnosticContract update stages.
+     */
     interface UpdateStages {
-        /** The stage of the DiagnosticContract update allowing to specify alwaysLog. */
+        /**
+         * The stage of the DiagnosticContract update allowing to specify alwaysLog.
+         */
         interface WithAlwaysLog {
             /**
              * Specifies the alwaysLog property: Specifies for what type of messages sampling settings should not
              * apply..
-             *
+             * 
              * @param alwaysLog Specifies for what type of messages sampling settings should not apply.
              * @return the next definition stage.
              */
             Update withAlwaysLog(AlwaysLog alwaysLog);
         }
 
-        /** The stage of the DiagnosticContract update allowing to specify loggerId. */
+        /**
+         * The stage of the DiagnosticContract update allowing to specify loggerId.
+         */
         interface WithLoggerId {
             /**
              * Specifies the loggerId property: Resource Id of a target logger..
-             *
+             * 
              * @param loggerId Resource Id of a target logger.
              * @return the next definition stage.
              */
             Update withLoggerId(String loggerId);
         }
 
-        /** The stage of the DiagnosticContract update allowing to specify sampling. */
+        /**
+         * The stage of the DiagnosticContract update allowing to specify sampling.
+         */
         interface WithSampling {
             /**
              * Specifies the sampling property: Sampling settings for Diagnostic..
-             *
+             * 
              * @param sampling Sampling settings for Diagnostic.
              * @return the next definition stage.
              */
             Update withSampling(SamplingSettings sampling);
         }
 
-        /** The stage of the DiagnosticContract update allowing to specify frontend. */
+        /**
+         * The stage of the DiagnosticContract update allowing to specify frontend.
+         */
         interface WithFrontend {
             /**
              * Specifies the frontend property: Diagnostic settings for incoming/outgoing HTTP messages to the Gateway..
-             *
+             * 
              * @param frontend Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
              * @return the next definition stage.
              */
             Update withFrontend(PipelineDiagnosticSettings frontend);
         }
 
-        /** The stage of the DiagnosticContract update allowing to specify backend. */
+        /**
+         * The stage of the DiagnosticContract update allowing to specify backend.
+         */
         interface WithBackend {
             /**
              * Specifies the backend property: Diagnostic settings for incoming/outgoing HTTP messages to the Backend.
-             *
+             * 
              * @param backend Diagnostic settings for incoming/outgoing HTTP messages to the Backend.
              * @return the next definition stage.
              */
             Update withBackend(PipelineDiagnosticSettings backend);
         }
 
-        /** The stage of the DiagnosticContract update allowing to specify logClientIp. */
+        /**
+         * The stage of the DiagnosticContract update allowing to specify logClientIp.
+         */
         interface WithLogClientIp {
             /**
              * Specifies the logClientIp property: Log the ClientIP. Default is false..
-             *
+             * 
              * @param logClientIp Log the ClientIP. Default is false.
              * @return the next definition stage.
              */
             Update withLogClientIp(Boolean logClientIp);
         }
 
-        /** The stage of the DiagnosticContract update allowing to specify httpCorrelationProtocol. */
+        /**
+         * The stage of the DiagnosticContract update allowing to specify httpCorrelationProtocol.
+         */
         interface WithHttpCorrelationProtocol {
             /**
              * Specifies the httpCorrelationProtocol property: Sets correlation protocol to use for Application Insights
              * diagnostics..
-             *
+             * 
              * @param httpCorrelationProtocol Sets correlation protocol to use for Application Insights diagnostics.
              * @return the next definition stage.
              */
             Update withHttpCorrelationProtocol(HttpCorrelationProtocol httpCorrelationProtocol);
         }
 
-        /** The stage of the DiagnosticContract update allowing to specify verbosity. */
+        /**
+         * The stage of the DiagnosticContract update allowing to specify verbosity.
+         */
         interface WithVerbosity {
             /**
              * Specifies the verbosity property: The verbosity level applied to traces emitted by trace policies..
-             *
+             * 
              * @param verbosity The verbosity level applied to traces emitted by trace policies.
              * @return the next definition stage.
              */
             Update withVerbosity(Verbosity verbosity);
         }
 
-        /** The stage of the DiagnosticContract update allowing to specify operationNameFormat. */
+        /**
+         * The stage of the DiagnosticContract update allowing to specify operationNameFormat.
+         */
         interface WithOperationNameFormat {
             /**
              * Specifies the operationNameFormat property: The format of the Operation Name for Application Insights
              * telemetries. Default is Name..
-             *
+             * 
              * @param operationNameFormat The format of the Operation Name for Application Insights telemetries. Default
-             *     is Name.
+             * is Name.
              * @return the next definition stage.
              */
             Update withOperationNameFormat(OperationNameFormat operationNameFormat);
         }
 
-        /** The stage of the DiagnosticContract update allowing to specify metrics. */
+        /**
+         * The stage of the DiagnosticContract update allowing to specify metrics.
+         */
         interface WithMetrics {
             /**
              * Specifies the metrics property: Emit custom metrics via emit-metric policy. Applicable only to
              * Application Insights diagnostic settings..
-             *
+             * 
              * @param metrics Emit custom metrics via emit-metric policy. Applicable only to Application Insights
-             *     diagnostic settings.
+             * diagnostic settings.
              * @return the next definition stage.
              */
             Update withMetrics(Boolean metrics);
         }
 
-        /** The stage of the DiagnosticContract update allowing to specify ifMatch. */
+        /**
+         * The stage of the DiagnosticContract update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: ETag of the Entity. ETag should match the current entity state from the
              * header response of the GET request or it should be * for unconditional update..
-             *
+             * 
              * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of
-             *     the GET request or it should be * for unconditional update.
+             * the GET request or it should be * for unconditional update.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
@@ -457,14 +515,14 @@ public interface DiagnosticContract {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     DiagnosticContract refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

@@ -7,28 +7,49 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.exception.ManagementError;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AsyncOperationStatus;
 import com.azure.resourcemanager.apimanagement.models.OperationResultLogItemContract;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Long Running Git Operation Results. */
+/**
+ * Long Running Git Operation Results.
+ */
 @Fluent
 public final class OperationResultContractInner extends ProxyResource {
     /*
      * Properties of the Operation Contract.
      */
-    @JsonProperty(value = "properties")
     private OperationResultContractProperties innerProperties;
 
-    /** Creates an instance of OperationResultContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of OperationResultContractInner class.
+     */
     public OperationResultContractInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Operation Contract.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OperationResultContractProperties innerProperties() {
@@ -36,8 +57,38 @@ public final class OperationResultContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the id property: Operation result identifier.
-     *
+     * 
      * @return the id value.
      */
     public String idPropertiesId() {
@@ -46,7 +97,7 @@ public final class OperationResultContractInner extends ProxyResource {
 
     /**
      * Set the id property: Operation result identifier.
-     *
+     * 
      * @param id the id value to set.
      * @return the OperationResultContractInner object itself.
      */
@@ -60,7 +111,7 @@ public final class OperationResultContractInner extends ProxyResource {
 
     /**
      * Get the status property: Status of an async operation.
-     *
+     * 
      * @return the status value.
      */
     public AsyncOperationStatus status() {
@@ -69,7 +120,7 @@ public final class OperationResultContractInner extends ProxyResource {
 
     /**
      * Set the status property: Status of an async operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationResultContractInner object itself.
      */
@@ -84,7 +135,7 @@ public final class OperationResultContractInner extends ProxyResource {
     /**
      * Get the started property: Start time of an async operation. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the started value.
      */
     public OffsetDateTime started() {
@@ -94,7 +145,7 @@ public final class OperationResultContractInner extends ProxyResource {
     /**
      * Set the started property: Start time of an async operation. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param started the started value to set.
      * @return the OperationResultContractInner object itself.
      */
@@ -109,7 +160,7 @@ public final class OperationResultContractInner extends ProxyResource {
     /**
      * Get the updated property: Last update time of an async operation. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the updated value.
      */
     public OffsetDateTime updated() {
@@ -119,7 +170,7 @@ public final class OperationResultContractInner extends ProxyResource {
     /**
      * Set the updated property: Last update time of an async operation. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param updated the updated value to set.
      * @return the OperationResultContractInner object itself.
      */
@@ -133,7 +184,7 @@ public final class OperationResultContractInner extends ProxyResource {
 
     /**
      * Get the resultInfo property: Optional result info.
-     *
+     * 
      * @return the resultInfo value.
      */
     public String resultInfo() {
@@ -142,7 +193,7 @@ public final class OperationResultContractInner extends ProxyResource {
 
     /**
      * Set the resultInfo property: Optional result info.
-     *
+     * 
      * @param resultInfo the resultInfo value to set.
      * @return the OperationResultContractInner object itself.
      */
@@ -156,7 +207,7 @@ public final class OperationResultContractInner extends ProxyResource {
 
     /**
      * Get the error property: Error Body Contract.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -165,7 +216,7 @@ public final class OperationResultContractInner extends ProxyResource {
 
     /**
      * Set the error property: Error Body Contract.
-     *
+     * 
      * @param error the error value to set.
      * @return the OperationResultContractInner object itself.
      */
@@ -181,7 +232,7 @@ public final class OperationResultContractInner extends ProxyResource {
      * Get the actionLog property: This property if only provided as part of the TenantConfiguration_Validate operation.
      * It contains the log the entities which will be updated/created/deleted as part of the TenantConfiguration_Deploy
      * operation.
-     *
+     * 
      * @return the actionLog value.
      */
     public List<OperationResultLogItemContract> actionLog() {
@@ -190,12 +241,56 @@ public final class OperationResultContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultContractInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationResultContractInner.
+     */
+    public static OperationResultContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultContractInner deserializedOperationResultContractInner = new OperationResultContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationResultContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationResultContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedOperationResultContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationResultContractInner.innerProperties
+                        = OperationResultContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultContractInner;
+        });
     }
 }

@@ -5,34 +5,41 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Gateway token request contract properties. */
+/**
+ * Gateway token request contract properties.
+ */
 @Fluent
-public final class GatewayTokenRequestContract {
+public final class GatewayTokenRequestContract implements JsonSerializable<GatewayTokenRequestContract> {
     /*
      * The Key to be used to generate gateway token.
      */
-    @JsonProperty(value = "keyType", required = true)
     private KeyType keyType;
 
     /*
      * The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following
      * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
      */
-    @JsonProperty(value = "expiry", required = true)
     private OffsetDateTime expiry;
 
-    /** Creates an instance of GatewayTokenRequestContract class. */
+    /**
+     * Creates an instance of GatewayTokenRequestContract class.
+     */
     public GatewayTokenRequestContract() {
     }
 
     /**
      * Get the keyType property: The Key to be used to generate gateway token.
-     *
+     * 
      * @return the keyType value.
      */
     public KeyType keyType() {
@@ -41,7 +48,7 @@ public final class GatewayTokenRequestContract {
 
     /**
      * Set the keyType property: The Key to be used to generate gateway token.
-     *
+     * 
      * @param keyType the keyType value to set.
      * @return the GatewayTokenRequestContract object itself.
      */
@@ -53,7 +60,7 @@ public final class GatewayTokenRequestContract {
     /**
      * Get the expiry property: The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date
      * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the expiry value.
      */
     public OffsetDateTime expiry() {
@@ -63,7 +70,7 @@ public final class GatewayTokenRequestContract {
     /**
      * Set the expiry property: The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date
      * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param expiry the expiry value to set.
      * @return the GatewayTokenRequestContract object itself.
      */
@@ -74,19 +81,63 @@ public final class GatewayTokenRequestContract {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property keyType in model GatewayTokenRequestContract"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property keyType in model GatewayTokenRequestContract"));
         }
         if (expiry() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property expiry in model GatewayTokenRequestContract"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property expiry in model GatewayTokenRequestContract"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GatewayTokenRequestContract.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyType", this.keyType == null ? null : this.keyType.toString());
+        jsonWriter.writeStringField("expiry",
+            this.expiry == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiry));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayTokenRequestContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayTokenRequestContract if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GatewayTokenRequestContract.
+     */
+    public static GatewayTokenRequestContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayTokenRequestContract deserializedGatewayTokenRequestContract = new GatewayTokenRequestContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyType".equals(fieldName)) {
+                    deserializedGatewayTokenRequestContract.keyType = KeyType.fromString(reader.getString());
+                } else if ("expiry".equals(fieldName)) {
+                    deserializedGatewayTokenRequestContract.expiry = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayTokenRequestContract;
+        });
+    }
 }

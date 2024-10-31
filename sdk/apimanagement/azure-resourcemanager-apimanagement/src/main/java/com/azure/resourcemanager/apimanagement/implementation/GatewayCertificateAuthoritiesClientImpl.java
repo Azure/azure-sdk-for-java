@@ -37,17 +37,23 @@ import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthorit
 import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthorityCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GatewayCertificateAuthoritiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GatewayCertificateAuthoritiesClient.
+ */
 public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCertificateAuthoritiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GatewayCertificateAuthoritiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of GatewayCertificateAuthoritiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GatewayCertificateAuthoritiesClientImpl(ApiManagementClientImpl client) {
@@ -127,21 +133,21 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Lists the collection of Certificate Authorities for the specified Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Gateway certificate authority list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GatewayCertificateAuthorityContractInner>> listByServiceSinglePageAsync(
@@ -177,14 +183,14 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Lists the collection of Certificate Authorities for the specified Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -192,7 +198,7 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Gateway certificate authority list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GatewayCertificateAuthorityContractInner>> listByServiceSinglePageAsync(
@@ -227,14 +233,14 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Lists the collection of Certificate Authorities for the specified Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,11 +258,11 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Lists the collection of Certificate Authorities for the specified Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -275,14 +281,14 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Lists the collection of Certificate Authorities for the specified Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -301,11 +307,11 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Lists the collection of Certificate Authorities for the specified Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -322,14 +328,14 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Lists the collection of Certificate Authorities for the specified Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
-     *     |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | eq, ne |
+     * |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -347,13 +353,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Checks if Certificate entity is assigned to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -393,13 +399,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Checks if Certificate entity is assigned to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -438,13 +444,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Checks if Certificate entity is assigned to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -459,13 +465,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Checks if Certificate entity is assigned to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -480,13 +486,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Checks if Certificate entity is assigned to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -498,13 +504,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Get assigned Gateway Certificate Authority details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -543,13 +549,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Get assigned Gateway Certificate Authority details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -588,13 +594,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Get assigned Gateway Certificate Authority details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -609,13 +615,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Get assigned Gateway Certificate Authority details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -630,13 +636,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Get assigned Gateway Certificate Authority details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -650,14 +656,14 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Assign Certificate entity to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Gateway certificate authority details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -704,14 +710,14 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Assign Certificate entity to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Gateway certificate authority details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -758,14 +764,14 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Assign Certificate entity to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Gateway certificate authority details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -782,14 +788,14 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Assign Certificate entity to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Gateway certificate authority details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -807,14 +813,14 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Assign Certificate entity to Gateway entity as Certificate Authority.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
-     * @param parameters Gateway certificate authority details.
+     * instance.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -830,15 +836,15 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -880,15 +886,15 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -930,15 +936,15 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -953,15 +959,15 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -977,15 +983,15 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Remove relationship between Certificate Authority and Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param certificateId Identifier of the certificate entity. Must be unique in the current API Management service
-     *     instance.
+     * instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -998,14 +1004,13 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Gateway certificate authority list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GatewayCertificateAuthorityContractInner>>
@@ -1028,15 +1033,14 @@ public final class GatewayCertificateAuthoritiesClientImpl implements GatewayCer
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Gateway certificate authority list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GatewayCertificateAuthorityContractInner>>

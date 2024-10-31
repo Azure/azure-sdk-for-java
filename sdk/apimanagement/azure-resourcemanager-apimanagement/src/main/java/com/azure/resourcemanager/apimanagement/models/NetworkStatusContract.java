@@ -7,11 +7,13 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.resourcemanager.apimanagement.fluent.models.NetworkStatusContractInner;
 import java.util.List;
 
-/** An immutable client-side representation of NetworkStatusContract. */
+/**
+ * An immutable client-side representation of NetworkStatusContract.
+ */
 public interface NetworkStatusContract {
     /**
      * Gets the dnsServers property: Gets the list of DNS servers IPV4 addresses.
-     *
+     * 
      * @return the dnsServers value.
      */
     List<String> dnsServers();
@@ -19,14 +21,14 @@ public interface NetworkStatusContract {
     /**
      * Gets the connectivityStatus property: Gets the list of Connectivity Status to the Resources on which the service
      * depends upon.
-     *
+     * 
      * @return the connectivityStatus value.
      */
     List<ConnectivityStatusContract> connectivityStatus();
 
     /**
      * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.NetworkStatusContractInner object.
-     *
+     * 
      * @return the inner object.
      */
     NetworkStatusContractInner innerModel();

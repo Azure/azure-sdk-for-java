@@ -9,12 +9,14 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.apimanagement.fluent.models.ResolverContractInner;
 
-/** Contains all response data for the update operation. */
+/**
+ * Contains all response data for the update operation.
+ */
 public final class GraphQLApiResolversUpdateResponse
     extends ResponseBase<GraphQLApiResolversUpdateHeaders, ResolverContractInner> {
     /**
      * Creates an instance of GraphQLApiResolversUpdateResponse.
-     *
+     * 
      * @param request the request which resulted in this GraphQLApiResolversUpdateResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
@@ -28,7 +30,7 @@ public final class GraphQLApiResolversUpdateResponse
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

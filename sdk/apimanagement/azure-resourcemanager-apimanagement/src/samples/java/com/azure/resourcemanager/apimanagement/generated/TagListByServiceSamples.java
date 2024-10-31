@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for Tag ListByService. */
+/**
+ * Samples for Tag ListByService.
+ */
 public final class TagListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListTags.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementListTags.json
      */
     /**
      * Sample code: ApiManagementListTags.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementListTags(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {

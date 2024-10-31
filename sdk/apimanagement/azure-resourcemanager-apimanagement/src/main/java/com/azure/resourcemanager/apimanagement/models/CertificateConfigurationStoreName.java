@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,15 +12,19 @@ import java.util.Collection;
  * CertificateAuthority are valid locations.
  */
 public final class CertificateConfigurationStoreName extends ExpandableStringEnum<CertificateConfigurationStoreName> {
-    /** Static value CertificateAuthority for CertificateConfigurationStoreName. */
+    /**
+     * Static value CertificateAuthority for CertificateConfigurationStoreName.
+     */
     public static final CertificateConfigurationStoreName CERTIFICATE_AUTHORITY = fromString("CertificateAuthority");
 
-    /** Static value Root for CertificateConfigurationStoreName. */
+    /**
+     * Static value Root for CertificateConfigurationStoreName.
+     */
     public static final CertificateConfigurationStoreName ROOT = fromString("Root");
 
     /**
      * Creates a new instance of CertificateConfigurationStoreName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +33,17 @@ public final class CertificateConfigurationStoreName extends ExpandableStringEnu
 
     /**
      * Creates or finds a CertificateConfigurationStoreName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CertificateConfigurationStoreName.
      */
-    @JsonCreator
     public static CertificateConfigurationStoreName fromString(String name) {
         return fromString(name, CertificateConfigurationStoreName.class);
     }
 
     /**
      * Gets known CertificateConfigurationStoreName values.
-     *
+     * 
      * @return known CertificateConfigurationStoreName values.
      */
     public static Collection<CertificateConfigurationStoreName> values() {

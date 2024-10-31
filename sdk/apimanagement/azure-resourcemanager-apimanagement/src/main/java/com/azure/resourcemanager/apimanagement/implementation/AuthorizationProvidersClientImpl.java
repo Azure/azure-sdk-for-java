@@ -35,17 +35,23 @@ import com.azure.resourcemanager.apimanagement.models.AuthorizationProvidersCrea
 import com.azure.resourcemanager.apimanagement.models.AuthorizationProvidersGetResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AuthorizationProvidersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AuthorizationProvidersClient.
+ */
 public final class AuthorizationProvidersClientImpl implements AuthorizationProvidersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AuthorizationProvidersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of AuthorizationProvidersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AuthorizationProvidersClientImpl(ApiManagementClientImpl client) {
@@ -114,20 +120,20 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Lists a collection of authorization providers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Authorization Provider list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationProviderContractInner>> listByServiceSinglePageAsync(
@@ -158,13 +164,13 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Lists a collection of authorization providers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -172,7 +178,7 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Authorization Provider list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationProviderContractInner>> listByServiceSinglePageAsync(
@@ -203,13 +209,13 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Lists a collection of authorization providers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,7 +232,7 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Lists a collection of authorization providers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -246,13 +252,13 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Lists a collection of authorization providers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -271,7 +277,7 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Lists a collection of authorization providers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,13 +296,13 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Lists a collection of authorization providers defined within a service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| displayName | filter | ge, le, eq, ne, gt, lt
+     * | substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
@@ -313,15 +319,15 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Gets the details of the authorization provider specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the authorization provider specified by its identifier on successful completion of {@link
-     *     Mono}.
+     * @return the details of the authorization provider specified by its identifier on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationProvidersGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
@@ -354,7 +360,7 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Gets the details of the authorization provider specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -362,8 +368,8 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the authorization provider specified by its identifier on successful completion of {@link
-     *     Mono}.
+     * @return the details of the authorization provider specified by its identifier on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationProvidersGetResponse> getWithResponseAsync(String resourceGroupName, String serviceName,
@@ -395,15 +401,15 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Gets the details of the authorization provider specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the authorization provider specified by its identifier on successful completion of {@link
-     *     Mono}.
+     * @return the details of the authorization provider specified by its identifier on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AuthorizationProviderContractInner> getAsync(String resourceGroupName, String serviceName,
@@ -414,7 +420,7 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Gets the details of the authorization provider specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -432,7 +438,7 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Gets the details of the authorization provider specified by its identifier.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -449,7 +455,7 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Creates or updates authorization provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -498,7 +504,7 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Creates or updates authorization provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -547,7 +553,7 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Creates or updates authorization provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -567,7 +573,7 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Creates or updates authorization provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -589,7 +595,7 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Creates or updates authorization provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -609,12 +615,12 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Deletes specific authorization provider from the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -655,12 +661,12 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Deletes specific authorization provider from the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -700,12 +706,12 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Deletes specific authorization provider from the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -720,12 +726,12 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Deletes specific authorization provider from the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -741,12 +747,12 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Deletes specific authorization provider from the API Management service instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -758,14 +764,13 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Authorization Provider list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationProviderContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -786,15 +791,14 @@ public final class AuthorizationProvidersClientImpl implements AuthorizationProv
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Authorization Provider list representation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AuthorizationProviderContractInner>> listByServiceNextSinglePageAsync(String nextLink,

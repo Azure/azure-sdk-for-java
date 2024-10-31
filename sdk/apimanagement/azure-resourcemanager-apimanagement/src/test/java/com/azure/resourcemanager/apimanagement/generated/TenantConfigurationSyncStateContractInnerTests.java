@@ -13,37 +13,37 @@ public final class TenantConfigurationSyncStateContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TenantConfigurationSyncStateContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"branch\":\"bfj\",\"commitId\":\"qzucfzluczdquur\",\"isExport\":false,\"isSynced\":true,\"isGitEnabled\":false,\"syncDate\":\"2021-04-12T14:43:43Z\",\"configurationChangeDate\":\"2021-05-22T17:17:14Z\",\"lastOperationId\":\"prnquj\"},\"id\":\"wzcqygg\",\"name\":\"nwsvhbngqiwye\",\"type\":\"tobdrrpnre\"}")
+            "{\"properties\":{\"branch\":\"slhmgw\",\"commitId\":\"ivrxpfduiol\",\"isExport\":true,\"isSynced\":true,\"isGitEnabled\":false,\"syncDate\":\"2021-07-23T04:42:45Z\",\"configurationChangeDate\":\"2021-07-17T19:43:09Z\",\"lastOperationId\":\"z\"},\"id\":\"cfzlu\",\"name\":\"zdquurbo\",\"type\":\"mvhvz\"}")
             .toObject(TenantConfigurationSyncStateContractInner.class);
-        Assertions.assertEquals("bfj", model.branch());
-        Assertions.assertEquals("qzucfzluczdquur", model.commitId());
-        Assertions.assertEquals(false, model.isExport());
+        Assertions.assertEquals("slhmgw", model.branch());
+        Assertions.assertEquals("ivrxpfduiol", model.commitId());
+        Assertions.assertEquals(true, model.isExport());
         Assertions.assertEquals(true, model.isSynced());
         Assertions.assertEquals(false, model.isGitEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T14:43:43Z"), model.syncDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T17:17:14Z"), model.configurationChangeDate());
-        Assertions.assertEquals("prnquj", model.lastOperationId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T04:42:45Z"), model.syncDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T19:43:09Z"), model.configurationChangeDate());
+        Assertions.assertEquals("z", model.lastOperationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TenantConfigurationSyncStateContractInner model
-            = new TenantConfigurationSyncStateContractInner().withBranch("bfj")
-                .withCommitId("qzucfzluczdquur")
-                .withIsExport(false)
+            = new TenantConfigurationSyncStateContractInner().withBranch("slhmgw")
+                .withCommitId("ivrxpfduiol")
+                .withIsExport(true)
                 .withIsSynced(true)
                 .withIsGitEnabled(false)
-                .withSyncDate(OffsetDateTime.parse("2021-04-12T14:43:43Z"))
-                .withConfigurationChangeDate(OffsetDateTime.parse("2021-05-22T17:17:14Z"))
-                .withLastOperationId("prnquj");
+                .withSyncDate(OffsetDateTime.parse("2021-07-23T04:42:45Z"))
+                .withConfigurationChangeDate(OffsetDateTime.parse("2021-07-17T19:43:09Z"))
+                .withLastOperationId("z");
         model = BinaryData.fromObject(model).toObject(TenantConfigurationSyncStateContractInner.class);
-        Assertions.assertEquals("bfj", model.branch());
-        Assertions.assertEquals("qzucfzluczdquur", model.commitId());
-        Assertions.assertEquals(false, model.isExport());
+        Assertions.assertEquals("slhmgw", model.branch());
+        Assertions.assertEquals("ivrxpfduiol", model.commitId());
+        Assertions.assertEquals(true, model.isExport());
         Assertions.assertEquals(true, model.isSynced());
         Assertions.assertEquals(false, model.isGitEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-12T14:43:43Z"), model.syncDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-22T17:17:14Z"), model.configurationChangeDate());
-        Assertions.assertEquals("prnquj", model.lastOperationId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-23T04:42:45Z"), model.syncDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-17T19:43:09Z"), model.configurationChangeDate());
+        Assertions.assertEquals("z", model.lastOperationId());
     }
 }

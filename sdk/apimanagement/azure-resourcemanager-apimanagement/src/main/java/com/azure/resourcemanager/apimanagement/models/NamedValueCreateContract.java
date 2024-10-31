@@ -6,26 +6,47 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.fluent.models.NamedValueCreateContractProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** NamedValue details. */
+/**
+ * NamedValue details.
+ */
 @Fluent
 public final class NamedValueCreateContract extends ProxyResource {
     /*
      * NamedValue entity contract properties for PUT operation.
      */
-    @JsonProperty(value = "properties")
     private NamedValueCreateContractProperties innerProperties;
 
-    /** Creates an instance of NamedValueCreateContract class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NamedValueCreateContract class.
+     */
     public NamedValueCreateContract() {
     }
 
     /**
      * Get the innerProperties property: NamedValue entity contract properties for PUT operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NamedValueCreateContractProperties innerProperties() {
@@ -33,9 +54,39 @@ public final class NamedValueCreateContract extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the displayName property: Unique name of NamedValue. It may contain only letters, digits, period, dash, and
      * underscore characters.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -45,7 +96,7 @@ public final class NamedValueCreateContract extends ProxyResource {
     /**
      * Set the displayName property: Unique name of NamedValue. It may contain only letters, digits, period, dash, and
      * underscore characters.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the NamedValueCreateContract object itself.
      */
@@ -61,7 +112,7 @@ public final class NamedValueCreateContract extends ProxyResource {
      * Get the value property: Value of the NamedValue. Can contain policy expressions. It may not be empty or consist
      * only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
      * the value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -72,7 +123,7 @@ public final class NamedValueCreateContract extends ProxyResource {
      * Set the value property: Value of the NamedValue. Can contain policy expressions. It may not be empty or consist
      * only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
      * the value.
-     *
+     * 
      * @param value the value value to set.
      * @return the NamedValueCreateContract object itself.
      */
@@ -86,7 +137,7 @@ public final class NamedValueCreateContract extends ProxyResource {
 
     /**
      * Get the keyVault property: KeyVault location details of the namedValue.
-     *
+     * 
      * @return the keyVault value.
      */
     public KeyVaultContractCreateProperties keyVault() {
@@ -95,7 +146,7 @@ public final class NamedValueCreateContract extends ProxyResource {
 
     /**
      * Set the keyVault property: KeyVault location details of the namedValue.
-     *
+     * 
      * @param keyVault the keyVault value to set.
      * @return the NamedValueCreateContract object itself.
      */
@@ -109,7 +160,7 @@ public final class NamedValueCreateContract extends ProxyResource {
 
     /**
      * Get the tags property: Optional tags that when provided can be used to filter the NamedValue list.
-     *
+     * 
      * @return the tags value.
      */
     public List<String> tags() {
@@ -118,7 +169,7 @@ public final class NamedValueCreateContract extends ProxyResource {
 
     /**
      * Set the tags property: Optional tags that when provided can be used to filter the NamedValue list.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the NamedValueCreateContract object itself.
      */
@@ -133,7 +184,7 @@ public final class NamedValueCreateContract extends ProxyResource {
     /**
      * Get the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
      * is false.
-     *
+     * 
      * @return the secret value.
      */
     public Boolean secret() {
@@ -143,7 +194,7 @@ public final class NamedValueCreateContract extends ProxyResource {
     /**
      * Set the secret property: Determines whether the value is a secret and should be encrypted or not. Default value
      * is false.
-     *
+     * 
      * @param secret the secret value to set.
      * @return the NamedValueCreateContract object itself.
      */
@@ -157,12 +208,56 @@ public final class NamedValueCreateContract extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NamedValueCreateContract from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NamedValueCreateContract if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NamedValueCreateContract.
+     */
+    public static NamedValueCreateContract fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NamedValueCreateContract deserializedNamedValueCreateContract = new NamedValueCreateContract();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNamedValueCreateContract.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNamedValueCreateContract.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNamedValueCreateContract.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNamedValueCreateContract.innerProperties
+                        = NamedValueCreateContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNamedValueCreateContract;
+        });
     }
 }

@@ -5,103 +5,98 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementSkuCapabilities;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementSkuCapacity;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementSkuCosts;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementSkuLocationInfo;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementSkuRestrictions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes an available ApiManagement SKU. */
+/**
+ * Describes an available ApiManagement SKU.
+ */
 @Immutable
-public final class ApiManagementSkuInner {
+public final class ApiManagementSkuInner implements JsonSerializable<ApiManagementSkuInner> {
     /*
      * The type of resource the SKU applies to.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * The name of SKU.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Specifies the tier of virtual machines in a scale set.<br /><br /> Possible Values:<br /><br /> **Standard**<br
      * /><br /> **Basic**
      */
-    @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
     /*
      * The Size of the SKU.
      */
-    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private String size;
 
     /*
      * The Family of this particular SKU.
      */
-    @JsonProperty(value = "family", access = JsonProperty.Access.WRITE_ONLY)
     private String family;
 
     /*
      * The Kind of resources that are supported in this SKU.
      */
-    @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
     /*
      * Specifies the number of virtual machines in the scale set.
      */
-    @JsonProperty(value = "capacity", access = JsonProperty.Access.WRITE_ONLY)
     private ApiManagementSkuCapacity capacity;
 
     /*
      * The set of locations that the SKU is available.
      */
-    @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
 
     /*
      * A list of locations and availability zones in those locations where the SKU is available.
      */
-    @JsonProperty(value = "locationInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiManagementSkuLocationInfo> locationInfo;
 
     /*
      * The api versions that support this SKU.
      */
-    @JsonProperty(value = "apiVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> apiVersions;
 
     /*
      * Metadata for retrieving price info.
      */
-    @JsonProperty(value = "costs", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiManagementSkuCosts> costs;
 
     /*
      * A name value pair to describe the capability.
      */
-    @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiManagementSkuCapabilities> capabilities;
 
     /*
      * The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      */
-    @JsonProperty(value = "restrictions", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApiManagementSkuRestrictions> restrictions;
 
-    /** Creates an instance of ApiManagementSkuInner class. */
+    /**
+     * Creates an instance of ApiManagementSkuInner class.
+     */
     public ApiManagementSkuInner() {
     }
 
     /**
      * Get the resourceType property: The type of resource the SKU applies to.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -110,7 +105,7 @@ public final class ApiManagementSkuInner {
 
     /**
      * Get the name property: The name of SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -120,7 +115,7 @@ public final class ApiManagementSkuInner {
     /**
      * Get the tier property: Specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible
      * Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -129,7 +124,7 @@ public final class ApiManagementSkuInner {
 
     /**
      * Get the size property: The Size of the SKU.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -138,7 +133,7 @@ public final class ApiManagementSkuInner {
 
     /**
      * Get the family property: The Family of this particular SKU.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -147,7 +142,7 @@ public final class ApiManagementSkuInner {
 
     /**
      * Get the kind property: The Kind of resources that are supported in this SKU.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -156,7 +151,7 @@ public final class ApiManagementSkuInner {
 
     /**
      * Get the capacity property: Specifies the number of virtual machines in the scale set.
-     *
+     * 
      * @return the capacity value.
      */
     public ApiManagementSkuCapacity capacity() {
@@ -165,7 +160,7 @@ public final class ApiManagementSkuInner {
 
     /**
      * Get the locations property: The set of locations that the SKU is available.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -175,7 +170,7 @@ public final class ApiManagementSkuInner {
     /**
      * Get the locationInfo property: A list of locations and availability zones in those locations where the SKU is
      * available.
-     *
+     * 
      * @return the locationInfo value.
      */
     public List<ApiManagementSkuLocationInfo> locationInfo() {
@@ -184,7 +179,7 @@ public final class ApiManagementSkuInner {
 
     /**
      * Get the apiVersions property: The api versions that support this SKU.
-     *
+     * 
      * @return the apiVersions value.
      */
     public List<String> apiVersions() {
@@ -193,7 +188,7 @@ public final class ApiManagementSkuInner {
 
     /**
      * Get the costs property: Metadata for retrieving price info.
-     *
+     * 
      * @return the costs value.
      */
     public List<ApiManagementSkuCosts> costs() {
@@ -202,7 +197,7 @@ public final class ApiManagementSkuInner {
 
     /**
      * Get the capabilities property: A name value pair to describe the capability.
-     *
+     * 
      * @return the capabilities value.
      */
     public List<ApiManagementSkuCapabilities> capabilities() {
@@ -212,7 +207,7 @@ public final class ApiManagementSkuInner {
     /**
      * Get the restrictions property: The restrictions because of which SKU cannot be used. This is empty if there are
      * no restrictions.
-     *
+     * 
      * @return the restrictions value.
      */
     public List<ApiManagementSkuRestrictions> restrictions() {
@@ -221,7 +216,7 @@ public final class ApiManagementSkuInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -240,5 +235,74 @@ public final class ApiManagementSkuInner {
         if (restrictions() != null) {
             restrictions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementSkuInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementSkuInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiManagementSkuInner.
+     */
+    public static ApiManagementSkuInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementSkuInner deserializedApiManagementSkuInner = new ApiManagementSkuInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedApiManagementSkuInner.resourceType = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApiManagementSkuInner.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedApiManagementSkuInner.tier = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedApiManagementSkuInner.size = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedApiManagementSkuInner.family = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedApiManagementSkuInner.kind = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedApiManagementSkuInner.capacity = ApiManagementSkuCapacity.fromJson(reader);
+                } else if ("locations".equals(fieldName)) {
+                    List<String> locations = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiManagementSkuInner.locations = locations;
+                } else if ("locationInfo".equals(fieldName)) {
+                    List<ApiManagementSkuLocationInfo> locationInfo
+                        = reader.readArray(reader1 -> ApiManagementSkuLocationInfo.fromJson(reader1));
+                    deserializedApiManagementSkuInner.locationInfo = locationInfo;
+                } else if ("apiVersions".equals(fieldName)) {
+                    List<String> apiVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedApiManagementSkuInner.apiVersions = apiVersions;
+                } else if ("costs".equals(fieldName)) {
+                    List<ApiManagementSkuCosts> costs
+                        = reader.readArray(reader1 -> ApiManagementSkuCosts.fromJson(reader1));
+                    deserializedApiManagementSkuInner.costs = costs;
+                } else if ("capabilities".equals(fieldName)) {
+                    List<ApiManagementSkuCapabilities> capabilities
+                        = reader.readArray(reader1 -> ApiManagementSkuCapabilities.fromJson(reader1));
+                    deserializedApiManagementSkuInner.capabilities = capabilities;
+                } else if ("restrictions".equals(fieldName)) {
+                    List<ApiManagementSkuRestrictions> restrictions
+                        = reader.readArray(reader1 -> ApiManagementSkuRestrictions.fromJson(reader1));
+                    deserializedApiManagementSkuInner.restrictions = restrictions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementSkuInner;
+        });
     }
 }

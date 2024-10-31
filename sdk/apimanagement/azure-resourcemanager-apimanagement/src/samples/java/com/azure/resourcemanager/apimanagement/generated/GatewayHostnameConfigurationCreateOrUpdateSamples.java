@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for GatewayHostnameConfiguration CreateOrUpdate. */
+/**
+ * Samples for GatewayHostnameConfiguration CreateOrUpdate.
+ */
 public final class GatewayHostnameConfigurationCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementCreateGatewayHostnameConfiguration.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementCreateGatewayHostnameConfiguration.json
      */
     /**
      * Sample code: ApiManagementCreateGatewayHostnameConfiguration.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementCreateGatewayHostnameConfiguration(
         com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager
-            .gatewayHostnameConfigurations()
+        manager.gatewayHostnameConfigurations()
             .define("default")
             .withExistingGateway("rg1", "apimService1", "gw1")
             .withHostname("*")

@@ -8,54 +8,56 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of GatewayHostnameConfigurations. */
+/**
+ * Resource collection API of GatewayHostnameConfigurations.
+ */
 public interface GatewayHostnameConfigurations {
     /**
      * Lists the collection of hostname configurations for the specified gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Gateway hostname configuration list representation as paginated response with {@link
-     *     PagedIterable}.
+     * @return paged Gateway hostname configuration list representation as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<GatewayHostnameConfigurationContract> listByService(String resourceGroupName, String serviceName,
         String gatewayId);
 
     /**
      * Lists the collection of hostname configurations for the specified gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param filter | Field | Usage | Supported operators | Supported functions
-     *     |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq,
-     *     ne, gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| hostname | filter | ge, le, eq, ne,
-     *     gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;.
+     * |&lt;/br&gt;|-------------|-------------|-------------|-------------|&lt;/br&gt;| name | filter | ge, le, eq, ne,
+     * gt, lt | substringof, contains, startswith, endswith |&lt;/br&gt;| hostname | filter | ge, le, eq, ne, gt, lt |
+     * substringof, contains, startswith, endswith |&lt;/br&gt;.
      * @param top Number of records to return.
      * @param skip Number of records to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Gateway hostname configuration list representation as paginated response with {@link
-     *     PagedIterable}.
+     * @return paged Gateway hostname configuration list representation as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<GatewayHostnameConfigurationContract> listByService(String resourceGroupName, String serviceName,
         String gatewayId, String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks that hostname configuration entity specified by identifier exists for specified Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param hcId Gateway hostname configuration identifier. Must be unique in the scope of parent Gateway entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,11 +70,11 @@ public interface GatewayHostnameConfigurations {
 
     /**
      * Checks that hostname configuration entity specified by identifier exists for specified Gateway entity.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param hcId Gateway hostname configuration identifier. Must be unique in the scope of parent Gateway entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,11 +84,11 @@ public interface GatewayHostnameConfigurations {
 
     /**
      * Get details of a hostname configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param hcId Gateway hostname configuration identifier. Must be unique in the scope of parent Gateway entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,11 +101,11 @@ public interface GatewayHostnameConfigurations {
 
     /**
      * Get details of a hostname configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param hcId Gateway hostname configuration identifier. Must be unique in the scope of parent Gateway entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,14 +117,14 @@ public interface GatewayHostnameConfigurations {
 
     /**
      * Deletes the specified hostname configuration from the specified Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param hcId Gateway hostname configuration identifier. Must be unique in the scope of parent Gateway entity.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,14 +136,14 @@ public interface GatewayHostnameConfigurations {
 
     /**
      * Deletes the specified hostname configuration from the specified Gateway.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param gatewayId Gateway entity identifier. Must be unique in the current API Management service instance. Must
-     *     not have value 'managed'.
+     * not have value 'managed'.
      * @param hcId Gateway hostname configuration identifier. Must be unique in the scope of parent Gateway entity.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -150,7 +152,7 @@ public interface GatewayHostnameConfigurations {
 
     /**
      * Get details of a hostname configuration.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -161,7 +163,7 @@ public interface GatewayHostnameConfigurations {
 
     /**
      * Get details of a hostname configuration.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +175,7 @@ public interface GatewayHostnameConfigurations {
 
     /**
      * Deletes the specified hostname configuration from the specified Gateway.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -183,10 +185,10 @@ public interface GatewayHostnameConfigurations {
 
     /**
      * Deletes the specified hostname configuration from the specified Gateway.
-     *
+     * 
      * @param id the resource ID.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,7 +199,7 @@ public interface GatewayHostnameConfigurations {
 
     /**
      * Begins definition for a new GatewayHostnameConfigurationContract resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new GatewayHostnameConfigurationContract definition.
      */

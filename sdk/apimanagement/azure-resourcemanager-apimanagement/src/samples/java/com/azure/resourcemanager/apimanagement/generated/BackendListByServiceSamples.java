@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-/** Samples for Backend ListByService. */
+/**
+ * Samples for Backend ListByService.
+ */
 public final class BackendListByServiceSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/ApiManagementListBackends.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementListBackends.json
      */
     /**
      * Sample code: ApiManagementListBackends.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementListBackends(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {

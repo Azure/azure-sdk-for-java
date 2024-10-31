@@ -6,31 +6,51 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Deleted API Management Service information. */
+/**
+ * Deleted API Management Service information.
+ */
 @Fluent
 public final class DeletedServiceContractInner extends ProxyResource {
     /*
      * Deleted API Management Service details.
      */
-    @JsonProperty(value = "properties")
     private DeletedServiceContractProperties innerProperties;
 
     /*
      * API Management Service Master Location.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of DeletedServiceContractInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DeletedServiceContractInner class.
+     */
     public DeletedServiceContractInner() {
     }
 
     /**
      * Get the innerProperties property: Deleted API Management Service details.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeletedServiceContractProperties innerProperties() {
@@ -39,7 +59,7 @@ public final class DeletedServiceContractInner extends ProxyResource {
 
     /**
      * Get the location property: API Management Service Master Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -47,8 +67,38 @@ public final class DeletedServiceContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the serviceId property: Fully-qualified API Management Service Resource ID.
-     *
+     * 
      * @return the serviceId value.
      */
     public String serviceId() {
@@ -57,7 +107,7 @@ public final class DeletedServiceContractInner extends ProxyResource {
 
     /**
      * Set the serviceId property: Fully-qualified API Management Service Resource ID.
-     *
+     * 
      * @param serviceId the serviceId value to set.
      * @return the DeletedServiceContractInner object itself.
      */
@@ -72,7 +122,7 @@ public final class DeletedServiceContractInner extends ProxyResource {
     /**
      * Get the scheduledPurgeDate property: UTC Date and Time when the service will be automatically purged. The date
      * conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime scheduledPurgeDate() {
@@ -82,7 +132,7 @@ public final class DeletedServiceContractInner extends ProxyResource {
     /**
      * Set the scheduledPurgeDate property: UTC Date and Time when the service will be automatically purged. The date
      * conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @param scheduledPurgeDate the scheduledPurgeDate value to set.
      * @return the DeletedServiceContractInner object itself.
      */
@@ -97,7 +147,7 @@ public final class DeletedServiceContractInner extends ProxyResource {
     /**
      * Get the deletionDate property: UTC Timestamp when the service was soft-deleted. The date conforms to the
      * following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -107,7 +157,7 @@ public final class DeletedServiceContractInner extends ProxyResource {
     /**
      * Set the deletionDate property: UTC Timestamp when the service was soft-deleted. The date conforms to the
      * following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-     *
+     * 
      * @param deletionDate the deletionDate value to set.
      * @return the DeletedServiceContractInner object itself.
      */
@@ -121,12 +171,58 @@ public final class DeletedServiceContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeletedServiceContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeletedServiceContractInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeletedServiceContractInner.
+     */
+    public static DeletedServiceContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeletedServiceContractInner deserializedDeletedServiceContractInner = new DeletedServiceContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDeletedServiceContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeletedServiceContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDeletedServiceContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDeletedServiceContractInner.innerProperties
+                        = DeletedServiceContractProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedDeletedServiceContractInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeletedServiceContractInner;
+        });
     }
 }

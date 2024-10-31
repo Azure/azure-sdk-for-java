@@ -34,14 +34,14 @@ public final class DiagnosticsImpl implements Diagnostics {
     public PagedIterable<DiagnosticContract> listByService(String resourceGroupName, String serviceName) {
         PagedIterable<DiagnosticContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new DiagnosticContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiagnosticContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DiagnosticContract> listByService(String resourceGroupName, String serviceName, String filter,
         Integer top, Integer skip, Context context) {
         PagedIterable<DiagnosticContractInner> inner
             = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new DiagnosticContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DiagnosticContractImpl(inner1, this.manager()));
     }
 
     public DiagnosticsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,

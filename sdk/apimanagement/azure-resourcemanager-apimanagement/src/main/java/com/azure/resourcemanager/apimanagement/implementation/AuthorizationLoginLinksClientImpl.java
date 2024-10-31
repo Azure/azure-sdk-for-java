@@ -27,17 +27,23 @@ import com.azure.resourcemanager.apimanagement.models.AuthorizationLoginLinksPos
 import com.azure.resourcemanager.apimanagement.models.AuthorizationLoginRequestContract;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AuthorizationLoginLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AuthorizationLoginLinksClient.
+ */
 public final class AuthorizationLoginLinksClientImpl implements AuthorizationLoginLinksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AuthorizationLoginLinksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of AuthorizationLoginLinksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AuthorizationLoginLinksClientImpl(ApiManagementClientImpl client) {
@@ -68,7 +74,7 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
 
     /**
      * Gets authorization login links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -121,7 +127,7 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
 
     /**
      * Gets authorization login links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -173,7 +179,7 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
 
     /**
      * Gets authorization login links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -193,7 +199,7 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
 
     /**
      * Gets authorization login links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
@@ -215,7 +221,7 @@ public final class AuthorizationLoginLinksClientImpl implements AuthorizationLog
 
     /**
      * Gets authorization login links.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param authorizationProviderId Identifier of the authorization provider.
