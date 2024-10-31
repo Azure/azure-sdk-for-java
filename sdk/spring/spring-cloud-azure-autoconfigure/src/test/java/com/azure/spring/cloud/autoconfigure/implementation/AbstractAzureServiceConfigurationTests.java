@@ -11,6 +11,7 @@ import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureTokenCredentialAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.cloud.core.properties.AzureProperties;
@@ -44,6 +45,7 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
                 getPropertyPrefix() + ".credential.client-secret=fake-client-secret"
             )
             .withConfiguration(AutoConfigurations.of(
+                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureTokenCredentialAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class
             ))
@@ -62,6 +64,7 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
                 getPropertyPrefix() + ".credential.client-certificate-path=fake-client-cert-path"
             )
             .withConfiguration(AutoConfigurations.of(
+                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureTokenCredentialAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class
             ))
@@ -81,6 +84,7 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
+                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class
             ))
             .run(context -> {
