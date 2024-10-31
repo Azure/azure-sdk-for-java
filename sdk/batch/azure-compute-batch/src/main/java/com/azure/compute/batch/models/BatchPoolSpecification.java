@@ -36,9 +36,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
     private final String vmSize;
 
     /*
-     * The virtual machine configuration for the Pool. This property must be specified if the Pool needs to be created
-     * with Azure IaaS VMs. If it is not specified then the Batch service returns an error; if you are calling the REST
-     * API directly, the HTTP status code is 400 (Bad Request).
+     * The virtual machine configuration for the Pool. This property must be specified.
      */
     @Generated
     private VirtualMachineConfiguration virtualMachineConfiguration;
@@ -213,8 +211,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
 
     /**
      * Get the virtualMachineConfiguration property: The virtual machine configuration for the Pool. This property must
-     * be specified if the Pool needs to be created with Azure IaaS VMs. If it is not specified then the Batch service
-     * returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * be specified.
      *
      * @return the virtualMachineConfiguration value.
      */
@@ -225,8 +222,7 @@ public final class BatchPoolSpecification implements JsonSerializable<BatchPoolS
 
     /**
      * Set the virtualMachineConfiguration property: The virtual machine configuration for the Pool. This property must
-     * be specified if the Pool needs to be created with Azure IaaS VMs. If it is not specified then the Batch service
-     * returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     * be specified.
      *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the BatchPoolSpecification object itself.
