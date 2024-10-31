@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.costmanagement.generated;
 
-/** Samples for Views Delete. */
+/**
+ * Samples for Views Delete.
+ */
 public final class ViewsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/PrivateViewDelete.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * PrivateViewDelete.json
      */
     /**
      * Sample code: DeletePrivateView.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void deletePrivateView(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
