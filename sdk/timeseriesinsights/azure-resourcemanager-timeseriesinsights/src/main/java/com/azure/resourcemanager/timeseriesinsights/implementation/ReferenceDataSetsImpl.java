@@ -83,17 +83,17 @@ public final class ReferenceDataSetsImpl implements ReferenceDataSets {
     }
 
     public ReferenceDataSetResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String referenceDataSetName = Utils.getValueFromIdByName(id, "referenceDataSets");
+        String referenceDataSetName = ResourceManagerUtils.getValueFromIdByName(id, "referenceDataSets");
         if (referenceDataSetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));
@@ -102,17 +102,17 @@ public final class ReferenceDataSetsImpl implements ReferenceDataSets {
     }
 
     public Response<ReferenceDataSetResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String referenceDataSetName = Utils.getValueFromIdByName(id, "referenceDataSets");
+        String referenceDataSetName = ResourceManagerUtils.getValueFromIdByName(id, "referenceDataSets");
         if (referenceDataSetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));
@@ -121,17 +121,17 @@ public final class ReferenceDataSetsImpl implements ReferenceDataSets {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String referenceDataSetName = Utils.getValueFromIdByName(id, "referenceDataSets");
+        String referenceDataSetName = ResourceManagerUtils.getValueFromIdByName(id, "referenceDataSets");
         if (referenceDataSetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));
@@ -140,17 +140,17 @@ public final class ReferenceDataSetsImpl implements ReferenceDataSets {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String referenceDataSetName = Utils.getValueFromIdByName(id, "referenceDataSets");
+        String referenceDataSetName = ResourceManagerUtils.getValueFromIdByName(id, "referenceDataSets");
         if (referenceDataSetName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'referenceDataSets'.", id)));

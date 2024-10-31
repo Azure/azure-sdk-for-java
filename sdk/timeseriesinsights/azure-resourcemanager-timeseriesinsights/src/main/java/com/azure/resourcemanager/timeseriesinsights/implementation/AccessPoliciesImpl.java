@@ -82,17 +82,17 @@ public final class AccessPoliciesImpl implements AccessPolicies {
     }
 
     public AccessPolicyResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
+        String accessPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
@@ -101,17 +101,17 @@ public final class AccessPoliciesImpl implements AccessPolicies {
     }
 
     public Response<AccessPolicyResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
+        String accessPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
@@ -120,17 +120,17 @@ public final class AccessPoliciesImpl implements AccessPolicies {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
+        String accessPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));
@@ -139,17 +139,17 @@ public final class AccessPoliciesImpl implements AccessPolicies {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String environmentName = Utils.getValueFromIdByName(id, "environments");
+        String environmentName = ResourceManagerUtils.getValueFromIdByName(id, "environments");
         if (environmentName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'environments'.", id)));
         }
-        String accessPolicyName = Utils.getValueFromIdByName(id, "accessPolicies");
+        String accessPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "accessPolicies");
         if (accessPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accessPolicies'.", id)));

@@ -5,27 +5,33 @@
 package com.azure.resourcemanager.timeseriesinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.timeseriesinsights.models.EventSourceMutableProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** An object that represents a set of mutable EventHub event source resource properties. */
+/**
+ * An object that represents a set of mutable EventHub event source resource properties.
+ */
 @Fluent
 public final class EventHubEventSourceMutableProperties extends EventSourceMutableProperties {
     /*
      * The value of the shared access key that grants the Time Series Insights service read access to the event hub.
      * This property is not shown in event source responses.
      */
-    @JsonProperty(value = "sharedAccessKey")
     private String sharedAccessKey;
 
-    /** Creates an instance of EventHubEventSourceMutableProperties class. */
+    /**
+     * Creates an instance of EventHubEventSourceMutableProperties class.
+     */
     public EventHubEventSourceMutableProperties() {
     }
 
     /**
      * Get the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
      * read access to the event hub. This property is not shown in event source responses.
-     *
+     * 
      * @return the sharedAccessKey value.
      */
     public String sharedAccessKey() {
@@ -35,7 +41,7 @@ public final class EventHubEventSourceMutableProperties extends EventSourceMutab
     /**
      * Set the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
      * read access to the event hub. This property is not shown in event source responses.
-     *
+     * 
      * @param sharedAccessKey the sharedAccessKey value to set.
      * @return the EventHubEventSourceMutableProperties object itself.
      */
@@ -44,7 +50,9 @@ public final class EventHubEventSourceMutableProperties extends EventSourceMutab
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubEventSourceMutableProperties withTimestampPropertyName(String timestampPropertyName) {
         super.withTimestampPropertyName(timestampPropertyName);
@@ -53,11 +61,50 @@ public final class EventHubEventSourceMutableProperties extends EventSourceMutab
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timestampPropertyName", timestampPropertyName());
+        jsonWriter.writeStringField("sharedAccessKey", this.sharedAccessKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubEventSourceMutableProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubEventSourceMutableProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventHubEventSourceMutableProperties.
+     */
+    public static EventHubEventSourceMutableProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubEventSourceMutableProperties deserializedEventHubEventSourceMutableProperties
+                = new EventHubEventSourceMutableProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timestampPropertyName".equals(fieldName)) {
+                    deserializedEventHubEventSourceMutableProperties.withTimestampPropertyName(reader.getString());
+                } else if ("sharedAccessKey".equals(fieldName)) {
+                    deserializedEventHubEventSourceMutableProperties.sharedAccessKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubEventSourceMutableProperties;
+        });
     }
 }

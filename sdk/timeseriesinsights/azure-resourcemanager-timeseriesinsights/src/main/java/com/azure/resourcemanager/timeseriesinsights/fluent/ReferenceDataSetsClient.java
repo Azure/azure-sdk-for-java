@@ -13,14 +13,16 @@ import com.azure.resourcemanager.timeseriesinsights.fluent.models.ReferenceDataS
 import com.azure.resourcemanager.timeseriesinsights.models.ReferenceDataSetCreateOrUpdateParameters;
 import com.azure.resourcemanager.timeseriesinsights.models.ReferenceDataSetUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in ReferenceDataSetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReferenceDataSetsClient.
+ */
 public interface ReferenceDataSetsClient {
     /**
      * Create or update a reference data set in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName Name of the reference data set.
      * @param parameters Parameters for creating a reference data set.
      * @param context The context to associate with this operation.
@@ -35,10 +37,10 @@ public interface ReferenceDataSetsClient {
 
     /**
      * Create or update a reference data set in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName Name of the reference data set.
      * @param parameters Parameters for creating a reference data set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,12 +54,12 @@ public interface ReferenceDataSetsClient {
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -70,12 +72,12 @@ public interface ReferenceDataSetsClient {
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -87,14 +89,14 @@ public interface ReferenceDataSetsClient {
     /**
      * Updates the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
-     *     data set.
+     * data set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,14 +111,14 @@ public interface ReferenceDataSetsClient {
     /**
      * Updates the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
-     *     data set.
+     * data set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -129,12 +131,12 @@ public interface ReferenceDataSetsClient {
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,12 +150,12 @@ public interface ReferenceDataSetsClient {
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -164,10 +166,10 @@ public interface ReferenceDataSetsClient {
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource
      * group and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -181,10 +183,10 @@ public interface ReferenceDataSetsClient {
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource
      * group and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
