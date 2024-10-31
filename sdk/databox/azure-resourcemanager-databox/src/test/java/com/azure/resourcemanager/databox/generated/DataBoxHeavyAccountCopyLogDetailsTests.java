@@ -11,7 +11,7 @@ public final class DataBoxHeavyAccountCopyLogDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataBoxHeavyAccountCopyLogDetails model = BinaryData.fromString(
-            "{\"copyLogDetailsType\":\"DataBoxHeavy\",\"accountName\":\"tohqkvpuvksgp\",\"copyLogLink\":[\"kn\",\"n\",\"synljphuopxodl\",\"iyntorzihle\"],\"copyVerboseLogLink\":[\"swsrms\",\"yzrpzbchckqqzq\",\"ox\"]}")
+            "{\"copyLogDetailsType\":\"DataBoxHeavy\",\"accountName\":\"gj\",\"copyLogLink\":[\"dknnqvsazn\",\"n\"],\"copyVerboseLogLink\":[\"udsgs\",\"hmk\"]}")
             .toObject(DataBoxHeavyAccountCopyLogDetails.class);
     }
 

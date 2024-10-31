@@ -13,28 +13,27 @@ public final class NotificationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NotificationProperties model = BinaryData.fromString(
-            "{\"to\":[\"kghtpwijnh\",\"jsvfycxzbfvoowv\",\"vmtgjqppy\"],\"language\":\"tronzmyhgfi\",\"message\":\"sxkm\",\"regionalFormat\":\"a\",\"subject\":\"krrjrea\"}")
+            "{\"to\":[\"njaujvaan\"],\"language\":\"giycwkdtaawxwfek\",\"message\":\"mrrqmbzmqkratb\",\"regionalFormat\":\"wbjsidbirkf\",\"subject\":\"kso\"}")
             .toObject(NotificationProperties.class);
-        Assertions.assertEquals("kghtpwijnh", model.to().get(0));
-        Assertions.assertEquals("tronzmyhgfi", model.language());
-        Assertions.assertEquals("sxkm", model.message());
-        Assertions.assertEquals("a", model.regionalFormat());
-        Assertions.assertEquals("krrjrea", model.subject());
+        Assertions.assertEquals("njaujvaan", model.to().get(0));
+        Assertions.assertEquals("giycwkdtaawxwfek", model.language());
+        Assertions.assertEquals("mrrqmbzmqkratb", model.message());
+        Assertions.assertEquals("wbjsidbirkf", model.regionalFormat());
+        Assertions.assertEquals("kso", model.subject());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationProperties model
-            = new NotificationProperties().withTo(Arrays.asList("kghtpwijnh", "jsvfycxzbfvoowv", "vmtgjqppy"))
-                .withLanguage("tronzmyhgfi")
-                .withMessage("sxkm")
-                .withRegionalFormat("a")
-                .withSubject("krrjrea");
+        NotificationProperties model = new NotificationProperties().withTo(Arrays.asList("njaujvaan"))
+            .withLanguage("giycwkdtaawxwfek")
+            .withMessage("mrrqmbzmqkratb")
+            .withRegionalFormat("wbjsidbirkf")
+            .withSubject("kso");
         model = BinaryData.fromObject(model).toObject(NotificationProperties.class);
-        Assertions.assertEquals("kghtpwijnh", model.to().get(0));
-        Assertions.assertEquals("tronzmyhgfi", model.language());
-        Assertions.assertEquals("sxkm", model.message());
-        Assertions.assertEquals("a", model.regionalFormat());
-        Assertions.assertEquals("krrjrea", model.subject());
+        Assertions.assertEquals("njaujvaan", model.to().get(0));
+        Assertions.assertEquals("giycwkdtaawxwfek", model.language());
+        Assertions.assertEquals("mrrqmbzmqkratb", model.message());
+        Assertions.assertEquals("wbjsidbirkf", model.regionalFormat());
+        Assertions.assertEquals("kso", model.subject());
     }
 }

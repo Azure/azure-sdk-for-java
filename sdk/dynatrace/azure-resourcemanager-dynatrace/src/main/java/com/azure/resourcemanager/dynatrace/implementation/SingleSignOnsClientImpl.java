@@ -37,17 +37,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SingleSignOnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SingleSignOnsClient.
+ */
 public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SingleSignOnsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DynatraceObservabilityImpl client;
 
     /**
      * Initializes an instance of SingleSignOnsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SingleSignOnsClientImpl(DynatraceObservabilityImpl client) {
@@ -104,7 +110,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -113,7 +119,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single sign-on configurations for a given monitor resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -152,7 +158,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -162,7 +168,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single sign-on configurations for a given monitor resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -200,7 +206,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -223,7 +229,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -248,7 +254,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -268,7 +274,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -289,7 +295,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -308,7 +314,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -328,7 +334,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -346,7 +352,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Create a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -365,7 +371,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Get a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -405,7 +411,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Get a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -445,7 +451,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Get a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -463,7 +469,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Get a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -481,7 +487,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Get a DynatraceSingleSignOnResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName Single Sign On Configuration Name.
@@ -498,14 +504,14 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * List all DynatraceSingleSignOnResource by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DynatraceSingleSignOnResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DynatraceSingleSignOnResourceInner>> listSinglePageAsync(String resourceGroupName,
@@ -536,7 +542,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * List all DynatraceSingleSignOnResource by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -544,7 +550,7 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DynatraceSingleSignOnResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DynatraceSingleSignOnResourceInner>> listSinglePageAsync(String resourceGroupName,
@@ -575,14 +581,14 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * List all DynatraceSingleSignOnResource by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DynatraceSingleSignOnResourceInner> listAsync(String resourceGroupName, String monitorName) {
@@ -592,15 +598,15 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * List all DynatraceSingleSignOnResource by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DynatraceSingleSignOnResourceInner> listAsync(String resourceGroupName, String monitorName,
@@ -611,14 +617,14 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * List all DynatraceSingleSignOnResource by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DynatraceSingleSignOnResourceInner> list(String resourceGroupName, String monitorName) {
@@ -627,15 +633,15 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * List all DynatraceSingleSignOnResource by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a DynatraceSingleSignOnResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DynatraceSingleSignOnResourceInner> list(String resourceGroupName, String monitorName,
@@ -645,14 +651,13 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DynatraceSingleSignOnResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DynatraceSingleSignOnResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -672,15 +677,14 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a DynatraceSingleSignOnResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DynatraceSingleSignOnResourceInner>> listNextSinglePageAsync(String nextLink,

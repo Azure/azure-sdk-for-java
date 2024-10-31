@@ -6,17 +6,20 @@ package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A stream analytics input.
  */
 @Fluent
-public final class TestInputInner {
+public final class TestInputInner implements JsonSerializable<TestInputInner> {
     /*
      * The stream analytics input to test.
      */
-    @JsonProperty(value = "input", required = true)
     private InputInner input;
 
     /**
@@ -52,12 +55,49 @@ public final class TestInputInner {
      */
     public void validate() {
         if (input() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property input in model TestInputInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property input in model TestInputInner"));
         } else {
             input().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TestInputInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("input", this.input);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TestInputInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TestInputInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TestInputInner.
+     */
+    public static TestInputInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TestInputInner deserializedTestInputInner = new TestInputInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("input".equals(fieldName)) {
+                    deserializedTestInputInner.input = InputInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTestInputInner;
+        });
+    }
 }

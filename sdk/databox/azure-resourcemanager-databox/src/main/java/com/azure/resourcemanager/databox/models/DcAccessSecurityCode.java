@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Dc access security code. */
+/**
+ * Dc access security code.
+ */
 @Fluent
-public final class DcAccessSecurityCode {
+public final class DcAccessSecurityCode implements JsonSerializable<DcAccessSecurityCode> {
     /*
      * Reverse Dc access security code.
      */
-    @JsonProperty(value = "reverseDCAccessCode")
     private String reverseDCAccessCode;
 
     /*
      * Forward Dc access security code.
      */
-    @JsonProperty(value = "forwardDCAccessCode")
     private String forwardDCAccessCode;
 
-    /** Creates an instance of DcAccessSecurityCode class. */
+    /**
+     * Creates an instance of DcAccessSecurityCode class.
+     */
     public DcAccessSecurityCode() {
     }
 
     /**
      * Get the reverseDCAccessCode property: Reverse Dc access security code.
-     *
+     * 
      * @return the reverseDCAccessCode value.
      */
     public String reverseDCAccessCode() {
@@ -37,7 +43,7 @@ public final class DcAccessSecurityCode {
 
     /**
      * Set the reverseDCAccessCode property: Reverse Dc access security code.
-     *
+     * 
      * @param reverseDCAccessCode the reverseDCAccessCode value to set.
      * @return the DcAccessSecurityCode object itself.
      */
@@ -48,7 +54,7 @@ public final class DcAccessSecurityCode {
 
     /**
      * Get the forwardDCAccessCode property: Forward Dc access security code.
-     *
+     * 
      * @return the forwardDCAccessCode value.
      */
     public String forwardDCAccessCode() {
@@ -57,7 +63,7 @@ public final class DcAccessSecurityCode {
 
     /**
      * Set the forwardDCAccessCode property: Forward Dc access security code.
-     *
+     * 
      * @param forwardDCAccessCode the forwardDCAccessCode value to set.
      * @return the DcAccessSecurityCode object itself.
      */
@@ -68,9 +74,48 @@ public final class DcAccessSecurityCode {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reverseDCAccessCode", this.reverseDCAccessCode);
+        jsonWriter.writeStringField("forwardDCAccessCode", this.forwardDCAccessCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DcAccessSecurityCode from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DcAccessSecurityCode if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DcAccessSecurityCode.
+     */
+    public static DcAccessSecurityCode fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DcAccessSecurityCode deserializedDcAccessSecurityCode = new DcAccessSecurityCode();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reverseDCAccessCode".equals(fieldName)) {
+                    deserializedDcAccessSecurityCode.reverseDCAccessCode = reader.getString();
+                } else if ("forwardDCAccessCode".equals(fieldName)) {
+                    deserializedDcAccessSecurityCode.forwardDCAccessCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDcAccessSecurityCode;
+        });
     }
 }

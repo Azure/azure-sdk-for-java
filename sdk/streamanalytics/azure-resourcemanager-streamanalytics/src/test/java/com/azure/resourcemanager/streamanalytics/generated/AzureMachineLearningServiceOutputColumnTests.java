@@ -12,20 +12,22 @@ public final class AzureMachineLearningServiceOutputColumnTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMachineLearningServiceOutputColumn model
-            = BinaryData.fromString("{\"name\":\"pyqs\",\"dataType\":\"wab\",\"mapTo\":334511461}")
+            = BinaryData.fromString("{\"name\":\"eodkwobda\",\"dataType\":\"tibqdxbxwakb\",\"mapTo\":620924213}")
                 .toObject(AzureMachineLearningServiceOutputColumn.class);
-        Assertions.assertEquals("pyqs", model.name());
-        Assertions.assertEquals("wab", model.dataType());
-        Assertions.assertEquals(334511461, model.mapTo());
+        Assertions.assertEquals("eodkwobda", model.name());
+        Assertions.assertEquals("tibqdxbxwakb", model.dataType());
+        Assertions.assertEquals(620924213, model.mapTo());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMachineLearningServiceOutputColumn model
-            = new AzureMachineLearningServiceOutputColumn().withName("pyqs").withDataType("wab").withMapTo(334511461);
+            = new AzureMachineLearningServiceOutputColumn().withName("eodkwobda")
+                .withDataType("tibqdxbxwakb")
+                .withMapTo(620924213);
         model = BinaryData.fromObject(model).toObject(AzureMachineLearningServiceOutputColumn.class);
-        Assertions.assertEquals("pyqs", model.name());
-        Assertions.assertEquals("wab", model.dataType());
-        Assertions.assertEquals(334511461, model.mapTo());
+        Assertions.assertEquals("eodkwobda", model.name());
+        Assertions.assertEquals("tibqdxbxwakb", model.dataType());
+        Assertions.assertEquals(620924213, model.mapTo());
     }
 }

@@ -14,21 +14,21 @@ public final class TrackPropertyConditionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TrackPropertyCondition model
-            = BinaryData.fromString("{\"property\":\"FourCC\",\"operation\":\"Equal\",\"value\":\"ilzznfqqnvwp\"}")
+            = BinaryData.fromString("{\"property\":\"Unknown\",\"operation\":\"Equal\",\"value\":\"p\"}")
                 .toObject(TrackPropertyCondition.class);
-        Assertions.assertEquals(TrackPropertyType.FOUR_CC, model.property());
+        Assertions.assertEquals(TrackPropertyType.UNKNOWN, model.property());
         Assertions.assertEquals(TrackPropertyCompareOperation.EQUAL, model.operation());
-        Assertions.assertEquals("ilzznfqqnvwp", model.value());
+        Assertions.assertEquals("p", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TrackPropertyCondition model = new TrackPropertyCondition().withProperty(TrackPropertyType.FOUR_CC)
+        TrackPropertyCondition model = new TrackPropertyCondition().withProperty(TrackPropertyType.UNKNOWN)
             .withOperation(TrackPropertyCompareOperation.EQUAL)
-            .withValue("ilzznfqqnvwp");
+            .withValue("p");
         model = BinaryData.fromObject(model).toObject(TrackPropertyCondition.class);
-        Assertions.assertEquals(TrackPropertyType.FOUR_CC, model.property());
+        Assertions.assertEquals(TrackPropertyType.UNKNOWN, model.property());
         Assertions.assertEquals(TrackPropertyCompareOperation.EQUAL, model.operation());
-        Assertions.assertEquals("ilzznfqqnvwp", model.value());
+        Assertions.assertEquals("p", model.value());
     }
 }

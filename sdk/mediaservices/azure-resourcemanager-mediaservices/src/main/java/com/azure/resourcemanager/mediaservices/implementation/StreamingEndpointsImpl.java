@@ -34,13 +34,13 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
 
     public PagedIterable<StreamingEndpoint> list(String resourceGroupName, String accountName) {
         PagedIterable<StreamingEndpointInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StreamingEndpoint> list(String resourceGroupName, String accountName, Context context) {
         PagedIterable<StreamingEndpointInner> inner
             = this.serviceClient().list(resourceGroupName, accountName, context);
-        return Utils.mapPage(inner, inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StreamingEndpointImpl(inner1, this.manager()));
     }
 
     public Response<StreamingEndpoint> getWithResponse(String resourceGroupName, String accountName,
@@ -167,17 +167,17 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
     }
 
     public StreamingEndpoint getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaservices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
-        String streamingEndpointName = Utils.getValueFromIdByName(id, "streamingEndpoints");
+        String streamingEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "streamingEndpoints");
         if (streamingEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'streamingEndpoints'.", id)));
@@ -186,17 +186,17 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
     }
 
     public Response<StreamingEndpoint> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaservices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
-        String streamingEndpointName = Utils.getValueFromIdByName(id, "streamingEndpoints");
+        String streamingEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "streamingEndpoints");
         if (streamingEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'streamingEndpoints'.", id)));
@@ -205,17 +205,17 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaservices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
-        String streamingEndpointName = Utils.getValueFromIdByName(id, "streamingEndpoints");
+        String streamingEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "streamingEndpoints");
         if (streamingEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'streamingEndpoints'.", id)));
@@ -224,17 +224,17 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaservices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
-        String streamingEndpointName = Utils.getValueFromIdByName(id, "streamingEndpoints");
+        String streamingEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "streamingEndpoints");
         if (streamingEndpointName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'streamingEndpoints'.", id)));

@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The IP access control. */
+/**
+ * The IP access control.
+ */
 @Fluent
-public final class IpAccessControl {
+public final class IpAccessControl implements JsonSerializable<IpAccessControl> {
     /*
      * The IP allow list.
      */
-    @JsonProperty(value = "allow")
     private List<IpRange> allow;
 
-    /** Creates an instance of IpAccessControl class. */
+    /**
+     * Creates an instance of IpAccessControl class.
+     */
     public IpAccessControl() {
     }
 
     /**
      * Get the allow property: The IP allow list.
-     *
+     * 
      * @return the allow value.
      */
     public List<IpRange> allow() {
@@ -32,7 +39,7 @@ public final class IpAccessControl {
 
     /**
      * Set the allow property: The IP allow list.
-     *
+     * 
      * @param allow the allow value to set.
      * @return the IpAccessControl object itself.
      */
@@ -43,12 +50,49 @@ public final class IpAccessControl {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (allow() != null) {
             allow().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("allow", this.allow, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IpAccessControl from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IpAccessControl if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IpAccessControl.
+     */
+    public static IpAccessControl fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IpAccessControl deserializedIpAccessControl = new IpAccessControl();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("allow".equals(fieldName)) {
+                    List<IpRange> allow = reader.readArray(reader1 -> IpRange.fromJson(reader1));
+                    deserializedIpAccessControl.allow = allow;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIpAccessControl;
+        });
     }
 }

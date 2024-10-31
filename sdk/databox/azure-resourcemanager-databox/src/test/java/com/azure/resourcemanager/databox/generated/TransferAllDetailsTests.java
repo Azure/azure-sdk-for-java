@@ -13,21 +13,21 @@ public final class TransferAllDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransferAllDetails model = BinaryData
-            .fromString("{\"dataAccountType\":\"ManagedDisk\",\"transferAllBlobs\":false,\"transferAllFiles\":false}")
+            .fromString("{\"dataAccountType\":\"StorageAccount\",\"transferAllBlobs\":false,\"transferAllFiles\":true}")
             .toObject(TransferAllDetails.class);
-        Assertions.assertEquals(DataAccountType.MANAGED_DISK, model.dataAccountType());
+        Assertions.assertEquals(DataAccountType.STORAGE_ACCOUNT, model.dataAccountType());
         Assertions.assertEquals(false, model.transferAllBlobs());
-        Assertions.assertEquals(false, model.transferAllFiles());
+        Assertions.assertEquals(true, model.transferAllFiles());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransferAllDetails model = new TransferAllDetails().withDataAccountType(DataAccountType.MANAGED_DISK)
+        TransferAllDetails model = new TransferAllDetails().withDataAccountType(DataAccountType.STORAGE_ACCOUNT)
             .withTransferAllBlobs(false)
-            .withTransferAllFiles(false);
+            .withTransferAllFiles(true);
         model = BinaryData.fromObject(model).toObject(TransferAllDetails.class);
-        Assertions.assertEquals(DataAccountType.MANAGED_DISK, model.dataAccountType());
+        Assertions.assertEquals(DataAccountType.STORAGE_ACCOUNT, model.dataAccountType());
         Assertions.assertEquals(false, model.transferAllBlobs());
-        Assertions.assertEquals(false, model.transferAllFiles());
+        Assertions.assertEquals(true, model.transferAllFiles());
     }
 }

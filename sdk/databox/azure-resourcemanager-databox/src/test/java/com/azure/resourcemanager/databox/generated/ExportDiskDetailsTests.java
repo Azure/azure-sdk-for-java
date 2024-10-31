@@ -11,7 +11,7 @@ public final class ExportDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExportDiskDetails model = BinaryData
-            .fromString("{\"manifestFile\":\"hsd\",\"manifestHash\":\"t\",\"backupManifestCloudPath\":\"fikdowwqu\"}")
+            .fromString("{\"manifestFile\":\"la\",\"manifestHash\":\"elwuipi\",\"backupManifestCloudPath\":\"jzkzi\"}")
             .toObject(ExportDiskDetails.class);
     }
 

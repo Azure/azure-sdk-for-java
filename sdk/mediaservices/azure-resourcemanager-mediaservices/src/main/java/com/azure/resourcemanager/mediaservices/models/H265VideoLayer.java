@@ -5,56 +5,57 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the settings to be used when encoding the input video into a desired output bitrate layer. */
+/**
+ * Describes the settings to be used when encoding the input video into a desired output bitrate layer.
+ */
 @Fluent
 public class H265VideoLayer extends Layer {
     /*
      * The average bitrate in bits per second at which to encode the input video when generating this layer. For
      * example: a target bitrate of 3000Kbps or 3Mbps means this value should be 3000000 This is a required field.
      */
-    @JsonProperty(value = "bitrate", required = true)
     private int bitrate;
 
     /*
      * The maximum bitrate (in bits per second), at which the VBV buffer should be assumed to refill. If not specified,
      * defaults to the same value as bitrate.
      */
-    @JsonProperty(value = "maxBitrate")
     private Integer maxBitrate;
 
     /*
-     * The number of B-frames to be used when encoding this layer.  If not specified, the encoder chooses an
-     * appropriate number based on the video profile and level.
+     * The number of B-frames to be used when encoding this layer. If not specified, the encoder chooses an appropriate
+     * number based on the video profile and level.
      */
-    @JsonProperty(value = "bFrames")
     private Integer bFrames;
 
     /*
      * The frame rate (in frames per second) at which to encode this layer. The value can be in the form of M/N where M
-     * and N are integers (For example, 30000/1001), or in the form of a number (For example, 30, or 29.97). The
-     * encoder enforces constraints on allowed frame rates based on the profile and level. If it is not specified, the
-     * encoder will use the same frame rate as the input video.
+     * and N are integers (For example, 30000/1001), or in the form of a number (For example, 30, or 29.97). The encoder
+     * enforces constraints on allowed frame rates based on the profile and level. If it is not specified, the encoder
+     * will use the same frame rate as the input video.
      */
-    @JsonProperty(value = "frameRate")
     private String frameRate;
 
     /*
      * The number of slices to be used when encoding this layer. If not specified, default is zero, which means that
      * encoder will use a single slice for each frame.
      */
-    @JsonProperty(value = "slices")
     private Integer slices;
 
     /*
-     * Specifies whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the
-     * encoder will turn it on whenever the video profile permits its use.
+     * Specifies whether or not adaptive B-frames are to be used when encoding this layer. If not specified, the encoder
+     * will turn it on whenever the video profile permits its use.
      */
-    @JsonProperty(value = "adaptiveBFrame")
     private Boolean adaptiveBFrame;
 
-    /** Creates an instance of H265VideoLayer class. */
+    /**
+     * Creates an instance of H265VideoLayer class.
+     */
     public H265VideoLayer() {
     }
 
@@ -62,7 +63,7 @@ public class H265VideoLayer extends Layer {
      * Get the bitrate property: The average bitrate in bits per second at which to encode the input video when
      * generating this layer. For example: a target bitrate of 3000Kbps or 3Mbps means this value should be 3000000 This
      * is a required field.
-     *
+     * 
      * @return the bitrate value.
      */
     public int bitrate() {
@@ -73,7 +74,7 @@ public class H265VideoLayer extends Layer {
      * Set the bitrate property: The average bitrate in bits per second at which to encode the input video when
      * generating this layer. For example: a target bitrate of 3000Kbps or 3Mbps means this value should be 3000000 This
      * is a required field.
-     *
+     * 
      * @param bitrate the bitrate value to set.
      * @return the H265VideoLayer object itself.
      */
@@ -85,7 +86,7 @@ public class H265VideoLayer extends Layer {
     /**
      * Get the maxBitrate property: The maximum bitrate (in bits per second), at which the VBV buffer should be assumed
      * to refill. If not specified, defaults to the same value as bitrate.
-     *
+     * 
      * @return the maxBitrate value.
      */
     public Integer maxBitrate() {
@@ -95,7 +96,7 @@ public class H265VideoLayer extends Layer {
     /**
      * Set the maxBitrate property: The maximum bitrate (in bits per second), at which the VBV buffer should be assumed
      * to refill. If not specified, defaults to the same value as bitrate.
-     *
+     * 
      * @param maxBitrate the maxBitrate value to set.
      * @return the H265VideoLayer object itself.
      */
@@ -107,7 +108,7 @@ public class H265VideoLayer extends Layer {
     /**
      * Get the bFrames property: The number of B-frames to be used when encoding this layer. If not specified, the
      * encoder chooses an appropriate number based on the video profile and level.
-     *
+     * 
      * @return the bFrames value.
      */
     public Integer bFrames() {
@@ -117,7 +118,7 @@ public class H265VideoLayer extends Layer {
     /**
      * Set the bFrames property: The number of B-frames to be used when encoding this layer. If not specified, the
      * encoder chooses an appropriate number based on the video profile and level.
-     *
+     * 
      * @param bFrames the bFrames value to set.
      * @return the H265VideoLayer object itself.
      */
@@ -131,7 +132,7 @@ public class H265VideoLayer extends Layer {
      * in the form of M/N where M and N are integers (For example, 30000/1001), or in the form of a number (For example,
      * 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is
      * not specified, the encoder will use the same frame rate as the input video.
-     *
+     * 
      * @return the frameRate value.
      */
     public String frameRate() {
@@ -143,7 +144,7 @@ public class H265VideoLayer extends Layer {
      * in the form of M/N where M and N are integers (For example, 30000/1001), or in the form of a number (For example,
      * 30, or 29.97). The encoder enforces constraints on allowed frame rates based on the profile and level. If it is
      * not specified, the encoder will use the same frame rate as the input video.
-     *
+     * 
      * @param frameRate the frameRate value to set.
      * @return the H265VideoLayer object itself.
      */
@@ -155,7 +156,7 @@ public class H265VideoLayer extends Layer {
     /**
      * Get the slices property: The number of slices to be used when encoding this layer. If not specified, default is
      * zero, which means that encoder will use a single slice for each frame.
-     *
+     * 
      * @return the slices value.
      */
     public Integer slices() {
@@ -165,7 +166,7 @@ public class H265VideoLayer extends Layer {
     /**
      * Set the slices property: The number of slices to be used when encoding this layer. If not specified, default is
      * zero, which means that encoder will use a single slice for each frame.
-     *
+     * 
      * @param slices the slices value to set.
      * @return the H265VideoLayer object itself.
      */
@@ -177,7 +178,7 @@ public class H265VideoLayer extends Layer {
     /**
      * Get the adaptiveBFrame property: Specifies whether or not adaptive B-frames are to be used when encoding this
      * layer. If not specified, the encoder will turn it on whenever the video profile permits its use.
-     *
+     * 
      * @return the adaptiveBFrame value.
      */
     public Boolean adaptiveBFrame() {
@@ -187,7 +188,7 @@ public class H265VideoLayer extends Layer {
     /**
      * Set the adaptiveBFrame property: Specifies whether or not adaptive B-frames are to be used when encoding this
      * layer. If not specified, the encoder will turn it on whenever the video profile permits its use.
-     *
+     * 
      * @param adaptiveBFrame the adaptiveBFrame value to set.
      * @return the H265VideoLayer object itself.
      */
@@ -196,21 +197,27 @@ public class H265VideoLayer extends Layer {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public H265VideoLayer withWidth(String width) {
         super.withWidth(width);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public H265VideoLayer withHeight(String height) {
         super.withHeight(height);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public H265VideoLayer withLabel(String label) {
         super.withLabel(label);
@@ -219,11 +226,71 @@ public class H265VideoLayer extends Layer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("width", width());
+        jsonWriter.writeStringField("height", height());
+        jsonWriter.writeStringField("label", label());
+        jsonWriter.writeIntField("bitrate", this.bitrate);
+        jsonWriter.writeNumberField("maxBitrate", this.maxBitrate);
+        jsonWriter.writeNumberField("bFrames", this.bFrames);
+        jsonWriter.writeStringField("frameRate", this.frameRate);
+        jsonWriter.writeNumberField("slices", this.slices);
+        jsonWriter.writeBooleanField("adaptiveBFrame", this.adaptiveBFrame);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of H265VideoLayer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of H265VideoLayer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the H265VideoLayer.
+     */
+    public static H265VideoLayer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            H265VideoLayer deserializedH265VideoLayer = new H265VideoLayer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("width".equals(fieldName)) {
+                    deserializedH265VideoLayer.withWidth(reader.getString());
+                } else if ("height".equals(fieldName)) {
+                    deserializedH265VideoLayer.withHeight(reader.getString());
+                } else if ("label".equals(fieldName)) {
+                    deserializedH265VideoLayer.withLabel(reader.getString());
+                } else if ("bitrate".equals(fieldName)) {
+                    deserializedH265VideoLayer.bitrate = reader.getInt();
+                } else if ("maxBitrate".equals(fieldName)) {
+                    deserializedH265VideoLayer.maxBitrate = reader.getNullable(JsonReader::getInt);
+                } else if ("bFrames".equals(fieldName)) {
+                    deserializedH265VideoLayer.bFrames = reader.getNullable(JsonReader::getInt);
+                } else if ("frameRate".equals(fieldName)) {
+                    deserializedH265VideoLayer.frameRate = reader.getString();
+                } else if ("slices".equals(fieldName)) {
+                    deserializedH265VideoLayer.slices = reader.getNullable(JsonReader::getInt);
+                } else if ("adaptiveBFrame".equals(fieldName)) {
+                    deserializedH265VideoLayer.adaptiveBFrame = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedH265VideoLayer;
+        });
     }
 }

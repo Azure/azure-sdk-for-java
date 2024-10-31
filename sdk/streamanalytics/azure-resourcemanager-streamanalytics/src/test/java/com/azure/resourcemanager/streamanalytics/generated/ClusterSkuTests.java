@@ -13,16 +13,16 @@ public final class ClusterSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterSku model
-            = BinaryData.fromString("{\"name\":\"Default\",\"capacity\":1487648770}").toObject(ClusterSku.class);
+            = BinaryData.fromString("{\"name\":\"Default\",\"capacity\":650781860}").toObject(ClusterSku.class);
         Assertions.assertEquals(ClusterSkuName.DEFAULT, model.name());
-        Assertions.assertEquals(1487648770, model.capacity());
+        Assertions.assertEquals(650781860, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClusterSku model = new ClusterSku().withName(ClusterSkuName.DEFAULT).withCapacity(1487648770);
+        ClusterSku model = new ClusterSku().withName(ClusterSkuName.DEFAULT).withCapacity(650781860);
         model = BinaryData.fromObject(model).toObject(ClusterSku.class);
         Assertions.assertEquals(ClusterSkuName.DEFAULT, model.name());
-        Assertions.assertEquals(1487648770, model.capacity());
+        Assertions.assertEquals(650781860, model.capacity());
     }
 }

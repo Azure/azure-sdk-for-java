@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AzureReservationApiImpl type. */
+/**
+ * A builder for creating a new instance of the AzureReservationApiImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { AzureReservationApiImpl.class })
 public final class AzureReservationApiBuilder {
     /*
@@ -24,7 +26,7 @@ public final class AzureReservationApiBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the AzureReservationApiBuilder.
      */
@@ -40,7 +42,7 @@ public final class AzureReservationApiBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the AzureReservationApiBuilder.
      */
@@ -56,7 +58,7 @@ public final class AzureReservationApiBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the AzureReservationApiBuilder.
      */
@@ -72,7 +74,7 @@ public final class AzureReservationApiBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AzureReservationApiBuilder.
      */
@@ -88,7 +90,7 @@ public final class AzureReservationApiBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureReservationApiBuilder.
      */
@@ -99,7 +101,7 @@ public final class AzureReservationApiBuilder {
 
     /**
      * Builds an instance of AzureReservationApiImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AzureReservationApiImpl.
      */
     public AzureReservationApiImpl buildClient() {

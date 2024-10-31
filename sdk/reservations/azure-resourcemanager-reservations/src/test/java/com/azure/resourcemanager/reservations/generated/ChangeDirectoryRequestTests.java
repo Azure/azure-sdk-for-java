@@ -12,14 +12,14 @@ public final class ChangeDirectoryRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ChangeDirectoryRequest model
-            = BinaryData.fromString("{\"destinationTenantId\":\"btkuwhh\"}").toObject(ChangeDirectoryRequest.class);
-        Assertions.assertEquals("btkuwhh", model.destinationTenantId());
+            = BinaryData.fromString("{\"destinationTenantId\":\"piexpbtgiw\"}").toObject(ChangeDirectoryRequest.class);
+        Assertions.assertEquals("piexpbtgiw", model.destinationTenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ChangeDirectoryRequest model = new ChangeDirectoryRequest().withDestinationTenantId("btkuwhh");
+        ChangeDirectoryRequest model = new ChangeDirectoryRequest().withDestinationTenantId("piexpbtgiw");
         model = BinaryData.fromObject(model).toObject(ChangeDirectoryRequest.class);
-        Assertions.assertEquals("btkuwhh", model.destinationTenantId());
+        Assertions.assertEquals("piexpbtgiw", model.destinationTenantId());
     }
 }

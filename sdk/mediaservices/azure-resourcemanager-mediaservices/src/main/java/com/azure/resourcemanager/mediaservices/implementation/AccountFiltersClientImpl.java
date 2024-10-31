@@ -34,17 +34,23 @@ import com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner;
 import com.azure.resourcemanager.mediaservices.models.AccountFilterCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AccountFiltersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccountFiltersClient.
+ */
 public final class AccountFiltersClientImpl implements AccountFiltersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AccountFiltersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of AccountFiltersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AccountFiltersClientImpl(AzureMediaServicesImpl client) {
@@ -61,8 +67,7 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
     @ServiceInterface(name = "AzureMediaServicesAc")
     public interface AccountFiltersService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/accountFilters")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/accountFilters")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccountFilterCollection>> list(@HostParam("$host") String endpoint,
@@ -71,8 +76,7 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/accountFilters/{filterName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/accountFilters/{filterName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccountFilterInner>> get(@HostParam("$host") String endpoint,
@@ -82,8 +86,7 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/accountFilters/{filterName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/accountFilters/{filterName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccountFilterInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -94,8 +97,7 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/accountFilters/{filterName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/accountFilters/{filterName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -105,8 +107,7 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/accountFilters/{filterName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/accountFilters/{filterName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AccountFilterInner>> update(@HostParam("$host") String endpoint,
@@ -126,16 +127,16 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * List Account Filters
-     *
-     * <p>List Account Filters in the Media Services account.
-     *
+     * 
+     * List Account Filters in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccountFilter items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of AccountFilter items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountFilterInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
@@ -166,17 +167,17 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * List Account Filters
-     *
-     * <p>List Account Filters in the Media Services account.
-     *
+     * 
+     * List Account Filters in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccountFilter items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of AccountFilter items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountFilterInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -208,9 +209,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * List Account Filters
-     *
-     * <p>List Account Filters in the Media Services account.
-     *
+     * 
+     * List Account Filters in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,9 +227,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * List Account Filters
-     *
-     * <p>List Account Filters in the Media Services account.
-     *
+     * 
+     * List Account Filters in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -245,9 +246,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * List Account Filters
-     *
-     * <p>List Account Filters in the Media Services account.
-     *
+     * 
+     * List Account Filters in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,9 +263,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * List Account Filters
-     *
-     * <p>List Account Filters in the Media Services account.
-     *
+     * 
+     * List Account Filters in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -280,9 +281,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
+     * 
+     * Get the details of an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -290,7 +291,7 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Account Filter in the Media Services account along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountFilterInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -323,9 +324,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
+     * 
+     * Get the details of an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -334,7 +335,7 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Account Filter in the Media Services account along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountFilterInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -366,9 +367,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
+     * 
+     * Get the details of an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -385,9 +386,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
+     * 
+     * Get the details of an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -405,9 +406,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
+     * 
+     * Get the details of an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -423,9 +424,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Create or update an Account Filter
-     *
-     * <p>Creates or updates an Account Filter in the Media Services account.
-     *
+     * 
+     * Creates or updates an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -471,9 +472,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Create or update an Account Filter
-     *
-     * <p>Creates or updates an Account Filter in the Media Services account.
-     *
+     * 
+     * Creates or updates an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -519,9 +520,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Create or update an Account Filter
-     *
-     * <p>Creates or updates an Account Filter in the Media Services account.
-     *
+     * 
+     * Creates or updates an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -540,9 +541,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Create or update an Account Filter
-     *
-     * <p>Creates or updates an Account Filter in the Media Services account.
-     *
+     * 
+     * Creates or updates an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -561,9 +562,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Create or update an Account Filter
-     *
-     * <p>Creates or updates an Account Filter in the Media Services account.
-     *
+     * 
+     * Creates or updates an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -582,9 +583,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Delete an Account Filter.
-     *
-     * <p>Deletes an Account Filter in the Media Services account.
-     *
+     * 
+     * Deletes an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -624,9 +625,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Delete an Account Filter.
-     *
-     * <p>Deletes an Account Filter in the Media Services account.
-     *
+     * 
+     * Deletes an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -666,9 +667,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Delete an Account Filter.
-     *
-     * <p>Deletes an Account Filter in the Media Services account.
-     *
+     * 
+     * Deletes an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -684,9 +685,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Delete an Account Filter.
-     *
-     * <p>Deletes an Account Filter in the Media Services account.
-     *
+     * 
+     * Deletes an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -704,9 +705,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Delete an Account Filter.
-     *
-     * <p>Deletes an Account Filter in the Media Services account.
-     *
+     * 
+     * Deletes an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -721,9 +722,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Update an Account Filter
-     *
-     * <p>Updates an existing Account Filter in the Media Services account.
-     *
+     * 
+     * Updates an existing Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -769,9 +770,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Update an Account Filter
-     *
-     * <p>Updates an existing Account Filter in the Media Services account.
-     *
+     * 
+     * Updates an existing Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -817,9 +818,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Update an Account Filter
-     *
-     * <p>Updates an existing Account Filter in the Media Services account.
-     *
+     * 
+     * Updates an existing Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -838,9 +839,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Update an Account Filter
-     *
-     * <p>Updates an existing Account Filter in the Media Services account.
-     *
+     * 
+     * Updates an existing Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -859,9 +860,9 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Update an Account Filter
-     *
-     * <p>Updates an existing Account Filter in the Media Services account.
-     *
+     * 
+     * Updates an existing Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -879,14 +880,13 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccountFilter items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of AccountFilter items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountFilterInner>> listNextSinglePageAsync(String nextLink) {
@@ -906,15 +906,14 @@ public final class AccountFiltersClientImpl implements AccountFiltersClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AccountFilter items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of AccountFilter items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountFilterInner>> listNextSinglePageAsync(String nextLink, Context context) {

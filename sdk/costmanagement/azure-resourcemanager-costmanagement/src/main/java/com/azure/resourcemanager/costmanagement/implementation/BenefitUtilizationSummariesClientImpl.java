@@ -31,17 +31,23 @@ import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummari
 import com.azure.resourcemanager.costmanagement.models.GrainParameter;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BenefitUtilizationSummariesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BenefitUtilizationSummariesClient.
+ */
 public final class BenefitUtilizationSummariesClientImpl implements BenefitUtilizationSummariesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BenefitUtilizationSummariesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CostManagementClientImpl client;
 
     /**
      * Initializes an instance of BenefitUtilizationSummariesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BenefitUtilizationSummariesClientImpl(CostManagementClientImpl client) {
@@ -134,15 +140,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
@@ -167,7 +173,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
@@ -175,8 +181,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listByBillingAccountIdSinglePageAsync(
@@ -201,7 +207,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
@@ -220,7 +226,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -238,7 +244,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
@@ -259,7 +265,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -276,7 +282,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
     /**
      * Lists savings plan utilization summaries for the enterprise agreement scope. Supported at grain values: 'Daily'
      * and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param grainParameter Grain.
      * @param filter Supports filtering by properties/benefitId, properties/benefitOrderId and properties/usageDate.
@@ -294,7 +300,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -302,8 +308,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listByBillingProfileIdSinglePageAsync(
@@ -332,7 +338,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -341,8 +347,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listByBillingProfileIdSinglePageAsync(
@@ -371,7 +377,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -391,7 +397,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -411,7 +417,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -431,7 +437,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -450,7 +456,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists savings plan utilization summaries for billing profile. Supported at grain values: 'Daily' and 'Monthly'.
-     *
+     * 
      * @param billingAccountId Billing account ID.
      * @param billingProfileId Billing profile ID.
      * @param grainParameter Grain.
@@ -470,15 +476,15 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
@@ -502,7 +508,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
@@ -510,8 +516,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanOrderSinglePageAsync(
@@ -535,7 +541,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
@@ -553,7 +559,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -570,7 +576,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
@@ -590,7 +596,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -606,7 +612,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param filter Supports filtering by properties/usageDate.
      * @param grainParameter Grain.
@@ -624,7 +630,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.
@@ -632,8 +638,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanIdSinglePageAsync(
@@ -660,7 +666,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.
@@ -669,8 +675,8 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanIdSinglePageAsync(
@@ -698,7 +704,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.
@@ -718,7 +724,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -738,7 +744,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.
@@ -758,7 +764,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -776,7 +782,7 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Lists the savings plan utilization summaries for daily or monthly grain.
-     *
+     * 
      * @param savingsPlanOrderId Savings plan order ID.
      * @param savingsPlanId Savings plan ID.
      * @param filter Supports filtering by properties/usageDate.
@@ -796,14 +802,13 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
@@ -826,15 +831,14 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
@@ -855,14 +859,13 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
@@ -885,15 +888,14 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
@@ -914,14 +916,13 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
@@ -944,15 +945,14 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
@@ -973,14 +973,13 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>>
@@ -1003,15 +1002,14 @@ public final class BenefitUtilizationSummariesClientImpl implements BenefitUtili
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of benefit utilization summaries along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitUtilizationSummaryInner>> listBySavingsPlanIdNextSinglePageAsync(String nextLink,
