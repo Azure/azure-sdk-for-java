@@ -25,10 +25,7 @@ class QuickPulseDataSender implements Runnable {
 
     private static final ClientLogger logger = new ClientLogger(QuickPulseCoordinator.class);
 
-    //private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
-    //private final HttpPipeline httpPipeline; // TODO: remove if not needed
-    private volatile PublishHeaders postResponseHeaders;
-    private long lastValidTransmission = 0;
+    private long lastValidRequestTimeNs = 0;
 
     private final ArrayBlockingQueue<MonitoringDataPoint> sendQueue;
 
@@ -44,6 +41,7 @@ class QuickPulseDataSender implements Runnable {
 
     private static final long TICKS_AT_EPOCH = 621355968000000000L;
 
+
     QuickPulseDataSender(LiveMetricsRestAPIsForClientSDKs liveMetricsRestAPIsForClientSDKs,
         ArrayBlockingQueue<MonitoringDataPoint> sendQueue, Supplier<URL> endpointUrl,
         Supplier<String> instrumentationKey) {
@@ -57,7 +55,6 @@ class QuickPulseDataSender implements Runnable {
     @Override
     public void run() {
         while (true) {
-            //HttpRequest post;
             MonitoringDataPoint point;
             try {
                 point = sendQueue.take();
@@ -74,12 +71,13 @@ class QuickPulseDataSender implements Runnable {
             long sendTime = System.nanoTime();
             String endpointPrefix
                 = Strings.isNullOrEmpty(redirectEndpointPrefix) ? getQuickPulseEndpoint() : redirectEndpointPrefix;
+            // TODO for a future PR: revisit caching & retry mechanism for failed post requests (shouldn't retry), send "cached" data points in the next post
             List<MonitoringDataPoint> dataPointList = new ArrayList<>();
             dataPointList.add(point);
             Date currentDate = new Date();
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
             try {
-                //TODO: populate the saved etag here for filtering
+                //TODO for a future PR: populate the saved etag here for filtering
                 Response<CollectionConfigurationInfo> responseMono = liveMetricsRestAPIsForClientSDKs
                     .publishNoCustomHeadersWithResponseAsync(endpointPrefix, instrumentationKey.get(), "",
                         transmissionTimeInTicks, dataPointList)
@@ -100,9 +98,8 @@ class QuickPulseDataSender implements Runnable {
                     this.qpStatus = QuickPulseStatus.QP_IS_ON;
                 }
 
-                lastValidTransmission = sendTime;
-                this.postResponseHeaders = headers;
-                //TODO: parse the response body here for filtering
+                lastValidRequestTimeNs = sendTime;
+                //TODO for a future PR: parse the response body here for filtering
 
             } catch (RuntimeException e) { // this includes ServiceErrorException & RuntimeException thrown from quickpulse post api
                 onPostError(sendTime);
@@ -118,15 +115,10 @@ class QuickPulseDataSender implements Runnable {
         qpStatus = QuickPulseStatus.QP_IS_ON;
     }
 
-    PublishHeaders getPostResponseHeaders() {
-        return postResponseHeaders;
-    }
-
     private void onPostError(long sendTime) {
-        double timeFromLastValidTransmission = (sendTime - lastValidTransmission) / 1000000000.0;
-        if (timeFromLastValidTransmission >= 20.0) {
+        double timeFromlastValidRequestTimeNs = (sendTime - lastValidRequestTimeNs) / 1000000000.0;
+        if (timeFromlastValidRequestTimeNs >= 20.0) {
             qpStatus = QuickPulseStatus.ERROR;
-            postResponseHeaders = new PublishHeaders(new HttpHeaders());
         }
     }
 
@@ -142,4 +134,11 @@ class QuickPulseDataSender implements Runnable {
         return this.qpStatus;
     }
 
+    public void resetLastValidRequestTimeNs(long lastValidPingTrasmission) {
+        this.lastValidRequestTimeNs = lastValidPingTrasmission;
+    }
+
+    public long getLastValidPostRequestTimeNs() {
+        return this.lastValidRequestTimeNs;
+    }
 }

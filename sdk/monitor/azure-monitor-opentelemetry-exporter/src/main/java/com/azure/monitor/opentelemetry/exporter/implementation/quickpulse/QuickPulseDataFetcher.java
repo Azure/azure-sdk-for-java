@@ -3,22 +3,14 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation.quickpulse;
 
-import com.azure.core.http.HttpRequest;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseEnvelope;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMonitoringDataPoints;
-import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.QuickPulseMetrics;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.MetricPoint;
 import com.azure.monitor.opentelemetry.exporter.implementation.quickpulse.model.swagger.models.MonitoringDataPoint;
-import com.azure.monitor.opentelemetry.exporter.implementation.utils.Strings;
 import org.slf4j.MDC;
 
-import java.io.IOException;
-import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.function.Supplier;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.QUICK_PULSE_SEND_ERROR;
 
@@ -29,7 +21,7 @@ class QuickPulseDataFetcher {
     private final QuickPulseDataCollector collector;
 
     private final ArrayBlockingQueue<MonitoringDataPoint> sendQueue;
-    private final QuickPulseNetworkHelper networkHelper = new QuickPulseNetworkHelper();
+
     private final String roleName;
     private final String instanceName;
     private final String machineName;
@@ -38,15 +30,15 @@ class QuickPulseDataFetcher {
     private final String sdkVersion;
 
     public QuickPulseDataFetcher(QuickPulseDataCollector collector, ArrayBlockingQueue<MonitoringDataPoint> sendQueue,
-        String roleName, String instanceName, String machineName, String quickPulseId) {
+        String roleName, String instanceName, String machineName, String quickPulseId, String sdkVersion) {
         this.collector = collector;
         this.sendQueue = sendQueue;
         this.roleName = roleName;
         this.instanceName = instanceName;
         this.machineName = machineName;
         this.quickPulseId = quickPulseId;
+        this.sdkVersion = sdkVersion;
 
-        sdkVersion = getCurrentSdkVersion();
     }
 
     /**
@@ -66,11 +58,7 @@ class QuickPulseDataFetcher {
             if (counters == null) {
                 return;
             }
-            //String endpointPrefix
-            //= Strings.isNullOrEmpty(redirectedEndpoint) ? getQuickPulseEndpoint() : redirectedEndpoint;
 
-            //HttpRequest request = networkHelper.buildRequest(currentDate, this.getEndpointUrl(endpointPrefix));
-            //request.setBody(buildPostEntity(counters));
             MonitoringDataPoint point = buildMonitoringDataPoint(counters);
 
             if (!sendQueue.offer(point)) {
@@ -91,38 +79,6 @@ class QuickPulseDataFetcher {
             }
         }
     }
-
-    // visible for testing
-    /*String getEndpointUrl(String endpointPrefix) {
-        return endpointPrefix + "/post?ikey=" + instrumentationKey.get();
-    }*/
-
-    // visible for testing
-    /*String getQuickPulseEndpoint() {
-        return endpointUrl.get().toString() + "QuickPulseService.svc";
-    }*/
-
-    /*private String buildPostEntity(QuickPulseDataCollector.FinalCounters counters) throws IOException {
-        List<QuickPulseEnvelope> envelopes = new ArrayList<>();
-        QuickPulseEnvelope postEnvelope = new QuickPulseEnvelope();
-        postEnvelope.setDocuments(counters.documentList);
-        postEnvelope.setInstance(instanceName);
-        postEnvelope.setInvariantVersion(QuickPulse.QP_INVARIANT_VERSION);
-        postEnvelope.setMachineName(machineName);
-        // FIXME (heya) what about azure functions consumption plan where role name not available yet?
-        postEnvelope.setRoleName(roleName);
-        // For historical reasons, instrumentation key is provided both in the query string and
-        // envelope.
-        //postEnvelope.setInstrumentationKey(instrumentationKey.get());
-        postEnvelope.setStreamId(quickPulseId);
-        postEnvelope.setVersion(sdkVersion);
-        postEnvelope.setTimeStamp("/Date(" + System.currentTimeMillis() + ")/");
-        postEnvelope.setMetrics(addMetricsToQuickPulseEnvelope(counters));
-        envelopes.add(postEnvelope);
-        QuickPulseMonitoringDataPoints points = new QuickPulseMonitoringDataPoints(envelopes);
-        // By default '/' is not escaped in JSON, so we need to escape it manually as the backend requires it.
-        return points.toJsonString().replace("/", "\\/");
-    }*/
 
     private MonitoringDataPoint buildMonitoringDataPoint(QuickPulseDataCollector.FinalCounters counters) {
         MonitoringDataPoint point = new MonitoringDataPoint();

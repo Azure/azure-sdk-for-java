@@ -26,17 +26,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 class QuickPulseDataFetcherTests {
 
     @Test
-    void testGetCurrentSdkVersion() {
-        ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
-        QuickPulseDataFetcher dataFetcher
-            = new QuickPulseDataFetcher(new QuickPulseDataCollector(), null, null, null, null, null);
-        String sdkVersion = dataFetcher.getCurrentSdkVersion();
-        assertThat(sdkVersion).isNotNull();
-        // TODO: SDK version is hardcoded to unknown - this test seems not be be accurate/useful at the moment
-        assertThat(sdkVersion).isNotEqualTo("java:unknown");
-    }
-
-    @Test
     void endpointChangesWithRedirectHeaderAndGetNewPingInterval() {
         Map<String, String> headers = new HashMap<>();
         headers.put("x-ms-qps-service-polling-interval-hint", "1000");

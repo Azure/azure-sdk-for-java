@@ -76,10 +76,19 @@ final class QuickPulseCoordinator implements Runnable {
         switch (qpStatus) {
             case ERROR:
                 pingMode = true;
+                // Below line is necessary because there is a case where the last valid request is a post
+                // that came 20s before a failing ping, such as a network related error. In this case, if the
+                // network error continues, we would want pings to remain in backoff mode instead of pinging every
+                // 5 seconds. Subtracting the 40s ensures that the ping sender thinks requests have been failing long
+                // enough to stay in a backoff state if the next ping fails.
+                pingSender.resetLastValidRequestTimeNs( (long) (dataSender.getLastValidPostRequestTimeNs() - 40 * 1e9) );
                 return waitOnErrorInMillis;
 
             case QP_IS_OFF:
                 pingMode = true;
+                // Below line is necessary because there is a case where the last valid request is a post
+                // before a failing ping, such as a network related error.
+                pingSender.resetLastValidRequestTimeNs(dataSender.getLastValidPostRequestTimeNs());
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis
                     : waitBetweenPingsInMillis;
@@ -107,6 +116,12 @@ final class QuickPulseCoordinator implements Runnable {
 
             case QP_IS_ON:
                 pingMode = false;
+                // Below two lines are necessary because there are cases where the last valid request is a ping
+                // before a failing post. This can happen in cases where authentication fails - pings would return
+                // http 200 but posts http 401. This is in line with .net behavior.
+                long lastValidRequestTransmission = pingSender.getLastValidPingTransmissionNs();
+                dataSender.resetLastValidRequestTimeNs(lastValidRequestTransmission);
+
                 dataSender.startSending();
                 return waitBetweenPostsInMillis;
 

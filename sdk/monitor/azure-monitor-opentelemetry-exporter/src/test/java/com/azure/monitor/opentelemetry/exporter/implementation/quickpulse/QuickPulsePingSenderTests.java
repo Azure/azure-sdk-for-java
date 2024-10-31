@@ -25,31 +25,25 @@ import static org.assertj.core.api.Assertions.assertThat;
 class QuickPulsePingSenderTests {
 
     @Test
-    void endpointIsFormattedCorrectlyWhenUsingConnectionString() throws URISyntaxException {
+    void endpointIsFormattedCorrectlyWhenUsingConnectionString() {
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=testing-123");
         QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(null, connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, null, null, null, null, null);
         String quickPulseEndpoint = quickPulsePingSender.getQuickPulseEndpoint();
-        String endpointUrl = quickPulsePingSender.getQuickPulsePingUri(quickPulseEndpoint);
-        URI uri = new URI(endpointUrl);
-        assertThat(uri).isNotNull();
-        assertThat(endpointUrl).endsWith("/ping?ikey=testing-123");
-        assertThat(endpointUrl)
-            .isEqualTo("https://rt.services.visualstudio.com/QuickPulseService.svc/ping?ikey=testing-123");
+        String instrumentationKey = quickPulsePingSender.getInstrumentationKey();
+        assertThat(quickPulseEndpoint).isEqualTo("https://rt.services.visualstudio.com/");
+        assertThat(instrumentationKey).isEqualTo("testing-123");
     }
 
     @Test
-    void endpointIsFormattedCorrectlyWhenUsingInstrumentationKey() throws URISyntaxException {
+    void endpointIsFormattedCorrectlyWhenUsingInstrumentationKey() {
         ConnectionString connectionString = ConnectionString.parse("InstrumentationKey=A-test-instrumentation-key");
         QuickPulsePingSender quickPulsePingSender = new QuickPulsePingSender(null, connectionString::getLiveEndpoint,
             connectionString::getInstrumentationKey, null, null, null, null, null);
         String quickPulseEndpoint = quickPulsePingSender.getQuickPulseEndpoint();
-        String endpointUrl = quickPulsePingSender.getQuickPulsePingUri(quickPulseEndpoint);
-        URI uri = new URI(endpointUrl);
-        assertThat(uri).isNotNull();
-        assertThat(endpointUrl).endsWith("/ping?ikey=A-test-instrumentation-key"); // from resources/ApplicationInsights.xml
-        assertThat(endpointUrl).isEqualTo(
-            "https://rt.services.visualstudio.com/QuickPulseService.svc/ping?ikey=A-test-instrumentation-key");
+        String instrumentationKey = quickPulsePingSender.getInstrumentationKey();
+        assertThat(quickPulseEndpoint).isEqualTo("https://rt.services.visualstudio.com/");
+        assertThat(instrumentationKey).isEqualTo("A-test-instrumentation-key");
     }
 
     @Test

@@ -50,7 +50,7 @@ class QuickPulsePingSender {
     private final String instanceName;
     private final String machineName;
     private final String quickPulseId;
-    private long lastValidTransmission = 0;
+    private long lastValidRequestTimeNs = System.nanoTime();
     private final String sdkVersion;
 
     private IsSubscribedHeaders responseHeaders;
@@ -105,7 +105,7 @@ class QuickPulsePingSender {
             String isSubscribed = responseHeaders.getXMsQpsSubscribed();
             if (!Strings.isNullOrEmpty(isSubscribed)) {
                 operationLogger.recordSuccess(); // when does this need to be called
-                lastValidTransmission = sendTime;
+                lastValidRequestTimeNs = sendTime;
             }
 
             return responseHeaders;
@@ -120,14 +120,10 @@ class QuickPulsePingSender {
         return onPingError(sendTime);
     }
 
-    // visible for testing
-    // TODO: alter this method if needed for test
-    String getQuickPulsePingUri(String endpointPrefix) {
-        return endpointPrefix + "/ping?ikey=" + getInstrumentationKey();
-    }
 
     @Nullable
-    private String getInstrumentationKey() {
+    // visible for testing
+    public String getInstrumentationKey() {
         return instrumentationKey.get();
     }
 
@@ -151,11 +147,19 @@ class QuickPulsePingSender {
     private IsSubscribedHeaders onPingError(long sendTime) {
         HttpHeaders headers = new HttpHeaders();
 
-        double timeFromLastValidTransmission = (sendTime - lastValidTransmission) / 1000000000.0;
-        if (timeFromLastValidTransmission >= 60.0) {
+        double timeFromlastValidRequestTimeNs = (sendTime - lastValidRequestTimeNs) / 1000000000.0;
+        if (timeFromlastValidRequestTimeNs >= 60.0) {
             return new IsSubscribedHeaders(headers); // all headers null
         }
         headers.add(QPS_STATUS_HEADER, "false");
         return new IsSubscribedHeaders(headers); // status header set to false
+    }
+
+    public long getLastValidPingTransmissionNs() {
+        return this.lastValidRequestTimeNs;
+    }
+
+    public void resetLastValidRequestTimeNs(long lastValidPostTrasmission) {
+        this.lastValidRequestTimeNs = lastValidPostTrasmission;
     }
 }
