@@ -96,10 +96,10 @@ public final class CurrentQuotaLimitBaseImpl
         com.azure.resourcemanager.reservations.ReservationsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.subscriptionId = Utils.getValueFromIdByName(innerObject.id(), "subscriptions");
-        this.providerId = Utils.getValueFromIdByName(innerObject.id(), "resourceProviders");
-        this.location = Utils.getValueFromIdByName(innerObject.id(), "locations");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "serviceLimits");
+        this.subscriptionId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "subscriptions");
+        this.providerId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceProviders");
+        this.location = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "locations");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "serviceLimits");
     }
 
     public CurrentQuotaLimitBase refresh() {

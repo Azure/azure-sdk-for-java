@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.fluent.models.SplitProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The request for reservation split. */
+/**
+ * The request for reservation split.
+ */
 @Fluent
-public final class SplitRequest {
+public final class SplitRequest implements JsonSerializable<SplitRequest> {
     /*
      * Properties for reservation split
      */
-    @JsonProperty(value = "properties")
     private SplitProperties innerProperties;
 
-    /** Creates an instance of SplitRequest class. */
+    /**
+     * Creates an instance of SplitRequest class.
+     */
     public SplitRequest() {
     }
 
     /**
      * Get the innerProperties property: Properties for reservation split.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SplitProperties innerProperties() {
@@ -33,7 +40,7 @@ public final class SplitRequest {
 
     /**
      * Get the quantities property: List of the quantities in the new reservations to create.
-     *
+     * 
      * @return the quantities value.
      */
     public List<Integer> quantities() {
@@ -42,7 +49,7 @@ public final class SplitRequest {
 
     /**
      * Set the quantities property: List of the quantities in the new reservations to create.
-     *
+     * 
      * @param quantities the quantities value to set.
      * @return the SplitRequest object itself.
      */
@@ -57,7 +64,7 @@ public final class SplitRequest {
     /**
      * Get the reservationId property: Resource id of the reservation to be split. Format of the resource id should be
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-     *
+     * 
      * @return the reservationId value.
      */
     public String reservationId() {
@@ -67,7 +74,7 @@ public final class SplitRequest {
     /**
      * Set the reservationId property: Resource id of the reservation to be split. Format of the resource id should be
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-     *
+     * 
      * @param reservationId the reservationId value to set.
      * @return the SplitRequest object itself.
      */
@@ -81,12 +88,48 @@ public final class SplitRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SplitRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SplitRequest if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SplitRequest.
+     */
+    public static SplitRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SplitRequest deserializedSplitRequest = new SplitRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSplitRequest.innerProperties = SplitProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSplitRequest;
+        });
     }
 }

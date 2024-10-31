@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Reservation to return. */
+/**
+ * Reservation to return.
+ */
 @Fluent
-public final class ReservationToReturn {
+public final class ReservationToReturn implements JsonSerializable<ReservationToReturn> {
     /*
      * Fully qualified identifier of the reservation being returned
      */
-    @JsonProperty(value = "reservationId")
     private String reservationId;
 
     /*
      * Quantity to be returned. Must be greater than zero.
      */
-    @JsonProperty(value = "quantity")
     private Integer quantity;
 
-    /** Creates an instance of ReservationToReturn class. */
+    /**
+     * Creates an instance of ReservationToReturn class.
+     */
     public ReservationToReturn() {
     }
 
     /**
      * Get the reservationId property: Fully qualified identifier of the reservation being returned.
-     *
+     * 
      * @return the reservationId value.
      */
     public String reservationId() {
@@ -37,7 +43,7 @@ public final class ReservationToReturn {
 
     /**
      * Set the reservationId property: Fully qualified identifier of the reservation being returned.
-     *
+     * 
      * @param reservationId the reservationId value to set.
      * @return the ReservationToReturn object itself.
      */
@@ -48,7 +54,7 @@ public final class ReservationToReturn {
 
     /**
      * Get the quantity property: Quantity to be returned. Must be greater than zero.
-     *
+     * 
      * @return the quantity value.
      */
     public Integer quantity() {
@@ -57,7 +63,7 @@ public final class ReservationToReturn {
 
     /**
      * Set the quantity property: Quantity to be returned. Must be greater than zero.
-     *
+     * 
      * @param quantity the quantity value to set.
      * @return the ReservationToReturn object itself.
      */
@@ -68,9 +74,48 @@ public final class ReservationToReturn {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reservationId", this.reservationId);
+        jsonWriter.writeNumberField("quantity", this.quantity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationToReturn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationToReturn if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationToReturn.
+     */
+    public static ReservationToReturn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationToReturn deserializedReservationToReturn = new ReservationToReturn();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reservationId".equals(fieldName)) {
+                    deserializedReservationToReturn.reservationId = reader.getString();
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedReservationToReturn.quantity = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationToReturn;
+        });
     }
 }
