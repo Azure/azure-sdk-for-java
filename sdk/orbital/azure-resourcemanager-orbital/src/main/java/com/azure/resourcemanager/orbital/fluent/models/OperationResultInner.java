@@ -5,82 +5,81 @@
 package com.azure.resourcemanager.orbital.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.orbital.models.OperationResultErrorProperties;
 import com.azure.resourcemanager.orbital.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Operation Result Entity. */
+/**
+ * Operation Result Entity.
+ */
 @Fluent
-public final class OperationResultInner {
+public final class OperationResultInner implements JsonSerializable<OperationResultInner> {
     /*
      * ID of the resource.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Name of the resource.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The status of operation.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private Status status;
 
     /*
      * The operation start time (ISO 8601 UTC standard).
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The operation end time (ISO 8601 UTC standard).
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * Percentage completed.
      */
-    @JsonProperty(value = "percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Double percentComplete;
 
     /*
      * A list of results when the operation returns multiple results.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<Object> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /*
      * Operation result properties.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * Operation result error properties.
      */
-    @JsonProperty(value = "error")
     private OperationResultErrorProperties error;
 
-    /** Creates an instance of OperationResultInner class. */
+    /**
+     * Creates an instance of OperationResultInner class.
+     */
     public OperationResultInner() {
     }
 
     /**
      * Get the id property: ID of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -89,7 +88,7 @@ public final class OperationResultInner {
 
     /**
      * Get the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -98,7 +97,7 @@ public final class OperationResultInner {
 
     /**
      * Get the status property: The status of operation.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -107,7 +106,7 @@ public final class OperationResultInner {
 
     /**
      * Get the startTime property: The operation start time (ISO 8601 UTC standard).
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -116,7 +115,7 @@ public final class OperationResultInner {
 
     /**
      * Get the endTime property: The operation end time (ISO 8601 UTC standard).
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -125,7 +124,7 @@ public final class OperationResultInner {
 
     /**
      * Get the percentComplete property: Percentage completed.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Double percentComplete() {
@@ -134,7 +133,7 @@ public final class OperationResultInner {
 
     /**
      * Get the value property: A list of results when the operation returns multiple results.
-     *
+     * 
      * @return the value value.
      */
     public List<Object> value() {
@@ -143,7 +142,7 @@ public final class OperationResultInner {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -152,7 +151,7 @@ public final class OperationResultInner {
 
     /**
      * Get the properties property: Operation result properties.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -161,7 +160,7 @@ public final class OperationResultInner {
 
     /**
      * Set the properties property: Operation result properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationResultInner object itself.
      */
@@ -172,7 +171,7 @@ public final class OperationResultInner {
 
     /**
      * Get the error property: Operation result error properties.
-     *
+     * 
      * @return the error value.
      */
     public OperationResultErrorProperties error() {
@@ -181,7 +180,7 @@ public final class OperationResultInner {
 
     /**
      * Set the error property: Operation result error properties.
-     *
+     * 
      * @param error the error value to set.
      * @return the OperationResultInner object itself.
      */
@@ -192,12 +191,70 @@ public final class OperationResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultInner.
+     */
+    public static OperationResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultInner deserializedOperationResultInner = new OperationResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationResultInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationResultInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationResultInner.status = Status.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationResultInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationResultInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedOperationResultInner.percentComplete = reader.getNullable(JsonReader::getDouble);
+                } else if ("value".equals(fieldName)) {
+                    List<Object> value = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedOperationResultInner.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOperationResultInner.nextLink = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationResultInner.properties = reader.readUntyped();
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationResultInner.error = OperationResultErrorProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultInner;
+        });
     }
 }

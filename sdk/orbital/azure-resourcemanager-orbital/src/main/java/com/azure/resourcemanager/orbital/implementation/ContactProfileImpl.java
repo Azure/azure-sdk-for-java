@@ -169,8 +169,8 @@ public final class ContactProfileImpl implements ContactProfile, ContactProfile.
         com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.contactProfileName = Utils.getValueFromIdByName(innerObject.id(), "contactProfiles");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.contactProfileName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "contactProfiles");
     }
 
     public ContactProfile refresh() {

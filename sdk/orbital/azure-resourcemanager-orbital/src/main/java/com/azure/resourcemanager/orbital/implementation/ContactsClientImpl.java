@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ContactsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContactsClient.
+ */
 public final class ContactsClientImpl implements ContactsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ContactsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureOrbitalImpl client;
 
     /**
      * Initializes an instance of ContactsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ContactsClientImpl(AzureOrbitalImpl client) {
@@ -114,18 +120,18 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Returns list of contacts by spacecraftName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContacts API service call along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactInner>> listSinglePageAsync(String resourceGroupName, String spacecraftName,
@@ -157,19 +163,19 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Returns list of contacts by spacecraftName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContacts API service call along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactInner>> listSinglePageAsync(String resourceGroupName, String spacecraftName,
@@ -200,13 +206,13 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Returns list of contacts by spacecraftName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -220,7 +226,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Returns list of contacts by spacecraftName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,13 +243,13 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Returns list of contacts by spacecraftName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -259,7 +265,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Returns list of contacts by spacecraftName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,13 +281,13 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Returns list of contacts by spacecraftName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -296,7 +302,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Gets the specified contact in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -304,7 +310,7 @@ public final class ContactsClientImpl implements ContactsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified contact in a specified resource group along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ContactInner>> getWithResponseAsync(String resourceGroupName, String spacecraftName,
@@ -337,7 +343,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Gets the specified contact in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -346,7 +352,7 @@ public final class ContactsClientImpl implements ContactsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified contact in a specified resource group along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ContactInner>> getWithResponseAsync(String resourceGroupName, String spacecraftName,
@@ -377,7 +383,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Gets the specified contact in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -394,7 +400,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Gets the specified contact in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -412,7 +418,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Gets the specified contact in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -428,7 +434,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -437,7 +443,7 @@ public final class ContactsClientImpl implements ContactsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a contact resource for a spacecraft resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String spacecraftName,
@@ -475,7 +481,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -485,7 +491,7 @@ public final class ContactsClientImpl implements ContactsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return customer creates a contact resource for a spacecraft resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String spacecraftName,
@@ -521,7 +527,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -542,7 +548,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -565,7 +571,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -583,7 +589,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -603,7 +609,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -622,7 +628,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -642,7 +648,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -660,7 +666,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -679,7 +685,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -719,7 +725,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -758,7 +764,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -777,7 +783,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -799,7 +805,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -816,7 +822,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -834,7 +840,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -851,7 +857,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -870,7 +876,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -885,7 +891,7 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -901,14 +907,13 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContacts API service call along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactInner>> listNextSinglePageAsync(String nextLink) {
@@ -928,15 +933,14 @@ public final class ContactsClientImpl implements ContactsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListContacts API service call along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ContactInner>> listNextSinglePageAsync(String nextLink, Context context) {

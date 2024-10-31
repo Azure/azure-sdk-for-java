@@ -44,7 +44,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to OrbitalManager. Azure Orbital service. */
+/**
+ * Entry point to OrbitalManager.
+ * Azure Orbital service.
+ */
 public final class OrbitalManager {
     private Operations operations;
 
@@ -72,7 +75,7 @@ public final class OrbitalManager {
 
     /**
      * Creates an instance of orbital service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the orbital service API instance.
@@ -85,7 +88,7 @@ public final class OrbitalManager {
 
     /**
      * Creates an instance of orbital service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the orbital service API instance.
@@ -98,14 +101,16 @@ public final class OrbitalManager {
 
     /**
      * Gets a Configurable instance that can be used to create OrbitalManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new OrbitalManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -177,8 +182,8 @@ public final class OrbitalManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -220,7 +225,7 @@ public final class OrbitalManager {
                 .append("-")
                 .append("com.azure.resourcemanager.orbital")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -268,7 +273,7 @@ public final class OrbitalManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -280,7 +285,7 @@ public final class OrbitalManager {
 
     /**
      * Gets the resource collection API of Spacecrafts. It manages Spacecraft.
-     *
+     * 
      * @return Resource collection API of Spacecrafts.
      */
     public Spacecrafts spacecrafts() {
@@ -292,7 +297,7 @@ public final class OrbitalManager {
 
     /**
      * Gets the resource collection API of Contacts. It manages Contact.
-     *
+     * 
      * @return Resource collection API of Contacts.
      */
     public Contacts contacts() {
@@ -304,7 +309,7 @@ public final class OrbitalManager {
 
     /**
      * Gets the resource collection API of ContactProfiles. It manages ContactProfile.
-     *
+     * 
      * @return Resource collection API of ContactProfiles.
      */
     public ContactProfiles contactProfiles() {
@@ -316,7 +321,7 @@ public final class OrbitalManager {
 
     /**
      * Gets the resource collection API of AvailableGroundStations.
-     *
+     * 
      * @return Resource collection API of AvailableGroundStations.
      */
     public AvailableGroundStations availableGroundStations() {
@@ -329,7 +334,7 @@ public final class OrbitalManager {
 
     /**
      * Gets the resource collection API of OperationsResults.
-     *
+     * 
      * @return Resource collection API of OperationsResults.
      */
     public OperationsResults operationsResults() {
@@ -340,8 +345,10 @@ public final class OrbitalManager {
     }
 
     /**
-     * @return Wrapped service client AzureOrbital providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client AzureOrbital providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client AzureOrbital.
      */
     public AzureOrbital serviceClient() {
         return this.clientObject;
