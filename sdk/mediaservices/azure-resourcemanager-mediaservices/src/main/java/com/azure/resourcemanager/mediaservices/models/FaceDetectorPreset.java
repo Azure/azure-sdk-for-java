@@ -5,20 +5,23 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Describes all the settings to be used when analyzing a video in order to detect (and optionally redact) all the faces
  * present.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.FaceDetectorPreset")
 @Fluent
 public final class FaceDetectorPreset extends Preset {
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.FaceDetectorPreset";
+
     /*
      * Specifies the maximum resolution at which your video is analyzed. The default behavior is "SourceResolution,"
      * which will keep the input video at its original resolution when analyzed. Using "StandardDefinition" will resize
@@ -26,38 +29,45 @@ public final class FaceDetectorPreset extends Preset {
      * video is of higher resolution. For example, a 1920x1080 input would be scaled to 640x360 before processing.
      * Switching to "StandardDefinition" will reduce the time it takes to process high resolution video. It may also
      * reduce the cost of using this component (see
-     * https://azure.microsoft.com/en-us/pricing/details/media-services/#analytics for details). However, faces that
-     * end up being too small in the resized video may not be detected.
+     * https://azure.microsoft.com/en-us/pricing/details/media-services/#analytics for details). However, faces that end
+     * up being too small in the resized video may not be detected.
      */
-    @JsonProperty(value = "resolution")
     private AnalysisResolution resolution;
 
     /*
      * This mode provides the ability to choose between the following settings: 1) Analyze - For detection only.This
-     * mode generates a metadata JSON file marking appearances of faces throughout the video.Where possible,
-     * appearances of the same person are assigned the same ID. 2) Combined - Additionally redacts(blurs) detected
-     * faces. 3) Redact - This enables a 2-pass process, allowing for selective redaction of a subset of detected
-     * faces.It takes in the metadata file from a prior analyze pass, along with the source video, and a user-selected
-     * subset of IDs that require redaction.
+     * mode generates a metadata JSON file marking appearances of faces throughout the video.Where possible, appearances
+     * of the same person are assigned the same ID. 2) Combined - Additionally redacts(blurs) detected faces. 3) Redact
+     * - This enables a 2-pass process, allowing for selective redaction of a subset of detected faces.It takes in the
+     * metadata file from a prior analyze pass, along with the source video, and a user-selected subset of IDs that
+     * require redaction.
      */
-    @JsonProperty(value = "mode")
     private FaceRedactorMode mode;
 
     /*
      * Blur type
      */
-    @JsonProperty(value = "blurType")
     private BlurType blurType;
 
     /*
      * Dictionary containing key value pairs for parameters not exposed in the preset itself
      */
-    @JsonProperty(value = "experimentalOptions")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> experimentalOptions;
 
-    /** Creates an instance of FaceDetectorPreset class. */
+    /**
+     * Creates an instance of FaceDetectorPreset class.
+     */
     public FaceDetectorPreset() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
@@ -69,7 +79,7 @@ public final class FaceDetectorPreset extends Preset {
      * resolution video. It may also reduce the cost of using this component (see
      * https://azure.microsoft.com/en-us/pricing/details/media-services/#analytics for details). However, faces that end
      * up being too small in the resized video may not be detected.
-     *
+     * 
      * @return the resolution value.
      */
     public AnalysisResolution resolution() {
@@ -85,7 +95,7 @@ public final class FaceDetectorPreset extends Preset {
      * resolution video. It may also reduce the cost of using this component (see
      * https://azure.microsoft.com/en-us/pricing/details/media-services/#analytics for details). However, faces that end
      * up being too small in the resized video may not be detected.
-     *
+     * 
      * @param resolution the resolution value to set.
      * @return the FaceDetectorPreset object itself.
      */
@@ -101,7 +111,7 @@ public final class FaceDetectorPreset extends Preset {
      * detected faces. 3) Redact - This enables a 2-pass process, allowing for selective redaction of a subset of
      * detected faces.It takes in the metadata file from a prior analyze pass, along with the source video, and a
      * user-selected subset of IDs that require redaction.
-     *
+     * 
      * @return the mode value.
      */
     public FaceRedactorMode mode() {
@@ -115,7 +125,7 @@ public final class FaceDetectorPreset extends Preset {
      * detected faces. 3) Redact - This enables a 2-pass process, allowing for selective redaction of a subset of
      * detected faces.It takes in the metadata file from a prior analyze pass, along with the source video, and a
      * user-selected subset of IDs that require redaction.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the FaceDetectorPreset object itself.
      */
@@ -126,7 +136,7 @@ public final class FaceDetectorPreset extends Preset {
 
     /**
      * Get the blurType property: Blur type.
-     *
+     * 
      * @return the blurType value.
      */
     public BlurType blurType() {
@@ -135,7 +145,7 @@ public final class FaceDetectorPreset extends Preset {
 
     /**
      * Set the blurType property: Blur type.
-     *
+     * 
      * @param blurType the blurType value to set.
      * @return the FaceDetectorPreset object itself.
      */
@@ -147,7 +157,7 @@ public final class FaceDetectorPreset extends Preset {
     /**
      * Get the experimentalOptions property: Dictionary containing key value pairs for parameters not exposed in the
      * preset itself.
-     *
+     * 
      * @return the experimentalOptions value.
      */
     public Map<String, String> experimentalOptions() {
@@ -157,7 +167,7 @@ public final class FaceDetectorPreset extends Preset {
     /**
      * Set the experimentalOptions property: Dictionary containing key value pairs for parameters not exposed in the
      * preset itself.
-     *
+     * 
      * @param experimentalOptions the experimentalOptions value to set.
      * @return the FaceDetectorPreset object itself.
      */
@@ -168,11 +178,60 @@ public final class FaceDetectorPreset extends Preset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("resolution", this.resolution == null ? null : this.resolution.toString());
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeStringField("blurType", this.blurType == null ? null : this.blurType.toString());
+        jsonWriter.writeMapField("experimentalOptions", this.experimentalOptions,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FaceDetectorPreset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FaceDetectorPreset if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FaceDetectorPreset.
+     */
+    public static FaceDetectorPreset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FaceDetectorPreset deserializedFaceDetectorPreset = new FaceDetectorPreset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedFaceDetectorPreset.odataType = reader.getString();
+                } else if ("resolution".equals(fieldName)) {
+                    deserializedFaceDetectorPreset.resolution = AnalysisResolution.fromString(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedFaceDetectorPreset.mode = FaceRedactorMode.fromString(reader.getString());
+                } else if ("blurType".equals(fieldName)) {
+                    deserializedFaceDetectorPreset.blurType = BlurType.fromString(reader.getString());
+                } else if ("experimentalOptions".equals(fieldName)) {
+                    Map<String, String> experimentalOptions = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFaceDetectorPreset.experimentalOptions = experimentalOptions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFaceDetectorPreset;
+        });
     }
 }

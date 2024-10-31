@@ -5,26 +5,82 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies that the content key ID is in the PlayReady header. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader")
+/**
+ * Specifies that the content key ID is in the PlayReady header.
+ */
 @Immutable
 public final class ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader
     extends ContentKeyPolicyPlayReadyContentKeyLocation {
-    /** Creates an instance of ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader class. */
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader";
+
+    /**
+     * Creates an instance of ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader class.
+     */
     public ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader if the JsonReader was pointing to
+     * an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.
+     */
+    public static ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader deserializedContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader
+                = new ContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicyPlayReadyContentEncryptionKeyFromHeader;
+        });
     }
 }

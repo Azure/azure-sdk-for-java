@@ -10,9 +10,8 @@ import com.azure.resourcemanager.streamanalytics.models.PrivateLinkConnectionSta
 public final class PrivateLinkConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkConnectionState model = BinaryData
-            .fromString(
-                "{\"status\":\"ilpjzuaejxdult\",\"description\":\"zbbtdzumveek\",\"actionsRequired\":\"wozuhkf\"}")
+        PrivateLinkConnectionState model = BinaryData.fromString(
+            "{\"status\":\"knalaulppg\",\"description\":\"tpnapnyiropuhpig\",\"actionsRequired\":\"gylgqgitxmedjvcs\"}")
             .toObject(PrivateLinkConnectionState.class);
     }
 

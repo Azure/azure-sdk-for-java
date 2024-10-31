@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The operator to use for comparison. */
+/**
+ * The operator to use for comparison.
+ */
 public final class QueryOperatorType extends ExpandableStringEnum<QueryOperatorType> {
-    /** Static value In for QueryOperatorType. */
+    /**
+     * Static value In for QueryOperatorType.
+     */
     public static final QueryOperatorType IN = fromString("In");
 
     /**
      * Creates a new instance of QueryOperatorType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,18 +27,17 @@ public final class QueryOperatorType extends ExpandableStringEnum<QueryOperatorT
 
     /**
      * Creates or finds a QueryOperatorType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QueryOperatorType.
      */
-    @JsonCreator
     public static QueryOperatorType fromString(String name) {
         return fromString(name, QueryOperatorType.class);
     }
 
     /**
      * Gets known QueryOperatorType values.
-     *
+     * 
      * @return known QueryOperatorType values.
      */
     public static Collection<QueryOperatorType> values() {

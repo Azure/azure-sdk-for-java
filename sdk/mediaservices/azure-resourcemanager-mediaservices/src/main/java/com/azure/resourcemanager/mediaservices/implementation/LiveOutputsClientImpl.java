@@ -39,17 +39,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LiveOutputsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LiveOutputsClient.
+ */
 public final class LiveOutputsClientImpl implements LiveOutputsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LiveOutputsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of LiveOutputsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LiveOutputsClientImpl(AzureMediaServicesImpl client) {
@@ -66,8 +72,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     @ServiceInterface(name = "AzureMediaServicesLi")
     public interface LiveOutputsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/liveOutputs")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/liveOutputs")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LiveOutputListResult>> list(@HostParam("$host") String endpoint,
@@ -77,8 +82,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LiveOutputInner>> get(@HostParam("$host") String endpoint,
@@ -88,8 +92,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
@@ -100,8 +103,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
@@ -111,8 +113,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveOutputOperations/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveOutputOperations/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AsyncOperationResultInner>> asyncOperation(@HostParam("$host") String endpoint,
@@ -122,9 +123,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}/operationLocations"
-            + "/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}/operationLocations/{operationId}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LiveOutputInner>> operationLocation(@HostParam("$host") String endpoint,
@@ -144,9 +143,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * List Live Outputs
-     *
-     * <p>Lists the live outputs of a live event.
-     *
+     * 
+     * Lists the live outputs of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -188,9 +187,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * List Live Outputs
-     *
-     * <p>Lists the live outputs of a live event.
-     *
+     * 
+     * Lists the live outputs of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -233,9 +232,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * List Live Outputs
-     *
-     * <p>Lists the live outputs of a live event.
-     *
+     * 
+     * Lists the live outputs of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -252,9 +251,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * List Live Outputs
-     *
-     * <p>Lists the live outputs of a live event.
-     *
+     * 
+     * Lists the live outputs of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -273,9 +272,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * List Live Outputs
-     *
-     * <p>Lists the live outputs of a live event.
-     *
+     * 
+     * Lists the live outputs of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -291,9 +290,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * List Live Outputs
-     *
-     * <p>Lists the live outputs of a live event.
-     *
+     * 
+     * Lists the live outputs of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -311,9 +310,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get Live Output
-     *
-     * <p>Gets a live output.
-     *
+     * 
+     * Gets a live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -357,9 +356,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get Live Output
-     *
-     * <p>Gets a live output.
-     *
+     * 
+     * Gets a live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -403,9 +402,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get Live Output
-     *
-     * <p>Gets a live output.
-     *
+     * 
+     * Gets a live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -424,9 +423,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get Live Output
-     *
-     * <p>Gets a live output.
-     *
+     * 
+     * Gets a live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -445,9 +444,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get Live Output
-     *
-     * <p>Gets a live output.
-     *
+     * 
+     * Gets a live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -465,9 +464,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -517,9 +516,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -569,9 +568,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -593,9 +592,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -619,9 +618,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -641,9 +640,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -664,9 +663,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -686,9 +685,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -710,9 +709,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -731,9 +730,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Create Live Output
-     *
-     * <p>Creates a new live output.
-     *
+     * 
+     * Creates a new live output.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -753,9 +752,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -799,9 +798,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -845,9 +844,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -868,9 +867,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -893,9 +892,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -913,9 +912,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -935,9 +934,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -956,9 +955,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -978,9 +977,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -996,9 +995,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Delete Live Output
-     *
-     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
-     *
+     * 
+     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1016,9 +1015,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -1058,9 +1057,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -1100,9 +1099,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -1120,9 +1119,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -1140,9 +1139,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -1158,9 +1157,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1209,9 +1208,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1259,9 +1258,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1281,9 +1280,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1304,9 +1303,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a Live Output operation status.
-     *
+     * 
+     * Get a Live Output operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1326,9 +1325,8 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1352,9 +1350,8 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -110,9 +110,9 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
     TagRuleImpl(TagRuleInner innerObject, com.azure.resourcemanager.dynatrace.DynatraceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = Utils.getValueFromIdByName(innerObject.id(), "monitors");
-        this.ruleSetName = Utils.getValueFromIdByName(innerObject.id(), "tagRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.ruleSetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tagRules");
     }
 
     public TagRule refresh() {

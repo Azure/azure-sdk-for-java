@@ -14,23 +14,21 @@ public final class Mp4FormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Mp4Format model = BinaryData.fromString(
-            "{\"@odata.type\":\"#Microsoft.Media.Mp4Format\",\"outputFiles\":[{\"labels\":[\"uqovekqvgqouwif\",\"mpjw\",\"ivqikfxcvhr\"]},{\"labels\":[\"phuagrttikteusq\",\"zkvyklx\",\"byjaffmmf\",\"lcqcuubgqibrt\"]},{\"labels\":[\"metttwgd\",\"lqxihhrmooiz\",\"seypxiutcxapz\",\"y\"]},{\"labels\":[\"etoge\",\"joxslhvnhla\",\"rqnkkzjcjbtr\"]}],\"filenamePattern\":\"aehvvibrxjjstoq\"}")
+            "{\"@odata.type\":\"#Microsoft.Media.Mp4Format\",\"outputFiles\":[{\"labels\":[\"jpdn\",\"zhajoylhjlmuo\",\"xprimrsop\"]},{\"labels\":[\"ecj\",\"eislstvasylwx\"]},{\"labels\":[\"aumweoohguufu\"]}],\"filenamePattern\":\"boyjathwt\"}")
             .toObject(Mp4Format.class);
-        Assertions.assertEquals("aehvvibrxjjstoq", model.filenamePattern());
-        Assertions.assertEquals("uqovekqvgqouwif", model.outputFiles().get(0).labels().get(0));
+        Assertions.assertEquals("boyjathwt", model.filenamePattern());
+        Assertions.assertEquals("jpdn", model.outputFiles().get(0).labels().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Mp4Format model = new Mp4Format().withFilenamePattern("aehvvibrxjjstoq")
+        Mp4Format model = new Mp4Format().withFilenamePattern("boyjathwt")
             .withOutputFiles(
-                Arrays.asList(new OutputFile().withLabels(Arrays.asList("uqovekqvgqouwif", "mpjw", "ivqikfxcvhr")),
-                    new OutputFile()
-                        .withLabels(Arrays.asList("phuagrttikteusq", "zkvyklx", "byjaffmmf", "lcqcuubgqibrt")),
-                    new OutputFile().withLabels(Arrays.asList("metttwgd", "lqxihhrmooiz", "seypxiutcxapz", "y")),
-                    new OutputFile().withLabels(Arrays.asList("etoge", "joxslhvnhla", "rqnkkzjcjbtr"))));
+                Arrays.asList(new OutputFile().withLabels(Arrays.asList("jpdn", "zhajoylhjlmuo", "xprimrsop")),
+                    new OutputFile().withLabels(Arrays.asList("ecj", "eislstvasylwx")),
+                    new OutputFile().withLabels(Arrays.asList("aumweoohguufu"))));
         model = BinaryData.fromObject(model).toObject(Mp4Format.class);
-        Assertions.assertEquals("aehvvibrxjjstoq", model.filenamePattern());
-        Assertions.assertEquals("uqovekqvgqouwif", model.outputFiles().get(0).labels().get(0));
+        Assertions.assertEquals("boyjathwt", model.filenamePattern());
+        Assertions.assertEquals("jpdn", model.outputFiles().get(0).labels().get(0));
     }
 }

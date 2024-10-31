@@ -19,13 +19,15 @@ import com.azure.resourcemanager.reservations.models.PatchModel;
 import com.azure.resourcemanager.reservations.models.SplitRequest;
 import java.util.List;
 
-/** An instance of this class provides access to all the operations defined in ReservationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReservationsClient.
+ */
 public interface ReservationsClient {
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -33,7 +35,7 @@ public interface ReservationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the response of available scope api containing scopes and their
-     *     eligibilities.
+     * eligibilities.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner>
@@ -41,9 +43,9 @@ public interface ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -52,7 +54,7 @@ public interface ReservationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the response of available scope api containing scopes and their
-     *     eligibilities.
+     * eligibilities.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner> beginAvailableScopes(
@@ -60,9 +62,9 @@ public interface ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -77,9 +79,9 @@ public interface ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -95,9 +97,9 @@ public interface ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -111,9 +113,9 @@ public interface ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @param context The context to associate with this operation.
@@ -128,9 +130,9 @@ public interface ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,9 +145,9 @@ public interface ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @param context The context to associate with this operation.
@@ -159,10 +161,10 @@ public interface ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,10 +178,10 @@ public interface ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @param context The context to associate with this operation.
@@ -194,10 +196,10 @@ public interface ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,10 +212,10 @@ public interface ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @param context The context to associate with this operation.
@@ -227,9 +229,9 @@ public interface ReservationsClient {
 
     /**
      * Get `Reservation`s in a given reservation Order
-     *
-     * <p>List `Reservation`s within a single `ReservationOrder`.
-     *
+     * 
+     * List `Reservation`s within a single `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -241,9 +243,9 @@ public interface ReservationsClient {
 
     /**
      * Get `Reservation`s in a given reservation Order
-     *
-     * <p>List `Reservation`s within a single `ReservationOrder`.
-     *
+     * 
+     * List `Reservation`s within a single `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -256,9 +258,9 @@ public interface ReservationsClient {
 
     /**
      * Get `Reservation` details.
-     *
-     * <p>Get specific `Reservation` details.
-     *
+     * 
+     * Get specific `Reservation` details.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param expand Supported value of this query is renewProperties.
@@ -274,9 +276,9 @@ public interface ReservationsClient {
 
     /**
      * Get `Reservation` details.
-     *
-     * <p>Get specific `Reservation` details.
-     *
+     * 
+     * Get specific `Reservation` details.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,9 +291,9 @@ public interface ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -306,9 +308,9 @@ public interface ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -324,9 +326,9 @@ public interface ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -340,9 +342,9 @@ public interface ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -358,9 +360,9 @@ public interface ReservationsClient {
 
     /**
      * Archive a `Reservation`.
-     *
-     * <p>Archiving a `Reservation` moves it to `Archived` state.
-     *
+     * 
+     * Archiving a `Reservation` moves it to `Archived` state.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param context The context to associate with this operation.
@@ -374,9 +376,9 @@ public interface ReservationsClient {
 
     /**
      * Archive a `Reservation`.
-     *
-     * <p>Archiving a `Reservation` moves it to `Archived` state.
-     *
+     * 
+     * Archiving a `Reservation` moves it to `Archived` state.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -388,9 +390,9 @@ public interface ReservationsClient {
 
     /**
      * Unarchive a `Reservation`.
-     *
-     * <p>Restores a `Reservation` to the state it was before archiving.
-     *
+     * 
+     * Restores a `Reservation` to the state it was before archiving.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param context The context to associate with this operation.
@@ -404,9 +406,9 @@ public interface ReservationsClient {
 
     /**
      * Unarchive a `Reservation`.
-     *
-     * <p>Restores a `Reservation` to the state it was before archiving.
-     *
+     * 
+     * Restores a `Reservation` to the state it was before archiving.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -418,9 +420,9 @@ public interface ReservationsClient {
 
     /**
      * Get `Reservation` revisions.
-     *
-     * <p>List of all the revisions for the `Reservation`.
-     *
+     * 
+     * List of all the revisions for the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -433,9 +435,9 @@ public interface ReservationsClient {
 
     /**
      * Get `Reservation` revisions.
-     *
-     * <p>List of all the revisions for the `Reservation`.
-     *
+     * 
+     * List of all the revisions for the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param context The context to associate with this operation.
@@ -451,11 +453,11 @@ public interface ReservationsClient {
     /**
      * List the reservations and the roll up counts of reservations group by provisioning states that the user has
      * access to in the current tenant.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReservationResponseInner> listAll();
@@ -463,15 +465,15 @@ public interface ReservationsClient {
     /**
      * List the reservations and the roll up counts of reservations group by provisioning states that the user has
      * access to in the current tenant.
-     *
+     * 
      * @param filter May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does
-     *     not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
-     *     properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
-     *     expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
-     *     userFriendlyRenewState}.
+     * not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
+     * properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
+     * expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
+     * userFriendlyRenewState}.
      * @param orderby May be used to sort order by reservation properties.
      * @param refreshSummary To indicate whether to refresh the roll up counts of the reservations group by provisioning
-     *     states.
+     * states.
      * @param skiptoken The number of reservations to skip from the list before returning results.
      * @param selectedState The selected provisioning state.
      * @param take To number of reservations to return.
@@ -480,7 +482,7 @@ public interface ReservationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReservationResponseInner> listAll(String filter, String orderby, String refreshSummary,

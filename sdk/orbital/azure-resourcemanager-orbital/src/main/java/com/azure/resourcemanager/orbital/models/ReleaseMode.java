@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Release Status of a ground station. */
+/**
+ * Release Status of a ground station.
+ */
 public final class ReleaseMode extends ExpandableStringEnum<ReleaseMode> {
-    /** Static value Preview for ReleaseMode. */
+    /**
+     * Static value Preview for ReleaseMode.
+     */
     public static final ReleaseMode PREVIEW = fromString("Preview");
 
-    /** Static value GA for ReleaseMode. */
+    /**
+     * Static value GA for ReleaseMode.
+     */
     public static final ReleaseMode GA = fromString("GA");
 
     /**
      * Creates a new instance of ReleaseMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ReleaseMode extends ExpandableStringEnum<ReleaseMode> {
 
     /**
      * Creates or finds a ReleaseMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReleaseMode.
      */
-    @JsonCreator
     public static ReleaseMode fromString(String name) {
         return fromString(name, ReleaseMode.class);
     }
 
     /**
      * Gets known ReleaseMode values.
-     *
+     * 
      * @return known ReleaseMode values.
      */
     public static Collection<ReleaseMode> values() {

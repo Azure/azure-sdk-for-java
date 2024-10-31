@@ -18,11 +18,13 @@ import com.azure.resourcemanager.managedapplications.fluent.models.ManagedIdenti
 import com.azure.resourcemanager.managedapplications.fluent.models.UpdateAccessDefinitionInner;
 import com.azure.resourcemanager.managedapplications.models.ListTokenRequest;
 
-/** An instance of this class provides access to all the operations defined in ApplicationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationsClient.
+ */
 public interface ApplicationsClient {
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,7 +52,7 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,7 +65,7 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -77,7 +79,7 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +91,7 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -102,7 +104,7 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -117,7 +119,7 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -133,7 +135,7 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -147,7 +149,7 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -163,7 +165,7 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -177,7 +179,7 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -193,7 +195,7 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +208,7 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -222,7 +224,7 @@ public interface ApplicationsClient {
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -234,7 +236,7 @@ public interface ApplicationsClient {
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -247,7 +249,7 @@ public interface ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed applications as paginated response with {@link PagedIterable}.
@@ -257,7 +259,7 @@ public interface ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -269,10 +271,10 @@ public interface ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -284,10 +286,10 @@ public interface ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -298,10 +300,10 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -312,10 +314,10 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -327,10 +329,10 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -340,10 +342,10 @@ public interface ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -354,10 +356,10 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -370,10 +372,10 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -387,10 +389,10 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -402,10 +404,10 @@ public interface ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -418,10 +420,10 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -432,10 +434,10 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -449,10 +451,10 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -463,10 +465,10 @@ public interface ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -479,7 +481,7 @@ public interface ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -492,7 +494,7 @@ public interface ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -507,7 +509,7 @@ public interface ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -519,7 +521,7 @@ public interface ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -532,7 +534,7 @@ public interface ApplicationsClient {
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -547,7 +549,7 @@ public interface ApplicationsClient {
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -560,7 +562,7 @@ public interface ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -575,7 +577,7 @@ public interface ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -591,7 +593,7 @@ public interface ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -606,7 +608,7 @@ public interface ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -622,7 +624,7 @@ public interface ApplicationsClient {
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -638,7 +640,7 @@ public interface ApplicationsClient {
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.

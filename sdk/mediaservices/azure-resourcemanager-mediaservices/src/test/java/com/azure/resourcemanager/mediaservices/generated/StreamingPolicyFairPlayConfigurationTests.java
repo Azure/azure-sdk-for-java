@@ -12,19 +12,19 @@ public final class StreamingPolicyFairPlayConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StreamingPolicyFairPlayConfiguration model = BinaryData
-            .fromString("{\"customLicenseAcquisitionUrlTemplate\":\"tppjflcx\",\"allowPersistentLicense\":true}")
+            .fromString("{\"customLicenseAcquisitionUrlTemplate\":\"qtvcofudflvkgj\",\"allowPersistentLicense\":false}")
             .toObject(StreamingPolicyFairPlayConfiguration.class);
-        Assertions.assertEquals("tppjflcx", model.customLicenseAcquisitionUrlTemplate());
-        Assertions.assertEquals(true, model.allowPersistentLicense());
+        Assertions.assertEquals("qtvcofudflvkgj", model.customLicenseAcquisitionUrlTemplate());
+        Assertions.assertEquals(false, model.allowPersistentLicense());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StreamingPolicyFairPlayConfiguration model
-            = new StreamingPolicyFairPlayConfiguration().withCustomLicenseAcquisitionUrlTemplate("tppjflcx")
-                .withAllowPersistentLicense(true);
+            = new StreamingPolicyFairPlayConfiguration().withCustomLicenseAcquisitionUrlTemplate("qtvcofudflvkgj")
+                .withAllowPersistentLicense(false);
         model = BinaryData.fromObject(model).toObject(StreamingPolicyFairPlayConfiguration.class);
-        Assertions.assertEquals("tppjflcx", model.customLicenseAcquisitionUrlTemplate());
-        Assertions.assertEquals(true, model.allowPersistentLicense());
+        Assertions.assertEquals("qtvcofudflvkgj", model.customLicenseAcquisitionUrlTemplate());
+        Assertions.assertEquals(false, model.allowPersistentLicense());
     }
 }

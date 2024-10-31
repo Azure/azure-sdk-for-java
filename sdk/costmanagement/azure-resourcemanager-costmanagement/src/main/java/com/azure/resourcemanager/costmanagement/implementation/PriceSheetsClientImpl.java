@@ -30,17 +30,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PriceSheetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PriceSheetsClient.
+ */
 public final class PriceSheetsClientImpl implements PriceSheetsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PriceSheetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CostManagementClientImpl client;
 
     /**
      * Initializes an instance of PriceSheetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PriceSheetsClientImpl(CostManagementClientImpl client) {
@@ -78,7 +84,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -86,7 +92,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download the pricesheet for an invoice along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(String billingAccountName,
@@ -116,7 +122,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -125,7 +131,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download the pricesheet for an invoice along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(String billingAccountName,
@@ -154,7 +160,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -175,7 +181,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -198,7 +204,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -216,7 +222,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -235,7 +241,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -254,7 +260,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -274,7 +280,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -291,7 +297,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -312,14 +318,14 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download the current month's pricesheet for a billing profile along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadByBillingProfileWithResponseAsync(String billingAccountName,
@@ -348,7 +354,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param context The context to associate with this operation.
@@ -356,7 +362,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a URL to download the current month's pricesheet for a billing profile along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> downloadByBillingProfileWithResponseAsync(String billingAccountName,
@@ -384,14 +390,14 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a URL to download the current month's pricesheet for a billing
-     *     profile.
+     * profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner>
@@ -407,7 +413,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param context The context to associate with this operation.
@@ -415,7 +421,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a URL to download the current month's pricesheet for a billing
-     *     profile.
+     * profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DownloadUrlInner>, DownloadUrlInner>
@@ -432,14 +438,14 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a URL to download the current month's pricesheet for a billing
-     *     profile.
+     * profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner>
@@ -452,7 +458,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param context The context to associate with this operation.
@@ -460,7 +466,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a URL to download the current month's pricesheet for a billing
-     *     profile.
+     * profile.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DownloadUrlInner>, DownloadUrlInner>
@@ -473,14 +479,14 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download the current month's pricesheet for a billing profile on successful completion of {@link
-     *     Mono}.
+     * @return a URL to download the current month's pricesheet for a billing profile on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DownloadUrlInner> downloadByBillingProfileAsync(String billingAccountName, String billingProfileName) {
@@ -493,15 +499,15 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a URL to download the current month's pricesheet for a billing profile on successful completion of {@link
-     *     Mono}.
+     * @return a URL to download the current month's pricesheet for a billing profile on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DownloadUrlInner> downloadByBillingProfileAsync(String billingAccountName, String billingProfileName,
@@ -515,7 +521,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -533,7 +539,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param context The context to associate with this operation.

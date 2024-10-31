@@ -12,14 +12,14 @@ public final class LiveEventTimedMetadataEndpointTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LiveEventTimedMetadataEndpoint model
-            = BinaryData.fromString("{\"url\":\"nzgmwznmabik\"}").toObject(LiveEventTimedMetadataEndpoint.class);
-        Assertions.assertEquals("nzgmwznmabik", model.url());
+            = BinaryData.fromString("{\"url\":\"vfxzsjab\"}").toObject(LiveEventTimedMetadataEndpoint.class);
+        Assertions.assertEquals("vfxzsjab", model.url());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventTimedMetadataEndpoint model = new LiveEventTimedMetadataEndpoint().withUrl("nzgmwznmabik");
+        LiveEventTimedMetadataEndpoint model = new LiveEventTimedMetadataEndpoint().withUrl("vfxzsjab");
         model = BinaryData.fromObject(model).toObject(LiveEventTimedMetadataEndpoint.class);
-        Assertions.assertEquals("nzgmwznmabik", model.url());
+        Assertions.assertEquals("vfxzsjab", model.url());
     }
 }

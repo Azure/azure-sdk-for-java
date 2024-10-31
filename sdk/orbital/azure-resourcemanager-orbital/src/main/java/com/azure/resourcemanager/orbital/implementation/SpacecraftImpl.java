@@ -155,8 +155,8 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
     SpacecraftImpl(SpacecraftInner innerObject, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.spacecraftName = Utils.getValueFromIdByName(innerObject.id(), "spacecrafts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.spacecraftName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "spacecrafts");
     }
 
     public Spacecraft refresh() {

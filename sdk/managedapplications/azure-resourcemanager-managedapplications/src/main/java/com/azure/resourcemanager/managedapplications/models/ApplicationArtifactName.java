@@ -5,26 +5,35 @@
 package com.azure.resourcemanager.managedapplications.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The managed application artifact name. */
+/**
+ * The managed application artifact name.
+ */
 public final class ApplicationArtifactName extends ExpandableStringEnum<ApplicationArtifactName> {
-    /** Static value NotSpecified for ApplicationArtifactName. */
+    /**
+     * Static value NotSpecified for ApplicationArtifactName.
+     */
     public static final ApplicationArtifactName NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value ViewDefinition for ApplicationArtifactName. */
+    /**
+     * Static value ViewDefinition for ApplicationArtifactName.
+     */
     public static final ApplicationArtifactName VIEW_DEFINITION = fromString("ViewDefinition");
 
-    /** Static value Authorizations for ApplicationArtifactName. */
+    /**
+     * Static value Authorizations for ApplicationArtifactName.
+     */
     public static final ApplicationArtifactName AUTHORIZATIONS = fromString("Authorizations");
 
-    /** Static value CustomRoleDefinition for ApplicationArtifactName. */
+    /**
+     * Static value CustomRoleDefinition for ApplicationArtifactName.
+     */
     public static final ApplicationArtifactName CUSTOM_ROLE_DEFINITION = fromString("CustomRoleDefinition");
 
     /**
      * Creates a new instance of ApplicationArtifactName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,18 +42,17 @@ public final class ApplicationArtifactName extends ExpandableStringEnum<Applicat
 
     /**
      * Creates or finds a ApplicationArtifactName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationArtifactName.
      */
-    @JsonCreator
     public static ApplicationArtifactName fromString(String name) {
         return fromString(name, ApplicationArtifactName.class);
     }
 
     /**
      * Gets known ApplicationArtifactName values.
-     *
+     * 
      * @return known ApplicationArtifactName values.
      */
     public static Collection<ApplicationArtifactName> values() {

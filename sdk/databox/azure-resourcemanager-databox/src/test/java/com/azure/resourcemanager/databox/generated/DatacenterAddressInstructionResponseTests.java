@@ -11,7 +11,7 @@ public final class DatacenterAddressInstructionResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatacenterAddressInstructionResponse model = BinaryData.fromString(
-            "{\"datacenterAddressType\":\"DatacenterAddressInstruction\",\"communicationInstruction\":\"hfwdsjnkaljutiis\",\"supportedCarriersForReturnShipment\":[\"ffgdkz\",\"ewkfvhqcrai\",\"vpnpp\"],\"dataCenterAzureLocation\":\"flrwd\"}")
+            "{\"datacenterAddressType\":\"DatacenterAddressInstruction\",\"communicationInstruction\":\"rdvstkwqqtch\",\"supportedCarriersForReturnShipment\":[\"mfmtdaaygdvw\",\"gpiohgwxrtfudxe\",\"xg\"],\"dataCenterAzureLocation\":\"agvrvmnpkuk\"}")
             .toObject(DatacenterAddressInstructionResponse.class);
     }
 

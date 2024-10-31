@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingPolicyInner;
 
-/** An instance of this class provides access to all the operations defined in StreamingPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StreamingPoliciesClient.
+ */
 public interface StreamingPoliciesClient {
     /**
      * List Streaming Policies
-     *
-     * <p>Lists the Streaming Policies in the account.
-     *
+     * 
+     * Lists the Streaming Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,14 +32,14 @@ public interface StreamingPoliciesClient {
 
     /**
      * List Streaming Policies
-     *
-     * <p>Lists the Streaming Policies in the account.
-     *
+     * 
+     * Lists the Streaming Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,9 +53,9 @@ public interface StreamingPoliciesClient {
 
     /**
      * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -69,9 +71,9 @@ public interface StreamingPoliciesClient {
 
     /**
      * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -85,9 +87,9 @@ public interface StreamingPoliciesClient {
 
     /**
      * Create a Streaming Policy
-     *
-     * <p>Create a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Create a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -104,9 +106,9 @@ public interface StreamingPoliciesClient {
 
     /**
      * Create a Streaming Policy
-     *
-     * <p>Create a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Create a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -122,9 +124,9 @@ public interface StreamingPoliciesClient {
 
     /**
      * Delete a Streaming Policy
-     *
-     * <p>Deletes a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -140,9 +142,9 @@ public interface StreamingPoliciesClient {
 
     /**
      * Delete a Streaming Policy
-     *
-     * <p>Deletes a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.

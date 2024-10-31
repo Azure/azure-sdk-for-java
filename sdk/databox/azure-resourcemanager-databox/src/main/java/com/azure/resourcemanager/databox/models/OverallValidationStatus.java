@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Overall validation status. */
+/**
+ * Overall validation status.
+ */
 public enum OverallValidationStatus {
-    /** Enum value AllValidToProceed. */
+    /**
+     * Enum value AllValidToProceed.
+     */
     ALL_VALID_TO_PROCEED("AllValidToProceed"),
 
-    /** Enum value InputsRevisitRequired. */
+    /**
+     * Enum value InputsRevisitRequired.
+     */
     INPUTS_REVISIT_REQUIRED("InputsRevisitRequired"),
 
-    /** Enum value CertainInputValidationsSkipped. */
+    /**
+     * Enum value CertainInputValidationsSkipped.
+     */
     CERTAIN_INPUT_VALIDATIONS_SKIPPED("CertainInputValidationsSkipped");
 
-    /** The actual serialized value for a OverallValidationStatus instance. */
+    /**
+     * The actual serialized value for a OverallValidationStatus instance.
+     */
     private final String value;
 
     OverallValidationStatus(String value) {
@@ -27,11 +34,10 @@ public enum OverallValidationStatus {
 
     /**
      * Parses a serialized value to a OverallValidationStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed OverallValidationStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static OverallValidationStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum OverallValidationStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

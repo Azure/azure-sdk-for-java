@@ -5,16 +5,21 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An object of optional configuration settings for encoder. */
+/**
+ * An object of optional configuration settings for encoder.
+ */
 @Fluent
-public final class PresetConfigurations {
+public final class PresetConfigurations implements JsonSerializable<PresetConfigurations> {
     /*
      * Allows you to configure the encoder settings to control the balance between speed and quality. Example: set
      * Complexity as Speed for faster encoding but less compression efficiency.
      */
-    @JsonProperty(value = "complexity")
     private Complexity complexity;
 
     /*
@@ -22,59 +27,54 @@ public final class PresetConfigurations {
      * Example: set InterleavedOutput as NonInterleavedOutput to produce audio-only and video-only outputs in separate
      * MP4 files.
      */
-    @JsonProperty(value = "interleaveOutput")
     private InterleaveOutput interleaveOutput;
 
     /*
      * The key frame interval in seconds. Example: set KeyFrameIntervalInSeconds as 2 to reduce the playback buffering
      * for some players.
      */
-    @JsonProperty(value = "keyFrameIntervalInSeconds")
     private Float keyFrameIntervalInSeconds;
 
     /*
-     * The maximum bitrate in bits per second (threshold for the top video layer). Example: set MaxBitrateBps as
-     * 6000000 to avoid producing very high bitrate outputs for contents with high complexity.
+     * The maximum bitrate in bits per second (threshold for the top video layer). Example: set MaxBitrateBps as 6000000
+     * to avoid producing very high bitrate outputs for contents with high complexity.
      */
-    @JsonProperty(value = "maxBitrateBps")
     private Integer maxBitrateBps;
 
     /*
-     * The maximum height of output video layers. Example: set MaxHeight as 720 to produce output layers up to 720P
-     * even if the input is 4K.
+     * The maximum height of output video layers. Example: set MaxHeight as 720 to produce output layers up to 720P even
+     * if the input is 4K.
      */
-    @JsonProperty(value = "maxHeight")
     private Integer maxHeight;
 
     /*
      * The maximum number of output video layers. Example: set MaxLayers as 4 to make sure at most 4 output layers are
      * produced to control the overall cost of the encoding job.
      */
-    @JsonProperty(value = "maxLayers")
     private Integer maxLayers;
 
     /*
      * The minimum bitrate in bits per second (threshold for the bottom video layer). Example: set MinBitrateBps as
      * 200000 to have a bottom layer that covers users with low network bandwidth.
      */
-    @JsonProperty(value = "minBitrateBps")
     private Integer minBitrateBps;
 
     /*
      * The minimum height of output video layers. Example: set MinHeight as 360 to avoid output layers of smaller
      * resolutions like 180P.
      */
-    @JsonProperty(value = "minHeight")
     private Integer minHeight;
 
-    /** Creates an instance of PresetConfigurations class. */
+    /**
+     * Creates an instance of PresetConfigurations class.
+     */
     public PresetConfigurations() {
     }
 
     /**
      * Get the complexity property: Allows you to configure the encoder settings to control the balance between speed
      * and quality. Example: set Complexity as Speed for faster encoding but less compression efficiency.
-     *
+     * 
      * @return the complexity value.
      */
     public Complexity complexity() {
@@ -84,7 +84,7 @@ public final class PresetConfigurations {
     /**
      * Set the complexity property: Allows you to configure the encoder settings to control the balance between speed
      * and quality. Example: set Complexity as Speed for faster encoding but less compression efficiency.
-     *
+     * 
      * @param complexity the complexity value to set.
      * @return the PresetConfigurations object itself.
      */
@@ -97,7 +97,7 @@ public final class PresetConfigurations {
      * Get the interleaveOutput property: Sets the interleave mode of the output to control how audio and video are
      * stored in the container format. Example: set InterleavedOutput as NonInterleavedOutput to produce audio-only and
      * video-only outputs in separate MP4 files.
-     *
+     * 
      * @return the interleaveOutput value.
      */
     public InterleaveOutput interleaveOutput() {
@@ -108,7 +108,7 @@ public final class PresetConfigurations {
      * Set the interleaveOutput property: Sets the interleave mode of the output to control how audio and video are
      * stored in the container format. Example: set InterleavedOutput as NonInterleavedOutput to produce audio-only and
      * video-only outputs in separate MP4 files.
-     *
+     * 
      * @param interleaveOutput the interleaveOutput value to set.
      * @return the PresetConfigurations object itself.
      */
@@ -120,7 +120,7 @@ public final class PresetConfigurations {
     /**
      * Get the keyFrameIntervalInSeconds property: The key frame interval in seconds. Example: set
      * KeyFrameIntervalInSeconds as 2 to reduce the playback buffering for some players.
-     *
+     * 
      * @return the keyFrameIntervalInSeconds value.
      */
     public Float keyFrameIntervalInSeconds() {
@@ -130,7 +130,7 @@ public final class PresetConfigurations {
     /**
      * Set the keyFrameIntervalInSeconds property: The key frame interval in seconds. Example: set
      * KeyFrameIntervalInSeconds as 2 to reduce the playback buffering for some players.
-     *
+     * 
      * @param keyFrameIntervalInSeconds the keyFrameIntervalInSeconds value to set.
      * @return the PresetConfigurations object itself.
      */
@@ -143,7 +143,7 @@ public final class PresetConfigurations {
      * Get the maxBitrateBps property: The maximum bitrate in bits per second (threshold for the top video layer).
      * Example: set MaxBitrateBps as 6000000 to avoid producing very high bitrate outputs for contents with high
      * complexity.
-     *
+     * 
      * @return the maxBitrateBps value.
      */
     public Integer maxBitrateBps() {
@@ -154,7 +154,7 @@ public final class PresetConfigurations {
      * Set the maxBitrateBps property: The maximum bitrate in bits per second (threshold for the top video layer).
      * Example: set MaxBitrateBps as 6000000 to avoid producing very high bitrate outputs for contents with high
      * complexity.
-     *
+     * 
      * @param maxBitrateBps the maxBitrateBps value to set.
      * @return the PresetConfigurations object itself.
      */
@@ -166,7 +166,7 @@ public final class PresetConfigurations {
     /**
      * Get the maxHeight property: The maximum height of output video layers. Example: set MaxHeight as 720 to produce
      * output layers up to 720P even if the input is 4K.
-     *
+     * 
      * @return the maxHeight value.
      */
     public Integer maxHeight() {
@@ -176,7 +176,7 @@ public final class PresetConfigurations {
     /**
      * Set the maxHeight property: The maximum height of output video layers. Example: set MaxHeight as 720 to produce
      * output layers up to 720P even if the input is 4K.
-     *
+     * 
      * @param maxHeight the maxHeight value to set.
      * @return the PresetConfigurations object itself.
      */
@@ -188,7 +188,7 @@ public final class PresetConfigurations {
     /**
      * Get the maxLayers property: The maximum number of output video layers. Example: set MaxLayers as 4 to make sure
      * at most 4 output layers are produced to control the overall cost of the encoding job.
-     *
+     * 
      * @return the maxLayers value.
      */
     public Integer maxLayers() {
@@ -198,7 +198,7 @@ public final class PresetConfigurations {
     /**
      * Set the maxLayers property: The maximum number of output video layers. Example: set MaxLayers as 4 to make sure
      * at most 4 output layers are produced to control the overall cost of the encoding job.
-     *
+     * 
      * @param maxLayers the maxLayers value to set.
      * @return the PresetConfigurations object itself.
      */
@@ -210,7 +210,7 @@ public final class PresetConfigurations {
     /**
      * Get the minBitrateBps property: The minimum bitrate in bits per second (threshold for the bottom video layer).
      * Example: set MinBitrateBps as 200000 to have a bottom layer that covers users with low network bandwidth.
-     *
+     * 
      * @return the minBitrateBps value.
      */
     public Integer minBitrateBps() {
@@ -220,7 +220,7 @@ public final class PresetConfigurations {
     /**
      * Set the minBitrateBps property: The minimum bitrate in bits per second (threshold for the bottom video layer).
      * Example: set MinBitrateBps as 200000 to have a bottom layer that covers users with low network bandwidth.
-     *
+     * 
      * @param minBitrateBps the minBitrateBps value to set.
      * @return the PresetConfigurations object itself.
      */
@@ -232,7 +232,7 @@ public final class PresetConfigurations {
     /**
      * Get the minHeight property: The minimum height of output video layers. Example: set MinHeight as 360 to avoid
      * output layers of smaller resolutions like 180P.
-     *
+     * 
      * @return the minHeight value.
      */
     public Integer minHeight() {
@@ -242,7 +242,7 @@ public final class PresetConfigurations {
     /**
      * Set the minHeight property: The minimum height of output video layers. Example: set MinHeight as 360 to avoid
      * output layers of smaller resolutions like 180P.
-     *
+     * 
      * @param minHeight the minHeight value to set.
      * @return the PresetConfigurations object itself.
      */
@@ -253,9 +253,68 @@ public final class PresetConfigurations {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("complexity", this.complexity == null ? null : this.complexity.toString());
+        jsonWriter.writeStringField("interleaveOutput",
+            this.interleaveOutput == null ? null : this.interleaveOutput.toString());
+        jsonWriter.writeNumberField("keyFrameIntervalInSeconds", this.keyFrameIntervalInSeconds);
+        jsonWriter.writeNumberField("maxBitrateBps", this.maxBitrateBps);
+        jsonWriter.writeNumberField("maxHeight", this.maxHeight);
+        jsonWriter.writeNumberField("maxLayers", this.maxLayers);
+        jsonWriter.writeNumberField("minBitrateBps", this.minBitrateBps);
+        jsonWriter.writeNumberField("minHeight", this.minHeight);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PresetConfigurations from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PresetConfigurations if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PresetConfigurations.
+     */
+    public static PresetConfigurations fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PresetConfigurations deserializedPresetConfigurations = new PresetConfigurations();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("complexity".equals(fieldName)) {
+                    deserializedPresetConfigurations.complexity = Complexity.fromString(reader.getString());
+                } else if ("interleaveOutput".equals(fieldName)) {
+                    deserializedPresetConfigurations.interleaveOutput = InterleaveOutput.fromString(reader.getString());
+                } else if ("keyFrameIntervalInSeconds".equals(fieldName)) {
+                    deserializedPresetConfigurations.keyFrameIntervalInSeconds
+                        = reader.getNullable(JsonReader::getFloat);
+                } else if ("maxBitrateBps".equals(fieldName)) {
+                    deserializedPresetConfigurations.maxBitrateBps = reader.getNullable(JsonReader::getInt);
+                } else if ("maxHeight".equals(fieldName)) {
+                    deserializedPresetConfigurations.maxHeight = reader.getNullable(JsonReader::getInt);
+                } else if ("maxLayers".equals(fieldName)) {
+                    deserializedPresetConfigurations.maxLayers = reader.getNullable(JsonReader::getInt);
+                } else if ("minBitrateBps".equals(fieldName)) {
+                    deserializedPresetConfigurations.minBitrateBps = reader.getNullable(JsonReader::getInt);
+                } else if ("minHeight".equals(fieldName)) {
+                    deserializedPresetConfigurations.minHeight = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPresetConfigurations;
+        });
     }
 }

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.managedapplications.generated;
 
-/** Samples for JitRequests GetByResourceGroup. */
+/**
+ * Samples for JitRequests GetByResourceGroup.
+ */
 public final class JitRequestsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/getJitRequest.json
+     * x-ms-original-file:
+     * specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/getJitRequest.json
      */
     /**
      * Sample code: Gets the jit request.
-     *
+     * 
      * @param manager Entry point to ApplicationManager.
      */
     public static void getsTheJitRequest(com.azure.resourcemanager.managedapplications.ApplicationManager manager) {

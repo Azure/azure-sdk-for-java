@@ -6,42 +6,41 @@ package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * The query compilation object which defines the input, output, and transformation for the query compilation.
  */
 @Fluent
-public final class CompileQuery {
+public final class CompileQuery implements JsonSerializable<CompileQuery> {
     /*
      * The query to compile.
      */
-    @JsonProperty(value = "query", required = true)
     private String query;
 
     /*
      * The inputs for the query compilation.
      */
-    @JsonProperty(value = "inputs")
     private List<QueryInput> inputs;
 
     /*
      * The functions for the query compilation.
      */
-    @JsonProperty(value = "functions")
     private List<QueryFunction> functions;
 
     /*
      * Describes the type of the job. Valid values are `Cloud` and 'Edge'.
      */
-    @JsonProperty(value = "jobType", required = true)
     private JobType jobType;
 
     /*
      * The query to compile.
      */
-    @JsonProperty(value = "compatibilityLevel")
     private CompatibilityLevel compatibilityLevel;
 
     /**
@@ -157,8 +156,8 @@ public final class CompileQuery {
      */
     public void validate() {
         if (query() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property query in model CompileQuery"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property query in model CompileQuery"));
         }
         if (inputs() != null) {
             inputs().forEach(e -> e.validate());
@@ -167,10 +166,62 @@ public final class CompileQuery {
             functions().forEach(e -> e.validate());
         }
         if (jobType() == null) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Missing required property jobType in model CompileQuery"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property jobType in model CompileQuery"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CompileQuery.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeStringField("jobType", this.jobType == null ? null : this.jobType.toString());
+        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("compatibilityLevel",
+            this.compatibilityLevel == null ? null : this.compatibilityLevel.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CompileQuery from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CompileQuery if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CompileQuery.
+     */
+    public static CompileQuery fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CompileQuery deserializedCompileQuery = new CompileQuery();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("query".equals(fieldName)) {
+                    deserializedCompileQuery.query = reader.getString();
+                } else if ("jobType".equals(fieldName)) {
+                    deserializedCompileQuery.jobType = JobType.fromString(reader.getString());
+                } else if ("inputs".equals(fieldName)) {
+                    List<QueryInput> inputs = reader.readArray(reader1 -> QueryInput.fromJson(reader1));
+                    deserializedCompileQuery.inputs = inputs;
+                } else if ("functions".equals(fieldName)) {
+                    List<QueryFunction> functions = reader.readArray(reader1 -> QueryFunction.fromJson(reader1));
+                    deserializedCompileQuery.functions = functions;
+                } else if ("compatibilityLevel".equals(fieldName)) {
+                    deserializedCompileQuery.compatibilityLevel = CompatibilityLevel.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCompileQuery;
+        });
+    }
 }

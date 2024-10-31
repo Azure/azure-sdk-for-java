@@ -5,33 +5,50 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents HTTPS job input. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.JobInputHttp")
+/**
+ * Represents HTTPS job input.
+ */
 @Fluent
 public final class JobInputHttp extends JobInputClip {
     /*
-     * Base URI for HTTPS job input. It will be concatenated with provided file names. If no base uri is given, then
-     * the provided file list is assumed to be fully qualified uris. Maximum length of 4000 characters. The query
-     * strings will not be returned in service responses to prevent sensitive data exposure.
+     * The discriminator for derived types.
      */
-    @JsonProperty(value = "baseUri")
+    private String odataType = "#Microsoft.Media.JobInputHttp";
+
+    /*
+     * Base URI for HTTPS job input. It will be concatenated with provided file names. If no base uri is given, then the
+     * provided file list is assumed to be fully qualified uris. Maximum length of 4000 characters. The query strings
+     * will not be returned in service responses to prevent sensitive data exposure.
+     */
     private String baseUri;
 
-    /** Creates an instance of JobInputHttp class. */
+    /**
+     * Creates an instance of JobInputHttp class.
+     */
     public JobInputHttp() {
+    }
+
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
     }
 
     /**
      * Get the baseUri property: Base URI for HTTPS job input. It will be concatenated with provided file names. If no
      * base uri is given, then the provided file list is assumed to be fully qualified uris. Maximum length of 4000
      * characters. The query strings will not be returned in service responses to prevent sensitive data exposure.
-     *
+     * 
      * @return the baseUri value.
      */
     public String baseUri() {
@@ -42,7 +59,7 @@ public final class JobInputHttp extends JobInputClip {
      * Set the baseUri property: Base URI for HTTPS job input. It will be concatenated with provided file names. If no
      * base uri is given, then the provided file list is assumed to be fully qualified uris. Maximum length of 4000
      * characters. The query strings will not be returned in service responses to prevent sensitive data exposure.
-     *
+     * 
      * @param baseUri the baseUri value to set.
      * @return the JobInputHttp object itself.
      */
@@ -51,35 +68,45 @@ public final class JobInputHttp extends JobInputClip {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobInputHttp withFiles(List<String> files) {
         super.withFiles(files);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobInputHttp withStart(ClipTime start) {
         super.withStart(start);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobInputHttp withEnd(ClipTime end) {
         super.withEnd(end);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobInputHttp withLabel(String label) {
         super.withLabel(label);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JobInputHttp withInputDefinitions(List<InputDefinition> inputDefinitions) {
         super.withInputDefinitions(inputDefinitions);
@@ -88,11 +115,77 @@ public final class JobInputHttp extends JobInputClip {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (start() != null) {
+            start().validate();
+        }
+        if (end() != null) {
+            end().validate();
+        }
+        if (inputDefinitions() != null) {
+            inputDefinitions().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("files", files(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("start", start());
+        jsonWriter.writeJsonField("end", end());
+        jsonWriter.writeStringField("label", label());
+        jsonWriter.writeArrayField("inputDefinitions", inputDefinitions(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeStringField("baseUri", this.baseUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobInputHttp from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobInputHttp if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JobInputHttp.
+     */
+    public static JobInputHttp fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobInputHttp deserializedJobInputHttp = new JobInputHttp();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("files".equals(fieldName)) {
+                    List<String> files = reader.readArray(reader1 -> reader1.getString());
+                    deserializedJobInputHttp.withFiles(files);
+                } else if ("start".equals(fieldName)) {
+                    deserializedJobInputHttp.withStart(ClipTime.fromJson(reader));
+                } else if ("end".equals(fieldName)) {
+                    deserializedJobInputHttp.withEnd(ClipTime.fromJson(reader));
+                } else if ("label".equals(fieldName)) {
+                    deserializedJobInputHttp.withLabel(reader.getString());
+                } else if ("inputDefinitions".equals(fieldName)) {
+                    List<InputDefinition> inputDefinitions
+                        = reader.readArray(reader1 -> InputDefinition.fromJson(reader1));
+                    deserializedJobInputHttp.withInputDefinitions(inputDefinitions);
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedJobInputHttp.odataType = reader.getString();
+                } else if ("baseUri".equals(fieldName)) {
+                    deserializedJobInputHttp.baseUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobInputHttp;
+        });
     }
 }
