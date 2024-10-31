@@ -15,7 +15,8 @@ public final class AuthorizationChallengeParser {
     /**
      * Creates an instance of the AuthorizationChallengeParser.
      */
-    private AuthorizationChallengeParser() { }
+    private AuthorizationChallengeParser() {
+    }
 
     /**
      * Examines a {@link HttpResponse} to see if it is a CAE challenge.
@@ -64,7 +65,9 @@ public final class AuthorizationChallengeParser {
 
         for (int i = 0; i <= length - schemeLength - 1; i++) {
             // Check if the scheme matches and is followed by a space
-            if (challenge.startsWith(challengeScheme, i) && (i + schemeLength < length) && challenge.charAt(i + schemeLength) == ' ') {
+            if (challenge.startsWith(challengeScheme, i)
+                && (i + schemeLength < length)
+                && challenge.charAt(i + schemeLength) == ' ') {
                 schemeIndex = i;
                 break;
             }
