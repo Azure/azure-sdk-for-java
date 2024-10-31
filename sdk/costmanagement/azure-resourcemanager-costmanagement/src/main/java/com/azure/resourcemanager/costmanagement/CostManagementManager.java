@@ -65,8 +65,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to CostManagementManager. CostManagement management client provides access to CostManagement resources
- * for Azure Enterprise Subscriptions.
+ * Entry point to CostManagementManager.
+ * CostManagement management client provides access to CostManagement resources for Azure Enterprise Subscriptions.
  */
 public final class CostManagementManager {
     private Operations operations;
@@ -114,7 +114,7 @@ public final class CostManagementManager {
 
     /**
      * Creates an instance of CostManagement service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the CostManagement service API instance.
@@ -127,7 +127,7 @@ public final class CostManagementManager {
 
     /**
      * Creates an instance of CostManagement service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the CostManagement service API instance.
@@ -140,14 +140,16 @@ public final class CostManagementManager {
 
     /**
      * Gets a Configurable instance that can be used to create CostManagementManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new CostManagementManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -219,8 +221,8 @@ public final class CostManagementManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -262,7 +264,7 @@ public final class CostManagementManager {
                 .append("-")
                 .append("com.azure.resourcemanager.costmanagement")
                 .append("/")
-                .append("1.0.0-beta.6");
+                .append("1.0.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -310,7 +312,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -322,7 +324,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Views. It manages View.
-     *
+     * 
      * @return Resource collection API of Views.
      */
     public Views views() {
@@ -334,7 +336,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Alerts.
-     *
+     * 
      * @return Resource collection API of Alerts.
      */
     public Alerts alerts() {
@@ -346,7 +348,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Forecasts.
-     *
+     * 
      * @return Resource collection API of Forecasts.
      */
     public Forecasts forecasts() {
@@ -358,7 +360,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Dimensions.
-     *
+     * 
      * @return Resource collection API of Dimensions.
      */
     public Dimensions dimensions() {
@@ -370,7 +372,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Queries.
-     *
+     * 
      * @return Resource collection API of Queries.
      */
     public Queries queries() {
@@ -382,7 +384,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of GenerateReservationDetailsReports.
-     *
+     * 
      * @return Resource collection API of GenerateReservationDetailsReports.
      */
     public GenerateReservationDetailsReports generateReservationDetailsReports() {
@@ -395,7 +397,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of Exports. It manages Export.
-     *
+     * 
      * @return Resource collection API of Exports.
      */
     public Exports exports() {
@@ -407,7 +409,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of GenerateCostDetailsReports.
-     *
+     * 
      * @return Resource collection API of GenerateCostDetailsReports.
      */
     public GenerateCostDetailsReports generateCostDetailsReports() {
@@ -420,7 +422,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of GenerateDetailedCostReports.
-     *
+     * 
      * @return Resource collection API of GenerateDetailedCostReports.
      */
     public GenerateDetailedCostReports generateDetailedCostReports() {
@@ -433,7 +435,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of GenerateDetailedCostReportOperationResults.
-     *
+     * 
      * @return Resource collection API of GenerateDetailedCostReportOperationResults.
      */
     public GenerateDetailedCostReportOperationResults generateDetailedCostReportOperationResults() {
@@ -446,7 +448,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of GenerateDetailedCostReportOperationStatus.
-     *
+     * 
      * @return Resource collection API of GenerateDetailedCostReportOperationStatus.
      */
     public GenerateDetailedCostReportOperationStatus generateDetailedCostReportOperationStatus() {
@@ -459,7 +461,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of PriceSheets.
-     *
+     * 
      * @return Resource collection API of PriceSheets.
      */
     public PriceSheets priceSheets() {
@@ -471,7 +473,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of ScheduledActions. It manages ScheduledAction.
-     *
+     * 
      * @return Resource collection API of ScheduledActions.
      */
     public ScheduledActions scheduledActions() {
@@ -483,7 +485,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of BenefitRecommendations.
-     *
+     * 
      * @return Resource collection API of BenefitRecommendations.
      */
     public BenefitRecommendations benefitRecommendations() {
@@ -496,7 +498,7 @@ public final class CostManagementManager {
 
     /**
      * Gets the resource collection API of BenefitUtilizationSummaries.
-     *
+     * 
      * @return Resource collection API of BenefitUtilizationSummaries.
      */
     public BenefitUtilizationSummaries benefitUtilizationSummaries() {
@@ -508,8 +510,10 @@ public final class CostManagementManager {
     }
 
     /**
-     * @return Wrapped service client CostManagementClient providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client CostManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client CostManagementClient.
      */
     public CostManagementClient serviceClient() {
         return this.clientObject;

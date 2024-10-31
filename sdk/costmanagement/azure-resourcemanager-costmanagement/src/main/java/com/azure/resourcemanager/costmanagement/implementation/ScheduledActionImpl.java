@@ -145,9 +145,9 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.scope = Utils.getValueFromIdByParameterName(innerObject.id(),
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
-        this.name = Utils.getValueFromIdByParameterName(innerObject.id(),
+        this.name = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
     }
 

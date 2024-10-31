@@ -29,22 +29,22 @@ public final class ViewsImpl implements Views {
 
     public PagedIterable<View> list() {
         PagedIterable<ViewInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
     }
 
     public PagedIterable<View> list(Context context) {
         PagedIterable<ViewInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
     }
 
     public PagedIterable<View> listByScope(String scope) {
         PagedIterable<ViewInner> inner = this.serviceClient().listByScope(scope);
-        return Utils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
     }
 
     public PagedIterable<View> listByScope(String scope, Context context) {
         PagedIterable<ViewInner> inner = this.serviceClient().listByScope(scope, context);
-        return Utils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ViewImpl(inner1, this.manager()));
     }
 
     public Response<View> getWithResponse(String viewName, Context context) {
@@ -121,13 +121,13 @@ public final class ViewsImpl implements Views {
     }
 
     public View getById(String id) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String viewName = Utils.getValueFromIdByParameterName(id,
+        String viewName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "viewName");
         if (viewName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -137,13 +137,13 @@ public final class ViewsImpl implements Views {
     }
 
     public Response<View> getByIdWithResponse(String id, Context context) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String viewName = Utils.getValueFromIdByParameterName(id,
+        String viewName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "viewName");
         if (viewName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -153,13 +153,13 @@ public final class ViewsImpl implements Views {
     }
 
     public void deleteById(String id) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String viewName = Utils.getValueFromIdByParameterName(id,
+        String viewName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "viewName");
         if (viewName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -169,13 +169,13 @@ public final class ViewsImpl implements Views {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String viewName = Utils.getValueFromIdByParameterName(id,
+        String viewName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/views/{viewName}", "viewName");
         if (viewName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(

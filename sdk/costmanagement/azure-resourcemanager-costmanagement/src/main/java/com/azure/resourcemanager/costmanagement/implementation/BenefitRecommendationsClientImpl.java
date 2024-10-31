@@ -30,17 +30,23 @@ import com.azure.resourcemanager.costmanagement.fluent.models.BenefitRecommendat
 import com.azure.resourcemanager.costmanagement.models.BenefitRecommendationsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BenefitRecommendationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BenefitRecommendationsClient.
+ */
 public final class BenefitRecommendationsClientImpl implements BenefitRecommendationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BenefitRecommendationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CostManagementClientImpl client;
 
     /**
      * Initializes an instance of BenefitRecommendationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BenefitRecommendationsClientImpl(CostManagementClientImpl client) {
@@ -77,25 +83,25 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     *     'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     *     'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y',
-     *     'P3Y'] and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
+     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
+     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
      * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     *     results are in order by default. There is no need to use this clause.
+     * results are in order by default. There is no need to use this clause.
      * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing benefit recommendations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitRecommendationModelInner>> listSinglePageAsync(String billingScope, String filter,
@@ -118,26 +124,26 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     *     'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     *     'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y',
-     *     'P3Y'] and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
+     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
+     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
      * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     *     results are in order by default. There is no need to use this clause.
+     * results are in order by default. There is no need to use this clause.
      * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing benefit recommendations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitRecommendationModelInner>> listSinglePageAsync(String billingScope, String filter,
@@ -160,19 +166,19 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     *     'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     *     'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y',
-     *     'P3Y'] and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
+     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
+     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
      * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     *     results are in order by default. There is no need to use this clause.
+     * results are in order by default. There is no need to use this clause.
      * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -188,13 +194,13 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -211,19 +217,19 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     *     'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     *     'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y',
-     *     'P3Y'] and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
+     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
+     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
      * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     *     results are in order by default. There is no need to use this clause.
+     * results are in order by default. There is no need to use this clause.
      * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -240,13 +246,13 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -262,19 +268,19 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
 
     /**
      * List of recommendations for purchasing savings plan.
-     *
+     * 
      * @param billingScope The scope associated with benefit recommendation operations. This includes
-     *     '/subscriptions/{subscriptionId}/' for subscription scope,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
-     *     /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
-     *     '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for
-     *     billing profile scope.
+     * '/subscriptions/{subscriptionId}/' for subscription scope,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for resource group scope,
+     * /providers/Microsoft.Billing/billingAccounts/{billingAccountId}' for enterprise agreement scope, and
+     * '/providers/Microsoft.Billing/billingAccounts/{billingAccountId}/billingProfiles/{billingProfileId}' for billing
+     * profile scope.
      * @param filter Can be used to filter benefitRecommendations by: properties/scope with allowed values ['Single',
-     *     'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
-     *     'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y',
-     *     'P3Y'] and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
+     * 'Shared'] and default value 'Shared'; and properties/lookBackPeriod with allowed values ['Last7Days',
+     * 'Last30Days', 'Last60Days'] and default value 'Last60Days'; properties/term with allowed values ['P1Y', 'P3Y']
+     * and default value 'P3Y'; properties/subscriptionId; properties/resourceGroup.
      * @param orderby May be used to order the recommendations by: properties/armSkuName. For the savings plan, the
-     *     results are in order by default. There is no need to use this clause.
+     * results are in order by default. There is no need to use this clause.
      * @param expand May be used to expand the properties by: properties/usage, properties/allRecommendationDetails.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -290,14 +296,13 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing benefit recommendations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitRecommendationModelInner>> listNextSinglePageAsync(String nextLink) {
@@ -317,15 +322,14 @@ public final class BenefitRecommendationsClientImpl implements BenefitRecommenda
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing benefit recommendations along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BenefitRecommendationModelInner>> listNextSinglePageAsync(String nextLink,

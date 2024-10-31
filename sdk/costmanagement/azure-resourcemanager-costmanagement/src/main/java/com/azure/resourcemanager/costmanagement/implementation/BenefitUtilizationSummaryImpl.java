@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.costmanagement.implementation;
 
 import com.azure.resourcemanager.costmanagement.fluent.models.BenefitUtilizationSummaryInner;
+import com.azure.resourcemanager.costmanagement.models.BenefitKind;
 import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummary;
 
 public final class BenefitUtilizationSummaryImpl implements BenefitUtilizationSummary {
@@ -28,6 +29,10 @@ public final class BenefitUtilizationSummaryImpl implements BenefitUtilizationSu
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public BenefitKind kind() {
+        return this.innerModel().kind();
     }
 
     public BenefitUtilizationSummaryInner innerModel() {

@@ -106,13 +106,13 @@ public final class ExportsImpl implements Exports {
     }
 
     public Export getById(String id) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String exportName = Utils.getValueFromIdByParameterName(id,
+        String exportName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "exportName");
         if (exportName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -123,13 +123,13 @@ public final class ExportsImpl implements Exports {
     }
 
     public Response<Export> getByIdWithResponse(String id, String expand, Context context) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String exportName = Utils.getValueFromIdByParameterName(id,
+        String exportName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "exportName");
         if (exportName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -139,13 +139,13 @@ public final class ExportsImpl implements Exports {
     }
 
     public void deleteById(String id) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String exportName = Utils.getValueFromIdByParameterName(id,
+        String exportName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "exportName");
         if (exportName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -155,13 +155,13 @@ public final class ExportsImpl implements Exports {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String exportName = Utils.getValueFromIdByParameterName(id,
+        String exportName = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/exports/{exportName}", "exportName");
         if (exportName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(

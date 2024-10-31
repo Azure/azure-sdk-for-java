@@ -13,22 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class QueryComparisonExpressionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QueryComparisonExpression model = BinaryData
-            .fromString("{\"name\":\"cewiipfpub\",\"operator\":\"In\",\"values\":[\"wwiftohqkvpuv\",\"sgplsakn\"]}")
+        QueryComparisonExpression model = BinaryData.fromString(
+            "{\"name\":\"iwdcxsmlzzhzd\",\"operator\":\"In\",\"values\":[\"tlgy\",\"lhqvlnnpxybafi\",\"geaar\",\"gjekglklby\"]}")
             .toObject(QueryComparisonExpression.class);
-        Assertions.assertEquals("cewiipfpub", model.name());
+        Assertions.assertEquals("iwdcxsmlzzhzd", model.name());
         Assertions.assertEquals(QueryOperatorType.IN, model.operator());
-        Assertions.assertEquals("wwiftohqkvpuv", model.values().get(0));
+        Assertions.assertEquals("tlgy", model.values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        QueryComparisonExpression model = new QueryComparisonExpression().withName("cewiipfpub")
+        QueryComparisonExpression model = new QueryComparisonExpression().withName("iwdcxsmlzzhzd")
             .withOperator(QueryOperatorType.IN)
-            .withValues(Arrays.asList("wwiftohqkvpuv", "sgplsakn"));
+            .withValues(Arrays.asList("tlgy", "lhqvlnnpxybafi", "geaar", "gjekglklby"));
         model = BinaryData.fromObject(model).toObject(QueryComparisonExpression.class);
-        Assertions.assertEquals("cewiipfpub", model.name());
+        Assertions.assertEquals("iwdcxsmlzzhzd", model.name());
         Assertions.assertEquals(QueryOperatorType.IN, model.operator());
-        Assertions.assertEquals("wwiftohqkvpuv", model.values().get(0));
+        Assertions.assertEquals("tlgy", model.values().get(0));
     }
 }

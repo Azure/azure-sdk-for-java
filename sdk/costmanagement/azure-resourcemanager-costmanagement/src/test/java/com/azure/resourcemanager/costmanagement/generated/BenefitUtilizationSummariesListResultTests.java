@@ -11,7 +11,7 @@ public final class BenefitUtilizationSummariesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BenefitUtilizationSummariesListResult model = BinaryData.fromString(
-            "{\"value\":[{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"thtywub\",\"name\":\"cbihwqk\",\"type\":\"fdntwjchrdgoih\"},{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"umwctondz\",\"name\":\"luudfdlwggytsb\",\"type\":\"tov\"}],\"nextLink\":\"gseinq\"}")
+            "{\"value\":[{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"lvdjjukyr\",\"name\":\"nqodxahhxhq\",\"type\":\"aqnvzoqgyipemchg\"},{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"v\",\"name\":\"czuejdtxptl\",\"type\":\"h\"},{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"zhomewjjstliu\",\"name\":\"qawmoaianc\",\"type\":\"nvodrrs\"},{\"kind\":\"BenefitUtilizationSummary\",\"id\":\"blxydkxr\",\"name\":\"vvbxiwkgfbqljnq\",\"type\":\"hychocokuleh\"}],\"nextLink\":\"qlrqffaweyurk\"}")
             .toObject(BenefitUtilizationSummariesListResult.class);
     }
 
