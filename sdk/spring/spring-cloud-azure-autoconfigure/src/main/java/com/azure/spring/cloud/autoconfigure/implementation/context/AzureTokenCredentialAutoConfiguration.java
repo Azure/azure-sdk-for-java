@@ -34,7 +34,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
-import org.springframework.boot.task.TaskExecutorBuilder;
+import org.springframework.boot.task.ThreadPoolTaskExecutorBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.GenericApplicationContext;
@@ -222,11 +222,10 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
         return new AzureServiceClientBuilderFactoryPostProcessor();
     }
 
-    @SuppressWarnings("removal")
     @Bean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     ThreadPoolTaskExecutor credentialTaskExecutor() {
-        return new TaskExecutorBuilder()
+        return new ThreadPoolTaskExecutorBuilder()
             .corePoolSize(8)
             .allowCoreThreadTimeOut(true)
             .threadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX)
