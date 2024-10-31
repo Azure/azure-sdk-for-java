@@ -35,17 +35,23 @@ import com.azure.resourcemanager.mediaservices.fluent.models.JobInner;
 import com.azure.resourcemanager.mediaservices.models.JobCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobsClient.
+ */
 public final class JobsClientImpl implements JobsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JobsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of JobsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JobsClientImpl(AzureMediaServicesImpl client) {
@@ -61,8 +67,7 @@ public final class JobsClientImpl implements JobsClient {
     @ServiceInterface(name = "AzureMediaServicesJo")
     public interface JobsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/transforms/{transformName}/jobs")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobCollection>> list(@HostParam("$host") String endpoint,
@@ -73,8 +78,7 @@ public final class JobsClientImpl implements JobsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/transforms/{transformName}/jobs/{jobName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobInner>> get(@HostParam("$host") String endpoint,
@@ -84,8 +88,7 @@ public final class JobsClientImpl implements JobsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/transforms/{transformName}/jobs/{jobName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobInner>> create(@HostParam("$host") String endpoint,
@@ -96,8 +99,7 @@ public final class JobsClientImpl implements JobsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/transforms/{transformName}/jobs/{jobName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -107,8 +109,7 @@ public final class JobsClientImpl implements JobsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/transforms/{transformName}/jobs/{jobName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobInner>> update(@HostParam("$host") String endpoint,
@@ -119,8 +120,7 @@ public final class JobsClientImpl implements JobsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/transforms/{transformName}/jobs/{jobName}/cancelJob")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}/cancelJob")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> cancelJob(@HostParam("$host") String endpoint,
@@ -139,9 +139,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -185,9 +185,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -232,9 +232,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -255,9 +255,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -277,9 +277,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -301,9 +301,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -321,9 +321,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -343,9 +343,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -389,9 +389,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -435,9 +435,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -456,9 +456,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -477,9 +477,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -496,9 +496,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Create Job
-     *
-     * <p>Creates a Job.
-     *
+     * 
+     * Creates a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -548,9 +548,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Create Job
-     *
-     * <p>Creates a Job.
-     *
+     * 
+     * Creates a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -600,9 +600,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Create Job
-     *
-     * <p>Creates a Job.
-     *
+     * 
+     * Creates a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -622,9 +622,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Create Job
-     *
-     * <p>Creates a Job.
-     *
+     * 
+     * Creates a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -645,9 +645,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Create Job
-     *
-     * <p>Creates a Job.
-     *
+     * 
+     * Creates a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -667,9 +667,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -713,9 +713,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -759,9 +759,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -779,9 +779,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -800,9 +800,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -818,10 +818,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -871,10 +871,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -924,10 +924,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -947,10 +947,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -971,10 +971,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -994,9 +994,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1040,9 +1040,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1086,9 +1086,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1107,9 +1107,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1128,9 +1128,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1146,9 +1146,8 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1172,9 +1171,8 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

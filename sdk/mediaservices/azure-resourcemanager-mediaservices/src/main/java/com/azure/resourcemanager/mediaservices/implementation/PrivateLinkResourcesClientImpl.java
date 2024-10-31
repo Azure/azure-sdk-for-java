@@ -26,17 +26,23 @@ import com.azure.resourcemanager.mediaservices.fluent.models.PrivateLinkResource
 import com.azure.resourcemanager.mediaservices.fluent.models.PrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(AzureMediaServicesImpl client) {
@@ -53,8 +59,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @ServiceInterface(name = "AzureMediaServicesPr")
     public interface PrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/privateLinkResources")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/privateLinkResources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceListResultInner>> list(@HostParam("$host") String endpoint,
@@ -63,8 +68,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/privateLinkResources/{name}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/privateLinkResources/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceInner>> get(@HostParam("$host") String endpoint,
@@ -76,9 +80,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get list of group IDs.
-     *
-     * <p>List supported group IDs.
-     *
+     * 
+     * List supported group IDs.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,9 +118,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get list of group IDs.
-     *
-     * <p>List supported group IDs.
-     *
+     * 
+     * List supported group IDs.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -152,9 +156,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get list of group IDs.
-     *
-     * <p>List supported group IDs.
-     *
+     * 
+     * List supported group IDs.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,9 +173,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get list of group IDs.
-     *
-     * <p>List supported group IDs.
-     *
+     * 
+     * List supported group IDs.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -188,9 +192,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get list of group IDs.
-     *
-     * <p>List supported group IDs.
-     *
+     * 
+     * List supported group IDs.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,9 +209,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get group ID.
-     *
-     * <p>Get details of a group ID.
-     *
+     * 
+     * Get details of a group ID.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
@@ -247,9 +251,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get group ID.
-     *
-     * <p>Get details of a group ID.
-     *
+     * 
+     * Get details of a group ID.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
@@ -289,9 +293,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get group ID.
-     *
-     * <p>Get details of a group ID.
-     *
+     * 
+     * Get details of a group ID.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
@@ -308,9 +312,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get group ID.
-     *
-     * <p>Get details of a group ID.
-     *
+     * 
+     * Get details of a group ID.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.
@@ -328,9 +332,9 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get group ID.
-     *
-     * <p>Get details of a group ID.
-     *
+     * 
+     * Get details of a group ID.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param name The name parameter.

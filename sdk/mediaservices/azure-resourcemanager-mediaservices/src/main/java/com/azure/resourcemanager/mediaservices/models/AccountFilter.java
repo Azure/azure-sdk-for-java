@@ -9,87 +9,97 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner;
 import java.util.List;
 
-/** An immutable client-side representation of AccountFilter. */
+/**
+ * An immutable client-side representation of AccountFilter.
+ */
 public interface AccountFilter {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the presentationTimeRange property: The presentation time range.
-     *
+     * 
      * @return the presentationTimeRange value.
      */
     PresentationTimeRange presentationTimeRange();
 
     /**
      * Gets the firstQuality property: The first quality.
-     *
+     * 
      * @return the firstQuality value.
      */
     FirstQuality firstQuality();
 
     /**
      * Gets the tracks property: The tracks selection conditions.
-     *
+     * 
      * @return the tracks value.
      */
     List<FilterTrackSelection> tracks();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner object.
-     *
+     * 
      * @return the inner object.
      */
     AccountFilterInner innerModel();
 
-    /** The entirety of the AccountFilter definition. */
+    /**
+     * The entirety of the AccountFilter definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The AccountFilter definition stages. */
+    /**
+     * The AccountFilter definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the AccountFilter definition. */
+        /**
+         * The first stage of the AccountFilter definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the AccountFilter definition allowing to specify parent resource. */
+        /**
+         * The stage of the AccountFilter definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, accountName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group within the Azure subscription.
              * @param accountName The Media Services account name.
              * @return the next definition stage.
@@ -105,47 +115,53 @@ public interface AccountFilter {
             DefinitionStages.WithTracks {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             AccountFilter create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             AccountFilter create(Context context);
         }
 
-        /** The stage of the AccountFilter definition allowing to specify presentationTimeRange. */
+        /**
+         * The stage of the AccountFilter definition allowing to specify presentationTimeRange.
+         */
         interface WithPresentationTimeRange {
             /**
              * Specifies the presentationTimeRange property: The presentation time range..
-             *
+             * 
              * @param presentationTimeRange The presentation time range.
              * @return the next definition stage.
              */
             WithCreate withPresentationTimeRange(PresentationTimeRange presentationTimeRange);
         }
 
-        /** The stage of the AccountFilter definition allowing to specify firstQuality. */
+        /**
+         * The stage of the AccountFilter definition allowing to specify firstQuality.
+         */
         interface WithFirstQuality {
             /**
              * Specifies the firstQuality property: The first quality..
-             *
+             * 
              * @param firstQuality The first quality.
              * @return the next definition stage.
              */
             WithCreate withFirstQuality(FirstQuality firstQuality);
         }
 
-        /** The stage of the AccountFilter definition allowing to specify tracks. */
+        /**
+         * The stage of the AccountFilter definition allowing to specify tracks.
+         */
         interface WithTracks {
             /**
              * Specifies the tracks property: The tracks selection conditions..
-             *
+             * 
              * @param tracks The tracks selection conditions.
              * @return the next definition stage.
              */
@@ -155,59 +171,69 @@ public interface AccountFilter {
 
     /**
      * Begins update for the AccountFilter resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     AccountFilter.Update update();
 
-    /** The template for AccountFilter update. */
+    /**
+     * The template for AccountFilter update.
+     */
     interface Update
         extends UpdateStages.WithPresentationTimeRange, UpdateStages.WithFirstQuality, UpdateStages.WithTracks {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         AccountFilter apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         AccountFilter apply(Context context);
     }
 
-    /** The AccountFilter update stages. */
+    /**
+     * The AccountFilter update stages.
+     */
     interface UpdateStages {
-        /** The stage of the AccountFilter update allowing to specify presentationTimeRange. */
+        /**
+         * The stage of the AccountFilter update allowing to specify presentationTimeRange.
+         */
         interface WithPresentationTimeRange {
             /**
              * Specifies the presentationTimeRange property: The presentation time range..
-             *
+             * 
              * @param presentationTimeRange The presentation time range.
              * @return the next definition stage.
              */
             Update withPresentationTimeRange(PresentationTimeRange presentationTimeRange);
         }
 
-        /** The stage of the AccountFilter update allowing to specify firstQuality. */
+        /**
+         * The stage of the AccountFilter update allowing to specify firstQuality.
+         */
         interface WithFirstQuality {
             /**
              * Specifies the firstQuality property: The first quality..
-             *
+             * 
              * @param firstQuality The first quality.
              * @return the next definition stage.
              */
             Update withFirstQuality(FirstQuality firstQuality);
         }
 
-        /** The stage of the AccountFilter update allowing to specify tracks. */
+        /**
+         * The stage of the AccountFilter update allowing to specify tracks.
+         */
         interface WithTracks {
             /**
              * Specifies the tracks property: The tracks selection conditions..
-             *
+             * 
              * @param tracks The tracks selection conditions.
              * @return the next definition stage.
              */
@@ -217,14 +243,14 @@ public interface AccountFilter {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     AccountFilter refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

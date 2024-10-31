@@ -31,14 +31,14 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
 
     public PagedIterable<ContentKeyPolicy> list(String resourceGroupName, String accountName) {
         PagedIterable<ContentKeyPolicyInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ContentKeyPolicy> list(String resourceGroupName, String accountName, String filter,
         Integer top, String orderby, Context context) {
         PagedIterable<ContentKeyPolicyInner> inner
             = this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContentKeyPolicyImpl(inner1, this.manager()));
     }
 
     public Response<ContentKeyPolicy> getWithResponse(String resourceGroupName, String accountName,
@@ -95,17 +95,17 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
     }
 
     public ContentKeyPolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String contentKeyPolicyName = Utils.getValueFromIdByName(id, "contentKeyPolicies");
+        String contentKeyPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "contentKeyPolicies");
         if (contentKeyPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentKeyPolicies'.", id)));
@@ -114,17 +114,17 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
     }
 
     public Response<ContentKeyPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String contentKeyPolicyName = Utils.getValueFromIdByName(id, "contentKeyPolicies");
+        String contentKeyPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "contentKeyPolicies");
         if (contentKeyPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentKeyPolicies'.", id)));
@@ -133,17 +133,17 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String contentKeyPolicyName = Utils.getValueFromIdByName(id, "contentKeyPolicies");
+        String contentKeyPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "contentKeyPolicies");
         if (contentKeyPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentKeyPolicies'.", id)));
@@ -152,17 +152,17 @@ public final class ContentKeyPoliciesImpl implements ContentKeyPolicies {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "mediaServices");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "mediaServices");
         if (accountName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'mediaServices'.", id)));
         }
-        String contentKeyPolicyName = Utils.getValueFromIdByName(id, "contentKeyPolicies");
+        String contentKeyPolicyName = ResourceManagerUtils.getValueFromIdByName(id, "contentKeyPolicies");
         if (contentKeyPolicyName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contentKeyPolicies'.", id)));
