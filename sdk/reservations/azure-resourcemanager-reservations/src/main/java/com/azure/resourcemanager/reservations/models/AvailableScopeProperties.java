@@ -6,18 +6,20 @@ package com.azure.resourcemanager.reservations.models;
 
 import com.azure.resourcemanager.reservations.fluent.models.AvailableScopePropertiesInner;
 
-/** An immutable client-side representation of AvailableScopeProperties. */
+/**
+ * An immutable client-side representation of AvailableScopeProperties.
+ */
 public interface AvailableScopeProperties {
     /**
      * Gets the properties property: The scopes checked by the available scope api.
-     *
+     * 
      * @return the properties value.
      */
     SubscriptionScopeProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.reservations.fluent.models.AvailableScopePropertiesInner object.
-     *
+     * 
      * @return the inner object.
      */
     AvailableScopePropertiesInner innerModel();

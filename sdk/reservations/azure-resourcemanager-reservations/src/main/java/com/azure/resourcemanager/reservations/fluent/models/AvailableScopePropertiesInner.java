@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.reservations.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.models.SubscriptionScopeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The response of available scope api containing scopes and their eligibilities. */
+/**
+ * The response of available scope api containing scopes and their eligibilities.
+ */
 @Fluent
-public final class AvailableScopePropertiesInner {
+public final class AvailableScopePropertiesInner implements JsonSerializable<AvailableScopePropertiesInner> {
     /*
      * The scopes checked by the available scope api.
      */
-    @JsonProperty(value = "properties")
     private SubscriptionScopeProperties properties;
 
-    /** Creates an instance of AvailableScopePropertiesInner class. */
+    /**
+     * Creates an instance of AvailableScopePropertiesInner class.
+     */
     public AvailableScopePropertiesInner() {
     }
 
     /**
      * Get the properties property: The scopes checked by the available scope api.
-     *
+     * 
      * @return the properties value.
      */
     public SubscriptionScopeProperties properties() {
@@ -32,7 +39,7 @@ public final class AvailableScopePropertiesInner {
 
     /**
      * Set the properties property: The scopes checked by the available scope api.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AvailableScopePropertiesInner object itself.
      */
@@ -43,12 +50,49 @@ public final class AvailableScopePropertiesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableScopePropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableScopePropertiesInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableScopePropertiesInner.
+     */
+    public static AvailableScopePropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableScopePropertiesInner deserializedAvailableScopePropertiesInner
+                = new AvailableScopePropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAvailableScopePropertiesInner.properties = SubscriptionScopeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableScopePropertiesInner;
+        });
     }
 }

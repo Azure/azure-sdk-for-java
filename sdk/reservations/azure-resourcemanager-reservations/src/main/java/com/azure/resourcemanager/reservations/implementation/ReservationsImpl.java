@@ -104,12 +104,12 @@ public final class ReservationsImpl implements Reservations {
 
     public PagedIterable<ReservationResponse> list(String reservationOrderId) {
         PagedIterable<ReservationResponseInner> inner = this.serviceClient().list(reservationOrderId);
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReservationResponse> list(String reservationOrderId, Context context) {
         PagedIterable<ReservationResponseInner> inner = this.serviceClient().list(reservationOrderId, context);
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
     public Response<ReservationResponse> getWithResponse(String reservationOrderId, String reservationId, String expand,
@@ -172,26 +172,26 @@ public final class ReservationsImpl implements Reservations {
     public PagedIterable<ReservationResponse> listRevisions(String reservationOrderId, String reservationId) {
         PagedIterable<ReservationResponseInner> inner
             = this.serviceClient().listRevisions(reservationOrderId, reservationId);
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReservationResponse> listRevisions(String reservationOrderId, String reservationId,
         Context context) {
         PagedIterable<ReservationResponseInner> inner
             = this.serviceClient().listRevisions(reservationOrderId, reservationId, context);
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReservationResponse> listAll() {
         PagedIterable<ReservationResponseInner> inner = this.serviceClient().listAll();
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReservationResponse> listAll(String filter, String orderby, String refreshSummary,
         Float skiptoken, String selectedState, Float take, Context context) {
         PagedIterable<ReservationResponseInner> inner
             = this.serviceClient().listAll(filter, orderby, refreshSummary, skiptoken, selectedState, take, context);
-        return Utils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReservationResponseImpl(inner1, this.manager()));
     }
 
     private ReservationsClient serviceClient() {

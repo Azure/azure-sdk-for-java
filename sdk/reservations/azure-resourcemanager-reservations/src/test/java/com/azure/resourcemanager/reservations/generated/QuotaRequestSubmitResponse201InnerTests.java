@@ -11,7 +11,7 @@ public final class QuotaRequestSubmitResponse201InnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuotaRequestSubmitResponse201Inner model = BinaryData.fromString(
-            "{\"id\":\"kdmtncvokotll\",\"name\":\"yhgsy\",\"type\":\"ogjltdtbnnhad\",\"properties\":{\"provisioningState\":\"Succeeded\",\"message\":\"vcikhnvpamqgx\"}}")
+            "{\"id\":\"cogjltdtbn\",\"name\":\"adoocrkvc\",\"type\":\"hnvpamqgxq\",\"properties\":{\"provisioningState\":\"Accepted\",\"message\":\"kywggxkallatmel\"}}")
             .toObject(QuotaRequestSubmitResponse201Inner.class);
     }
 

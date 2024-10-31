@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.reservations.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties for reservation split. */
+/**
+ * Properties for reservation split.
+ */
 @Fluent
-public final class SplitProperties {
+public final class SplitProperties implements JsonSerializable<SplitProperties> {
     /*
      * List of the quantities in the new reservations to create.
      */
-    @JsonProperty(value = "quantities")
     private List<Integer> quantities;
 
     /*
      * Resource id of the reservation to be split. Format of the resource id should be
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}
      */
-    @JsonProperty(value = "reservationId")
     private String reservationId;
 
-    /** Creates an instance of SplitProperties class. */
+    /**
+     * Creates an instance of SplitProperties class.
+     */
     public SplitProperties() {
     }
 
     /**
      * Get the quantities property: List of the quantities in the new reservations to create.
-     *
+     * 
      * @return the quantities value.
      */
     public List<Integer> quantities() {
@@ -39,7 +45,7 @@ public final class SplitProperties {
 
     /**
      * Set the quantities property: List of the quantities in the new reservations to create.
-     *
+     * 
      * @param quantities the quantities value to set.
      * @return the SplitProperties object itself.
      */
@@ -51,7 +57,7 @@ public final class SplitProperties {
     /**
      * Get the reservationId property: Resource id of the reservation to be split. Format of the resource id should be
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-     *
+     * 
      * @return the reservationId value.
      */
     public String reservationId() {
@@ -61,7 +67,7 @@ public final class SplitProperties {
     /**
      * Set the reservationId property: Resource id of the reservation to be split. Format of the resource id should be
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-     *
+     * 
      * @param reservationId the reservationId value to set.
      * @return the SplitProperties object itself.
      */
@@ -72,9 +78,49 @@ public final class SplitProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("quantities", this.quantities, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeStringField("reservationId", this.reservationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SplitProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SplitProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SplitProperties.
+     */
+    public static SplitProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SplitProperties deserializedSplitProperties = new SplitProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("quantities".equals(fieldName)) {
+                    List<Integer> quantities = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedSplitProperties.quantities = quantities;
+                } else if ("reservationId".equals(fieldName)) {
+                    deserializedSplitProperties.reservationId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSplitProperties;
+        });
     }
 }

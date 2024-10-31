@@ -31,7 +31,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     public PagedIterable<Catalog> list(String subscriptionId) {
         PagedIterable<CatalogInner> inner = this.serviceClient().list(subscriptionId);
-        return Utils.mapPage(inner, inner1 -> new CatalogImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CatalogImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Catalog> list(String subscriptionId, String reservedResourceType, String location,
@@ -39,7 +39,7 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         PagedIterable<CatalogInner> inner = this.serviceClient()
             .list(subscriptionId, reservedResourceType, location, publisherId, offerId, planId, filter, skip, take,
                 context);
-        return Utils.mapPage(inner, inner1 -> new CatalogImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CatalogImpl(inner1, this.manager()));
     }
 
     public Response<AppliedReservations> getAppliedReservationListWithResponse(String subscriptionId, Context context) {
