@@ -26,9 +26,12 @@ public final class FunctionsUpdateSamples {
     public static void
         updateAJavaScriptFunction(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Function resource = manager.functions()
-            .getWithResponse("sjrg1637", "sj8653", "function8197", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withProperties(new ScalarFunctionProperties()
-            .withBinding(new JavaScriptFunctionBinding().withScript("function (a, b) { return a * b; }"))).apply();
+            .getWithResponse("sjrg1637", "sj8653", "function8197", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new ScalarFunctionProperties()
+                .withBinding(new JavaScriptFunctionBinding().withScript("function (a, b) { return a * b; }")))
+            .apply();
     }
 
     /*
@@ -44,8 +47,11 @@ public final class FunctionsUpdateSamples {
     public static void
         updateAnAzureMLFunction(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Function resource = manager.functions()
-            .getWithResponse("sjrg7", "sj9093", "function588", com.azure.core.util.Context.NONE).getValue();
-        resource.update().withProperties(new ScalarFunctionProperties()
-            .withBinding(new AzureMachineLearningStudioFunctionBinding().withBatchSize(5000))).apply();
+            .getWithResponse("sjrg7", "sj9093", "function588", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new ScalarFunctionProperties()
+                .withBinding(new AzureMachineLearningStudioFunctionBinding().withBatchSize(5000)))
+            .apply();
     }
 }
