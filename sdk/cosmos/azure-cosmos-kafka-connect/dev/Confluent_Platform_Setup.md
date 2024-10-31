@@ -9,7 +9,7 @@ This guide walks through setting up Confluent Platform using Docker containers.
 - Java 11+ ([download](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html))
 - Maven ([download](https://maven.apache.org/download.cgi))
 - Docker ([download](https://www.docker.com/products/docker-desktop))
-- Powershell (optional) ([download](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell))
+- Powershell (optional) ([download](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell))
 
 ### Startup
 
@@ -44,8 +44,8 @@ If you instead would like to run Kafka Connect as `standalone mode`, which is us
 
 ### Access Confluent Platform components
 
-| Name | Address | Description |
-| --- | --- | --- |
+| Name | Address                 | Description |
+| --- |-------------------------| --- |
 | Control Center | <http://localhost:9021> | The main webpage for all Confluent services where you can create topics, configure connectors, interact with the Connect cluster (only for distributed mode) and more. |
 | Kafka Topics UI | <http://localhost:9000> | Useful to viewing Kafka topics and the messages within them. |
 | Schema Registry UI | <http://localhost:9001> | Can view and create new schemas, ideal for interacting with Avro data.  |
