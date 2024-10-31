@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
+import java.util.Arrays;
 
 /** Options to configure the Recognize operation **/
 @Fluent
@@ -119,6 +120,7 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      * Set the playPrompt property: The source of the audio to be played for recognition.
      *
      * @param playPrompt the playPrompt value to set.
+     * @Deprecated Use the {@link #setPlayPrompts(List<PlaySource>) or #setPlayPrompts(PlaySource... playPrompts)} method.
      * @return the RecognizeRequest object itself.
      */
     public CallMediaRecognizeOptions setPlayPrompt(PlaySource playPrompt) {
@@ -143,6 +145,20 @@ public abstract class CallMediaRecognizeOptions implements JsonSerializable<Call
      */
     public CallMediaRecognizeOptions setPlayPrompts(List<PlaySource> playPrompts) {
         this.playPrompts = playPrompts;
+        return this;
+    }
+
+    /**
+     * Set the playPrompts property: The list source of the audio to be played for recognition.
+     *
+     * @param playPrompts the playPrompts value to set.
+     * @return the RecognizeRequest object itself.
+     */
+    public CallMediaRecognizeOptions setPlayPrompts(PlaySource... playPrompts) {
+        if (playPrompts != null) {
+            this.playPrompts = Arrays.asList(playPrompts);
+        }
+
         return this;
     }
 
