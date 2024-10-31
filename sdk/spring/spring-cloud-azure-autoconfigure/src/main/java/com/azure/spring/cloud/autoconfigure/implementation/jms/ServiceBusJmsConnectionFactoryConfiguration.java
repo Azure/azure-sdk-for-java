@@ -17,20 +17,13 @@ import org.springframework.boot.autoconfigure.jms.JmsPoolConnectionFactoryFactor
 import org.springframework.boot.autoconfigure.jms.JmsProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.jms.connection.CachingConnectionFactory;
 
 import java.util.stream.Collectors;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(ConnectionFactory.class)
-public class ServiceBusJmsConnectionFactoryConfiguration  {
-
-    private final GenericApplicationContext applicationContext;
-
-    ServiceBusJmsConnectionFactoryConfiguration(GenericApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
+class ServiceBusJmsConnectionFactoryConfiguration  {
 
     private ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties serviceBusJmsProperties,
                                                                              ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
