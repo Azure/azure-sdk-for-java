@@ -11,7 +11,7 @@ public final class PrivateEndpointListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"createdDate\":\"ofd\",\"manualPrivateLinkServiceConnections\":[{\"properties\":{}},{\"properties\":{}},{\"properties\":{}}]},\"etag\":\"touwaboekqv\",\"id\":\"elnsmvbxw\",\"name\":\"jsflhhcaalnjix\",\"type\":\"sxyawjoyaqcs\"},{\"properties\":{\"createdDate\":\"pkii\",\"manualPrivateLinkServiceConnections\":[{\"properties\":{}}]},\"etag\":\"znelixhnrztfolh\",\"id\":\"nxknalaulp\",\"name\":\"ggdtpnapnyiro\",\"type\":\"uhpigvp\"}],\"nextLink\":\"lgqg\"}")
+            "{\"value\":[{\"properties\":{\"createdDate\":\"wncwzzhxgktrmg\",\"manualPrivateLinkServiceConnections\":[{\"properties\":{}},{\"properties\":{}},{\"properties\":{}}]},\"etag\":\"eoellwptfdygp\",\"id\":\"qbuaceopzfqr\",\"name\":\"huaoppp\",\"type\":\"qeqxo\"}],\"nextLink\":\"dahzxctobg\"}")
             .toObject(PrivateEndpointListResult.class);
     }
 

@@ -5,9 +5,12 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.EventHubDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,13 +21,11 @@ public final class EventHubOutputDataSourceProperties extends EventHubDataSource
     /*
      * The key/column that is used to determine to which partition to send event data.
      */
-    @JsonProperty(value = "partitionKey")
     private String partitionKey;
 
     /*
      * The properties associated with this Event Hub output.
      */
-    @JsonProperty(value = "propertyColumns")
     private List<String> propertyColumns;
 
     /**
@@ -134,6 +135,68 @@ public final class EventHubOutputDataSourceProperties extends EventHubDataSource
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceBusNamespace", serviceBusNamespace());
+        jsonWriter.writeStringField("sharedAccessPolicyName", sharedAccessPolicyName());
+        jsonWriter.writeStringField("sharedAccessPolicyKey", sharedAccessPolicyKey());
+        jsonWriter.writeStringField("authenticationMode",
+            authenticationMode() == null ? null : authenticationMode().toString());
+        jsonWriter.writeStringField("eventHubName", eventHubName());
+        jsonWriter.writeNumberField("partitionCount", partitionCount());
+        jsonWriter.writeStringField("partitionKey", this.partitionKey);
+        jsonWriter.writeArrayField("propertyColumns", this.propertyColumns,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubOutputDataSourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubOutputDataSourceProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EventHubOutputDataSourceProperties.
+     */
+    public static EventHubOutputDataSourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubOutputDataSourceProperties deserializedEventHubOutputDataSourceProperties
+                = new EventHubOutputDataSourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceBusNamespace".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties.withServiceBusNamespace(reader.getString());
+                } else if ("sharedAccessPolicyName".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties.withSharedAccessPolicyName(reader.getString());
+                } else if ("sharedAccessPolicyKey".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties.withSharedAccessPolicyKey(reader.getString());
+                } else if ("authenticationMode".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties
+                        .withAuthenticationMode(AuthenticationMode.fromString(reader.getString()));
+                } else if ("eventHubName".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties.withEventHubName(reader.getString());
+                } else if ("partitionCount".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties
+                        .withPartitionCount(reader.getNullable(JsonReader::getInt));
+                } else if ("partitionKey".equals(fieldName)) {
+                    deserializedEventHubOutputDataSourceProperties.partitionKey = reader.getString();
+                } else if ("propertyColumns".equals(fieldName)) {
+                    List<String> propertyColumns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedEventHubOutputDataSourceProperties.propertyColumns = propertyColumns;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubOutputDataSourceProperties;
+        });
     }
 }

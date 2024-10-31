@@ -5,30 +5,31 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.JobState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * A streaming job.
  */
 @Immutable
-public final class ClusterJobInner {
+public final class ClusterJobInner implements JsonSerializable<ClusterJobInner> {
     /*
      * Resource ID of the streaming job.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The number of streaming units that are used by the streaming job.
      */
-    @JsonProperty(value = "streamingUnits", access = JsonProperty.Access.WRITE_ONLY)
     private Integer streamingUnits;
 
     /*
      * The current execution state of the streaming job.
      */
-    @JsonProperty(value = "jobState", access = JsonProperty.Access.WRITE_ONLY)
     private JobState jobState;
 
     /**
@@ -70,5 +71,44 @@ public final class ClusterJobInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterJobInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterJobInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterJobInner.
+     */
+    public static ClusterJobInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterJobInner deserializedClusterJobInner = new ClusterJobInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterJobInner.id = reader.getString();
+                } else if ("streamingUnits".equals(fieldName)) {
+                    deserializedClusterJobInner.streamingUnits = reader.getNullable(JsonReader::getInt);
+                } else if ("jobState".equals(fieldName)) {
+                    deserializedClusterJobInner.jobState = JobState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterJobInner;
+        });
     }
 }
