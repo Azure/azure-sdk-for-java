@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.orbital.generated;
 
-/** Samples for ContactProfiles ListByResourceGroup. */
+/**
+ * Samples for ContactProfiles ListByResourceGroup.
+ */
 public final class ContactProfilesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/ContactProfilesByResourceGroupList.json
+     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/
+     * ContactProfilesByResourceGroupList.json
      */
     /**
      * Sample code: List of Contact Profiles by Resource Group.
-     *
+     * 
      * @param manager Entry point to OrbitalManager.
      */
     public static void listOfContactProfilesByResourceGroup(com.azure.resourcemanager.orbital.OrbitalManager manager) {

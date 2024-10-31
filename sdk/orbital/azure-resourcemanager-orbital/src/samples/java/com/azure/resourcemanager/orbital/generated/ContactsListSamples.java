@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.orbital.generated;
 
-/** Samples for Contacts List. */
+/**
+ * Samples for Contacts List.
+ */
 public final class ContactsListSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/ContactsBySpacecraftNameList.json
+     * x-ms-original-file:
+     * specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/ContactsBySpacecraftNameList.
+     * json
      */
     /**
      * Sample code: List of Spacecraft.
-     *
+     * 
      * @param manager Entry point to OrbitalManager.
      */
     public static void listOfSpacecraft(com.azure.resourcemanager.orbital.OrbitalManager manager) {

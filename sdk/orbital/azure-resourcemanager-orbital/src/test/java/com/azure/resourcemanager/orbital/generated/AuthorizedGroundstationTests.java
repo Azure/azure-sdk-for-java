@@ -12,14 +12,14 @@ public final class AuthorizedGroundstationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AuthorizedGroundstation model
-            = BinaryData.fromString("{\"groundStation\":\"zrnf\"}").toObject(AuthorizedGroundstation.class);
-        Assertions.assertEquals("zrnf", model.groundStation());
+            = BinaryData.fromString("{\"groundStation\":\"wfzitonpeqfpjk\"}").toObject(AuthorizedGroundstation.class);
+        Assertions.assertEquals("wfzitonpeqfpjk", model.groundStation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AuthorizedGroundstation model = new AuthorizedGroundstation().withGroundStation("zrnf");
+        AuthorizedGroundstation model = new AuthorizedGroundstation().withGroundStation("wfzitonpeqfpjk");
         model = BinaryData.fromObject(model).toObject(AuthorizedGroundstation.class);
-        Assertions.assertEquals("zrnf", model.groundStation());
+        Assertions.assertEquals("wfzitonpeqfpjk", model.groundStation());
     }
 }
