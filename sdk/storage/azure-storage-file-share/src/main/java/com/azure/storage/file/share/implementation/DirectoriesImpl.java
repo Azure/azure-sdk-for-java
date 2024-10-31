@@ -743,8 +743,8 @@ public final class DirectoriesImpl {
         String filePermissionKey, String fileCreationTime, String fileLastWriteTime, String fileChangeTime) {
         return createWithResponseAsync(shareName, directory, fileAttributes, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -785,8 +785,8 @@ public final class DirectoriesImpl {
         Context context) {
         return createWithResponseAsync(shareName, directory, fileAttributes, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1597,8 +1597,8 @@ public final class DirectoriesImpl {
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime) {
         return setPropertiesWithResponseAsync(shareName, directory, fileAttributes, timeout, filePermission,
             filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1637,8 +1637,8 @@ public final class DirectoriesImpl {
         String fileCreationTime, String fileLastWriteTime, String fileChangeTime, Context context) {
         return setPropertiesWithResponseAsync(shareName, directory, fileAttributes, timeout, filePermission,
             filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2220,8 +2220,8 @@ public final class DirectoriesImpl {
         List<ListFilesIncludeType> include, Boolean includeExtendedInfo) {
         return listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directory, prefix, sharesnapshot, marker,
             maxresults, timeout, include, includeExtendedInfo)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2256,8 +2256,8 @@ public final class DirectoriesImpl {
         List<ListFilesIncludeType> include, Boolean includeExtendedInfo, Context context) {
         return listFilesAndDirectoriesSegmentWithResponseAsync(shareName, directory, prefix, sharesnapshot, marker,
             maxresults, timeout, include, includeExtendedInfo, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2622,7 +2622,7 @@ public final class DirectoriesImpl {
         Integer maxresults, Integer timeout, String sharesnapshot, Boolean recursive, Context context) {
         return listHandlesWithResponseAsync(shareName, directory, marker, maxresults, timeout, sharesnapshot, recursive,
             context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2909,7 +2909,7 @@ public final class DirectoriesImpl {
         String marker, String sharesnapshot, Boolean recursive) {
         return forceCloseHandlesWithResponseAsync(shareName, directory, handleId, timeout, marker, sharesnapshot,
             recursive).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2941,7 +2941,7 @@ public final class DirectoriesImpl {
         String marker, String sharesnapshot, Boolean recursive, Context context) {
         return forceCloseHandlesWithResponseAsync(shareName, directory, handleId, timeout, marker, sharesnapshot,
             recursive, context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3339,8 +3339,8 @@ public final class DirectoriesImpl {
         return renameWithResponseAsync(shareName, directory, renameSource, timeout, replaceIfExists, ignoreReadOnly,
             filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
             destinationLeaseAccessConditions, copyFileSmbInfo)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3391,8 +3391,8 @@ public final class DirectoriesImpl {
         return renameWithResponseAsync(shareName, directory, renameSource, timeout, replaceIfExists, ignoreReadOnly,
             filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
             destinationLeaseAccessConditions, copyFileSmbInfo, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**

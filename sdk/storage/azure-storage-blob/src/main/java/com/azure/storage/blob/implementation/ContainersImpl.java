@@ -1058,8 +1058,8 @@ public final class ContainersImpl {
         PublicAccessType access, String requestId, BlobContainerEncryptionScope blobContainerEncryptionScope) {
         return createWithResponseAsync(containerName, timeout, metadata, access, requestId,
             blobContainerEncryptionScope)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1092,8 +1092,8 @@ public final class ContainersImpl {
         Context context) {
         return createWithResponseAsync(containerName, timeout, metadata, access, requestId,
             blobContainerEncryptionScope, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1684,7 +1684,7 @@ public final class ContainersImpl {
         OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return deleteWithResponseAsync(containerName, timeout, leaseId, ifModifiedSince, ifUnmodifiedSince, requestId,
             context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2001,7 +2001,7 @@ public final class ContainersImpl {
         Map<String, String> metadata, OffsetDateTime ifModifiedSince, String requestId, Context context) {
         return setMetadataWithResponseAsync(containerName, timeout, leaseId, metadata, ifModifiedSince, requestId,
             context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2557,8 +2557,8 @@ public final class ContainersImpl {
         List<BlobSignedIdentifier> containerAcl) {
         return setAccessPolicyWithResponseAsync(containerName, timeout, leaseId, access, ifModifiedSince,
             ifUnmodifiedSince, requestId, containerAcl)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2590,8 +2590,8 @@ public final class ContainersImpl {
         List<BlobSignedIdentifier> containerAcl, Context context) {
         return setAccessPolicyWithResponseAsync(containerName, timeout, leaseId, access, ifModifiedSince,
             ifUnmodifiedSince, requestId, containerAcl, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2879,8 +2879,8 @@ public final class ContainersImpl {
         String deletedContainerVersion) {
         return restoreWithResponseAsync(containerName, timeout, requestId, deletedContainerName,
             deletedContainerVersion)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2907,8 +2907,8 @@ public final class ContainersImpl {
         String deletedContainerVersion, Context context) {
         return restoreWithResponseAsync(containerName, timeout, requestId, deletedContainerName,
             deletedContainerVersion, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3404,7 +3404,7 @@ public final class ContainersImpl {
         Flux<ByteBuffer> body, Integer timeout, String requestId) {
         return submitBatchWithResponseAsync(containerName, contentLength, multipartContentType, body, timeout,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -3431,7 +3431,7 @@ public final class ContainersImpl {
         Flux<ByteBuffer> body, Integer timeout, String requestId, Context context) {
         return submitBatchWithResponseAsync(containerName, contentLength, multipartContentType, body, timeout,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -3581,7 +3581,7 @@ public final class ContainersImpl {
         BinaryData body, Integer timeout, String requestId) {
         return submitBatchWithResponseAsync(containerName, contentLength, multipartContentType, body, timeout,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -3608,7 +3608,7 @@ public final class ContainersImpl {
         BinaryData body, Integer timeout, String requestId, Context context) {
         return submitBatchWithResponseAsync(containerName, contentLength, multipartContentType, body, timeout,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -3929,7 +3929,7 @@ public final class ContainersImpl {
         String where, String marker, Integer maxresults, List<FilterBlobsIncludeItem> include, Context context) {
         return filterBlobsWithResponseAsync(containerName, timeout, requestId, where, marker, maxresults, include,
             context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4278,8 +4278,8 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
         return acquireLeaseWithResponseAsync(containerName, timeout, duration, proposedLeaseId, ifModifiedSince,
             ifUnmodifiedSince, requestId)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4313,8 +4313,8 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return acquireLeaseWithResponseAsync(containerName, timeout, duration, proposedLeaseId, ifModifiedSince,
             ifUnmodifiedSince, requestId, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4633,7 +4633,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
         return releaseLeaseWithResponseAsync(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4662,7 +4662,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return releaseLeaseWithResponseAsync(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4954,7 +4954,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
         return renewLeaseWithResponseAsync(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4983,7 +4983,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return renewLeaseWithResponseAsync(containerName, leaseId, timeout, ifModifiedSince, ifUnmodifiedSince,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5290,7 +5290,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
         return breakLeaseWithResponseAsync(containerName, timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5324,7 +5324,7 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return breakLeaseWithResponseAsync(containerName, timeout, breakPeriod, ifModifiedSince, ifUnmodifiedSince,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5653,8 +5653,8 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId) {
         return changeLeaseWithResponseAsync(containerName, leaseId, proposedLeaseId, timeout, ifModifiedSince,
             ifUnmodifiedSince, requestId)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5686,8 +5686,8 @@ public final class ContainersImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String requestId, Context context) {
         return changeLeaseWithResponseAsync(containerName, leaseId, proposedLeaseId, timeout, ifModifiedSince,
             ifUnmodifiedSince, requestId, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6015,7 +6015,7 @@ public final class ContainersImpl {
         String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
         return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, timeout,
             requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6051,7 +6051,7 @@ public final class ContainersImpl {
         Context context) {
         return listBlobFlatSegmentWithResponseAsync(containerName, prefix, marker, maxresults, include, timeout,
             requestId, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6408,7 +6408,7 @@ public final class ContainersImpl {
         String requestId) {
         return listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker, maxresults, include,
             timeout, requestId).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6447,8 +6447,8 @@ public final class ContainersImpl {
         String requestId, Context context) {
         return listBlobHierarchySegmentWithResponseAsync(containerName, delimiter, prefix, marker, maxresults, include,
             timeout, requestId, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

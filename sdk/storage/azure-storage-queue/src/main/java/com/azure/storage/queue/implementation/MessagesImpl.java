@@ -826,7 +826,7 @@ public final class MessagesImpl {
         Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout, String requestId) {
         return enqueueWithResponseAsync(queueName, queueMessage, visibilitytimeout, messageTimeToLive, timeout,
             requestId).onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -862,7 +862,7 @@ public final class MessagesImpl {
         Integer visibilitytimeout, Integer messageTimeToLive, Integer timeout, String requestId, Context context) {
         return enqueueWithResponseAsync(queueName, queueMessage, visibilitytimeout, messageTimeToLive, timeout,
             requestId, context).onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

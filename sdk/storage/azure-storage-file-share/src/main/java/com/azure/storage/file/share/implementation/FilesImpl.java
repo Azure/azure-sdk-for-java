@@ -1445,8 +1445,8 @@ public final class FilesImpl {
         return createWithResponseAsync(shareName, fileName, fileContentLength, fileAttributes, timeout, metadata,
             filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, shareFileHttpHeaders)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1491,8 +1491,8 @@ public final class FilesImpl {
         return createWithResponseAsync(shareName, fileName, fileContentLength, fileAttributes, timeout, metadata,
             filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, shareFileHttpHeaders, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1955,7 +1955,7 @@ public final class FilesImpl {
         Boolean rangeGetContentMD5, String structuredBodyType, String leaseId) {
         return downloadWithResponseAsync(shareName, fileName, timeout, range, rangeGetContentMD5, structuredBodyType,
             leaseId).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -1983,7 +1983,7 @@ public final class FilesImpl {
         Boolean rangeGetContentMD5, String structuredBodyType, String leaseId, Context context) {
         return downloadWithResponseAsync(shareName, fileName, timeout, range, rangeGetContentMD5, structuredBodyType,
             leaseId, context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -2812,8 +2812,8 @@ public final class FilesImpl {
         return setHttpHeadersWithResponseAsync(shareName, fileName, fileAttributes, timeout, fileContentLength,
             filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, shareFileHttpHeaders)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2858,8 +2858,8 @@ public final class FilesImpl {
         return setHttpHeadersWithResponseAsync(shareName, fileName, fileAttributes, timeout, fileContentLength,
             filePermission, filePermissionFormat, filePermissionKey, fileCreationTime, fileLastWriteTime,
             fileChangeTime, leaseId, shareFileHttpHeaders, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3380,8 +3380,8 @@ public final class FilesImpl {
         Flux<ByteBuffer> optionalbody) {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
             contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3428,7 +3428,7 @@ public final class FilesImpl {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
             contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody,
             context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3679,8 +3679,8 @@ public final class FilesImpl {
         BinaryData optionalbody) {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
             contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3727,7 +3727,7 @@ public final class FilesImpl {
         return uploadRangeWithResponseAsync(shareName, fileName, range, fileRangeWrite, contentLength, timeout,
             contentMD5, leaseId, fileLastWrittenMode, structuredBodyType, structuredContentLength, optionalbody,
             context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4344,7 +4344,7 @@ public final class FilesImpl {
         String proposedLeaseId, String requestId, Context context) {
         return acquireLeaseWithResponseAsync(shareName, fileName, timeout, duration, proposedLeaseId, requestId,
             context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5457,8 +5457,8 @@ public final class FilesImpl {
         return uploadRangeFromURLWithResponseAsync(shareName, fileName, range, copySource, contentLength, timeout,
             sourceRange, sourceContentCrc64, leaseId, copySourceAuthorization, fileLastWrittenMode,
             sourceModifiedAccessConditions)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5500,8 +5500,8 @@ public final class FilesImpl {
         return uploadRangeFromURLWithResponseAsync(shareName, fileName, range, copySource, contentLength, timeout,
             sourceRange, sourceContentCrc64, leaseId, copySourceAuthorization, fileLastWrittenMode,
             sourceModifiedAccessConditions, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5898,8 +5898,8 @@ public final class FilesImpl {
         String prevsharesnapshot, Integer timeout, String range, String leaseId, Boolean supportRename) {
         return getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
             leaseId, supportRename)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5933,8 +5933,8 @@ public final class FilesImpl {
         Context context) {
         return getRangeListWithResponseAsync(shareName, fileName, sharesnapshot, prevsharesnapshot, timeout, range,
             leaseId, supportRename, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -6333,8 +6333,8 @@ public final class FilesImpl {
         String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo) {
         return startCopyWithResponseAsync(shareName, fileName, copySource, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, leaseId, copyFileSmbInfo)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6377,8 +6377,8 @@ public final class FilesImpl {
         String filePermissionKey, String leaseId, CopyFileSmbInfo copyFileSmbInfo, Context context) {
         return startCopyWithResponseAsync(shareName, fileName, copySource, timeout, metadata, filePermission,
             filePermissionFormat, filePermissionKey, leaseId, copyFileSmbInfo, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7422,7 +7422,7 @@ public final class FilesImpl {
         String marker, String sharesnapshot, Context context) {
         return forceCloseHandlesWithResponseAsync(shareName, fileName, handleId, timeout, marker, sharesnapshot,
             context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7821,8 +7821,8 @@ public final class FilesImpl {
         return renameWithResponseAsync(shareName, fileName, renameSource, timeout, replaceIfExists, ignoreReadOnly,
             filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
             destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7874,8 +7874,8 @@ public final class FilesImpl {
         return renameWithResponseAsync(shareName, fileName, renameSource, timeout, replaceIfExists, ignoreReadOnly,
             filePermission, filePermissionFormat, filePermissionKey, metadata, sourceLeaseAccessConditions,
             destinationLeaseAccessConditions, copyFileSmbInfo, shareFileHttpHeaders, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**

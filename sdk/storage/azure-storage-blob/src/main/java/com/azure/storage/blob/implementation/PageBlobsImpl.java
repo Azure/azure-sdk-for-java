@@ -1170,7 +1170,7 @@ public final class PageBlobsImpl {
             leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, blobSequenceNumber, requestId,
             blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo,
             encryptionScopeParam).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1227,8 +1227,8 @@ public final class PageBlobsImpl {
             leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, blobSequenceNumber, requestId,
             blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo,
             encryptionScopeParam, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1992,8 +1992,8 @@ public final class PageBlobsImpl {
             transactionalContentCrc64, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2048,8 +2048,8 @@ public final class PageBlobsImpl {
             transactionalContentCrc64, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2451,8 +2451,8 @@ public final class PageBlobsImpl {
             transactionalContentCrc64, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2507,8 +2507,8 @@ public final class PageBlobsImpl {
             transactionalContentCrc64, timeout, range, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3111,8 +3111,8 @@ public final class PageBlobsImpl {
         return clearPagesWithResponseAsync(containerName, blob, contentLength, timeout, range, leaseId,
             ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3158,8 +3158,8 @@ public final class PageBlobsImpl {
         return clearPagesWithResponseAsync(containerName, blob, contentLength, timeout, range, leaseId,
             ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3775,8 +3775,8 @@ public final class PageBlobsImpl {
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId,
             copySourceAuthorization, cpkInfo, encryptionScopeParam)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3841,8 +3841,8 @@ public final class PageBlobsImpl {
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId,
             copySourceAuthorization, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4478,8 +4478,8 @@ public final class PageBlobsImpl {
         String ifNoneMatch, String ifTags, String requestId, String marker, Integer maxresults) {
         return getPageRangesWithResponseAsync(containerName, blob, snapshot, timeout, range, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker, maxresults)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4528,8 +4528,8 @@ public final class PageBlobsImpl {
         String ifNoneMatch, String ifTags, String requestId, String marker, Integer maxresults, Context context) {
         return getPageRangesWithResponseAsync(containerName, blob, snapshot, timeout, range, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker, maxresults, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4753,7 +4753,7 @@ public final class PageBlobsImpl {
         try {
             return getPageRangesWithResponse(containerName, blob, snapshot, timeout, range, leaseId, ifModifiedSince,
                 ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker, maxresults, Context.NONE)
-                .getValue();
+                    .getValue();
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -5008,7 +5008,7 @@ public final class PageBlobsImpl {
         return getPageRangesDiffWithResponseAsync(containerName, blob, snapshot, timeout, prevsnapshot, prevSnapshotUrl,
             range, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker,
             maxresults).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5067,7 +5067,7 @@ public final class PageBlobsImpl {
         return getPageRangesDiffWithResponseAsync(containerName, blob, snapshot, timeout, prevsnapshot, prevSnapshotUrl,
             range, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, marker,
             maxresults, context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -5566,8 +5566,8 @@ public final class PageBlobsImpl {
         String ifNoneMatch, String ifTags, String requestId, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         return resizeWithResponseAsync(containerName, blob, blobContentLength, timeout, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5605,8 +5605,8 @@ public final class PageBlobsImpl {
         Context context) {
         return resizeWithResponseAsync(containerName, blob, blobContentLength, timeout, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6042,8 +6042,8 @@ public final class PageBlobsImpl {
         String requestId) {
         return updateSequenceNumberWithResponseAsync(containerName, blob, sequenceNumberAction, timeout, leaseId,
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, blobSequenceNumber, requestId)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6082,8 +6082,8 @@ public final class PageBlobsImpl {
         String requestId, Context context) {
         return updateSequenceNumberWithResponseAsync(containerName, blob, sequenceNumberAction, timeout, leaseId,
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, blobSequenceNumber, requestId, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6439,8 +6439,8 @@ public final class PageBlobsImpl {
         String ifTags, String requestId) {
         return copyIncrementalWithResponseAsync(containerName, blob, copySource, timeout, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6478,8 +6478,8 @@ public final class PageBlobsImpl {
         String ifTags, String requestId, Context context) {
         return copyIncrementalWithResponseAsync(containerName, blob, copySource, timeout, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**

@@ -2103,8 +2103,8 @@ public final class FileSystemsImpl {
         Integer timeout, String requestId) {
         return listBlobHierarchySegmentWithResponseAsync(prefix, delimiter, marker, maxResults, include, showonly,
             timeout, requestId)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2140,8 +2140,8 @@ public final class FileSystemsImpl {
         Integer timeout, String requestId, Context context) {
         return listBlobHierarchySegmentWithResponseAsync(prefix, delimiter, marker, maxResults, include, showonly,
             timeout, requestId, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

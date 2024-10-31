@@ -1039,8 +1039,8 @@ public final class SharesImpl {
         return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
             paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1083,8 +1083,8 @@ public final class SharesImpl {
         return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
             paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1949,7 +1949,7 @@ public final class SharesImpl {
         String sharesnapshot, String requestId, Context context) {
         return acquireLeaseWithResponseAsync(shareName, timeout, duration, proposedLeaseId, sharesnapshot, requestId,
             context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2536,7 +2536,7 @@ public final class SharesImpl {
         String sharesnapshot, String requestId, Context context) {
         return changeLeaseWithResponseAsync(shareName, leaseId, timeout, proposedLeaseId, sharesnapshot, requestId,
             context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4155,8 +4155,8 @@ public final class SharesImpl {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
             paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4197,8 +4197,8 @@ public final class SharesImpl {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
             paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**

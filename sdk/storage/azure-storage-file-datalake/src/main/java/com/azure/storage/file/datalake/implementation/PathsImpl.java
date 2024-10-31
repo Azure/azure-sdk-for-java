@@ -1466,8 +1466,8 @@ public final class PathsImpl {
             properties, permissions, umask, owner, group, acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn,
             encryptionContext, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
             sourceModifiedAccessConditions, cpkInfo)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1548,8 +1548,8 @@ public final class PathsImpl {
             properties, permissions, umask, owner, group, acl, proposedLeaseId, leaseDuration, expiryOptions, expiresOn,
             encryptionContext, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
             sourceModifiedAccessConditions, cpkInfo, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2753,8 +2753,8 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2846,8 +2846,8 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3562,8 +3562,8 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3655,8 +3655,8 @@ public final class PathsImpl {
         return updateWithResponseAsync(action, mode, body, requestId, timeout, maxRecords, continuation, forceFlag,
             position, retainUncommittedData, close, contentLength, properties, owner, group, permissions, acl,
             pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4570,8 +4570,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions) {
         return leaseWithResponseAsync(xMsLeaseAction, requestId, timeout, xMsLeaseBreakPeriod, proposedLeaseId,
             leaseAccessConditions, modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4613,8 +4613,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return leaseWithResponseAsync(xMsLeaseAction, requestId, timeout, xMsLeaseBreakPeriod, proposedLeaseId,
             leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5161,8 +5161,8 @@ public final class PathsImpl {
         CpkInfo cpkInfo) {
         return readWithResponseAsync(requestId, timeout, range, xMsRangeGetContentMd5, leaseAccessConditions,
             modifiedAccessConditions, cpkInfo)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -5198,8 +5198,8 @@ public final class PathsImpl {
         Context context) {
         return readWithResponseAsync(requestId, timeout, range, xMsRangeGetContentMd5, leaseAccessConditions,
             modifiedAccessConditions, cpkInfo, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMapMany(fluxByteBufferResponse -> fluxByteBufferResponse.getValue());
     }
 
     /**
@@ -5754,8 +5754,8 @@ public final class PathsImpl {
         LeaseAccessConditions leaseAccessConditions, ModifiedAccessConditions modifiedAccessConditions) {
         return getPropertiesWithResponseAsync(requestId, timeout, action, upn, leaseAccessConditions,
             modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -5794,8 +5794,8 @@ public final class PathsImpl {
         Context context) {
         return getPropertiesWithResponseAsync(requestId, timeout, action, upn, leaseAccessConditions,
             modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6291,8 +6291,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions) {
         return deleteWithResponseAsync(requestId, timeout, recursive, continuation, paginated, leaseAccessConditions,
             modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6330,8 +6330,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return deleteWithResponseAsync(requestId, timeout, recursive, continuation, paginated, leaseAccessConditions,
             modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6816,8 +6816,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions) {
         return setAccessControlWithResponseAsync(timeout, owner, group, permissions, acl, requestId,
             leaseAccessConditions, modifiedAccessConditions)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -6851,8 +6851,8 @@ public final class PathsImpl {
         ModifiedAccessConditions modifiedAccessConditions, Context context) {
         return setAccessControlWithResponseAsync(timeout, owner, group, permissions, acl, requestId,
             leaseAccessConditions, modifiedAccessConditions, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7279,7 +7279,7 @@ public final class PathsImpl {
         Integer maxRecords, String acl, String requestId) {
         return setAccessControlRecursiveWithResponseAsync(mode, timeout, continuation, forceFlag, maxRecords, acl,
             requestId).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -7318,8 +7318,8 @@ public final class PathsImpl {
         Integer maxRecords, String acl, String requestId, Context context) {
         return setAccessControlRecursiveWithResponseAsync(mode, timeout, continuation, forceFlag, maxRecords, acl,
             requestId, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -7866,7 +7866,7 @@ public final class PathsImpl {
         return flushDataWithResponseAsync(timeout, position, retainUncommittedData, close, contentLength, leaseAction,
             leaseDuration, proposedLeaseId, requestId, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
             cpkInfo).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -7923,8 +7923,8 @@ public final class PathsImpl {
         return flushDataWithResponseAsync(timeout, position, retainUncommittedData, close, contentLength, leaseAction,
             leaseDuration, proposedLeaseId, requestId, pathHttpHeaders, leaseAccessConditions, modifiedAccessConditions,
             cpkInfo, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -8739,7 +8739,7 @@ public final class PathsImpl {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
             cpkInfo).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -8786,8 +8786,8 @@ public final class PathsImpl {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
             cpkInfo, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -9145,7 +9145,7 @@ public final class PathsImpl {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
             cpkInfo).onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -9192,8 +9192,8 @@ public final class PathsImpl {
         return appendDataWithResponseAsync(body, position, timeout, contentLength, transactionalContentCrc64,
             leaseAction, leaseDuration, proposedLeaseId, requestId, flush, pathHttpHeaders, leaseAccessConditions,
             cpkInfo, context)
-            .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(DataLakeStorageExceptionInternal.class, ModelHelper::mapToDataLakeStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**

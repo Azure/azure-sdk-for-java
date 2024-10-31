@@ -26,12 +26,15 @@ final class EncryptedBlobLength {
              */
             case ENCRYPTION_PROTOCOL_V1:
                 return encryptedLength;
+
             case ENCRYPTION_PROTOCOL_V2:
             case ENCRYPTION_PROTOCOL_V2_1:
                 long regionLength = encryptionData.getEncryptedRegionInfo().getDataLength();
-                long region = (long) Math.ceil((double) encryptedLength / (double) (regionLength + NONCE_LENGTH + TAG_LENGTH));
+                long region
+                    = (long) Math.ceil((double) encryptedLength / (double) (regionLength + NONCE_LENGTH + TAG_LENGTH));
                 long offset = (NONCE_LENGTH + TAG_LENGTH) * region;
                 return encryptedLength - offset;
+
             default:
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unexpected protocol version"));
         }

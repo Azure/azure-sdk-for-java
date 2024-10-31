@@ -776,8 +776,8 @@ public final class AppendBlobsImpl {
         return createWithResponseAsync(containerName, blob, contentLength, timeout, metadata, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry,
             immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -827,8 +827,8 @@ public final class AppendBlobsImpl {
         return createWithResponseAsync(containerName, blob, contentLength, timeout, metadata, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry,
             immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1563,8 +1563,8 @@ public final class AppendBlobsImpl {
         return appendBlockWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1621,7 +1621,7 @@ public final class AppendBlobsImpl {
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam,
             context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2024,8 +2024,8 @@ public final class AppendBlobsImpl {
         return appendBlockWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2082,7 +2082,7 @@ public final class AppendBlobsImpl {
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam,
             context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2760,7 +2760,7 @@ public final class AppendBlobsImpl {
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
             sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
             encryptionScopeParam).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2827,8 +2827,8 @@ public final class AppendBlobsImpl {
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
             sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
             encryptionScopeParam, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3430,8 +3430,8 @@ public final class AppendBlobsImpl {
         Long appendPosition) {
         return sealWithResponseAsync(containerName, blob, timeout, requestId, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, appendPosition)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3468,8 +3468,8 @@ public final class AppendBlobsImpl {
         Long appendPosition, Context context) {
         return sealWithResponseAsync(containerName, blob, timeout, requestId, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, appendPosition, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**

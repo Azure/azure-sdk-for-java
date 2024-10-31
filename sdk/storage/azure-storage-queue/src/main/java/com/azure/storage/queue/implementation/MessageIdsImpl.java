@@ -244,7 +244,7 @@ public final class MessageIdsImpl {
         Integer timeout, String requestId, QueueMessage queueMessage) {
         return updateWithResponseAsync(queueName, messageid, popReceipt, visibilitytimeout, timeout, requestId,
             queueMessage).onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -278,8 +278,8 @@ public final class MessageIdsImpl {
         Integer timeout, String requestId, QueueMessage queueMessage, Context context) {
         return updateWithResponseAsync(queueName, messageid, popReceipt, visibilitytimeout, timeout, requestId,
             queueMessage, context)
-            .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(QueueStorageExceptionInternal.class, ModelHelper::mapToQueueStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**

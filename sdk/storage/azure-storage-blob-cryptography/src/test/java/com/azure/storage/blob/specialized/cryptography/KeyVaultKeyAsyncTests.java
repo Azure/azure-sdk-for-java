@@ -42,8 +42,7 @@ public class KeyVaultKeyAsyncTests extends BlobCryptographyTestBase {
             keyVaultUrl = Configuration.getGlobalConfiguration().get("KEYVAULT_URL");
         }
 
-        keyClient = new KeyClientBuilder()
-            .pipeline(getHttpPipeline(KEY_SERVICE_VERSION))
+        keyClient = new KeyClientBuilder().pipeline(getHttpPipeline(KEY_SERVICE_VERSION))
             .httpClient(getHttpClient())
             .vaultUrl(keyVaultUrl)
             .serviceVersion(KEY_SERVICE_VERSION)
@@ -51,19 +50,16 @@ public class KeyVaultKeyAsyncTests extends BlobCryptographyTestBase {
 
         keyId = testResourceNamer.randomName(prefix, 50);
 
-        KeyVaultKey keyVaultKey = keyClient.createRsaKey(new CreateRsaKeyOptions(keyId)
-            .setExpiresOn(testResourceNamer.now().plusYears(1))
-            .setKeySize(2048));
+        KeyVaultKey keyVaultKey = keyClient.createRsaKey(
+            new CreateRsaKeyOptions(keyId).setExpiresOn(testResourceNamer.now().plusYears(1)).setKeySize(2048));
 
-        AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
-            .pipeline(getHttpPipeline(KEY_SERVICE_VERSION))
+        AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder().pipeline(getHttpPipeline(KEY_SERVICE_VERSION))
             .httpClient(getHttpClient())
             .serviceVersion(CRYPTOGRAPHY_SERVICE_VERSION)
             .buildAsyncKeyEncryptionKey(keyVaultKey.getId())
             .block();
 
-        cca = getServiceClientBuilder(ENV.getPrimaryAccount())
-            .buildAsyncClient()
+        cca = getServiceClientBuilder(ENV.getPrimaryAccount()).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName());
         cca.create().block();
 
@@ -82,19 +78,22 @@ public class KeyVaultKeyAsyncTests extends BlobCryptographyTestBase {
     public void uploadDownload() {
         byte[] inputArray = getRandomByteArray(Constants.KB);
 
-        StepVerifier.create(beac.upload(Flux.just(ByteBuffer.wrap(inputArray)), null)
-            .then(FluxUtil.collectBytesInByteBufferStream(beac.downloadStream())))
-                .assertNext(r -> assertArraysEqual(inputArray, r))
-                .verifyComplete();
+        StepVerifier
+            .create(beac.upload(Flux.just(ByteBuffer.wrap(inputArray)), null)
+                .then(FluxUtil.collectBytesInByteBufferStream(beac.downloadStream())))
+            .assertNext(r -> assertArraysEqual(inputArray, r))
+            .verifyComplete();
     }
 
     @Test
     public void encryptionNotANoop() {
         byte[] inputArray = getRandomByteArray(Constants.KB);
 
-        StepVerifier.create(beac.upload(Flux.just(ByteBuffer.wrap(inputArray)), null)
-            .then(FluxUtil.collectBytesInByteBufferStream(cca.getBlobAsyncClient(beac.getBlobName()).downloadStream())))
-                .assertNext(r -> assertFalse(Arrays.equals(inputArray, r)))
-                .verifyComplete();
+        StepVerifier
+            .create(beac.upload(Flux.just(ByteBuffer.wrap(inputArray)), null)
+                .then(FluxUtil
+                    .collectBytesInByteBufferStream(cca.getBlobAsyncClient(beac.getBlobName()).downloadStream())))
+            .assertNext(r -> assertFalse(Arrays.equals(inputArray, r)))
+            .verifyComplete();
     }
 }

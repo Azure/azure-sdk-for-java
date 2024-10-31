@@ -49,13 +49,13 @@ class StorageSeekableByteChannelShareFileReadBehavior implements StorageSeekable
         int initialPosition = dst.position();
 
         try (ByteBufferBackedOutputStream dstStream = new ByteBufferBackedOutputStream(dst)) {
-            ShareFileDownloadResponse response =  client.downloadWithResponse(dstStream,
+            ShareFileDownloadResponse response = client.downloadWithResponse(dstStream,
                 new ShareFileDownloadOptions()
                     .setRange(new ShareFileRange(sourceOffset, sourceOffset + dst.remaining() - 1))
                     .setRequestConditions(conditions),
                 null, null);
-            lastKnownResourceLength = CoreUtils.extractSizeFromContentRange(
-                response.getDeserializedHeaders().getContentRange());
+            lastKnownResourceLength
+                = CoreUtils.extractSizeFromContentRange(response.getDeserializedHeaders().getContentRange());
             return dst.position() - initialPosition;
         } catch (ShareStorageException e) {
             if (e.getErrorCode() == ShareErrorCode.INVALID_RANGE) {
