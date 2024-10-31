@@ -6,7 +6,7 @@
   - Resource Groups, Cosmos DB
 - Bash shell (tested on Visual Studio Codespaces, Cloud Shell, Mac, Ubuntu, Windows with WSL2)
   - Will not work with WSL1
-- Azure CLI ([download](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest))
+- Azure CLI ([download](https://learn.microsoft.com/cli/azure/install-azure-cli?view=azure-cli-latest))
 
 ## Create Azure Cosmos DB Instance, Database and Container
 

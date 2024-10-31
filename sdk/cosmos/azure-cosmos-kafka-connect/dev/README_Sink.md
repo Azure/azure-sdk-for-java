@@ -245,7 +245,7 @@ Refer to the [InsertUUID repository](https://github.com/confluentinc/kafka-conne
 
 Using both the `InsertField` and `Cast` SMTs, you can add specify the TTL on each item created in Cosmos DB.
 
-> Note: You will need to enable TTL on the Cosmos DB container to enable TTL at an item level. Refer to the [Cosmos DB setup guide]<!--(CosmosDB_Setup.md)--> or the [Cosmos DB docs](https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/how-to-time-to-live?tabs=dotnet-sdk-v3#enable-time-to-live-on-a-container-using-azure-portal) for more information on setting the TTL.
+> Note: You will need to enable TTL on the Cosmos DB container to enable TTL at an item level. Refer to the [Cosmos DB setup guide]<!--(CosmosDB_Setup.md)--> or the [Cosmos DB docs](https://learn.microsoft.com/azure/cosmos-db/nosql/how-to-time-to-live?tabs=dotnet-sdk-v3#enable-time-to-live-on-a-container-using-azure-portal) for more information on setting the TTL.
 
 Inside your Sink connector config, add the following properties to set the TTL (in seconds). In this following example, the TTL is set to 100 seconds.
 

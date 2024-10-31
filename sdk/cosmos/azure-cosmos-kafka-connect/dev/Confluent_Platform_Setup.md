@@ -9,7 +9,7 @@ This guide walks through setting up Confluent Platform using Docker containers.
 - Java 11+ ([download](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html))
 - Maven ([download](https://maven.apache.org/download.cgi))
 - Docker ([download](https://www.docker.com/products/docker-desktop))
-- Powershell (optional) ([download](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell))
+- Powershell (optional) ([download](https://learn.microsoft.com/powershell/scripting/install/installing-powershell))
 
 ### Startup
 
