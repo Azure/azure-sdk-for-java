@@ -156,8 +156,9 @@ public final class SqlVirtualMachineGroupImpl
         com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.sqlVirtualMachineGroupName = Utils.getValueFromIdByName(innerObject.id(), "sqlVirtualMachineGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.sqlVirtualMachineGroupName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlVirtualMachineGroups");
     }
 
     public SqlVirtualMachineGroup refresh() {

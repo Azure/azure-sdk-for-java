@@ -43,10 +43,10 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * Entry point to SqlVirtualMachineManager. The SQL virtual machine management API provides a RESTful set of web APIs
- * that interact with Azure Compute, Network &amp; Storage services to manage your SQL Server virtual machine. The API
- * enables users to create, delete and retrieve a SQL virtual machine, SQL virtual machine group or availability group
- * listener.
+ * Entry point to SqlVirtualMachineManager.
+ * The SQL virtual machine management API provides a RESTful set of web APIs that interact with Azure Compute, Network
+ * &amp; Storage services to manage your SQL Server virtual machine. The API enables users to create, delete and
+ * retrieve a SQL virtual machine, SQL virtual machine group or availability group listener.
  */
 public final class SqlVirtualMachineManager {
     private AvailabilityGroupListeners availabilityGroupListeners;
@@ -73,7 +73,7 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Creates an instance of SqlVirtualMachine service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the SqlVirtualMachine service API instance.
@@ -86,7 +86,7 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Creates an instance of SqlVirtualMachine service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the SqlVirtualMachine service API instance.
@@ -99,14 +99,16 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Gets a Configurable instance that can be used to create SqlVirtualMachineManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new SqlVirtualMachineManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -178,8 +180,8 @@ public final class SqlVirtualMachineManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -221,7 +223,7 @@ public final class SqlVirtualMachineManager {
                 .append("-")
                 .append("com.azure.resourcemanager.sqlvirtualmachine")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -269,7 +271,7 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Gets the resource collection API of AvailabilityGroupListeners. It manages AvailabilityGroupListener.
-     *
+     * 
      * @return Resource collection API of AvailabilityGroupListeners.
      */
     public AvailabilityGroupListeners availabilityGroupListeners() {
@@ -282,7 +284,7 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -294,7 +296,7 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Gets the resource collection API of SqlVirtualMachineGroups. It manages SqlVirtualMachineGroup.
-     *
+     * 
      * @return Resource collection API of SqlVirtualMachineGroups.
      */
     public SqlVirtualMachineGroups sqlVirtualMachineGroups() {
@@ -307,7 +309,7 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Gets the resource collection API of SqlVirtualMachines. It manages SqlVirtualMachine.
-     *
+     * 
      * @return Resource collection API of SqlVirtualMachines.
      */
     public SqlVirtualMachines sqlVirtualMachines() {
@@ -319,7 +321,7 @@ public final class SqlVirtualMachineManager {
 
     /**
      * Gets the resource collection API of SqlVirtualMachineTroubleshoots.
-     *
+     * 
      * @return Resource collection API of SqlVirtualMachineTroubleshoots.
      */
     public SqlVirtualMachineTroubleshoots sqlVirtualMachineTroubleshoots() {
@@ -331,8 +333,10 @@ public final class SqlVirtualMachineManager {
     }
 
     /**
-     * @return Wrapped service client SqlVirtualMachineManagementClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets wrapped service client SqlVirtualMachineManagementClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client SqlVirtualMachineManagementClient.
      */
     public SqlVirtualMachineManagementClient serviceClient() {
         return this.clientObject;
