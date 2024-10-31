@@ -6,22 +6,19 @@ package com.azure.resourcemanager.baremetalinfrastructure.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager;
-import com.azure.resourcemanager.baremetalinfrastructure.models.Operation;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class OperationsListMockTests {
+public final class AzureBareMetalStorageInstancesDeleteByResourceGroupWithMockTests {
     @Test
-    public void testList() throws Exception {
-        String responseStr
-            = "{\"value\":[{\"name\":\"wqsmbsur\",\"isDataAction\":true,\"display\":{\"provider\":\"ryocfsfksymdd\",\"resource\":\"tki\",\"operation\":\"xhqyudxorrqnb\",\"description\":\"czvyifq\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}]}";
+    public void testDeleteWithResponse() throws Exception {
+        String responseStr = "{}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +27,8 @@ public final class OperationsListMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
+        manager.azureBareMetalStorageInstances()
+            .deleteByResourceGroupWithResponse("bgsncghkjeszzhb", "jhtxfvgxbfsmxne", com.azure.core.util.Context.NONE);
 
     }
 }
