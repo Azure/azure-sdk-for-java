@@ -173,7 +173,8 @@ class SparkE2EStructuredStreamingITest
 
 
     // 2 partitions with 100 changes each
-    for (_ <- 0 until 100) {
+    val documentsPerPartition = 100
+    for (_ <- 0 until documentsPerPartition) {
       this.ingestTestDocument(sourceContainer, 1)
       this.ingestTestDocument(sourceContainer, 2)
     }
@@ -183,7 +184,7 @@ class SparkE2EStructuredStreamingITest
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> sourceContainer.getId,
-      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "10",
+      "spark.cosmos.changeFeed.itemCountPerTriggerHint" -> "20",
     )
 
     val writeCfg = Map(
@@ -220,9 +221,8 @@ class SparkE2EStructuredStreamingITest
     val targetCount: Long = getRecordCountOfContainer(targetContainer)
     logInfo(s"RecordCount in target container after first execution: $targetCount")
 
-    sourceCount shouldEqual 200L
+    sourceCount shouldEqual documentsPerPartition * 2
     targetCount shouldEqual sourceCount
-    validateEndLSN.get() shouldEqual true
   }
 
   "spark change feed micro batch (incremental)" can
@@ -888,6 +888,7 @@ class SparkE2EStructuredStreamingITest
         processedRecordCount.addAndGet(queryProgress.progress.numInputRows)
         validateEndLSN.set(processedRecordCount.get() ==
          getTotalChanges(queryProgress.progress.sources(0).endOffset))
+        validateEndLSN.get() shouldEqual true
       }
     })
 
