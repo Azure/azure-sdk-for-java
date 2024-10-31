@@ -25,17 +25,23 @@ import com.azure.resourcemanager.cognitiveservices.fluent.PrivateLinkResourcesCl
 import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateLinkResourceListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CognitiveServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(CognitiveServicesManagementClientImpl client) {
@@ -63,14 +69,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets the private link resources that need to be created for a Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Cognitive Services account along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the private link resources that need to be created for a Cognitive Services account along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourceListResultInner>> listWithResponseAsync(String resourceGroupName,
@@ -99,15 +105,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets the private link resources that need to be created for a Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Cognitive Services account along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the private link resources that need to be created for a Cognitive Services account along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourceListResultInner>> listWithResponseAsync(String resourceGroupName,
@@ -135,14 +141,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets the private link resources that need to be created for a Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources that need to be created for a Cognitive Services account on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PrivateLinkResourceListResultInner> listAsync(String resourceGroupName, String accountName) {
@@ -151,15 +157,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets the private link resources that need to be created for a Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a Cognitive Services account along with {@link
-     *     Response}.
+     * @return the private link resources that need to be created for a Cognitive Services account along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourceListResultInner> listWithResponse(String resourceGroupName, String accountName,
@@ -169,7 +175,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Gets the private link resources that need to be created for a Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

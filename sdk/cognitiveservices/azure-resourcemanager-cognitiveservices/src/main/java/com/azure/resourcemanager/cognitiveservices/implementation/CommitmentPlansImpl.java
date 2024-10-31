@@ -31,12 +31,12 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
 
     public PagedIterable<CommitmentPlan> list(String resourceGroupName, String accountName) {
         PagedIterable<CommitmentPlanInner> inner = this.serviceClient().list(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommitmentPlan> list(String resourceGroupName, String accountName, Context context) {
         PagedIterable<CommitmentPlanInner> inner = this.serviceClient().list(resourceGroupName, accountName, context);
-        return Utils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
     }
 
     public Response<CommitmentPlan> getWithResponse(String resourceGroupName, String accountName,
@@ -122,36 +122,38 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
 
     public PagedIterable<CommitmentPlan> listByResourceGroup(String resourceGroupName) {
         PagedIterable<CommitmentPlanInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommitmentPlan> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<CommitmentPlanInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommitmentPlan> listPlansBySubscription() {
         PagedIterable<CommitmentPlanInner> inner = this.serviceClient().listPlansBySubscription();
-        return Utils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommitmentPlan> listPlansBySubscription(Context context) {
         PagedIterable<CommitmentPlanInner> inner = this.serviceClient().listPlansBySubscription(context);
-        return Utils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CommitmentPlanImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommitmentPlanAccountAssociation> listAssociations(String resourceGroupName,
         String commitmentPlanName) {
         PagedIterable<CommitmentPlanAccountAssociationInner> inner
             = this.serviceClient().listAssociations(resourceGroupName, commitmentPlanName);
-        return Utils.mapPage(inner, inner1 -> new CommitmentPlanAccountAssociationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CommitmentPlanAccountAssociationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CommitmentPlanAccountAssociation> listAssociations(String resourceGroupName,
         String commitmentPlanName, Context context) {
         PagedIterable<CommitmentPlanAccountAssociationInner> inner
             = this.serviceClient().listAssociations(resourceGroupName, commitmentPlanName, context);
-        return Utils.mapPage(inner, inner1 -> new CommitmentPlanAccountAssociationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CommitmentPlanAccountAssociationImpl(inner1, this.manager()));
     }
 
     public Response<CommitmentPlanAccountAssociation> getAssociationWithResponse(String resourceGroupName,
@@ -189,12 +191,12 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public CommitmentPlan getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String commitmentPlanName = Utils.getValueFromIdByName(id, "commitmentPlans");
+        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(id, "commitmentPlans");
         if (commitmentPlanName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
@@ -203,12 +205,12 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public Response<CommitmentPlan> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String commitmentPlanName = Utils.getValueFromIdByName(id, "commitmentPlans");
+        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(id, "commitmentPlans");
         if (commitmentPlanName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
@@ -217,17 +219,17 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public CommitmentPlanAccountAssociation getAssociationById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String commitmentPlanName = Utils.getValueFromIdByName(id, "commitmentPlans");
+        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(id, "commitmentPlans");
         if (commitmentPlanName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
         }
-        String commitmentPlanAssociationName = Utils.getValueFromIdByName(id, "accountAssociations");
+        String commitmentPlanAssociationName = ResourceManagerUtils.getValueFromIdByName(id, "accountAssociations");
         if (commitmentPlanAssociationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accountAssociations'.", id)));
@@ -239,17 +241,17 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public Response<CommitmentPlanAccountAssociation> getAssociationByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String commitmentPlanName = Utils.getValueFromIdByName(id, "commitmentPlans");
+        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(id, "commitmentPlans");
         if (commitmentPlanName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
         }
-        String commitmentPlanAssociationName = Utils.getValueFromIdByName(id, "accountAssociations");
+        String commitmentPlanAssociationName = ResourceManagerUtils.getValueFromIdByName(id, "accountAssociations");
         if (commitmentPlanAssociationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accountAssociations'.", id)));
@@ -259,12 +261,12 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public void deletePlanById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String commitmentPlanName = Utils.getValueFromIdByName(id, "commitmentPlans");
+        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(id, "commitmentPlans");
         if (commitmentPlanName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
@@ -273,12 +275,12 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public void deletePlanByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String commitmentPlanName = Utils.getValueFromIdByName(id, "commitmentPlans");
+        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(id, "commitmentPlans");
         if (commitmentPlanName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
@@ -287,17 +289,17 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public void deleteAssociationById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String commitmentPlanName = Utils.getValueFromIdByName(id, "commitmentPlans");
+        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(id, "commitmentPlans");
         if (commitmentPlanName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
         }
-        String commitmentPlanAssociationName = Utils.getValueFromIdByName(id, "accountAssociations");
+        String commitmentPlanAssociationName = ResourceManagerUtils.getValueFromIdByName(id, "accountAssociations");
         if (commitmentPlanAssociationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accountAssociations'.", id)));
@@ -306,17 +308,17 @@ public final class CommitmentPlansImpl implements CommitmentPlans {
     }
 
     public void deleteAssociationByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String commitmentPlanName = Utils.getValueFromIdByName(id, "commitmentPlans");
+        String commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(id, "commitmentPlans");
         if (commitmentPlanName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'commitmentPlans'.", id)));
         }
-        String commitmentPlanAssociationName = Utils.getValueFromIdByName(id, "accountAssociations");
+        String commitmentPlanAssociationName = ResourceManagerUtils.getValueFromIdByName(id, "accountAssociations");
         if (commitmentPlanAssociationName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'accountAssociations'.", id)));
