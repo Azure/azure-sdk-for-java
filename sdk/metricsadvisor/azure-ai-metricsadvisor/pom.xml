@@ -39,7 +39,6 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-opens com.azure.ai.metricsadvisor/com.azure.ai.metricsadvisor=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

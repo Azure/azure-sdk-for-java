@@ -10,8 +10,9 @@ import com.azure.resourcemanager.synapse.models.EntityResource;
 public final class EntityResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EntityResource model = BinaryData.fromString(
-            "{\"etag\":\"mspofapvuhryl\",\"id\":\"iofrzgbzjedmstk\",\"name\":\"nlvxbcuii\",\"type\":\"nktwfansnvpdibmi\"}")
+        EntityResource model = BinaryData
+            .fromString(
+                "{\"etag\":\"gphuartvtiu\",\"id\":\"yefchnm\",\"name\":\"ahmnxhkxjqirw\",\"type\":\"weooxffifhxwrs\"}")
             .toObject(EntityResource.class);
     }
 

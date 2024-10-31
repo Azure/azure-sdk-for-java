@@ -32,22 +32,22 @@ public final class ScheduledActionsImpl implements ScheduledActions {
 
     public PagedIterable<ScheduledAction> list() {
         PagedIterable<ScheduledActionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ScheduledAction> list(String filter, Context context) {
         PagedIterable<ScheduledActionInner> inner = this.serviceClient().list(filter, context);
-        return Utils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ScheduledAction> listByScope(String scope) {
         PagedIterable<ScheduledActionInner> inner = this.serviceClient().listByScope(scope);
-        return Utils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ScheduledAction> listByScope(String scope, String filter, Context context) {
         PagedIterable<ScheduledActionInner> inner = this.serviceClient().listByScope(scope, filter, context);
-        return Utils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduledActionImpl(inner1, this.manager()));
     }
 
     public Response<ScheduledAction> createOrUpdateWithResponse(String name, ScheduledActionInner scheduledAction,
@@ -188,13 +188,13 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public ScheduledAction getById(String id) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String name = Utils.getValueFromIdByParameterName(id,
+        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -204,13 +204,13 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<ScheduledAction> getByIdWithResponse(String id, Context context) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String name = Utils.getValueFromIdByParameterName(id,
+        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -220,13 +220,13 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public void deleteById(String id) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String name = Utils.getValueFromIdByParameterName(id,
+        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -236,13 +236,13 @@ public final class ScheduledActionsImpl implements ScheduledActions {
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String scope = Utils.getValueFromIdByParameterName(id,
+        String scope = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "scope");
         if (scope == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String name = Utils.getValueFromIdByParameterName(id,
+        String name = ResourceManagerUtils.getValueFromIdByParameterName(id,
             "/{scope}/providers/Microsoft.CostManagement/scheduledActions/{name}", "name");
         if (name == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(

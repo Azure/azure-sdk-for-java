@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.baremetalinfrastructure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the disk information fo the Azure Bare Metal Instance. */
+/**
+ * Specifies the disk information fo the Azure Bare Metal Instance.
+ */
 @Fluent
-public final class Disk {
+public final class Disk implements JsonSerializable<Disk> {
     /*
      * The disk name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Specifies the size of an empty data disk in gigabytes.
      */
-    @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
      * Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
      * therefore must be unique for each data disk attached to a VM.
      */
-    @JsonProperty(value = "lun", access = JsonProperty.Access.WRITE_ONLY)
     private Integer lun;
 
-    /** Creates an instance of Disk class. */
+    /**
+     * Creates an instance of Disk class.
+     */
     public Disk() {
     }
 
     /**
      * Get the name property: The disk name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +49,7 @@ public final class Disk {
 
     /**
      * Set the name property: The disk name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Disk object itself.
      */
@@ -55,7 +60,7 @@ public final class Disk {
 
     /**
      * Get the diskSizeGB property: Specifies the size of an empty data disk in gigabytes.
-     *
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -64,7 +69,7 @@ public final class Disk {
 
     /**
      * Set the diskSizeGB property: Specifies the size of an empty data disk in gigabytes.
-     *
+     * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the Disk object itself.
      */
@@ -76,7 +81,7 @@ public final class Disk {
     /**
      * Get the lun property: Specifies the logical unit number of the data disk. This value is used to identify data
      * disks within the VM and therefore must be unique for each data disk attached to a VM.
-     *
+     * 
      * @return the lun value.
      */
     public Integer lun() {
@@ -85,9 +90,50 @@ public final class Disk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("diskSizeGB", this.diskSizeGB);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Disk from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Disk if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Disk.
+     */
+    public static Disk fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Disk deserializedDisk = new Disk();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDisk.name = reader.getString();
+                } else if ("diskSizeGB".equals(fieldName)) {
+                    deserializedDisk.diskSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("lun".equals(fieldName)) {
+                    deserializedDisk.lun = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDisk;
+        });
     }
 }

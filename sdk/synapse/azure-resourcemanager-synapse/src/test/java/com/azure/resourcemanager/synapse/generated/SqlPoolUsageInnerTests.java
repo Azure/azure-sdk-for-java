@@ -11,7 +11,7 @@ public final class SqlPoolUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SqlPoolUsageInner model = BinaryData.fromString(
-            "{\"name\":\"lxgwimfnjhf\",\"resourceName\":\"wmszkk\",\"displayName\":\"qreyfkzi\",\"currentValue\":47.32813703422634,\"limit\":4.556100953874753,\"unit\":\"ivx\",\"nextResetTime\":\"2021-12-04T11:19:32Z\"}")
+            "{\"name\":\"gdknnqv\",\"resourceName\":\"znqntoru\",\"displayName\":\"gsahmkycgrauw\",\"currentValue\":35.149572223577785,\"limit\":27.237904606376194,\"unit\":\"ruvdmov\",\"nextResetTime\":\"2021-10-21T17:37:50Z\"}")
             .toObject(SqlPoolUsageInner.class);
     }
 

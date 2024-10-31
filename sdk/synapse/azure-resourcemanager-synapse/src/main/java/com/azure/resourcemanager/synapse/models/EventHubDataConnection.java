@@ -5,38 +5,118 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.DataConnectionInner;
 import com.azure.resourcemanager.synapse.fluent.models.EventHubConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
-/** Class representing an event hub data connection. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("EventHub")
+/**
+ * Class representing an event hub data connection.
+ */
 @Fluent
 public final class EventHubDataConnection extends DataConnectionInner {
     /*
+     * Kind of the endpoint for the data connection
+     */
+    private DataConnectionKind kind = DataConnectionKind.EVENT_HUB;
+
+    /*
      * The Event Hub data connection properties to validate.
      */
-    @JsonProperty(value = "properties")
     private EventHubConnectionProperties innerProperties;
 
-    /** Creates an instance of EventHubDataConnection class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EventHubDataConnection class.
+     */
     public EventHubDataConnection() {
     }
 
     /**
+     * Get the kind property: Kind of the endpoint for the data connection.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public DataConnectionKind kind() {
+        return this.kind;
+    }
+
+    /**
      * Get the innerProperties property: The Event Hub data connection properties to validate.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EventHubConnectionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    @Override
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubDataConnection withLocation(String location) {
         super.withLocation(location);
@@ -45,7 +125,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
 
     /**
      * Get the eventHubResourceId property: The resource ID of the event hub to be used to create a data connection.
-     *
+     * 
      * @return the eventHubResourceId value.
      */
     public String eventHubResourceId() {
@@ -54,7 +134,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
 
     /**
      * Set the eventHubResourceId property: The resource ID of the event hub to be used to create a data connection.
-     *
+     * 
      * @param eventHubResourceId the eventHubResourceId value to set.
      * @return the EventHubDataConnection object itself.
      */
@@ -68,7 +148,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
 
     /**
      * Get the consumerGroup property: The event hub consumer group.
-     *
+     * 
      * @return the consumerGroup value.
      */
     public String consumerGroup() {
@@ -77,7 +157,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
 
     /**
      * Set the consumerGroup property: The event hub consumer group.
-     *
+     * 
      * @param consumerGroup the consumerGroup value to set.
      * @return the EventHubDataConnection object itself.
      */
@@ -92,7 +172,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
     /**
      * Get the tableName property: The table where the data should be ingested. Optionally the table information can be
      * added to each message.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -102,7 +182,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
     /**
      * Set the tableName property: The table where the data should be ingested. Optionally the table information can be
      * added to each message.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the EventHubDataConnection object itself.
      */
@@ -117,7 +197,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
     /**
      * Get the mappingRuleName property: The mapping rule to be used to ingest the data. Optionally the mapping
      * information can be added to each message.
-     *
+     * 
      * @return the mappingRuleName value.
      */
     public String mappingRuleName() {
@@ -127,7 +207,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
     /**
      * Set the mappingRuleName property: The mapping rule to be used to ingest the data. Optionally the mapping
      * information can be added to each message.
-     *
+     * 
      * @param mappingRuleName the mappingRuleName value to set.
      * @return the EventHubDataConnection object itself.
      */
@@ -142,7 +222,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
     /**
      * Get the dataFormat property: The data format of the message. Optionally the data format can be added to each
      * message.
-     *
+     * 
      * @return the dataFormat value.
      */
     public EventHubDataFormat dataFormat() {
@@ -152,7 +232,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
     /**
      * Set the dataFormat property: The data format of the message. Optionally the data format can be added to each
      * message.
-     *
+     * 
      * @param dataFormat the dataFormat value to set.
      * @return the EventHubDataConnection object itself.
      */
@@ -166,7 +246,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
 
     /**
      * Get the eventSystemProperties property: System properties of the event hub.
-     *
+     * 
      * @return the eventSystemProperties value.
      */
     public List<String> eventSystemProperties() {
@@ -175,7 +255,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
 
     /**
      * Set the eventSystemProperties property: System properties of the event hub.
-     *
+     * 
      * @param eventSystemProperties the eventSystemProperties value to set.
      * @return the EventHubDataConnection object itself.
      */
@@ -189,7 +269,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
 
     /**
      * Get the compression property: The event hub messages compression type.
-     *
+     * 
      * @return the compression value.
      */
     public Compression compression() {
@@ -198,7 +278,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
 
     /**
      * Set the compression property: The event hub messages compression type.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the EventHubDataConnection object itself.
      */
@@ -212,7 +292,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceProvisioningState provisioningState() {
@@ -222,7 +302,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
     /**
      * Get the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
      * used to authenticate with event hub.
-     *
+     * 
      * @return the managedIdentityResourceId value.
      */
     public String managedIdentityResourceId() {
@@ -232,7 +312,7 @@ public final class EventHubDataConnection extends DataConnectionInner {
     /**
      * Set the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
      * used to authenticate with event hub.
-     *
+     * 
      * @param managedIdentityResourceId the managedIdentityResourceId value to set.
      * @return the EventHubDataConnection object itself.
      */
@@ -246,14 +326,64 @@ public final class EventHubDataConnection extends DataConnectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubDataConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubDataConnection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventHubDataConnection.
+     */
+    public static EventHubDataConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubDataConnection deserializedEventHubDataConnection = new EventHubDataConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEventHubDataConnection.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEventHubDataConnection.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEventHubDataConnection.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedEventHubDataConnection.withLocation(reader.getString());
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedEventHubDataConnection.systemData = SystemData.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEventHubDataConnection.kind = DataConnectionKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEventHubDataConnection.innerProperties = EventHubConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubDataConnection;
+        });
     }
 }

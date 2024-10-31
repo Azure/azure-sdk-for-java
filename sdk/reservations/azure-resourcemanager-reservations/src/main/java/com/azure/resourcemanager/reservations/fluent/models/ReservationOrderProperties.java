@@ -5,103 +5,101 @@
 package com.azure.resourcemanager.reservations.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.reservations.models.ProvisioningState;
 import com.azure.resourcemanager.reservations.models.ReservationBillingPlan;
 import com.azure.resourcemanager.reservations.models.ReservationOrderBillingPlanInformation;
 import com.azure.resourcemanager.reservations.models.ReservationTerm;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
-/** Properties of a reservation order. */
+/**
+ * Properties of a reservation order.
+ */
 @Fluent
-public final class ReservationOrderProperties {
+public final class ReservationOrderProperties implements JsonSerializable<ReservationOrderProperties> {
     /*
      * Friendly name for user to easily identified the reservation.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * This is the DateTime when the reservation was initially requested for purchase.
      */
-    @JsonProperty(value = "requestDateTime")
     private OffsetDateTime requestDateTime;
 
     /*
      * This is the DateTime when the reservation was created.
      */
-    @JsonProperty(value = "createdDateTime")
     private OffsetDateTime createdDateTime;
 
     /*
      * This is the date when the reservation will expire.
      */
-    @JsonProperty(value = "expiryDate")
     private LocalDate expiryDate;
 
     /*
      * This is the date-time when the reservation will expire.
      */
-    @JsonProperty(value = "expiryDateTime")
     private OffsetDateTime expiryDateTime;
 
     /*
      * This is the DateTime when the reservation benefit started.
      */
-    @JsonProperty(value = "benefitStartTime")
     private OffsetDateTime benefitStartTime;
 
     /*
      * Total Quantity of the skus purchased in the reservation.
      */
-    @JsonProperty(value = "originalQuantity")
     private Integer originalQuantity;
 
     /*
      * Represent the term of reservation.
      */
-    @JsonProperty(value = "term")
     private ReservationTerm term;
 
     /*
      * Current state of the reservation.
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /*
      * Represent the billing plans.
      */
-    @JsonProperty(value = "billingPlan")
     private ReservationBillingPlan billingPlan;
 
     /*
      * Information describing the type of billing plan for this reservation.
      */
-    @JsonProperty(value = "planInformation")
     private ReservationOrderBillingPlanInformation planInformation;
 
     /*
      * The reservations property.
      */
-    @JsonProperty(value = "reservations")
     private List<ReservationResponseInner> reservations;
 
     /*
      * This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
      */
-    @JsonProperty(value = "reviewDateTime")
     private OffsetDateTime reviewDateTime;
 
-    /** Creates an instance of ReservationOrderProperties class. */
+    /**
+     * Creates an instance of ReservationOrderProperties class.
+     */
     public ReservationOrderProperties() {
     }
 
     /**
      * Get the displayName property: Friendly name for user to easily identified the reservation.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -110,7 +108,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the displayName property: Friendly name for user to easily identified the reservation.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -121,7 +119,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the requestDateTime property: This is the DateTime when the reservation was initially requested for purchase.
-     *
+     * 
      * @return the requestDateTime value.
      */
     public OffsetDateTime requestDateTime() {
@@ -130,7 +128,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the requestDateTime property: This is the DateTime when the reservation was initially requested for purchase.
-     *
+     * 
      * @param requestDateTime the requestDateTime value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -141,7 +139,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the createdDateTime property: This is the DateTime when the reservation was created.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -150,7 +148,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the createdDateTime property: This is the DateTime when the reservation was created.
-     *
+     * 
      * @param createdDateTime the createdDateTime value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -161,7 +159,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the expiryDate property: This is the date when the reservation will expire.
-     *
+     * 
      * @return the expiryDate value.
      */
     public LocalDate expiryDate() {
@@ -170,7 +168,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the expiryDate property: This is the date when the reservation will expire.
-     *
+     * 
      * @param expiryDate the expiryDate value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -181,7 +179,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the expiryDateTime property: This is the date-time when the reservation will expire.
-     *
+     * 
      * @return the expiryDateTime value.
      */
     public OffsetDateTime expiryDateTime() {
@@ -190,7 +188,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the expiryDateTime property: This is the date-time when the reservation will expire.
-     *
+     * 
      * @param expiryDateTime the expiryDateTime value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -201,7 +199,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the benefitStartTime property: This is the DateTime when the reservation benefit started.
-     *
+     * 
      * @return the benefitStartTime value.
      */
     public OffsetDateTime benefitStartTime() {
@@ -210,7 +208,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the benefitStartTime property: This is the DateTime when the reservation benefit started.
-     *
+     * 
      * @param benefitStartTime the benefitStartTime value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -221,7 +219,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the originalQuantity property: Total Quantity of the skus purchased in the reservation.
-     *
+     * 
      * @return the originalQuantity value.
      */
     public Integer originalQuantity() {
@@ -230,7 +228,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the originalQuantity property: Total Quantity of the skus purchased in the reservation.
-     *
+     * 
      * @param originalQuantity the originalQuantity value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -241,7 +239,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the term property: Represent the term of reservation.
-     *
+     * 
      * @return the term value.
      */
     public ReservationTerm term() {
@@ -250,7 +248,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the term property: Represent the term of reservation.
-     *
+     * 
      * @param term the term value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -261,7 +259,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the provisioningState property: Current state of the reservation.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -270,7 +268,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the provisioningState property: Current state of the reservation.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -281,7 +279,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the billingPlan property: Represent the billing plans.
-     *
+     * 
      * @return the billingPlan value.
      */
     public ReservationBillingPlan billingPlan() {
@@ -290,7 +288,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the billingPlan property: Represent the billing plans.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -301,7 +299,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the planInformation property: Information describing the type of billing plan for this reservation.
-     *
+     * 
      * @return the planInformation value.
      */
     public ReservationOrderBillingPlanInformation planInformation() {
@@ -310,7 +308,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the planInformation property: Information describing the type of billing plan for this reservation.
-     *
+     * 
      * @param planInformation the planInformation value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -321,7 +319,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the reservations property: The reservations property.
-     *
+     * 
      * @return the reservations value.
      */
     public List<ReservationResponseInner> reservations() {
@@ -330,7 +328,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the reservations property: The reservations property.
-     *
+     * 
      * @param reservations the reservations value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -341,7 +339,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Get the reviewDateTime property: This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
-     *
+     * 
      * @return the reviewDateTime value.
      */
     public OffsetDateTime reviewDateTime() {
@@ -350,7 +348,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Set the reviewDateTime property: This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
-     *
+     * 
      * @param reviewDateTime the reviewDateTime value to set.
      * @return the ReservationOrderProperties object itself.
      */
@@ -361,7 +359,7 @@ public final class ReservationOrderProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -371,5 +369,96 @@ public final class ReservationOrderProperties {
         if (reservations() != null) {
             reservations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("requestDateTime",
+            this.requestDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.requestDateTime));
+        jsonWriter.writeStringField("createdDateTime",
+            this.createdDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdDateTime));
+        jsonWriter.writeStringField("expiryDate", Objects.toString(this.expiryDate, null));
+        jsonWriter.writeStringField("expiryDateTime",
+            this.expiryDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryDateTime));
+        jsonWriter.writeStringField("benefitStartTime",
+            this.benefitStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.benefitStartTime));
+        jsonWriter.writeNumberField("originalQuantity", this.originalQuantity);
+        jsonWriter.writeStringField("term", this.term == null ? null : this.term.toString());
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("billingPlan", this.billingPlan == null ? null : this.billingPlan.toString());
+        jsonWriter.writeJsonField("planInformation", this.planInformation);
+        jsonWriter.writeArrayField("reservations", this.reservations, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("reviewDateTime",
+            this.reviewDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.reviewDateTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationOrderProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationOrderProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationOrderProperties.
+     */
+    public static ReservationOrderProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationOrderProperties deserializedReservationOrderProperties = new ReservationOrderProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("displayName".equals(fieldName)) {
+                    deserializedReservationOrderProperties.displayName = reader.getString();
+                } else if ("requestDateTime".equals(fieldName)) {
+                    deserializedReservationOrderProperties.requestDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedReservationOrderProperties.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiryDate".equals(fieldName)) {
+                    deserializedReservationOrderProperties.expiryDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("expiryDateTime".equals(fieldName)) {
+                    deserializedReservationOrderProperties.expiryDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("benefitStartTime".equals(fieldName)) {
+                    deserializedReservationOrderProperties.benefitStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("originalQuantity".equals(fieldName)) {
+                    deserializedReservationOrderProperties.originalQuantity = reader.getNullable(JsonReader::getInt);
+                } else if ("term".equals(fieldName)) {
+                    deserializedReservationOrderProperties.term = ReservationTerm.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedReservationOrderProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("billingPlan".equals(fieldName)) {
+                    deserializedReservationOrderProperties.billingPlan
+                        = ReservationBillingPlan.fromString(reader.getString());
+                } else if ("planInformation".equals(fieldName)) {
+                    deserializedReservationOrderProperties.planInformation
+                        = ReservationOrderBillingPlanInformation.fromJson(reader);
+                } else if ("reservations".equals(fieldName)) {
+                    List<ReservationResponseInner> reservations
+                        = reader.readArray(reader1 -> ReservationResponseInner.fromJson(reader1));
+                    deserializedReservationOrderProperties.reservations = reservations;
+                } else if ("reviewDateTime".equals(fieldName)) {
+                    deserializedReservationOrderProperties.reviewDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationOrderProperties;
+        });
     }
 }

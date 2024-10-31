@@ -7,18 +7,20 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.resourcemanager.synapse.fluent.models.KustoPoolListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of KustoPoolListResult. */
+/**
+ * An immutable client-side representation of KustoPoolListResult.
+ */
 public interface KustoPoolListResult {
     /**
      * Gets the value property: The list of Kusto pools.
-     *
+     * 
      * @return the value value.
      */
     List<KustoPool> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.KustoPoolListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     KustoPoolListResultInner innerModel();

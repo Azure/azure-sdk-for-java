@@ -12,13 +12,15 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.ContentKeyPolicyPropertiesInner;
 
-/** An instance of this class provides access to all the operations defined in ContentKeyPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContentKeyPoliciesClient.
+ */
 public interface ContentKeyPoliciesClient {
     /**
      * List Content Key Policies
-     *
-     * <p>Lists the Content Key Policies in the account.
-     *
+     * 
+     * Lists the Content Key Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,14 +33,14 @@ public interface ContentKeyPoliciesClient {
 
     /**
      * List Content Key Policies
-     *
-     * <p>Lists the Content Key Policies in the account.
-     *
+     * 
+     * Lists the Content Key Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -52,9 +54,9 @@ public interface ContentKeyPoliciesClient {
 
     /**
      * Get a Content Key Policy
-     *
-     * <p>Get the details of a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -70,9 +72,9 @@ public interface ContentKeyPoliciesClient {
 
     /**
      * Get a Content Key Policy
-     *
-     * <p>Get the details of a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -86,9 +88,9 @@ public interface ContentKeyPoliciesClient {
 
     /**
      * Create or update an Content Key Policy
-     *
-     * <p>Create or update a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Create or update a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -105,9 +107,9 @@ public interface ContentKeyPoliciesClient {
 
     /**
      * Create or update an Content Key Policy
-     *
-     * <p>Create or update a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Create or update a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -123,9 +125,9 @@ public interface ContentKeyPoliciesClient {
 
     /**
      * Delete a Content Key Policy
-     *
-     * <p>Deletes a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -141,9 +143,9 @@ public interface ContentKeyPoliciesClient {
 
     /**
      * Delete a Content Key Policy
-     *
-     * <p>Deletes a Content Key Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -156,9 +158,9 @@ public interface ContentKeyPoliciesClient {
 
     /**
      * Update a Content Key Policy
-     *
-     * <p>Updates an existing Content Key Policy in the Media Services account.
-     *
+     * 
+     * Updates an existing Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -175,9 +177,9 @@ public interface ContentKeyPoliciesClient {
 
     /**
      * Update a Content Key Policy
-     *
-     * <p>Updates an existing Content Key Policy in the Media Services account.
-     *
+     * 
+     * Updates an existing Content Key Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -193,9 +195,9 @@ public interface ContentKeyPoliciesClient {
 
     /**
      * Get a Content Key Policy with secrets
-     *
-     * <p>Get a Content Key Policy including secret values.
-     *
+     * 
+     * Get a Content Key Policy including secret values.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.
@@ -211,9 +213,9 @@ public interface ContentKeyPoliciesClient {
 
     /**
      * Get a Content Key Policy with secrets
-     *
-     * <p>Get a Content Key Policy including secret values.
-     *
+     * 
+     * Get a Content Key Policy including secret values.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param contentKeyPolicyName The Content Key Policy name.

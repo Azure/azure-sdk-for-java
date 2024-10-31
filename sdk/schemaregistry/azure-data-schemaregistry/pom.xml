@@ -46,7 +46,6 @@
       --add-exports com.azure.data.schemaregistry/com.azure.data.schemaregistry.implementation.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <checkstyle.excludes>**/implementation/**/*.java</checkstyle.excludes>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

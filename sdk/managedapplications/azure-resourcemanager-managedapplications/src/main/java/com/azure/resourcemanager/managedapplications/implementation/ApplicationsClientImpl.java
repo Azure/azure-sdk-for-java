@@ -45,17 +45,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApplicationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationsClient.
+ */
 public final class ApplicationsClientImpl implements ApplicationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApplicationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationClientImpl client;
 
     /**
      * Initializes an instance of ApplicationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationsClientImpl(ApplicationClientImpl client) {
@@ -226,7 +232,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -263,7 +269,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -299,7 +305,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -315,7 +321,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -332,7 +338,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -347,7 +353,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -382,7 +388,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -418,7 +424,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,7 +441,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -455,7 +461,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -470,7 +476,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -487,7 +493,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -503,7 +509,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -520,7 +526,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -534,7 +540,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -549,15 +555,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -592,7 +598,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -600,8 +606,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -635,7 +641,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -655,7 +661,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -677,7 +683,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -694,7 +700,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -712,7 +718,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -730,7 +736,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -749,7 +755,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -766,7 +772,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to the create or update a managed application.
@@ -784,15 +790,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String applicationName,
@@ -825,7 +831,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -833,8 +839,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String applicationName,
@@ -866,7 +872,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -886,7 +892,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -906,7 +912,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -928,7 +934,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -945,7 +951,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -963,7 +969,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -981,7 +987,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -998,7 +1004,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -1017,7 +1023,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1033,7 +1039,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Parameters supplied to update an existing managed application.
@@ -1051,7 +1057,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1083,7 +1089,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1117,7 +1123,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1132,7 +1138,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1148,7 +1154,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1162,7 +1168,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1177,7 +1183,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed applications along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1203,7 +1209,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1231,7 +1237,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed applications as paginated response with {@link PagedFlux}.
@@ -1244,7 +1250,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1259,7 +1265,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed applications as paginated response with {@link PagedIterable}.
@@ -1271,7 +1277,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Lists all the applications within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1285,10 +1291,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1312,10 +1318,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1338,10 +1344,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1354,10 +1360,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1371,10 +1377,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Gets the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1387,10 +1393,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1414,10 +1420,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1441,10 +1447,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1459,10 +1465,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1479,10 +1485,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1495,10 +1501,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1512,10 +1518,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1528,10 +1534,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1545,10 +1551,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1560,10 +1566,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Deletes the managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1576,16 +1582,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(String applicationId,
@@ -1611,17 +1617,17 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(String applicationId,
@@ -1646,10 +1652,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1666,10 +1672,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1688,10 +1694,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1706,10 +1712,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1725,10 +1731,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1743,10 +1749,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1763,10 +1769,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1780,10 +1786,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Creates or updates a managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to the create or update a managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1798,16 +1804,16 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(String applicationId,
@@ -1831,17 +1837,17 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about managed application along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return information about managed application along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(String applicationId,
@@ -1864,10 +1870,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1885,10 +1891,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1906,10 +1912,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1928,10 +1934,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1946,10 +1952,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1965,10 +1971,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1983,10 +1989,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2000,10 +2006,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2020,10 +2026,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2037,10 +2043,10 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Updates an existing managed application.
-     *
+     * 
      * @param applicationId The fully qualified ID of the managed application, including the managed application name
-     *     and the managed application resource type. Use the format,
-     *     /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
+     * and the managed application resource type. Use the format,
+     * /subscriptions/{guid}/resourceGroups/{resource-group-name}/Microsoft.Solutions/applications/{application-name}.
      * @param parameters Parameters supplied to update an existing managed application.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2056,7 +2062,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2093,7 +2099,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2129,7 +2135,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2147,7 +2153,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2168,7 +2174,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2184,7 +2190,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2201,7 +2207,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2217,7 +2223,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2234,7 +2240,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2248,7 +2254,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Refresh Permissions for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2263,7 +2269,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2300,7 +2306,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2336,7 +2342,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2353,7 +2359,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param context The context to associate with this operation.
@@ -2370,7 +2376,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * List allowed upgrade plans for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2385,7 +2391,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2427,7 +2433,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2469,7 +2475,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2490,7 +2496,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2513,7 +2519,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2530,7 +2536,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2548,7 +2554,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2566,7 +2572,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2585,7 +2591,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2602,7 +2608,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Update access for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2620,15 +2626,15 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the array of managed identity tokens along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the array of managed identity tokens along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedIdentityTokenResultInner>> listTokensWithResponseAsync(String resourceGroupName,
@@ -2663,7 +2669,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2671,8 +2677,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the array of managed identity tokens along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the array of managed identity tokens along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagedIdentityTokenResultInner>> listTokensWithResponseAsync(String resourceGroupName,
@@ -2706,7 +2712,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2724,7 +2730,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2742,7 +2748,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * List tokens for application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationName The name of the managed application.
      * @param parameters Request body parameters to list tokens.
@@ -2759,9 +2765,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2787,9 +2792,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2815,9 +2819,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2843,9 +2846,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

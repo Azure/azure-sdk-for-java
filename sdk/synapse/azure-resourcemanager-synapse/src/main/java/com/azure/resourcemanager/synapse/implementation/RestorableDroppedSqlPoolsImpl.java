@@ -53,14 +53,14 @@ public final class RestorableDroppedSqlPoolsImpl implements RestorableDroppedSql
     public PagedIterable<RestorableDroppedSqlPool> listByWorkspace(String resourceGroupName, String workspaceName) {
         PagedIterable<RestorableDroppedSqlPoolInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new RestorableDroppedSqlPoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RestorableDroppedSqlPoolImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RestorableDroppedSqlPool> listByWorkspace(String resourceGroupName, String workspaceName,
         Context context) {
         PagedIterable<RestorableDroppedSqlPoolInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new RestorableDroppedSqlPoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RestorableDroppedSqlPoolImpl(inner1, this.manager()));
     }
 
     private RestorableDroppedSqlPoolsClient serviceClient() {

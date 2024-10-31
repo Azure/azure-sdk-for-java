@@ -140,8 +140,8 @@ public final class CommitmentPlanImpl implements CommitmentPlan, CommitmentPlan.
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.commitmentPlanName = Utils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
     }
 
     public CommitmentPlan refresh() {

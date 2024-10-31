@@ -27,17 +27,23 @@ import com.azure.resourcemanager.synapse.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.synapse.models.DatabaseCheckNameRequest;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KustoPoolChildResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KustoPoolChildResourcesClient.
+ */
 public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KustoPoolChildResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of KustoPoolChildResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KustoPoolChildResourcesClientImpl(SynapseManagementClientImpl client) {
@@ -54,8 +60,7 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
     @ServiceInterface(name = "SynapseManagementCli")
     public interface KustoPoolChildResourcesService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/checkNameAvailability")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/checkNameAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
@@ -68,7 +73,7 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -77,7 +82,7 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String workspaceName,
@@ -116,7 +121,7 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -126,7 +131,7 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String workspaceName,
@@ -163,7 +168,7 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -182,7 +187,7 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -202,7 +207,7 @@ public final class KustoPoolChildResourcesClientImpl implements KustoPoolChildRe
 
     /**
      * Checks that the Kusto Pool child resource name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.

@@ -58,12 +58,12 @@ public final class DeletedAccountsImpl implements DeletedAccounts {
 
     public PagedIterable<Account> list() {
         PagedIterable<AccountInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Account> list(Context context) {
         PagedIterable<AccountInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
     private DeletedAccountsClient serviceClient() {

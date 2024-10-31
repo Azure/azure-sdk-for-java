@@ -14,7 +14,9 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the AzureOrbitalImpl type. */
+/**
+ * A builder for creating a new instance of the AzureOrbitalImpl type.
+ */
 @ServiceClientBuilder(serviceClients = { AzureOrbitalImpl.class })
 public final class AzureOrbitalBuilder {
     /*
@@ -24,7 +26,7 @@ public final class AzureOrbitalBuilder {
 
     /**
      * Sets The ID of the target subscription.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the AzureOrbitalBuilder.
      */
@@ -40,7 +42,7 @@ public final class AzureOrbitalBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the AzureOrbitalBuilder.
      */
@@ -56,7 +58,7 @@ public final class AzureOrbitalBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the AzureOrbitalBuilder.
      */
@@ -72,7 +74,7 @@ public final class AzureOrbitalBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the AzureOrbitalBuilder.
      */
@@ -88,7 +90,7 @@ public final class AzureOrbitalBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the AzureOrbitalBuilder.
      */
@@ -104,7 +106,7 @@ public final class AzureOrbitalBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureOrbitalBuilder.
      */
@@ -115,7 +117,7 @@ public final class AzureOrbitalBuilder {
 
     /**
      * Builds an instance of AzureOrbitalImpl with the provided parameters.
-     *
+     * 
      * @return an instance of AzureOrbitalImpl.
      */
     public AzureOrbitalImpl buildClient() {
@@ -130,7 +132,7 @@ public final class AzureOrbitalBuilder {
             ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
         AzureOrbitalImpl client = new AzureOrbitalImpl(localPipeline, localSerializerAdapter, localDefaultPollInterval,
-            localEnvironment, subscriptionId, localEndpoint);
+            localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

@@ -8,18 +8,20 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationRuntimes. */
+/**
+ * Resource collection API of IntegrationRuntimes.
+ */
 public interface IntegrationRuntimes {
     /**
      * Get integration runtime
-     *
-     * <p>Get an integration runtime.
-     *
+     * 
+     * Get an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
      * @param ifNoneMatch ETag of the integration runtime entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * the existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,9 +33,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Get integration runtime
-     *
-     * <p>Get an integration runtime.
-     *
+     * 
+     * Get an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -46,9 +48,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Delete integration runtime
-     *
-     * <p>Delete an integration runtime.
-     *
+     * 
+     * Delete an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -60,9 +62,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Delete integration runtime
-     *
-     * <p>Delete an integration runtime.
-     *
+     * 
+     * Delete an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -75,9 +77,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Upgrade integration runtime
-     *
-     * <p>Upgrade an integration runtime.
-     *
+     * 
+     * Upgrade an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -92,9 +94,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Upgrade integration runtime
-     *
-     * <p>Upgrade an integration runtime.
-     *
+     * 
+     * Upgrade an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -106,9 +108,9 @@ public interface IntegrationRuntimes {
 
     /**
      * List integration runtimes
-     *
-     * <p>List all integration runtimes.
-     *
+     * 
+     * List all integration runtimes.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,9 +122,9 @@ public interface IntegrationRuntimes {
 
     /**
      * List integration runtimes
-     *
-     * <p>List all integration runtimes.
-     *
+     * 
+     * List all integration runtimes.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -136,9 +138,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Start integration runtime
-     *
-     * <p>Start an integration runtime.
-     *
+     * 
+     * Start an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -152,9 +154,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Start integration runtime
-     *
-     * <p>Start an integration runtime.
-     *
+     * 
+     * Start an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -169,9 +171,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Stop integration runtime
-     *
-     * <p>Stop an integration runtime.
-     *
+     * 
+     * Stop an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -183,9 +185,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Stop integration runtime
-     *
-     * <p>Stop an integration runtime.
-     *
+     * 
+     * Stop an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -198,9 +200,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Gets list of outbound network dependencies for a given Azure-SSIS integration runtime.
-     *
-     * <p>Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
-     *
+     * 
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -208,8 +210,8 @@ public interface IntegrationRuntimes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with {@link
-     *     Response}.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with
+     * {@link Response}.
      */
     Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse>
         listOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName, String workspaceName,
@@ -217,9 +219,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Gets list of outbound network dependencies for a given Azure-SSIS integration runtime.
-     *
-     * <p>Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
-     *
+     * 
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -233,7 +235,7 @@ public interface IntegrationRuntimes {
 
     /**
      * Enable interactive query in integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -245,7 +247,7 @@ public interface IntegrationRuntimes {
 
     /**
      * Enable interactive query in integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -259,7 +261,7 @@ public interface IntegrationRuntimes {
 
     /**
      * Disable interactive query in integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -271,7 +273,7 @@ public interface IntegrationRuntimes {
 
     /**
      * Disable interactive query in integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -285,9 +287,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Get integration runtime
-     *
-     * <p>Get an integration runtime.
-     *
+     * 
+     * Get an integration runtime.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -298,12 +300,12 @@ public interface IntegrationRuntimes {
 
     /**
      * Get integration runtime
-     *
-     * <p>Get an integration runtime.
-     *
+     * 
+     * Get an integration runtime.
+     * 
      * @param id the resource ID.
      * @param ifNoneMatch ETag of the integration runtime entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * the existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -314,9 +316,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Delete integration runtime
-     *
-     * <p>Delete an integration runtime.
-     *
+     * 
+     * Delete an integration runtime.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -326,9 +328,9 @@ public interface IntegrationRuntimes {
 
     /**
      * Delete integration runtime
-     *
-     * <p>Delete an integration runtime.
-     *
+     * 
+     * Delete an integration runtime.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -339,7 +341,7 @@ public interface IntegrationRuntimes {
 
     /**
      * Begins definition for a new IntegrationRuntimeResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IntegrationRuntimeResource definition.
      */

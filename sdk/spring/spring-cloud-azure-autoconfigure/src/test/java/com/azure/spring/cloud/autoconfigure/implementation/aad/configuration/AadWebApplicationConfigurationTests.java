@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConfiguration;
@@ -39,7 +40,8 @@ class AadWebApplicationConfigurationTests {
             .withConfiguration(AutoConfigurations.of(
                 HttpMessageConvertersAutoConfiguration.class,
                 RestTemplateAutoConfiguration.class))
-            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class,
+            .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+                AzureGlobalPropertiesAutoConfiguration.class,
                 TestSecurityFilterChain.class,
                 AadAutoConfiguration.class)
             .withInitializer(ConditionEvaluationReportLoggingListener.forLogLevel(LogLevel.INFO))

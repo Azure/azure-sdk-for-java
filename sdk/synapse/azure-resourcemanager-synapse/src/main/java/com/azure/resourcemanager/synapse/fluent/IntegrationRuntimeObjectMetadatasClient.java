@@ -20,9 +20,9 @@ import com.azure.resourcemanager.synapse.models.GetSsisObjectMetadataRequest;
 public interface IntegrationRuntimeObjectMetadatasClient {
     /**
      * Get integration runtime object metadata
-     *
-     * <p>Get object metadata from an integration runtime.
-     *
+     * 
+     * Get object metadata from an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -39,9 +39,9 @@ public interface IntegrationRuntimeObjectMetadatasClient {
 
     /**
      * Get integration runtime object metadata
-     *
-     * <p>Get object metadata from an integration runtime.
-     *
+     * 
+     * Get object metadata from an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -56,9 +56,9 @@ public interface IntegrationRuntimeObjectMetadatasClient {
 
     /**
      * Refresh integration runtime object metadata
-     *
-     * <p>Refresh the object metadata in an integration runtime.
-     *
+     * 
+     * Refresh the object metadata in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -73,9 +73,9 @@ public interface IntegrationRuntimeObjectMetadatasClient {
 
     /**
      * Refresh integration runtime object metadata
-     *
-     * <p>Refresh the object metadata in an integration runtime.
-     *
+     * 
+     * Refresh the object metadata in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -91,9 +91,9 @@ public interface IntegrationRuntimeObjectMetadatasClient {
 
     /**
      * Refresh integration runtime object metadata
-     *
-     * <p>Refresh the object metadata in an integration runtime.
-     *
+     * 
+     * Refresh the object metadata in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -108,9 +108,9 @@ public interface IntegrationRuntimeObjectMetadatasClient {
 
     /**
      * Refresh integration runtime object metadata
-     *
-     * <p>Refresh the object metadata in an integration runtime.
-     *
+     * 
+     * Refresh the object metadata in an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

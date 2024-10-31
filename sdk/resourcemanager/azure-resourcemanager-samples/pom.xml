@@ -41,7 +41,6 @@
       com.azure.core.*:
       com.azure.resourcemanager.*.samples
     </javadoc.excludePackageNames>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>

@@ -5,19 +5,40 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A codec flag, which tells the encoder to copy the input video bitstream without re-encoding. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.CopyVideo")
+/**
+ * A codec flag, which tells the encoder to copy the input video bitstream without re-encoding.
+ */
 @Fluent
 public final class CopyVideo extends Codec {
-    /** Creates an instance of CopyVideo class. */
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.CopyVideo";
+
+    /**
+     * Creates an instance of CopyVideo class.
+     */
     public CopyVideo() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CopyVideo withLabel(String label) {
         super.withLabel(label);
@@ -26,11 +47,49 @@ public final class CopyVideo extends Codec {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("label", label());
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CopyVideo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CopyVideo if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the CopyVideo.
+     */
+    public static CopyVideo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CopyVideo deserializedCopyVideo = new CopyVideo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("label".equals(fieldName)) {
+                    deserializedCopyVideo.withLabel(reader.getString());
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedCopyVideo.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCopyVideo;
+        });
     }
 }

@@ -40,6 +40,7 @@ public class CancelTranslationTests extends DocumentTranslationClientTestBase {
         TranslationStatus translationStatus = documentTranslationClient.getTranslationStatus(translationId);
         Assertions.assertEquals(translationId, translationStatus.getId());
         String status = translationStatus.getStatus().toString();
-        Assertions.assertTrue("Cancelled".equals(status) || "Cancelling".equals(status) || "NotStarted".equals(status));
+        Assertions.assertTrue("Cancelled".equals(status) || "Cancelling".equals(status) || "NotStarted".equals(status),
+            "Expected status to be one of 'Cancelled', 'Cancelling', or 'NotStarted', but was: " + status);
     }
 }

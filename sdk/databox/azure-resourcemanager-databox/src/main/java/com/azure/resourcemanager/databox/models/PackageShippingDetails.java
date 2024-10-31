@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** package shipping details. */
+/**
+ * package shipping details.
+ */
 @Immutable
-public final class PackageShippingDetails {
+public final class PackageShippingDetails implements JsonSerializable<PackageShippingDetails> {
     /*
      * Url where shipment can be tracked.
      */
-    @JsonProperty(value = "trackingUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingUrl;
 
     /*
      * Name of the carrier.
      */
-    @JsonProperty(value = "carrierName", access = JsonProperty.Access.WRITE_ONLY)
     private String carrierName;
 
     /*
      * Tracking Id of shipment.
      */
-    @JsonProperty(value = "trackingId", access = JsonProperty.Access.WRITE_ONLY)
     private String trackingId;
 
-    /** Creates an instance of PackageShippingDetails class. */
+    /**
+     * Creates an instance of PackageShippingDetails class.
+     */
     public PackageShippingDetails() {
     }
 
     /**
      * Get the trackingUrl property: Url where shipment can be tracked.
-     *
+     * 
      * @return the trackingUrl value.
      */
     public String trackingUrl() {
@@ -43,7 +48,7 @@ public final class PackageShippingDetails {
 
     /**
      * Get the carrierName property: Name of the carrier.
-     *
+     * 
      * @return the carrierName value.
      */
     public String carrierName() {
@@ -52,7 +57,7 @@ public final class PackageShippingDetails {
 
     /**
      * Get the trackingId property: Tracking Id of shipment.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -61,9 +66,48 @@ public final class PackageShippingDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PackageShippingDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PackageShippingDetails if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PackageShippingDetails.
+     */
+    public static PackageShippingDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PackageShippingDetails deserializedPackageShippingDetails = new PackageShippingDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trackingUrl".equals(fieldName)) {
+                    deserializedPackageShippingDetails.trackingUrl = reader.getString();
+                } else if ("carrierName".equals(fieldName)) {
+                    deserializedPackageShippingDetails.carrierName = reader.getString();
+                } else if ("trackingId".equals(fieldName)) {
+                    deserializedPackageShippingDetails.trackingId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPackageShippingDetails;
+        });
     }
 }

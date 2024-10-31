@@ -5,235 +5,211 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Objects;
 
-/** The properties of the reservations. */
+/**
+ * The properties of the reservations.
+ */
 @Fluent
-public final class ReservationsProperties {
+public final class ReservationsProperties implements JsonSerializable<ReservationsProperties> {
     /*
      * The type of the resource that is being reserved.
      */
-    @JsonProperty(value = "reservedResourceType")
     private ReservedResourceType reservedResourceType;
 
     /*
      * Allows reservation discount to be applied across skus within the same auto fit group. Not all skus support
      * instance size flexibility.
      */
-    @JsonProperty(value = "instanceFlexibility")
     private InstanceFlexibility instanceFlexibility;
 
     /*
      * Friendly name for user to easily identify the reservation
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The list of applied scopes
      */
-    @JsonProperty(value = "appliedScopes")
     private List<String> appliedScopes;
 
     /*
      * The applied scope type
      */
-    @JsonProperty(value = "appliedScopeType")
     private AppliedScopeType appliedScopeType;
 
     /*
      * Indicates if the reservation is archived
      */
-    @JsonProperty(value = "archived")
     private Boolean archived;
 
     /*
      * Capabilities of the reservation
      */
-    @JsonProperty(value = "capabilities")
     private String capabilities;
 
     /*
      * Quantity of the skus that are part of the reservation.
      */
-    @JsonProperty(value = "quantity")
     private Integer quantity;
 
     /*
      * Current state of the reservation.
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /*
      * DateTime of the reservation starting when this version is effective from.
      */
-    @JsonProperty(value = "effectiveDateTime")
     private OffsetDateTime effectiveDateTime;
 
     /*
      * This is the DateTime when the reservation benefit started.
      */
-    @JsonProperty(value = "benefitStartTime")
     private OffsetDateTime benefitStartTime;
 
     /*
      * DateTime of the last time the reservation was updated.
      */
-    @JsonProperty(value = "lastUpdatedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedDateTime;
 
     /*
      * This is the date when the reservation will expire.
      */
-    @JsonProperty(value = "expiryDate")
     private LocalDate expiryDate;
 
     /*
      * This is the date-time when the reservation will expire.
      */
-    @JsonProperty(value = "expiryDateTime")
     private OffsetDateTime expiryDateTime;
 
     /*
      * This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
      */
-    @JsonProperty(value = "reviewDateTime")
     private OffsetDateTime reviewDateTime;
 
     /*
      * Description of the sku in english.
      */
-    @JsonProperty(value = "skuDescription")
     private String skuDescription;
 
     /*
      * The message giving detailed information about the status code.
      */
-    @JsonProperty(value = "extendedStatusInfo")
     private ExtendedStatusInfo extendedStatusInfo;
 
     /*
      * The billing plan options available for this sku.
      */
-    @JsonProperty(value = "billingPlan")
     private ReservationBillingPlan billingPlan;
 
     /*
      * The provisioning state of the reservation for display, e.g. Succeeded
      */
-    @JsonProperty(value = "displayProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String displayProvisioningState;
 
     /*
      * The provisioning sub-state of the reservation, e.g. Succeeded
      */
-    @JsonProperty(value = "provisioningSubState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningSubState;
 
     /*
      * This is the date when the reservation was purchased.
      */
-    @JsonProperty(value = "purchaseDate")
     private LocalDate purchaseDate;
 
     /*
      * This is the date-time when the reservation was purchased.
      */
-    @JsonProperty(value = "purchaseDateTime")
     private OffsetDateTime purchaseDateTime;
 
     /*
      * Properties of reservation split
      */
-    @JsonProperty(value = "splitProperties")
     private ReservationSplitProperties splitProperties;
 
     /*
      * Properties of reservation merge
      */
-    @JsonProperty(value = "mergeProperties")
     private ReservationMergeProperties mergeProperties;
 
     /*
      * Properties of reservation swap
      */
-    @JsonProperty(value = "swapProperties")
     private ReservationSwapProperties swapProperties;
 
     /*
      * Properties specific to applied scope type. Not required if not applicable. Required and need to provide tenantId
      * and managementGroupId if AppliedScopeType is ManagementGroup
      */
-    @JsonProperty(value = "appliedScopeProperties")
     private AppliedScopeProperties appliedScopeProperties;
 
     /*
      * Subscription that will be charged for purchasing reservation or savings plan
      */
-    @JsonProperty(value = "billingScopeId")
     private String billingScopeId;
 
     /*
      * Setting this to true will automatically purchase a new reservation on the expiration date time.
      */
-    @JsonProperty(value = "renew")
     private Boolean renew;
 
     /*
      * Reservation Id of the reservation from which this reservation is renewed. Format of the resource Id is
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
      */
-    @JsonProperty(value = "renewSource")
     private String renewSource;
 
     /*
      * Reservation Id of the reservation which is purchased because of renew. Format of the resource Id is
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
      */
-    @JsonProperty(value = "renewDestination")
     private String renewDestination;
 
     /*
      * The renew properties for a reservation.
      */
-    @JsonProperty(value = "renewProperties")
     private RenewPropertiesResponse renewProperties;
 
     /*
      * Represent the term of reservation.
      */
-    @JsonProperty(value = "term")
     private ReservationTerm term;
 
     /*
      * The applied scope type of the reservation for display, e.g. Shared
      */
-    @JsonProperty(value = "userFriendlyAppliedScopeType", access = JsonProperty.Access.WRITE_ONLY)
     private String userFriendlyAppliedScopeType;
 
     /*
      * The renew state of the reservation for display, e.g. On
      */
-    @JsonProperty(value = "userFriendlyRenewState", access = JsonProperty.Access.WRITE_ONLY)
     private String userFriendlyRenewState;
 
     /*
      * Reservation utilization
      */
-    @JsonProperty(value = "utilization", access = JsonProperty.Access.WRITE_ONLY)
     private ReservationsPropertiesUtilization utilization;
 
-    /** Creates an instance of ReservationsProperties class. */
+    /**
+     * Creates an instance of ReservationsProperties class.
+     */
     public ReservationsProperties() {
     }
 
     /**
      * Get the reservedResourceType property: The type of the resource that is being reserved.
-     *
+     * 
      * @return the reservedResourceType value.
      */
     public ReservedResourceType reservedResourceType() {
@@ -242,7 +218,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the reservedResourceType property: The type of the resource that is being reserved.
-     *
+     * 
      * @param reservedResourceType the reservedResourceType value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -254,7 +230,7 @@ public final class ReservationsProperties {
     /**
      * Get the instanceFlexibility property: Allows reservation discount to be applied across skus within the same auto
      * fit group. Not all skus support instance size flexibility.
-     *
+     * 
      * @return the instanceFlexibility value.
      */
     public InstanceFlexibility instanceFlexibility() {
@@ -264,7 +240,7 @@ public final class ReservationsProperties {
     /**
      * Set the instanceFlexibility property: Allows reservation discount to be applied across skus within the same auto
      * fit group. Not all skus support instance size flexibility.
-     *
+     * 
      * @param instanceFlexibility the instanceFlexibility value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -275,7 +251,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the displayName property: Friendly name for user to easily identify the reservation.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -284,7 +260,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the displayName property: Friendly name for user to easily identify the reservation.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -295,7 +271,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the appliedScopes property: The list of applied scopes.
-     *
+     * 
      * @return the appliedScopes value.
      */
     public List<String> appliedScopes() {
@@ -304,7 +280,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the appliedScopes property: The list of applied scopes.
-     *
+     * 
      * @param appliedScopes the appliedScopes value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -315,7 +291,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the appliedScopeType property: The applied scope type.
-     *
+     * 
      * @return the appliedScopeType value.
      */
     public AppliedScopeType appliedScopeType() {
@@ -324,7 +300,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the appliedScopeType property: The applied scope type.
-     *
+     * 
      * @param appliedScopeType the appliedScopeType value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -335,7 +311,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the archived property: Indicates if the reservation is archived.
-     *
+     * 
      * @return the archived value.
      */
     public Boolean archived() {
@@ -344,7 +320,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the archived property: Indicates if the reservation is archived.
-     *
+     * 
      * @param archived the archived value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -355,7 +331,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the capabilities property: Capabilities of the reservation.
-     *
+     * 
      * @return the capabilities value.
      */
     public String capabilities() {
@@ -364,7 +340,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the capabilities property: Capabilities of the reservation.
-     *
+     * 
      * @param capabilities the capabilities value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -375,7 +351,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the quantity property: Quantity of the skus that are part of the reservation.
-     *
+     * 
      * @return the quantity value.
      */
     public Integer quantity() {
@@ -384,7 +360,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the quantity property: Quantity of the skus that are part of the reservation.
-     *
+     * 
      * @param quantity the quantity value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -395,7 +371,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the provisioningState property: Current state of the reservation.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -404,7 +380,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the provisioningState property: Current state of the reservation.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -415,7 +391,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the effectiveDateTime property: DateTime of the reservation starting when this version is effective from.
-     *
+     * 
      * @return the effectiveDateTime value.
      */
     public OffsetDateTime effectiveDateTime() {
@@ -424,7 +400,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the effectiveDateTime property: DateTime of the reservation starting when this version is effective from.
-     *
+     * 
      * @param effectiveDateTime the effectiveDateTime value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -435,7 +411,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the benefitStartTime property: This is the DateTime when the reservation benefit started.
-     *
+     * 
      * @return the benefitStartTime value.
      */
     public OffsetDateTime benefitStartTime() {
@@ -444,7 +420,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the benefitStartTime property: This is the DateTime when the reservation benefit started.
-     *
+     * 
      * @param benefitStartTime the benefitStartTime value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -455,7 +431,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the lastUpdatedDateTime property: DateTime of the last time the reservation was updated.
-     *
+     * 
      * @return the lastUpdatedDateTime value.
      */
     public OffsetDateTime lastUpdatedDateTime() {
@@ -464,7 +440,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the expiryDate property: This is the date when the reservation will expire.
-     *
+     * 
      * @return the expiryDate value.
      */
     public LocalDate expiryDate() {
@@ -473,7 +449,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the expiryDate property: This is the date when the reservation will expire.
-     *
+     * 
      * @param expiryDate the expiryDate value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -484,7 +460,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the expiryDateTime property: This is the date-time when the reservation will expire.
-     *
+     * 
      * @return the expiryDateTime value.
      */
     public OffsetDateTime expiryDateTime() {
@@ -493,7 +469,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the expiryDateTime property: This is the date-time when the reservation will expire.
-     *
+     * 
      * @param expiryDateTime the expiryDateTime value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -504,7 +480,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the reviewDateTime property: This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
-     *
+     * 
      * @return the reviewDateTime value.
      */
     public OffsetDateTime reviewDateTime() {
@@ -513,7 +489,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the reviewDateTime property: This is the date-time when the Azure Hybrid Benefit needs to be reviewed.
-     *
+     * 
      * @param reviewDateTime the reviewDateTime value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -524,7 +500,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the skuDescription property: Description of the sku in english.
-     *
+     * 
      * @return the skuDescription value.
      */
     public String skuDescription() {
@@ -533,7 +509,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the skuDescription property: Description of the sku in english.
-     *
+     * 
      * @param skuDescription the skuDescription value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -544,7 +520,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the extendedStatusInfo property: The message giving detailed information about the status code.
-     *
+     * 
      * @return the extendedStatusInfo value.
      */
     public ExtendedStatusInfo extendedStatusInfo() {
@@ -553,7 +529,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the extendedStatusInfo property: The message giving detailed information about the status code.
-     *
+     * 
      * @param extendedStatusInfo the extendedStatusInfo value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -564,7 +540,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the billingPlan property: The billing plan options available for this sku.
-     *
+     * 
      * @return the billingPlan value.
      */
     public ReservationBillingPlan billingPlan() {
@@ -573,7 +549,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the billingPlan property: The billing plan options available for this sku.
-     *
+     * 
      * @param billingPlan the billingPlan value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -584,7 +560,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the displayProvisioningState property: The provisioning state of the reservation for display, e.g. Succeeded.
-     *
+     * 
      * @return the displayProvisioningState value.
      */
     public String displayProvisioningState() {
@@ -593,7 +569,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the provisioningSubState property: The provisioning sub-state of the reservation, e.g. Succeeded.
-     *
+     * 
      * @return the provisioningSubState value.
      */
     public String provisioningSubState() {
@@ -602,7 +578,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the purchaseDate property: This is the date when the reservation was purchased.
-     *
+     * 
      * @return the purchaseDate value.
      */
     public LocalDate purchaseDate() {
@@ -611,7 +587,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the purchaseDate property: This is the date when the reservation was purchased.
-     *
+     * 
      * @param purchaseDate the purchaseDate value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -622,7 +598,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the purchaseDateTime property: This is the date-time when the reservation was purchased.
-     *
+     * 
      * @return the purchaseDateTime value.
      */
     public OffsetDateTime purchaseDateTime() {
@@ -631,7 +607,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the purchaseDateTime property: This is the date-time when the reservation was purchased.
-     *
+     * 
      * @param purchaseDateTime the purchaseDateTime value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -642,7 +618,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the splitProperties property: Properties of reservation split.
-     *
+     * 
      * @return the splitProperties value.
      */
     public ReservationSplitProperties splitProperties() {
@@ -651,7 +627,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the splitProperties property: Properties of reservation split.
-     *
+     * 
      * @param splitProperties the splitProperties value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -662,7 +638,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the mergeProperties property: Properties of reservation merge.
-     *
+     * 
      * @return the mergeProperties value.
      */
     public ReservationMergeProperties mergeProperties() {
@@ -671,7 +647,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the mergeProperties property: Properties of reservation merge.
-     *
+     * 
      * @param mergeProperties the mergeProperties value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -682,7 +658,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the swapProperties property: Properties of reservation swap.
-     *
+     * 
      * @return the swapProperties value.
      */
     public ReservationSwapProperties swapProperties() {
@@ -691,7 +667,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the swapProperties property: Properties of reservation swap.
-     *
+     * 
      * @param swapProperties the swapProperties value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -703,7 +679,7 @@ public final class ReservationsProperties {
     /**
      * Get the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @return the appliedScopeProperties value.
      */
     public AppliedScopeProperties appliedScopeProperties() {
@@ -713,7 +689,7 @@ public final class ReservationsProperties {
     /**
      * Set the appliedScopeProperties property: Properties specific to applied scope type. Not required if not
      * applicable. Required and need to provide tenantId and managementGroupId if AppliedScopeType is ManagementGroup.
-     *
+     * 
      * @param appliedScopeProperties the appliedScopeProperties value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -724,7 +700,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the billingScopeId property: Subscription that will be charged for purchasing reservation or savings plan.
-     *
+     * 
      * @return the billingScopeId value.
      */
     public String billingScopeId() {
@@ -733,7 +709,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the billingScopeId property: Subscription that will be charged for purchasing reservation or savings plan.
-     *
+     * 
      * @param billingScopeId the billingScopeId value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -745,7 +721,7 @@ public final class ReservationsProperties {
     /**
      * Get the renew property: Setting this to true will automatically purchase a new reservation on the expiration date
      * time.
-     *
+     * 
      * @return the renew value.
      */
     public Boolean renew() {
@@ -755,7 +731,7 @@ public final class ReservationsProperties {
     /**
      * Set the renew property: Setting this to true will automatically purchase a new reservation on the expiration date
      * time.
-     *
+     * 
      * @param renew the renew value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -768,7 +744,7 @@ public final class ReservationsProperties {
      * Get the renewSource property: Reservation Id of the reservation from which this reservation is renewed. Format of
      * the resource Id is
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-     *
+     * 
      * @return the renewSource value.
      */
     public String renewSource() {
@@ -779,7 +755,7 @@ public final class ReservationsProperties {
      * Set the renewSource property: Reservation Id of the reservation from which this reservation is renewed. Format of
      * the resource Id is
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-     *
+     * 
      * @param renewSource the renewSource value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -792,7 +768,7 @@ public final class ReservationsProperties {
      * Get the renewDestination property: Reservation Id of the reservation which is purchased because of renew. Format
      * of the resource Id is
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-     *
+     * 
      * @return the renewDestination value.
      */
     public String renewDestination() {
@@ -803,7 +779,7 @@ public final class ReservationsProperties {
      * Set the renewDestination property: Reservation Id of the reservation which is purchased because of renew. Format
      * of the resource Id is
      * /providers/Microsoft.Capacity/reservationOrders/{reservationOrderId}/reservations/{reservationId}.
-     *
+     * 
      * @param renewDestination the renewDestination value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -814,7 +790,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the renewProperties property: The renew properties for a reservation.
-     *
+     * 
      * @return the renewProperties value.
      */
     public RenewPropertiesResponse renewProperties() {
@@ -823,7 +799,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the renewProperties property: The renew properties for a reservation.
-     *
+     * 
      * @param renewProperties the renewProperties value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -834,7 +810,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the term property: Represent the term of reservation.
-     *
+     * 
      * @return the term value.
      */
     public ReservationTerm term() {
@@ -843,7 +819,7 @@ public final class ReservationsProperties {
 
     /**
      * Set the term property: Represent the term of reservation.
-     *
+     * 
      * @param term the term value to set.
      * @return the ReservationsProperties object itself.
      */
@@ -855,7 +831,7 @@ public final class ReservationsProperties {
     /**
      * Get the userFriendlyAppliedScopeType property: The applied scope type of the reservation for display, e.g.
      * Shared.
-     *
+     * 
      * @return the userFriendlyAppliedScopeType value.
      */
     public String userFriendlyAppliedScopeType() {
@@ -864,7 +840,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the userFriendlyRenewState property: The renew state of the reservation for display, e.g. On.
-     *
+     * 
      * @return the userFriendlyRenewState value.
      */
     public String userFriendlyRenewState() {
@@ -873,7 +849,7 @@ public final class ReservationsProperties {
 
     /**
      * Get the utilization property: Reservation utilization.
-     *
+     * 
      * @return the utilization value.
      */
     public ReservationsPropertiesUtilization utilization() {
@@ -882,7 +858,7 @@ public final class ReservationsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -907,5 +883,167 @@ public final class ReservationsProperties {
         if (utilization() != null) {
             utilization().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("reservedResourceType",
+            this.reservedResourceType == null ? null : this.reservedResourceType.toString());
+        jsonWriter.writeStringField("instanceFlexibility",
+            this.instanceFlexibility == null ? null : this.instanceFlexibility.toString());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeArrayField("appliedScopes", this.appliedScopes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("appliedScopeType",
+            this.appliedScopeType == null ? null : this.appliedScopeType.toString());
+        jsonWriter.writeBooleanField("archived", this.archived);
+        jsonWriter.writeStringField("capabilities", this.capabilities);
+        jsonWriter.writeNumberField("quantity", this.quantity);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("effectiveDateTime",
+            this.effectiveDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.effectiveDateTime));
+        jsonWriter.writeStringField("benefitStartTime",
+            this.benefitStartTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.benefitStartTime));
+        jsonWriter.writeStringField("expiryDate", Objects.toString(this.expiryDate, null));
+        jsonWriter.writeStringField("expiryDateTime",
+            this.expiryDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryDateTime));
+        jsonWriter.writeStringField("reviewDateTime",
+            this.reviewDateTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.reviewDateTime));
+        jsonWriter.writeStringField("skuDescription", this.skuDescription);
+        jsonWriter.writeJsonField("extendedStatusInfo", this.extendedStatusInfo);
+        jsonWriter.writeStringField("billingPlan", this.billingPlan == null ? null : this.billingPlan.toString());
+        jsonWriter.writeStringField("purchaseDate", Objects.toString(this.purchaseDate, null));
+        jsonWriter.writeStringField("purchaseDateTime",
+            this.purchaseDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.purchaseDateTime));
+        jsonWriter.writeJsonField("splitProperties", this.splitProperties);
+        jsonWriter.writeJsonField("mergeProperties", this.mergeProperties);
+        jsonWriter.writeJsonField("swapProperties", this.swapProperties);
+        jsonWriter.writeJsonField("appliedScopeProperties", this.appliedScopeProperties);
+        jsonWriter.writeStringField("billingScopeId", this.billingScopeId);
+        jsonWriter.writeBooleanField("renew", this.renew);
+        jsonWriter.writeStringField("renewSource", this.renewSource);
+        jsonWriter.writeStringField("renewDestination", this.renewDestination);
+        jsonWriter.writeJsonField("renewProperties", this.renewProperties);
+        jsonWriter.writeStringField("term", this.term == null ? null : this.term.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReservationsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReservationsProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReservationsProperties.
+     */
+    public static ReservationsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReservationsProperties deserializedReservationsProperties = new ReservationsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("reservedResourceType".equals(fieldName)) {
+                    deserializedReservationsProperties.reservedResourceType
+                        = ReservedResourceType.fromString(reader.getString());
+                } else if ("instanceFlexibility".equals(fieldName)) {
+                    deserializedReservationsProperties.instanceFlexibility
+                        = InstanceFlexibility.fromString(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedReservationsProperties.displayName = reader.getString();
+                } else if ("appliedScopes".equals(fieldName)) {
+                    List<String> appliedScopes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedReservationsProperties.appliedScopes = appliedScopes;
+                } else if ("appliedScopeType".equals(fieldName)) {
+                    deserializedReservationsProperties.appliedScopeType
+                        = AppliedScopeType.fromString(reader.getString());
+                } else if ("archived".equals(fieldName)) {
+                    deserializedReservationsProperties.archived = reader.getNullable(JsonReader::getBoolean);
+                } else if ("capabilities".equals(fieldName)) {
+                    deserializedReservationsProperties.capabilities = reader.getString();
+                } else if ("quantity".equals(fieldName)) {
+                    deserializedReservationsProperties.quantity = reader.getNullable(JsonReader::getInt);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedReservationsProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("effectiveDateTime".equals(fieldName)) {
+                    deserializedReservationsProperties.effectiveDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("benefitStartTime".equals(fieldName)) {
+                    deserializedReservationsProperties.benefitStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastUpdatedDateTime".equals(fieldName)) {
+                    deserializedReservationsProperties.lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiryDate".equals(fieldName)) {
+                    deserializedReservationsProperties.expiryDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("expiryDateTime".equals(fieldName)) {
+                    deserializedReservationsProperties.expiryDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("reviewDateTime".equals(fieldName)) {
+                    deserializedReservationsProperties.reviewDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("skuDescription".equals(fieldName)) {
+                    deserializedReservationsProperties.skuDescription = reader.getString();
+                } else if ("extendedStatusInfo".equals(fieldName)) {
+                    deserializedReservationsProperties.extendedStatusInfo = ExtendedStatusInfo.fromJson(reader);
+                } else if ("billingPlan".equals(fieldName)) {
+                    deserializedReservationsProperties.billingPlan
+                        = ReservationBillingPlan.fromString(reader.getString());
+                } else if ("displayProvisioningState".equals(fieldName)) {
+                    deserializedReservationsProperties.displayProvisioningState = reader.getString();
+                } else if ("provisioningSubState".equals(fieldName)) {
+                    deserializedReservationsProperties.provisioningSubState = reader.getString();
+                } else if ("purchaseDate".equals(fieldName)) {
+                    deserializedReservationsProperties.purchaseDate
+                        = reader.getNullable(nonNullReader -> LocalDate.parse(nonNullReader.getString()));
+                } else if ("purchaseDateTime".equals(fieldName)) {
+                    deserializedReservationsProperties.purchaseDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("splitProperties".equals(fieldName)) {
+                    deserializedReservationsProperties.splitProperties = ReservationSplitProperties.fromJson(reader);
+                } else if ("mergeProperties".equals(fieldName)) {
+                    deserializedReservationsProperties.mergeProperties = ReservationMergeProperties.fromJson(reader);
+                } else if ("swapProperties".equals(fieldName)) {
+                    deserializedReservationsProperties.swapProperties = ReservationSwapProperties.fromJson(reader);
+                } else if ("appliedScopeProperties".equals(fieldName)) {
+                    deserializedReservationsProperties.appliedScopeProperties = AppliedScopeProperties.fromJson(reader);
+                } else if ("billingScopeId".equals(fieldName)) {
+                    deserializedReservationsProperties.billingScopeId = reader.getString();
+                } else if ("renew".equals(fieldName)) {
+                    deserializedReservationsProperties.renew = reader.getNullable(JsonReader::getBoolean);
+                } else if ("renewSource".equals(fieldName)) {
+                    deserializedReservationsProperties.renewSource = reader.getString();
+                } else if ("renewDestination".equals(fieldName)) {
+                    deserializedReservationsProperties.renewDestination = reader.getString();
+                } else if ("renewProperties".equals(fieldName)) {
+                    deserializedReservationsProperties.renewProperties = RenewPropertiesResponse.fromJson(reader);
+                } else if ("term".equals(fieldName)) {
+                    deserializedReservationsProperties.term = ReservationTerm.fromString(reader.getString());
+                } else if ("userFriendlyAppliedScopeType".equals(fieldName)) {
+                    deserializedReservationsProperties.userFriendlyAppliedScopeType = reader.getString();
+                } else if ("userFriendlyRenewState".equals(fieldName)) {
+                    deserializedReservationsProperties.userFriendlyRenewState = reader.getString();
+                } else if ("utilization".equals(fieldName)) {
+                    deserializedReservationsProperties.utilization = ReservationsPropertiesUtilization.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReservationsProperties;
+        });
     }
 }

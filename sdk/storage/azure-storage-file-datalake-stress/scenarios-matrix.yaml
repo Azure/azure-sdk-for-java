@@ -24,7 +24,7 @@ matrix:
       sync: false
       sizeBytes: "52428800"
       downloadFaults: true
-      durationMin: 30
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking
@@ -51,7 +51,7 @@ matrix:
       sync: false
       sizeBytes: "52428800"
       downloadFaults: true
-      durationMin: 30
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes) to open input stream, no chunking
@@ -69,7 +69,7 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       downloadFaults: true
-      durationMin: 30
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes), no chunking
@@ -96,7 +96,7 @@ matrix:
       sync: true
       sizeBytes: "26214400"
       uploadFaults: true
-      durationMin: 30
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) to output stream, no chunking
@@ -114,7 +114,7 @@ matrix:
       sync: true
       sizeBytes: "26214400"
       uploadFaults: true
-      durationMin: 30
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes), no chunking
@@ -141,7 +141,7 @@ matrix:
       sync: true
       sizeBytes: "26214400"
       uploadFaults: true
-      durationMin: 30
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes), no chunking
@@ -168,7 +168,7 @@ matrix:
       sync: true
       sizeBytes: "26214400"
       uploadFaults: true
-      durationMin: 30
+      durationMin: 60
       imageBuildDir: "../../.."
 
     # this test uploads 1KB (1024 bytes) from a file, no chunking
@@ -186,5 +186,5 @@ matrix:
       sync: true
       sizeBytes: "52428800"
       uploadFaults: true
-      durationMin: 30
+      durationMin: 60
       imageBuildDir: "../../.."

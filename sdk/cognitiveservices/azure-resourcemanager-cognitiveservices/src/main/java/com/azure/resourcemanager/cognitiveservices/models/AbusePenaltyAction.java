@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The action of AbusePenalty. */
+/**
+ * The action of AbusePenalty.
+ */
 public final class AbusePenaltyAction extends ExpandableStringEnum<AbusePenaltyAction> {
-    /** Static value Throttle for AbusePenaltyAction. */
+    /**
+     * Static value Throttle for AbusePenaltyAction.
+     */
     public static final AbusePenaltyAction THROTTLE = fromString("Throttle");
 
-    /** Static value Block for AbusePenaltyAction. */
+    /**
+     * Static value Block for AbusePenaltyAction.
+     */
     public static final AbusePenaltyAction BLOCK = fromString("Block");
 
     /**
      * Creates a new instance of AbusePenaltyAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class AbusePenaltyAction extends ExpandableStringEnum<AbusePenaltyA
 
     /**
      * Creates or finds a AbusePenaltyAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AbusePenaltyAction.
      */
-    @JsonCreator
     public static AbusePenaltyAction fromString(String name) {
         return fromString(name, AbusePenaltyAction.class);
     }
 
     /**
      * Gets known AbusePenaltyAction values.
-     *
+     * 
      * @return known AbusePenaltyAction values.
      */
     public static Collection<AbusePenaltyAction> values() {

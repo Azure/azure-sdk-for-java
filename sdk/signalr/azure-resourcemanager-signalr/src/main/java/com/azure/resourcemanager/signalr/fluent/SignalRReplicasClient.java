@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.signalr.fluent.models.ReplicaInner;
 
-/** An instance of this class provides access to all the operations defined in SignalRReplicasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SignalRReplicasClient.
+ */
 public interface SignalRReplicasClient {
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface SignalRReplicasClient {
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -60,7 +62,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -74,7 +76,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -90,7 +92,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -107,7 +109,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -123,7 +125,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -140,7 +142,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -156,7 +158,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -169,7 +171,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -185,7 +187,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -202,7 +204,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -217,7 +219,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -234,7 +236,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -248,7 +250,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -264,7 +266,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -277,7 +279,7 @@ public interface SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.

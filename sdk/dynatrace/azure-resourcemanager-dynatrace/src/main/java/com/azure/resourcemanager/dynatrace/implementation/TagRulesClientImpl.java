@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TagRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TagRulesClient.
+ */
 public final class TagRulesClientImpl implements TagRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TagRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DynatraceObservabilityImpl client;
 
     /**
      * Initializes an instance of TagRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TagRulesClientImpl(DynatraceObservabilityImpl client) {
@@ -110,7 +116,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -149,7 +155,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -188,7 +194,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -205,7 +211,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -223,7 +229,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -239,7 +245,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -285,7 +291,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -330,7 +336,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -351,7 +357,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -374,7 +380,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -392,7 +398,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -412,7 +418,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -431,7 +437,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -451,7 +457,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -469,7 +475,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Create a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -488,7 +494,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -527,7 +533,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -566,7 +572,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -585,7 +591,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -607,7 +613,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -624,7 +630,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -642,7 +648,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -659,7 +665,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -677,7 +683,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -692,7 +698,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Delete a TagRule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param ruleSetName Monitor resource name.
@@ -708,14 +714,14 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List all TagRule by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TagRule list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TagRuleInner>> listSinglePageAsync(String resourceGroupName, String monitorName) {
@@ -745,7 +751,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List all TagRule by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -753,7 +759,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TagRule list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TagRuleInner>> listSinglePageAsync(String resourceGroupName, String monitorName,
@@ -784,7 +790,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List all TagRule by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -800,7 +806,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List all TagRule by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -817,7 +823,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List all TagRule by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -832,7 +838,7 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * List all TagRule by monitorName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -848,14 +854,13 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TagRule list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TagRuleInner>> listNextSinglePageAsync(String nextLink) {
@@ -875,15 +880,14 @@ public final class TagRulesClientImpl implements TagRulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a TagRule list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<TagRuleInner>> listNextSinglePageAsync(String nextLink, Context context) {

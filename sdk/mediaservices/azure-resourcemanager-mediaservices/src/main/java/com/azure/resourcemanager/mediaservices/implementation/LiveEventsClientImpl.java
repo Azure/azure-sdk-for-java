@@ -48,17 +48,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LiveEventsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LiveEventsClient.
+ */
 public final class LiveEventsClientImpl implements LiveEventsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LiveEventsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of LiveEventsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LiveEventsClientImpl(AzureMediaServicesImpl client) {
@@ -75,8 +81,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
     @ServiceInterface(name = "AzureMediaServicesLi")
     public interface LiveEventsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LiveEventListResult>> list(@HostParam("$host") String endpoint,
@@ -85,8 +90,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LiveEventInner>> get(@HostParam("$host") String endpoint,
@@ -96,8 +100,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
@@ -108,8 +111,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
@@ -120,8 +122,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
@@ -131,8 +132,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/allocate")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/allocate")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> allocate(@HostParam("$host") String endpoint,
@@ -142,8 +142,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/start")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/start")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint,
@@ -153,8 +152,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/stop")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/stop")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("$host") String endpoint,
@@ -165,8 +163,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/reset")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/reset")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> reset(@HostParam("$host") String endpoint,
@@ -176,8 +173,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/getStatus")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/getStatus")
         @ExpectedResponses({ 200, 202, 304 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> listGetStatus(@HostParam("$host") String endpoint,
@@ -187,8 +183,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/getStreamEvents")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/getStreamEvents")
         @ExpectedResponses({ 200, 202, 304 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> listGetStreamEvents(@HostParam("$host") String endpoint,
@@ -198,8 +193,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/getTrackIngestHeartbeats")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/getTrackIngestHeartbeats")
         @ExpectedResponses({ 200, 202, 304 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> listGetTrackIngestHeartbeats(@HostParam("$host") String endpoint,
@@ -209,8 +203,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEventOperations/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEventOperations/{operationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AsyncOperationResultInner>> asyncOperation(@HostParam("$host") String endpoint,
@@ -220,8 +213,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/liveEvents/{liveEventName}/operationLocations/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/liveEvents/{liveEventName}/operationLocations/{operationId}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LiveEventInner>> operationLocation(@HostParam("$host") String endpoint,
@@ -240,9 +232,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * List live events
-     *
-     * <p>Lists all the live events in the account.
-     *
+     * 
+     * Lists all the live events in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -279,9 +271,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * List live events
-     *
-     * <p>Lists all the live events in the account.
-     *
+     * 
+     * Lists all the live events in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -320,9 +312,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * List live events
-     *
-     * <p>Lists all the live events in the account.
-     *
+     * 
+     * Lists all the live events in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -338,9 +330,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * List live events
-     *
-     * <p>Lists all the live events in the account.
-     *
+     * 
+     * Lists all the live events in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -357,9 +349,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * List live events
-     *
-     * <p>Lists all the live events in the account.
-     *
+     * 
+     * Lists all the live events in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -374,9 +366,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * List live events
-     *
-     * <p>Lists all the live events in the account.
-     *
+     * 
+     * Lists all the live events in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -392,9 +384,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get Live Event
-     *
-     * <p>Gets properties of a live event.
-     *
+     * 
+     * Gets properties of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -434,9 +426,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get Live Event
-     *
-     * <p>Gets properties of a live event.
-     *
+     * 
+     * Gets properties of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -476,9 +468,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get Live Event
-     *
-     * <p>Gets properties of a live event.
-     *
+     * 
+     * Gets properties of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -495,9 +487,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get Live Event
-     *
-     * <p>Gets properties of a live event.
-     *
+     * 
+     * Gets properties of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -515,9 +507,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get Live Event
-     *
-     * <p>Gets properties of a live event.
-     *
+     * 
+     * Gets properties of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -533,9 +525,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -582,9 +574,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -631,9 +623,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -655,9 +647,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -679,9 +671,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -705,9 +697,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -727,9 +719,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -750,9 +742,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -772,9 +764,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -794,9 +786,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -817,9 +809,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -838,9 +830,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Create Live Event
-     *
-     * <p>Creates a new live event.
-     *
+     * 
+     * Creates a new live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -860,7 +852,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Updates settings on an existing live event.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -906,7 +898,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Updates settings on an existing live event.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -952,7 +944,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Updates settings on an existing live event.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -973,7 +965,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Updates settings on an existing live event.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -996,7 +988,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Updates settings on an existing live event.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1014,7 +1006,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Updates settings on an existing live event.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1034,7 +1026,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Updates settings on an existing live event.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1053,7 +1045,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Updates settings on an existing live event.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1073,7 +1065,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Updates settings on an existing live event.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1091,7 +1083,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Updates settings on an existing live event.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1110,9 +1102,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1152,9 +1144,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1194,9 +1186,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1215,9 +1207,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1239,9 +1231,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1258,9 +1250,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1278,9 +1270,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1297,9 +1289,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1318,9 +1310,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1335,9 +1327,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1353,9 +1345,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1395,9 +1387,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1437,9 +1429,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1459,9 +1451,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1483,9 +1475,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1502,9 +1494,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1522,9 +1514,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1541,9 +1533,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1562,9 +1554,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1579,9 +1571,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1597,9 +1589,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1639,9 +1631,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1681,9 +1673,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1702,9 +1694,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1726,9 +1718,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1745,9 +1737,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1765,9 +1757,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1784,9 +1776,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1804,9 +1796,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1821,9 +1813,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1839,9 +1831,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1887,9 +1879,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1935,9 +1927,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1958,9 +1950,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -1983,9 +1975,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2003,9 +1995,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2024,9 +2016,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2045,9 +2037,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2067,9 +2059,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2086,9 +2078,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2106,11 +2098,11 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2150,11 +2142,11 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2194,11 +2186,11 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2217,11 +2209,11 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2243,11 +2235,11 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2264,11 +2256,11 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2286,11 +2278,11 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2307,11 +2299,11 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2329,11 +2321,11 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2348,11 +2340,11 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2368,17 +2360,17 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get status of one live event
-     *
-     * <p>Gets status telemetry of a live event.
-     *
+     * 
+     * Gets status telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status telemetry of a live event along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return status telemetry of a live event along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LiveEventStatusInner>> listGetStatusSinglePageAsync(String resourceGroupName,
@@ -2422,9 +2414,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get status of one live event
-     *
-     * <p>Gets status telemetry of a live event.
-     *
+     * 
+     * Gets status telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2432,8 +2424,8 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status telemetry of a live event along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return status telemetry of a live event along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LiveEventStatusInner>> listGetStatusSinglePageAsync(String resourceGroupName,
@@ -2476,9 +2468,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get status of one live event
-     *
-     * <p>Gets status telemetry of a live event.
-     *
+     * 
+     * Gets status telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2495,9 +2487,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get status of one live event
-     *
-     * <p>Gets status telemetry of a live event.
-     *
+     * 
+     * Gets status telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2516,9 +2508,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get status of one live event
-     *
-     * <p>Gets status telemetry of a live event.
-     *
+     * 
+     * Gets status telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2535,9 +2527,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get status of one live event
-     *
-     * <p>Gets status telemetry of a live event.
-     *
+     * 
+     * Gets status telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2555,9 +2547,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get stream events of one live event
-     *
-     * <p>Get stream events telemetry of a live event.
-     *
+     * 
+     * Get stream events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2565,7 +2557,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stream events telemetry of a live event along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LiveEventStreamEventInner>> listGetStreamEventsSinglePageAsync(String resourceGroupName,
@@ -2610,9 +2602,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get stream events of one live event
-     *
-     * <p>Get stream events telemetry of a live event.
-     *
+     * 
+     * Get stream events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2621,7 +2613,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return stream events telemetry of a live event along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LiveEventStreamEventInner>> listGetStreamEventsSinglePageAsync(String resourceGroupName,
@@ -2666,9 +2658,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get stream events of one live event
-     *
-     * <p>Get stream events telemetry of a live event.
-     *
+     * 
+     * Get stream events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2685,9 +2677,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get stream events of one live event
-     *
-     * <p>Get stream events telemetry of a live event.
-     *
+     * 
+     * Get stream events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2706,9 +2698,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get stream events of one live event
-     *
-     * <p>Get stream events telemetry of a live event.
-     *
+     * 
+     * Get stream events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2725,9 +2717,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get stream events of one live event
-     *
-     * <p>Get stream events telemetry of a live event.
-     *
+     * 
+     * Get stream events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2745,9 +2737,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get track events of one live event
-     *
-     * <p>Get track ingest heartbeat events telemetry of a live event.
-     *
+     * 
+     * Get track ingest heartbeat events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2755,7 +2747,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return track ingest heartbeat events telemetry of a live event along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LiveEventTrackEventInner>> listGetTrackIngestHeartbeatsSinglePageAsync(
@@ -2801,9 +2793,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get track events of one live event
-     *
-     * <p>Get track ingest heartbeat events telemetry of a live event.
-     *
+     * 
+     * Get track ingest heartbeat events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2812,7 +2804,7 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return track ingest heartbeat events telemetry of a live event along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LiveEventTrackEventInner>> listGetTrackIngestHeartbeatsSinglePageAsync(
@@ -2856,9 +2848,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get track events of one live event
-     *
-     * <p>Get track ingest heartbeat events telemetry of a live event.
-     *
+     * 
+     * Get track ingest heartbeat events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2876,9 +2868,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get track events of one live event
-     *
-     * <p>Get track ingest heartbeat events telemetry of a live event.
-     *
+     * 
+     * Get track ingest heartbeat events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2897,9 +2889,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get track events of one live event
-     *
-     * <p>Get track ingest heartbeat events telemetry of a live event.
-     *
+     * 
+     * Get track ingest heartbeat events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2916,9 +2908,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get track events of one live event
-     *
-     * <p>Get track ingest heartbeat events telemetry of a live event.
-     *
+     * 
+     * Get track ingest heartbeat events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -2937,9 +2929,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -2979,9 +2971,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -3021,9 +3013,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -3041,9 +3033,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -3061,9 +3053,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -3079,9 +3071,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -3126,9 +3118,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -3172,9 +3164,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -3193,9 +3185,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -3215,9 +3207,9 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -3236,9 +3228,8 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3262,9 +3253,8 @@ public final class LiveEventsClientImpl implements LiveEventsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageInner;
 
-/** An instance of this class provides access to all the operations defined in UsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UsagesClient.
+ */
 public interface UsagesClient {
     /**
      * Get usages for the requested subscription.
-     *
+     * 
      * @param location Resource location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -26,10 +28,10 @@ public interface UsagesClient {
 
     /**
      * Get usages for the requested subscription.
-     *
+     * 
      * @param location Resource location.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     *     name.value (name of the metric, can have an or of multiple names).
+     * name.value (name of the metric, can have an or of multiple names).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

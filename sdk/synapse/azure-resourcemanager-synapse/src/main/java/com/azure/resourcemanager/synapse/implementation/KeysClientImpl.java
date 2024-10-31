@@ -33,17 +33,23 @@ import com.azure.resourcemanager.synapse.fluent.models.KeyInner;
 import com.azure.resourcemanager.synapse.models.KeyInfoListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KeysClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KeysClient.
+ */
 public final class KeysClientImpl implements KeysClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KeysService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of KeysClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KeysClientImpl(SynapseManagementClientImpl client) {
@@ -59,8 +65,7 @@ public final class KeysClientImpl implements KeysClient {
     @ServiceInterface(name = "SynapseManagementCli")
     public interface KeysService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/keys")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<KeyInfoListResult>> listByWorkspace(@HostParam("$host") String endpoint,
@@ -69,8 +74,7 @@ public final class KeysClientImpl implements KeysClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/keys/{keyName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys/{keyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<KeyInner>> get(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
@@ -79,8 +83,7 @@ public final class KeysClientImpl implements KeysClient {
             @PathParam("keyName") String keyName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/keys/{keyName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys/{keyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<KeyInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -90,8 +93,7 @@ public final class KeysClientImpl implements KeysClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/keys/{keyName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/keys/{keyName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<KeyInner>> delete(@HostParam("$host") String endpoint,
@@ -110,7 +112,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Returns a list of keys in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +150,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Returns a list of keys in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -187,7 +189,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Returns a list of keys in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,7 +205,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Returns a list of keys in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -220,7 +222,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Returns a list of keys in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -235,7 +237,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Returns a list of keys in a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -251,7 +253,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Gets a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -291,7 +293,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Gets a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -331,7 +333,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Gets a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -348,7 +350,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Gets a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -366,7 +368,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Gets a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -382,7 +384,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Creates or updates a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -427,7 +429,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Creates or updates a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -473,7 +475,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Creates or updates a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -492,7 +494,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Creates or updates a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -512,7 +514,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Creates or updates a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -531,7 +533,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Deletes a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -571,7 +573,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Deletes a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -611,7 +613,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Deletes a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -628,7 +630,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Deletes a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -646,7 +648,7 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Deletes a workspace key.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param keyName The name of the workspace key.
@@ -662,9 +664,8 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -689,9 +690,8 @@ public final class KeysClientImpl implements KeysClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -61,23 +61,23 @@ public final class ApplicationDefinitionsImpl implements ApplicationDefinitions 
 
     public PagedIterable<ApplicationDefinition> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ApplicationDefinitionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ApplicationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationDefinitionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApplicationDefinition> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ApplicationDefinitionInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationDefinitionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApplicationDefinition> list() {
         PagedIterable<ApplicationDefinitionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ApplicationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationDefinitionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApplicationDefinition> list(Context context) {
         PagedIterable<ApplicationDefinitionInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationDefinitionImpl(inner1, this.manager()));
     }
 
     public Response<ApplicationDefinition> getByIdWithResponse(String resourceGroupName,

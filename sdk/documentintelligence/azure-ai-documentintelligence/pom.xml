@@ -42,7 +42,6 @@
     <jacoco.min.linecoverage>0.24</jacoco.min.linecoverage>
     <parallelizeLiveTests>same_thread</parallelizeLiveTests>
     <graalvm.disable>false</graalvm.disable>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>

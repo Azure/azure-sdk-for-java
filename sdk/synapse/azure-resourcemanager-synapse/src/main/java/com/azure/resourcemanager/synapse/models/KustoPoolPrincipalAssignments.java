@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of KustoPoolPrincipalAssignments. */
+/**
+ * Resource collection API of KustoPoolPrincipalAssignments.
+ */
 public interface KustoPoolPrincipalAssignments {
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -28,7 +30,7 @@ public interface KustoPoolPrincipalAssignments {
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -43,22 +45,22 @@ public interface KustoPoolPrincipalAssignments {
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<ClusterPrincipalAssignment> list(String workspaceName, String kustoPoolName,
         String resourceGroupName);
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -66,15 +68,15 @@ public interface KustoPoolPrincipalAssignments {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<ClusterPrincipalAssignment> list(String workspaceName, String kustoPoolName, String resourceGroupName,
         Context context);
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -90,7 +92,7 @@ public interface KustoPoolPrincipalAssignments {
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -105,7 +107,7 @@ public interface KustoPoolPrincipalAssignments {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -118,7 +120,7 @@ public interface KustoPoolPrincipalAssignments {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -133,7 +135,7 @@ public interface KustoPoolPrincipalAssignments {
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -144,7 +146,7 @@ public interface KustoPoolPrincipalAssignments {
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +158,7 @@ public interface KustoPoolPrincipalAssignments {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -166,7 +168,7 @@ public interface KustoPoolPrincipalAssignments {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -177,7 +179,7 @@ public interface KustoPoolPrincipalAssignments {
 
     /**
      * Begins definition for a new ClusterPrincipalAssignment resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ClusterPrincipalAssignment definition.
      */

@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-/** Samples for SignalRReplicas Restart. */
+/**
+ * Samples for SignalRReplicas Restart.
+ */
 public final class SignalRReplicasRestartSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_Restart.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
+     * SignalRReplicas_Restart.json
      */
     /**
      * Sample code: SignalRReplicas_Restart.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRReplicasRestart(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager
-            .signalRReplicas()
-            .restart(
-                "myResourceGroup", "mySignalRService", "mySignalRService-eastus", com.azure.core.util.Context.NONE);
+        manager.signalRReplicas()
+            .restart("myResourceGroup", "mySignalRService", "mySignalRService-eastus",
+                com.azure.core.util.Context.NONE);
     }
 }

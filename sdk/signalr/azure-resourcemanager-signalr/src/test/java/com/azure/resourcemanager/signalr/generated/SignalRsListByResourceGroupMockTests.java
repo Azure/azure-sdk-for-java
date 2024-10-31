@@ -6,12 +6,10 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import com.azure.resourcemanager.signalr.models.AclAction;
 import com.azure.resourcemanager.signalr.models.FeatureFlags;
@@ -20,37 +18,20 @@ import com.azure.resourcemanager.signalr.models.ServiceKind;
 import com.azure.resourcemanager.signalr.models.SignalRRequestType;
 import com.azure.resourcemanager.signalr.models.SignalRResource;
 import com.azure.resourcemanager.signalr.models.SignalRSkuTier;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SignalRsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"value\":[{\"sku\":{\"name\":\"wq\",\"tier\":\"Premium\",\"size\":\"lwi\",\"family\":\"sttex\",\"capacity\":496912008},\"properties\":{\"provisioningState\":\"Canceled\",\"externalIP\":\"yufmhruncuwmq\",\"hostName\":\"kcdqzhlct\",\"publicPort\":1266865634,\"serverPort\":302400307,\"version\":\"dyfpchrqbnj\",\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"groupIds\":[\"wboxjumvqqo\"],\"privateLinkServiceConnectionState\":{}},\"id\":\"r\",\"name\":\"aiouaubrjt\",\"type\":\"oq\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"groupIds\":[\"giflrzpasccbiu\",\"mzdlyjdfqwmkyo\",\"ufdvruz\",\"lzo\"],\"privateLinkServiceConnectionState\":{}},\"id\":\"ctfnmdxotng\",\"name\":\"dgug\",\"type\":\"yzihgrkyuizabsn\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"groupIds\":[\"eevy\"],\"privateLinkServiceConnectionState\":{}},\"id\":\"sgzfczbg\",\"name\":\"mfg\",\"type\":\"eglqgleohibetn\"}],\"sharedPrivateLinkResources\":[{\"properties\":{\"groupId\":\"krrfx\",\"privateLinkResourceId\":\"eebtijvacvb\",\"provisioningState\":\"Canceled\",\"requestMessage\":\"qqxlajr\",\"status\":\"Pending\"},\"id\":\"cevehjkuyxoafg\",\"name\":\"oqltfae\",\"type\":\"linmfgv\"},{\"properties\":{\"groupId\":\"r\",\"privateLinkResourceId\":\"gh\",\"provisioningState\":\"Updating\",\"requestMessage\":\"oqeyhlqhykprl\",\"status\":\"Timeout\"},\"id\":\"uciqdsme\",\"name\":\"iitdfuxt\",\"type\":\"asiibmiybnnust\"},{\"properties\":{\"groupId\":\"ljhnmgixhcmav\",\"privateLinkResourceId\":\"qfoudorhcgyy\",\"provisioningState\":\"Deleting\",\"requestMessage\":\"wy\",\"status\":\"Approved\"},\"id\":\"mbxhugcmjkav\",\"name\":\"gorbmftpm\",\"type\":\"tzfjltf\"}],\"tls\":{\"clientCertEnabled\":true},\"hostNamePrefix\":\"jtotpvopvpbd\",\"features\":[{\"flag\":\"EnableMessagingLogs\",\"value\":\"qqihedsvqwthmk\",\"properties\":{\"qcwdhoh\":\"cysihs\",\"sufco\":\"dtmcd\"}},{\"flag\":\"EnableMessagingLogs\",\"value\":\"xbzlmc\",\"properties\":{\"onqzinkfkbgbzbow\":\"pcvhdbevwqqxeys\",\"qkjjeokbz\":\"eqocljmygvk\"}},{\"flag\":\"EnableConnectivityLogs\",\"value\":\"ezrxcczurtleipqx\",\"properties\":{\"nzvdfbzdixzmq\":\"vz\"}},{\"flag\":\"ServiceMode\",\"value\":\"odawopqhewjptmcg\",\"properties\":{\"zlbiojlvfhrbbpn\":\"stzelndlatut\",\"yurmochpprprs\":\"qvcww\",\"ayzejnhlbkpbz\":\"mo\"}}],\"liveTraceConfiguration\":{\"enabled\":\"iljhahz\",\"categories\":[{\"name\":\"ndbnwieh\",\"enabled\":\"ewjwiuubw\"},{\"name\":\"qsfapaqt\",\"enabled\":\"rrqwexjk\"},{\"name\":\"xap\",\"enabled\":\"og\"}]},\"resourceLogConfiguration\":{\"categories\":[{\"name\":\"pud\",\"enabled\":\"abtqwpwyawbzasqb\"}]},\"cors\":{\"allowedOrigins\":[\"gkyexaoguy\"]},\"serverless\":{\"connectionTimeoutInSeconds\":731871951},\"upstream\":{\"templates\":[{\"hubPattern\":\"ultxijjumfq\",\"eventPattern\":\"z\",\"categoryPattern\":\"qnmcjngzqdqx\",\"urlTemplate\":\"bjwgnyfus\",\"auth\":{}},{\"hubPattern\":\"vtuikzhajq\",\"eventPattern\":\"cfhmlrqryxyn\",\"categoryPattern\":\"zrdpsovwxznptgoe\",\"urlTemplate\":\"ybbabpfhvfsl\",\"auth\":{}},{\"hubPattern\":\"tjlrigjksky\",\"eventPattern\":\"oov\",\"categoryPattern\":\"dsxwaab\",\"urlTemplate\":\"mifrygznmma\",\"auth\":{}},{\"hubPattern\":\"zkzobgopxlhslnel\",\"eventPattern\":\"eixynllxecwcroj\",\"categoryPattern\":\"slhcawjutifd\",\"urlTemplate\":\"fmvigorqjbttzh\",\"auth\":{}}]},\"networkACLs\":{\"defaultAction\":\"Allow\",\"publicNetwork\":{\"allow\":[\"Trace\",\"ClientConnection\",\"Trace\",\"ClientConnection\"],\"deny\":[\"ServerConnection\",\"ServerConnection\"]},\"privateEndpoints\":[{\"name\":\"pzvcpopmxelnwc\",\"allow\":[\"RESTAPI\",\"RESTAPI\"],\"deny\":[\"Trace\"]},{\"name\":\"xm\",\"allow\":[\"Trace\",\"RESTAPI\"],\"deny\":[\"ServerConnection\",\"Trace\"]},{\"name\":\"uawxtzx\",\"allow\":[\"RESTAPI\",\"Trace\",\"Trace\",\"Trace\"],\"deny\":[\"ServerConnection\",\"Trace\",\"ServerConnection\",\"ClientConnection\"]},{\"name\":\"ushsp\",\"allow\":[\"ClientConnection\",\"Trace\",\"RESTAPI\"],\"deny\":[\"Trace\",\"ClientConnection\"]}],\"ipRules\":[{\"value\":\"sgzwywakoihknsm\",\"action\":\"Deny\"},{\"value\":\"ljhlnymzotq\",\"action\":\"Deny\"},{\"value\":\"zcbmqqvxmvwf\",\"action\":\"Deny\"},{\"value\":\"xo\",\"action\":\"Deny\"}]},\"publicNetworkAccess\":\"e\",\"disableLocalAuth\":false,\"disableAadAuth\":true,\"regionEndpointEnabled\":\"hcvsqltnzoi\",\"resourceStopped\":\"sxgnx\"},\"kind\":\"RawWebSockets\",\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"h\":{\"principalId\":\"xwdofdb\",\"clientId\":\"qxeiiqbimhtmwwi\"},\"embnkbw\":{\"principalId\":\"f\",\"clientId\":\"ofvwbcb\"}},\"principalId\":\"vxkdivqihebwtswb\",\"tenantId\":\"wfmdurage\"},\"location\":\"zvcjfelisdjubggb\",\"tags\":{\"m\":\"kxkbsazgakgacyr\",\"pv\":\"dmspof\",\"iofrzgbzjedmstk\":\"hryl\"},\"id\":\"nlvxbcuii\",\"name\":\"nktwfansnvpdibmi\",\"type\":\"ostbzbkiwb\"}]}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SignalRManager manager = SignalRManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

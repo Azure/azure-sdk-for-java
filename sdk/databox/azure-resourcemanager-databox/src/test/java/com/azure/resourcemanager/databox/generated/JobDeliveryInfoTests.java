@@ -13,15 +13,15 @@ public final class JobDeliveryInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobDeliveryInfo model
-            = BinaryData.fromString("{\"scheduledDateTime\":\"2021-07-27T15:10:57Z\"}").toObject(JobDeliveryInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T15:10:57Z"), model.scheduledDateTime());
+            = BinaryData.fromString("{\"scheduledDateTime\":\"2021-11-01T14:14:41Z\"}").toObject(JobDeliveryInfo.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T14:14:41Z"), model.scheduledDateTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobDeliveryInfo model
-            = new JobDeliveryInfo().withScheduledDateTime(OffsetDateTime.parse("2021-07-27T15:10:57Z"));
+            = new JobDeliveryInfo().withScheduledDateTime(OffsetDateTime.parse("2021-11-01T14:14:41Z"));
         model = BinaryData.fromObject(model).toObject(JobDeliveryInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-27T15:10:57Z"), model.scheduledDateTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T14:14:41Z"), model.scheduledDateTime());
     }
 }

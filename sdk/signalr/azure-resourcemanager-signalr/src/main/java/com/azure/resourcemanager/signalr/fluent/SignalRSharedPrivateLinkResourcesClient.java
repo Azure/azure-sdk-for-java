@@ -19,7 +19,7 @@ import com.azure.resourcemanager.signalr.fluent.models.SharedPrivateLinkResource
 public interface SignalRSharedPrivateLinkResourcesClient {
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -32,7 +32,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
 
     /**
      * List shared private link resources.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -46,7 +46,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
 
     /**
      * Get the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -62,7 +62,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
 
     /**
      * Get the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -77,7 +77,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -94,7 +94,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -112,7 +112,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -128,7 +128,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
 
     /**
      * Create or update a shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -145,7 +145,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -160,7 +160,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -176,7 +176,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
@@ -189,7 +189,7 @@ public interface SignalRSharedPrivateLinkResourcesClient {
 
     /**
      * Delete the specified shared private link resource.
-     *
+     * 
      * @param sharedPrivateLinkResourceName The name of the shared private link resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.

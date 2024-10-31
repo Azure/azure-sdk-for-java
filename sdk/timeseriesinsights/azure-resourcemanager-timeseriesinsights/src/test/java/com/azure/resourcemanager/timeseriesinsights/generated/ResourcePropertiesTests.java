@@ -11,7 +11,7 @@ public final class ResourcePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceProperties model
-            = BinaryData.fromString("{\"provisioningState\":\"Failed\",\"creationTime\":\"2021-01-31T06:13:45Z\"}")
+            = BinaryData.fromString("{\"provisioningState\":\"Succeeded\",\"creationTime\":\"2021-03-22T07:27:17Z\"}")
                 .toObject(ResourceProperties.class);
     }
 

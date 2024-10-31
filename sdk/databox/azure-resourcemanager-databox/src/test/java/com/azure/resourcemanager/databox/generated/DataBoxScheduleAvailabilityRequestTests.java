@@ -12,18 +12,18 @@ public final class DataBoxScheduleAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataBoxScheduleAvailabilityRequest model
-            = BinaryData.fromString("{\"skuName\":\"DataBox\",\"storageLocation\":\"edndr\",\"country\":\"stkwqqtch\"}")
+            = BinaryData.fromString("{\"skuName\":\"DataBox\",\"storageLocation\":\"m\",\"country\":\"rwr\"}")
                 .toObject(DataBoxScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("edndr", model.storageLocation());
-        Assertions.assertEquals("stkwqqtch", model.country());
+        Assertions.assertEquals("m", model.storageLocation());
+        Assertions.assertEquals("rwr", model.country());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataBoxScheduleAvailabilityRequest model
-            = new DataBoxScheduleAvailabilityRequest().withStorageLocation("edndr").withCountry("stkwqqtch");
+            = new DataBoxScheduleAvailabilityRequest().withStorageLocation("m").withCountry("rwr");
         model = BinaryData.fromObject(model).toObject(DataBoxScheduleAvailabilityRequest.class);
-        Assertions.assertEquals("edndr", model.storageLocation());
-        Assertions.assertEquals("stkwqqtch", model.country());
+        Assertions.assertEquals("m", model.storageLocation());
+        Assertions.assertEquals("rwr", model.country());
     }
 }

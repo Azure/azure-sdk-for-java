@@ -23,7 +23,8 @@ public final class ClustersUpdateSamples {
      */
     public static void updateACluster(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
         Cluster resource = manager.clusters()
-            .getByResourceGroupWithResponse("sjrg", "testcluster", com.azure.core.util.Context.NONE).getValue();
+            .getByResourceGroupWithResponse("sjrg", "testcluster", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withSku(new ClusterSku().withCapacity(96)).apply();
     }
 }

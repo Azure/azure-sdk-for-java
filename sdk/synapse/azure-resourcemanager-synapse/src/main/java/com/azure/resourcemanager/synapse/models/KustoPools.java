@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.FollowerDatabaseDefinitionInner;
 
-/** Resource collection API of KustoPools. */
+/**
+ * Resource collection API of KustoPools.
+ */
 public interface KustoPools {
     /**
      * Lists eligible SKUs for Kusto Pool resource.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of the SKU descriptions as paginated response with {@link PagedIterable}.
@@ -22,7 +24,7 @@ public interface KustoPools {
 
     /**
      * Lists eligible SKUs for Kusto Pool resource.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,7 +35,7 @@ public interface KustoPools {
 
     /**
      * Checks that the kusto pool name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param kustoPoolName The name of the cluster.
      * @param context The context to associate with this operation.
@@ -47,7 +49,7 @@ public interface KustoPools {
 
     /**
      * Checks that the kusto pool name is valid and is not already in use.
-     *
+     * 
      * @param location The name of Azure region.
      * @param kustoPoolName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,9 +61,9 @@ public interface KustoPools {
 
     /**
      * List Kusto pools
-     *
-     * <p>List all Kusto pools.
-     *
+     * 
+     * List all Kusto pools.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -75,9 +77,9 @@ public interface KustoPools {
 
     /**
      * List Kusto pools
-     *
-     * <p>List all Kusto pools.
-     *
+     * 
+     * List all Kusto pools.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,7 +91,7 @@ public interface KustoPools {
 
     /**
      * Gets a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -104,7 +106,7 @@ public interface KustoPools {
 
     /**
      * Gets a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -117,7 +119,7 @@ public interface KustoPools {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -129,7 +131,7 @@ public interface KustoPools {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param kustoPoolName The name of the Kusto pool.
@@ -142,7 +144,7 @@ public interface KustoPools {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -154,7 +156,7 @@ public interface KustoPools {
 
     /**
      * Stops a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -167,7 +169,7 @@ public interface KustoPools {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -179,7 +181,7 @@ public interface KustoPools {
 
     /**
      * Starts a Kusto pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -192,7 +194,7 @@ public interface KustoPools {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -206,7 +208,7 @@ public interface KustoPools {
 
     /**
      * Returns the SKUs available for the provided resource.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -221,7 +223,7 @@ public interface KustoPools {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -235,7 +237,7 @@ public interface KustoPools {
 
     /**
      * Returns a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -250,7 +252,7 @@ public interface KustoPools {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -264,7 +266,7 @@ public interface KustoPools {
 
     /**
      * Add a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -279,7 +281,7 @@ public interface KustoPools {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -293,7 +295,7 @@ public interface KustoPools {
 
     /**
      * Remove a list of language extensions that can run within KQL queries.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -308,7 +310,7 @@ public interface KustoPools {
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -322,7 +324,7 @@ public interface KustoPools {
 
     /**
      * Returns a list of databases that are owned by this Kusto Pool and were followed by another Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -337,7 +339,7 @@ public interface KustoPools {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -351,7 +353,7 @@ public interface KustoPools {
 
     /**
      * Detaches all followers of a database owned by this Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -366,7 +368,7 @@ public interface KustoPools {
 
     /**
      * Gets a Kusto pool.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -377,7 +379,7 @@ public interface KustoPools {
 
     /**
      * Gets a Kusto pool.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -389,7 +391,7 @@ public interface KustoPools {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -399,7 +401,7 @@ public interface KustoPools {
 
     /**
      * Deletes a Kusto pool.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -410,7 +412,7 @@ public interface KustoPools {
 
     /**
      * Begins definition for a new KustoPool resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new KustoPool definition.
      */

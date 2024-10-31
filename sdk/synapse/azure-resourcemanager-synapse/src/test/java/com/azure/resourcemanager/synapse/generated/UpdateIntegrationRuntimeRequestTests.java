@@ -13,19 +13,19 @@ public final class UpdateIntegrationRuntimeRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UpdateIntegrationRuntimeRequest model
-            = BinaryData.fromString("{\"autoUpdate\":\"Off\",\"updateDelayOffset\":\"bxqmu\"}")
+            = BinaryData.fromString("{\"autoUpdate\":\"On\",\"updateDelayOffset\":\"vcopex\"}")
                 .toObject(UpdateIntegrationRuntimeRequest.class);
-        Assertions.assertEquals(IntegrationRuntimeAutoUpdate.OFF, model.autoUpdate());
-        Assertions.assertEquals("bxqmu", model.updateDelayOffset());
+        Assertions.assertEquals(IntegrationRuntimeAutoUpdate.ON, model.autoUpdate());
+        Assertions.assertEquals("vcopex", model.updateDelayOffset());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateIntegrationRuntimeRequest model
-            = new UpdateIntegrationRuntimeRequest().withAutoUpdate(IntegrationRuntimeAutoUpdate.OFF)
-                .withUpdateDelayOffset("bxqmu");
+            = new UpdateIntegrationRuntimeRequest().withAutoUpdate(IntegrationRuntimeAutoUpdate.ON)
+                .withUpdateDelayOffset("vcopex");
         model = BinaryData.fromObject(model).toObject(UpdateIntegrationRuntimeRequest.class);
-        Assertions.assertEquals(IntegrationRuntimeAutoUpdate.OFF, model.autoUpdate());
-        Assertions.assertEquals("bxqmu", model.updateDelayOffset());
+        Assertions.assertEquals(IntegrationRuntimeAutoUpdate.ON, model.autoUpdate());
+        Assertions.assertEquals("vcopex", model.updateDelayOffset());
     }
 }

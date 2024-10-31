@@ -10,19 +10,21 @@ import com.azure.resourcemanager.synapse.models.StorageAccountType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SqlPools Create. */
+/**
+ * Samples for SqlPools Create.
+ */
 public final class SqlPoolsCreateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateSqlPool.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateSqlPool.json
      */
     /**
      * Sample code: Create a SQL Analytics pool.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void createASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .sqlPools()
+        manager.sqlPools()
             .define("ExampleSqlPool")
             .withRegion("Southeast Asia")
             .withExistingWorkspace("ExampleResourceGroup", "ExampleWorkspace")
@@ -37,6 +39,7 @@ public final class SqlPoolsCreateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

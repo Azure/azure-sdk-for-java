@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.orbital.generated;
 
-/** Samples for Contacts Get. */
+/**
+ * Samples for Contacts Get.
+ */
 public final class ContactsGetSamples {
     /*
-     * x-ms-original-file: specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/ContactGet.json
+     * x-ms-original-file:
+     * specification/orbital/resource-manager/Microsoft.Orbital/stable/2022-11-01/examples/ContactGet.json
      */
     /**
      * Sample code: Get Contact.
-     *
+     * 
      * @param manager Entry point to OrbitalManager.
      */
     public static void getContact(com.azure.resourcemanager.orbital.OrbitalManager manager) {

@@ -5,53 +5,80 @@
 package com.azure.resourcemanager.reservations.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Represent the current state of the Reservation. */
+/**
+ * Represent the current state of the Reservation.
+ */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
-    /** Static value Creating for ProvisioningState. */
+    /**
+     * Static value Creating for ProvisioningState.
+     */
     public static final ProvisioningState CREATING = fromString("Creating");
 
-    /** Static value PendingResourceHold for ProvisioningState. */
+    /**
+     * Static value PendingResourceHold for ProvisioningState.
+     */
     public static final ProvisioningState PENDING_RESOURCE_HOLD = fromString("PendingResourceHold");
 
-    /** Static value ConfirmedResourceHold for ProvisioningState. */
+    /**
+     * Static value ConfirmedResourceHold for ProvisioningState.
+     */
     public static final ProvisioningState CONFIRMED_RESOURCE_HOLD = fromString("ConfirmedResourceHold");
 
-    /** Static value PendingBilling for ProvisioningState. */
+    /**
+     * Static value PendingBilling for ProvisioningState.
+     */
     public static final ProvisioningState PENDING_BILLING = fromString("PendingBilling");
 
-    /** Static value ConfirmedBilling for ProvisioningState. */
+    /**
+     * Static value ConfirmedBilling for ProvisioningState.
+     */
     public static final ProvisioningState CONFIRMED_BILLING = fromString("ConfirmedBilling");
 
-    /** Static value Created for ProvisioningState. */
+    /**
+     * Static value Created for ProvisioningState.
+     */
     public static final ProvisioningState CREATED = fromString("Created");
 
-    /** Static value Succeeded for ProvisioningState. */
+    /**
+     * Static value Succeeded for ProvisioningState.
+     */
     public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Cancelled for ProvisioningState. */
+    /**
+     * Static value Cancelled for ProvisioningState.
+     */
     public static final ProvisioningState CANCELLED = fromString("Cancelled");
 
-    /** Static value Expired for ProvisioningState. */
+    /**
+     * Static value Expired for ProvisioningState.
+     */
     public static final ProvisioningState EXPIRED = fromString("Expired");
 
-    /** Static value BillingFailed for ProvisioningState. */
+    /**
+     * Static value BillingFailed for ProvisioningState.
+     */
     public static final ProvisioningState BILLING_FAILED = fromString("BillingFailed");
 
-    /** Static value Failed for ProvisioningState. */
+    /**
+     * Static value Failed for ProvisioningState.
+     */
     public static final ProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Split for ProvisioningState. */
+    /**
+     * Static value Split for ProvisioningState.
+     */
     public static final ProvisioningState SPLIT = fromString("Split");
 
-    /** Static value Merged for ProvisioningState. */
+    /**
+     * Static value Merged for ProvisioningState.
+     */
     public static final ProvisioningState MERGED = fromString("Merged");
 
     /**
      * Creates a new instance of ProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -60,18 +87,17 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
 
     /**
      * Creates or finds a ProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProvisioningState.
      */
-    @JsonCreator
     public static ProvisioningState fromString(String name) {
         return fromString(name, ProvisioningState.class);
     }
 
     /**
      * Gets known ProvisioningState values.
-     *
+     * 
      * @return known ProvisioningState values.
      */
     public static Collection<ProvisioningState> values() {

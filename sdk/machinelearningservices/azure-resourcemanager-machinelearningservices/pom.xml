@@ -42,7 +42,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.skip>true</jacoco.skip>
     <doclintMissingInclusion>-</doclintMissingInclusion>
-    <spotless.skip>false</spotless.skip>
   </properties>
   <dependencies>
     <dependency>

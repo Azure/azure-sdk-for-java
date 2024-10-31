@@ -33,17 +33,23 @@ import com.azure.resourcemanager.mediaservices.fluent.models.StreamingPolicyInne
 import com.azure.resourcemanager.mediaservices.models.StreamingPolicyCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in StreamingPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StreamingPoliciesClient.
+ */
 public final class StreamingPoliciesClientImpl implements StreamingPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final StreamingPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of StreamingPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     StreamingPoliciesClientImpl(AzureMediaServicesImpl client) {
@@ -60,8 +66,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
     @ServiceInterface(name = "AzureMediaServicesSt")
     public interface StreamingPoliciesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/streamingPolicies")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingPolicies")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StreamingPolicyCollection>> list(@HostParam("$host") String endpoint,
@@ -72,8 +77,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/streamingPolicies/{streamingPolicyName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingPolicies/{streamingPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StreamingPolicyInner>> get(@HostParam("$host") String endpoint,
@@ -83,8 +87,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/streamingPolicies/{streamingPolicyName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingPolicies/{streamingPolicyName}")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StreamingPolicyInner>> create(@HostParam("$host") String endpoint,
@@ -95,8 +98,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/streamingPolicies/{streamingPolicyName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingPolicies/{streamingPolicyName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -116,20 +118,20 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * List Streaming Policies
-     *
-     * <p>Lists the Streaming Policies in the account.
-     *
+     * 
+     * Lists the Streaming Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -161,21 +163,21 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * List Streaming Policies
-     *
-     * <p>Lists the Streaming Policies in the account.
-     *
+     * 
+     * Lists the Streaming Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingPolicyInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -207,14 +209,14 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * List Streaming Policies
-     *
-     * <p>Lists the Streaming Policies in the account.
-     *
+     * 
+     * Lists the Streaming Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -230,9 +232,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * List Streaming Policies
-     *
-     * <p>Lists the Streaming Policies in the account.
-     *
+     * 
+     * Lists the Streaming Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,14 +253,14 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * List Streaming Policies
-     *
-     * <p>Lists the Streaming Policies in the account.
-     *
+     * 
+     * Lists the Streaming Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,9 +277,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * List Streaming Policies
-     *
-     * <p>Lists the Streaming Policies in the account.
-     *
+     * 
+     * Lists the Streaming Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -295,14 +297,14 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * List Streaming Policies
-     *
-     * <p>Lists the Streaming Policies in the account.
-     *
+     * 
+     * Lists the Streaming Policies in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -318,9 +320,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -328,7 +330,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a Streaming Policy in the Media Services account along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StreamingPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -362,9 +364,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -373,7 +375,7 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a Streaming Policy in the Media Services account along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StreamingPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -406,9 +408,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -426,9 +428,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -446,9 +448,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Get a Streaming Policy
-     *
-     * <p>Get the details of a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -464,9 +466,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Create a Streaming Policy
-     *
-     * <p>Create a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Create a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -513,9 +515,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Create a Streaming Policy
-     *
-     * <p>Create a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Create a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -562,9 +564,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Create a Streaming Policy
-     *
-     * <p>Create a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Create a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -583,9 +585,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Create a Streaming Policy
-     *
-     * <p>Create a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Create a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -605,9 +607,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Create a Streaming Policy
-     *
-     * <p>Create a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Create a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -626,9 +628,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Delete a Streaming Policy
-     *
-     * <p>Deletes a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -669,9 +671,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Delete a Streaming Policy
-     *
-     * <p>Deletes a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -712,9 +714,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Delete a Streaming Policy
-     *
-     * <p>Deletes a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -731,9 +733,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Delete a Streaming Policy
-     *
-     * <p>Deletes a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -751,9 +753,9 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Delete a Streaming Policy
-     *
-     * <p>Deletes a Streaming Policy in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Policy in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingPolicyName The Streaming Policy name.
@@ -768,14 +770,13 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -795,15 +796,14 @@ public final class StreamingPoliciesClientImpl implements StreamingPoliciesClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of StreamingPolicy items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingPolicyInner>> listNextSinglePageAsync(String nextLink, Context context) {

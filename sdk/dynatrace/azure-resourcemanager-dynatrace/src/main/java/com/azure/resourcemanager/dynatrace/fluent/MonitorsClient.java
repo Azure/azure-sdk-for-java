@@ -25,33 +25,35 @@ import com.azure.resourcemanager.dynatrace.models.MarketplaceSaaSResourceDetails
 import com.azure.resourcemanager.dynatrace.models.MonitorResourceUpdate;
 import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
 
-/** An instance of this class provides access to all the operations defined in MonitorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MonitorsClient.
+ */
 public interface MonitorsClient {
     /**
      * List the resources currently being monitored by the Dynatrace monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName);
 
     /**
      * List the resources currently being monitored by the Dynatrace monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of all the resources being monitored by Dynatrace monitor resource as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName,
@@ -59,7 +61,7 @@ public interface MonitorsClient {
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -74,7 +76,7 @@ public interface MonitorsClient {
 
     /**
      * Returns the payload that needs to be passed in the request body for installing Dynatrace agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,7 +89,7 @@ public interface MonitorsClient {
 
     /**
      * Get a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -102,7 +104,7 @@ public interface MonitorsClient {
 
     /**
      * Get a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -130,7 +132,7 @@ public interface MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -146,7 +148,7 @@ public interface MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -160,7 +162,7 @@ public interface MonitorsClient {
 
     /**
      * Create a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource Resource create parameters.
@@ -176,7 +178,7 @@ public interface MonitorsClient {
 
     /**
      * Update a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource The resource properties to be updated.
@@ -192,7 +194,7 @@ public interface MonitorsClient {
 
     /**
      * Update a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param resource The resource properties to be updated.
@@ -206,7 +208,7 @@ public interface MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,7 +221,7 @@ public interface MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -233,7 +235,7 @@ public interface MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +247,7 @@ public interface MonitorsClient {
 
     /**
      * Delete a MonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -258,7 +260,7 @@ public interface MonitorsClient {
 
     /**
      * List all MonitorResource by subscriptionId.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a MonitorResource list operation as paginated response with {@link PagedIterable}.
@@ -268,7 +270,7 @@ public interface MonitorsClient {
 
     /**
      * List all MonitorResource by subscriptionId.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -280,7 +282,7 @@ public interface MonitorsClient {
 
     /**
      * List MonitorResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -292,7 +294,7 @@ public interface MonitorsClient {
 
     /**
      * List MonitorResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,13 +307,13 @@ public interface MonitorsClient {
 
     /**
      * Get Marketplace SaaS resource details of a tenant under a specific subscription.
-     *
+     * 
      * @param request Tenant Id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 404.
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return marketplace SaaS resource details of a tenant under a specific subscription along with {@link Response}.
      */
@@ -321,12 +323,12 @@ public interface MonitorsClient {
 
     /**
      * Get Marketplace SaaS resource details of a tenant under a specific subscription.
-     *
+     * 
      * @param request Tenant Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 404.
+     * status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return marketplace SaaS resource details of a tenant under a specific subscription.
      */
@@ -336,7 +338,7 @@ public interface MonitorsClient {
 
     /**
      * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,7 +351,7 @@ public interface MonitorsClient {
 
     /**
      * List the VM/VMSS resources currently being monitored by the Dynatrace resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
@@ -363,7 +365,7 @@ public interface MonitorsClient {
 
     /**
      * Get metric status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitor resource.
      * @param context The context to associate with this operation.
@@ -378,7 +380,7 @@ public interface MonitorsClient {
 
     /**
      * Get metric status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitor resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -391,36 +393,36 @@ public interface MonitorsClient {
 
     /**
      * Gets list of App Services with Dynatrace PaaS OneAgent enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of App Services with Dynatrace PaaS OneAgent enabled as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of App Services with Dynatrace PaaS OneAgent enabled as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AppServiceInfoInner> listAppServices(String resourceGroupName, String monitorName);
 
     /**
      * Gets list of App Services with Dynatrace PaaS OneAgent enabled.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of App Services with Dynatrace PaaS OneAgent enabled as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of App Services with Dynatrace PaaS OneAgent enabled as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AppServiceInfoInner> listAppServices(String resourceGroupName, String monitorName, Context context);
 
     /**
      * Gets the SSO configuration details from the partner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the get sso details request.
@@ -428,7 +430,7 @@ public interface MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 401.
+     * status code 401.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner along with {@link Response}.
      */
@@ -438,13 +440,13 @@ public interface MonitorsClient {
 
     /**
      * Gets the SSO configuration details from the partner.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
-     *     status code 401.
+     * status code 401.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SSO configuration details from the partner.
      */
@@ -453,15 +455,15 @@ public interface MonitorsClient {
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the linkable environment request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LinkableEnvironmentResponseInner> listLinkableEnvironments(String resourceGroupName,
@@ -469,7 +471,7 @@ public interface MonitorsClient {
 
     /**
      * Gets all the Dynatrace environments that a user can link a azure resource to.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param request The details of the linkable environment request.
@@ -477,8 +479,8 @@ public interface MonitorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with {@link
-     *     PagedIterable}.
+     * @return all the Dynatrace environments that a user can link a azure resource to as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LinkableEnvironmentResponseInner> listLinkableEnvironments(String resourceGroupName,

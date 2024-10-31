@@ -29,15 +29,19 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in IntegrationRuntimeStatusOperationsClient.
  */
 public final class IntegrationRuntimeStatusOperationsClientImpl implements IntegrationRuntimeStatusOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IntegrationRuntimeStatusOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of IntegrationRuntimeStatusOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationRuntimeStatusOperationsClientImpl(SynapseManagementClientImpl client) {
@@ -54,8 +58,7 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
     @ServiceInterface(name = "SynapseManagementCli")
     public interface IntegrationRuntimeStatusOperationsService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/getStatus")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/getStatus")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeStatusResponseInner>> get(@HostParam("$host") String endpoint,
@@ -67,9 +70,9 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
 
     /**
      * Get integration runtime status
-     *
-     * <p>Get the integration runtime status.
-     *
+     * 
+     * Get the integration runtime status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -110,9 +113,9 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
 
     /**
      * Get integration runtime status
-     *
-     * <p>Get the integration runtime status.
-     *
+     * 
+     * Get the integration runtime status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -153,9 +156,9 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
 
     /**
      * Get integration runtime status
-     *
-     * <p>Get the integration runtime status.
-     *
+     * 
+     * Get the integration runtime status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -173,9 +176,9 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
 
     /**
      * Get integration runtime status
-     *
-     * <p>Get the integration runtime status.
-     *
+     * 
+     * Get the integration runtime status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -193,9 +196,9 @@ public final class IntegrationRuntimeStatusOperationsClientImpl implements Integ
 
     /**
      * Get integration runtime status
-     *
-     * <p>Get the integration runtime status.
-     *
+     * 
+     * Get the integration runtime status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

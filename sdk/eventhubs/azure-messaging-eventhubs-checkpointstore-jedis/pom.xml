@@ -37,10 +37,6 @@
     <tag>HEAD</tag>
   </scm>
 
-  <properties>
-    <spotless.skip>false</spotless.skip>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

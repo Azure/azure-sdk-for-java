@@ -14,30 +14,31 @@ public final class GenerateDetailedCostReportDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenerateDetailedCostReportDefinition model = BinaryData.fromString(
-            "{\"metric\":\"ActualCost\",\"timePeriod\":{\"start\":\"qiby\",\"end\":\"unyowxwl\"},\"billingPeriod\":\"jrkvfgbvfvpdbo\",\"invoiceId\":\"cizsjqlhkrribdei\",\"customerId\":\"ipqkghvxndzwm\"}")
+            "{\"metric\":\"ActualCost\",\"timePeriod\":{\"start\":\"fpyapucygvoavyu\",\"end\":\"ssxlghieegjlg\"},\"billingPeriod\":\"paseksgb\",\"invoiceId\":\"antuygdhgaqipirp\",\"customerId\":\"rqofulopmjnlexwh\"}")
             .toObject(GenerateDetailedCostReportDefinition.class);
         Assertions.assertEquals(GenerateDetailedCostReportMetricType.ACTUAL_COST, model.metric());
-        Assertions.assertEquals("qiby", model.timePeriod().start());
-        Assertions.assertEquals("unyowxwl", model.timePeriod().end());
-        Assertions.assertEquals("jrkvfgbvfvpdbo", model.billingPeriod());
-        Assertions.assertEquals("cizsjqlhkrribdei", model.invoiceId());
-        Assertions.assertEquals("ipqkghvxndzwm", model.customerId());
+        Assertions.assertEquals("fpyapucygvoavyu", model.timePeriod().start());
+        Assertions.assertEquals("ssxlghieegjlg", model.timePeriod().end());
+        Assertions.assertEquals("paseksgb", model.billingPeriod());
+        Assertions.assertEquals("antuygdhgaqipirp", model.invoiceId());
+        Assertions.assertEquals("rqofulopmjnlexwh", model.customerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GenerateDetailedCostReportDefinition model
             = new GenerateDetailedCostReportDefinition().withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
-                .withTimePeriod(new GenerateDetailedCostReportTimePeriod().withStart("qiby").withEnd("unyowxwl"))
-                .withBillingPeriod("jrkvfgbvfvpdbo")
-                .withInvoiceId("cizsjqlhkrribdei")
-                .withCustomerId("ipqkghvxndzwm");
+                .withTimePeriod(
+                    new GenerateDetailedCostReportTimePeriod().withStart("fpyapucygvoavyu").withEnd("ssxlghieegjlg"))
+                .withBillingPeriod("paseksgb")
+                .withInvoiceId("antuygdhgaqipirp")
+                .withCustomerId("rqofulopmjnlexwh");
         model = BinaryData.fromObject(model).toObject(GenerateDetailedCostReportDefinition.class);
         Assertions.assertEquals(GenerateDetailedCostReportMetricType.ACTUAL_COST, model.metric());
-        Assertions.assertEquals("qiby", model.timePeriod().start());
-        Assertions.assertEquals("unyowxwl", model.timePeriod().end());
-        Assertions.assertEquals("jrkvfgbvfvpdbo", model.billingPeriod());
-        Assertions.assertEquals("cizsjqlhkrribdei", model.invoiceId());
-        Assertions.assertEquals("ipqkghvxndzwm", model.customerId());
+        Assertions.assertEquals("fpyapucygvoavyu", model.timePeriod().start());
+        Assertions.assertEquals("ssxlghieegjlg", model.timePeriod().end());
+        Assertions.assertEquals("paseksgb", model.billingPeriod());
+        Assertions.assertEquals("antuygdhgaqipirp", model.invoiceId());
+        Assertions.assertEquals("rqofulopmjnlexwh", model.customerId());
     }
 }
