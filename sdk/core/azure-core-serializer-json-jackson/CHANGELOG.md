@@ -2,12 +2,6 @@
 
 ## 1.5.3 (2024-11-01)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 #### Dependency Updates
