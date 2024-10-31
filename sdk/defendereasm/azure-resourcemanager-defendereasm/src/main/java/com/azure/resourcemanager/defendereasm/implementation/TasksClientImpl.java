@@ -25,17 +25,23 @@ import com.azure.resourcemanager.defendereasm.fluent.TasksClient;
 import com.azure.resourcemanager.defendereasm.fluent.models.TaskResourceInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TasksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TasksClient.
+ */
 public final class TasksClientImpl implements TasksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final TasksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EasmMgmtClientImpl client;
 
     /**
      * Initializes an instance of TasksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     TasksClientImpl(EasmMgmtClientImpl client) {
@@ -62,7 +68,7 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.
@@ -101,7 +107,7 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.
@@ -140,7 +146,7 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.
@@ -157,7 +163,7 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.
@@ -175,7 +181,7 @@ public final class TasksClientImpl implements TasksClient {
 
     /**
      * Returns a task in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param taskId The id of the Task.
