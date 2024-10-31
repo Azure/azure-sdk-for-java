@@ -180,7 +180,7 @@ abstract class Fetcher<T> {
             .doOnNext(response -> {
                 completed.set(true);
 
-                if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+                if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)) {
 
                     checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
                     FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker = request.requestContext.getFeedOperationContextForCircuitBreaker();
@@ -207,7 +207,7 @@ abstract class Fetcher<T> {
                     return;
                 }
 
-                if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+                if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)) {
 
                     checkNotNull(request.requestContext, "Argument 'request.requestContext' must not be null!");
 

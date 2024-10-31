@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.Paginator;
@@ -157,7 +158,7 @@ class ChangeFeedQueryImpl<T> {
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         if (this.operationContextAndListener == null) {
-            return handlePartitionLevelCircuitBreakingPrerequisites(request)
+            return handlePerPartitionFailoverPrerequisites(request)
                 .flatMap(client::readFeed)
                 .map(rsp -> feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics()));
         } else {
@@ -168,7 +169,7 @@ class ChangeFeedQueryImpl<T> {
                 .put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, operationContext.getCorrelationActivityId());
             listener.requestListener(operationContext, request);
 
-            return handlePartitionLevelCircuitBreakingPrerequisites(request)
+            return handlePerPartitionFailoverPrerequisites(request)
                 .flatMap(client::readFeed)
                 .map(rsp -> {
                     listener.responseListener(operationContext, rsp);
@@ -196,14 +197,19 @@ class ChangeFeedQueryImpl<T> {
         }
     }
 
-    private Mono<RxDocumentServiceRequest> handlePartitionLevelCircuitBreakingPrerequisites(RxDocumentServiceRequest request) {
+    private Mono<RxDocumentServiceRequest> handlePerPartitionFailoverPrerequisites(RxDocumentServiceRequest request) {
 
         GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
-            = client.getGlobalPartitionEndpointManagerForCircuitBreaker();
+            = this.client.getGlobalPartitionEndpointManagerForCircuitBreaker();
+
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+            = this.client.getGlobalPartitionEndpointManagerForPerPartitionAutomaticFailover();
 
         checkNotNull(globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "Argument 'globalPartitionEndpointManagerForPerPartitionCircuitBreaker' must not be null!");
 
-        if (globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+        if (
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)
+                || globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
             return Mono.just(request)
                 .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
                 .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)

@@ -328,7 +328,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
             });
     }
 
-    public boolean isPartitionLevelCircuitBreakingApplicable(RxDocumentServiceRequest request) {
+    public boolean isPerPartitionLevelCircuitBreakingApplicable(RxDocumentServiceRequest request) {
 
         if (!this.consecutiveExceptionBasedCircuitBreaker.isPartitionLevelCircuitBreakerEnabled()) {
             return false;

@@ -126,8 +126,6 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         // Received Connection error (HttpRequestException), initiate the endpoint rediscovery
         if (WebExceptionUtility.isNetworkFailure(e)) {
 
-            this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
-
             if (clientException != null && Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE)) {
 
                 if (this.isReadRequest || WebExceptionUtility.isWebExceptionRetriable(e)) {
@@ -311,7 +309,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         boolean canFailoverOnTimeout = canGatewayRequestFailoverOnTimeout(this.request);
 
-        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
+        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(this.request)) {
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.locationEndpointToRoute);
         }
 
@@ -362,7 +360,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         boolean nonIdempotentWriteRetriesEnabled,
         CosmosException cosmosException) {
 
-        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
+        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(this.request)) {
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(this.request, this.request.requestContext.locationEndpointToRoute);
         }
@@ -431,7 +429,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.tryMarkEndpointAsUnavailableForPartitionKeyRange(this.request);
 
         if (subStatusCode == HttpConstants.SubStatusCodes.TRANSIT_TIMEOUT) {
-            if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
+            if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(this.request)) {
                 if (!isReadRequest && !nonIdempotentWriteRetriesEnabled) {
                     this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
                         request,
@@ -445,7 +443,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
     private Mono<ShouldRetryResult> shouldRetryOnInternalServerError() {
 
-        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(this.request)) {
+        if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(this.request)) {
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.handleLocationExceptionForPartitionKeyRange(
                 request,
                 request.requestContext.locationEndpointToRoute);

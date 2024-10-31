@@ -574,7 +574,7 @@ public class DocumentProducerTest {
             }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
             doReturn(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
-            doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
+            doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPerPartitionLevelCircuitBreakingApplicable(any());
 
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
@@ -676,7 +676,7 @@ public class DocumentProducerTest {
             }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
             doReturn(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
-            doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
+            doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPerPartitionLevelCircuitBreakingApplicable(any());
 
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
@@ -782,7 +782,7 @@ public class DocumentProducerTest {
             }).when(queryClient).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
             doReturn(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).when(queryClient).getGlobalPartitionEndpointManagerForCircuitBreaker();
-            doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
+            doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPerPartitionLevelCircuitBreakingApplicable(any());
 
             String initialContinuationToken = "initial-cp";
             DocumentProducer<Document> documentProducer =
@@ -924,7 +924,7 @@ public class DocumentProducerTest {
         }).when(client).addPartitionLevelUnavailableRegionsOnRequest(any(), any(), any());
 
         doReturn(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).when(client).getGlobalPartitionEndpointManagerForCircuitBreaker();
-        doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPartitionLevelCircuitBreakingApplicable(any());
+        doReturn(false).when(globalPartitionEndpointManagerForPerPartitionCircuitBreaker).isPerPartitionLevelCircuitBreakingApplicable(any());
 
         return client;
     }

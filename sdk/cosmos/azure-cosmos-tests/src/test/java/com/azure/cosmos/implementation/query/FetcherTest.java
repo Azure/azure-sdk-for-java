@@ -101,7 +101,7 @@ public class FetcherTest {
                 return Mono.just(rsp);
         };
 
-        Mockito.when(globalPartitionEndpointManagerForPerPartitionCircuitBreakerMock.isPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(false);
+        Mockito.when(globalPartitionEndpointManagerForPerPartitionCircuitBreakerMock.isPerPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(false);
 
         ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
                 new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, ModelBridgeInternal.getRequestContinuationFromQueryRequestOptions(options), false, top,
@@ -177,7 +177,7 @@ public class FetcherTest {
 
         Function<RxDocumentServiceRequest, Mono<FeedResponse<Document>>> executeFunc = request -> Mono.just(feedResponseList.get(executeIndex.getAndIncrement()));
 
-        Mockito.when(globalPartitionEndpointManagerForPerPartitionCircuitBreakerMock.isPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(false);
+        Mockito.when(globalPartitionEndpointManagerForPerPartitionCircuitBreakerMock.isPerPartitionLevelCircuitBreakingApplicable(Mockito.any())).thenReturn(false);
 
         ServerSideOnlyContinuationFetcherImpl<Document> fetcher =
                 new ServerSideOnlyContinuationFetcherImpl<>(createRequestFunc, executeFunc, null, isChangeFeed, top,
