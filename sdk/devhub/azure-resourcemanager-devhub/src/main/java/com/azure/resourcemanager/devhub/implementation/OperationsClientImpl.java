@@ -24,17 +24,23 @@ import com.azure.resourcemanager.devhub.fluent.OperationsClient;
 import com.azure.resourcemanager.devhub.fluent.models.OperationListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public final class OperationsClientImpl implements OperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DeveloperHubServiceClientImpl client;
 
     /**
      * Initializes an instance of OperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationsClientImpl(DeveloperHubServiceClientImpl client) {
@@ -60,13 +66,13 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets a list of operations.
-     *
-     * <p>Returns list of operations.
-     *
+     * 
+     * Returns list of operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of REST API operations supported by an Azure Resource Provider along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationListResultInner>> listWithResponseAsync() {
@@ -83,15 +89,15 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets a list of operations.
-     *
-     * <p>Returns list of operations.
-     *
+     * 
+     * Returns list of operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of REST API operations supported by an Azure Resource Provider along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<OperationListResultInner>> listWithResponseAsync(Context context) {
@@ -106,13 +112,13 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets a list of operations.
-     *
-     * <p>Returns list of operations.
-     *
+     * 
+     * Returns list of operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of REST API operations supported by an Azure Resource Provider on successful completion of {@link
-     *     Mono}.
+     * @return a list of REST API operations supported by an Azure Resource Provider on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationListResultInner> listAsync() {
@@ -121,9 +127,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets a list of operations.
-     *
-     * <p>Returns list of operations.
-     *
+     * 
+     * Returns list of operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -137,9 +143,9 @@ public final class OperationsClientImpl implements OperationsClient {
 
     /**
      * Gets a list of operations.
-     *
-     * <p>Returns list of operations.
-     *
+     * 
+     * Returns list of operations.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of REST API operations supported by an Azure Resource Provider.
