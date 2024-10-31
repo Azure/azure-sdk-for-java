@@ -13,21 +13,21 @@ public final class ManagedVirtualNetworkSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedVirtualNetworkSettings model = BinaryData.fromString(
-            "{\"preventDataExfiltration\":false,\"linkedAccessCheckOnTargetResource\":true,\"allowedAadTenantIdsForLinking\":[\"pmyyefrpmpdnqq\",\"ka\",\"ao\",\"vmm\"]}")
+            "{\"preventDataExfiltration\":true,\"linkedAccessCheckOnTargetResource\":true,\"allowedAadTenantIdsForLinking\":[\"failcfx\"]}")
             .toObject(ManagedVirtualNetworkSettings.class);
-        Assertions.assertEquals(false, model.preventDataExfiltration());
+        Assertions.assertEquals(true, model.preventDataExfiltration());
         Assertions.assertEquals(true, model.linkedAccessCheckOnTargetResource());
-        Assertions.assertEquals("pmyyefrpmpdnqq", model.allowedAadTenantIdsForLinking().get(0));
+        Assertions.assertEquals("failcfx", model.allowedAadTenantIdsForLinking().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedVirtualNetworkSettings model = new ManagedVirtualNetworkSettings().withPreventDataExfiltration(false)
+        ManagedVirtualNetworkSettings model = new ManagedVirtualNetworkSettings().withPreventDataExfiltration(true)
             .withLinkedAccessCheckOnTargetResource(true)
-            .withAllowedAadTenantIdsForLinking(Arrays.asList("pmyyefrpmpdnqq", "ka", "ao", "vmm"));
+            .withAllowedAadTenantIdsForLinking(Arrays.asList("failcfx"));
         model = BinaryData.fromObject(model).toObject(ManagedVirtualNetworkSettings.class);
-        Assertions.assertEquals(false, model.preventDataExfiltration());
+        Assertions.assertEquals(true, model.preventDataExfiltration());
         Assertions.assertEquals(true, model.linkedAccessCheckOnTargetResource());
-        Assertions.assertEquals("pmyyefrpmpdnqq", model.allowedAadTenantIdsForLinking().get(0));
+        Assertions.assertEquals("failcfx", model.allowedAadTenantIdsForLinking().get(0));
     }
 }

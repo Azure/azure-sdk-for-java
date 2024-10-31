@@ -146,9 +146,9 @@ public final class ExtendedSqlPoolBlobAuditingPolicyImpl implements ExtendedSqlP
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.sqlPoolName = Utils.getValueFromIdByName(innerObject.id(), "sqlPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.sqlPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlPools");
     }
 
     public ExtendedSqlPoolBlobAuditingPolicy refresh() {

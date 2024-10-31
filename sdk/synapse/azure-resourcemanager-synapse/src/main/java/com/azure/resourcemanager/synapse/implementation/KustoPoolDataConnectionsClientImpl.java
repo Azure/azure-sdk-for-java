@@ -44,17 +44,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KustoPoolDataConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KustoPoolDataConnectionsClient.
+ */
 public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KustoPoolDataConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of KustoPoolDataConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KustoPoolDataConnectionsClientImpl(SynapseManagementClientImpl client) {
@@ -71,8 +77,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
     @ServiceInterface(name = "SynapseManagementCli")
     public interface KustoPoolDataConnectionsService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/checkNameAvailability")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/checkNameAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
@@ -84,8 +89,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnectionValidation")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnectionValidation")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> dataConnectionValidation(@HostParam("$host") String endpoint,
@@ -97,8 +101,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataConnectionListResult>> listByDatabase(@HostParam("$host") String endpoint,
@@ -108,9 +111,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections"
-            + "/{dataConnectionName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataConnectionInner>> get(@HostParam("$host") String endpoint,
@@ -121,9 +122,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections"
-            + "/{dataConnectionName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -135,9 +134,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections"
-            + "/{dataConnectionName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
@@ -149,9 +146,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections"
-            + "/{dataConnectionName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/databases/{databaseName}/dataConnections/{dataConnectionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
@@ -164,7 +159,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -174,7 +169,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
@@ -218,7 +213,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -229,7 +224,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName,
@@ -272,7 +267,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -292,7 +287,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -314,7 +309,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -334,7 +329,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -344,7 +339,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connection validation result along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> dataConnectionValidationWithResponseAsync(String resourceGroupName,
@@ -386,7 +381,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -397,7 +392,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connection validation result along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> dataConnectionValidationWithResponseAsync(String resourceGroupName,
@@ -438,7 +433,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -463,7 +458,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -490,7 +485,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -513,7 +508,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -537,7 +532,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -557,7 +552,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -579,7 +574,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -599,7 +594,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -621,7 +616,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -630,7 +625,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connections operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataConnectionInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
@@ -668,7 +663,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -678,7 +673,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto data connections operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataConnectionInner>> listByDatabaseSinglePageAsync(String resourceGroupName,
@@ -716,7 +711,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -735,7 +730,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -755,7 +750,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -773,7 +768,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -793,7 +788,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Returns a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -802,8 +797,8 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing a data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataConnectionInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -844,7 +839,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Returns a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -854,8 +849,8 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing a data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataConnectionInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -894,7 +889,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Returns a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -914,7 +909,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Returns a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -935,7 +930,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Returns a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -955,7 +950,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -965,8 +960,8 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing a data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -1013,7 +1008,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1024,8 +1019,8 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing a data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -1070,7 +1065,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1094,7 +1089,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1120,7 +1115,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1144,7 +1139,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1169,7 +1164,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1190,7 +1185,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1213,7 +1208,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1234,7 +1229,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1256,7 +1251,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1266,8 +1261,8 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing a data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -1313,7 +1308,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1324,8 +1319,8 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a data connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class representing a data connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -1370,7 +1365,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1394,7 +1389,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1420,7 +1415,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1444,7 +1439,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1469,7 +1464,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1490,7 +1485,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1512,7 +1507,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1533,7 +1528,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1555,7 +1550,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1605,7 +1600,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1654,7 +1649,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1676,7 +1671,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1700,7 +1695,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1720,7 +1715,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1743,7 +1738,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1764,7 +1759,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1785,7 +1780,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -1803,7 +1798,7 @@ public final class KustoPoolDataConnectionsClientImpl implements KustoPoolDataCo
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.

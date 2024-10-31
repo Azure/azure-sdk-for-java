@@ -6,13 +6,15 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlPoolOperationResults. */
+/**
+ * Resource collection API of SqlPoolOperationResults.
+ */
 public interface SqlPoolOperationResults {
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -27,9 +29,9 @@ public interface SqlPoolOperationResults {
 
     /**
      * Get SQL pool operation status
-     *
-     * <p>Get the status of a SQL pool operation.
-     *
+     * 
+     * Get the status of a SQL pool operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

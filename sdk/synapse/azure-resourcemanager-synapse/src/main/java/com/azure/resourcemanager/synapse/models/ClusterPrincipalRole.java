@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Cluster principal role. */
+/**
+ * Cluster principal role.
+ */
 public final class ClusterPrincipalRole extends ExpandableStringEnum<ClusterPrincipalRole> {
-    /** Static value AllDatabasesAdmin for ClusterPrincipalRole. */
+    /**
+     * Static value AllDatabasesAdmin for ClusterPrincipalRole.
+     */
     public static final ClusterPrincipalRole ALL_DATABASES_ADMIN = fromString("AllDatabasesAdmin");
 
-    /** Static value AllDatabasesViewer for ClusterPrincipalRole. */
+    /**
+     * Static value AllDatabasesViewer for ClusterPrincipalRole.
+     */
     public static final ClusterPrincipalRole ALL_DATABASES_VIEWER = fromString("AllDatabasesViewer");
 
     /**
      * Creates a new instance of ClusterPrincipalRole value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class ClusterPrincipalRole extends ExpandableStringEnum<ClusterPrin
 
     /**
      * Creates or finds a ClusterPrincipalRole from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClusterPrincipalRole.
      */
-    @JsonCreator
     public static ClusterPrincipalRole fromString(String name) {
         return fromString(name, ClusterPrincipalRole.class);
     }
 
     /**
      * Gets known ClusterPrincipalRole values.
-     *
+     * 
      * @return known ClusterPrincipalRole values.
      */
     public static Collection<ClusterPrincipalRole> values() {

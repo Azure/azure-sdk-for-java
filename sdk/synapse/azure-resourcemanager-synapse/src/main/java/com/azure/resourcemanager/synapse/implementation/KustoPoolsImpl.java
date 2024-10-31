@@ -43,12 +43,12 @@ public final class KustoPoolsImpl implements KustoPools {
 
     public PagedIterable<SkuDescription> list() {
         PagedIterable<SkuDescriptionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SkuDescription> list(Context context) {
         PagedIterable<SkuDescriptionInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuDescriptionImpl(inner1, this.manager()));
     }
 
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(String location,
@@ -142,28 +142,28 @@ public final class KustoPoolsImpl implements KustoPools {
         String resourceGroupName) {
         PagedIterable<AzureResourceSkuInner> inner
             = this.serviceClient().listSkusByResource(workspaceName, kustoPoolName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureResourceSku> listSkusByResource(String workspaceName, String kustoPoolName,
         String resourceGroupName, Context context) {
         PagedIterable<AzureResourceSkuInner> inner
             = this.serviceClient().listSkusByResource(workspaceName, kustoPoolName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LanguageExtension> listLanguageExtensions(String workspaceName, String kustoPoolName,
         String resourceGroupName) {
         PagedIterable<LanguageExtensionInner> inner
             = this.serviceClient().listLanguageExtensions(workspaceName, kustoPoolName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LanguageExtension> listLanguageExtensions(String workspaceName, String kustoPoolName,
         String resourceGroupName, Context context) {
         PagedIterable<LanguageExtensionInner> inner
             = this.serviceClient().listLanguageExtensions(workspaceName, kustoPoolName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LanguageExtensionImpl(inner1, this.manager()));
     }
 
     public void addLanguageExtensions(String workspaceName, String kustoPoolName, String resourceGroupName,
@@ -195,14 +195,16 @@ public final class KustoPoolsImpl implements KustoPools {
         String resourceGroupName) {
         PagedIterable<FollowerDatabaseDefinitionInner> inner
             = this.serviceClient().listFollowerDatabases(workspaceName, kustoPoolName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FollowerDatabaseDefinition> listFollowerDatabases(String workspaceName, String kustoPoolName,
         String resourceGroupName, Context context) {
         PagedIterable<FollowerDatabaseDefinitionInner> inner
             = this.serviceClient().listFollowerDatabases(workspaceName, kustoPoolName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new FollowerDatabaseDefinitionImpl(inner1, this.manager()));
     }
 
     public void detachFollowerDatabases(String workspaceName, String kustoPoolName, String resourceGroupName,
@@ -219,17 +221,17 @@ public final class KustoPoolsImpl implements KustoPools {
     }
 
     public KustoPool getById(String id) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
@@ -238,17 +240,17 @@ public final class KustoPoolsImpl implements KustoPools {
     }
 
     public Response<KustoPool> getByIdWithResponse(String id, Context context) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
@@ -257,17 +259,17 @@ public final class KustoPoolsImpl implements KustoPools {
     }
 
     public void deleteById(String id) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
@@ -276,17 +278,17 @@ public final class KustoPoolsImpl implements KustoPools {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
+        String kustoPoolName = ResourceManagerUtils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));

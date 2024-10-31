@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolTableInner;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolTablesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolTablesClient.
+ */
 public interface SqlPoolTablesClient {
     /**
      * Gets tables of a given schema in a SQL pool
-     *
-     * <p>Gets tables of a given schema in a SQL pool.
-     *
+     * 
+     * Gets tables of a given schema in a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -33,9 +35,9 @@ public interface SqlPoolTablesClient {
 
     /**
      * Gets tables of a given schema in a SQL pool
-     *
-     * <p>Gets tables of a given schema in a SQL pool.
-     *
+     * 
+     * Gets tables of a given schema in a SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -53,7 +55,7 @@ public interface SqlPoolTablesClient {
 
     /**
      * Get Sql pool table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -71,7 +73,7 @@ public interface SqlPoolTablesClient {
 
     /**
      * Get Sql pool table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

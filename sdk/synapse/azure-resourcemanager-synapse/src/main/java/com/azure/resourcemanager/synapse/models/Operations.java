@@ -8,13 +8,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/** Resource collection API of Operations. */
+/**
+ * Resource collection API of Operations.
+ */
 public interface Operations {
     /**
      * Check name availability
-     *
-     * <p>Check whether a workspace name is available.
-     *
+     * 
+     * Check whether a workspace name is available.
+     * 
      * @param request The check request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,9 +29,9 @@ public interface Operations {
 
     /**
      * Check name availability
-     *
-     * <p>Check whether a workspace name is available.
-     *
+     * 
+     * Check whether a workspace name is available.
+     * 
      * @param request The check request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,9 +42,9 @@ public interface Operations {
 
     /**
      * All operations
-     *
-     * <p>Get all available operations.
-     *
+     * 
+     * Get all available operations.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -53,9 +55,9 @@ public interface Operations {
 
     /**
      * All operations
-     *
-     * <p>Get all available operations.
-     *
+     * 
+     * Get all available operations.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all available operations.
@@ -64,9 +66,9 @@ public interface Operations {
 
     /**
      * Get operation result
-     *
-     * <p>Get the result of an operation.
-     *
+     * 
+     * Get the result of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -81,9 +83,9 @@ public interface Operations {
 
     /**
      * Get operation result
-     *
-     * <p>Get the result of an operation.
-     *
+     * 
+     * Get the result of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -95,9 +97,9 @@ public interface Operations {
 
     /**
      * Get operation status
-     *
-     * <p>Get the status of an operation.
-     *
+     * 
+     * Get the status of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.
@@ -112,9 +114,9 @@ public interface Operations {
 
     /**
      * Get operation status
-     *
-     * <p>Get the status of an operation.
-     *
+     * 
+     * Get the status of an operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param operationId Operation ID.

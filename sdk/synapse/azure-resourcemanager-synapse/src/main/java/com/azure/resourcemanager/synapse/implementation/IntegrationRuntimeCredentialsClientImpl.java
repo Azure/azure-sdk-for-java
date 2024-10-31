@@ -24,17 +24,23 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeCredentialsClient;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IntegrationRuntimeCredentialsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IntegrationRuntimeCredentialsClient.
+ */
 public final class IntegrationRuntimeCredentialsClientImpl implements IntegrationRuntimeCredentialsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IntegrationRuntimeCredentialsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of IntegrationRuntimeCredentialsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationRuntimeCredentialsClientImpl(SynapseManagementClientImpl client) {
@@ -51,8 +57,7 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
     @ServiceInterface(name = "SynapseManagementCli")
     public interface IntegrationRuntimeCredentialsService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/syncCredentials")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/syncCredentials")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> sync(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
@@ -64,12 +69,12 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
 
     /**
      * Sync integration runtime credentials
-     *
-     * <p>Force the integration runtime to synchronize credentials across integration runtime nodes, and this will
-     * override the credentials across all worker nodes with those available on the dispatcher node. If you already have
-     * the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
-     * runtime node than using this API directly.
-     *
+     * 
+     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
+     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
+     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
+     * node than using this API directly.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -110,12 +115,12 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
 
     /**
      * Sync integration runtime credentials
-     *
-     * <p>Force the integration runtime to synchronize credentials across integration runtime nodes, and this will
-     * override the credentials across all worker nodes with those available on the dispatcher node. If you already have
-     * the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
-     * runtime node than using this API directly.
-     *
+     * 
+     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
+     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
+     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
+     * node than using this API directly.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -156,12 +161,12 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
 
     /**
      * Sync integration runtime credentials
-     *
-     * <p>Force the integration runtime to synchronize credentials across integration runtime nodes, and this will
-     * override the credentials across all worker nodes with those available on the dispatcher node. If you already have
-     * the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
-     * runtime node than using this API directly.
-     *
+     * 
+     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
+     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
+     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
+     * node than using this API directly.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -178,12 +183,12 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
 
     /**
      * Sync integration runtime credentials
-     *
-     * <p>Force the integration runtime to synchronize credentials across integration runtime nodes, and this will
-     * override the credentials across all worker nodes with those available on the dispatcher node. If you already have
-     * the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
-     * runtime node than using this API directly.
-     *
+     * 
+     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
+     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
+     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
+     * node than using this API directly.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -201,12 +206,12 @@ public final class IntegrationRuntimeCredentialsClientImpl implements Integratio
 
     /**
      * Sync integration runtime credentials
-     *
-     * <p>Force the integration runtime to synchronize credentials across integration runtime nodes, and this will
-     * override the credentials across all worker nodes with those available on the dispatcher node. If you already have
-     * the latest credential backup file, you should manually import it (preferred) on any self-hosted integration
-     * runtime node than using this API directly.
-     *
+     * 
+     * Force the integration runtime to synchronize credentials across integration runtime nodes, and this will override
+     * the credentials across all worker nodes with those available on the dispatcher node. If you already have the
+     * latest credential backup file, you should manually import it (preferred) on any self-hosted integration runtime
+     * node than using this API directly.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

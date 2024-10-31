@@ -182,7 +182,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to SynapseManager. Azure Synapse Analytics Management Client. */
+/**
+ * Entry point to SynapseManager.
+ * Azure Synapse Analytics Management Client.
+ */
 public final class SynapseManager {
     private AzureADOnlyAuthentications azureADOnlyAuthentications;
 
@@ -348,7 +351,7 @@ public final class SynapseManager {
 
     /**
      * Creates an instance of Synapse service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Synapse service API instance.
@@ -361,7 +364,7 @@ public final class SynapseManager {
 
     /**
      * Creates an instance of Synapse service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Synapse service API instance.
@@ -374,14 +377,16 @@ public final class SynapseManager {
 
     /**
      * Gets a Configurable instance that can be used to create SynapseManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new SynapseManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -453,8 +458,8 @@ public final class SynapseManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -496,7 +501,7 @@ public final class SynapseManager {
                 .append("-")
                 .append("com.azure.resourcemanager.synapse")
                 .append("/")
-                .append("1.0.0-beta.7");
+                .append("1.0.0-beta.8");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -544,7 +549,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of AzureADOnlyAuthentications. It manages AzureADOnlyAuthentication.
-     *
+     * 
      * @return Resource collection API of AzureADOnlyAuthentications.
      */
     public AzureADOnlyAuthentications azureADOnlyAuthentications() {
@@ -557,7 +562,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -569,7 +574,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IpFirewallRules. It manages IpFirewallRuleInfo.
-     *
+     * 
      * @return Resource collection API of IpFirewallRules.
      */
     public IpFirewallRules ipFirewallRules() {
@@ -581,7 +586,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of Keys. It manages Key.
-     *
+     * 
      * @return Resource collection API of Keys.
      */
     public Keys keys() {
@@ -593,7 +598,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
@@ -606,7 +611,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of PrivateLinkResourcesOperations.
-     *
+     * 
      * @return Resource collection API of PrivateLinkResourcesOperations.
      */
     public PrivateLinkResourcesOperations privateLinkResourcesOperations() {
@@ -619,7 +624,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of PrivateLinkHubPrivateLinkResources.
-     *
+     * 
      * @return Resource collection API of PrivateLinkHubPrivateLinkResources.
      */
     public PrivateLinkHubPrivateLinkResources privateLinkHubPrivateLinkResources() {
@@ -632,7 +637,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of PrivateLinkHubs. It manages PrivateLinkHub.
-     *
+     * 
      * @return Resource collection API of PrivateLinkHubs.
      */
     public PrivateLinkHubs privateLinkHubs() {
@@ -644,7 +649,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of PrivateEndpointConnectionsPrivateLinkHubs.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnectionsPrivateLinkHubs.
      */
     public PrivateEndpointConnectionsPrivateLinkHubs privateEndpointConnectionsPrivateLinkHubs() {
@@ -657,7 +662,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPools. It manages SqlPool.
-     *
+     * 
      * @return Resource collection API of SqlPools.
      */
     public SqlPools sqlPools() {
@@ -669,7 +674,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolMetadataSyncConfigs.
-     *
+     * 
      * @return Resource collection API of SqlPoolMetadataSyncConfigs.
      */
     public SqlPoolMetadataSyncConfigs sqlPoolMetadataSyncConfigs() {
@@ -682,7 +687,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolOperationResults.
-     *
+     * 
      * @return Resource collection API of SqlPoolOperationResults.
      */
     public SqlPoolOperationResults sqlPoolOperationResults() {
@@ -695,7 +700,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolGeoBackupPolicies. It manages GeoBackupPolicy.
-     *
+     * 
      * @return Resource collection API of SqlPoolGeoBackupPolicies.
      */
     public SqlPoolGeoBackupPolicies sqlPoolGeoBackupPolicies() {
@@ -708,7 +713,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolDataWarehouseUserActivities.
-     *
+     * 
      * @return Resource collection API of SqlPoolDataWarehouseUserActivities.
      */
     public SqlPoolDataWarehouseUserActivities sqlPoolDataWarehouseUserActivities() {
@@ -721,7 +726,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolRestorePoints.
-     *
+     * 
      * @return Resource collection API of SqlPoolRestorePoints.
      */
     public SqlPoolRestorePoints sqlPoolRestorePoints() {
@@ -733,7 +738,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolReplicationLinks.
-     *
+     * 
      * @return Resource collection API of SqlPoolReplicationLinks.
      */
     public SqlPoolReplicationLinks sqlPoolReplicationLinks() {
@@ -746,7 +751,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolMaintenanceWindows.
-     *
+     * 
      * @return Resource collection API of SqlPoolMaintenanceWindows.
      */
     public SqlPoolMaintenanceWindows sqlPoolMaintenanceWindows() {
@@ -759,7 +764,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolMaintenanceWindowOptions.
-     *
+     * 
      * @return Resource collection API of SqlPoolMaintenanceWindowOptions.
      */
     public SqlPoolMaintenanceWindowOptions sqlPoolMaintenanceWindowOptions() {
@@ -772,7 +777,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolTransparentDataEncryptions. It manages TransparentDataEncryption.
-     *
+     * 
      * @return Resource collection API of SqlPoolTransparentDataEncryptions.
      */
     public SqlPoolTransparentDataEncryptions sqlPoolTransparentDataEncryptions() {
@@ -785,7 +790,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolBlobAuditingPolicies. It manages SqlPoolBlobAuditingPolicy.
-     *
+     * 
      * @return Resource collection API of SqlPoolBlobAuditingPolicies.
      */
     public SqlPoolBlobAuditingPolicies sqlPoolBlobAuditingPolicies() {
@@ -798,7 +803,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolOperations.
-     *
+     * 
      * @return Resource collection API of SqlPoolOperations.
      */
     public SqlPoolOperations sqlPoolOperations() {
@@ -810,7 +815,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolUsages.
-     *
+     * 
      * @return Resource collection API of SqlPoolUsages.
      */
     public SqlPoolUsages sqlPoolUsages() {
@@ -822,7 +827,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolSensitivityLabels. It manages SensitivityLabel.
-     *
+     * 
      * @return Resource collection API of SqlPoolSensitivityLabels.
      */
     public SqlPoolSensitivityLabels sqlPoolSensitivityLabels() {
@@ -835,7 +840,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolRecommendedSensitivityLabels.
-     *
+     * 
      * @return Resource collection API of SqlPoolRecommendedSensitivityLabels.
      */
     public SqlPoolRecommendedSensitivityLabels sqlPoolRecommendedSensitivityLabels() {
@@ -848,7 +853,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolSchemas.
-     *
+     * 
      * @return Resource collection API of SqlPoolSchemas.
      */
     public SqlPoolSchemas sqlPoolSchemas() {
@@ -860,7 +865,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolTables.
-     *
+     * 
      * @return Resource collection API of SqlPoolTables.
      */
     public SqlPoolTables sqlPoolTables() {
@@ -872,7 +877,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolTableColumns.
-     *
+     * 
      * @return Resource collection API of SqlPoolTableColumns.
      */
     public SqlPoolTableColumns sqlPoolTableColumns() {
@@ -884,7 +889,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolConnectionPolicies.
-     *
+     * 
      * @return Resource collection API of SqlPoolConnectionPolicies.
      */
     public SqlPoolConnectionPolicies sqlPoolConnectionPolicies() {
@@ -897,7 +902,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolVulnerabilityAssessments. It manages SqlPoolVulnerabilityAssessment.
-     *
+     * 
      * @return Resource collection API of SqlPoolVulnerabilityAssessments.
      */
     public SqlPoolVulnerabilityAssessments sqlPoolVulnerabilityAssessments() {
@@ -910,7 +915,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolVulnerabilityAssessmentScans.
-     *
+     * 
      * @return Resource collection API of SqlPoolVulnerabilityAssessmentScans.
      */
     public SqlPoolVulnerabilityAssessmentScans sqlPoolVulnerabilityAssessmentScans() {
@@ -923,7 +928,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolSecurityAlertPolicies. It manages SqlPoolSecurityAlertPolicy.
-     *
+     * 
      * @return Resource collection API of SqlPoolSecurityAlertPolicies.
      */
     public SqlPoolSecurityAlertPolicies sqlPoolSecurityAlertPolicies() {
@@ -937,7 +942,7 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of SqlPoolVulnerabilityAssessmentRuleBaselines. It manages
      * SqlPoolVulnerabilityAssessmentRuleBaseline.
-     *
+     * 
      * @return Resource collection API of SqlPoolVulnerabilityAssessmentRuleBaselines.
      */
     public SqlPoolVulnerabilityAssessmentRuleBaselines sqlPoolVulnerabilityAssessmentRuleBaselines() {
@@ -951,7 +956,7 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of ExtendedSqlPoolBlobAuditingPolicies. It manages
      * ExtendedSqlPoolBlobAuditingPolicy.
-     *
+     * 
      * @return Resource collection API of ExtendedSqlPoolBlobAuditingPolicies.
      */
     public ExtendedSqlPoolBlobAuditingPolicies extendedSqlPoolBlobAuditingPolicies() {
@@ -964,7 +969,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of DataMaskingPolicies. It manages DataMaskingPolicy.
-     *
+     * 
      * @return Resource collection API of DataMaskingPolicies.
      */
     public DataMaskingPolicies dataMaskingPolicies() {
@@ -976,7 +981,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of DataMaskingRules. It manages DataMaskingRule.
-     *
+     * 
      * @return Resource collection API of DataMaskingRules.
      */
     public DataMaskingRules dataMaskingRules() {
@@ -988,7 +993,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolColumns.
-     *
+     * 
      * @return Resource collection API of SqlPoolColumns.
      */
     public SqlPoolColumns sqlPoolColumns() {
@@ -1000,7 +1005,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolWorkloadGroups. It manages WorkloadGroup.
-     *
+     * 
      * @return Resource collection API of SqlPoolWorkloadGroups.
      */
     public SqlPoolWorkloadGroups sqlPoolWorkloadGroups() {
@@ -1012,7 +1017,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SqlPoolWorkloadClassifiers. It manages WorkloadClassifier.
-     *
+     * 
      * @return Resource collection API of SqlPoolWorkloadClassifiers.
      */
     public SqlPoolWorkloadClassifiers sqlPoolWorkloadClassifiers() {
@@ -1026,7 +1031,7 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerBlobAuditingPolicies. It manages
      * ServerBlobAuditingPolicy.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerBlobAuditingPolicies.
      */
     public WorkspaceManagedSqlServerBlobAuditingPolicies workspaceManagedSqlServerBlobAuditingPolicies() {
@@ -1040,7 +1045,7 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerExtendedBlobAuditingPolicies. It manages
      * ExtendedServerBlobAuditingPolicy.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerExtendedBlobAuditingPolicies.
      */
     public WorkspaceManagedSqlServerExtendedBlobAuditingPolicies
@@ -1056,7 +1061,7 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerSecurityAlertPolicies. It manages
      * ServerSecurityAlertPolicy.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerSecurityAlertPolicies.
      */
     public WorkspaceManagedSqlServerSecurityAlertPolicies workspaceManagedSqlServerSecurityAlertPolicies() {
@@ -1071,7 +1076,7 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerVulnerabilityAssessments. It manages
      * ServerVulnerabilityAssessment.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerVulnerabilityAssessments.
      */
     public WorkspaceManagedSqlServerVulnerabilityAssessments workspaceManagedSqlServerVulnerabilityAssessments() {
@@ -1086,7 +1091,7 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerEncryptionProtectors. It manages
      * EncryptionProtector.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerEncryptionProtectors.
      */
     public WorkspaceManagedSqlServerEncryptionProtectors workspaceManagedSqlServerEncryptionProtectors() {
@@ -1099,7 +1104,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerUsages.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerUsages.
      */
     public WorkspaceManagedSqlServerUsages workspaceManagedSqlServerUsages() {
@@ -1112,7 +1117,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerRecoverableSqlPools.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerRecoverableSqlPools.
      */
     public WorkspaceManagedSqlServerRecoverableSqlPools workspaceManagedSqlServerRecoverableSqlPools() {
@@ -1125,7 +1130,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings.
      */
     public WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings
@@ -1140,7 +1145,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of Workspaces. It manages Workspace.
-     *
+     * 
      * @return Resource collection API of Workspaces.
      */
     public Workspaces workspaces() {
@@ -1152,7 +1157,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of WorkspaceAadAdmins.
-     *
+     * 
      * @return Resource collection API of WorkspaceAadAdmins.
      */
     public WorkspaceAadAdmins workspaceAadAdmins() {
@@ -1164,7 +1169,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of WorkspaceSqlAadAdmins.
-     *
+     * 
      * @return Resource collection API of WorkspaceSqlAadAdmins.
      */
     public WorkspaceSqlAadAdmins workspaceSqlAadAdmins() {
@@ -1176,7 +1181,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of WorkspaceManagedIdentitySqlControlSettings.
-     *
+     * 
      * @return Resource collection API of WorkspaceManagedIdentitySqlControlSettings.
      */
     public WorkspaceManagedIdentitySqlControlSettings workspaceManagedIdentitySqlControlSettings() {
@@ -1189,7 +1194,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of RestorableDroppedSqlPools.
-     *
+     * 
      * @return Resource collection API of RestorableDroppedSqlPools.
      */
     public RestorableDroppedSqlPools restorableDroppedSqlPools() {
@@ -1202,7 +1207,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of BigDataPools. It manages BigDataPoolResourceInfo.
-     *
+     * 
      * @return Resource collection API of BigDataPools.
      */
     public BigDataPools bigDataPools() {
@@ -1214,7 +1219,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of Libraries.
-     *
+     * 
      * @return Resource collection API of Libraries.
      */
     public Libraries libraries() {
@@ -1226,7 +1231,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of LibrariesOperations.
-     *
+     * 
      * @return Resource collection API of LibrariesOperations.
      */
     public LibrariesOperations librariesOperations() {
@@ -1238,7 +1243,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IntegrationRuntimes. It manages IntegrationRuntimeResource.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimes.
      */
     public IntegrationRuntimes integrationRuntimes() {
@@ -1250,7 +1255,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IntegrationRuntimeNodeIpAddressOperations.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeNodeIpAddressOperations.
      */
     public IntegrationRuntimeNodeIpAddressOperations integrationRuntimeNodeIpAddressOperations() {
@@ -1263,7 +1268,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IntegrationRuntimeObjectMetadatas.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeObjectMetadatas.
      */
     public IntegrationRuntimeObjectMetadatas integrationRuntimeObjectMetadatas() {
@@ -1276,7 +1281,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IntegrationRuntimeNodes.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeNodes.
      */
     public IntegrationRuntimeNodes integrationRuntimeNodes() {
@@ -1289,7 +1294,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IntegrationRuntimeCredentials.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeCredentials.
      */
     public IntegrationRuntimeCredentials integrationRuntimeCredentials() {
@@ -1302,7 +1307,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IntegrationRuntimeConnectionInfos.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeConnectionInfos.
      */
     public IntegrationRuntimeConnectionInfos integrationRuntimeConnectionInfos() {
@@ -1315,7 +1320,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IntegrationRuntimeAuthKeysOperations.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeAuthKeysOperations.
      */
     public IntegrationRuntimeAuthKeysOperations integrationRuntimeAuthKeysOperations() {
@@ -1328,7 +1333,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IntegrationRuntimeMonitoringDatas.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeMonitoringDatas.
      */
     public IntegrationRuntimeMonitoringDatas integrationRuntimeMonitoringDatas() {
@@ -1341,7 +1346,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of IntegrationRuntimeStatusOperations.
-     *
+     * 
      * @return Resource collection API of IntegrationRuntimeStatusOperations.
      */
     public IntegrationRuntimeStatusOperations integrationRuntimeStatusOperations() {
@@ -1354,7 +1359,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of Gets.
-     *
+     * 
      * @return Resource collection API of Gets.
      */
     public Gets gets() {
@@ -1366,7 +1371,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SparkConfigurations.
-     *
+     * 
      * @return Resource collection API of SparkConfigurations.
      */
     public SparkConfigurations sparkConfigurations() {
@@ -1378,7 +1383,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of SparkConfigurationsOperations.
-     *
+     * 
      * @return Resource collection API of SparkConfigurationsOperations.
      */
     public SparkConfigurationsOperations sparkConfigurationsOperations() {
@@ -1391,7 +1396,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of KustoOperations.
-     *
+     * 
      * @return Resource collection API of KustoOperations.
      */
     public KustoOperations kustoOperations() {
@@ -1403,7 +1408,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of KustoPools. It manages KustoPool.
-     *
+     * 
      * @return Resource collection API of KustoPools.
      */
     public KustoPools kustoPools() {
@@ -1415,7 +1420,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of KustoPoolChildResources.
-     *
+     * 
      * @return Resource collection API of KustoPoolChildResources.
      */
     public KustoPoolChildResources kustoPoolChildResources() {
@@ -1429,7 +1434,7 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of KustoPoolAttachedDatabaseConfigurations. It manages
      * AttachedDatabaseConfiguration.
-     *
+     * 
      * @return Resource collection API of KustoPoolAttachedDatabaseConfigurations.
      */
     public KustoPoolAttachedDatabaseConfigurations kustoPoolAttachedDatabaseConfigurations() {
@@ -1442,7 +1447,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of KustoPoolDatabases.
-     *
+     * 
      * @return Resource collection API of KustoPoolDatabases.
      */
     public KustoPoolDatabases kustoPoolDatabases() {
@@ -1454,7 +1459,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of KustoPoolDataConnections.
-     *
+     * 
      * @return Resource collection API of KustoPoolDataConnections.
      */
     public KustoPoolDataConnections kustoPoolDataConnections() {
@@ -1467,7 +1472,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of KustoPoolPrincipalAssignments. It manages ClusterPrincipalAssignment.
-     *
+     * 
      * @return Resource collection API of KustoPoolPrincipalAssignments.
      */
     public KustoPoolPrincipalAssignments kustoPoolPrincipalAssignments() {
@@ -1481,7 +1486,7 @@ public final class SynapseManager {
     /**
      * Gets the resource collection API of KustoPoolDatabasePrincipalAssignments. It manages
      * DatabasePrincipalAssignment.
-     *
+     * 
      * @return Resource collection API of KustoPoolDatabasePrincipalAssignments.
      */
     public KustoPoolDatabasePrincipalAssignments kustoPoolDatabasePrincipalAssignments() {
@@ -1494,7 +1499,7 @@ public final class SynapseManager {
 
     /**
      * Gets the resource collection API of KustoPoolPrivateLinkResourcesOperations.
-     *
+     * 
      * @return Resource collection API of KustoPoolPrivateLinkResourcesOperations.
      */
     public KustoPoolPrivateLinkResourcesOperations kustoPoolPrivateLinkResourcesOperations() {
@@ -1506,8 +1511,10 @@ public final class SynapseManager {
     }
 
     /**
-     * @return Wrapped service client SynapseManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client SynapseManagementClient providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client SynapseManagementClient.
      */
     public SynapseManagementClient serviceClient() {
         return this.clientObject;

@@ -12,16 +12,16 @@ public final class DedicatedSQLminimalTlsSettingsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DedicatedSQLminimalTlsSettingsInner model = BinaryData.fromString(
-            "{\"location\":\"imlnwiaaomylw\",\"properties\":{\"minimalTlsVersion\":\"ulcsethwwnpj\"},\"id\":\"l\",\"name\":\"zswpchwa\",\"type\":\"fb\"}")
+            "{\"location\":\"buzjyih\",\"properties\":{\"minimalTlsVersion\":\"bhu\"},\"id\":\"ypoh\",\"name\":\"uemsly\",\"type\":\"sqy\"}")
             .toObject(DedicatedSQLminimalTlsSettingsInner.class);
-        Assertions.assertEquals("ulcsethwwnpj", model.minimalTlsVersion());
+        Assertions.assertEquals("bhu", model.minimalTlsVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DedicatedSQLminimalTlsSettingsInner model
-            = new DedicatedSQLminimalTlsSettingsInner().withMinimalTlsVersion("ulcsethwwnpj");
+            = new DedicatedSQLminimalTlsSettingsInner().withMinimalTlsVersion("bhu");
         model = BinaryData.fromObject(model).toObject(DedicatedSQLminimalTlsSettingsInner.class);
-        Assertions.assertEquals("ulcsethwwnpj", model.minimalTlsVersion());
+        Assertions.assertEquals("bhu", model.minimalTlsVersion());
     }
 }

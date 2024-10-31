@@ -12,11 +12,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceAadAdminInfoInner;
 
-/** An instance of this class provides access to all the operations defined in WorkspaceAadAdminsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspaceAadAdminsClient.
+ */
 public interface WorkspaceAadAdminsClient {
     /**
      * Gets a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -31,7 +33,7 @@ public interface WorkspaceAadAdminsClient {
 
     /**
      * Gets a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +46,7 @@ public interface WorkspaceAadAdminsClient {
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -59,7 +61,7 @@ public interface WorkspaceAadAdminsClient {
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -75,7 +77,7 @@ public interface WorkspaceAadAdminsClient {
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -90,7 +92,7 @@ public interface WorkspaceAadAdminsClient {
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -106,7 +108,7 @@ public interface WorkspaceAadAdminsClient {
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +121,7 @@ public interface WorkspaceAadAdminsClient {
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -133,7 +135,7 @@ public interface WorkspaceAadAdminsClient {
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +147,7 @@ public interface WorkspaceAadAdminsClient {
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.

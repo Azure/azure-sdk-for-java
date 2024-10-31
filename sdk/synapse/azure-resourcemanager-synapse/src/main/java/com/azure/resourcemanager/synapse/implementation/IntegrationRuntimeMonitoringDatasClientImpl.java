@@ -29,15 +29,19 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in IntegrationRuntimeMonitoringDatasClient.
  */
 public final class IntegrationRuntimeMonitoringDatasClientImpl implements IntegrationRuntimeMonitoringDatasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IntegrationRuntimeMonitoringDatasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of IntegrationRuntimeMonitoringDatasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IntegrationRuntimeMonitoringDatasClientImpl(SynapseManagementClientImpl client) {
@@ -54,8 +58,7 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
     @ServiceInterface(name = "SynapseManagementCli")
     public interface IntegrationRuntimeMonitoringDatasService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/monitoringData")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/integrationRuntimes/{integrationRuntimeName}/monitoringData")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IntegrationRuntimeMonitoringDataInner>> list(@HostParam("$host") String endpoint,
@@ -67,17 +70,17 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
 
     /**
      * Get integration runtime monitoring data
-     *
-     * <p>Get monitoring data for an integration runtime.
-     *
+     * 
+     * Get monitoring data for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitoring data for an integration runtime along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return monitoring data for an integration runtime along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeMonitoringDataInner>> listWithResponseAsync(String resourceGroupName,
@@ -111,9 +114,9 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
 
     /**
      * Get integration runtime monitoring data
-     *
-     * <p>Get monitoring data for an integration runtime.
-     *
+     * 
+     * Get monitoring data for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -121,8 +124,8 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return monitoring data for an integration runtime along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return monitoring data for an integration runtime along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IntegrationRuntimeMonitoringDataInner>> listWithResponseAsync(String resourceGroupName,
@@ -155,9 +158,9 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
 
     /**
      * Get integration runtime monitoring data
-     *
-     * <p>Get monitoring data for an integration runtime.
-     *
+     * 
+     * Get monitoring data for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -175,9 +178,9 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
 
     /**
      * Get integration runtime monitoring data
-     *
-     * <p>Get monitoring data for an integration runtime.
-     *
+     * 
+     * Get monitoring data for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -195,9 +198,9 @@ public final class IntegrationRuntimeMonitoringDatasClientImpl implements Integr
 
     /**
      * Get integration runtime monitoring data
-     *
-     * <p>Get monitoring data for an integration runtime.
-     *
+     * 
+     * Get monitoring data for an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.

@@ -12,13 +12,15 @@ import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeEnablei
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeOperationStatusInner;
 import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStopOperationStatusInner;
 
-/** An instance of this class provides access to all the operations defined in GetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GetsClient.
+ */
 public interface GetsClient {
     /**
      * Get integration runtime start operation status
-     *
-     * <p>Get an integration runtime start operation status.
-     *
+     * 
+     * Get an integration runtime start operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -35,9 +37,9 @@ public interface GetsClient {
 
     /**
      * Get integration runtime start operation status
-     *
-     * <p>Get an integration runtime start operation status.
-     *
+     * 
+     * Get an integration runtime start operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -53,9 +55,9 @@ public interface GetsClient {
 
     /**
      * Get integration runtime stop operation status
-     *
-     * <p>Get an integration runtime stop operation status.
-     *
+     * 
+     * Get an integration runtime stop operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -72,9 +74,9 @@ public interface GetsClient {
 
     /**
      * Get integration runtime stop operation status
-     *
-     * <p>Get an integration runtime stop operation status.
-     *
+     * 
+     * Get an integration runtime stop operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -90,9 +92,9 @@ public interface GetsClient {
 
     /**
      * Get integration runtime enable interactivequery operation status
-     *
-     * <p>Get an integration runtime enable interactivequery operation status.
-     *
+     * 
+     * Get an integration runtime enable interactivequery operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -110,9 +112,9 @@ public interface GetsClient {
 
     /**
      * Get integration runtime enable interactivequery operation status
-     *
-     * <p>Get an integration runtime enable interactivequery operation status.
-     *
+     * 
+     * Get an integration runtime enable interactivequery operation status.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
