@@ -20,8 +20,9 @@ public final class SpringbootsitesGetByResourceGroupSamples {
      */
     public static void springbootsitesGetMaximumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootsites().getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
-            com.azure.core.util.Context.NONE);
+        manager.springbootsites()
+            .getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +37,8 @@ public final class SpringbootsitesGetByResourceGroupSamples {
      */
     public static void springbootsitesGetMinimumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootsites().getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
-            com.azure.core.util.Context.NONE);
+        manager.springbootsites()
+            .getByResourceGroupWithResponse("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
+                com.azure.core.util.Context.NONE);
     }
 }
