@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SignalRReplicasClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SignalRReplicasClient.
+ */
 public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SignalRReplicasService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SignalRManagementClientImpl client;
 
     /**
      * Initializes an instance of SignalRReplicasClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SignalRReplicasClientImpl(SignalRManagementClientImpl client) {
@@ -137,7 +143,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +179,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -211,7 +217,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,7 +233,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -244,7 +250,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -259,7 +265,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -275,7 +281,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -314,7 +320,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -353,7 +359,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -370,7 +376,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -388,7 +394,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -404,7 +410,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -412,8 +418,8 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a class represent a replica resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -450,7 +456,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -459,8 +465,8 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a class represent a replica resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -496,7 +502,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -517,7 +523,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -540,7 +546,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -558,7 +564,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -578,7 +584,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -597,7 +603,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -617,7 +623,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -635,7 +641,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Create or update a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -654,7 +660,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -693,7 +699,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -732,7 +738,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -748,7 +754,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -766,7 +772,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -781,7 +787,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -789,8 +795,8 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a class represent a replica resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
@@ -827,7 +833,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -836,8 +842,8 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class represent a replica resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a class represent a replica resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
@@ -873,7 +879,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -894,7 +900,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -917,7 +923,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -935,7 +941,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -954,7 +960,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -973,7 +979,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -993,7 +999,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1011,7 +1017,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to update an exiting replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1030,7 +1036,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1069,7 +1075,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1108,7 +1114,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1127,7 +1133,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1149,7 +1155,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1166,7 +1172,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1184,7 +1190,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1201,7 +1207,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1220,7 +1226,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1235,7 +1241,7 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1251,9 +1257,8 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1277,9 +1282,8 @@ public final class SignalRReplicasClientImpl implements SignalRReplicasClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

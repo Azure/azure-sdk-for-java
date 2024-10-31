@@ -22,7 +22,7 @@ import com.azure.resourcemanager.synapse.models.DatabasePrincipalAssignmentCheck
 public interface KustoPoolDatabasePrincipalAssignmentsClient {
     /**
      * Checks that the database principal assignment is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -41,7 +41,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Checks that the database principal assignment is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -58,7 +58,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Lists all Kusto pool database principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -66,8 +66,8 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto database principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabasePrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
@@ -75,7 +75,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Lists all Kusto pool database principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -84,8 +84,8 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto database principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatabasePrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
@@ -93,7 +93,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Gets a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -111,7 +111,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Gets a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -128,7 +128,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Creates a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -147,7 +147,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Creates a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -167,7 +167,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Creates a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -185,7 +185,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Creates a Kusto pool database principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -205,7 +205,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -222,7 +222,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -240,7 +240,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.
@@ -256,7 +256,7 @@ public interface KustoPoolDatabasePrincipalAssignmentsClient {
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param databaseName The name of the database in the Kusto pool.

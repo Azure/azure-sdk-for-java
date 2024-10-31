@@ -36,17 +36,23 @@ import com.azure.resourcemanager.mediaservices.fluent.models.StreamingLocatorInn
 import com.azure.resourcemanager.mediaservices.models.StreamingLocatorCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in StreamingLocatorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StreamingLocatorsClient.
+ */
 public final class StreamingLocatorsClientImpl implements StreamingLocatorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final StreamingLocatorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of StreamingLocatorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     StreamingLocatorsClientImpl(AzureMediaServicesImpl client) {
@@ -63,8 +69,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
     @ServiceInterface(name = "AzureMediaServicesSt")
     public interface StreamingLocatorsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/streamingLocators")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StreamingLocatorCollection>> list(@HostParam("$host") String endpoint,
@@ -75,8 +80,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/streamingLocators/{streamingLocatorName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators/{streamingLocatorName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StreamingLocatorInner>> get(@HostParam("$host") String endpoint,
@@ -86,8 +90,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/streamingLocators/{streamingLocatorName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators/{streamingLocatorName}")
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StreamingLocatorInner>> create(@HostParam("$host") String endpoint,
@@ -99,8 +102,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/streamingLocators/{streamingLocatorName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators/{streamingLocatorName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -110,8 +112,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/streamingLocators/{streamingLocatorName}/listContentKeys")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators/{streamingLocatorName}/listContentKeys")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListContentKeysResponseInner>> listContentKeys(@HostParam("$host") String endpoint,
@@ -121,8 +122,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-            + "/{accountName}/streamingLocators/{streamingLocatorName}/listPaths")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/streamingLocators/{streamingLocatorName}/listPaths")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListPathsResponseInner>> listPaths(@HostParam("$host") String endpoint,
@@ -142,20 +142,20 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists the Streaming Locators in the account.
-     *
+     * 
+     * Lists the Streaming Locators in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of StreamingLocator items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingLocatorInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -187,21 +187,21 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists the Streaming Locators in the account.
-     *
+     * 
+     * Lists the Streaming Locators in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of StreamingLocator items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingLocatorInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -233,14 +233,14 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists the Streaming Locators in the account.
-     *
+     * 
+     * Lists the Streaming Locators in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -256,9 +256,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists the Streaming Locators in the account.
-     *
+     * 
+     * Lists the Streaming Locators in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,14 +277,14 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists the Streaming Locators in the account.
-     *
+     * 
+     * Lists the Streaming Locators in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,9 +301,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists the Streaming Locators in the account.
-     *
+     * 
+     * Lists the Streaming Locators in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -321,14 +321,14 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Streaming Locators
-     *
-     * <p>Lists the Streaming Locators in the account.
-     *
+     * 
+     * Lists the Streaming Locators in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filter Restricts the set of items returned.
      * @param top Specifies a non-negative integer n that limits the number of items returned from a collection. The
-     *     service returns the number of available items up to but not greater than the specified value n.
+     * service returns the number of available items up to but not greater than the specified value n.
      * @param orderby Specifies the key by which the result collection should be ordered.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -344,9 +344,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Get a Streaming Locator
-     *
-     * <p>Get the details of a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -354,7 +354,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a Streaming Locator in the Media Services account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StreamingLocatorInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -388,9 +388,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Get a Streaming Locator
-     *
-     * <p>Get the details of a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -399,7 +399,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a Streaming Locator in the Media Services account along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StreamingLocatorInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -432,17 +432,17 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Get a Streaming Locator
-     *
-     * <p>Get the details of a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Streaming Locator in the Media Services account on successful completion of {@link
-     *     Mono}.
+     * @return the details of a Streaming Locator in the Media Services account on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StreamingLocatorInner> getAsync(String resourceGroupName, String accountName,
@@ -453,9 +453,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Get a Streaming Locator
-     *
-     * <p>Get the details of a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -473,9 +473,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Get a Streaming Locator
-     *
-     * <p>Get the details of a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Get the details of a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -491,9 +491,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Create a Streaming Locator
-     *
-     * <p>Create a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Create a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -540,9 +540,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Create a Streaming Locator
-     *
-     * <p>Create a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Create a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -589,9 +589,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Create a Streaming Locator
-     *
-     * <p>Create a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Create a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -610,9 +610,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Create a Streaming Locator
-     *
-     * <p>Create a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Create a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -632,9 +632,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Create a Streaming Locator
-     *
-     * <p>Create a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Create a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -653,9 +653,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Delete a Streaming Locator
-     *
-     * <p>Deletes a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -696,9 +696,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Delete a Streaming Locator
-     *
-     * <p>Deletes a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -739,9 +739,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Delete a Streaming Locator
-     *
-     * <p>Deletes a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -758,9 +758,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Delete a Streaming Locator
-     *
-     * <p>Deletes a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -778,9 +778,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Delete a Streaming Locator
-     *
-     * <p>Deletes a Streaming Locator in the Media Services account.
-     *
+     * 
+     * Deletes a Streaming Locator in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -795,9 +795,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Content Keys
-     *
-     * <p>List Content Keys used by this Streaming Locator.
-     *
+     * 
+     * List Content Keys used by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -805,7 +805,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class of response for listContentKeys action along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ListContentKeysResponseInner>> listContentKeysWithResponseAsync(String resourceGroupName,
@@ -839,9 +839,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Content Keys
-     *
-     * <p>List Content Keys used by this Streaming Locator.
-     *
+     * 
+     * List Content Keys used by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -850,7 +850,7 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class of response for listContentKeys action along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ListContentKeysResponseInner>> listContentKeysWithResponseAsync(String resourceGroupName,
@@ -883,9 +883,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Content Keys
-     *
-     * <p>List Content Keys used by this Streaming Locator.
-     *
+     * 
+     * List Content Keys used by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -903,9 +903,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Content Keys
-     *
-     * <p>List Content Keys used by this Streaming Locator.
-     *
+     * 
+     * List Content Keys used by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -923,9 +923,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Content Keys
-     *
-     * <p>List Content Keys used by this Streaming Locator.
-     *
+     * 
+     * List Content Keys used by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -943,17 +943,17 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Paths
-     *
-     * <p>List Paths supported by this Streaming Locator.
-     *
+     * 
+     * List Paths supported by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class of response for listPaths action along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class of response for listPaths action along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ListPathsResponseInner>> listPathsWithResponseAsync(String resourceGroupName,
@@ -987,9 +987,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Paths
-     *
-     * <p>List Paths supported by this Streaming Locator.
-     *
+     * 
+     * List Paths supported by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -997,8 +997,8 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class of response for listPaths action along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return class of response for listPaths action along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ListPathsResponseInner>> listPathsWithResponseAsync(String resourceGroupName,
@@ -1031,9 +1031,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Paths
-     *
-     * <p>List Paths supported by this Streaming Locator.
-     *
+     * 
+     * List Paths supported by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -1051,9 +1051,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Paths
-     *
-     * <p>List Paths supported by this Streaming Locator.
-     *
+     * 
+     * List Paths supported by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -1071,9 +1071,9 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * List Paths
-     *
-     * <p>List Paths supported by this Streaming Locator.
-     *
+     * 
+     * List Paths supported by this Streaming Locator.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingLocatorName The Streaming Locator name.
@@ -1089,14 +1089,13 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of StreamingLocator items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingLocatorInner>> listNextSinglePageAsync(String nextLink) {
@@ -1116,15 +1115,14 @@ public final class StreamingLocatorsClientImpl implements StreamingLocatorsClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of StreamingLocator items along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingLocatorInner>> listNextSinglePageAsync(String nextLink, Context context) {

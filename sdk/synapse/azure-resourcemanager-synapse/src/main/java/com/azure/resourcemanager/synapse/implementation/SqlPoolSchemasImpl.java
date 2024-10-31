@@ -30,14 +30,14 @@ public final class SqlPoolSchemasImpl implements SqlPoolSchemas {
     public PagedIterable<SqlPoolSchema> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
         PagedIterable<SqlPoolSchemaInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName);
-        return Utils.mapPage(inner, inner1 -> new SqlPoolSchemaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlPoolSchemaImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlPoolSchema> list(String resourceGroupName, String workspaceName, String sqlPoolName,
         String filter, Context context) {
         PagedIterable<SqlPoolSchemaInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new SqlPoolSchemaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlPoolSchemaImpl(inner1, this.manager()));
     }
 
     public Response<SqlPoolSchema> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,

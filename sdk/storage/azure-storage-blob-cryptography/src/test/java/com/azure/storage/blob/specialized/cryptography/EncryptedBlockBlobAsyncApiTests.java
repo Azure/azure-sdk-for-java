@@ -939,7 +939,22 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
     }
 
     @Test
-    @Disabled
+    public void downloadContent() {
+        StepVerifier.create(bec.upload(DATA.getDefaultBinaryData())
+                .then(bec.downloadContent()))
+            .assertNext(r -> assertArraysEqual(DATA.getDefaultBytes(), r.toBytes()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void downloadContentWithResponse() {
+        StepVerifier.create(bec.upload(DATA.getDefaultBinaryData())
+                .then(bec.downloadContentWithResponse(null, null)))
+            .assertNext(r -> assertArraysEqual(DATA.getDefaultBytes(), r.getValue().toBytes()))
+            .verifyComplete();
+    }
+
+    @Test
     public void downloadSnapshot() {
         Mono<byte[]> response = bec.upload(DATA.getDefaultBinaryData()).thenMany(bec.download()).then(bec.createSnapshot())
             .flatMap(bc2 -> bec.uploadWithResponse(new BlobParallelUploadOptions(new ByteArrayInputStream("ABC".getBytes()), "ABC".getBytes().length))
@@ -1854,6 +1869,12 @@ public class EncryptedBlockBlobAsyncApiTests extends BlobCryptographyTestBase {
                 assertEquals(expectedVersion, encryptionData.getEncryptionAgent().getProtocol());
             })
             .verifyComplete();
+    }
+
+    @Test
+    public void queryUnsupported() {
+        assertThrows(UnsupportedOperationException.class, () -> bec.query(null));
+        assertThrows(UnsupportedOperationException.class, () -> bec.queryWithResponse(null));
     }
 
 

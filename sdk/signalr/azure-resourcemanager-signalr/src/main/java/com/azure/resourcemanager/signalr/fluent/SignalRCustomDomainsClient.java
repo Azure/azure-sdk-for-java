@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.signalr.fluent.models.CustomDomainInner;
 
-/** An instance of this class provides access to all the operations defined in SignalRCustomDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SignalRCustomDomainsClient.
+ */
 public interface SignalRCustomDomainsClient {
     /**
      * List all custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface SignalRCustomDomainsClient {
 
     /**
      * List all custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface SignalRCustomDomainsClient {
 
     /**
      * Get a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
@@ -60,7 +62,7 @@ public interface SignalRCustomDomainsClient {
 
     /**
      * Get a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
@@ -74,11 +76,11 @@ public interface SignalRCustomDomainsClient {
 
     /**
      * Create or update a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
-     * @param parameters A custom domain.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -90,11 +92,11 @@ public interface SignalRCustomDomainsClient {
 
     /**
      * Create or update a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
-     * @param parameters A custom domain.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,11 +109,11 @@ public interface SignalRCustomDomainsClient {
 
     /**
      * Create or update a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
-     * @param parameters A custom domain.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -123,11 +125,11 @@ public interface SignalRCustomDomainsClient {
 
     /**
      * Create or update a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
-     * @param parameters A custom domain.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -140,7 +142,7 @@ public interface SignalRCustomDomainsClient {
 
     /**
      * Delete a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
@@ -154,7 +156,7 @@ public interface SignalRCustomDomainsClient {
 
     /**
      * Delete a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
@@ -170,7 +172,7 @@ public interface SignalRCustomDomainsClient {
 
     /**
      * Delete a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.
@@ -183,7 +185,7 @@ public interface SignalRCustomDomainsClient {
 
     /**
      * Delete a custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param name Custom domain name.

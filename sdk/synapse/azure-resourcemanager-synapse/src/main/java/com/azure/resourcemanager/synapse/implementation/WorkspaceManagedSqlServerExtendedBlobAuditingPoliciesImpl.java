@@ -58,28 +58,30 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
         String workspaceName) {
         PagedIterable<ExtendedServerBlobAuditingPolicyInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new ExtendedServerBlobAuditingPolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ExtendedServerBlobAuditingPolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ExtendedServerBlobAuditingPolicy> listByWorkspace(String resourceGroupName,
         String workspaceName, Context context) {
         PagedIterable<ExtendedServerBlobAuditingPolicyInner> inner
             = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new ExtendedServerBlobAuditingPolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ExtendedServerBlobAuditingPolicyImpl(inner1, this.manager()));
     }
 
     public ExtendedServerBlobAuditingPolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String blobAuditingPolicyNameLocal = Utils.getValueFromIdByName(id, "extendedAuditingSettings");
+        String blobAuditingPolicyNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "extendedAuditingSettings");
         if (blobAuditingPolicyNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'extendedAuditingSettings'.", id)));
@@ -89,17 +91,17 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
     }
 
     public Response<ExtendedServerBlobAuditingPolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String blobAuditingPolicyNameLocal = Utils.getValueFromIdByName(id, "extendedAuditingSettings");
+        String blobAuditingPolicyNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "extendedAuditingSettings");
         if (blobAuditingPolicyNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
                 .format("The resource ID '%s' is not valid. Missing path segment 'extendedAuditingSettings'.", id)));

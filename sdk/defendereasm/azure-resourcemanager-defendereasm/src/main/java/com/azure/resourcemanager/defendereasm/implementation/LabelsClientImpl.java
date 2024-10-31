@@ -40,17 +40,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LabelsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LabelsClient.
+ */
 public final class LabelsClientImpl implements LabelsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LabelsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EasmMgmtClientImpl client;
 
     /**
      * Initializes an instance of LabelsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LabelsClientImpl(EasmMgmtClientImpl client) {
@@ -124,7 +130,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Returns a list of labels in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,7 +167,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Returns a list of labels in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param context The context to associate with this operation.
@@ -199,7 +205,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Returns a list of labels in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,7 +221,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Returns a list of labels in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param context The context to associate with this operation.
@@ -233,7 +239,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Returns a list of labels in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -248,7 +254,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Returns a list of labels in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param context The context to associate with this operation.
@@ -265,7 +271,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Returns a label in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -303,7 +309,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Returns a label in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -342,7 +348,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Returns a label in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -360,7 +366,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Returns a label in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -378,7 +384,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Returns a label in the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -394,7 +400,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -438,7 +444,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -481,7 +487,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -502,7 +508,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -523,7 +529,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -547,7 +553,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -566,7 +572,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -586,7 +592,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -605,7 +611,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -624,7 +630,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -644,7 +650,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -661,7 +667,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Create or update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -680,7 +686,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -724,7 +730,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -767,7 +773,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -785,7 +791,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -805,7 +811,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Update a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -823,7 +829,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -863,7 +869,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -902,7 +908,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -921,7 +927,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -943,7 +949,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -960,7 +966,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -978,7 +984,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -995,7 +1001,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -1013,7 +1019,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -1028,7 +1034,7 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Delete a Label.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the Workspace.
      * @param labelName The name of the Label.
@@ -1044,9 +1050,8 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1071,9 +1076,8 @@ public final class LabelsClientImpl implements LabelsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

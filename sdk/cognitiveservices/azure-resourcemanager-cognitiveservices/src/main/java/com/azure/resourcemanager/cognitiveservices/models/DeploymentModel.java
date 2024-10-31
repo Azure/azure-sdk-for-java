@@ -5,21 +5,25 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of Cognitive Services account deployment model. */
+/**
+ * Properties of Cognitive Services account deployment model.
+ */
 @Fluent
-public class DeploymentModel {
+public class DeploymentModel implements JsonSerializable<DeploymentModel> {
     /*
      * Deployment model format.
      */
-    @JsonProperty(value = "format")
     private String format;
 
     /*
      * Deployment model name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
@@ -27,28 +31,27 @@ public class DeploymentModel {
      * version is different for different models and might change when there is new version available for a model.
      * Default version for a model could be found from list models API.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Optional. Deployment model source ARM resource ID.
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * The call rate limit Cognitive Services account.
      */
-    @JsonProperty(value = "callRateLimit", access = JsonProperty.Access.WRITE_ONLY)
     private CallRateLimit callRateLimit;
 
-    /** Creates an instance of DeploymentModel class. */
+    /**
+     * Creates an instance of DeploymentModel class.
+     */
     public DeploymentModel() {
     }
 
     /**
      * Get the format property: Deployment model format.
-     *
+     * 
      * @return the format value.
      */
     public String format() {
@@ -57,7 +60,7 @@ public class DeploymentModel {
 
     /**
      * Set the format property: Deployment model format.
-     *
+     * 
      * @param format the format value to set.
      * @return the DeploymentModel object itself.
      */
@@ -68,7 +71,7 @@ public class DeploymentModel {
 
     /**
      * Get the name property: Deployment model name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -77,7 +80,7 @@ public class DeploymentModel {
 
     /**
      * Set the name property: Deployment model name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DeploymentModel object itself.
      */
@@ -90,7 +93,7 @@ public class DeploymentModel {
      * Get the version property: Optional. Deployment model version. If version is not specified, a default version will
      * be assigned. The default version is different for different models and might change when there is new version
      * available for a model. Default version for a model could be found from list models API.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -101,7 +104,7 @@ public class DeploymentModel {
      * Set the version property: Optional. Deployment model version. If version is not specified, a default version will
      * be assigned. The default version is different for different models and might change when there is new version
      * available for a model. Default version for a model could be found from list models API.
-     *
+     * 
      * @param version the version value to set.
      * @return the DeploymentModel object itself.
      */
@@ -112,7 +115,7 @@ public class DeploymentModel {
 
     /**
      * Get the source property: Optional. Deployment model source ARM resource ID.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -121,7 +124,7 @@ public class DeploymentModel {
 
     /**
      * Set the source property: Optional. Deployment model source ARM resource ID.
-     *
+     * 
      * @param source the source value to set.
      * @return the DeploymentModel object itself.
      */
@@ -132,7 +135,7 @@ public class DeploymentModel {
 
     /**
      * Get the callRateLimit property: The call rate limit Cognitive Services account.
-     *
+     * 
      * @return the callRateLimit value.
      */
     public CallRateLimit callRateLimit() {
@@ -140,13 +143,71 @@ public class DeploymentModel {
     }
 
     /**
+     * Set the callRateLimit property: The call rate limit Cognitive Services account.
+     * 
+     * @param callRateLimit the callRateLimit value to set.
+     * @return the DeploymentModel object itself.
+     */
+    DeploymentModel withCallRateLimit(CallRateLimit callRateLimit) {
+        this.callRateLimit = callRateLimit;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (callRateLimit() != null) {
             callRateLimit().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("format", this.format);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("source", this.source);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentModel if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentModel.
+     */
+    public static DeploymentModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentModel deserializedDeploymentModel = new DeploymentModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("format".equals(fieldName)) {
+                    deserializedDeploymentModel.format = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDeploymentModel.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedDeploymentModel.version = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedDeploymentModel.source = reader.getString();
+                } else if ("callRateLimit".equals(fieldName)) {
+                    deserializedDeploymentModel.callRateLimit = CallRateLimit.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentModel;
+        });
     }
 }

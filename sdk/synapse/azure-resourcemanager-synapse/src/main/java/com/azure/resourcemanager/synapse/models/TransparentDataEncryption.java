@@ -8,87 +8,97 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.TransparentDataEncryptionInner;
 
-/** An immutable client-side representation of TransparentDataEncryption. */
+/**
+ * An immutable client-side representation of TransparentDataEncryption.
+ */
 public interface TransparentDataEncryption {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the status property: The status of the database transparent data encryption.
-     *
+     * 
      * @return the status value.
      */
     TransparentDataEncryptionStatus status();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.TransparentDataEncryptionInner object.
-     *
+     * 
      * @return the inner object.
      */
     TransparentDataEncryptionInner innerModel();
 
-    /** The entirety of the TransparentDataEncryption definition. */
+    /**
+     * The entirety of the TransparentDataEncryption definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The TransparentDataEncryption definition stages. */
+    /**
+     * The TransparentDataEncryption definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the TransparentDataEncryption definition. */
+        /**
+         * The first stage of the TransparentDataEncryption definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the TransparentDataEncryption definition allowing to specify parent resource. */
+        /**
+         * The stage of the TransparentDataEncryption definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, workspaceName, sqlPoolName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param workspaceName The name of the workspace.
              * @param sqlPoolName SQL pool name.
@@ -104,25 +114,27 @@ public interface TransparentDataEncryption {
         interface WithCreate extends DefinitionStages.WithStatus {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             TransparentDataEncryption create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             TransparentDataEncryption create(Context context);
         }
 
-        /** The stage of the TransparentDataEncryption definition allowing to specify status. */
+        /**
+         * The stage of the TransparentDataEncryption definition allowing to specify status.
+         */
         interface WithStatus {
             /**
              * Specifies the status property: The status of the database transparent data encryption..
-             *
+             * 
              * @param status The status of the database transparent data encryption.
              * @return the next definition stage.
              */
@@ -132,36 +144,42 @@ public interface TransparentDataEncryption {
 
     /**
      * Begins update for the TransparentDataEncryption resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     TransparentDataEncryption.Update update();
 
-    /** The template for TransparentDataEncryption update. */
+    /**
+     * The template for TransparentDataEncryption update.
+     */
     interface Update extends UpdateStages.WithStatus {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         TransparentDataEncryption apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         TransparentDataEncryption apply(Context context);
     }
 
-    /** The TransparentDataEncryption update stages. */
+    /**
+     * The TransparentDataEncryption update stages.
+     */
     interface UpdateStages {
-        /** The stage of the TransparentDataEncryption update allowing to specify status. */
+        /**
+         * The stage of the TransparentDataEncryption update allowing to specify status.
+         */
         interface WithStatus {
             /**
              * Specifies the status property: The status of the database transparent data encryption..
-             *
+             * 
              * @param status The status of the database transparent data encryption.
              * @return the next definition stage.
              */
@@ -171,14 +189,14 @@ public interface TransparentDataEncryption {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     TransparentDataEncryption refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

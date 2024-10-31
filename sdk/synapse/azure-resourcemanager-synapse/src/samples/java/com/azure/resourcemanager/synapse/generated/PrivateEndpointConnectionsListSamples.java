@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-/** Samples for PrivateEndpointConnections List. */
+/**
+ * Samples for PrivateEndpointConnections List.
+ */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListPrivateEndpointConnections.json
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/
+     * ListPrivateEndpointConnections.json
      */
     /**
      * Sample code: List private endpoint connections in workspace.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
-    public static void listPrivateEndpointConnectionsInWorkspace(
-        com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .privateEndpointConnections()
+    public static void
+        listPrivateEndpointConnectionsInWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
+        manager.privateEndpointConnections()
             .list("ExampleResourceGroup", "ExampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }

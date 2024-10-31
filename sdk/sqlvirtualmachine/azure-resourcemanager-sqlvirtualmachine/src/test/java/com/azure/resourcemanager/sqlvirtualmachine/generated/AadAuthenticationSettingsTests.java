@@ -12,14 +12,14 @@ public final class AadAuthenticationSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AadAuthenticationSettings model
-            = BinaryData.fromString("{\"clientId\":\"pfhyhl\"}").toObject(AadAuthenticationSettings.class);
-        Assertions.assertEquals("pfhyhl", model.clientId());
+            = BinaryData.fromString("{\"clientId\":\"hvmdajvnysounq\"}").toObject(AadAuthenticationSettings.class);
+        Assertions.assertEquals("hvmdajvnysounq", model.clientId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AadAuthenticationSettings model = new AadAuthenticationSettings().withClientId("pfhyhl");
+        AadAuthenticationSettings model = new AadAuthenticationSettings().withClientId("hvmdajvnysounq");
         model = BinaryData.fromObject(model).toObject(AadAuthenticationSettings.class);
-        Assertions.assertEquals("pfhyhl", model.clientId());
+        Assertions.assertEquals("hvmdajvnysounq", model.clientId());
     }
 }

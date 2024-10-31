@@ -56,13 +56,13 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
 
     public PagedIterable<EncryptionProtector> list(String resourceGroupName, String workspaceName) {
         PagedIterable<EncryptionProtectorInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new EncryptionProtectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EncryptionProtectorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<EncryptionProtector> list(String resourceGroupName, String workspaceName, Context context) {
         PagedIterable<EncryptionProtectorInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new EncryptionProtectorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EncryptionProtectorImpl(inner1, this.manager()));
     }
 
     public void revalidate(String resourceGroupName, String workspaceName,
@@ -76,17 +76,17 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
     }
 
     public EncryptionProtector getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String encryptionProtectorNameLocal = Utils.getValueFromIdByName(id, "encryptionProtector");
+        String encryptionProtectorNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "encryptionProtector");
         if (encryptionProtectorNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'encryptionProtector'.", id)));
@@ -97,17 +97,17 @@ public final class WorkspaceManagedSqlServerEncryptionProtectorsImpl
     }
 
     public Response<EncryptionProtector> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String encryptionProtectorNameLocal = Utils.getValueFromIdByName(id, "encryptionProtector");
+        String encryptionProtectorNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "encryptionProtector");
         if (encryptionProtectorNameLocal == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'encryptionProtector'.", id)));

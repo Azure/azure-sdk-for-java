@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.managedapplications.generated;
 
-/** Samples for Applications ListByResourceGroup. */
+/**
+ * Samples for Applications ListByResourceGroup.
+ */
 public final class ApplicationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/listApplicationsByResourceGroup.json
+     * x-ms-original-file: specification/solutions/resource-manager/Microsoft.Solutions/stable/2021-07-01/examples/
+     * listApplicationsByResourceGroup.json
      */
     /**
      * Sample code: Lists all the applications within a resource group.
-     *
+     * 
      * @param manager Entry point to ApplicationManager.
      */
     public static void listsAllTheApplicationsWithinAResourceGroup(

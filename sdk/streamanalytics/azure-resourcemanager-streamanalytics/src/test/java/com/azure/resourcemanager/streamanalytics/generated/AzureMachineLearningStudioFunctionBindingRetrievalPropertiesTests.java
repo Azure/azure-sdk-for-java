@@ -13,20 +13,20 @@ public final class AzureMachineLearningStudioFunctionBindingRetrievalPropertiesT
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMachineLearningStudioFunctionBindingRetrievalProperties model
-            = BinaryData.fromString("{\"executeEndpoint\":\"bnw\",\"udfType\":\"Scalar\"}")
+            = BinaryData.fromString("{\"executeEndpoint\":\"mmdnbbglzps\",\"udfType\":\"Scalar\"}")
                 .toObject(AzureMachineLearningStudioFunctionBindingRetrievalProperties.class);
-        Assertions.assertEquals("bnw", model.executeEndpoint());
+        Assertions.assertEquals("mmdnbbglzps", model.executeEndpoint());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureMachineLearningStudioFunctionBindingRetrievalProperties model
-            = new AzureMachineLearningStudioFunctionBindingRetrievalProperties().withExecuteEndpoint("bnw")
+            = new AzureMachineLearningStudioFunctionBindingRetrievalProperties().withExecuteEndpoint("mmdnbbglzps")
                 .withUdfType(UdfType.SCALAR);
         model
             = BinaryData.fromObject(model).toObject(AzureMachineLearningStudioFunctionBindingRetrievalProperties.class);
-        Assertions.assertEquals("bnw", model.executeEndpoint());
+        Assertions.assertEquals("mmdnbbglzps", model.executeEndpoint());
         Assertions.assertEquals(UdfType.SCALAR, model.udfType());
     }
 }

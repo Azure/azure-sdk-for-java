@@ -21,7 +21,8 @@ public final class StreamingJobsScaleSamples {
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void scaleAStreamingJob(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.streamingJobs().scale("sjrg", "sjName", new ScaleStreamingJobParameters().withStreamingUnits(36),
-            com.azure.core.util.Context.NONE);
+        manager.streamingJobs()
+            .scale("sjrg", "sjName", new ScaleStreamingJobParameters().withStreamingUnits(36),
+                com.azure.core.util.Context.NONE);
     }
 }

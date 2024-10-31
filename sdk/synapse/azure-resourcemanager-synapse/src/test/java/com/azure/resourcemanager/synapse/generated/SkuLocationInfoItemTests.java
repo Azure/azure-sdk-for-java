@@ -13,18 +13,18 @@ public final class SkuLocationInfoItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuLocationInfoItem model
-            = BinaryData.fromString("{\"location\":\"xsmlz\",\"zones\":[\"dtxetlgydlh\",\"vlnnpx\",\"b\"]}")
+            = BinaryData.fromString("{\"location\":\"gvvpasek\",\"zones\":[\"uxantuygdhgaqipi\",\"piwrqofu\",\"o\"]}")
                 .toObject(SkuLocationInfoItem.class);
-        Assertions.assertEquals("xsmlz", model.location());
-        Assertions.assertEquals("dtxetlgydlh", model.zones().get(0));
+        Assertions.assertEquals("gvvpasek", model.location());
+        Assertions.assertEquals("uxantuygdhgaqipi", model.zones().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuLocationInfoItem model
-            = new SkuLocationInfoItem().withLocation("xsmlz").withZones(Arrays.asList("dtxetlgydlh", "vlnnpx", "b"));
+        SkuLocationInfoItem model = new SkuLocationInfoItem().withLocation("gvvpasek")
+            .withZones(Arrays.asList("uxantuygdhgaqipi", "piwrqofu", "o"));
         model = BinaryData.fromObject(model).toObject(SkuLocationInfoItem.class);
-        Assertions.assertEquals("xsmlz", model.location());
-        Assertions.assertEquals("dtxetlgydlh", model.zones().get(0));
+        Assertions.assertEquals("gvvpasek", model.location());
+        Assertions.assertEquals("uxantuygdhgaqipi", model.zones().get(0));
     }
 }

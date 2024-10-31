@@ -11,7 +11,7 @@ public final class DedicatedSQLminimalTlsSettingsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DedicatedSQLminimalTlsSettingsListResult model = BinaryData.fromString(
-            "{\"value\":[{\"location\":\"ykxhdjh\",\"properties\":{\"minimalTlsVersion\":\"mbcxfhbcp\"},\"id\":\"rxvxcjzh\",\"name\":\"izxfpxt\",\"type\":\"qscjavftjuh\"}],\"nextLink\":\"azkmtgguwp\"}")
+            "{\"value\":[{\"location\":\"qdnfwqzdz\",\"properties\":{\"minimalTlsVersion\":\"la\"},\"id\":\"hnfhqlyvijouwi\",\"name\":\"kxoyzunbixxr\",\"type\":\"ikvcpwp\"},{\"location\":\"lrcivtsoxfrke\",\"properties\":{\"minimalTlsVersion\":\"m\"},\"id\":\"yefrpmpdnqqska\",\"name\":\"ao\",\"type\":\"vmm\"},{\"location\":\"pqfrtqlkz\",\"properties\":{\"minimalTlsVersion\":\"nitgvkxlz\"},\"id\":\"qdrfegcealzxwhc\",\"name\":\"nsymoyqhlwigd\",\"type\":\"vbkbxgomf\"}],\"nextLink\":\"uwasqvd\"}")
             .toObject(DedicatedSQLminimalTlsSettingsListResult.class);
     }
 

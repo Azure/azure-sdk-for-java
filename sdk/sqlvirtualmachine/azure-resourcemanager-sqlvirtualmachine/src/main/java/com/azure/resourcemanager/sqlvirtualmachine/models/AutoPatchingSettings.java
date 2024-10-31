@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Set a patching window during which Windows and SQL patches will be applied. */
+/**
+ * Set a patching window during which Windows and SQL patches will be applied.
+ */
 @Fluent
-public final class AutoPatchingSettings {
+public final class AutoPatchingSettings implements JsonSerializable<AutoPatchingSettings> {
     /*
      * Enable or disable autopatching on SQL virtual machine.
      */
-    @JsonProperty(value = "enable")
     private Boolean enable;
 
     /*
      * Day of week to apply the patch on.
      */
-    @JsonProperty(value = "dayOfWeek")
     private DayOfWeek dayOfWeek;
 
     /*
      * Hour of the day when patching is initiated. Local VM time.
      */
-    @JsonProperty(value = "maintenanceWindowStartingHour")
     private Integer maintenanceWindowStartingHour;
 
     /*
      * Duration of patching.
      */
-    @JsonProperty(value = "maintenanceWindowDuration")
     private Integer maintenanceWindowDuration;
 
-    /** Creates an instance of AutoPatchingSettings class. */
+    /**
+     * Creates an instance of AutoPatchingSettings class.
+     */
     public AutoPatchingSettings() {
     }
 
     /**
      * Get the enable property: Enable or disable autopatching on SQL virtual machine.
-     *
+     * 
      * @return the enable value.
      */
     public Boolean enable() {
@@ -49,7 +53,7 @@ public final class AutoPatchingSettings {
 
     /**
      * Set the enable property: Enable or disable autopatching on SQL virtual machine.
-     *
+     * 
      * @param enable the enable value to set.
      * @return the AutoPatchingSettings object itself.
      */
@@ -60,7 +64,7 @@ public final class AutoPatchingSettings {
 
     /**
      * Get the dayOfWeek property: Day of week to apply the patch on.
-     *
+     * 
      * @return the dayOfWeek value.
      */
     public DayOfWeek dayOfWeek() {
@@ -69,7 +73,7 @@ public final class AutoPatchingSettings {
 
     /**
      * Set the dayOfWeek property: Day of week to apply the patch on.
-     *
+     * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the AutoPatchingSettings object itself.
      */
@@ -80,7 +84,7 @@ public final class AutoPatchingSettings {
 
     /**
      * Get the maintenanceWindowStartingHour property: Hour of the day when patching is initiated. Local VM time.
-     *
+     * 
      * @return the maintenanceWindowStartingHour value.
      */
     public Integer maintenanceWindowStartingHour() {
@@ -89,7 +93,7 @@ public final class AutoPatchingSettings {
 
     /**
      * Set the maintenanceWindowStartingHour property: Hour of the day when patching is initiated. Local VM time.
-     *
+     * 
      * @param maintenanceWindowStartingHour the maintenanceWindowStartingHour value to set.
      * @return the AutoPatchingSettings object itself.
      */
@@ -100,7 +104,7 @@ public final class AutoPatchingSettings {
 
     /**
      * Get the maintenanceWindowDuration property: Duration of patching.
-     *
+     * 
      * @return the maintenanceWindowDuration value.
      */
     public Integer maintenanceWindowDuration() {
@@ -109,7 +113,7 @@ public final class AutoPatchingSettings {
 
     /**
      * Set the maintenanceWindowDuration property: Duration of patching.
-     *
+     * 
      * @param maintenanceWindowDuration the maintenanceWindowDuration value to set.
      * @return the AutoPatchingSettings object itself.
      */
@@ -120,9 +124,55 @@ public final class AutoPatchingSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enable", this.enable);
+        jsonWriter.writeStringField("dayOfWeek", this.dayOfWeek == null ? null : this.dayOfWeek.toString());
+        jsonWriter.writeNumberField("maintenanceWindowStartingHour", this.maintenanceWindowStartingHour);
+        jsonWriter.writeNumberField("maintenanceWindowDuration", this.maintenanceWindowDuration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoPatchingSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoPatchingSettings if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoPatchingSettings.
+     */
+    public static AutoPatchingSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoPatchingSettings deserializedAutoPatchingSettings = new AutoPatchingSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enable".equals(fieldName)) {
+                    deserializedAutoPatchingSettings.enable = reader.getNullable(JsonReader::getBoolean);
+                } else if ("dayOfWeek".equals(fieldName)) {
+                    deserializedAutoPatchingSettings.dayOfWeek = DayOfWeek.fromString(reader.getString());
+                } else if ("maintenanceWindowStartingHour".equals(fieldName)) {
+                    deserializedAutoPatchingSettings.maintenanceWindowStartingHour
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("maintenanceWindowDuration".equals(fieldName)) {
+                    deserializedAutoPatchingSettings.maintenanceWindowDuration = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoPatchingSettings;
+        });
     }
 }

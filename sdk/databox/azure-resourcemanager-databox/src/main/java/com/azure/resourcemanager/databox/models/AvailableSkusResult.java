@@ -5,32 +5,38 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databox.fluent.models.SkuInformationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The available skus operation response. */
+/**
+ * The available skus operation response.
+ */
 @Fluent
-public final class AvailableSkusResult {
+public final class AvailableSkusResult implements JsonSerializable<AvailableSkusResult> {
     /*
      * List of available skus.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuInformationInner> value;
 
     /*
      * Link for the next set of skus.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AvailableSkusResult class. */
+    /**
+     * Creates an instance of AvailableSkusResult class.
+     */
     public AvailableSkusResult() {
     }
 
     /**
      * Get the value property: List of available skus.
-     *
+     * 
      * @return the value value.
      */
     public List<SkuInformationInner> value() {
@@ -39,7 +45,7 @@ public final class AvailableSkusResult {
 
     /**
      * Get the nextLink property: Link for the next set of skus.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +54,7 @@ public final class AvailableSkusResult {
 
     /**
      * Set the nextLink property: Link for the next set of skus.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AvailableSkusResult object itself.
      */
@@ -59,12 +65,52 @@ public final class AvailableSkusResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableSkusResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableSkusResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableSkusResult.
+     */
+    public static AvailableSkusResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableSkusResult deserializedAvailableSkusResult = new AvailableSkusResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<SkuInformationInner> value
+                        = reader.readArray(reader1 -> SkuInformationInner.fromJson(reader1));
+                    deserializedAvailableSkusResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedAvailableSkusResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableSkusResult;
+        });
     }
 }

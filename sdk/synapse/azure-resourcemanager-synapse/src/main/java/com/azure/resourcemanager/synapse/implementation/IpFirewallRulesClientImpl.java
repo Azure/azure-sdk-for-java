@@ -41,17 +41,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IpFirewallRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IpFirewallRulesClient.
+ */
 public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IpFirewallRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of IpFirewallRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IpFirewallRulesClientImpl(SynapseManagementClientImpl client) {
@@ -68,8 +74,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
     @ServiceInterface(name = "SynapseManagementCli")
     public interface IpFirewallRulesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/firewallRules")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IpFirewallRuleInfoListResult>> listByWorkspace(@HostParam("$host") String endpoint,
@@ -78,8 +83,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/firewallRules/{ruleName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules/{ruleName}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -90,8 +94,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/firewallRules/{ruleName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules/{ruleName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
@@ -100,8 +103,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
             @PathParam("ruleName") String ruleName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/firewallRules/{ruleName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/firewallRules/{ruleName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IpFirewallRuleInfoInner>> get(@HostParam("$host") String endpoint,
@@ -110,8 +112,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
             @PathParam("ruleName") String ruleName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/replaceAllIpFirewallRules")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/replaceAllIpFirewallRules")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> replaceAll(@HostParam("$host") String endpoint,
@@ -131,7 +132,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Returns a list of firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +170,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Returns a list of firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -208,7 +209,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Returns a list of firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,7 +225,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Returns a list of firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -242,7 +243,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Returns a list of firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +258,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Returns a list of firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -274,7 +275,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -322,7 +323,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -369,7 +370,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -391,7 +392,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -415,7 +416,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -434,7 +435,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -455,7 +456,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -474,7 +475,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -494,7 +495,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -512,7 +513,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Creates or updates a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -531,7 +532,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -571,7 +572,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -611,7 +612,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -631,7 +632,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -653,7 +654,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -670,7 +671,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -688,7 +689,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -705,7 +706,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -724,7 +725,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -740,7 +741,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Deletes a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -758,7 +759,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Get a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -798,7 +799,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Get a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -838,7 +839,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Get a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -855,7 +856,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Get a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -873,7 +874,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Get a firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param ruleName The IP firewall rule name.
@@ -889,7 +890,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -897,7 +898,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing operation for replacing the firewall rules along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> replaceAllWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -932,7 +933,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -941,7 +942,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing operation for replacing the firewall rules along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> replaceAllWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -975,7 +976,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -997,7 +998,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -1023,7 +1024,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -1041,7 +1042,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -1061,7 +1062,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -1079,7 +1080,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -1098,7 +1099,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -1115,7 +1116,7 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Replaces firewall rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param request Replace all IP firewall rules request.
@@ -1133,9 +1134,8 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1160,9 +1160,8 @@ public final class IpFirewallRulesClientImpl implements IpFirewallRulesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

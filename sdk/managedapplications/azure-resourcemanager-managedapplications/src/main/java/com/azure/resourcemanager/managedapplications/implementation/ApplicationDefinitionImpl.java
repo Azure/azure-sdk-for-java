@@ -220,8 +220,9 @@ public final class ApplicationDefinitionImpl
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.applicationDefinitionName = Utils.getValueFromIdByName(innerObject.id(), "applicationDefinitions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.applicationDefinitionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applicationDefinitions");
     }
 
     public ApplicationDefinition refresh() {

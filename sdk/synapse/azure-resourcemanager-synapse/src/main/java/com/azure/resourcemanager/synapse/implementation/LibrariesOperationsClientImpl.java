@@ -30,17 +30,23 @@ import com.azure.resourcemanager.synapse.fluent.models.LibraryResourceInner;
 import com.azure.resourcemanager.synapse.models.LibraryListResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LibrariesOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LibrariesOperationsClient.
+ */
 public final class LibrariesOperationsClientImpl implements LibrariesOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LibrariesOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of LibrariesOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LibrariesOperationsClientImpl(SynapseManagementClientImpl client) {
@@ -57,8 +63,7 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
     @ServiceInterface(name = "SynapseManagementCli")
     public interface LibrariesOperationsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/libraries")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/libraries")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LibraryListResponse>> listByWorkspace(@HostParam("$host") String endpoint,
@@ -77,9 +82,9 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
 
     /**
      * List the libraries in a workspace.
-     *
-     * <p>List libraries in a workspace.
-     *
+     * 
+     * List libraries in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,9 +122,9 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
 
     /**
      * List the libraries in a workspace.
-     *
-     * <p>List libraries in a workspace.
-     *
+     * 
+     * List libraries in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -158,9 +163,9 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
 
     /**
      * List the libraries in a workspace.
-     *
-     * <p>List libraries in a workspace.
-     *
+     * 
+     * List libraries in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,9 +181,9 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
 
     /**
      * List the libraries in a workspace.
-     *
-     * <p>List libraries in a workspace.
-     *
+     * 
+     * List libraries in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -196,9 +201,9 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
 
     /**
      * List the libraries in a workspace.
-     *
-     * <p>List libraries in a workspace.
-     *
+     * 
+     * List libraries in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,9 +218,9 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
 
     /**
      * List the libraries in a workspace.
-     *
-     * <p>List libraries in a workspace.
-     *
+     * 
+     * List libraries in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -232,9 +237,8 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -259,9 +263,8 @@ public final class LibrariesOperationsClientImpl implements LibrariesOperationsC
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

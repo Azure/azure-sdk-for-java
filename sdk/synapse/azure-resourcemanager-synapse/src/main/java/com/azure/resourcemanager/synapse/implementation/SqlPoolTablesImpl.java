@@ -31,14 +31,14 @@ public final class SqlPoolTablesImpl implements SqlPoolTables {
         String schemaName) {
         PagedIterable<SqlPoolTableInner> inner
             = this.serviceClient().listBySchema(resourceGroupName, workspaceName, sqlPoolName, schemaName);
-        return Utils.mapPage(inner, inner1 -> new SqlPoolTableImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlPoolTableImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlPoolTable> listBySchema(String resourceGroupName, String workspaceName, String sqlPoolName,
         String schemaName, String filter, Context context) {
         PagedIterable<SqlPoolTableInner> inner = this.serviceClient()
             .listBySchema(resourceGroupName, workspaceName, sqlPoolName, schemaName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new SqlPoolTableImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SqlPoolTableImpl(inner1, this.manager()));
     }
 
     public Response<SqlPoolTable> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,

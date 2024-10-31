@@ -16,11 +16,13 @@ import com.azure.resourcemanager.orbital.fluent.models.SpacecraftInner;
 import com.azure.resourcemanager.orbital.models.ContactParameters;
 import com.azure.resourcemanager.orbital.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in SpacecraftsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SpacecraftsClient.
+ */
 public interface SpacecraftsClient {
     /**
      * Returns list of spacecrafts by subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for the ListSpacecrafts API service call as paginated response with {@link PagedIterable}.
@@ -30,11 +32,11 @@ public interface SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by subscription.
-     *
+     * 
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,7 +48,7 @@ public interface SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,12 +60,12 @@ public interface SpacecraftsClient {
 
     /**
      * Returns list of spacecrafts by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -75,7 +77,7 @@ public interface SpacecraftsClient {
 
     /**
      * Gets the specified spacecraft in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -90,7 +92,7 @@ public interface SpacecraftsClient {
 
     /**
      * Gets the specified spacecraft in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,7 +105,7 @@ public interface SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -118,7 +120,7 @@ public interface SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -134,7 +136,7 @@ public interface SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -148,7 +150,7 @@ public interface SpacecraftsClient {
 
     /**
      * Creates or updates a spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the created spacecraft.
@@ -164,7 +166,7 @@ public interface SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -177,7 +179,7 @@ public interface SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -191,7 +193,7 @@ public interface SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,7 +205,7 @@ public interface SpacecraftsClient {
 
     /**
      * Deletes a specified spacecraft resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param context The context to associate with this operation.
@@ -216,7 +218,7 @@ public interface SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -231,7 +233,7 @@ public interface SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -247,7 +249,7 @@ public interface SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -261,7 +263,7 @@ public interface SpacecraftsClient {
 
     /**
      * Updates the specified spacecraft tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters Parameters supplied to update spacecraft tags.
@@ -277,7 +279,7 @@ public interface SpacecraftsClient {
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
      * for more than the minimum viable contact duration provided in the contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the contacts.
@@ -293,7 +295,7 @@ public interface SpacecraftsClient {
     /**
      * Returns list of available contacts. A contact is available if the spacecraft is visible from the ground station
      * for more than the minimum viable contact duration provided in the contact profile.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param parameters The parameters to provide for the contacts.

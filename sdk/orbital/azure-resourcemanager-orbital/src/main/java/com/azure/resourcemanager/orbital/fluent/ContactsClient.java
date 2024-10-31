@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.orbital.fluent.models.ContactInner;
 
-/** An instance of this class provides access to all the operations defined in ContactsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ContactsClient.
+ */
 public interface ContactsClient {
     /**
      * Returns list of contacts by spacecraftName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,13 +32,13 @@ public interface ContactsClient {
 
     /**
      * Returns list of contacts by spacecraftName.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param skiptoken An opaque string that the resource provider uses to skip over previously-returned results. This
-     *     is used when a previous list operation call returned a partial result. If a previous response contains a
-     *     nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a
-     *     starting point to use for subsequent calls.
+     * is used when a previous list operation call returned a partial result. If a previous response contains a nextLink
+     * element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point to
+     * use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -49,7 +51,7 @@ public interface ContactsClient {
 
     /**
      * Gets the specified contact in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -65,7 +67,7 @@ public interface ContactsClient {
 
     /**
      * Gets the specified contact in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -79,7 +81,7 @@ public interface ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -95,7 +97,7 @@ public interface ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -112,7 +114,7 @@ public interface ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -127,7 +129,7 @@ public interface ContactsClient {
 
     /**
      * Creates a contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -144,7 +146,7 @@ public interface ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -158,7 +160,7 @@ public interface ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -174,7 +176,7 @@ public interface ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.
@@ -187,7 +189,7 @@ public interface ContactsClient {
 
     /**
      * Deletes a specified contact.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param spacecraftName Spacecraft ID.
      * @param contactName Contact name.

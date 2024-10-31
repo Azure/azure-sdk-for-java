@@ -16,13 +16,15 @@ import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointIn
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointSkuInfoListResultInner;
 import com.azure.resourcemanager.mediaservices.models.StreamingEntityScaleUnit;
 
-/** An instance of this class provides access to all the operations defined in StreamingEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StreamingEndpointsClient.
+ */
 public interface StreamingEndpointsClient {
     /**
      * List StreamingEndpoints
-     *
-     * <p>Lists the streaming endpoints in the account.
-     *
+     * 
+     * Lists the streaming endpoints in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,9 +37,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * List StreamingEndpoints
-     *
-     * <p>Lists the streaming endpoints in the account.
-     *
+     * 
+     * Lists the streaming endpoints in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -51,9 +53,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Get StreamingEndpoint
-     *
-     * <p>Gets a streaming endpoint.
-     *
+     * 
+     * Gets a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -69,9 +71,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Get StreamingEndpoint
-     *
-     * <p>Gets a streaming endpoint.
-     *
+     * 
+     * Gets a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -85,9 +87,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Create StreamingEndpoint
-     *
-     * <p>Creates a streaming endpoint.
-     *
+     * 
+     * Creates a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -103,9 +105,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Create StreamingEndpoint
-     *
-     * <p>Creates a streaming endpoint.
-     *
+     * 
+     * Creates a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -124,9 +126,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Create StreamingEndpoint
-     *
-     * <p>Creates a streaming endpoint.
-     *
+     * 
+     * Creates a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -142,9 +144,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Create StreamingEndpoint
-     *
-     * <p>Creates a streaming endpoint.
-     *
+     * 
+     * Creates a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -162,9 +164,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Update StreamingEndpoint
-     *
-     * <p>Updates a existing streaming endpoint.
-     *
+     * 
+     * Updates a existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -180,9 +182,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Update StreamingEndpoint
-     *
-     * <p>Updates a existing streaming endpoint.
-     *
+     * 
+     * Updates a existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -199,9 +201,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Update StreamingEndpoint
-     *
-     * <p>Updates a existing streaming endpoint.
-     *
+     * 
+     * Updates a existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -217,9 +219,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Update StreamingEndpoint
-     *
-     * <p>Updates a existing streaming endpoint.
-     *
+     * 
+     * Updates a existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -236,9 +238,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Delete StreamingEndpoint
-     *
-     * <p>Deletes a streaming endpoint.
-     *
+     * 
+     * Deletes a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -253,9 +255,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Delete StreamingEndpoint
-     *
-     * <p>Deletes a streaming endpoint.
-     *
+     * 
+     * Deletes a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -271,9 +273,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Delete StreamingEndpoint
-     *
-     * <p>Deletes a streaming endpoint.
-     *
+     * 
+     * Deletes a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -286,9 +288,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Delete StreamingEndpoint
-     *
-     * <p>Deletes a streaming endpoint.
-     *
+     * 
+     * Deletes a streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -302,9 +304,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * List StreamingEndpoint skus
-     *
-     * <p>List streaming endpoint supported skus.
-     *
+     * 
+     * List streaming endpoint supported skus.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -320,9 +322,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * List StreamingEndpoint skus
-     *
-     * <p>List streaming endpoint supported skus.
-     *
+     * 
+     * List streaming endpoint supported skus.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -337,9 +339,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Start StreamingEndpoint
-     *
-     * <p>Starts an existing streaming endpoint.
-     *
+     * 
+     * Starts an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -354,9 +356,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Start StreamingEndpoint
-     *
-     * <p>Starts an existing streaming endpoint.
-     *
+     * 
+     * Starts an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -372,9 +374,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Start StreamingEndpoint
-     *
-     * <p>Starts an existing streaming endpoint.
-     *
+     * 
+     * Starts an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -387,9 +389,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Start StreamingEndpoint
-     *
-     * <p>Starts an existing streaming endpoint.
-     *
+     * 
+     * Starts an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -403,9 +405,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Stop StreamingEndpoint
-     *
-     * <p>Stops an existing streaming endpoint.
-     *
+     * 
+     * Stops an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -420,9 +422,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Stop StreamingEndpoint
-     *
-     * <p>Stops an existing streaming endpoint.
-     *
+     * 
+     * Stops an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -438,9 +440,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Stop StreamingEndpoint
-     *
-     * <p>Stops an existing streaming endpoint.
-     *
+     * 
+     * Stops an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -453,9 +455,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Stop StreamingEndpoint
-     *
-     * <p>Stops an existing streaming endpoint.
-     *
+     * 
+     * Stops an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -469,9 +471,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Scale StreamingEndpoint
-     *
-     * <p>Scales an existing streaming endpoint.
-     *
+     * 
+     * Scales an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -487,9 +489,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Scale StreamingEndpoint
-     *
-     * <p>Scales an existing streaming endpoint.
-     *
+     * 
+     * Scales an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -506,9 +508,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Scale StreamingEndpoint
-     *
-     * <p>Scales an existing streaming endpoint.
-     *
+     * 
+     * Scales an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -523,9 +525,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Scale StreamingEndpoint
-     *
-     * <p>Scales an existing streaming endpoint.
-     *
+     * 
+     * Scales an existing streaming endpoint.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -541,9 +543,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a streaming endpoint operation status.
-     *
+     * 
+     * Get a streaming endpoint operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -559,9 +561,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a streaming endpoint operation status.
-     *
+     * 
+     * Get a streaming endpoint operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -575,9 +577,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a streaming endpoint operation status.
-     *
+     * 
+     * Get a streaming endpoint operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
@@ -594,9 +596,9 @@ public interface StreamingEndpointsClient {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a streaming endpoint operation status.
-     *
+     * 
+     * Get a streaming endpoint operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.

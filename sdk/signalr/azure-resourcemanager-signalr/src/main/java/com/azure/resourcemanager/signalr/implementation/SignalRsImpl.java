@@ -57,23 +57,23 @@ public final class SignalRsImpl implements SignalRs {
 
     public PagedIterable<SignalRResource> list() {
         PagedIterable<SignalRResourceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new SignalRResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SignalRResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SignalRResource> list(Context context) {
         PagedIterable<SignalRResourceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new SignalRResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SignalRResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SignalRResource> listByResourceGroup(String resourceGroupName) {
         PagedIterable<SignalRResourceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new SignalRResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SignalRResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SignalRResource> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<SignalRResourceInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new SignalRResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SignalRResourceImpl(inner1, this.manager()));
     }
 
     public Response<SignalRResource> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
@@ -196,12 +196,12 @@ public final class SignalRsImpl implements SignalRs {
     }
 
     public SignalRResource getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
@@ -210,12 +210,12 @@ public final class SignalRsImpl implements SignalRs {
     }
 
     public Response<SignalRResource> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
@@ -224,12 +224,12 @@ public final class SignalRsImpl implements SignalRs {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));
@@ -238,12 +238,12 @@ public final class SignalRsImpl implements SignalRs {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceName = Utils.getValueFromIdByName(id, "signalR");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "signalR");
         if (resourceName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'signalR'.", id)));

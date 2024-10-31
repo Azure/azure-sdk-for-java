@@ -5,32 +5,45 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Database principal role. */
+/**
+ * Database principal role.
+ */
 public final class DatabasePrincipalRole extends ExpandableStringEnum<DatabasePrincipalRole> {
-    /** Static value Admin for DatabasePrincipalRole. */
+    /**
+     * Static value Admin for DatabasePrincipalRole.
+     */
     public static final DatabasePrincipalRole ADMIN = fromString("Admin");
 
-    /** Static value Ingestor for DatabasePrincipalRole. */
+    /**
+     * Static value Ingestor for DatabasePrincipalRole.
+     */
     public static final DatabasePrincipalRole INGESTOR = fromString("Ingestor");
 
-    /** Static value Monitor for DatabasePrincipalRole. */
+    /**
+     * Static value Monitor for DatabasePrincipalRole.
+     */
     public static final DatabasePrincipalRole MONITOR = fromString("Monitor");
 
-    /** Static value User for DatabasePrincipalRole. */
+    /**
+     * Static value User for DatabasePrincipalRole.
+     */
     public static final DatabasePrincipalRole USER = fromString("User");
 
-    /** Static value UnrestrictedViewer for DatabasePrincipalRole. */
+    /**
+     * Static value UnrestrictedViewer for DatabasePrincipalRole.
+     */
     public static final DatabasePrincipalRole UNRESTRICTED_VIEWER = fromString("UnrestrictedViewer");
 
-    /** Static value Viewer for DatabasePrincipalRole. */
+    /**
+     * Static value Viewer for DatabasePrincipalRole.
+     */
     public static final DatabasePrincipalRole VIEWER = fromString("Viewer");
 
     /**
      * Creates a new instance of DatabasePrincipalRole value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,18 +52,17 @@ public final class DatabasePrincipalRole extends ExpandableStringEnum<DatabasePr
 
     /**
      * Creates or finds a DatabasePrincipalRole from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatabasePrincipalRole.
      */
-    @JsonCreator
     public static DatabasePrincipalRole fromString(String name) {
         return fromString(name, DatabasePrincipalRole.class);
     }
 
     /**
      * Gets known DatabasePrincipalRole values.
-     *
+     * 
      * @return known DatabasePrincipalRole values.
      */
     public static Collection<DatabasePrincipalRole> values() {

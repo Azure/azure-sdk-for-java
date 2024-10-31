@@ -38,7 +38,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to BareMetalInfrastructureManager. The Bare Metal Infrastructure Management client. */
+/**
+ * Entry point to BareMetalInfrastructureManager.
+ * The Bare Metal Infrastructure Management client.
+ */
 public final class BareMetalInfrastructureManager {
     private AzureBareMetalInstances azureBareMetalInstances;
 
@@ -61,7 +64,7 @@ public final class BareMetalInfrastructureManager {
 
     /**
      * Creates an instance of BareMetalInfrastructure service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the BareMetalInfrastructure service API instance.
@@ -74,7 +77,7 @@ public final class BareMetalInfrastructureManager {
 
     /**
      * Creates an instance of BareMetalInfrastructure service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the BareMetalInfrastructure service API instance.
@@ -88,14 +91,16 @@ public final class BareMetalInfrastructureManager {
     /**
      * Gets a Configurable instance that can be used to create BareMetalInfrastructureManager with optional
      * configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new BareMetalInfrastructureManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -167,8 +172,8 @@ public final class BareMetalInfrastructureManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -210,7 +215,7 @@ public final class BareMetalInfrastructureManager {
                 .append("-")
                 .append("com.azure.resourcemanager.baremetalinfrastructure")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -258,7 +263,7 @@ public final class BareMetalInfrastructureManager {
 
     /**
      * Gets the resource collection API of AzureBareMetalInstances.
-     *
+     * 
      * @return Resource collection API of AzureBareMetalInstances.
      */
     public AzureBareMetalInstances azureBareMetalInstances() {
@@ -271,7 +276,7 @@ public final class BareMetalInfrastructureManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -283,7 +288,7 @@ public final class BareMetalInfrastructureManager {
 
     /**
      * Gets the resource collection API of AzureBareMetalStorageInstances. It manages AzureBareMetalStorageInstance.
-     *
+     * 
      * @return Resource collection API of AzureBareMetalStorageInstances.
      */
     public AzureBareMetalStorageInstances azureBareMetalStorageInstances() {
@@ -297,7 +302,7 @@ public final class BareMetalInfrastructureManager {
     /**
      * Gets wrapped service client BareMetalInfrastructureClient providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client BareMetalInfrastructureClient.
      */
     public BareMetalInfrastructureClient serviceClient() {

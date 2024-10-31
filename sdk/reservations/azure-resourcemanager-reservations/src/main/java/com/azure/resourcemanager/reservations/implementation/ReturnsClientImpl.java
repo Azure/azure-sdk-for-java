@@ -32,17 +32,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReturnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReturnsClient.
+ */
 public final class ReturnsClientImpl implements ReturnsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReturnsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of ReturnsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReturnsClientImpl(AzureReservationApiImpl client) {
@@ -68,16 +74,16 @@ public final class ReturnsClientImpl implements ReturnsClient {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a reservation order being returned along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(String reservationOrderId, RefundRequest body) {
@@ -103,9 +109,9 @@ public final class ReturnsClientImpl implements ReturnsClient {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @param context The context to associate with this operation.
@@ -113,7 +119,7 @@ public final class ReturnsClientImpl implements ReturnsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a reservation order being returned along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> postWithResponseAsync(String reservationOrderId, RefundRequest body,
@@ -139,9 +145,9 @@ public final class ReturnsClientImpl implements ReturnsClient {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,9 +166,9 @@ public final class ReturnsClientImpl implements ReturnsClient {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @param context The context to associate with this operation.
@@ -183,9 +189,9 @@ public final class ReturnsClientImpl implements ReturnsClient {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,9 +207,9 @@ public final class ReturnsClientImpl implements ReturnsClient {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @param context The context to associate with this operation.
@@ -220,9 +226,9 @@ public final class ReturnsClientImpl implements ReturnsClient {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,9 +243,9 @@ public final class ReturnsClientImpl implements ReturnsClient {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @param context The context to associate with this operation.
@@ -256,9 +262,9 @@ public final class ReturnsClientImpl implements ReturnsClient {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -273,9 +279,9 @@ public final class ReturnsClientImpl implements ReturnsClient {
 
     /**
      * Return a reservation.
-     *
-     * <p>Return a reservation and get refund information.
-     *
+     * 
+     * Return a reservation and get refund information.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for returning reservation.
      * @param context The context to associate with this operation.

@@ -20,8 +20,8 @@ public final class SpringbootsitesDeleteSamples {
      */
     public static void springbootsitesDeleteMaximumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootsites().delete("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
-            com.azure.core.util.Context.NONE);
+        manager.springbootsites()
+            .delete("rgspringbootsites", "xrmzlavpewxtfeitghdrj", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +36,7 @@ public final class SpringbootsitesDeleteSamples {
      */
     public static void springbootsitesDeleteMinimumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.springbootsites().delete("rgspringbootsites", "xrmzlavpewxtfeitghdrj",
-            com.azure.core.util.Context.NONE);
+        manager.springbootsites()
+            .delete("rgspringbootsites", "xrmzlavpewxtfeitghdrj", com.azure.core.util.Context.NONE);
     }
 }

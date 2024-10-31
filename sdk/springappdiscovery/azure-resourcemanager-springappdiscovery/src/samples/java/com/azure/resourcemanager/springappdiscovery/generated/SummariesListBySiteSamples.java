@@ -20,8 +20,9 @@ public final class SummariesListBySiteSamples {
      */
     public static void summariesListBySiteMaximumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.summaries().listBySite("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps",
-            com.azure.core.util.Context.NONE);
+        manager.summaries()
+            .listBySite("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -36,7 +37,8 @@ public final class SummariesListBySiteSamples {
      */
     public static void summariesListBySiteMinimumSetGen(
         com.azure.resourcemanager.springappdiscovery.SpringAppDiscoveryManager manager) {
-        manager.summaries().listBySite("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps",
-            com.azure.core.util.Context.NONE);
+        manager.summaries()
+            .listBySite("rgspringbootdiscovery", "xxkzlvbihwxunadjcpjpjmghmhxrqyvghtpfps",
+                com.azure.core.util.Context.NONE);
     }
 }

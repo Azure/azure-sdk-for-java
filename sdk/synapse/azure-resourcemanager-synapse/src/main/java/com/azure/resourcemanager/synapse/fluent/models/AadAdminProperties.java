@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Workspace active directory administrator properties. */
+/**
+ * Workspace active directory administrator properties.
+ */
 @Fluent
-public final class AadAdminProperties {
+public final class AadAdminProperties implements JsonSerializable<AadAdminProperties> {
     /*
      * Tenant ID of the workspace active directory administrator
      */
-    @JsonProperty(value = "tenantId")
     private String tenantId;
 
     /*
      * Login of the workspace active directory administrator
      */
-    @JsonProperty(value = "login")
     private String login;
 
     /*
      * Workspace active directory administrator type
      */
-    @JsonProperty(value = "administratorType")
     private String administratorType;
 
     /*
      * Object ID of the workspace active directory administrator
      */
-    @JsonProperty(value = "sid")
     private String sid;
 
-    /** Creates an instance of AadAdminProperties class. */
+    /**
+     * Creates an instance of AadAdminProperties class.
+     */
     public AadAdminProperties() {
     }
 
     /**
      * Get the tenantId property: Tenant ID of the workspace active directory administrator.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -49,7 +53,7 @@ public final class AadAdminProperties {
 
     /**
      * Set the tenantId property: Tenant ID of the workspace active directory administrator.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AadAdminProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class AadAdminProperties {
 
     /**
      * Get the login property: Login of the workspace active directory administrator.
-     *
+     * 
      * @return the login value.
      */
     public String login() {
@@ -69,7 +73,7 @@ public final class AadAdminProperties {
 
     /**
      * Set the login property: Login of the workspace active directory administrator.
-     *
+     * 
      * @param login the login value to set.
      * @return the AadAdminProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class AadAdminProperties {
 
     /**
      * Get the administratorType property: Workspace active directory administrator type.
-     *
+     * 
      * @return the administratorType value.
      */
     public String administratorType() {
@@ -89,7 +93,7 @@ public final class AadAdminProperties {
 
     /**
      * Set the administratorType property: Workspace active directory administrator type.
-     *
+     * 
      * @param administratorType the administratorType value to set.
      * @return the AadAdminProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class AadAdminProperties {
 
     /**
      * Get the sid property: Object ID of the workspace active directory administrator.
-     *
+     * 
      * @return the sid value.
      */
     public String sid() {
@@ -109,7 +113,7 @@ public final class AadAdminProperties {
 
     /**
      * Set the sid property: Object ID of the workspace active directory administrator.
-     *
+     * 
      * @param sid the sid value to set.
      * @return the AadAdminProperties object itself.
      */
@@ -120,9 +124,54 @@ public final class AadAdminProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenantId", this.tenantId);
+        jsonWriter.writeStringField("login", this.login);
+        jsonWriter.writeStringField("administratorType", this.administratorType);
+        jsonWriter.writeStringField("sid", this.sid);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AadAdminProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AadAdminProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AadAdminProperties.
+     */
+    public static AadAdminProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AadAdminProperties deserializedAadAdminProperties = new AadAdminProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedAadAdminProperties.tenantId = reader.getString();
+                } else if ("login".equals(fieldName)) {
+                    deserializedAadAdminProperties.login = reader.getString();
+                } else if ("administratorType".equals(fieldName)) {
+                    deserializedAadAdminProperties.administratorType = reader.getString();
+                } else if ("sid".equals(fieldName)) {
+                    deserializedAadAdminProperties.sid = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAadAdminProperties;
+        });
     }
 }

@@ -218,9 +218,9 @@ public final class BigDataPoolResourceInfoImpl
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.bigDataPoolName = Utils.getValueFromIdByName(innerObject.id(), "bigDataPools");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.bigDataPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bigDataPools");
     }
 
     public BigDataPoolResourceInfo refresh() {
@@ -286,6 +286,11 @@ public final class BigDataPoolResourceInfoImpl
 
     public BigDataPoolResourceInfoImpl withSessionLevelPackagesEnabled(Boolean sessionLevelPackagesEnabled) {
         this.innerModel().withSessionLevelPackagesEnabled(sessionLevelPackagesEnabled);
+        return this;
+    }
+
+    public BigDataPoolResourceInfoImpl withCacheSize(Integer cacheSize) {
+        this.innerModel().withCacheSize(cacheSize);
         return this;
     }
 

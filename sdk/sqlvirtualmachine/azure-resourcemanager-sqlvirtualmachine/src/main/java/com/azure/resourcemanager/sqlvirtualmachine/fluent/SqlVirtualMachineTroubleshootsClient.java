@@ -11,13 +11,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVmTroubleshootingInner;
 
-/** An instance of this class provides access to all the operations defined in SqlVirtualMachineTroubleshootsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlVirtualMachineTroubleshootsClient.
+ */
 public interface SqlVirtualMachineTroubleshootsClient {
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -31,9 +33,9 @@ public interface SqlVirtualMachineTroubleshootsClient {
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.
@@ -48,9 +50,9 @@ public interface SqlVirtualMachineTroubleshootsClient {
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,9 +66,9 @@ public interface SqlVirtualMachineTroubleshootsClient {
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.

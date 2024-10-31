@@ -33,17 +33,23 @@ import com.azure.resourcemanager.synapse.models.GeoBackupPolicyListResult;
 import com.azure.resourcemanager.synapse.models.GeoBackupPolicyName;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolGeoBackupPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolGeoBackupPoliciesClient.
+ */
 public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBackupPoliciesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolGeoBackupPoliciesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolGeoBackupPoliciesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolGeoBackupPoliciesClientImpl(SynapseManagementClientImpl client) {
@@ -60,8 +66,7 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolGeoBackupPoliciesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GeoBackupPolicyListResult>> list(@HostParam("$host") String endpoint,
@@ -70,8 +75,7 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
             @PathParam("sqlPoolName") String sqlPoolName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies/{geoBackupPolicyName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies/{geoBackupPolicyName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GeoBackupPolicyInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -83,8 +87,7 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies/{geoBackupPolicyName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/geoBackupPolicies/{geoBackupPolicyName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GeoBackupPolicyInner>> get(@HostParam("$host") String endpoint,
@@ -97,17 +100,17 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool geo backup policies along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of SQL pool geo backup policies along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GeoBackupPolicyInner>> listSinglePageAsync(String resourceGroupName,
@@ -142,9 +145,9 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -152,8 +155,8 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pool geo backup policies along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of SQL pool geo backup policies along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GeoBackupPolicyInner>> listSinglePageAsync(String resourceGroupName,
@@ -188,9 +191,9 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -207,9 +210,9 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -227,9 +230,9 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -246,9 +249,9 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * List SQL pool geo backup policies
-     *
-     * <p>Get list of SQL pool geo backup policies.
-     *
+     * 
+     * Get list of SQL pool geo backup policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -266,7 +269,7 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -319,7 +322,7 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -371,7 +374,7 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -391,7 +394,7 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -412,7 +415,7 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * Updates a SQL Pool geo backup policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -432,9 +435,9 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -442,8 +445,8 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified SQL pool geo backup policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified SQL pool geo backup policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GeoBackupPolicyInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -480,9 +483,9 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -491,8 +494,8 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified SQL pool geo backup policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified SQL pool geo backup policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GeoBackupPolicyInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -528,9 +531,9 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -549,9 +552,9 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -571,9 +574,9 @@ public final class SqlPoolGeoBackupPoliciesClientImpl implements SqlPoolGeoBacku
 
     /**
      * Get a SQL pool geo backup policy
-     *
-     * <p>Get the specified SQL pool geo backup policy.
-     *
+     * 
+     * Get the specified SQL pool geo backup policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

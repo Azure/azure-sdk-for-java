@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.fluent.models.PrivateEndpointConnectionInner;
 
-/** Resource collection API of SignalRPrivateEndpointConnections. */
+/**
+ * Resource collection API of SignalRPrivateEndpointConnections.
+ */
 public interface SignalRPrivateEndpointConnections {
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,7 +27,7 @@ public interface SignalRPrivateEndpointConnections {
 
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -38,9 +40,9 @@ public interface SignalRPrivateEndpointConnections {
 
     /**
      * Get the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -54,9 +56,9 @@ public interface SignalRPrivateEndpointConnections {
 
     /**
      * Get the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,9 +70,9 @@ public interface SignalRPrivateEndpointConnections {
 
     /**
      * Update the state of specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The resource of private endpoint and its properties.
@@ -85,9 +87,9 @@ public interface SignalRPrivateEndpointConnections {
 
     /**
      * Update the state of specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The resource of private endpoint and its properties.
@@ -101,9 +103,9 @@ public interface SignalRPrivateEndpointConnections {
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,9 +116,9 @@ public interface SignalRPrivateEndpointConnections {
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.

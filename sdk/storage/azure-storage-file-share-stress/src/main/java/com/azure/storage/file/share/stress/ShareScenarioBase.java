@@ -14,6 +14,7 @@ import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
+import com.azure.storage.file.share.models.ShareTokenIntent;
 import com.azure.storage.stress.TelemetryHelper;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
 import com.azure.storage.stress.FaultInjectionProbabilities;
@@ -40,6 +41,7 @@ public abstract class ShareScenarioBase<TOptions extends StorageStressOptions> e
 
         ShareServiceClientBuilder clientBuilder = new ShareServiceClientBuilder()
             .credential(defaultAzureCredential)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
             .endpoint(endpoint)
             .httpLogOptions(getLogOptions());
 

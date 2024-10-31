@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.JobInner;
 
-/** An instance of this class provides access to all the operations defined in JobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobsClient.
+ */
 public interface JobsClient {
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -31,9 +33,9 @@ public interface JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -51,9 +53,9 @@ public interface JobsClient {
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -70,9 +72,9 @@ public interface JobsClient {
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -87,9 +89,9 @@ public interface JobsClient {
 
     /**
      * Create Job
-     *
-     * <p>Creates a Job.
-     *
+     * 
+     * Creates a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -107,9 +109,9 @@ public interface JobsClient {
 
     /**
      * Create Job
-     *
-     * <p>Creates a Job.
-     *
+     * 
+     * Creates a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -126,9 +128,9 @@ public interface JobsClient {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -145,9 +147,9 @@ public interface JobsClient {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -161,10 +163,10 @@ public interface JobsClient {
 
     /**
      * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -182,10 +184,10 @@ public interface JobsClient {
 
     /**
      * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -202,9 +204,9 @@ public interface JobsClient {
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -221,9 +223,9 @@ public interface JobsClient {
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.

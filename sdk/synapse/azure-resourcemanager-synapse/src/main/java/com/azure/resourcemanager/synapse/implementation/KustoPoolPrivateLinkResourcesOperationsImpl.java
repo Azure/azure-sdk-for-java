@@ -29,14 +29,16 @@ public final class KustoPoolPrivateLinkResourcesOperationsImpl implements KustoP
         String kustoPoolName) {
         PagedIterable<KustoPoolPrivateLinkResourcesInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, kustoPoolName);
-        return Utils.mapPage(inner, inner1 -> new KustoPoolPrivateLinkResourcesImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new KustoPoolPrivateLinkResourcesImpl(inner1, this.manager()));
     }
 
     public PagedIterable<KustoPoolPrivateLinkResources> list(String resourceGroupName, String workspaceName,
         String kustoPoolName, Context context) {
         PagedIterable<KustoPoolPrivateLinkResourcesInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, kustoPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new KustoPoolPrivateLinkResourcesImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new KustoPoolPrivateLinkResourcesImpl(inner1, this.manager()));
     }
 
     private KustoPoolPrivateLinkResourcesOperationsClient serviceClient() {

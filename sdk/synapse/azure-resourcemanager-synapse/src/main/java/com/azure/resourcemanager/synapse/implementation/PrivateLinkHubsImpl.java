@@ -29,12 +29,12 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
 
     public PagedIterable<PrivateLinkHub> listByResourceGroup(String resourceGroupName) {
         PagedIterable<PrivateLinkHubInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkHubImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkHubImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateLinkHub> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<PrivateLinkHubInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkHubImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkHubImpl(inner1, this.manager()));
     }
 
     public Response<PrivateLinkHub> getByResourceGroupWithResponse(String resourceGroupName, String privateLinkHubName,
@@ -68,21 +68,21 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
 
     public PagedIterable<PrivateLinkHub> list() {
         PagedIterable<PrivateLinkHubInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkHubImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkHubImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateLinkHub> list(Context context) {
         PagedIterable<PrivateLinkHubInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkHubImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkHubImpl(inner1, this.manager()));
     }
 
     public PrivateLinkHub getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateLinkHubName = Utils.getValueFromIdByName(id, "privateLinkHubs");
+        String privateLinkHubName = ResourceManagerUtils.getValueFromIdByName(id, "privateLinkHubs");
         if (privateLinkHubName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkHubs'.", id)));
@@ -91,12 +91,12 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
     }
 
     public Response<PrivateLinkHub> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateLinkHubName = Utils.getValueFromIdByName(id, "privateLinkHubs");
+        String privateLinkHubName = ResourceManagerUtils.getValueFromIdByName(id, "privateLinkHubs");
         if (privateLinkHubName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkHubs'.", id)));
@@ -105,12 +105,12 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateLinkHubName = Utils.getValueFromIdByName(id, "privateLinkHubs");
+        String privateLinkHubName = ResourceManagerUtils.getValueFromIdByName(id, "privateLinkHubs");
         if (privateLinkHubName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkHubs'.", id)));
@@ -119,12 +119,12 @@ public final class PrivateLinkHubsImpl implements PrivateLinkHubs {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String privateLinkHubName = Utils.getValueFromIdByName(id, "privateLinkHubs");
+        String privateLinkHubName = ResourceManagerUtils.getValueFromIdByName(id, "privateLinkHubs");
         if (privateLinkHubName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'privateLinkHubs'.", id)));

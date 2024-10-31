@@ -5,23 +5,30 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** SQL Server connectivity option. */
+/**
+ * SQL Server connectivity option.
+ */
 public final class ConnectivityType extends ExpandableStringEnum<ConnectivityType> {
-    /** Static value LOCAL for ConnectivityType. */
+    /**
+     * Static value LOCAL for ConnectivityType.
+     */
     public static final ConnectivityType LOCAL = fromString("LOCAL");
 
-    /** Static value PRIVATE for ConnectivityType. */
+    /**
+     * Static value PRIVATE for ConnectivityType.
+     */
     public static final ConnectivityType PRIVATE = fromString("PRIVATE");
 
-    /** Static value PUBLIC for ConnectivityType. */
+    /**
+     * Static value PUBLIC for ConnectivityType.
+     */
     public static final ConnectivityType PUBLIC = fromString("PUBLIC");
 
     /**
      * Creates a new instance of ConnectivityType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,18 +37,17 @@ public final class ConnectivityType extends ExpandableStringEnum<ConnectivityTyp
 
     /**
      * Creates or finds a ConnectivityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectivityType.
      */
-    @JsonCreator
     public static ConnectivityType fromString(String name) {
         return fromString(name, ConnectivityType.class);
     }
 
     /**
      * Gets known ConnectivityType values.
-     *
+     * 
      * @return known ConnectivityType values.
      */
     public static Collection<ConnectivityType> values() {

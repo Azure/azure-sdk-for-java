@@ -12,14 +12,14 @@ public final class UnhealthyReplicaInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UnhealthyReplicaInfo model
-            = BinaryData.fromString("{\"availabilityGroupName\":\"ciwwzjuqkhr\"}").toObject(UnhealthyReplicaInfo.class);
-        Assertions.assertEquals("ciwwzjuqkhr", model.availabilityGroupName());
+            = BinaryData.fromString("{\"availabilityGroupName\":\"t\"}").toObject(UnhealthyReplicaInfo.class);
+        Assertions.assertEquals("t", model.availabilityGroupName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnhealthyReplicaInfo model = new UnhealthyReplicaInfo().withAvailabilityGroupName("ciwwzjuqkhr");
+        UnhealthyReplicaInfo model = new UnhealthyReplicaInfo().withAvailabilityGroupName("t");
         model = BinaryData.fromObject(model).toObject(UnhealthyReplicaInfo.class);
-        Assertions.assertEquals("ciwwzjuqkhr", model.availabilityGroupName());
+        Assertions.assertEquals("t", model.availabilityGroupName());
     }
 }

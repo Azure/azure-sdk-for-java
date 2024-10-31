@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlPoolSchemas. */
+/**
+ * Resource collection API of SqlPoolSchemas.
+ */
 public interface SqlPoolSchemas {
     /**
      * Gets schemas of a given SQL pool
-     *
-     * <p>Gets schemas of a given SQL pool.
-     *
+     * 
+     * Gets schemas of a given SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -27,9 +29,9 @@ public interface SqlPoolSchemas {
 
     /**
      * Gets schemas of a given SQL pool
-     *
-     * <p>Gets schemas of a given SQL pool.
-     *
+     * 
+     * Gets schemas of a given SQL pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -45,7 +47,7 @@ public interface SqlPoolSchemas {
 
     /**
      * Get Sql Pool schema.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -61,7 +63,7 @@ public interface SqlPoolSchemas {
 
     /**
      * Get Sql Pool schema.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

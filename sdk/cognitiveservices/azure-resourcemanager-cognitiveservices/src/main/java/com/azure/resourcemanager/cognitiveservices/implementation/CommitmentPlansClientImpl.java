@@ -42,17 +42,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CommitmentPlansClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CommitmentPlansClient.
+ */
 public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CommitmentPlansService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CognitiveServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of CommitmentPlansClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CommitmentPlansClientImpl(CognitiveServicesManagementClientImpl client) {
@@ -244,14 +250,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the commitmentPlans associated with the Cognitive Services account along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listSinglePageAsync(String resourceGroupName, String accountName) {
@@ -281,7 +287,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
@@ -289,7 +295,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the commitmentPlans associated with the Cognitive Services account along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listSinglePageAsync(String resourceGroupName, String accountName,
@@ -320,14 +326,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commitmentPlans associated with the Cognitive Services account as paginated response with {@link
-     *     PagedFlux}.
+     * @return the commitmentPlans associated with the Cognitive Services account as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CommitmentPlanInner> listAsync(String resourceGroupName, String accountName) {
@@ -337,15 +343,15 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commitmentPlans associated with the Cognitive Services account as paginated response with {@link
-     *     PagedFlux}.
+     * @return the commitmentPlans associated with the Cognitive Services account as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CommitmentPlanInner> listAsync(String resourceGroupName, String accountName, Context context) {
@@ -355,14 +361,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commitmentPlans associated with the Cognitive Services account as paginated response with {@link
-     *     PagedIterable}.
+     * @return the commitmentPlans associated with the Cognitive Services account as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> list(String resourceGroupName, String accountName) {
@@ -371,15 +377,15 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the commitmentPlans associated with the Cognitive Services account as paginated response with {@link
-     *     PagedIterable}.
+     * @return the commitmentPlans associated with the Cognitive Services account as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> list(String resourceGroupName, String accountName, Context context) {
@@ -388,7 +394,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the specified commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -396,7 +402,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified commitmentPlans associated with the Cognitive Services account along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommitmentPlanInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -429,7 +435,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the specified commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -438,7 +444,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified commitmentPlans associated with the Cognitive Services account along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommitmentPlanInner>> getWithResponseAsync(String resourceGroupName, String accountName,
@@ -470,7 +476,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the specified commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -478,7 +484,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified commitmentPlans associated with the Cognitive Services account on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CommitmentPlanInner> getAsync(String resourceGroupName, String accountName,
@@ -489,7 +495,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the specified commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -507,7 +513,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the specified commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -523,7 +529,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Update the state of specified commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -531,8 +537,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommitmentPlanInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -571,7 +577,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Update the state of specified commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -580,8 +586,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommitmentPlanInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -619,7 +625,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Update the state of specified commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -638,7 +644,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Update the state of specified commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -658,7 +664,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Update the state of specified commitmentPlans associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -677,7 +683,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -717,7 +723,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -757,7 +763,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -777,7 +783,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -799,7 +805,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -816,7 +822,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -834,7 +840,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -851,7 +857,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -870,7 +876,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -885,7 +891,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the specified commitmentPlan associated with the Cognitive Services account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
@@ -901,15 +907,15 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdatePlanWithResponseAsync(String resourceGroupName,
@@ -945,7 +951,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -953,8 +959,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdatePlanWithResponseAsync(String resourceGroupName,
@@ -988,7 +994,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1008,7 +1014,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1030,7 +1036,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1047,7 +1053,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1066,7 +1072,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1084,7 +1090,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1103,7 +1109,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1120,7 +1126,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1138,15 +1144,15 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updatePlanWithResponseAsync(String resourceGroupName,
@@ -1181,7 +1187,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1189,8 +1195,8 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updatePlanWithResponseAsync(String resourceGroupName,
@@ -1224,7 +1230,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1244,7 +1250,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1266,7 +1272,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1283,7 +1289,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1302,7 +1308,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1320,7 +1326,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1339,7 +1345,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1356,7 +1362,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlan The parameters to provide for the created commitment plan.
@@ -1374,7 +1380,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes a Cognitive Services commitment plan from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1410,7 +1416,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes a Cognitive Services commitment plan from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
@@ -1446,7 +1452,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes a Cognitive Services commitment plan from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1464,7 +1470,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes a Cognitive Services commitment plan from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
@@ -1485,7 +1491,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes a Cognitive Services commitment plan from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1500,7 +1506,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes a Cognitive Services commitment plan from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
@@ -1517,7 +1523,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes a Cognitive Services commitment plan from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1533,7 +1539,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes a Cognitive Services commitment plan from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
@@ -1550,7 +1556,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes a Cognitive Services commitment plan from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1564,7 +1570,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes a Cognitive Services commitment plan from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
@@ -1579,14 +1585,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns a Cognitive Services commitment plan specified by the parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommitmentPlanInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -1616,15 +1622,15 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns a Cognitive Services commitment plan specified by the parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return cognitive Services account commitment plan along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommitmentPlanInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -1653,7 +1659,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns a Cognitive Services commitment plan specified by the parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1669,7 +1675,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns a Cognitive Services commitment plan specified by the parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
@@ -1686,7 +1692,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns a Cognitive Services commitment plan specified by the parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1701,13 +1707,13 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1734,14 +1740,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -1769,7 +1775,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1784,7 +1790,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1800,13 +1806,13 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> listByResourceGroup(String resourceGroupName) {
@@ -1815,14 +1821,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1831,11 +1837,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listPlansBySubscriptionSinglePageAsync() {
@@ -1858,13 +1864,13 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listPlansBySubscriptionSinglePageAsync(Context context) {
@@ -1887,7 +1893,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response as paginated response with {@link PagedFlux}.
@@ -1900,7 +1906,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1915,11 +1921,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> listPlansBySubscription() {
@@ -1928,13 +1934,13 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanInner> listPlansBySubscription(Context context) {
@@ -1943,14 +1949,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the associations of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the associations of the Cognitive Services commitment plan along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanAccountAssociationInner>>
@@ -1982,7 +1988,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the associations of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
@@ -1990,7 +1996,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the associations of the Cognitive Services commitment plan along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanAccountAssociationInner>>
@@ -2022,7 +2028,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the associations of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2039,7 +2045,7 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the associations of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
@@ -2057,14 +2063,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the associations of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the associations of the Cognitive Services commitment plan as paginated response with {@link
-     *     PagedIterable}.
+     * @return the associations of the Cognitive Services commitment plan as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanAccountAssociationInner> listAssociations(String resourceGroupName,
@@ -2074,15 +2080,15 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the associations of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the associations of the Cognitive Services commitment plan as paginated response with {@link
-     *     PagedIterable}.
+     * @return the associations of the Cognitive Services commitment plan as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CommitmentPlanAccountAssociationInner> listAssociations(String resourceGroupName,
@@ -2092,16 +2098,16 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the association of the Cognitive Services commitment plan along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommitmentPlanAccountAssociationInner>> getAssociationWithResponseAsync(
@@ -2136,17 +2142,17 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the association of the Cognitive Services commitment plan along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CommitmentPlanAccountAssociationInner>> getAssociationWithResponseAsync(
@@ -2179,11 +2185,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2198,11 +2204,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2218,11 +2224,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Gets the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2237,11 +2243,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create or update the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param association The commitmentPlan properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2287,11 +2293,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create or update the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param association The commitmentPlan properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2337,11 +2343,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create or update the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param association The commitmentPlan properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2361,11 +2367,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create or update the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param association The commitmentPlan properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2387,11 +2393,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create or update the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param association The commitmentPlan properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2410,11 +2416,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create or update the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param association The commitmentPlan properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2434,11 +2440,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create or update the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param association The commitmentPlan properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2455,11 +2461,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create or update the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param association The commitmentPlan properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2477,11 +2483,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create or update the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param association The commitmentPlan properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2498,11 +2504,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Create or update the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param association The commitmentPlan properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2520,11 +2526,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2563,11 +2569,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2605,11 +2611,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2626,11 +2632,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2649,11 +2655,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2668,11 +2674,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2689,11 +2695,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2708,11 +2714,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2728,11 +2734,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2745,11 +2751,11 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Deletes the association of the Cognitive Services commitment plan.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param commitmentPlanName The name of the commitmentPlan associated with the Cognitive Services Account.
      * @param commitmentPlanAssociationName The name of the commitment plan association with the Cognitive Services
-     *     Account.
+     * Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2763,14 +2769,13 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listNextSinglePageAsync(String nextLink) {
@@ -2790,15 +2795,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2818,14 +2822,13 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listPlansByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2847,15 +2850,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listPlansByResourceGroupNextSinglePageAsync(String nextLink,
@@ -2876,14 +2878,13 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listPlansBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2905,15 +2906,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanInner>> listPlansBySubscriptionNextSinglePageAsync(String nextLink,
@@ -2934,14 +2934,13 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services Commitment Plan Account Association operation response along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of cognitive services Commitment Plan Account Association operation response along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanAccountAssociationInner>>
@@ -2963,15 +2962,14 @@ public final class CommitmentPlansClientImpl implements CommitmentPlansClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services Commitment Plan Account Association operation response along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of cognitive services Commitment Plan Account Association operation response along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CommitmentPlanAccountAssociationInner>>

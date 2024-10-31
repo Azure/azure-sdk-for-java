@@ -12,14 +12,14 @@ public final class LocalTimestampTimeZoneOffsetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LocalTimestampTimeZoneOffset model
-            = BinaryData.fromString("{\"propertyName\":\"gmaajrm\"}").toObject(LocalTimestampTimeZoneOffset.class);
-        Assertions.assertEquals("gmaajrm", model.propertyName());
+            = BinaryData.fromString("{\"propertyName\":\"ys\"}").toObject(LocalTimestampTimeZoneOffset.class);
+        Assertions.assertEquals("ys", model.propertyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LocalTimestampTimeZoneOffset model = new LocalTimestampTimeZoneOffset().withPropertyName("gmaajrm");
+        LocalTimestampTimeZoneOffset model = new LocalTimestampTimeZoneOffset().withPropertyName("ys");
         model = BinaryData.fromObject(model).toObject(LocalTimestampTimeZoneOffset.class);
-        Assertions.assertEquals("gmaajrm", model.propertyName());
+        Assertions.assertEquals("ys", model.propertyName());
     }
 }

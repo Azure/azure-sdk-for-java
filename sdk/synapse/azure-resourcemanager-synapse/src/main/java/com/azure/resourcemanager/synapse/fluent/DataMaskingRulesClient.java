@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.DataMaskingRuleInner;
 
-/** An instance of this class provides access to all the operations defined in DataMaskingRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataMaskingRulesClient.
+ */
 public interface DataMaskingRulesClient {
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -33,7 +35,7 @@ public interface DataMaskingRulesClient {
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -50,7 +52,7 @@ public interface DataMaskingRulesClient {
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -67,7 +69,7 @@ public interface DataMaskingRulesClient {
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -83,7 +85,7 @@ public interface DataMaskingRulesClient {
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -98,7 +100,7 @@ public interface DataMaskingRulesClient {
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
