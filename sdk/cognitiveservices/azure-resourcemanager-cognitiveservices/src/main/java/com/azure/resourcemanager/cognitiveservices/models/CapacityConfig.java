@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The capacity configuration. */
+/**
+ * The capacity configuration.
+ */
 @Fluent
-public final class CapacityConfig {
+public final class CapacityConfig implements JsonSerializable<CapacityConfig> {
     /*
      * The minimum capacity.
      */
-    @JsonProperty(value = "minimum")
     private Integer minimum;
 
     /*
      * The maximum capacity.
      */
-    @JsonProperty(value = "maximum")
     private Integer maximum;
 
     /*
      * The minimal incremental between allowed values for capacity.
      */
-    @JsonProperty(value = "step")
     private Integer step;
 
     /*
      * The default capacity.
      */
-    @JsonProperty(value = "default")
     private Integer defaultProperty;
 
-    /** Creates an instance of CapacityConfig class. */
+    /**
+     * Creates an instance of CapacityConfig class.
+     */
     public CapacityConfig() {
     }
 
     /**
      * Get the minimum property: The minimum capacity.
-     *
+     * 
      * @return the minimum value.
      */
     public Integer minimum() {
@@ -49,7 +53,7 @@ public final class CapacityConfig {
 
     /**
      * Set the minimum property: The minimum capacity.
-     *
+     * 
      * @param minimum the minimum value to set.
      * @return the CapacityConfig object itself.
      */
@@ -60,7 +64,7 @@ public final class CapacityConfig {
 
     /**
      * Get the maximum property: The maximum capacity.
-     *
+     * 
      * @return the maximum value.
      */
     public Integer maximum() {
@@ -69,7 +73,7 @@ public final class CapacityConfig {
 
     /**
      * Set the maximum property: The maximum capacity.
-     *
+     * 
      * @param maximum the maximum value to set.
      * @return the CapacityConfig object itself.
      */
@@ -80,7 +84,7 @@ public final class CapacityConfig {
 
     /**
      * Get the step property: The minimal incremental between allowed values for capacity.
-     *
+     * 
      * @return the step value.
      */
     public Integer step() {
@@ -89,7 +93,7 @@ public final class CapacityConfig {
 
     /**
      * Set the step property: The minimal incremental between allowed values for capacity.
-     *
+     * 
      * @param step the step value to set.
      * @return the CapacityConfig object itself.
      */
@@ -100,7 +104,7 @@ public final class CapacityConfig {
 
     /**
      * Get the defaultProperty property: The default capacity.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Integer defaultProperty() {
@@ -109,7 +113,7 @@ public final class CapacityConfig {
 
     /**
      * Set the defaultProperty property: The default capacity.
-     *
+     * 
      * @param defaultProperty the defaultProperty value to set.
      * @return the CapacityConfig object itself.
      */
@@ -120,9 +124,54 @@ public final class CapacityConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("minimum", this.minimum);
+        jsonWriter.writeNumberField("maximum", this.maximum);
+        jsonWriter.writeNumberField("step", this.step);
+        jsonWriter.writeNumberField("default", this.defaultProperty);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CapacityConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CapacityConfig if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CapacityConfig.
+     */
+    public static CapacityConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CapacityConfig deserializedCapacityConfig = new CapacityConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minimum".equals(fieldName)) {
+                    deserializedCapacityConfig.minimum = reader.getNullable(JsonReader::getInt);
+                } else if ("maximum".equals(fieldName)) {
+                    deserializedCapacityConfig.maximum = reader.getNullable(JsonReader::getInt);
+                } else if ("step".equals(fieldName)) {
+                    deserializedCapacityConfig.step = reader.getNullable(JsonReader::getInt);
+                } else if ("default".equals(fieldName)) {
+                    deserializedCapacityConfig.defaultProperty = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCapacityConfig;
+        });
     }
 }

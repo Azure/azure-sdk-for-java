@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Identity model = BinaryData.fromString("{\"type\":\"SystemAssigned,"
-            + " UserAssigned\",\"tenantId\":\"kohdbiha\",\"principalId\":\"fhfcb\",\"userAssignedIdentities\":{\"yscnpqxu\":{\"principalId\":\"git\",\"clientId\":\"qhabifpikxwcz\"}}}")
+        Identity model = BinaryData.fromString(
+            "{\"type\":\"SystemAssigned, UserAssigned\",\"tenantId\":\"kohdbiha\",\"principalId\":\"fhfcb\",\"userAssignedIdentities\":{\"yscnpqxu\":{\"principalId\":\"git\",\"clientId\":\"qhabifpikxwcz\"}}}")
             .toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
@@ -29,6 +29,7 @@ public final class IdentityTests {
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

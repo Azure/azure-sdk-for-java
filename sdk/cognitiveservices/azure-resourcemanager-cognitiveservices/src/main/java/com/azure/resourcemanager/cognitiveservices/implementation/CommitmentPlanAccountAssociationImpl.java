@@ -111,9 +111,10 @@ public final class CommitmentPlanAccountAssociationImpl implements CommitmentPla
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.commitmentPlanName = Utils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
-        this.commitmentPlanAssociationName = Utils.getValueFromIdByName(innerObject.id(), "accountAssociations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.commitmentPlanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "commitmentPlans");
+        this.commitmentPlanAssociationName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accountAssociations");
     }
 
     public CommitmentPlanAccountAssociation refresh() {

@@ -27,12 +27,12 @@ public final class UsagesImpl implements Usages {
 
     public PagedIterable<Usage> list(String location) {
         PagedIterable<UsageInner> inner = this.serviceClient().list(location);
-        return Utils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Usage> list(String location, String filter, Context context) {
         PagedIterable<UsageInner> inner = this.serviceClient().list(location, filter, context);
-        return Utils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new UsageImpl(inner1, this.manager()));
     }
 
     private UsagesClient serviceClient() {

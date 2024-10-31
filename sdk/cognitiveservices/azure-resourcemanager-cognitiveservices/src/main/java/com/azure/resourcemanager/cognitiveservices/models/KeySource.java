@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enumerates the possible value of keySource for Encryption. */
+/**
+ * Enumerates the possible value of keySource for Encryption.
+ */
 public final class KeySource extends ExpandableStringEnum<KeySource> {
-    /** Static value Microsoft.CognitiveServices for KeySource. */
+    /**
+     * Static value Microsoft.CognitiveServices for KeySource.
+     */
     public static final KeySource MICROSOFT_COGNITIVE_SERVICES = fromString("Microsoft.CognitiveServices");
 
-    /** Static value Microsoft.KeyVault for KeySource. */
+    /**
+     * Static value Microsoft.KeyVault for KeySource.
+     */
     public static final KeySource MICROSOFT_KEY_VAULT = fromString("Microsoft.KeyVault");
 
     /**
      * Creates a new instance of KeySource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class KeySource extends ExpandableStringEnum<KeySource> {
 
     /**
      * Creates or finds a KeySource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KeySource.
      */
-    @JsonCreator
     public static KeySource fromString(String name) {
         return fromString(name, KeySource.class);
     }
 
     /**
      * Gets known KeySource values.
-     *
+     * 
      * @return known KeySource values.
      */
     public static Collection<KeySource> values() {
