@@ -5,41 +5,57 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
-/** Properties of the environment. */
+/**
+ * Properties of the environment.
+ */
 @Immutable
 public class EnvironmentResourceProperties extends ResourceProperties {
     /*
      * An id used to access the environment data, e.g. to query the environment's events or upload reference data for
      * the environment.
      */
-    @JsonProperty(value = "dataAccessId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID dataAccessId;
 
     /*
      * The fully qualified domain name used to access the environment data, e.g. to query the environment's events or
      * upload reference data for the environment.
      */
-    @JsonProperty(value = "dataAccessFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String dataAccessFqdn;
 
     /*
      * An object that represents the status of the environment, and its internal state in the Time Series Insights
      * service.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private EnvironmentStatus status;
 
-    /** Creates an instance of EnvironmentResourceProperties class. */
+    /*
+     * The time the resource was created.
+     */
+    private OffsetDateTime creationTime;
+
+    /*
+     * Provisioning state of the resource.
+     */
+    private ProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of EnvironmentResourceProperties class.
+     */
     public EnvironmentResourceProperties() {
     }
 
     /**
      * Get the dataAccessId property: An id used to access the environment data, e.g. to query the environment's events
      * or upload reference data for the environment.
-     *
+     * 
      * @return the dataAccessId value.
      */
     public UUID dataAccessId() {
@@ -47,9 +63,21 @@ public class EnvironmentResourceProperties extends ResourceProperties {
     }
 
     /**
+     * Set the dataAccessId property: An id used to access the environment data, e.g. to query the environment's events
+     * or upload reference data for the environment.
+     * 
+     * @param dataAccessId the dataAccessId value to set.
+     * @return the EnvironmentResourceProperties object itself.
+     */
+    EnvironmentResourceProperties withDataAccessId(UUID dataAccessId) {
+        this.dataAccessId = dataAccessId;
+        return this;
+    }
+
+    /**
      * Get the dataAccessFqdn property: The fully qualified domain name used to access the environment data, e.g. to
      * query the environment's events or upload reference data for the environment.
-     *
+     * 
      * @return the dataAccessFqdn value.
      */
     public String dataAccessFqdn() {
@@ -57,9 +85,21 @@ public class EnvironmentResourceProperties extends ResourceProperties {
     }
 
     /**
+     * Set the dataAccessFqdn property: The fully qualified domain name used to access the environment data, e.g. to
+     * query the environment's events or upload reference data for the environment.
+     * 
+     * @param dataAccessFqdn the dataAccessFqdn value to set.
+     * @return the EnvironmentResourceProperties object itself.
+     */
+    EnvironmentResourceProperties withDataAccessFqdn(String dataAccessFqdn) {
+        this.dataAccessFqdn = dataAccessFqdn;
+        return this;
+    }
+
+    /**
      * Get the status property: An object that represents the status of the environment, and its internal state in the
      * Time Series Insights service.
-     *
+     * 
      * @return the status value.
      */
     public EnvironmentStatus status() {
@@ -67,15 +107,93 @@ public class EnvironmentResourceProperties extends ResourceProperties {
     }
 
     /**
+     * Set the status property: An object that represents the status of the environment, and its internal state in the
+     * Time Series Insights service.
+     * 
+     * @param status the status value to set.
+     * @return the EnvironmentResourceProperties object itself.
+     */
+    EnvironmentResourceProperties withStatus(EnvironmentStatus status) {
+        this.status = status;
+        return this;
+    }
+
+    /**
+     * Get the creationTime property: The time the resource was created.
+     * 
+     * @return the creationTime value.
+     */
+    @Override
+    public OffsetDateTime creationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    @Override
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EnvironmentResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EnvironmentResourceProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the EnvironmentResourceProperties.
+     */
+    public static EnvironmentResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EnvironmentResourceProperties deserializedEnvironmentResourceProperties
+                = new EnvironmentResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedEnvironmentResourceProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedEnvironmentResourceProperties.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("dataAccessId".equals(fieldName)) {
+                    deserializedEnvironmentResourceProperties.dataAccessId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("dataAccessFqdn".equals(fieldName)) {
+                    deserializedEnvironmentResourceProperties.dataAccessFqdn = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedEnvironmentResourceProperties.status = EnvironmentStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEnvironmentResourceProperties;
+        });
     }
 }

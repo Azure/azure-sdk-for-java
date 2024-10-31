@@ -37,17 +37,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EnvironmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EnvironmentsClient.
+ */
 public final class EnvironmentsClientImpl implements EnvironmentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EnvironmentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final TimeSeriesInsightsClientImpl client;
 
     /**
      * Initializes an instance of EnvironmentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EnvironmentsClientImpl(TimeSeriesInsightsClientImpl client) {
@@ -64,8 +70,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
     @ServiceInterface(name = "TimeSeriesInsightsCl")
     public interface EnvironmentsService {
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-            + "/environments/{environmentName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}")
         @ExpectedResponses({ 200, 201, 404 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -76,8 +81,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-            + "/environments/{environmentName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EnvironmentResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
@@ -87,8 +91,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-            + "/environments/{environmentName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
@@ -99,8 +102,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-            + "/environments/{environmentName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -110,8 +112,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-            + "/environments")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EnvironmentListResponseInner>> listByResourceGroup(@HostParam("$host") String endpoint,
@@ -130,7 +131,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -138,7 +139,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource along with {@link Response} on successful completion of {@link Mono}.
+     * Insights resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -173,7 +174,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -182,7 +183,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource along with {@link Response} on successful completion of {@link Mono}.
+     * Insights resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -216,7 +217,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -224,7 +225,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an environment is a set of time-series data available for query,
-     *     and is the top level Azure Time Series Insights resource.
+     * and is the top level Azure Time Series Insights resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginCreateOrUpdateAsync(
@@ -238,7 +239,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -247,7 +248,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an environment is a set of time-series data available for query,
-     *     and is the top level Azure Time Series Insights resource.
+     * and is the top level Azure Time Series Insights resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginCreateOrUpdateAsync(
@@ -262,7 +263,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -270,7 +271,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an environment is a set of time-series data available for query,
-     *     and is the top level Azure Time Series Insights resource.
+     * and is the top level Azure Time Series Insights resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginCreateOrUpdate(
@@ -280,7 +281,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -289,7 +290,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an environment is a set of time-series data available for query,
-     *     and is the top level Azure Time Series Insights resource.
+     * and is the top level Azure Time Series Insights resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginCreateOrUpdate(
@@ -300,7 +301,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -308,7 +309,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource on successful completion of {@link Mono}.
+     * Insights resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EnvironmentResourceInner> createOrUpdateAsync(String resourceGroupName, String environmentName,
@@ -319,7 +320,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -328,7 +329,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource on successful completion of {@link Mono}.
+     * Insights resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EnvironmentResourceInner> createOrUpdateAsync(String resourceGroupName, String environmentName,
@@ -339,7 +340,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -347,7 +348,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource.
+     * Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnvironmentResourceInner createOrUpdate(String resourceGroupName, String environmentName,
@@ -357,7 +358,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Create or update an environment in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName Name of the environment.
      * @param parameters Parameters for creating an environment resource.
@@ -366,7 +367,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource.
+     * Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnvironmentResourceInner createOrUpdate(String resourceGroupName, String environmentName,
@@ -376,17 +377,17 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Gets the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param expand Setting $expand=status will include the status of the internal services of the environment in the
-     *     Time Series Insights service.
+     * Time Series Insights service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the environment with the specified name in the specified subscription and resource group along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnvironmentResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -417,18 +418,18 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Gets the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param expand Setting $expand=status will include the status of the internal services of the environment in the
-     *     Time Series Insights service.
+     * Time Series Insights service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the environment with the specified name in the specified subscription and resource group along with
-     *     {@link Response} on successful completion of {@link Mono}.
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnvironmentResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -457,15 +458,15 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Gets the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the environment with the specified name in the specified subscription and resource group on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EnvironmentResourceInner> getByResourceGroupAsync(String resourceGroupName, String environmentName) {
@@ -476,18 +477,18 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Gets the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param expand Setting $expand=status will include the status of the internal services of the environment in the
-     *     Time Series Insights service.
+     * Time Series Insights service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the environment with the specified name in the specified subscription and resource group along with
-     *     {@link Response}.
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<EnvironmentResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
@@ -497,10 +498,10 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Gets the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -514,16 +515,16 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource along with {@link Response} on successful completion of {@link Mono}.
+     * Insights resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String environmentName,
@@ -560,17 +561,17 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource along with {@link Response} on successful completion of {@link Mono}.
+     * Insights resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String environmentName,
@@ -605,16 +606,16 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an environment is a set of time-series data available for query,
-     *     and is the top level Azure Time Series Insights resource.
+     * and is the top level Azure Time Series Insights resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginUpdateAsync(
@@ -628,17 +629,17 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of an environment is a set of time-series data available for query,
-     *     and is the top level Azure Time Series Insights resource.
+     * and is the top level Azure Time Series Insights resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginUpdateAsync(
@@ -653,16 +654,16 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an environment is a set of time-series data available for query,
-     *     and is the top level Azure Time Series Insights resource.
+     * and is the top level Azure Time Series Insights resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginUpdate(
@@ -672,17 +673,17 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of an environment is a set of time-series data available for query,
-     *     and is the top level Azure Time Series Insights resource.
+     * and is the top level Azure Time Series Insights resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EnvironmentResourceInner>, EnvironmentResourceInner> beginUpdate(
@@ -694,16 +695,16 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource on successful completion of {@link Mono}.
+     * Insights resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EnvironmentResourceInner> updateAsync(String resourceGroupName, String environmentName,
@@ -714,17 +715,17 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource on successful completion of {@link Mono}.
+     * Insights resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EnvironmentResourceInner> updateAsync(String resourceGroupName, String environmentName,
@@ -735,16 +736,16 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource.
+     * Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnvironmentResourceInner update(String resourceGroupName, String environmentName,
@@ -754,17 +755,17 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Updates the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param environmentUpdateParameters Request object that contains the updated information for the environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment is a set of time-series data available for query, and is the top level Azure Time Series
-     *     Insights resource.
+     * Insights resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EnvironmentResourceInner update(String resourceGroupName, String environmentName,
@@ -774,10 +775,10 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Deletes the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -810,10 +811,10 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Deletes the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -847,10 +848,10 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Deletes the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -863,10 +864,10 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Deletes the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -880,10 +881,10 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Deletes the environment with the specified name in the specified subscription and resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -895,13 +896,13 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Lists all the available environments associated with the subscription and within the specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Environments operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnvironmentListResponseInner>>
@@ -927,14 +928,14 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Lists all the available environments associated with the subscription and within the specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Environments operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnvironmentListResponseInner>> listByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -959,7 +960,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Lists all the available environments associated with the subscription and within the specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -973,7 +974,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Lists all the available environments associated with the subscription and within the specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -989,7 +990,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Lists all the available environments associated with the subscription and within the specified resource group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1003,11 +1004,11 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Lists all the available environments within a subscription, irrespective of the resource groups.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Environments operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnvironmentListResponseInner>> listBySubscriptionWithResponseAsync() {
@@ -1028,13 +1029,13 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Lists all the available environments within a subscription, irrespective of the resource groups.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Environments operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EnvironmentListResponseInner>> listBySubscriptionWithResponseAsync(Context context) {
@@ -1054,7 +1055,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Lists all the available environments within a subscription, irrespective of the resource groups.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Environments operation on successful completion of {@link Mono}.
@@ -1066,7 +1067,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Lists all the available environments within a subscription, irrespective of the resource groups.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1080,7 +1081,7 @@ public final class EnvironmentsClientImpl implements EnvironmentsClient {
 
     /**
      * Lists all the available environments within a subscription, irrespective of the resource groups.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List Environments operation.
