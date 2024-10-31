@@ -10,6 +10,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
