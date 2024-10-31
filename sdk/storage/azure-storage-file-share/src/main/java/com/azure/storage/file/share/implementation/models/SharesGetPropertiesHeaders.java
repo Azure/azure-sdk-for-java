@@ -14,7 +14,6 @@ import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
 import com.azure.storage.file.share.models.ShareRootSquash;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.Map;
 
 /**

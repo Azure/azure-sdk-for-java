@@ -14,7 +14,6 @@ import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.PublicAccessType;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
