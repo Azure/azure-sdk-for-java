@@ -1114,8 +1114,9 @@ public class BlobApiTests extends BlobTestBase {
                  */
                 Mono.fromCallable(() -> bcUploading.upload(dataLocal.getDefaultInputStream(), dataLocal.getDefaultDataSize(),
                     true))
-                    .subscribeOn(Schedulers.boundedElastic()).subscribe();
+                    .subscribeOn(Schedulers.boundedElastic()).thenReturn(r).subscribe();
             }
+            Mono.just(r);
         });
         BlockBlobClient bcDownloading = instrument(new BlobClientBuilder()
             .addPolicy(policy)
