@@ -11,8 +11,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.common.config.ConfigDef;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +19,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CosmosSourceTaskConfig extends CosmosSourceConfig {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CosmosSourceTaskConfig.class);
     private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
 
     public static final String SOURCE_METADATA_TASK_UNIT = "azure.cosmos.source.task.metadataTaskUnit";

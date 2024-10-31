@@ -35,7 +35,7 @@ public class KafkaCosmosUtils {
         return null;
     }
 
-    public static String convertClientMetadataCacheToString(CosmosAsyncClient client) {
+    public static String convertClientMetadataCacheSnapshotToString(CosmosAsyncClient client) {
         if (client == null) {
             return null;
         }
