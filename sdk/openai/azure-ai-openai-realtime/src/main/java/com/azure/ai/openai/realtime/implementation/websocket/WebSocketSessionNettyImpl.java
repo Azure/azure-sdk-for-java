@@ -21,6 +21,7 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshaker;
 import io.netty.handler.codec.http.websocketx.WebSocketClientHandshakerFactory;
 import io.netty.handler.codec.http.websocketx.WebSocketCloseStatus;
+import io.netty.handler.codec.http.websocketx.WebSocketFrameAggregator;
 import io.netty.handler.codec.http.websocketx.WebSocketVersion;
 import io.netty.handler.codec.http.websocketx.extensions.compression.WebSocketClientCompressionHandler;
 import io.netty.handler.ssl.SslContext;
@@ -37,6 +38,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 final class WebSocketSessionNettyImpl implements WebSocketSession {
+
+    private final static int MAX_FRAME_SIZE = 65536;
 
     private final AtomicReference<ClientLogger> loggerReference;
     private final MessageEncoder messageEncoder;
@@ -75,7 +78,11 @@ final class WebSocketSessionNettyImpl implements WebSocketSession {
             if (sslCtx != null) {
                 p.addLast(sslCtx.newHandler(ch.alloc(), host, port));
             }
-            p.addLast(new HttpClientCodec(), new HttpObjectAggregator(8192), WebSocketClientCompressionHandler.INSTANCE,
+            p.addLast(
+                    new HttpClientCodec(),
+                    new HttpObjectAggregator(MAX_FRAME_SIZE),
+                    WebSocketClientCompressionHandler.INSTANCE,
+                    new WebSocketFrameAggregator(MAX_FRAME_SIZE),
                     handler);
         }
     }

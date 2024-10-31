@@ -5,6 +5,7 @@ import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionModel;
 import com.azure.ai.openai.realtime.models.RealtimeAudioInputTranscriptionSettings;
 import com.azure.ai.openai.realtime.models.RealtimeClientEventSessionUpdate;
 import com.azure.ai.openai.realtime.models.RealtimeRequestSession;
+import com.azure.ai.openai.realtime.models.RealtimeRequestSessionModality;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationCreated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventConversationItemCreated;
@@ -36,6 +37,8 @@ import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated;
 import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionUpdated;
 import com.azure.ai.openai.realtime.models.RealtimeServerVadTurnDetection;
 import reactor.core.publisher.Sinks;
+
+import java.util.Arrays;
 
 public final class RealtimeEventHandler {
 
@@ -181,6 +184,7 @@ public final class RealtimeEventHandler {
     public static RealtimeClientEventSessionUpdate sessionUpdate() {
         return new RealtimeClientEventSessionUpdate(
                 new RealtimeRequestSession()
+                        .setModalities(Arrays.asList(RealtimeRequestSessionModality.TEXT, RealtimeRequestSessionModality.AUDIO))
                         .setInputAudioTranscription(
                                 new RealtimeAudioInputTranscriptionSettings()
                                         .setModel(RealtimeAudioInputTranscriptionModel.WHISPER_1)
