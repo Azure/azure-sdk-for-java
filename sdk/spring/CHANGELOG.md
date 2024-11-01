@@ -9,7 +9,6 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 - Support to configure token credential bean name. [#41977](https://github.com/Azure/azure-sdk-for-java/issues/41977).
-- Support propagating shared beans for Service Bus binder and Event Hubs binder. [#42771](https://github.com/Azure/azure-sdk-for-java/pull/42771).
 
 #### Bugs Fixed
 - Fix primitive type prop (isManagedIdentityEnabled) copy issue. [#41977](https://github.com/Azure/azure-sdk-for-java/issues/41977).
