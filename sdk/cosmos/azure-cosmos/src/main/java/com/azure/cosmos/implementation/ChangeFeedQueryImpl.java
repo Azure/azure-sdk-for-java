@@ -227,8 +227,19 @@ class ChangeFeedQueryImpl<T> {
                                 changeFeedRequestOptionsAccessor.setPartitionKeyDefinition(options, documentCollectionValueHolder.v.getPartitionKey());
                                 changeFeedRequestOptionsAccessor.setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());
 
-                                client.addPartitionKeyRangeForPerPartitionAutomaticFailoverForChangeFeedRequest(req, options, collectionRoutingMapValueHolder.v);
-                                client.addPartitionLevelUnavailableRegionsForChangeFeedRequest(req, options, collectionRoutingMapValueHolder.v);
+                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = this.client
+                                    .addPartitionKeyRangeForChangeFeedOperationRequestForPerPartitionAutomaticFailover(
+                                        req,
+                                        options,
+                                        collectionRoutingMapValueHolder.v,
+                                        null);
+
+                                this.client
+                                    .addPartitionLevelUnavailableRegionsForChangeFeedOperationRequestForPerPartitionCircuitBreaker(
+                                        req,
+                                        options,
+                                        collectionRoutingMapValueHolder.v,
+                                        preResolvedPartitionKeyRangeIfAny);
 
                                 if (req.requestContext.getClientRetryPolicySupplier() != null) {
                                     DocumentClientRetryPolicy documentClientRetryPolicy = req.requestContext.getClientRetryPolicySupplier().get();

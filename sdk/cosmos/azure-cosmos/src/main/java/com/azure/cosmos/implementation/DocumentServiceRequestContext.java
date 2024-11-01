@@ -184,7 +184,7 @@ public class DocumentServiceRequestContext implements Cloneable {
         return unavailableRegionsForPartition;
     }
 
-    public void setUnavailableRegionsForPartition(List<String> unavailableRegionsForPartition) {
+    public void setUnavailableRegionsForPerPartitionCircuitBreaker(List<String> unavailableRegionsForPartition) {
         this.unavailableRegionsForPartition = unavailableRegionsForPartition;
     }
 

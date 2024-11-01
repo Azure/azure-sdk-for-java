@@ -58,6 +58,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -203,6 +204,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 expectedResponseCharacteristicsAfterFailover
             },
             {
+                OperationType.Batch,
+                HttpConstants.StatusCodes.GONE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailover,
+                expectedResponseCharacteristicsAfterFailover
+            },
+            {
                 OperationType.Create,
                 HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
                 HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
@@ -243,6 +252,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                 expectedResponseCharacteristicsAfterFailover
             },
             {
+                OperationType.Batch,
+                HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailover,
+                expectedResponseCharacteristicsAfterFailover
+            },
+            {
                 OperationType.Create,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
@@ -276,6 +293,14 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             },
             {
                 OperationType.Patch,
+                HttpConstants.StatusCodes.FORBIDDEN,
+                HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
+                HttpConstants.StatusCodes.OK,
+                expectedResponseCharacteristicsBeforeFailover,
+                expectedResponseCharacteristicsAfterFailover
+            },
+            {
+                OperationType.Batch,
                 HttpConstants.StatusCodes.FORBIDDEN,
                 HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN,
                 HttpConstants.StatusCodes.OK,
@@ -594,19 +619,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             regionMap);
     }
 
-    private void validateDiagnosticsContext(
-        CosmosDiagnostics actualCosmosDiagnostics,
-        int expectedRegionsContacted,
-        int expectedStatusCode) {
-
-        assertThat(actualCosmosDiagnostics).isNotNull();
-        assertThat(actualCosmosDiagnostics.getDiagnosticsContext()).isNotNull();
-        assertThat(actualCosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames()).isNotNull();
-        assertThat(actualCosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames()).isNotEmpty();
-        assertThat(actualCosmosDiagnostics.getDiagnosticsContext().getContactedRegionNames()).hasSize(expectedRegionsContacted);
-        assertThat(actualCosmosDiagnostics.getDiagnosticsContext().getStatusCode()).isEqualTo(expectedStatusCode);
-    }
-
     private StoreResponse constructStoreResponse(OperationType operationType, int statusCode) throws JsonProcessingException {
 
         StoreResponseBuilder storeResponseBuilder = StoreResponseBuilder.create()
@@ -617,6 +629,21 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
             return storeResponseBuilder
                 .withHeader(HttpConstants.HttpHeaders.CONTINUATION, "1")
                 .withHeader(HttpConstants.HttpHeaders.E_TAG, "1")
+                .build();
+        } else if (operationType == OperationType.Batch) {
+
+            FakeBatchResponse fakeBatchResponse = new FakeBatchResponse();
+
+            fakeBatchResponse
+                .seteTag("1")
+                .setStatusCode(HttpConstants.StatusCodes.OK)
+                .setSubStatusCode(HttpConstants.SubStatusCodes.UNKNOWN)
+                .setRequestCharge(1.0d)
+                .setResourceBody(getTestPojoObject())
+                .setRetryAfterMilliseconds("1");
+
+            return storeResponseBuilder
+                .withContent(OBJECT_MAPPER.writeValueAsString(Arrays.asList(fakeBatchResponse)))
                 .build();
         } else {
             return storeResponseBuilder.build();
@@ -863,7 +890,6 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
                     CosmosAsyncContainer asyncContainer = paramsWrapper.asyncContainer;
 
                     batch.createItemOperation(testObject);
-                    batch.readItemOperation(testObject.getId());
 
                     try {
                         CosmosBatchResponse batchResponse = asyncContainer.executeCosmosBatch(batch).block();
@@ -1010,6 +1036,75 @@ public class GlobalPartitionEndpointManagerForPerPartitionAutomaticFailoverTests
 
         public ExpectedResponseCharacteristics setShouldFinalResponseHaveSuccess(boolean shouldFinalResponseHaveSuccess) {
             this.shouldFinalResponseHaveSuccess = shouldFinalResponseHaveSuccess;
+            return this;
+        }
+    }
+
+    private static class FakeBatchResponse {
+
+        private int statusCode;
+
+        private int subStatusCode;
+
+        private double requestCharge;
+
+        private String eTag;
+
+        private Object resourceBody;
+
+        private String retryAfterMilliseconds;
+
+        public int getStatusCode() {
+            return statusCode;
+        }
+
+        public FakeBatchResponse setStatusCode(int statusCode) {
+            this.statusCode = statusCode;
+            return this;
+        }
+
+        public int getSubStatusCode() {
+            return subStatusCode;
+        }
+
+        public FakeBatchResponse setSubStatusCode(int subStatusCode) {
+            this.subStatusCode = subStatusCode;
+            return this;
+        }
+
+        public double getRequestCharge() {
+            return requestCharge;
+        }
+
+        public FakeBatchResponse setRequestCharge(double requestCharge) {
+            this.requestCharge = requestCharge;
+            return this;
+        }
+
+        public String geteTag() {
+            return eTag;
+        }
+
+        public FakeBatchResponse seteTag(String eTag) {
+            this.eTag = eTag;
+            return this;
+        }
+
+        public Object getResourceBody() {
+            return resourceBody;
+        }
+
+        public FakeBatchResponse setResourceBody(Object resourceBody) {
+            this.resourceBody = resourceBody;
+            return this;
+        }
+
+        public String getRetryAfterMilliseconds() {
+            return retryAfterMilliseconds;
+        }
+
+        public FakeBatchResponse setRetryAfterMilliseconds(String retryAfterMilliseconds) {
+            this.retryAfterMilliseconds = retryAfterMilliseconds;
             return this;
         }
     }
