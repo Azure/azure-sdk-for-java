@@ -33,7 +33,7 @@ import java.util.Collections;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.util.auth.AuthUtils.PROXY_AUTHORIZATION;
+import static io.clientcore.core.http.models.HttpHeaderName.PROXY_AUTHORIZATION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -86,7 +86,7 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertNull(authenticateRequest.header(PROXY_AUTHORIZATION));
+        assertNull(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()));
     }
 
     /**
@@ -105,7 +105,7 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
     }
 
     public static Stream<Arguments> authorizationIsAppliedSupplier() {
@@ -139,7 +139,7 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
 
         /*
          * Now that a request challenge has been handled we should apply a preemptive Proxy-Authorization header to
@@ -148,7 +148,7 @@ public class ProxyAuthenticatorTests {
         response = mockResponse(PREEMPTIVE_AUTHENTICATE, new Headers.Builder().build());
         authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(expectedPredicate.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
     }
 
     public static Stream<Arguments> authorizationCanBePipelinedSupplier() {
@@ -176,7 +176,7 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
@@ -189,7 +189,9 @@ public class ProxyAuthenticatorTests {
         assertNotNull(authenticateRequest);
 
         String nonce
-            = AuthUtils.parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
+            = AuthUtils
+                .parseAuthenticationOrAuthorizationHeader(
+                    authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()))
                 .get("nonce");
         assertEquals(ORIGINAL_NONCE, nonce);
     }
@@ -209,10 +211,12 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
 
         String cnonce
-            = AuthUtils.parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
+            = AuthUtils
+                .parseAuthenticationOrAuthorizationHeader(
+                    authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()))
                 .get("cnonce");
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
@@ -228,7 +232,9 @@ public class ProxyAuthenticatorTests {
         assertNotNull(authenticateRequest);
 
         String nonce
-            = AuthUtils.parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
+            = AuthUtils
+                .parseAuthenticationOrAuthorizationHeader(
+                    authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()))
                 .get("nonce");
         assertEquals(ORIGINAL_NONCE, nonce);
     }
@@ -248,7 +254,7 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
@@ -275,7 +281,7 @@ public class ProxyAuthenticatorTests {
 
         Request authenticateRequest = proxyAuthenticator.authenticate(route, response);
         assertNotNull(authenticateRequest);
-        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION)));
+        assertTrue(DIGEST_PREDICATE.test(authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName())));
 
         Interceptor interceptor = proxyAuthenticator.getProxyAuthenticationInfoInterceptor();
 
@@ -290,7 +296,9 @@ public class ProxyAuthenticatorTests {
         assertNotNull(authenticateRequest);
 
         String nonce
-            = AuthUtils.parseAuthenticationOrAuthorizationHeader(authenticateRequest.header(PROXY_AUTHORIZATION))
+            = AuthUtils
+                .parseAuthenticationOrAuthorizationHeader(
+                    authenticateRequest.header(PROXY_AUTHORIZATION.getCaseInsensitiveName()))
                 .get("nonce");
         assertEquals(UPDATED_NONCE, nonce);
     }

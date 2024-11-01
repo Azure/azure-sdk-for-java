@@ -36,8 +36,7 @@ public class BasicChallengeHandler implements ChallengeHandler {
     public void handleChallenge(HttpRequest request, Response<?> response, boolean isProxy) {
         if (canHandle(response, isProxy)) {
             synchronized (request.getHeaders()) {
-                HttpHeaderName headerName
-                    = isProxy ? HttpHeaderName.fromString(AuthUtils.PROXY_AUTHORIZATION) : HttpHeaderName.AUTHORIZATION;
+                HttpHeaderName headerName = isProxy ? HttpHeaderName.PROXY_AUTHORIZATION : HttpHeaderName.AUTHORIZATION;
                 // Check if the appropriate Authorization header is already present
                 if (request.getHeaders().getValue(headerName) == null) {
                     request.getHeaders().add(headerName, authHeader);

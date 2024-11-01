@@ -24,18 +24,40 @@ import java.util.stream.Collectors;
  * Utility class for handling various authentication-related operations.
  */
 public final class AuthUtils {
+    /**
+     * Suffix used for session-based algorithms.
+     */
     public static final String SESS = "-SESS";
-    public static final String MD5 = "MD5";
-    public static final String SHA_512_256 = "SHA-512-256";
-    public static final String ALGORITHM = "algorithm";
-    public static final String NEXT_NONCE = "nextnonce";
-    public static final String BASIC = "Basic";
-    public static final String DIGEST = "Digest";
 
     /**
-     * Header representing the authorization the client is presenting to a proxy server.
+     * MD5 hashing algorithm.
      */
-    public static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
+    public static final String MD5 = "MD5";
+
+    /**
+     * SHA-512-256 hashing algorithm.
+     */
+    public static final String SHA_512_256 = "SHA-512-256";
+
+    /**
+     * Key for the algorithm parameter in authentication headers.
+     */
+    public static final String ALGORITHM = "algorithm";
+
+    /**
+     * Key for the next nonce parameter in authentication headers.
+     */
+    public static final String NEXT_NONCE = "nextnonce";
+
+    /**
+     * Basic authentication scheme.
+     */
+    public static final String BASIC = "Basic";
+
+    /**
+     * Digest authentication scheme.
+     */
+    public static final String DIGEST = "Digest";
 
     private AuthUtils() {
         // Utility class should not be instantiated

@@ -501,8 +501,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpRequest proxyRequest = new HttpRequest(HttpMethod.GET, createUri());
         basicHandler.handleChallenge(proxyRequest, new HttpResponse<>(proxyRequest, 200, headers, null), true);
 
-        assertEquals(EXPECTED_BASIC,
-            proxyRequest.getHeaders().getValue(HttpHeaderName.fromString(AuthUtils.PROXY_AUTHORIZATION)));
+        assertEquals(EXPECTED_BASIC, proxyRequest.getHeaders().getValue(HttpHeaderName.PROXY_AUTHORIZATION));
     }
 
     @Test
@@ -515,7 +514,7 @@ public class AuthorizationChallengeHandlerTests {
         HttpRequest proxyRequest = new HttpRequest(HttpMethod.GET, createUri());
         digestHandler.handleChallenge(proxyRequest, new HttpResponse<>(proxyRequest, 200, headers, null), true);
 
-        assertNotNull(proxyRequest.getHeaders().getValue(HttpHeaderName.fromString(AuthUtils.PROXY_AUTHORIZATION)));
+        assertNotNull(proxyRequest.getHeaders().getValue(HttpHeaderName.PROXY_AUTHORIZATION));
     }
 
     private static Stream<Arguments> parseAuthenticationOrAuthorizationHeaderSupplier() {

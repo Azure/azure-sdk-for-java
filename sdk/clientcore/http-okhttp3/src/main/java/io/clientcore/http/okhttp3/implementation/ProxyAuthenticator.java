@@ -22,6 +22,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
+import static io.clientcore.core.http.models.HttpHeaderName.PROXY_AUTHORIZATION;
+
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.
  */
@@ -30,10 +32,6 @@ public final class ProxyAuthenticator implements Authenticator {
         + "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
 
     private static final String PREEMPTIVE_AUTHENTICATE = "Preemptive Authenticate";
-    /**
-     * Header representing the authorization the client is presenting to a proxy server.
-     */
-    private static final String PROXY_AUTHORIZATION = "Proxy-Authorization";
 
     /**
      * Header representing additional information a proxy server is expecting during future authentication requests.
@@ -98,7 +96,10 @@ public final class ProxyAuthenticator implements Authenticator {
         if (PREEMPTIVE_AUTHENTICATE.equalsIgnoreCase(response.message())) {
             // If we have already authenticated, apply the stored Proxy-Authorization header.
             if (lastAuthorizationHeader != null) {
-                return response.request().newBuilder().header(PROXY_AUTHORIZATION, lastAuthorizationHeader).build();
+                return response.request()
+                    .newBuilder()
+                    .header(PROXY_AUTHORIZATION.getCaseInsensitiveName(), lastAuthorizationHeader)
+                    .build();
             }
             // If no previous authorization, return the request unchanged.
             return response.request();
@@ -125,12 +126,14 @@ public final class ProxyAuthenticator implements Authenticator {
         }
         // set isProxy true to indicate proxy authentication
         compositeChallengeHandler.handleChallenge(httpRequest, httpResponse, true);
-        authorizationHeader = httpRequest.getHeaders().getValue(HttpHeaderName.AUTHORIZATION);
+        authorizationHeader = httpRequest.getHeaders().getValue(PROXY_AUTHORIZATION);
 
-        if (authorizationHeader != null) {
-            // Store the Proxy-Authorization header for future preemptive requests.
-            lastAuthorizationHeader = authorizationHeader;
-            requestBuilder.header(PROXY_AUTHORIZATION, authorizationHeader);
+        synchronized (this) {
+            if (authorizationHeader != null) {
+                // Store the Proxy-Authorization header for future preemptive requests.
+                lastAuthorizationHeader = authorizationHeader;
+                requestBuilder.header(PROXY_AUTHORIZATION.getCaseInsensitiveName(), authorizationHeader);
+            }
         }
 
         return requestBuilder.build();
@@ -194,8 +197,8 @@ public final class ProxyAuthenticator implements Authenticator {
             if (!AuthUtils.isNullOrEmpty(proxyAuthenticationInfoHeader)) {
                 Map<String, String> authenticationInfoPieces
                     = AuthUtils.parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
-                Map<String, String> authorizationPieces
-                    = AuthUtils.parseAuthenticationOrAuthorizationHeader(chain.request().header(PROXY_AUTHORIZATION));
+                Map<String, String> authorizationPieces = AuthUtils.parseAuthenticationOrAuthorizationHeader(
+                    chain.request().header(PROXY_AUTHORIZATION.getCaseInsensitiveName()));
 
                 /*
                  * If the authentication info response contains a cnonce or nc value it MUST match the value sent in the

@@ -110,8 +110,7 @@ public class DigestChallengeHandler implements ChallengeHandler {
                 request.getUri().toString(), algorithm, digestFunction, response.getBody());
 
             synchronized (request.getHeaders()) {
-                HttpHeaderName headerName
-                    = isProxy ? HttpHeaderName.fromString(AuthUtils.PROXY_AUTHORIZATION) : HttpHeaderName.AUTHORIZATION;
+                HttpHeaderName headerName = isProxy ? HttpHeaderName.PROXY_AUTHORIZATION : HttpHeaderName.AUTHORIZATION;
                 request.getHeaders().set(headerName, digestAuthHeader);
             }
         }
