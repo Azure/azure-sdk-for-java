@@ -3,7 +3,7 @@
   "config": {
     "connector.class": "com.azure.cosmos.kafka.connect.CosmosSinkConnector",
     "tasks.max": "5",
-	  "topics": "GreenTaxiRecords",
+	  "topics": "{topic}",
     "value.converter": "org.apache.kafka.connect.json.JsonConverter",
     "value.converter.schemas.enable": "false",
     "key.converter": "org.apache.kafka.connect.json.JsonConverter",

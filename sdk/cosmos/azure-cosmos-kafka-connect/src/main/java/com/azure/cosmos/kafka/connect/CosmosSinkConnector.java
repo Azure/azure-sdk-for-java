@@ -91,7 +91,7 @@ public final class CosmosSinkConnector extends SinkConnector {
                     clientMetadataCachesString);
             }
 
-            if (StringUtils.isNotEmpty(clientMetadataCachesString)) {
+            if (StringUtils.isNotEmpty(throughputControlClientMetadataCachesString)) {
                 taskConfigs.put(
                     CosmosSinkTaskConfig.THROUGHPUT_CONTROL_COSMOS_CLIENT_METADATA_CACHES_SNAPSHOT,
                     throughputControlClientMetadataCachesString);

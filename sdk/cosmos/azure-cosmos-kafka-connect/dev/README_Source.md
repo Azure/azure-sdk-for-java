@@ -29,6 +29,10 @@ Otherwise, you can use JAR file from latest [Release](https://mvnrepository.com/
 You can also package a new JAR file from the source code.
 
 ```bash
+# clone the azure-cosmos repo if you haven't done so already
+git clone https://github.com/Azure/azure-sdk-for-java.git
+cd sdk/cosmos
+
 mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos,azure-cosmos-tests -am clean install
 mvn -e -DskipTests -Dgpg.skip -Dmaven.javadoc.skip=true -Dcodesnippet.skip=true -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl ,azure-cosmos-kafka-connect clean install
 
@@ -57,24 +61,24 @@ Refer to the [source properties](#source-configuration-properties) section for m
 
 ```json
 {
-    "name": "cosmosdb-source-connectorv2",
-    "config": {
-        "connector.class": "com.azure.cosmos.kafka.connect.CosmosSourceConnector",
-        "tasks.max": "5",
-        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
-        "value.converter.schemas.enable": "false",
-        "key.converter": "org.apache.kafka.connect.json.JsonConverter",
-        "key.converter.schemas.enable": "false",
-        "azure.cosmos.account.endpoint":"{endpoint}",
-        "azure.cosmos.account.key":"{masterKey}",
-        "azure.cosmos.application.name": "{applicationName}",
-        "azure.cosmos.source.database.name":"{database}",
-        "azure.cosmos.source.containers.includedList":"{container}",
-        "azure.cosmos.source.changeFeed.maxItemCountHint":"500",
-        "azure.cosmos.source.containers.topicMap":"{topic}#{container}",
-        "azure.cosmos.source.metadata.storage.type":"Cosmos",
-        "azure.cosmos.source.metadata.storage.name":"{metadataContainerName}"
-    }
+  "name": "cosmosdb-source-connector-v2",
+  "config": {
+    "connector.class": "com.azure.cosmos.kafka.connect.CosmosSourceConnector",
+    "tasks.max": "5",
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "key.converter.schemas.enable": "false",
+    "azure.cosmos.account.endpoint":"{endpoint}",
+    "azure.cosmos.account.key":"{masterKey}",
+    "azure.cosmos.application.name": "{applicationName}",
+    "azure.cosmos.source.database.name":"{database}",
+    "azure.cosmos.source.containers.includedList":"{container}",
+    "azure.cosmos.source.changeFeed.maxItemCountHint":"500",
+    "azure.cosmos.source.containers.topicMap":"{topic}#{container}",
+    "azure.cosmos.source.metadata.storage.type":"Cosmos",
+    "azure.cosmos.source.metadata.storage.name":"{metadataContainerName}"
+  }
 }
 
 ```
