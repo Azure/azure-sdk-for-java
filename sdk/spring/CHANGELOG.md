@@ -21,13 +21,13 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
 
 #### Features Added
-- Support propagating shared beans for Service Bus binder. [#42771](https://github.com/Azure/azure-sdk-for-java/pull/42771).
+- Support propagating the custom beans for Service Bus binder. [#42771](https://github.com/Azure/azure-sdk-for-java/pull/42771).
 
 ### Spring Cloud Stream Event Hubs Binder
 This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
 
 #### Features Added
-- Support propagating shared beans for Event Hubs binder. [#42771](https://github.com/Azure/azure-sdk-for-java/pull/42771).
+- Support propagating the custom beans for Event Hubs binder. [#42771](https://github.com/Azure/azure-sdk-for-java/pull/42771).
 
 ## 5.17.1 (2024-10-11)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.12, 3.2.0-3.2.10, 3.3.0-3.3.4. (Note: 3.0.x (x>13), 3.1.y (y>12), 3.2.z (z>10) and 3.3.m (m>4) should be supported, but they aren't tested with this release.)
