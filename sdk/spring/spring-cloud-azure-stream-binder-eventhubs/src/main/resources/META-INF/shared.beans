@@ -1,0 +1,4 @@
+com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer
+com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsProcessorFactoryCustomizer
+com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsProducerFactoryCustomizer
+com.fasterxml.jackson.databind.ObjectMapper
