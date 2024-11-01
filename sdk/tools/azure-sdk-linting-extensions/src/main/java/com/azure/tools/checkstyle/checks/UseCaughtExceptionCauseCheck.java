@@ -7,8 +7,11 @@ import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 /**
@@ -31,8 +34,8 @@ import java.util.stream.Collectors;
  */
 public class UseCaughtExceptionCauseCheck extends AbstractCheck {
     static final String UNUSED_CAUGHT_EXCEPTION_ERROR = "Caught and rethrown exceptions should include the caught"
-        + " exception as the cause in the rethrown exception. Dropping the causal exception makes it more difficult"
-        + " to troubleshoot issues when they arise. Include the caught exception variable %s as the cause.";
+        + " exception as the cause in the rethrown exception. Dropping the causal exception makes it more difficult to"
+        + " troubleshoot issues when they arise. Include the caught exception variable %s as the cause.";
 
     @Override
     public int[] getDefaultTokens() {
@@ -52,18 +55,15 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
     @Override
     public void visitToken(DetailAST catchBlockToken) {
         // get the caught exception variable name from the catch block
-        final DetailAST catchStatement = catchBlockToken.findFirstToken(TokenTypes.PARAMETER_DEF);
-        final String caughtExceptionVariableName = catchStatement.findFirstToken(TokenTypes.IDENT).getText();
-
-        // get all throw statements from current catch block
-        final List<DetailAST> throwStatements = getThrowStatements(catchBlockToken);
+        DetailAST catchStatement = catchBlockToken.findFirstToken(TokenTypes.PARAMETER_DEF);
+        String caughtExceptionVariableName = catchStatement.findFirstToken(TokenTypes.IDENT).getText();
 
         // get possible exception names to which the original exception might be assigned to
-        final List<String> wrappedExceptions =
-            getWrappedExceptions(catchBlockToken, catchBlockToken, caughtExceptionVariableName);
+        List<String> wrappedExceptions = new ArrayList<>();
+        getWrappedExceptions(catchBlockToken, catchBlockToken, caughtExceptionVariableName, wrappedExceptions);
 
-        throwStatements.forEach(throwToken -> {
-            final List<String> throwParamNames = new LinkedList<>();
+        forEachThrowStatement(catchBlockToken, throwToken -> {
+            Set<String> throwParamNames = new HashSet<>();
             getThrowParamNames(throwToken, throwParamNames);
             // include the original exception name to the list to look for in throw statements
             wrappedExceptions.add(caughtExceptionVariableName);
@@ -86,14 +86,11 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
      * @param currentCatchAST current catch block token
      * @param detailAST catch block throw parent token
      * @param caughtExceptionVariableName list containing the exception tokens
-     * @return list of wrapped exception tokens
+     * @param wrappedExceptionNames list of wrapped exception names to add to
      */
-    private List<String> getWrappedExceptions(DetailAST currentCatchAST, DetailAST detailAST,
-                                              String caughtExceptionVariableName) {
-
-        final List<String> wrappedExceptionNames = new LinkedList<>();
-
-        for (DetailAST currentNode : getChildrenNodes(detailAST)) {
+    private void getWrappedExceptions(DetailAST currentCatchAST, DetailAST detailAST,
+        String caughtExceptionVariableName, List<String> wrappedExceptionNames) {
+        forEachChildNode(detailAST, currentNode -> {
             // Recursively traverse through the children of the parent node to collect references where the
             // caught exception variable is used.
             if (currentNode.getType() == TokenTypes.IDENT
@@ -103,18 +100,16 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
 
             // add collection in case of last node on this level
             if (currentNode.getFirstChild() != null) {
-                wrappedExceptionNames.addAll(
-                    getWrappedExceptions(currentCatchAST, currentNode, caughtExceptionVariableName));
+                getWrappedExceptions(currentCatchAST, currentNode, caughtExceptionVariableName, wrappedExceptionNames);
             }
-        }
-        return wrappedExceptionNames;
+        });
     }
 
     /**
      * Returns the wrapped exception variable name
      */
     private void getWrappedExceptionVariable(DetailAST currentCatchBlock, List<String> wrappedExceptionNames,
-                                             DetailAST currentToken) {
+        DetailAST currentToken) {
         DetailAST temp = currentToken;
 
         // Get the node assigning the caught exception variable, traversing upwards starting from the current node.
@@ -145,10 +140,10 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
      * @param throwParent The parent throw token
      * @param paramNames The list containing the parameter names
      */
-    private void getThrowParamNames(DetailAST throwParent, List<String> paramNames) {
+    private void getThrowParamNames(DetailAST throwParent, Set<String> paramNames) {
         // get all param names by recursively going through all the throw statements retrieving the token type IDENT
         // for the text
-        getChildrenNodes(throwParent).forEach(currentNode -> {
+        forEachChildNode(throwParent, currentNode -> {
             if (currentNode.getType() == TokenTypes.IDENT) {
                 paramNames.add(currentNode.getText());
             }
@@ -162,38 +157,32 @@ public class UseCaughtExceptionCauseCheck extends AbstractCheck {
      * Recursive method that searches for all the LITERAL_THROW on the current catch token.
      *
      * @param catchBlockToken A start token.
-     * @return list of throw tokens
+     * @param throwStatementConsumer Callback to consume each throw statement found.
      */
-    private List<DetailAST> getThrowStatements(DetailAST catchBlockToken) {
-        final List<DetailAST> throwStatements = new LinkedList<>();
-        getChildrenNodes(catchBlockToken).forEach(currentNode -> {
+    private void forEachThrowStatement(DetailAST catchBlockToken, Consumer<DetailAST> throwStatementConsumer) {
+        forEachChildNode(catchBlockToken, currentNode -> {
             if (TokenTypes.LITERAL_THROW == currentNode.getType()) {
-                throwStatements.add(currentNode);
+                throwStatementConsumer.accept(currentNode);
             }
             if (currentNode.getFirstChild() != null) {
-                throwStatements.addAll(getThrowStatements(currentNode));
+                forEachThrowStatement(currentNode, throwStatementConsumer);
             }
         });
-        return throwStatements;
     }
 
     /**
      * Gets all the children by traversing the tree generated from the current parent node.
      *
      * @param token parent node.
-     * @return List of children of the current node.
+     * @param childNodeConsumer Callback to consume each child node found.
      */
-    private static List<DetailAST> getChildrenNodes(DetailAST token) {
-        final List<DetailAST> result = new LinkedList<>();
-
+    private static void forEachChildNode(DetailAST token, Consumer<DetailAST> childNodeConsumer) {
         DetailAST currNode = token.getFirstChild();
 
         // Add all the nodes on the current level of the tree and then move to the next level
         while (currNode != null) {
-            result.add(currNode);
+            childNodeConsumer.accept(currNode);
             currNode = currNode.getNextSibling();
         }
-
-        return result;
     }
 }

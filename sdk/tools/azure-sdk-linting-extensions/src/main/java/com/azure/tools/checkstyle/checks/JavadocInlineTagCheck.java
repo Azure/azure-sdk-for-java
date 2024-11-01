@@ -67,8 +67,8 @@ public class JavadocInlineTagCheck extends AbstractJavadocCheck {
         final DetailNode tagNameNode =
             JavadocUtil.findFirstToken(htmlElementStartNode, JavadocTokenTypes.HTML_TAG_NAME);
         // HTML tags are case-insensitive
-        final String tagName = tagNameNode.getText().toLowerCase();
-        if (!"pre".equals(tagName) && !"code".equals(tagName)) {
+        String tagName = tagNameNode.getText();
+        if (!"pre".regionMatches(true, 0, tagName, 0, 3) && !"code".regionMatches(true, 0, tagName, 0, 4)) {
             return;
         }
 

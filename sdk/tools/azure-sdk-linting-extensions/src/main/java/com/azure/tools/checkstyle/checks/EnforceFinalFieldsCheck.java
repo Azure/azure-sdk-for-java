@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * Verify the whenever a field is assigned just once in constructor to be final
  * Tree traversal will pre-compute and fill 3 private containers:
- * nonFinalFields: keep an array of non private fields as tokens (to keep line number)
+ * nonFinalFields: keep an array of non-private fields as tokens (to keep line number)
  * assignmentsFromConstructor: Save a set of string for each field name that gets its value assigned in constructor
  * assignmentsFromMethods: Save a set of strings for each field name that gets updated in any method
  * <p>
@@ -29,8 +29,8 @@ import java.util.Set;
  * strings inside nonFinalFields AND assignmentsFromConstructor but NOT in assignmentsFromMethods
  */
 public class EnforceFinalFieldsCheck extends AbstractCheck {
-    private static final String ERROR_SUGGESTION = "You should consider making the field final, "
-        + "or suppressing the warning.";
+    private static final String ERROR_SUGGESTION
+        = "You should consider making the field final, or suppressing the warning.";
     private static final String ERROR_MSG = "Field \"%s\" is only assigned in constructor and it is not final. "
         + ERROR_SUGGESTION;
     private static final String ERROR_FIELD_ALONE = "Field \"%s\" is not assigned in constructor or methods."

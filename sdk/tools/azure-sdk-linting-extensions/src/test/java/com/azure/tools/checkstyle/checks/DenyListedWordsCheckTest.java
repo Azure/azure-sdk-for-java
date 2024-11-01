@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.Arrays;
 
+import static com.azure.tools.checkstyle.checks.DenyListedWordsCheck.getErrorMessage;
 import static com.azure.tools.checkstyle.checks.TestUtils.expectedErrorMessage;
 
 public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
@@ -41,19 +42,15 @@ public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
             "@JacksonXmlRootElement(localName = \"File-SetHTTPHeaders-Headers\")",
             "public class CamelCaseTestData {",
             "    public void errorHTTPMethod() { throw new RuntimeException(\"Error Messages.\"); }",
-            "",
             "    public void validHttpMethod() { throw new RuntimeException(\"Error Messages.\"); }",
-            "",
             "    public static void itIsAURLError() { throw new RuntimeException(\"Error Messages.\"); }",
-            "",
             "    protected void invalidXMLMethod() { throw new RuntimeException(\"Error Messages.\"); }",
-            "",
             "    private void shouldNotSearch() { throw new RuntimeException(\"Error Messages.\"); }",
             "}"
             ));
         String[] expected = {
-            expectedErrorMessage(3, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "errorHTTPMethod", "XML, HTTP, URL")),
-            expectedErrorMessage(9, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "invalidXMLMethod", "XML, HTTP, URL"))
+            expectedErrorMessage(3, 5, getErrorMessage("errorHTTPMethod", "URL, HTTP, XML")),
+            expectedErrorMessage(6, 5, getErrorMessage("invalidXMLMethod", "URL, HTTP, XML"))
         };
         verify(checker, new File[]{ file }, file.getAbsolutePath(), expected);
     }
@@ -64,9 +61,7 @@ public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
             "import java.time.Duration;",
             "",
             "public interface DenyListedWordsInterface {",
-            "",
             "    int HTTP_STATUS_TOO_MANY_REQUESTS = 429;",
-            "",
             "    Duration calculateRetryDelay(int retryAttempts);",
             "}"
         ));

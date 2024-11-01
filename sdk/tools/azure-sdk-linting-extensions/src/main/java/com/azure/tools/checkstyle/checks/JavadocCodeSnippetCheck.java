@@ -151,8 +151,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
 
             // Check for CodeSnippet naming pattern matching
             if (customDescription == null || customDescription.isEmpty()
-                || !isNamingMatched(customDescription.toLowerCase(Locale.ROOT),
-                fullPathWithoutParameters.toLowerCase(Locale.ROOT), parameters)) {
+                || !isNamingMatched(customDescription, fullPathWithoutParameters, parameters)) {
                 log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codesnippet description "
                     + "''%s'' does not match ''%s''. Case Insensitive.", customDescription, fullPath));
             }
@@ -237,7 +236,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
         if (descriptionSegments.length == 2) {
             // Both of codesnippet name and the method has parameters
             if (parameters != null) {
-                return descriptionSegments[1].toLowerCase().startsWith(parameters.toLowerCase());
+                return parameters.regionMatches(true, 0, descriptionSegments[1], 0, parameters.length());
             }
 
             // Codesnippet name has parameters but the method does not.

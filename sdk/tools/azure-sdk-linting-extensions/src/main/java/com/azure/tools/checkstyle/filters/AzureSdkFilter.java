@@ -5,9 +5,6 @@ package com.azure.tools.checkstyle.filters;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.Filter;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * A Checkstyle filter that filters out common Checkstyle violations that should be ignored by all SDKs.
  * <p>
@@ -25,16 +22,6 @@ import java.util.regex.Pattern;
  * </ul>
  */
 public class AzureSdkFilter implements Filter {
-    // Pattern that matches sample, test, and test-shared files.
-    // This will capture the file type (sample, test, or test-shared) in group 1, which removes the need for multiple
-    // Patterns to match whether the file is a sample, test, or test-shared file to improve performance.
-    private static final Pattern SAMPLE_OR_TEST_FILE_PATTERN
-        = Pattern.compile(".*src[/\\\\](samples|test|test-shared)[/\\\\]java[/\\\\].*\\.java$");
-
-    // Pattern that matches implementation files.
-    private static final Pattern IMPLEMENTATION_FILE_PATTERN
-        = Pattern.compile(".*src[/\\\\].*[/\\\\]implementation[/\\\\].*\\.java$");
-
     // The package name prefix for Azure SDK Checkstyle checks
     private static final String AZURE_SDK_CHECK_START = "com.azure.tools.checkstyle.checks.";
 
@@ -49,21 +36,44 @@ public class AzureSdkFilter implements Filter {
     }
 
     private static boolean isIgnoredSampleOrTest(AuditEvent event) {
-        Matcher matcher = SAMPLE_OR_TEST_FILE_PATTERN.matcher(event.getFileName());
+        String fileName = event.getFileName();
 
-        if (!matcher.matches()) {
-            // Not a test or sample file, so don't filter
+        // File isn't a Java file.
+        if (!fileName.endsWith(".java")) {
             return false;
         }
 
-        boolean isTestFile = matcher.group(1).startsWith("test");
+        int srcStart = fileName.indexOf("src");
+
+        // Doesn't contain .*src
+        if (srcStart == -1) {
+            return false;
+        }
+
+        char srcPathDelimiter = fileName.charAt(srcStart + 3 + 1);
+
+        // Doesn't match the start .*src[/\\]
+        if (srcPathDelimiter != '/' && srcPathDelimiter != '\\') {
+            return false;
+        }
+
+        // Use the delimiter found previously to find the next path delimiter.
+        int nextPathSegment = fileName.indexOf((srcPathDelimiter == '/') ? '/' : '\\', srcStart + 3 + 2);
+
+        // There isn't another path segment.
+        if (nextPathSegment == -1) {
+            return false;
+        }
+
+        String folderName = fileName.substring(srcStart + 3 + 2, nextPathSegment);
+        boolean isTestFile = folderName.startsWith("test");
 
         String violation = event.getViolation().getSourceName();
 
         if (violation.contains("Javadoc")) {
             // Ignore missing Javadoc comments in test code
             return true;
-        } else if  (isTestFile && violation.contains("AvoidStarImport")) {
+        } else if (isTestFile && violation.contains("AvoidStarImport")) {
             // Ignore star imports in test code
             return true;
         } else if (isTestFile && violation.contains("AvoidNestedBlocks")) {
@@ -84,15 +94,41 @@ public class AzureSdkFilter implements Filter {
     }
 
     private static boolean isIgnoredImplementation(AuditEvent event) {
-        Matcher matcher = IMPLEMENTATION_FILE_PATTERN.matcher(event.getFileName());
+        String fileName = event.getFileName();
 
-        if (!matcher.matches()) {
-            // Not an implementation file, so don't filter
+        // File isn't a Java file.
+        if (!fileName.endsWith(".java")) {
             return false;
         }
 
-        String violation = event.getViolation().getSourceName();
+        int srcStart = fileName.indexOf("src");
 
-        return violation.startsWith(EXTERNAL_DEPENDENCY_EXPOSED);
+        // Doesn't contain .*src
+        if (srcStart == -1) {
+            return false;
+        }
+
+        char srcPathDelimiter = fileName.charAt(srcStart + 3 + 1);
+
+        // Doesn't match the start .*src[/\\]
+        if (srcPathDelimiter != '/' && srcPathDelimiter != '\\') {
+            return false;
+        }
+
+        int implementationPosition = fileName.indexOf("implementation", srcStart + 2);
+
+        // Doesn't contain implementation in the file path.
+        if (implementationPosition == -1) {
+            return false;
+        }
+
+        char implementationBeforePathDelimiter = fileName.charAt(implementationPosition - 1);
+        char implementationAfterPathDelimiter = fileName.charAt(implementationPosition + 14 + 1);
+        if ((implementationBeforePathDelimiter != '/' && implementationBeforePathDelimiter != '\\')
+            || (implementationAfterPathDelimiter != '/' && implementationAfterPathDelimiter != '\\')) {
+            return false;
+        }
+
+        return event.getViolation().getSourceName().startsWith(EXTERNAL_DEPENDENCY_EXPOSED);
     }
 }

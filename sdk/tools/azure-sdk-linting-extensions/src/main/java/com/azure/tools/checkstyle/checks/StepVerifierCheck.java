@@ -19,8 +19,8 @@ public class StepVerifierCheck extends AbstractCheck {
     private static final String METHOD_CALL = "StepVerifier.setDefaultTimeout";
 
     static final String ERROR_MESSAGE = "Do not use StepVerifier.setDefaultTimeout as it can affect other tests. "
-                                        + "Instead use expect* methods on StepVerifier and use verify(Duration) to "
-                                        + "set timeouts on a test-by-test basis.";
+        + "Instead use expect* methods on StepVerifier and use verify(Duration) to set timeouts on a test-by-test "
+        + "basis.";
 
     private boolean hasStaticImport;
 
