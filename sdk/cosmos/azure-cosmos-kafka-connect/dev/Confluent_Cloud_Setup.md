@@ -9,7 +9,7 @@ This guide walks through setting up Confluent Cloud using Docker containers.
 - Java 11+ ([download](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html))
 - Maven ([download](https://maven.apache.org/download.cgi))
 - Docker ([download](https://www.docker.com/products/docker-desktop))
-- CosmosDB [Setting up an Azure Cosmos DB Instance]<!--(CosmosDB_Setup.md)-->
+- CosmosDB [Setting up an Azure Cosmos DB Instance](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/CosmosDB_Setup.md)
 
 ## Setup
 
