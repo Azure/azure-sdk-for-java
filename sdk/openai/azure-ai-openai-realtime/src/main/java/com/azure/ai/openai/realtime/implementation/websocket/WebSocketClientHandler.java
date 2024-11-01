@@ -22,16 +22,16 @@ import java.util.function.Consumer;
 
 final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
-    private final WebSocketClientHandshaker handshaker;
+    private final WebSocketClientHandshaker handShaker;
     private ChannelPromise handshakeFuture;
 
     private final AtomicReference<ClientLogger> loggerReference;
     private final MessageDecoder messageDecoder;
     private final Consumer<Object> messageHandler;
 
-    WebSocketClientHandler(WebSocketClientHandshaker handshaker, AtomicReference<ClientLogger> loggerReference,
+    WebSocketClientHandler(WebSocketClientHandshaker handShaker, AtomicReference<ClientLogger> loggerReference,
                            MessageDecoder messageDecoder, Consumer<Object> messageHandler) {
-        this.handshaker = handshaker;
+        this.handShaker = handShaker;
         this.loggerReference = loggerReference;
         this.messageDecoder = messageDecoder;
         this.messageHandler = messageHandler;
@@ -48,15 +48,15 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) {
-        handshaker.handshake(ctx.channel());
+        handShaker.handshake(ctx.channel());
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Object msg) {
         Channel ch = ctx.channel();
-        if (handshakeFuture != null && !handshaker.isHandshakeComplete()) {
+        if (handshakeFuture != null && !handShaker.isHandshakeComplete()) {
             try {
-                handshaker.finishHandshake(ch, (FullHttpResponse) msg);
+                handShaker.finishHandshake(ch, (FullHttpResponse) msg);
                 handshakeFuture.setSuccess();
             } catch (WebSocketHandshakeException e) {
                 handshakeFuture.setFailure(e);
@@ -77,9 +77,6 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
             // Text
             TextWebSocketFrame textFrame = (TextWebSocketFrame) frame;
             loggerReference.get().atVerbose().addKeyValue("text", textFrame.text()).log("Received TextWebSocketFrame");
-            // TODO jpalvarez, accumulate fragments while !frame.isFinalFragment()
-            // RFC 6455, Section 5.4 https://www.rfc-editor.org/rfc/rfc6455.html#section-5.4
-            // only TextFrames can be fragmented
 
             Object wpsMessage = messageDecoder.decode(textFrame.text());
             messageHandler.accept(wpsMessage);
@@ -116,7 +113,11 @@ final class WebSocketClientHandler extends SimpleChannelInboundHandler<Object> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        cause.printStackTrace();
+        ClientLogger logger = loggerReference.get();
+        if (logger != null) {
+            logger.atError().log(cause);
+        }
+//        cause.printStackTrace();
         if (handshakeFuture != null && !handshakeFuture.isDone()) {
             handshakeFuture.setFailure(cause);
         }
