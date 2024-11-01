@@ -1195,7 +1195,7 @@ public final class ServiceBusClientBuilder
         private static final ConfigurationProperty<Boolean> SESSION_CHANNEL_CACHE_PROPERTY
             = ConfigurationPropertyBuilder.ofBoolean(SESSION_CHANNEL_CACHE_KEY)
                 .environmentVariableName(SESSION_CHANNEL_CACHE_KEY)
-                .defaultValue(false) // "SessionCache" and "RequestResponseChannelCache" requires explicit opt in along with v2 stack opt in.
+                .defaultValue(true) // "SessionCache" and "RequestResponseChannelCache" is auto on when v2 stack is also opted in.
                 .shared(true)
                 .build();
         private final AtomicReference<Boolean> sessionChannelCacheFlag = new AtomicReference<>();
@@ -1267,13 +1267,13 @@ public final class ServiceBusClientBuilder
         }
 
         /**
-         * SessionCache and RequestResponseChannelCache not opted-in default, but the application may opt in.
+         * SessionCache and RequestResponseChannelCache is on by default, but the application may opt out.
          *
          * @param configuration the client configuration.
-         * @return true if SessionCache and RequestResponseChannelCache is opted-in.
+         * @return true if SessionCache and RequestResponseChannelCache is not opted-out.
          */
         boolean isSessionChannelCacheEnabled(Configuration configuration) {
-            return isOptedIn(configuration, SESSION_CHANNEL_CACHE_PROPERTY, sessionChannelCacheFlag);
+            return !isOptedOut(configuration, SESSION_CHANNEL_CACHE_PROPERTY, sessionChannelCacheFlag);
         }
 
         // Obtain the shared connection-cache based on the V2-Stack.
@@ -1351,33 +1351,6 @@ public final class ServiceBusClientBuilder
                         = "If your application fails to work without explicitly setting {} configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
                     ServiceBusClientBuilder.LOGGER.info(logMessage, propName);
                 }
-            }
-            return choiceFlag.get();
-        }
-
-        private boolean isOptedIn(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
-            AtomicReference<Boolean> choiceFlag) {
-            final Boolean flag = choiceFlag.get();
-            if (flag != null) {
-                return flag;
-            }
-
-            final String propName = configProperty.getName();
-            final boolean isOptedIn;
-            if (configuration != null) {
-                isOptedIn = configuration.get(configProperty);
-            } else {
-                assert !CoreUtils.isNullOrEmpty(propName);
-                if (!CoreUtils.isNullOrEmpty(System.getenv(propName))) {
-                    isOptedIn = "true".equalsIgnoreCase(System.getenv(propName));
-                } else if (!CoreUtils.isNullOrEmpty(System.getProperty(propName))) {
-                    isOptedIn = "true".equalsIgnoreCase(System.getProperty(propName));
-                } else {
-                    isOptedIn = false;
-                }
-            }
-            if (choiceFlag.compareAndSet(null, isOptedIn)) {
-                ServiceBusClientBuilder.LOGGER.verbose("Selected configuration {}={}", propName, isOptedIn);
             }
             return choiceFlag.get();
         }
@@ -1784,11 +1757,17 @@ public final class ServiceBusClientBuilder
 
         /**
          * Max concurrent messages that this processor should process.
-         *
+         * <p>
+         * This setting allows the application to configure the number of concurrent calls to the message processing
+         * callback {@link ServiceBusSessionProcessorClientBuilder#processMessage(Consumer)} per session, allowing
+         * parallel processing of multiple messages across sessions.
+         * </p>
          * @param maxConcurrentCalls max concurrent messages that this processor should process.
          *
          * @return The updated {@link ServiceBusSessionProcessorClientBuilder} object.
          * @throws IllegalArgumentException if {@code maxConcurrentCalls} is less than 1.
+         *
+         * @see <a href="https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-messaging-service-bus-overview#concurrency-in-servicebusprocessorclient">Concurrency in ServiceBusProcessorClient</a>
          */
         public ServiceBusSessionProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
             if (maxConcurrentCalls < 1) {
@@ -2502,9 +2481,17 @@ public final class ServiceBusClientBuilder
         /**
          * Max concurrent messages that this processor should process. By default, this is set to 1.
          *
+         * <p>
+         * This setting allows the application to configure the number of concurrent calls to the message processing
+         * callback {@link ServiceBusProcessorClientBuilder#processMessage(Consumer)}, enabling the processing of
+         * multiple messages in parallel.
+         * </p>
+         *
          * @param maxConcurrentCalls max concurrent messages that this processor should process.
          * @return The updated {@link ServiceBusProcessorClientBuilder} object.
          * @throws IllegalArgumentException if the {@code maxConcurrentCalls} is set to a value less than 1.
+         *
+         * @see <a href="https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-messaging-service-bus-overview#concurrency-in-servicebusprocessorclient">Concurrency in ServiceBusProcessorClient</a>
          */
         public ServiceBusProcessorClientBuilder maxConcurrentCalls(int maxConcurrentCalls) {
             if (maxConcurrentCalls < 1) {

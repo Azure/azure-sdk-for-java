@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Enabled RequestResponseChannelCache (CBS, Management channel cache) and ReactorSessionCache by default. ([42641](https://github.com/Azure/azure-sdk-for-java/pull/42641))
+
 ### Breaking Changes
 
 ### Bugs Fixed
