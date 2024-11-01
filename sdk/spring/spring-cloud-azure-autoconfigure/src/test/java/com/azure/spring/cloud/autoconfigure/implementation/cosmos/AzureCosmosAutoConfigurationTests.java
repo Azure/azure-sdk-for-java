@@ -12,6 +12,7 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.AbstractAzureServiceConfigurationTests;
 import com.azure.spring.cloud.autoconfigure.implementation.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.service.implementation.cosmos.CosmosClientBuilderFactory;
@@ -35,6 +36,7 @@ class AzureCosmosAutoConfigurationTests extends AbstractAzureServiceConfiguratio
     static final String TEST_ENDPOINT_HTTPS = "https://test.https.documents.azure.com:443/";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureCosmosAutoConfiguration.class,
+            TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
             AzureGlobalPropertiesAutoConfiguration.class));
 
     @Override

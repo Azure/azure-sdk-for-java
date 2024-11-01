@@ -19,7 +19,7 @@ import com.azure.resourcemanager.synapse.fluent.models.ManagedIdentitySqlControl
 public interface WorkspaceManagedIdentitySqlControlSettingsClient {
     /**
      * Get Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -34,7 +34,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
 
     /**
      * Get Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,7 +47,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -63,7 +63,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -80,7 +80,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.
@@ -95,7 +95,7 @@ public interface WorkspaceManagedIdentitySqlControlSettingsClient {
 
     /**
      * Create or update Managed Identity Sql Control Settings.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param managedIdentitySqlControlSettings Managed Identity Sql Control Settings.

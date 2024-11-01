@@ -38,17 +38,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SignalRCustomCertificatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SignalRCustomCertificatesClient.
+ */
 public final class SignalRCustomCertificatesClientImpl implements SignalRCustomCertificatesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SignalRCustomCertificatesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SignalRManagementClientImpl client;
 
     /**
      * Initializes an instance of SignalRCustomCertificatesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SignalRCustomCertificatesClientImpl(SignalRManagementClientImpl client) {
@@ -114,7 +120,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * List all custom certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +157,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * List all custom certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -189,7 +195,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * List all custom certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -205,7 +211,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * List all custom certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -223,7 +229,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * List all custom certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,7 +244,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * List all custom certificates.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -254,7 +260,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Get a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -294,7 +300,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Get a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -334,7 +340,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Get a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -352,7 +358,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Get a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -370,7 +376,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Get a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -386,11 +392,11 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -433,11 +439,11 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -479,11 +485,11 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -501,11 +507,11 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -525,11 +531,11 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -544,11 +550,11 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -565,11 +571,11 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -584,11 +590,11 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -604,11 +610,11 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -622,11 +628,11 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Create or update a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
-     * @param parameters A custom certificate.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -641,7 +647,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Delete a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -681,7 +687,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Delete a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -721,7 +727,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Delete a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -738,7 +744,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Delete a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -756,7 +762,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Delete a custom certificate.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param certificateName Custom certificate name.
@@ -771,9 +777,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -797,9 +802,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -36,17 +36,23 @@ import com.azure.resourcemanager.devhub.models.TagsObject;
 import com.azure.resourcemanager.devhub.models.WorkflowListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowsClient.
+ */
 public final class WorkflowsClientImpl implements WorkflowsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DeveloperHubServiceClientImpl client;
 
     /**
      * Initializes an instance of WorkflowsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowsClientImpl(DeveloperHubServiceClientImpl client) {
@@ -136,11 +142,11 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows associated with the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workflows associated with the specified subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listSinglePageAsync() {
@@ -163,13 +169,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows associated with the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workflows associated with the specified subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listSinglePageAsync(Context context) {
@@ -192,11 +198,11 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows associated with the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows associated with the specified subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of workflows associated with the specified subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowInner> listAsync() {
@@ -205,13 +211,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows associated with the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows associated with the specified subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return a list of workflows associated with the specified subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<WorkflowInner> listAsync(Context context) {
@@ -221,11 +227,11 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows associated with the specified subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows associated with the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of workflows associated with the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowInner> list() {
@@ -234,13 +240,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows associated with the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of workflows associated with the specified subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of workflows associated with the specified subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<WorkflowInner> list(Context context) {
@@ -249,14 +255,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedClusterResource The ManagedCluster resource associated with the workflows.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workflows within a resource group along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -284,7 +290,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedClusterResource The ManagedCluster resource associated with the workflows.
      * @param context The context to associate with this operation.
@@ -292,7 +298,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of workflows within a resource group along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -320,7 +326,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedClusterResource The ManagedCluster resource associated with the workflows.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,7 +342,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -352,7 +358,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedClusterResource The ManagedCluster resource associated with the workflows.
      * @param context The context to associate with this operation.
@@ -371,7 +377,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -386,7 +392,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a list of workflows within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param managedClusterResource The ManagedCluster resource associated with the workflows.
      * @param context The context to associate with this operation.
@@ -403,7 +409,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -438,7 +444,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
@@ -473,7 +479,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -489,7 +495,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
@@ -506,7 +512,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Gets a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -521,10 +527,10 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Creates or updates a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @param parameters Resource representation of a workflow.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -562,10 +568,10 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Creates or updates a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @param parameters Resource representation of a workflow.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -603,10 +609,10 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Creates or updates a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @param parameters Resource representation of a workflow.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -621,10 +627,10 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Creates or updates a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @param parameters Resource representation of a workflow.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -639,10 +645,10 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Creates or updates a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
-     * @param parameters Resource representation of a workflow.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -655,14 +661,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return delete response if content must be provided on delete operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeleteWorkflowResponseInner>> deleteWithResponseAsync(String resourceGroupName,
@@ -691,7 +697,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
@@ -699,7 +705,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return delete response if content must be provided on delete operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeleteWorkflowResponseInner>> deleteWithResponseAsync(String resourceGroupName,
@@ -727,7 +733,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -743,7 +749,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param context The context to associate with this operation.
@@ -760,7 +766,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Deletes a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -775,7 +781,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Updates tags on a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param parameters Parameters supplied to the Update Workflow Tags operation.
@@ -816,7 +822,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Updates tags on a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param parameters Parameters supplied to the Update Workflow Tags operation.
@@ -857,7 +863,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Updates tags on a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param parameters Parameters supplied to the Update Workflow Tags operation.
@@ -874,7 +880,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Updates tags on a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param parameters Parameters supplied to the Update Workflow Tags operation.
@@ -892,7 +898,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Updates tags on a workflow.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workflowName The name of the workflow resource.
      * @param parameters Parameters supplied to the Update Workflow Tags operation.
@@ -908,14 +914,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from List Workflows operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listNextSinglePageAsync(String nextLink) {
@@ -935,15 +940,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from List Workflows operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -963,14 +967,13 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from List Workflows operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -992,15 +995,14 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response from List Workflows operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<WorkflowInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

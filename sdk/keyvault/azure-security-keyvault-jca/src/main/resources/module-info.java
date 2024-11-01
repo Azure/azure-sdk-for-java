@@ -22,5 +22,6 @@ module com.azure.security.keyvault.jca {
 
     exports com.azure.security.keyvault.jca;
     exports com.azure.security.keyvault.jca.implementation.signature to java.base;
+
     provides java.security.Provider with com.azure.security.keyvault.jca.KeyVaultJcaProvider;
 }

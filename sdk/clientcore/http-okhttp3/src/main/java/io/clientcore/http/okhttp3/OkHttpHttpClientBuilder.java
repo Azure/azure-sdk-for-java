@@ -7,6 +7,7 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.util.ClientLogger;
 import io.clientcore.core.util.SharedExecutorService;
+import io.clientcore.core.util.auth.ChallengeHandler;
 import io.clientcore.core.util.configuration.Configuration;
 import io.clientcore.http.okhttp3.implementation.OkHttpProxySelector;
 import io.clientcore.http.okhttp3.implementation.ProxyAuthenticator;
@@ -350,10 +351,10 @@ public class OkHttpHttpClientBuilder {
             httpClientBuilder
                 = httpClientBuilder.proxySelector(new OkHttpProxySelector(buildProxyOptions.getType().toProxyType(),
                     buildProxyOptions::getAddress, buildProxyOptions.getNonProxyHosts()));
+            ChallengeHandler challengeHandler = buildProxyOptions.getChallengeHandler();
 
             if (buildProxyOptions.getUsername() != null) {
-                ProxyAuthenticator proxyAuthenticator
-                    = new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword());
+                ProxyAuthenticator proxyAuthenticator = new ProxyAuthenticator(challengeHandler);
 
                 httpClientBuilder = httpClientBuilder.proxyAuthenticator(proxyAuthenticator)
                     .addInterceptor(proxyAuthenticator.getProxyAuthenticationInfoInterceptor());

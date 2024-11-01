@@ -109,9 +109,9 @@ public final class CustomDomainImpl implements CustomDomain, CustomDomain.Defini
     CustomDomainImpl(CustomDomainInner innerObject, com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "signalR");
-        this.name = Utils.getValueFromIdByName(innerObject.id(), "customDomains");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "signalR");
+        this.name = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "customDomains");
     }
 
     public CustomDomain refresh() {

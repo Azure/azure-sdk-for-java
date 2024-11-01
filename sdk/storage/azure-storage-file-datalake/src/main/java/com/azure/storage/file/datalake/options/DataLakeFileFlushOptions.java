@@ -10,7 +10,6 @@ import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 
-
 /**
  * Optional parameters for appending data to a file when calling flush() on {@link DataLakeFileClient} and
  * {@link DataLakeFileAsyncClient}

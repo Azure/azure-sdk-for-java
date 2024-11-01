@@ -25,17 +25,23 @@ import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
 import com.azure.resourcemanager.mediaservices.models.MediaServicesOperationResultsGetResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MediaServicesOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MediaServicesOperationResultsClient.
+ */
 public final class MediaServicesOperationResultsClientImpl implements MediaServicesOperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MediaServicesOperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of MediaServicesOperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MediaServicesOperationResultsClientImpl(AzureMediaServicesImpl client) {
@@ -52,8 +58,7 @@ public final class MediaServicesOperationResultsClientImpl implements MediaServi
     @ServiceInterface(name = "AzureMediaServicesMe")
     public interface MediaServicesOperationResultsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}"
-            + "/mediaServicesOperationResults/{operationId}")
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Media/locations/{locationName}/mediaServicesOperationResults/{operationId}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<MediaServicesOperationResultsGetResponse> get(@HostParam("$host") String endpoint,
@@ -64,9 +69,9 @@ public final class MediaServicesOperationResultsClientImpl implements MediaServi
 
     /**
      * Get operation result.
-     *
-     * <p>Get media service operation result.
-     *
+     * 
+     * Get media service operation result.
+     * 
      * @param locationName Location name.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,9 +106,9 @@ public final class MediaServicesOperationResultsClientImpl implements MediaServi
 
     /**
      * Get operation result.
-     *
-     * <p>Get media service operation result.
-     *
+     * 
+     * Get media service operation result.
+     * 
      * @param locationName Location name.
      * @param operationId Operation Id.
      * @param context The context to associate with this operation.
@@ -138,9 +143,9 @@ public final class MediaServicesOperationResultsClientImpl implements MediaServi
 
     /**
      * Get operation result.
-     *
-     * <p>Get media service operation result.
-     *
+     * 
+     * Get media service operation result.
+     * 
      * @param locationName Location name.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -155,9 +160,9 @@ public final class MediaServicesOperationResultsClientImpl implements MediaServi
 
     /**
      * Get operation result.
-     *
-     * <p>Get media service operation result.
-     *
+     * 
+     * Get media service operation result.
+     * 
      * @param locationName Location name.
      * @param operationId Operation Id.
      * @param context The context to associate with this operation.
@@ -174,9 +179,9 @@ public final class MediaServicesOperationResultsClientImpl implements MediaServi
 
     /**
      * Get operation result.
-     *
-     * <p>Get media service operation result.
-     *
+     * 
+     * Get media service operation result.
+     * 
      * @param locationName Location name.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

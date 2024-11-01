@@ -29,15 +29,19 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in SqlPoolRecommendedSensitivityLabelsClient.
  */
 public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlPoolRecommendedSensitivityLabelsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolRecommendedSensitivityLabelsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolRecommendedSensitivityLabelsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolRecommendedSensitivityLabelsClientImpl(SynapseManagementClientImpl client) {
@@ -54,8 +58,7 @@ public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlP
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolRecommendedSensitivityLabelsService {
         @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/recommendedSensitivityLabels")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/recommendedSensitivityLabels")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> update(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
@@ -67,11 +70,11 @@ public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlP
 
     /**
      * Update recommended sensitivity labels states of a given SQL Pool using an operations batch.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
-     * @param parameters A list of recommended sensitivity label update operations.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -112,11 +115,11 @@ public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlP
 
     /**
      * Update recommended sensitivity labels states of a given SQL Pool using an operations batch.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
-     * @param parameters A list of recommended sensitivity label update operations.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -157,11 +160,11 @@ public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlP
 
     /**
      * Update recommended sensitivity labels states of a given SQL Pool using an operations batch.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
-     * @param parameters A list of recommended sensitivity label update operations.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -176,11 +179,11 @@ public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlP
 
     /**
      * Update recommended sensitivity labels states of a given SQL Pool using an operations batch.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
-     * @param parameters A list of recommended sensitivity label update operations.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -195,11 +198,11 @@ public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlP
 
     /**
      * Update recommended sensitivity labels states of a given SQL Pool using an operations batch.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
-     * @param parameters A list of recommended sensitivity label update operations.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

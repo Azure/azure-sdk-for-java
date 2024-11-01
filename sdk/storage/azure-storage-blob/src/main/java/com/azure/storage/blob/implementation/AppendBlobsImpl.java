@@ -29,6 +29,7 @@ import com.azure.storage.blob.implementation.models.AppendBlobsCreateHeaders;
 import com.azure.storage.blob.implementation.models.AppendBlobsSealHeaders;
 import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
 import com.azure.storage.blob.models.CpkInfo;
@@ -38,7 +39,6 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 
 /**
  * An instance of this class provides access to all the operations defined in AppendBlobs.
@@ -549,72 +549,11 @@ public final class AppendBlobsImpl {
         String ifTags, String requestId, String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, BlobHttpHeaders blobHttpHeaders,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        final String blobType = "AppendBlob";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return FluxUtil
-            .withContext(context -> service.create(this.client.getUrl(), containerName, blob, blobType, timeout,
-                contentLength, contentType, contentEncoding, contentLanguage, contentMd5Converted, cacheControl,
-                metadata, leaseId, contentDisposition, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
-                encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-                this.client.getVersion(), requestId, blobTagsString, immutabilityPolicyExpiryConverted,
-                immutabilityPolicyMode, legalHold, accept, context))
+            .withContext(context -> createWithResponseAsync(containerName, blob, contentLength, timeout, metadata,
+                leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString,
+                immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo,
+                encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -776,8 +715,8 @@ public final class AppendBlobsImpl {
         return createWithResponseAsync(containerName, blob, contentLength, timeout, metadata, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry,
             immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -827,8 +766,8 @@ public final class AppendBlobsImpl {
         return createWithResponseAsync(containerName, blob, contentLength, timeout, metadata, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, blobTagsString, immutabilityPolicyExpiry,
             immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo, encryptionScopeParam, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -875,72 +814,11 @@ public final class AppendBlobsImpl {
         String ifTags, String requestId, String blobTagsString, OffsetDateTime immutabilityPolicyExpiry,
         BlobImmutabilityPolicyMode immutabilityPolicyMode, Boolean legalHold, BlobHttpHeaders blobHttpHeaders,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        final String blobType = "AppendBlob";
-        final String accept = "application/xml";
-        String contentTypeInternal = null;
-        if (blobHttpHeaders != null) {
-            contentTypeInternal = blobHttpHeaders.getContentType();
-        }
-        String contentType = contentTypeInternal;
-        String contentEncodingInternal = null;
-        if (blobHttpHeaders != null) {
-            contentEncodingInternal = blobHttpHeaders.getContentEncoding();
-        }
-        String contentEncoding = contentEncodingInternal;
-        String contentLanguageInternal = null;
-        if (blobHttpHeaders != null) {
-            contentLanguageInternal = blobHttpHeaders.getContentLanguage();
-        }
-        String contentLanguage = contentLanguageInternal;
-        byte[] contentMd5Internal = null;
-        if (blobHttpHeaders != null) {
-            contentMd5Internal = blobHttpHeaders.getContentMd5();
-        }
-        byte[] contentMd5 = contentMd5Internal;
-        String cacheControlInternal = null;
-        if (blobHttpHeaders != null) {
-            cacheControlInternal = blobHttpHeaders.getCacheControl();
-        }
-        String cacheControl = cacheControlInternal;
-        String contentDispositionInternal = null;
-        if (blobHttpHeaders != null) {
-            contentDispositionInternal = blobHttpHeaders.getContentDisposition();
-        }
-        String contentDisposition = contentDispositionInternal;
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String contentMd5Converted = Base64Util.encodeToString(contentMd5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 immutabilityPolicyExpiryConverted
-            = immutabilityPolicyExpiry == null ? null : new DateTimeRfc1123(immutabilityPolicyExpiry);
         return FluxUtil
-            .withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), containerName, blob, blobType,
-                timeout, contentLength, contentType, contentEncoding, contentLanguage, contentMd5Converted,
-                cacheControl, metadata, leaseId, contentDisposition, encryptionKey, encryptionKeySha256,
-                encryptionAlgorithm, encryptionScope, ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch,
-                ifNoneMatch, ifTags, this.client.getVersion(), requestId, blobTagsString,
-                immutabilityPolicyExpiryConverted, immutabilityPolicyMode, legalHold, accept, context))
+            .withContext(context -> createNoCustomHeadersWithResponseAsync(containerName, blob, contentLength, timeout,
+                metadata, leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId,
+                blobTagsString, immutabilityPolicyExpiry, immutabilityPolicyMode, legalHold, blobHttpHeaders, cpkInfo,
+                encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1387,39 +1265,11 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam) {
-        final String comp = "appendblock";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.appendBlock(this.client.getUrl(), containerName, blob, comp,
-            timeout, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, leaseId,
-            maxSize, appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context))
+        return FluxUtil
+            .withContext(context -> appendBlockWithResponseAsync(containerName, blob, contentLength, body, timeout,
+                transactionalContentMD5, transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince,
+                ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength,
+                cpkInfo, encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1563,8 +1413,8 @@ public final class AppendBlobsImpl {
         return appendBlockWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1621,7 +1471,7 @@ public final class AppendBlobsImpl {
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam,
             context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1674,39 +1524,11 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam) {
-        final String comp = "appendblock";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.appendBlockNoCustomHeaders(this.client.getUrl(), containerName,
-            blob, comp, timeout, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted,
-            leaseId, maxSize, appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context))
+        return FluxUtil
+            .withContext(context -> appendBlockNoCustomHeadersWithResponseAsync(containerName, blob, contentLength,
+                body, timeout, transactionalContentMD5, transactionalContentCrc64, leaseId, maxSize, appendPosition,
+                ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, structuredBodyType,
+                structuredContentLength, cpkInfo, encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -1848,39 +1670,11 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam) {
-        final String comp = "appendblock";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.appendBlock(this.client.getUrl(), containerName, blob, comp,
-            timeout, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted, leaseId,
-            maxSize, appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context))
+        return FluxUtil
+            .withContext(context -> appendBlockWithResponseAsync(containerName, blob, contentLength, body, timeout,
+                transactionalContentMD5, transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince,
+                ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength,
+                cpkInfo, encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2024,8 +1818,8 @@ public final class AppendBlobsImpl {
         return appendBlockWithResponseAsync(containerName, blob, contentLength, body, timeout, transactionalContentMD5,
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2082,7 +1876,7 @@ public final class AppendBlobsImpl {
             transactionalContentCrc64, leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch,
             ifNoneMatch, ifTags, requestId, structuredBodyType, structuredContentLength, cpkInfo, encryptionScopeParam,
             context).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2135,39 +1929,11 @@ public final class AppendBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, String requestId, String structuredBodyType, Long structuredContentLength, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam) {
-        final String comp = "appendblock";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        String transactionalContentCrc64Converted = Base64Util.encodeToString(transactionalContentCrc64);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.appendBlockNoCustomHeaders(this.client.getUrl(), containerName,
-            blob, comp, timeout, contentLength, transactionalContentMD5Converted, transactionalContentCrc64Converted,
-            leaseId, maxSize, appendPosition, encryptionKey, encryptionKeySha256, encryptionAlgorithm, encryptionScope,
-            ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
-            this.client.getVersion(), requestId, structuredBodyType, structuredContentLength, body, accept, context))
+        return FluxUtil
+            .withContext(context -> appendBlockNoCustomHeadersWithResponseAsync(containerName, blob, contentLength,
+                body, timeout, transactionalContentMD5, transactionalContentCrc64, leaseId, maxSize, appendPosition,
+                ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, requestId, structuredBodyType,
+                structuredContentLength, cpkInfo, encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -2553,46 +2319,13 @@ public final class AppendBlobsImpl {
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
         String sourceIfNoneMatch, String requestId, String copySourceAuthorization, CpkInfo cpkInfo,
         EncryptionScope encryptionScopeParam) {
-        final String comp = "appendblock";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
-        String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
-        return FluxUtil.withContext(context -> service.appendBlockFromUrl(this.client.getUrl(), containerName, blob,
-            comp, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout,
-            contentLength, transactionalContentMD5Converted, encryptionKey, encryptionKeySha256, encryptionAlgorithm,
-            encryptionScope, leaseId, maxSize, appendPosition, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-            ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
-            sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept,
-            context)).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+        return FluxUtil
+            .withContext(context -> appendBlockFromUrlWithResponseAsync(containerName, blob, sourceUrl, contentLength,
+                sourceRange, sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5, leaseId, maxSize,
+                appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
+                sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
+                encryptionScopeParam, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -2760,7 +2493,7 @@ public final class AppendBlobsImpl {
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
             sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
             encryptionScopeParam).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2827,8 +2560,8 @@ public final class AppendBlobsImpl {
             ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince,
             sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo,
             encryptionScopeParam, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2889,47 +2622,12 @@ public final class AppendBlobsImpl {
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
         CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
-        final String comp = "appendblock";
-        final String accept = "application/xml";
-        String encryptionKeyInternal = null;
-        if (cpkInfo != null) {
-            encryptionKeyInternal = cpkInfo.getEncryptionKey();
-        }
-        String encryptionKey = encryptionKeyInternal;
-        String encryptionKeySha256Internal = null;
-        if (cpkInfo != null) {
-            encryptionKeySha256Internal = cpkInfo.getEncryptionKeySha256();
-        }
-        String encryptionKeySha256 = encryptionKeySha256Internal;
-        EncryptionAlgorithmType encryptionAlgorithmInternal = null;
-        if (cpkInfo != null) {
-            encryptionAlgorithmInternal = cpkInfo.getEncryptionAlgorithm();
-        }
-        EncryptionAlgorithmType encryptionAlgorithm = encryptionAlgorithmInternal;
-        String encryptionScopeInternal = null;
-        if (encryptionScopeParam != null) {
-            encryptionScopeInternal = encryptionScopeParam.getEncryptionScope();
-        }
-        String encryptionScope = encryptionScopeInternal;
-        String sourceContentMD5Converted = Base64Util.encodeToString(sourceContentMD5);
-        String sourceContentcrc64Converted = Base64Util.encodeToString(sourceContentcrc64);
-        String transactionalContentMD5Converted = Base64Util.encodeToString(transactionalContentMD5);
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
-        DateTimeRfc1123 sourceIfModifiedSinceConverted
-            = sourceIfModifiedSince == null ? null : new DateTimeRfc1123(sourceIfModifiedSince);
-        DateTimeRfc1123 sourceIfUnmodifiedSinceConverted
-            = sourceIfUnmodifiedSince == null ? null : new DateTimeRfc1123(sourceIfUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.appendBlockFromUrlNoCustomHeaders(this.client.getUrl(), containerName, blob,
-                comp, sourceUrl, sourceRange, sourceContentMD5Converted, sourceContentcrc64Converted, timeout,
-                contentLength, transactionalContentMD5Converted, encryptionKey, encryptionKeySha256,
-                encryptionAlgorithm, encryptionScope, leaseId, maxSize, appendPosition, ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted,
-                sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId,
-                copySourceAuthorization, accept, context))
+            .withContext(context -> appendBlockFromUrlNoCustomHeadersWithResponseAsync(containerName, blob, sourceUrl,
+                contentLength, sourceRange, sourceContentMD5, sourceContentcrc64, timeout, transactionalContentMD5,
+                leaseId, maxSize, appendPosition, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags,
+                sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId,
+                copySourceAuthorization, cpkInfo, encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3339,16 +3037,9 @@ public final class AppendBlobsImpl {
     public Mono<ResponseBase<AppendBlobsSealHeaders, Void>> sealWithResponseAsync(String containerName, String blob,
         Integer timeout, String requestId, String leaseId, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, Long appendPosition) {
-        final String comp = "seal";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.seal(this.client.getUrl(), containerName, blob, comp, timeout,
-                this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
-                ifMatch, ifNoneMatch, appendPosition, accept, context))
+            .withContext(context -> sealWithResponseAsync(containerName, blob, timeout, requestId, leaseId,
+                ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, appendPosition, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3430,8 +3121,8 @@ public final class AppendBlobsImpl {
         Long appendPosition) {
         return sealWithResponseAsync(containerName, blob, timeout, requestId, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, appendPosition)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3468,8 +3159,8 @@ public final class AppendBlobsImpl {
         Long appendPosition, Context context) {
         return sealWithResponseAsync(containerName, blob, timeout, requestId, leaseId, ifModifiedSince,
             ifUnmodifiedSince, ifMatch, ifNoneMatch, appendPosition, context)
-            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -3503,16 +3194,9 @@ public final class AppendBlobsImpl {
     public Mono<Response<Void>> sealNoCustomHeadersWithResponseAsync(String containerName, String blob, Integer timeout,
         String requestId, String leaseId, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince,
         String ifMatch, String ifNoneMatch, Long appendPosition) {
-        final String comp = "seal";
-        final String accept = "application/xml";
-        DateTimeRfc1123 ifModifiedSinceConverted
-            = ifModifiedSince == null ? null : new DateTimeRfc1123(ifModifiedSince);
-        DateTimeRfc1123 ifUnmodifiedSinceConverted
-            = ifUnmodifiedSince == null ? null : new DateTimeRfc1123(ifUnmodifiedSince);
         return FluxUtil
-            .withContext(context -> service.sealNoCustomHeaders(this.client.getUrl(), containerName, blob, comp,
-                timeout, this.client.getVersion(), requestId, leaseId, ifModifiedSinceConverted,
-                ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, appendPosition, accept, context))
+            .withContext(context -> sealNoCustomHeadersWithResponseAsync(containerName, blob, timeout, requestId,
+                leaseId, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch, appendPosition, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 

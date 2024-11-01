@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.signalr.generated;
 
-/** Samples for SignalRPrivateEndpointConnections List. */
+/**
+ * Samples for SignalRPrivateEndpointConnections List.
+ */
 public final class SignalRPrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRPrivateEndpointConnections_List.json
+     * x-ms-original-file:
+     * specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/
+     * SignalRPrivateEndpointConnections_List.json
      */
     /**
      * Sample code: SignalRPrivateEndpointConnections_List.
-     *
+     * 
      * @param manager Entry point to SignalRManager.
      */
     public static void signalRPrivateEndpointConnectionsList(com.azure.resourcemanager.signalr.SignalRManager manager) {
-        manager
-            .signalRPrivateEndpointConnections()
+        manager.signalRPrivateEndpointConnections()
             .list("myResourceGroup", "mySignalRService", com.azure.core.util.Context.NONE);
     }
 }

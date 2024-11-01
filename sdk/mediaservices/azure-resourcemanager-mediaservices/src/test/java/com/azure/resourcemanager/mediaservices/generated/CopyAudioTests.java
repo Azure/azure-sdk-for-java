@@ -12,15 +12,15 @@ public final class CopyAudioTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CopyAudio model
-            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.CopyAudio\",\"label\":\"drihpfhoqcaaewda\"}")
+            = BinaryData.fromString("{\"@odata.type\":\"#Microsoft.Media.CopyAudio\",\"label\":\"nsqyrpfoobrltt\"}")
                 .toObject(CopyAudio.class);
-        Assertions.assertEquals("drihpfhoqcaaewda", model.label());
+        Assertions.assertEquals("nsqyrpfoobrltt", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CopyAudio model = new CopyAudio().withLabel("drihpfhoqcaaewda");
+        CopyAudio model = new CopyAudio().withLabel("nsqyrpfoobrltt");
         model = BinaryData.fromObject(model).toObject(CopyAudio.class);
-        Assertions.assertEquals("drihpfhoqcaaewda", model.label());
+        Assertions.assertEquals("nsqyrpfoobrltt", model.label());
     }
 }

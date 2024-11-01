@@ -129,7 +129,7 @@ public class UsernamePasswordCredential implements TokenCredential {
                     LoggingUtil.logTokenSuccess(LOGGER, request);
                     return token;
                 }
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
 
@@ -148,7 +148,6 @@ public class UsernamePasswordCredential implements TokenCredential {
      * Authenticates the user using the specified username and password.
      *
      * @param request The details of the authentication request.
-     *
      * @return The {@link AuthenticationRecord} of the authenticated account.
      */
     public Mono<AuthenticationRecord> authenticate(TokenRequestContext request) {
@@ -167,7 +166,7 @@ public class UsernamePasswordCredential implements TokenCredential {
         if (defaultScope == null) {
             return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER,
                 identityClient.getIdentityClientOptions(), new CredentialUnavailableException(
-                    "Authenticating in this " + "environment requires specifying a TokenRequestContext.")));
+                    "Authenticating in this environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));
     }

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BigDataPools. */
+/**
+ * Resource collection API of BigDataPools.
+ */
 public interface BigDataPools {
     /**
      * Get Big Data pool
-     *
-     * <p>Get a Big Data pool.
-     *
+     * 
+     * Get a Big Data pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -29,9 +31,9 @@ public interface BigDataPools {
 
     /**
      * Get Big Data pool
-     *
-     * <p>Get a Big Data pool.
-     *
+     * 
+     * Get a Big Data pool.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -44,9 +46,9 @@ public interface BigDataPools {
 
     /**
      * Delete a Big Data pool.
-     *
-     * <p>Delete a Big Data pool from the workspace.
-     *
+     * 
+     * Delete a Big Data pool from the workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -59,9 +61,9 @@ public interface BigDataPools {
 
     /**
      * Delete a Big Data pool.
-     *
-     * <p>Delete a Big Data pool from the workspace.
-     *
+     * 
+     * Delete a Big Data pool from the workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param bigDataPoolName Big Data pool name.
@@ -76,9 +78,9 @@ public interface BigDataPools {
 
     /**
      * List the Big Data pools in a workspace.
-     *
-     * <p>List Big Data pools in a workspace.
-     *
+     * 
+     * List Big Data pools in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,9 +92,9 @@ public interface BigDataPools {
 
     /**
      * List the Big Data pools in a workspace.
-     *
-     * <p>List Big Data pools in a workspace.
-     *
+     * 
+     * List Big Data pools in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -106,9 +108,9 @@ public interface BigDataPools {
 
     /**
      * Get Big Data pool
-     *
-     * <p>Get a Big Data pool.
-     *
+     * 
+     * Get a Big Data pool.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -119,9 +121,9 @@ public interface BigDataPools {
 
     /**
      * Get Big Data pool
-     *
-     * <p>Get a Big Data pool.
-     *
+     * 
+     * Get a Big Data pool.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,9 +135,9 @@ public interface BigDataPools {
 
     /**
      * Delete a Big Data pool.
-     *
-     * <p>Delete a Big Data pool from the workspace.
-     *
+     * 
+     * Delete a Big Data pool from the workspace.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -146,9 +148,9 @@ public interface BigDataPools {
 
     /**
      * Delete a Big Data pool.
-     *
-     * <p>Delete a Big Data pool from the workspace.
-     *
+     * 
+     * Delete a Big Data pool from the workspace.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +162,7 @@ public interface BigDataPools {
 
     /**
      * Begins definition for a new BigDataPoolResourceInfo resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new BigDataPoolResourceInfo definition.
      */

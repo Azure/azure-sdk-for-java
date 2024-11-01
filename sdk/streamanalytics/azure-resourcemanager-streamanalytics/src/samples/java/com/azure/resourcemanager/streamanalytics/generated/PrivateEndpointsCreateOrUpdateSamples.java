@@ -24,7 +24,9 @@ public final class PrivateEndpointsCreateOrUpdateSamples {
      */
     public static void
         createAPrivateEndpoint(com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager.privateEndpoints().define("testpe").withExistingCluster("sjrg", "testcluster")
+        manager.privateEndpoints()
+            .define("testpe")
+            .withExistingCluster("sjrg", "testcluster")
             .withProperties(new PrivateEndpointProperties().withManualPrivateLinkServiceConnections(
                 Arrays.asList(new PrivateLinkServiceConnection().withPrivateLinkServiceId(
                     "/subscriptions/subId/resourceGroups/rg1/providers/Microsoft.Network/privateLinkServices/testPls")

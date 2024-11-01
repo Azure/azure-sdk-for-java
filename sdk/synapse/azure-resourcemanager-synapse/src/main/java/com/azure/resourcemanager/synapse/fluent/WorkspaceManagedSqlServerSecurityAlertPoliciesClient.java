@@ -21,9 +21,9 @@ import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyNameAutoGener
 public interface WorkspaceManagedSqlServerSecurityAlertPoliciesClient {
     /**
      * Get server's security alert policy.
-     *
-     * <p>Get a workspace managed sql server's security alert policy.
-     *
+     * 
+     * Get a workspace managed sql server's security alert policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -39,9 +39,9 @@ public interface WorkspaceManagedSqlServerSecurityAlertPoliciesClient {
 
     /**
      * Get server's security alert policy.
-     *
-     * <p>Get a workspace managed sql server's security alert policy.
-     *
+     * 
+     * Get a workspace managed sql server's security alert policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -56,9 +56,9 @@ public interface WorkspaceManagedSqlServerSecurityAlertPoliciesClient {
 
     /**
      * Create or Update server's threat detection policy.
-     *
-     * <p>Create or Update a workspace managed sql server's threat detection policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's threat detection policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -75,9 +75,9 @@ public interface WorkspaceManagedSqlServerSecurityAlertPoliciesClient {
 
     /**
      * Create or Update server's threat detection policy.
-     *
-     * <p>Create or Update a workspace managed sql server's threat detection policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's threat detection policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -95,9 +95,9 @@ public interface WorkspaceManagedSqlServerSecurityAlertPoliciesClient {
 
     /**
      * Create or Update server's threat detection policy.
-     *
-     * <p>Create or Update a workspace managed sql server's threat detection policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's threat detection policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -113,9 +113,9 @@ public interface WorkspaceManagedSqlServerSecurityAlertPoliciesClient {
 
     /**
      * Create or Update server's threat detection policy.
-     *
-     * <p>Create or Update a workspace managed sql server's threat detection policy.
-     *
+     * 
+     * Create or Update a workspace managed sql server's threat detection policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param securityAlertPolicyName The name of the security alert policy.
@@ -133,33 +133,33 @@ public interface WorkspaceManagedSqlServerSecurityAlertPoliciesClient {
 
     /**
      * Get server's threat detection policies.
-     *
-     * <p>Get workspace managed sql server's threat detection policies.
-     *
+     * 
+     * Get workspace managed sql server's threat detection policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's threat detection policies as paginated response with {@link
-     *     PagedIterable}.
+     * @return workspace managed sql server's threat detection policies as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerSecurityAlertPolicyInner> list(String resourceGroupName, String workspaceName);
 
     /**
      * Get server's threat detection policies.
-     *
-     * <p>Get workspace managed sql server's threat detection policies.
-     *
+     * 
+     * Get workspace managed sql server's threat detection policies.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's threat detection policies as paginated response with {@link
-     *     PagedIterable}.
+     * @return workspace managed sql server's threat detection policies as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ServerSecurityAlertPolicyInner> list(String resourceGroupName, String workspaceName, Context context);

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SignalRReplicas. */
+/**
+ * Resource collection API of SignalRReplicas.
+ */
 public interface SignalRReplicas {
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface SignalRReplicas {
 
     /**
      * List all replicas belong to this resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface SignalRReplicas {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -52,7 +54,7 @@ public interface SignalRReplicas {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -65,7 +67,7 @@ public interface SignalRReplicas {
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -80,7 +82,7 @@ public interface SignalRReplicas {
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -92,7 +94,7 @@ public interface SignalRReplicas {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -104,7 +106,7 @@ public interface SignalRReplicas {
 
     /**
      * Operation to restart a replica.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -117,7 +119,7 @@ public interface SignalRReplicas {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,7 +130,7 @@ public interface SignalRReplicas {
 
     /**
      * Get the replica and its properties.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,7 +142,7 @@ public interface SignalRReplicas {
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -150,7 +152,7 @@ public interface SignalRReplicas {
 
     /**
      * Operation to delete a replica.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,7 +164,7 @@ public interface SignalRReplicas {
 
     /**
      * Begins definition for a new Replica resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Replica definition.
      */

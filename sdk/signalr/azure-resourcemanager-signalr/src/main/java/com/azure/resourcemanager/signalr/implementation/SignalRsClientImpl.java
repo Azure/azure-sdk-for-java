@@ -45,17 +45,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SignalRsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SignalRsClient.
+ */
 public final class SignalRsClientImpl implements SignalRsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SignalRsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SignalRManagementClientImpl client;
 
     /**
      * Initializes an instance of SignalRsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SignalRsClientImpl(SignalRManagementClientImpl client) {
@@ -201,14 +207,14 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Checks that the resource name is valid and is not already in use.
-     *
+     * 
      * @param location the region.
      * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to check name availability along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(String location,
@@ -238,7 +244,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Checks that the resource name is valid and is not already in use.
-     *
+     * 
      * @param location the region.
      * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -246,7 +252,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to check name availability along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NameAvailabilityInner>> checkNameAvailabilityWithResponseAsync(String location,
@@ -275,7 +281,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Checks that the resource name is valid and is not already in use.
-     *
+     * 
      * @param location the region.
      * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -292,7 +298,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Checks that the resource name is valid and is not already in use.
-     *
+     * 
      * @param location the region.
      * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -309,7 +315,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Checks that the resource name is valid and is not already in use.
-     *
+     * 
      * @param location the region.
      * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -324,11 +330,11 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of resources and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalRResourceInner>> listSinglePageAsync() {
@@ -351,13 +357,13 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of resources and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalRResourceInner>> listSinglePageAsync(Context context) {
@@ -380,11 +386,11 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SignalRResourceInner> listAsync() {
@@ -394,13 +400,13 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SignalRResourceInner> listAsync(Context context) {
@@ -410,11 +416,11 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SignalRResourceInner> list() {
@@ -423,13 +429,13 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SignalRResourceInner> list(Context context) {
@@ -438,13 +444,13 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of resources and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalRResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -471,14 +477,14 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of resources and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalRResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -506,13 +512,13 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SignalRResourceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -522,14 +528,14 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SignalRResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -539,13 +545,13 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SignalRResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -554,14 +560,14 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Handles requests to list all resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SignalRResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -570,7 +576,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the resource and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -605,7 +611,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the resource and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -640,7 +646,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the resource and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -656,7 +662,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the resource and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -673,7 +679,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the resource and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -688,7 +694,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -729,7 +735,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -770,7 +776,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -790,7 +796,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -812,7 +818,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -829,7 +835,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -847,7 +853,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -865,7 +871,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -884,7 +890,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -901,7 +907,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
@@ -919,7 +925,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -953,7 +959,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -988,7 +994,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1005,7 +1011,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -1025,7 +1031,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1040,7 +1046,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -1057,7 +1063,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1072,7 +1078,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -1089,7 +1095,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1103,7 +1109,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -1118,7 +1124,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -1159,7 +1165,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -1200,7 +1206,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -1219,7 +1225,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -1241,7 +1247,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -1258,7 +1264,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -1276,7 +1282,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -1294,7 +1300,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -1313,7 +1319,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -1329,7 +1335,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
@@ -1347,7 +1353,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the access keys of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1381,7 +1387,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the access keys of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -1416,7 +1422,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the access keys of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1432,7 +1438,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the access keys of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -1449,7 +1455,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the access keys of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1464,7 +1470,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -1472,7 +1478,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represents the access keys of the resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(String resourceGroupName,
@@ -1506,7 +1512,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -1515,7 +1521,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a class represents the access keys of the resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(String resourceGroupName,
@@ -1548,7 +1554,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -1568,7 +1574,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -1590,7 +1596,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -1607,7 +1613,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -1625,7 +1631,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -1643,7 +1649,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -1662,7 +1668,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -1679,7 +1685,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
@@ -1697,7 +1703,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * List all available skus of the replica resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1736,7 +1742,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * List all available skus of the replica resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1775,7 +1781,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * List all available skus of the replica resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1792,7 +1798,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * List all available skus of the replica resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1810,7 +1816,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * List all available skus of the replica resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param replicaName The name of the replica.
@@ -1826,7 +1832,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1860,7 +1866,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -1895,7 +1901,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1912,7 +1918,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -1932,7 +1938,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1947,7 +1953,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -1964,7 +1970,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1979,7 +1985,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -1996,7 +2002,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2010,7 +2016,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -2025,7 +2031,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * List all available skus of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2059,7 +2065,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * List all available skus of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -2094,7 +2100,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * List all available skus of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2110,7 +2116,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * List all available skus of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -2126,7 +2132,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * List all available skus of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2141,14 +2147,13 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of resources and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalRResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2170,15 +2175,14 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of resources and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalRResourceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
@@ -2199,14 +2203,13 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of resources and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalRResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2228,15 +2231,14 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of resources and a possible link for next set along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return object that includes an array of resources and a possible link for next set along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SignalRResourceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,

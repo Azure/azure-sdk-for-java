@@ -5,26 +5,29 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.UdfType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The binding retrieval properties associated with an Azure Machine learning Studio.
  */
 @Fluent
-public final class AzureMachineLearningStudioFunctionBindingRetrievalProperties {
+public final class AzureMachineLearningStudioFunctionBindingRetrievalProperties
+    implements JsonSerializable<AzureMachineLearningStudioFunctionBindingRetrievalProperties> {
     /*
      * The Request-Response execute endpoint of the Azure Machine Learning Studio. Find out more here:
      * https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-
      * service-rrs
      */
-    @JsonProperty(value = "executeEndpoint")
     private String executeEndpoint;
 
     /*
      * The function type.
      */
-    @JsonProperty(value = "udfType")
     private UdfType udfType;
 
     /**
@@ -83,5 +86,49 @@ public final class AzureMachineLearningStudioFunctionBindingRetrievalProperties 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("executeEndpoint", this.executeEndpoint);
+        jsonWriter.writeStringField("udfType", this.udfType == null ? null : this.udfType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMachineLearningStudioFunctionBindingRetrievalProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMachineLearningStudioFunctionBindingRetrievalProperties if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * AzureMachineLearningStudioFunctionBindingRetrievalProperties.
+     */
+    public static AzureMachineLearningStudioFunctionBindingRetrievalProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMachineLearningStudioFunctionBindingRetrievalProperties deserializedAzureMachineLearningStudioFunctionBindingRetrievalProperties
+                = new AzureMachineLearningStudioFunctionBindingRetrievalProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("executeEndpoint".equals(fieldName)) {
+                    deserializedAzureMachineLearningStudioFunctionBindingRetrievalProperties.executeEndpoint
+                        = reader.getString();
+                } else if ("udfType".equals(fieldName)) {
+                    deserializedAzureMachineLearningStudioFunctionBindingRetrievalProperties.udfType
+                        = UdfType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMachineLearningStudioFunctionBindingRetrievalProperties;
+        });
     }
 }

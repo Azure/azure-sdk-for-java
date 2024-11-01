@@ -21,8 +21,8 @@ public class DataLakeImplUtilsTests {
 
         Throwable dataLakeException = DataLakeImplUtils.transformBlobStorageException(blobException);
 
-        DataLakeStorageException dataLakeStorageException = assertInstanceOf(DataLakeStorageException.class,
-            dataLakeException);
+        DataLakeStorageException dataLakeStorageException
+            = assertInstanceOf(DataLakeStorageException.class, dataLakeException);
         assertEquals(response.getStatusCode(), dataLakeStorageException.getStatusCode());
         assertEquals("fail", dataLakeStorageException.getMessage());
     }
@@ -38,13 +38,13 @@ public class DataLakeImplUtilsTests {
         Throwable dataLakeException1 = Exceptions.unwrapMultiple(dataLakeComposite).get(0);
         Throwable dataLakeException2 = Exceptions.unwrapMultiple(dataLakeComposite).get(1);
 
-        DataLakeStorageException dataLakeStorageException1 = assertInstanceOf(DataLakeStorageException.class,
-            dataLakeException1);
+        DataLakeStorageException dataLakeStorageException1
+            = assertInstanceOf(DataLakeStorageException.class, dataLakeException1);
         assertEquals(response.getStatusCode(), dataLakeStorageException1.getStatusCode());
         assertEquals("fail1", dataLakeStorageException1.getMessage());
 
-        DataLakeStorageException dataLakeStorageException2 = assertInstanceOf(DataLakeStorageException.class,
-            dataLakeException2);
+        DataLakeStorageException dataLakeStorageException2
+            = assertInstanceOf(DataLakeStorageException.class, dataLakeException2);
         assertEquals(response.getStatusCode(), dataLakeStorageException2.getStatusCode());
         assertEquals("fail2", dataLakeStorageException2.getMessage());
     }

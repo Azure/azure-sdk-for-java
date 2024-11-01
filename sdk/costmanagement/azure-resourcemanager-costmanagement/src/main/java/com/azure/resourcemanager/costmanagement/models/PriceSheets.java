@@ -6,12 +6,14 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of PriceSheets. */
+/**
+ * Resource collection API of PriceSheets.
+ */
 public interface PriceSheets {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -25,7 +27,7 @@ public interface PriceSheets {
     /**
      * Gets a URL to download the pricesheet for an invoice. The operation is supported for billing accounts with
      * agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param invoiceName The ID that uniquely identifies an invoice.
@@ -42,7 +44,7 @@ public interface PriceSheets {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -57,7 +59,7 @@ public interface PriceSheets {
      * billing accounts with agreement type Microsoft Partner Agreement or Microsoft Customer Agreement.Due to Azure
      * product growth, the Azure price sheet download experience in this preview version will be updated from a single
      * csv file to a Zip file containing multiple csv files, each with max 200k records.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param billingProfileName The ID that uniquely identifies a billing profile.
      * @param context The context to associate with this operation.

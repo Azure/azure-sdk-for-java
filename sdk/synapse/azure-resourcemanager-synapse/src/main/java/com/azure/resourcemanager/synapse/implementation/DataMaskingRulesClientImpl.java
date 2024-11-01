@@ -32,17 +32,23 @@ import com.azure.resourcemanager.synapse.fluent.models.DataMaskingRuleInner;
 import com.azure.resourcemanager.synapse.models.DataMaskingRuleListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DataMaskingRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataMaskingRulesClient.
+ */
 public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DataMaskingRulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of DataMaskingRulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DataMaskingRulesClientImpl(SynapseManagementClientImpl client) {
@@ -59,9 +65,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
     @ServiceInterface(name = "SynapseManagementCli")
     public interface DataMaskingRulesService {
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules"
-            + "/{dataMaskingRuleName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules/{dataMaskingRuleName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataMaskingRuleInner>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -74,9 +78,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules"
-            + "/{dataMaskingRuleName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules/{dataMaskingRuleName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataMaskingRuleInner>> get(@HostParam("$host") String endpoint,
@@ -88,8 +90,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataMaskingRuleListResult>> listBySqlPool(@HostParam("$host") String endpoint,
@@ -102,7 +103,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -111,8 +112,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool data masking rule along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a Sql pool data masking rule along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -156,7 +157,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -166,8 +167,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a Sql pool data masking rule along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return represents a Sql pool data masking rule along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -211,7 +212,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -231,7 +232,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -252,7 +253,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Creates or updates a Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -272,7 +273,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -280,8 +281,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Sql pool data masking rule along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specific Sql pool data masking rule along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingRuleInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -320,7 +321,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -329,8 +330,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specific Sql pool data masking rule along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specific Sql pool data masking rule along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingRuleInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -367,7 +368,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -386,7 +387,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -406,7 +407,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Gets the specific Sql pool data masking rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -425,15 +426,15 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool data masking rules along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of Sql pool data masking rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMaskingRuleInner>> listBySqlPoolSinglePageAsync(String resourceGroupName,
@@ -470,7 +471,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -478,8 +479,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Sql pool data masking rules along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of Sql pool data masking rules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMaskingRuleInner>> listBySqlPoolSinglePageAsync(String resourceGroupName,
@@ -515,7 +516,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -532,7 +533,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -551,7 +552,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -568,7 +569,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
 
     /**
      * Gets a list of Sql pool data masking rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

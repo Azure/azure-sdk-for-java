@@ -209,8 +209,8 @@ public final class JobResourceImpl implements JobResource, JobResource.Definitio
     JobResourceImpl(JobResourceInner innerObject, com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.jobName = Utils.getValueFromIdByName(innerObject.id(), "jobs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.jobName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "jobs");
     }
 
     public JobResource refresh() {

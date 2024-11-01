@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.WorkspaceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Integration Runtime Operation Status Properties. */
+/**
+ * Integration Runtime Operation Status Properties.
+ */
 @Fluent
-public final class IntegrationRuntimeEnableinteractivequeryInner {
+public final class IntegrationRuntimeEnableinteractivequeryInner
+    implements JsonSerializable<IntegrationRuntimeEnableinteractivequeryInner> {
     /*
-     * EnableInteractivequery status of  Integrationruntimes.
+     * EnableInteractivequery status of Integrationruntimes.
      */
-    @JsonProperty(value = "status")
     private WorkspaceStatus status;
 
     /*
      * The operation name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The operation properties.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /*
      * The operation error message.
      */
-    @JsonProperty(value = "error")
     private String error;
 
-    /** Creates an instance of IntegrationRuntimeEnableinteractivequeryInner class. */
+    /**
+     * Creates an instance of IntegrationRuntimeEnableinteractivequeryInner class.
+     */
     public IntegrationRuntimeEnableinteractivequeryInner() {
     }
 
     /**
      * Get the status property: EnableInteractivequery status of Integrationruntimes.
-     *
+     * 
      * @return the status value.
      */
     public WorkspaceStatus status() {
@@ -50,7 +55,7 @@ public final class IntegrationRuntimeEnableinteractivequeryInner {
 
     /**
      * Set the status property: EnableInteractivequery status of Integrationruntimes.
-     *
+     * 
      * @param status the status value to set.
      * @return the IntegrationRuntimeEnableinteractivequeryInner object itself.
      */
@@ -61,7 +66,7 @@ public final class IntegrationRuntimeEnableinteractivequeryInner {
 
     /**
      * Get the name property: The operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +75,7 @@ public final class IntegrationRuntimeEnableinteractivequeryInner {
 
     /**
      * Set the name property: The operation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the IntegrationRuntimeEnableinteractivequeryInner object itself.
      */
@@ -81,7 +86,7 @@ public final class IntegrationRuntimeEnableinteractivequeryInner {
 
     /**
      * Get the properties property: The operation properties.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -90,7 +95,7 @@ public final class IntegrationRuntimeEnableinteractivequeryInner {
 
     /**
      * Set the properties property: The operation properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the IntegrationRuntimeEnableinteractivequeryInner object itself.
      */
@@ -101,7 +106,7 @@ public final class IntegrationRuntimeEnableinteractivequeryInner {
 
     /**
      * Get the error property: The operation error message.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -110,7 +115,7 @@ public final class IntegrationRuntimeEnableinteractivequeryInner {
 
     /**
      * Set the error property: The operation error message.
-     *
+     * 
      * @param error the error value to set.
      * @return the IntegrationRuntimeEnableinteractivequeryInner object itself.
      */
@@ -121,9 +126,56 @@ public final class IntegrationRuntimeEnableinteractivequeryInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeUntypedField("properties", this.properties);
+        jsonWriter.writeStringField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationRuntimeEnableinteractivequeryInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationRuntimeEnableinteractivequeryInner if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationRuntimeEnableinteractivequeryInner.
+     */
+    public static IntegrationRuntimeEnableinteractivequeryInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationRuntimeEnableinteractivequeryInner deserializedIntegrationRuntimeEnableinteractivequeryInner
+                = new IntegrationRuntimeEnableinteractivequeryInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedIntegrationRuntimeEnableinteractivequeryInner.status
+                        = WorkspaceStatus.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedIntegrationRuntimeEnableinteractivequeryInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIntegrationRuntimeEnableinteractivequeryInner.properties = reader.readUntyped();
+                } else if ("error".equals(fieldName)) {
+                    deserializedIntegrationRuntimeEnableinteractivequeryInner.error = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationRuntimeEnableinteractivequeryInner;
+        });
     }
 }

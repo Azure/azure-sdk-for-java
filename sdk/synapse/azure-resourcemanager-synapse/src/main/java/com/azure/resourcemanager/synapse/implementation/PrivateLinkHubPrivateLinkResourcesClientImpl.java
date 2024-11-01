@@ -34,15 +34,19 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in PrivateLinkHubPrivateLinkResourcesClient.
  */
 public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements PrivateLinkHubPrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkHubPrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkHubPrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkHubPrivateLinkResourcesClientImpl(SynapseManagementClientImpl client) {
@@ -59,8 +63,7 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
     @ServiceInterface(name = "SynapseManagementCli")
     public interface PrivateLinkHubPrivateLinkResourcesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
-            + "/privateLinkHubs/{privateLinkHubName}/privateLinkResources")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateLinkResources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceListResult>> list(@HostParam("$host") String endpoint,
@@ -70,8 +73,7 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse"
-            + "/privateLinkHubs/{privateLinkHubName}/privateLinkResources/{privateLinkResourceName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/privateLinkHubs/{privateLinkHubName}/privateLinkResources/{privateLinkResourceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceInner>> get(@HostParam("$host") String endpoint,
@@ -92,16 +94,16 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private link resources for a private link hub along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
@@ -134,9 +136,9 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param context The context to associate with this operation.
@@ -144,7 +146,7 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private link resources for a private link hub along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
@@ -177,9 +179,9 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,9 +197,9 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param context The context to associate with this operation.
@@ -215,9 +217,9 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,9 +234,9 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a private link hub.
-     *
+     * 
+     * Get all private link resources for a private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param context The context to associate with this operation.
@@ -251,17 +253,17 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link resource in private link hub along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return private link resource in private link hub along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName,
@@ -296,9 +298,9 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.
@@ -306,8 +308,8 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link resource in private link hub along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return private link resource in private link hub along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName,
@@ -341,9 +343,9 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.
@@ -361,9 +363,9 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.
@@ -381,9 +383,9 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Get Private Link Hub Private Link Resource
-     *
-     * <p>Get private link resource in private link hub.
-     *
+     * 
+     * Get private link resource in private link hub.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateLinkHubName The name of the private link hub.
      * @param privateLinkResourceName The name of the private link resource.
@@ -400,14 +402,13 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -427,15 +428,14 @@ public final class PrivateLinkHubPrivateLinkResourcesClientImpl implements Priva
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {

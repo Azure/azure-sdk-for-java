@@ -5,27 +5,48 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.BenefitKind;
 import com.azure.resourcemanager.costmanagement.models.BenefitRecommendationProperties;
 import com.azure.resourcemanager.costmanagement.models.BenefitResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** benefit plan recommendation details. */
+/**
+ * benefit plan recommendation details.
+ */
 @Fluent
 public final class BenefitRecommendationModelInner extends BenefitResource {
     /*
      * The properties of the benefit recommendations.
      */
-    @JsonProperty(value = "properties")
     private BenefitRecommendationProperties properties;
 
-    /** Creates an instance of BenefitRecommendationModelInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BenefitRecommendationModelInner class.
+     */
     public BenefitRecommendationModelInner() {
     }
 
     /**
      * Get the properties property: The properties of the benefit recommendations.
-     *
+     * 
      * @return the properties value.
      */
     public BenefitRecommendationProperties properties() {
@@ -34,7 +55,7 @@ public final class BenefitRecommendationModelInner extends BenefitResource {
 
     /**
      * Set the properties property: The properties of the benefit recommendations.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BenefitRecommendationModelInner object itself.
      */
@@ -43,7 +64,39 @@ public final class BenefitRecommendationModelInner extends BenefitResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BenefitRecommendationModelInner withKind(BenefitKind kind) {
         super.withKind(kind);
@@ -52,14 +105,61 @@ public final class BenefitRecommendationModelInner extends BenefitResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind() == null ? null : kind().toString());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BenefitRecommendationModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BenefitRecommendationModelInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BenefitRecommendationModelInner.
+     */
+    public static BenefitRecommendationModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BenefitRecommendationModelInner deserializedBenefitRecommendationModelInner
+                = new BenefitRecommendationModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBenefitRecommendationModelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBenefitRecommendationModelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBenefitRecommendationModelInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedBenefitRecommendationModelInner.withKind(BenefitKind.fromString(reader.getString()));
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBenefitRecommendationModelInner.properties
+                        = BenefitRecommendationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBenefitRecommendationModelInner;
+        });
     }
 }

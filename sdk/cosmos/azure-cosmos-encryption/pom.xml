@@ -51,6 +51,7 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
     </javaModulesSurefireArgLine>
     <doclintMissingInclusion>-</doclintMissingInclusion>
+    <spotless.skip>true</spotless.skip>
   </properties>
 
   <dependencies>

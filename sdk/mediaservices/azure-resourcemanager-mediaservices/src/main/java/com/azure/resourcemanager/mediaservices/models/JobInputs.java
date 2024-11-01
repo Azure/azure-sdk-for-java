@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes a list of inputs to a Job. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.JobInputs")
+/**
+ * Describes a list of inputs to a Job.
+ */
 @Fluent
 public final class JobInputs extends JobInput {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.JobInputs";
+
+    /*
      * List of inputs to a Job.
      */
-    @JsonProperty(value = "inputs")
     private List<JobInput> inputs;
 
-    /** Creates an instance of JobInputs class. */
+    /**
+     * Creates an instance of JobInputs class.
+     */
     public JobInputs() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the inputs property: List of inputs to a Job.
-     *
+     * 
      * @return the inputs value.
      */
     public List<JobInput> inputs() {
@@ -36,7 +53,7 @@ public final class JobInputs extends JobInput {
 
     /**
      * Set the inputs property: List of inputs to a Job.
-     *
+     * 
      * @param inputs the inputs value to set.
      * @return the JobInputs object itself.
      */
@@ -47,14 +64,53 @@ public final class JobInputs extends JobInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (inputs() != null) {
             inputs().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobInputs from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobInputs if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the JobInputs.
+     */
+    public static JobInputs fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobInputs deserializedJobInputs = new JobInputs();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedJobInputs.odataType = reader.getString();
+                } else if ("inputs".equals(fieldName)) {
+                    List<JobInput> inputs = reader.readArray(reader1 -> JobInput.fromJson(reader1));
+                    deserializedJobInputs.inputs = inputs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobInputs;
+        });
     }
 }

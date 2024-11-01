@@ -4,18 +4,22 @@
 
 package com.azure.resourcemanager.timeseriesinsights.generated;
 
-/** Samples for AccessPolicies Delete. */
+/**
+ * Samples for AccessPolicies Delete.
+ */
 public final class AccessPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/AccessPoliciesDelete.json
+     * x-ms-original-file:
+     * specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/
+     * AccessPoliciesDelete.json
      */
     /**
      * Sample code: AccessPoliciesDelete.
-     *
+     * 
      * @param manager Entry point to TimeSeriesInsightsManager.
      */
-    public static void accessPoliciesDelete(
-        com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
+    public static void
+        accessPoliciesDelete(com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
         manager.accessPolicies().deleteWithResponse("rg1", "env1", "ap1", com.azure.core.util.Context.NONE);
     }
 }

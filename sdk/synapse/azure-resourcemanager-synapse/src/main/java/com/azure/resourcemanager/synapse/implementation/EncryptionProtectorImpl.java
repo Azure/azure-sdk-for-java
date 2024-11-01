@@ -132,10 +132,10 @@ public final class EncryptionProtectorImpl
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.encryptionProtectorName
-            = EncryptionProtectorName.fromString(Utils.getValueFromIdByName(innerObject.id(), "encryptionProtector"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.encryptionProtectorName = EncryptionProtectorName
+            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "encryptionProtector"));
     }
 
     public EncryptionProtector refresh() {

@@ -125,9 +125,9 @@ public final class TransformImpl implements Transform, Transform.Definition, Tra
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "mediaServices");
-        this.transformName = Utils.getValueFromIdByName(innerObject.id(), "transforms");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mediaServices");
+        this.transformName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "transforms");
     }
 
     public Transform refresh() {

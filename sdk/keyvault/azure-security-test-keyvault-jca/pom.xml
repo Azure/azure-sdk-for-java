@@ -20,7 +20,6 @@
   <properties>
     <spotbugs.skip>true</spotbugs.skip>
     <doclintMissingInclusion>-</doclintMissingInclusion>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
@@ -66,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

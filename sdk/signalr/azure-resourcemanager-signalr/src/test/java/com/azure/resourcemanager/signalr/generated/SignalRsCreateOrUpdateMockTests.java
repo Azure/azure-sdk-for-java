@@ -6,11 +6,9 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import com.azure.resourcemanager.signalr.models.AclAction;
 import com.azure.resourcemanager.signalr.models.FeatureFlags;
@@ -37,7 +35,6 @@ import com.azure.resourcemanager.signalr.models.SignalRTlsSettings;
 import com.azure.resourcemanager.signalr.models.UpstreamAuthSettings;
 import com.azure.resourcemanager.signalr.models.UpstreamTemplate;
 import com.azure.resourcemanager.signalr.models.UserAssignedIdentityProperty;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -45,32 +42,16 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class SignalRsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
-
         String responseStr
             = "{\"sku\":{\"name\":\"lhikcyychunsj\",\"tier\":\"Basic\",\"size\":\"twszhvvuic\",\"family\":\"vtrrmhwrbfdpyflu\",\"capacity\":2023214586},\"properties\":{\"provisioningState\":\"Succeeded\",\"externalIP\":\"ocu\",\"hostName\":\"lw\",\"publicPort\":1284227714,\"serverPort\":1438409396,\"version\":\"ooclutnp\",\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Moving\",\"privateEndpoint\":{},\"groupIds\":[\"mykyujxsglhs\",\"rryejylmbkzudnig\"],\"privateLinkServiceConnectionState\":{}},\"id\":\"hotj\",\"name\":\"wlpxuzzjg\",\"type\":\"refqy\"}],\"sharedPrivateLinkResources\":[{\"properties\":{\"groupId\":\"oihiqak\",\"privateLinkResourceId\":\"diw\",\"provisioningState\":\"Canceled\",\"requestMessage\":\"wpzdqtvhcspo\",\"status\":\"Pending\"},\"id\":\"xsi\",\"name\":\"ietgbebjfu\",\"type\":\"bmoichd\"},{\"properties\":{\"groupId\":\"nfpubntnbatz\",\"privateLinkResourceId\":\"iqsowsaaelc\",\"provisioningState\":\"Creating\",\"requestMessage\":\"ju\",\"status\":\"Disconnected\"},\"id\":\"vkmjcwmjvlgf\",\"name\":\"gcvkyyli\",\"type\":\"rzbjpsfxsfuz\"}],\"tls\":{\"clientCertEnabled\":false},\"hostNamePrefix\":\"vagbwidqlvhukove\",\"features\":[{\"flag\":\"EnableLiveTrace\",\"value\":\"rvjfnmjmvlw\",\"properties\":{\"lfojuidjp\":\"iblkujr\",\"ovvtzejetjkln\":\"uyjucejikzo\",\"k\":\"ikyju\"}}],\"liveTraceConfiguration\":{\"enabled\":\"zolxrzvhqjwtr\",\"categories\":[{\"name\":\"gzpcrrkolaw\",\"enabled\":\"jsmwrokc\"}]},\"resourceLogConfiguration\":{\"categories\":[{\"name\":\"zwyjafitlhgu\",\"enabled\":\"uchlgmltx\"},{\"name\":\"hmoz\",\"enabled\":\"gzvlnsnn\"}]},\"cors\":{\"allowedOrigins\":[\"afolpymwamxqzrag\",\"gdphtvdula\"]},\"serverless\":{\"connectionTimeoutInSeconds\":254887878},\"upstream\":{\"templates\":[{\"hubPattern\":\"srlzknmzlan\",\"eventPattern\":\"pdwvnphcn\",\"categoryPattern\":\"tpjhm\",\"urlTemplate\":\"rhv\",\"auth\":{}},{\"hubPattern\":\"aiwdcxsmlzzhz\",\"eventPattern\":\"xetlgydlhqv\",\"categoryPattern\":\"npxybafiq\",\"urlTemplate\":\"eaarbgjekglklbyu\",\"auth\":{}},{\"hubPattern\":\"wcwvmzeg\",\"eventPattern\":\"nfhjirwgdnqzbr\",\"categoryPattern\":\"spzhzmtksjc\",\"urlTemplate\":\"tdigsxcdglj\",\"auth\":{}}]},\"networkACLs\":{\"defaultAction\":\"Allow\",\"publicNetwork\":{\"allow\":[\"Trace\",\"RESTAPI\",\"Trace\",\"RESTAPI\"],\"deny\":[\"ServerConnection\",\"Trace\"]},\"privateEndpoints\":[{\"name\":\"fpfmdgycxnmskwh\",\"allow\":[\"ClientConnection\",\"Trace\"],\"deny\":[\"ServerConnection\",\"Trace\"]},{\"name\":\"pshhkvpedwqslsr\",\"allow\":[\"ServerConnection\"],\"deny\":[\"Trace\",\"RESTAPI\"]},{\"name\":\"kondcb\",\"allow\":[\"RESTAPI\",\"Trace\",\"RESTAPI\",\"ClientConnection\"],\"deny\":[\"Trace\",\"ClientConnection\",\"Trace\"]}],\"ipRules\":[{\"value\":\"rleaes\",\"action\":\"Deny\"},{\"value\":\"tljqobbpih\",\"action\":\"Deny\"},{\"value\":\"cy\",\"action\":\"Deny\"},{\"value\":\"brjbbmpxdlvy\",\"action\":\"Deny\"}]},\"publicNetworkAccess\":\"xcrseqwjksgh\",\"disableLocalAuth\":false,\"disableAadAuth\":true,\"regionEndpointEnabled\":\"ogjggsvoujkxibda\",\"resourceStopped\":\"rkmdyom\"},\"kind\":\"SignalR\",\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"kumuikjcjca\":{\"principalId\":\"y\",\"clientId\":\"hpwpgddeimawzovg\"}},\"principalId\":\"bwsnsqow\",\"tenantId\":\"comlikytwvczc\"},\"location\":\"k\",\"tags\":{\"gddpq\":\"ejyfdvlvhbwrnfx\"},\"id\":\"hehnmnaoya\",\"name\":\"kcoeqswank\",\"type\":\"t\"}";
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito.when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito.when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
-            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-            return Mono.just(httpResponse);
-        }));
-
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SignalRManager manager = SignalRManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),

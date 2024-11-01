@@ -7,24 +7,25 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.resourcemanager.cognitiveservices.models.CheckSkuAvailabilityParameter;
 import java.util.Arrays;
 
-/** Samples for ResourceProvider CheckSkuAvailability. */
+/**
+ * Samples for ResourceProvider CheckSkuAvailability.
+ */
 public final class ResourceProviderCheckSkuAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/CheckSkuAvailability.json
+     * x-ms-original-file:
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/
+     * CheckSkuAvailability.json
      */
     /**
      * Sample code: Check SKU Availability.
-     *
+     * 
      * @param manager Entry point to CognitiveServicesManager.
      */
-    public static void checkSKUAvailability(
-        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager
-            .resourceProviders()
-            .checkSkuAvailabilityWithResponse(
-                "westus",
-                new CheckSkuAvailabilityParameter()
-                    .withSkus(Arrays.asList("S0"))
+    public static void
+        checkSKUAvailability(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.resourceProviders()
+            .checkSkuAvailabilityWithResponse("westus",
+                new CheckSkuAvailabilityParameter().withSkus(Arrays.asList("S0"))
                     .withKind("Face")
                     .withType("Microsoft.CognitiveServices/accounts"),
                 com.azure.core.util.Context.NONE);

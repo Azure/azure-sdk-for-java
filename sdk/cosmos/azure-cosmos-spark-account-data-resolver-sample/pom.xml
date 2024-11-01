@@ -31,6 +31,7 @@
     <revapi.skip>true</revapi.skip>
     <checkstyle.skip>true</checkstyle.skip>
     <spotbugs.skip>true</spotbugs.skip>
+    <spotless.skip>true</spotless.skip>
 
     <cosmos.spark.skip>false</cosmos.spark.skip>
     <cosmos-spark-version>3.5</cosmos-spark-version>
@@ -134,7 +135,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <exclusions>
         <exclusion>
           <groupId>com.azure</groupId>

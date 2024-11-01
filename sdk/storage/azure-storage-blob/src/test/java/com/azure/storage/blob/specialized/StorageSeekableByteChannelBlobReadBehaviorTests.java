@@ -62,8 +62,8 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
         String contentRangeHeader = "Content-Range";
         Map<String, String> headers = new HashMap<>();
         headers.put(contentRangeHeader, contentRange);
-        return new BlobDownloadResponse(new BlobDownloadAsyncResponse(null, 206,
-            new HttpHeaders(headers), null, new BlobDownloadHeaders().setContentRange(contentRange)));
+        return new BlobDownloadResponse(new BlobDownloadAsyncResponse(null, 206, new HttpHeaders(headers), null,
+            new BlobDownloadHeaders().setContentRange(contentRange)));
     }
 
     @ParameterizedTest
@@ -73,26 +73,18 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
         BlobClientBase client = Mockito.mock(BlobClientBase.class);
         ArgumentCaptor<BlobRange> blobRangeCaptor = ArgumentCaptor.forClass(BlobRange.class);
         Mockito.when(client.downloadStreamWithResponse(any(), any(), any(), any(), anyBoolean(), any(), any()))
-            .thenReturn(createMockDownloadResponse("bytes " + offset + "-" + (offset + bufferSize - 1)
-                + "/" + Constants.MB));
+            .thenReturn(
+                createMockDownloadResponse("bytes " + offset + "-" + (offset + bufferSize - 1) + "/" + Constants.MB));
 
-        StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(
-            client, ByteBuffer.allocate(0), -1, Constants.MB, conditions
-        );
+        StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(client,
+            ByteBuffer.allocate(0), -1, Constants.MB, conditions);
 
         // when: "ReadBehavior.read() called"
         behavior.read(ByteBuffer.allocate(bufferSize), offset);
 
         // then: "Expected ShareFileClient download parameters given"
-        verify(client, times(1)).downloadStreamWithResponse(
-            any(),
-            blobRangeCaptor.capture(),
-            any(),
-            eq(conditions),
-            eq(false),
-            any(),
-            any()
-        );
+        verify(client, times(1)).downloadStreamWithResponse(any(), blobRangeCaptor.capture(), any(), eq(conditions),
+            eq(false), any(), any());
 
         BlobRange range = blobRangeCaptor.getValue();
         assertEquals(offset, range.getOffset());
@@ -100,12 +92,8 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
     }
 
     private static Stream<Arguments> readCallsToClientCorrectlySupplier() {
-        return Stream.of(
-            Arguments.of(0, Constants.KB, null),
-            Arguments.of(50, Constants.KB, null),
-            Arguments.of(0, 2000, null),
-            Arguments.of(0, Constants.KB, new BlobRequestConditions())
-        );
+        return Stream.of(Arguments.of(0, Constants.KB, null), Arguments.of(50, Constants.KB, null),
+            Arguments.of(0, 2000, null), Arguments.of(0, Constants.KB, new BlobRequestConditions()));
     }
 
     @ParameterizedTest
@@ -114,33 +102,29 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
         // given: "Behavior with a starting cached response"
         BlobClientBase client = Mockito.mock(BlobClientBase.class);
         ByteBuffer initialCache = getRandomData(cacheSize);
-        StorageSeekableByteChannelBlobReadBehavior behavior =
-            new StorageSeekableByteChannelBlobReadBehavior(client, initialCache, offset, Constants.MB, null);
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, initialCache, offset, Constants.MB, null);
 
         // Stubbing downloadStreamWithResponse before any read call
-        Mockito.when(client.downloadStreamWithResponse(
-                Mockito.any(),
+        Mockito
+            .when(client.downloadStreamWithResponse(Mockito.any(),
                 Mockito.argThat(range -> range.getOffset() == offset && range.getCount().intValue() == bufferSize),
-                Mockito.any(),
-                Mockito.any(),
-                Mockito.anyBoolean(),
-                Mockito.any(),
-                Mockito.any()))
+                Mockito.any(), Mockito.any(), Mockito.anyBoolean(), Mockito.any(), Mockito.any()))
             .thenAnswer(invocation -> {
                 OutputStream os = invocation.getArgument(0);
                 BlobRange range = invocation.getArgument(1);
                 os.write(getRandomData(range.getCount().intValue()).array());
-                return createMockDownloadResponse("bytes " + offset + "-" + (offset + bufferSize - 1) + "/"
-                    + Constants.MB);
+                return createMockDownloadResponse(
+                    "bytes " + offset + "-" + (offset + bufferSize - 1) + "/" + Constants.MB);
             });
         // when: "ReadBehavior.read() called at offset of cache"
         ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         int read1 = behavior.read(buffer, offset);
 
         // then: "Cache used"
-        Mockito.verify(client, Mockito.times(0)).downloadStreamWithResponse(
-            Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyBoolean(), Mockito.any(),
-            Mockito.any());
+        Mockito.verify(client, Mockito.times(0))
+            .downloadStreamWithResponse(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any(),
+                Mockito.anyBoolean(), Mockito.any(), Mockito.any());
         assertEquals(Math.min(bufferSize, cacheSize), read1);
         byte[] actual = new byte[read1];
         buffer.flip();
@@ -159,12 +143,8 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
     }
 
     static Stream<Arguments> readUsesCacheCorrectlySupplier() {
-        return Stream.of(
-            Arguments.of(0L, Constants.KB, Constants.KB),
-            Arguments.of(50L, Constants.KB, Constants.KB),
-            Arguments.of(0L, 2 * Constants.KB, Constants.KB),
-            Arguments.of(0L, Constants.KB, 2 * Constants.KB)
-        );
+        return Stream.of(Arguments.of(0L, Constants.KB, Constants.KB), Arguments.of(50L, Constants.KB, Constants.KB),
+            Arguments.of(0L, 2 * Constants.KB, Constants.KB), Arguments.of(0L, Constants.KB, 2 * Constants.KB));
     }
 
     @ParameterizedTest
@@ -180,24 +160,27 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
                 blockBlobClient.upload(BinaryData.fromBytes(data));
                 client = blockBlobClient;
                 break;
+
             case "page":
                 pageBlobClient.create(fileSize);
                 pageBlobClient.uploadPages(new PageRange().setStart(0).setEnd(fileSize - 1),
                     new ByteArrayInputStream(data));
                 client = pageBlobClient;
                 break;
+
             case "append":
                 appendBlobClient.create();
                 appendBlobClient.appendBlock(new ByteArrayInputStream(data), fileSize);
                 client = appendBlobClient;
                 break;
+
             default:
                 throw new RuntimeException("Bad test input");
         }
 
         // and: "behavior to target it"
-        StorageSeekableByteChannelBlobReadBehavior behavior = new StorageSeekableByteChannelBlobReadBehavior(
-            client, ByteBuffer.allocate(0), -1, fileSize, null);
+        StorageSeekableByteChannelBlobReadBehavior behavior
+            = new StorageSeekableByteChannelBlobReadBehavior(client, ByteBuffer.allocate(0), -1, fileSize, null);
 
         // when: "ReadBehavior.read() called"
         ByteBuffer buffer = ByteBuffer.allocate(readSize);
@@ -291,4 +274,3 @@ public class StorageSeekableByteChannelBlobReadBehaviorTests extends BlobTestBas
         TestUtils.assertArraysEqual(data, halfLength, buffer.array(), 0, data.length - halfLength);
     }
 }
-

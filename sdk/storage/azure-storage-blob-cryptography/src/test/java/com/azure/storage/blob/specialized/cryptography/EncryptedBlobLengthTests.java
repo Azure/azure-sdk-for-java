@@ -35,10 +35,7 @@ public class EncryptedBlobLengthTests extends BlobCryptographyTestBase {
     }
 
     private static Stream<Arguments> correctAdjustedLengthV1Supplier() {
-        return Stream.of(
-            Arguments.of(FOUR_MB),
-            Arguments.of(SIXTEEN_MB)
-        );
+        return Stream.of(Arguments.of(FOUR_MB), Arguments.of(SIXTEEN_MB));
     }
 
     @ParameterizedTest
@@ -53,14 +50,9 @@ public class EncryptedBlobLengthTests extends BlobCryptographyTestBase {
     }
 
     private static Stream<Arguments> correctAdjustedLengthV2Supplier() {
-        return Stream.of(
-            Arguments.of(FOUR_MB + 28, FOUR_MB),
-            Arguments.of(FOUR_MB + 57, FOUR_MB + 1),
-            Arguments.of(SIXTEEN_MB + 112, SIXTEEN_MB),
-            Arguments.of(28L, 0L),
-            Arguments.of(0L, 0L),
-            Arguments.of(ONE_MB + 28, ONE_MB)
-        );
+        return Stream.of(Arguments.of(FOUR_MB + 28, FOUR_MB), Arguments.of(FOUR_MB + 57, FOUR_MB + 1),
+            Arguments.of(SIXTEEN_MB + 112, SIXTEEN_MB), Arguments.of(28L, 0L), Arguments.of(0L, 0L),
+            Arguments.of(ONE_MB + 28, ONE_MB));
     }
 
     @ParameterizedTest
@@ -75,16 +67,11 @@ public class EncryptedBlobLengthTests extends BlobCryptographyTestBase {
     }
 
     private static Stream<Arguments> correctAdjustedLengthVariableRegionSupplier() {
-        return Stream.of(
-            Arguments.of(FOUR_MB + 112, FOUR_MB, ONE_MB),
-            Arguments.of(SIXTEEN_MB + 448, SIXTEEN_MB, ONE_MB),
-            Arguments.of(FOUR_MB + 114688, FOUR_MB, ONE_KB),
-            Arguments.of(SIXTEEN_MB + 458752, SIXTEEN_MB, ONE_KB),
-            Arguments.of(FOUR_MB + 448, FOUR_MB, 256 * ONE_KB),
-            Arguments.of(SIXTEEN_MB + 1792, SIXTEEN_MB, 256 * ONE_KB),
-            Arguments.of(ONE_MB + 28672, ONE_MB, ONE_KB),
-            Arguments.of(ONE_MB + 28, ONE_MB, ONE_MB)
-        );
+        return Stream.of(Arguments.of(FOUR_MB + 112, FOUR_MB, ONE_MB),
+            Arguments.of(SIXTEEN_MB + 448, SIXTEEN_MB, ONE_MB), Arguments.of(FOUR_MB + 114688, FOUR_MB, ONE_KB),
+            Arguments.of(SIXTEEN_MB + 458752, SIXTEEN_MB, ONE_KB), Arguments.of(FOUR_MB + 448, FOUR_MB, 256 * ONE_KB),
+            Arguments.of(SIXTEEN_MB + 1792, SIXTEEN_MB, 256 * ONE_KB), Arguments.of(ONE_MB + 28672, ONE_MB, ONE_KB),
+            Arguments.of(ONE_MB + 28, ONE_MB, ONE_MB));
     }
 
     @Test
@@ -92,8 +79,8 @@ public class EncryptedBlobLengthTests extends BlobCryptographyTestBase {
         EncryptionData encryptionData = new EncryptionData();
         encryptionData.setEncryptionAgent(new EncryptionAgent("garbage", null));
 
-        assertThrows(IllegalArgumentException.class, () -> EncryptedBlobLength.computeAdjustedBlobLength(encryptionData,
-                null));
+        assertThrows(IllegalArgumentException.class,
+            () -> EncryptedBlobLength.computeAdjustedBlobLength(encryptionData, null));
     }
 
 }

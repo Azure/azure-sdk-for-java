@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -51,9 +50,8 @@ public class SoftDeleteAsyncTests extends BlobTestBase {
 
     @Test
     public void listBlobsFlatOptionsDeleted() {
-        ListBlobsOptions options = new ListBlobsOptions()
-            .setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true))
-            .setPrefix(prefix);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true)).setPrefix(prefix);
         StepVerifier.create(blobClient.delete().thenMany(containerClient.listBlobs(options)))
             .assertNext(r -> assertEquals(blobClient.getBlobName(), r.getName()))
             .verifyComplete();
@@ -61,8 +59,8 @@ public class SoftDeleteAsyncTests extends BlobTestBase {
 
     @Test
     public void listBlobsHierOptionsDeleted() {
-        ListBlobsOptions options = new ListBlobsOptions().setDetails(
-            new BlobListDetails().setRetrieveDeletedBlobs(true)).setPrefix(prefix);
+        ListBlobsOptions options
+            = new ListBlobsOptions().setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true)).setPrefix(prefix);
         StepVerifier.create(blobClient.delete().thenMany(containerClient.listBlobsByHierarchy("", options)))
             .assertNext(r -> assertEquals(blobClient.getBlobName(), r.getName()))
             .verifyComplete();

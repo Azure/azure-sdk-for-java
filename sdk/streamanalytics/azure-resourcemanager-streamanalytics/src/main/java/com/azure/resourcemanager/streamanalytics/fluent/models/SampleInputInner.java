@@ -5,36 +5,36 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The stream analytics input to sample.
  */
 @Fluent
-public final class SampleInputInner {
+public final class SampleInputInner implements JsonSerializable<SampleInputInner> {
     /*
      * The stream analytics input to sample.
      */
-    @JsonProperty(value = "input")
     private InputInner input;
 
     /*
      * Defaults to the default ASA job compatibility level. Today it is 1.2
      */
-    @JsonProperty(value = "compatibilityLevel")
     private String compatibilityLevel;
 
     /*
      * The SAS URI of the storage blob for service to write the sampled events to. If this parameter is not provided,
      * service will write events to he system account and share a temporary SAS URI to it.
      */
-    @JsonProperty(value = "eventsUri")
     private String eventsUri;
 
     /*
      * Defaults to en-US.
      */
-    @JsonProperty(value = "dataLocale")
     private String dataLocale;
 
     /**
@@ -134,5 +134,50 @@ public final class SampleInputInner {
         if (input() != null) {
             input().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("input", this.input);
+        jsonWriter.writeStringField("compatibilityLevel", this.compatibilityLevel);
+        jsonWriter.writeStringField("eventsUri", this.eventsUri);
+        jsonWriter.writeStringField("dataLocale", this.dataLocale);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SampleInputInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SampleInputInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SampleInputInner.
+     */
+    public static SampleInputInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SampleInputInner deserializedSampleInputInner = new SampleInputInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("input".equals(fieldName)) {
+                    deserializedSampleInputInner.input = InputInner.fromJson(reader);
+                } else if ("compatibilityLevel".equals(fieldName)) {
+                    deserializedSampleInputInner.compatibilityLevel = reader.getString();
+                } else if ("eventsUri".equals(fieldName)) {
+                    deserializedSampleInputInner.eventsUri = reader.getString();
+                } else if ("dataLocale".equals(fieldName)) {
+                    deserializedSampleInputInner.dataLocale = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSampleInputInner;
+        });
     }
 }

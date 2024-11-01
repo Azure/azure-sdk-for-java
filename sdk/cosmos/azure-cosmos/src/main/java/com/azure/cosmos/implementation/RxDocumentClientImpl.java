@@ -482,7 +482,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         logger.info(
             "Initializing DocumentClient [{}] with"
                 + " serviceEndpoint [{}], connectionPolicy [{}], consistencyLevel [{}]",
-            this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel, configs.getProtocol());
+            this.clientId, serviceEndpoint, connectionPolicy, consistencyLevel);
 
         try {
             this.connectionSharingAcrossClientsEnabled = connectionSharingAcrossClientsEnabled;

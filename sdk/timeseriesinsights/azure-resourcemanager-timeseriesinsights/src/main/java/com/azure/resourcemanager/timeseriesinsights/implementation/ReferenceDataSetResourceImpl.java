@@ -159,9 +159,9 @@ public final class ReferenceDataSetResourceImpl
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.environmentName = Utils.getValueFromIdByName(innerObject.id(), "environments");
-        this.referenceDataSetName = Utils.getValueFromIdByName(innerObject.id(), "referenceDataSets");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.environmentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "environments");
+        this.referenceDataSetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "referenceDataSets");
     }
 
     public ReferenceDataSetResource refresh() {

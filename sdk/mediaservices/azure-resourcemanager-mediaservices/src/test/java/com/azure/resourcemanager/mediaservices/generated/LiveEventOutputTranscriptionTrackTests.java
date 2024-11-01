@@ -12,14 +12,14 @@ public final class LiveEventOutputTranscriptionTrackTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LiveEventOutputTranscriptionTrack model
-            = BinaryData.fromString("{\"trackName\":\"tkl\"}").toObject(LiveEventOutputTranscriptionTrack.class);
-        Assertions.assertEquals("tkl", model.trackName());
+            = BinaryData.fromString("{\"trackName\":\"guufzd\"}").toObject(LiveEventOutputTranscriptionTrack.class);
+        Assertions.assertEquals("guufzd", model.trackName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LiveEventOutputTranscriptionTrack model = new LiveEventOutputTranscriptionTrack().withTrackName("tkl");
+        LiveEventOutputTranscriptionTrack model = new LiveEventOutputTranscriptionTrack().withTrackName("guufzd");
         model = BinaryData.fromObject(model).toObject(LiveEventOutputTranscriptionTrack.class);
-        Assertions.assertEquals("tkl", model.trackName());
+        Assertions.assertEquals("guufzd", model.trackName());
     }
 }

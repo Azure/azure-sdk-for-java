@@ -30,17 +30,23 @@ import com.azure.resourcemanager.synapse.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.synapse.models.PrivateLinkResourceListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesOperationsClient.
+ */
 public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLinkResourcesOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkResourcesOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesOperationsClientImpl(SynapseManagementClientImpl client) {
@@ -57,8 +63,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
     @ServiceInterface(name = "SynapseManagementCli")
     public interface PrivateLinkResourcesOperationsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/privateLinkResources")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateLinkResources")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceListResult>> list(@HostParam("$host") String endpoint,
@@ -67,8 +72,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/privateLinkResources/{privateLinkResourceName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/privateLinkResources/{privateLinkResourceName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceInner>> get(@HostParam("$host") String endpoint,
@@ -88,16 +92,16 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a workspaces.
-     *
+     * 
+     * Get all private link resources for a workspaces.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private link resources for a workspaces along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
@@ -129,9 +133,9 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a workspaces.
-     *
+     * 
+     * Get all private link resources for a workspaces.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -139,7 +143,7 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all private link resources for a workspaces along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listSinglePageAsync(String resourceGroupName,
@@ -171,9 +175,9 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a workspaces.
-     *
+     * 
+     * Get all private link resources for a workspaces.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,9 +193,9 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a workspaces.
-     *
+     * 
+     * Get all private link resources for a workspaces.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -209,9 +213,9 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a workspaces.
-     *
+     * 
+     * Get all private link resources for a workspaces.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,9 +230,9 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Private Link Resources
-     *
-     * <p>Get all private link resources for a workspaces.
-     *
+     * 
+     * Get all private link resources for a workspaces.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -245,9 +249,9 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Get Private Link Resource
-     *
-     * <p>Get private link resource in workspace.
-     *
+     * 
+     * Get private link resource in workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateLinkResourceName The name of the private link resource.
@@ -288,9 +292,9 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Get Private Link Resource
-     *
-     * <p>Get private link resource in workspace.
-     *
+     * 
+     * Get private link resource in workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateLinkResourceName The name of the private link resource.
@@ -331,9 +335,9 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Get Private Link Resource
-     *
-     * <p>Get private link resource in workspace.
-     *
+     * 
+     * Get private link resource in workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateLinkResourceName The name of the private link resource.
@@ -351,9 +355,9 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Get Private Link Resource
-     *
-     * <p>Get private link resource in workspace.
-     *
+     * 
+     * Get private link resource in workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateLinkResourceName The name of the private link resource.
@@ -371,9 +375,9 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Get Private Link Resource
-     *
-     * <p>Get private link resource in workspace.
-     *
+     * 
+     * Get private link resource in workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateLinkResourceName The name of the private link resource.
@@ -390,14 +394,13 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -417,15 +420,14 @@ public final class PrivateLinkResourcesOperationsClientImpl implements PrivateLi
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of private link resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a list of private link resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {

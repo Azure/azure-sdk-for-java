@@ -33,14 +33,13 @@
 
   <properties>
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.51</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
+      <version>1.0.0-beta.52</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry;current} -->
     </dependency>
 
     <!--samples dependencies -->
@@ -53,7 +52,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.7.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.7.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

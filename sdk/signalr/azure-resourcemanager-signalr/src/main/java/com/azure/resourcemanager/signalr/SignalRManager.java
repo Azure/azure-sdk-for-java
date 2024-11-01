@@ -50,7 +50,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to SignalRManager. REST API for Azure SignalR Service. */
+/**
+ * Entry point to SignalRManager.
+ * REST API for Azure SignalR Service.
+ */
 public final class SignalRManager {
     private Operations operations;
 
@@ -84,7 +87,7 @@ public final class SignalRManager {
 
     /**
      * Creates an instance of SignalR service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the SignalR service API instance.
@@ -97,7 +100,7 @@ public final class SignalRManager {
 
     /**
      * Creates an instance of SignalR service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the SignalR service API instance.
@@ -110,14 +113,16 @@ public final class SignalRManager {
 
     /**
      * Gets a Configurable instance that can be used to create SignalRManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new SignalRManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -189,8 +194,8 @@ public final class SignalRManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -232,7 +237,7 @@ public final class SignalRManager {
                 .append("-")
                 .append("com.azure.resourcemanager.signalr")
                 .append("/")
-                .append("1.0.0-beta.8");
+                .append("1.0.0-beta.9");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -280,7 +285,7 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -292,7 +297,7 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of SignalRs. It manages SignalRResource.
-     *
+     * 
      * @return Resource collection API of SignalRs.
      */
     public SignalRs signalRs() {
@@ -304,7 +309,7 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of Usages.
-     *
+     * 
      * @return Resource collection API of Usages.
      */
     public Usages usages() {
@@ -316,7 +321,7 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of SignalRCustomCertificates. It manages CustomCertificate.
-     *
+     * 
      * @return Resource collection API of SignalRCustomCertificates.
      */
     public SignalRCustomCertificates signalRCustomCertificates() {
@@ -329,7 +334,7 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of SignalRCustomDomains. It manages CustomDomain.
-     *
+     * 
      * @return Resource collection API of SignalRCustomDomains.
      */
     public SignalRCustomDomains signalRCustomDomains() {
@@ -341,7 +346,7 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of SignalRPrivateEndpointConnections.
-     *
+     * 
      * @return Resource collection API of SignalRPrivateEndpointConnections.
      */
     public SignalRPrivateEndpointConnections signalRPrivateEndpointConnections() {
@@ -354,7 +359,7 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of SignalRPrivateLinkResources.
-     *
+     * 
      * @return Resource collection API of SignalRPrivateLinkResources.
      */
     public SignalRPrivateLinkResources signalRPrivateLinkResources() {
@@ -367,7 +372,7 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of SignalRReplicas. It manages Replica.
-     *
+     * 
      * @return Resource collection API of SignalRReplicas.
      */
     public SignalRReplicas signalRReplicas() {
@@ -379,7 +384,7 @@ public final class SignalRManager {
 
     /**
      * Gets the resource collection API of SignalRSharedPrivateLinkResources. It manages SharedPrivateLinkResource.
-     *
+     * 
      * @return Resource collection API of SignalRSharedPrivateLinkResources.
      */
     public SignalRSharedPrivateLinkResources signalRSharedPrivateLinkResources() {
@@ -393,7 +398,7 @@ public final class SignalRManager {
     /**
      * Gets wrapped service client SignalRManagementClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client SignalRManagementClient.
      */
     public SignalRManagementClient serviceClient() {

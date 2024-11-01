@@ -4,26 +4,24 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-/** Samples for LiveOutputs OperationLocation. */
+/**
+ * Samples for LiveOutputs OperationLocation.
+ */
 public final class LiveOutputsOperationLocationSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-11-01/examples/liveoutput-operation-location.json
+     * x-ms-original-file:
+     * specification/mediaservices/resource-manager/Microsoft.Media/Streaming/stable/2022-11-01/examples/liveoutput-
+     * operation-location.json
      */
     /**
      * Sample code: Get the LiveOutput operation status.
-     *
+     * 
      * @param manager Entry point to MediaServicesManager.
      */
-    public static void getTheLiveOutputOperationStatus(
-        com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager
-            .liveOutputs()
-            .operationLocationWithResponse(
-                "mediaresources",
-                "slitestmedia10",
-                "myLiveEvent1",
-                "myLiveOutput1",
-                "62e4d893-d233-4005-988e-a428d9f77076",
-                com.azure.core.util.Context.NONE);
+    public static void
+        getTheLiveOutputOperationStatus(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
+        manager.liveOutputs()
+            .operationLocationWithResponse("mediaresources", "slitestmedia10", "myLiveEvent1", "myLiveOutput1",
+                "62e4d893-d233-4005-988e-a428d9f77076", com.azure.core.util.Context.NONE);
     }
 }

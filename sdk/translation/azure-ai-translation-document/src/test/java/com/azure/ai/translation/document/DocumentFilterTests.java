@@ -21,6 +21,8 @@ import com.azure.core.util.polling.SyncPoller;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DocumentFilterTests extends DocumentTranslationClientTestBase {
@@ -106,10 +108,10 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
                 = documentTranslationClient.getDocumentsStatus(translationStatus.getId(), null, null, null, null,
                     getDateTimeOffset(testCreatedOnDateTimes.get(4)), null, null);
             int itemCount = 0;
-            for (DocumentStatus d : response) {
+            for (DocumentStatus ignored : response) {
                 itemCount += 1;
             }
-            assertTrue(itemCount == 1);
+            assertEquals(1, itemCount);
         } catch (Exception e) {
             System.err.println("An exception occurred: " + e.getMessage());
             e.printStackTrace();
@@ -121,10 +123,10 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
                 = documentTranslationClient.getDocumentsStatus(translationStatus.getId(), null, null, null, null,
                     getDateTimeOffset(testCreatedOnDateTimes.get(2)), null, null);
             int itemCount = 0;
-            for (DocumentStatus d : response) {
+            for (DocumentStatus ignored : response) {
                 itemCount += 1;
             }
-            assertTrue(itemCount == 3);
+            assertEquals(3, itemCount);
         } catch (Exception e) {
             System.err.println("An exception occurred: " + e.getMessage());
             e.printStackTrace();
@@ -159,10 +161,10 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
                 = documentTranslationClient.getDocumentsStatus(translationStatus.getId(), null, null, null, null, null,
                     getDateTimeOffset(testCreatedOnDateTimes.get(0)), null);
             int itemCount = 0;
-            for (DocumentStatus d : response) {
+            for (DocumentStatus ignored : response) {
                 itemCount += 1;
             }
-            assertTrue(itemCount == 1);
+            assertEquals(1, itemCount);
         } catch (Exception e) {
             System.err.println("An exception occurred: " + e.getMessage());
             e.printStackTrace();
@@ -174,10 +176,10 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
                 = documentTranslationClient.getDocumentsStatus(translationStatus.getId(), null, null, null, null, null,
                     getDateTimeOffset(testCreatedOnDateTimes.get(3)), null);
             int itemCount = 0;
-            for (DocumentStatus d : response) {
+            for (DocumentStatus ignored : response) {
                 itemCount += 1;
             }
-            assertTrue(itemCount == 4);
+            assertEquals(4, itemCount);
         } catch (Exception e) {
             System.err.println("An exception occurred: " + e.getMessage());
             e.printStackTrace();
@@ -201,7 +203,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
                 String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
                 LocalDateTime createdDateTimeUtc
                     = LocalDateTime.parse(createdDateTimeString, DateTimeFormatter.ISO_DATE_TIME);
-                assertTrue(createdDateTimeUtc.compareTo(timestamp) < 0 || createdDateTimeUtc.compareTo(timestamp) == 0);
+                assertTrue(createdDateTimeUtc.isBefore(timestamp) || createdDateTimeUtc.isEqual(timestamp));
                 timestamp = createdDateTimeUtc;
             }
         } catch (Exception e) {
@@ -227,8 +229,7 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
             documentTranslationClient.beginStartTranslation(TestHelper.getStartTranslationDetails(batchRequest)));
 
         // Wait until the operation completes
-        TranslationStatus translationStatus = poller.waitForCompletion().getValue();
-        return translationStatus;
+        return poller.waitForCompletion().getValue();
     }
 
     public OffsetDateTime getDateTimeOffset(String dateString) {

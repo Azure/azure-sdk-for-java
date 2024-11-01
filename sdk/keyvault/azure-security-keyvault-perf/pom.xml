@@ -20,7 +20,6 @@
   <properties>
     <perf.test.mainClass>com.azure.security.keyvault.App</perf.test.mainClass>
     <perf.test.imageName>azure-security-keyvault-perf</perf.test.imageName>
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
@@ -47,7 +46,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.27.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.27.0-beta.3</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -58,12 +57,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.53.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.54.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.15.5</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.15.6</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
   </dependencies>
 

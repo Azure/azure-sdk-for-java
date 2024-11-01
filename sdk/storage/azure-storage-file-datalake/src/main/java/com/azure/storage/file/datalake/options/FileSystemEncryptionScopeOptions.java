@@ -67,7 +67,8 @@ public final class FileSystemEncryptionScopeOptions implements JsonSerializable<
      * @param encryptionScopeOverridePrevented the encryptionScopeOverridePrevented value to set.
      * @return the updated {@link FileSystemEncryptionScopeOptions}.
      */
-    public FileSystemEncryptionScopeOptions setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {
+    public FileSystemEncryptionScopeOptions
+        setEncryptionScopeOverridePrevented(Boolean encryptionScopeOverridePrevented) {
         this.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
         return this;
     }
@@ -99,7 +100,8 @@ public final class FileSystemEncryptionScopeOptions implements JsonSerializable<
                 if ("DefaultEncryptionScope".equals(fieldName)) {
                     fileSystemEncryptionScopeOptions.defaultEncryptionScope = reader.getString();
                 } else if ("EncryptionScopeOverridePrevented".equals(fieldName)) {
-                    fileSystemEncryptionScopeOptions.encryptionScopeOverridePrevented = reader.getNullable(JsonReader::getBoolean);
+                    fileSystemEncryptionScopeOptions.encryptionScopeOverridePrevented
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     // Skip unknown values.
                     // If the type supported additional properties, this is where they would be handled.

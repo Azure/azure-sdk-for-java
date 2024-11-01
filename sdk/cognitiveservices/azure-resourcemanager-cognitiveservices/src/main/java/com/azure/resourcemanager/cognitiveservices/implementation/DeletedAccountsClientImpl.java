@@ -36,17 +36,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeletedAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeletedAccountsClient.
+ */
 public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DeletedAccountsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CognitiveServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of DeletedAccountsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DeletedAccountsClientImpl(CognitiveServicesManagementClientImpl client) {
@@ -98,7 +104,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Returns a Cognitive Services account specified by the parameters.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -106,7 +112,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     *     and SKU along with {@link Response} on successful completion of {@link Mono}.
+     * and SKU along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountInner>> getWithResponseAsync(String location, String resourceGroupName,
@@ -138,7 +144,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Returns a Cognitive Services account specified by the parameters.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -147,7 +153,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     *     and SKU along with {@link Response} on successful completion of {@link Mono}.
+     * and SKU along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AccountInner>> getWithResponseAsync(String location, String resourceGroupName,
@@ -178,7 +184,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Returns a Cognitive Services account specified by the parameters.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -186,7 +192,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     *     and SKU on successful completion of {@link Mono}.
+     * and SKU on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccountInner> getAsync(String location, String resourceGroupName, String accountName) {
@@ -196,7 +202,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Returns a Cognitive Services account specified by the parameters.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -205,7 +211,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     *     and SKU along with {@link Response}.
+     * and SKU along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccountInner> getWithResponse(String location, String resourceGroupName, String accountName,
@@ -215,7 +221,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Returns a Cognitive Services account specified by the parameters.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -223,7 +229,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cognitive Services account is an Azure resource representing the provisioned account, it's type, location
-     *     and SKU.
+     * and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AccountInner get(String location, String resourceGroupName, String accountName) {
@@ -232,7 +238,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Deletes a Cognitive Services account from the resource group.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -271,7 +277,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Deletes a Cognitive Services account from the resource group.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -310,7 +316,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Deletes a Cognitive Services account from the resource group.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -329,7 +335,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Deletes a Cognitive Services account from the resource group.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -351,7 +357,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Deletes a Cognitive Services account from the resource group.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -368,7 +374,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Deletes a Cognitive Services account from the resource group.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -386,7 +392,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Deletes a Cognitive Services account from the resource group.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -403,7 +409,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Deletes a Cognitive Services account from the resource group.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -421,7 +427,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Deletes a Cognitive Services account from the resource group.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -436,7 +442,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Deletes a Cognitive Services account from the resource group.
-     *
+     * 
      * @param location Resource location.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of Cognitive Services account.
@@ -452,11 +458,11 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listSinglePageAsync() {
@@ -479,13 +485,13 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listSinglePageAsync(Context context) {
@@ -508,7 +514,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response as paginated response with {@link PagedFlux}.
@@ -520,7 +526,7 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -535,11 +541,11 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountInner> list() {
@@ -548,13 +554,13 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Returns all the resources of a particular type belonging to a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of cognitive services accounts operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of cognitive services accounts operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccountInner> list(Context context) {
@@ -563,14 +569,13 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listNextSinglePageAsync(String nextLink) {
@@ -590,15 +595,14 @@ public final class DeletedAccountsClientImpl implements DeletedAccountsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of cognitive services accounts operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccountInner>> listNextSinglePageAsync(String nextLink, Context context) {

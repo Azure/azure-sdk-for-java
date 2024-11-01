@@ -5,28 +5,30 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.Encoding;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * The properties that are associated with the CSV serialization type.
  */
 @Fluent
-public final class CsvSerializationProperties {
+public final class CsvSerializationProperties implements JsonSerializable<CsvSerializationProperties> {
     /*
      * Specifies the delimiter that will be used to separate comma-separated value (CSV) records. See
      * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported
-     * values. Required on PUT (CreateOrReplace) requests.
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported values.
+     * Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "fieldDelimiter")
     private String fieldDelimiter;
 
     /*
-     * Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case
-     * of output. Required on PUT (CreateOrReplace) requests.
+     * Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of
+     * output. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "encoding")
     private Encoding encoding;
 
     /**
@@ -38,8 +40,8 @@ public final class CsvSerializationProperties {
     /**
      * Get the fieldDelimiter property: Specifies the delimiter that will be used to separate comma-separated value
      * (CSV) records. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported
-     * values. Required on PUT (CreateOrReplace) requests.
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported values.
+     * Required on PUT (CreateOrReplace) requests.
      * 
      * @return the fieldDelimiter value.
      */
@@ -50,8 +52,8 @@ public final class CsvSerializationProperties {
     /**
      * Set the fieldDelimiter property: Specifies the delimiter that will be used to separate comma-separated value
      * (CSV) records. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or
-     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported
-     * values. Required on PUT (CreateOrReplace) requests.
+     * https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported values.
+     * Required on PUT (CreateOrReplace) requests.
      * 
      * @param fieldDelimiter the fieldDelimiter value to set.
      * @return the CsvSerializationProperties object itself.
@@ -89,5 +91,44 @@ public final class CsvSerializationProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("fieldDelimiter", this.fieldDelimiter);
+        jsonWriter.writeStringField("encoding", this.encoding == null ? null : this.encoding.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CsvSerializationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CsvSerializationProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CsvSerializationProperties.
+     */
+    public static CsvSerializationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CsvSerializationProperties deserializedCsvSerializationProperties = new CsvSerializationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("fieldDelimiter".equals(fieldName)) {
+                    deserializedCsvSerializationProperties.fieldDelimiter = reader.getString();
+                } else if ("encoding".equals(fieldName)) {
+                    deserializedCsvSerializationProperties.encoding = Encoding.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCsvSerializationProperties;
+        });
     }
 }

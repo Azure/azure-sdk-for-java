@@ -228,7 +228,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
      * @param xmlReader The XmlReader being read.
      * @return An instance of UserDelegationKey if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the UserDelegationKey.
      */
     public static UserDelegationKey fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -243,7 +242,6 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
      * cases where the model can deserialize from different root element names.
      * @return An instance of UserDelegationKey if the XmlReader was pointing to an instance of it, or null if it was
      * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the UserDelegationKey.
      */
     public static UserDelegationKey fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
@@ -259,10 +257,10 @@ public final class UserDelegationKey implements XmlSerializable<UserDelegationKe
                     deserializedUserDelegationKey.signedTenantId = reader.getStringElement();
                 } else if ("SignedStart".equals(elementName.getLocalPart())) {
                     deserializedUserDelegationKey.signedStart
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("SignedExpiry".equals(elementName.getLocalPart())) {
                     deserializedUserDelegationKey.signedExpiry
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
+                        = reader.getNullableElement(dateString -> CoreUtils.parseBestOffsetDateTime(dateString));
                 } else if ("SignedService".equals(elementName.getLocalPart())) {
                     deserializedUserDelegationKey.signedService = reader.getStringElement();
                 } else if ("SignedVersion".equals(elementName.getLocalPart())) {

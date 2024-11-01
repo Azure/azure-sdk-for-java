@@ -52,7 +52,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ReservationsManager. This API describe Azure Reservation. */
+/**
+ * Entry point to ReservationsManager.
+ * This API describe Azure Reservation.
+ */
 public final class ReservationsManager {
     private Reservations reservations;
 
@@ -87,7 +90,7 @@ public final class ReservationsManager {
 
     /**
      * Creates an instance of reservations service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the reservations service API instance.
@@ -100,7 +103,7 @@ public final class ReservationsManager {
 
     /**
      * Creates an instance of reservations service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the reservations service API instance.
@@ -113,14 +116,16 @@ public final class ReservationsManager {
 
     /**
      * Gets a Configurable instance that can be used to create ReservationsManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ReservationsManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -192,8 +197,8 @@ public final class ReservationsManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -235,7 +240,7 @@ public final class ReservationsManager {
                 .append("-")
                 .append("com.azure.resourcemanager.reservations")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -283,7 +288,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of Reservations.
-     *
+     * 
      * @return Resource collection API of Reservations.
      */
     public Reservations reservations() {
@@ -295,7 +300,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of ResourceProviders.
-     *
+     * 
      * @return Resource collection API of ResourceProviders.
      */
     public ResourceProviders resourceProviders() {
@@ -307,7 +312,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of ReservationOrders.
-     *
+     * 
      * @return Resource collection API of ReservationOrders.
      */
     public ReservationOrders reservationOrders() {
@@ -319,7 +324,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -331,7 +336,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of CalculateRefunds.
-     *
+     * 
      * @return Resource collection API of CalculateRefunds.
      */
     public CalculateRefunds calculateRefunds() {
@@ -343,7 +348,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of Returns.
-     *
+     * 
      * @return Resource collection API of Returns.
      */
     public Returns returns() {
@@ -355,7 +360,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of CalculateExchanges.
-     *
+     * 
      * @return Resource collection API of CalculateExchanges.
      */
     public CalculateExchanges calculateExchanges() {
@@ -367,7 +372,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of Exchanges.
-     *
+     * 
      * @return Resource collection API of Exchanges.
      */
     public Exchanges exchanges() {
@@ -379,7 +384,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of Quotas. It manages CurrentQuotaLimitBase.
-     *
+     * 
      * @return Resource collection API of Quotas.
      */
     public Quotas quotas() {
@@ -391,7 +396,7 @@ public final class ReservationsManager {
 
     /**
      * Gets the resource collection API of QuotaRequestStatus.
-     *
+     * 
      * @return Resource collection API of QuotaRequestStatus.
      */
     public QuotaRequestStatus quotaRequestStatus() {
@@ -402,8 +407,10 @@ public final class ReservationsManager {
     }
 
     /**
-     * @return Wrapped service client AzureReservationApi providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client AzureReservationApi providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client AzureReservationApi.
      */
     public AzureReservationApi serviceClient() {
         return this.clientObject;

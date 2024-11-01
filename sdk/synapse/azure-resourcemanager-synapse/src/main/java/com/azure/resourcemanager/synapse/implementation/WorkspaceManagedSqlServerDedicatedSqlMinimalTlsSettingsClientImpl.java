@@ -44,15 +44,19 @@ import reactor.core.publisher.Mono;
  */
 public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClientImpl
     implements WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClientImpl(SynapseManagementClientImpl client) {
@@ -70,8 +74,7 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
     @ServiceInterface(name = "SynapseManagementCli")
     public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsService {
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/dedicatedSQLminimalTlsSettings/{dedicatedSQLminimalTlsSettingsName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/dedicatedSQLminimalTlsSettings/{dedicatedSQLminimalTlsSettingsName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
@@ -82,8 +85,7 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/dedicatedSQLminimalTlsSettings/{dedicatedSQLminimalTlsSettingsName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/dedicatedSQLminimalTlsSettings/{dedicatedSQLminimalTlsSettingsName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DedicatedSQLminimalTlsSettingsInner>> get(@HostParam("$host") String endpoint,
@@ -93,8 +95,7 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/dedicatedSQLminimalTlsSettings")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/dedicatedSQLminimalTlsSettings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DedicatedSQLminimalTlsSettingsListResult>> list(@HostParam("$host") String endpoint,
@@ -113,9 +114,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Update server's tls settings.
-     *
-     * <p>Update workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Update workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -123,8 +124,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated Sql Minimal Tls Settings Info along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return dedicated Sql Minimal Tls Settings Info along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -165,9 +166,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Update server's tls settings.
-     *
-     * <p>Update workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Update workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -176,8 +177,8 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dedicated Sql Minimal Tls Settings Info along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return dedicated Sql Minimal Tls Settings Info along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
@@ -216,9 +217,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Update server's tls settings.
-     *
-     * <p>Update workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Update workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -242,9 +243,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Update server's tls settings.
-     *
-     * <p>Update workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Update workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -270,9 +271,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Update server's tls settings.
-     *
-     * <p>Update workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Update workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -293,9 +294,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Update server's tls settings.
-     *
-     * <p>Update workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Update workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -318,9 +319,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Update server's tls settings.
-     *
-     * <p>Update workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Update workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -340,9 +341,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Update server's tls settings.
-     *
-     * <p>Update workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Update workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -363,9 +364,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Update server's tls settings.
-     *
-     * <p>Update workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Update workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -384,9 +385,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Update server's tls settings.
-     *
-     * <p>Update workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Update workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -407,9 +408,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Get server's minimal tls settings.
-     *
-     * <p>Get workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Get workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -417,7 +418,7 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed sql server's minimal tls settings along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DedicatedSQLminimalTlsSettingsInner>> getWithResponseAsync(String resourceGroupName,
@@ -451,9 +452,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Get server's minimal tls settings.
-     *
-     * <p>Get workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Get workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -462,7 +463,7 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace managed sql server's minimal tls settings along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DedicatedSQLminimalTlsSettingsInner>> getWithResponseAsync(String resourceGroupName,
@@ -495,9 +496,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Get server's minimal tls settings.
-     *
-     * <p>Get workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Get workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -515,9 +516,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Get server's minimal tls settings.
-     *
-     * <p>Get workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Get workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -536,9 +537,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Get server's minimal tls settings.
-     *
-     * <p>Get workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * Get workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
@@ -556,16 +557,16 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * List workspace server's minimal tls settings.
-     *
-     * <p>List workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * List workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's dedicated sql minimal tls settings along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedSQLminimalTlsSettingsInner>> listSinglePageAsync(String resourceGroupName,
@@ -597,9 +598,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * List workspace server's minimal tls settings.
-     *
-     * <p>List workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * List workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -607,7 +608,7 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's dedicated sql minimal tls settings along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedSQLminimalTlsSettingsInner>> listSinglePageAsync(String resourceGroupName,
@@ -639,9 +640,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * List workspace server's minimal tls settings.
-     *
-     * <p>List workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * List workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -657,9 +658,9 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * List workspace server's minimal tls settings.
-     *
-     * <p>List workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * List workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -677,16 +678,16 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * List workspace server's minimal tls settings.
-     *
-     * <p>List workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * List workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the server's dedicated sql minimal tls settings as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of the server's dedicated sql minimal tls settings as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedSQLminimalTlsSettingsInner> list(String resourceGroupName, String workspaceName) {
@@ -695,17 +696,17 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * List workspace server's minimal tls settings.
-     *
-     * <p>List workspace managed sql server's minimal tls settings.
-     *
+     * 
+     * List workspace managed sql server's minimal tls settings.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the server's dedicated sql minimal tls settings as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of the server's dedicated sql minimal tls settings as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedSQLminimalTlsSettingsInner> list(String resourceGroupName, String workspaceName,
@@ -715,14 +716,13 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's dedicated sql minimal tls settings along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedSQLminimalTlsSettingsInner>> listNextSinglePageAsync(String nextLink) {
@@ -742,15 +742,14 @@ public final class WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the server's dedicated sql minimal tls settings along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedSQLminimalTlsSettingsInner>> listNextSinglePageAsync(String nextLink,

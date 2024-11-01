@@ -44,15 +44,19 @@ import reactor.core.publisher.Mono;
  */
 public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
     implements KustoPoolAttachedDatabaseConfigurationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KustoPoolAttachedDatabaseConfigurationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of KustoPoolAttachedDatabaseConfigurationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KustoPoolAttachedDatabaseConfigurationsClientImpl(SynapseManagementClientImpl client) {
@@ -69,8 +73,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
     @ServiceInterface(name = "SynapseManagementCli")
     public interface KustoPoolAttachedDatabaseConfigurationsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedDatabaseConfigurationListResult>> listByKustoPool(@HostParam("$host") String endpoint,
@@ -80,9 +83,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations"
-            + "/{attachedDatabaseConfigurationName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AttachedDatabaseConfigurationInner>> get(@HostParam("$host") String endpoint,
@@ -93,9 +94,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations"
-            + "/{attachedDatabaseConfigurationName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
         @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -107,9 +106,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations"
-            + "/{attachedDatabaseConfigurationName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/attachedDatabaseConfigurations/{attachedDatabaseConfigurationName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
@@ -122,7 +119,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Returns the list of attached database configurations of the given Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -130,7 +127,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list attached database configurations operation response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttachedDatabaseConfigurationInner>> listByKustoPoolSinglePageAsync(String workspaceName,
@@ -165,7 +162,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Returns the list of attached database configurations of the given Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -174,7 +171,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list attached database configurations operation response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AttachedDatabaseConfigurationInner>> listByKustoPoolSinglePageAsync(String workspaceName,
@@ -209,15 +206,15 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Returns the list of attached database configurations of the given Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttachedDatabaseConfigurationInner> listByKustoPoolAsync(String workspaceName,
@@ -227,7 +224,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Returns the list of attached database configurations of the given Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -235,8 +232,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AttachedDatabaseConfigurationInner> listByKustoPoolAsync(String workspaceName,
@@ -247,15 +244,15 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Returns the list of attached database configurations of the given Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttachedDatabaseConfigurationInner> listByKustoPool(String workspaceName, String kustoPoolName,
@@ -265,7 +262,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Returns the list of attached database configurations of the given Kusto Pool.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -273,8 +270,8 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list attached database configurations operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list attached database configurations operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AttachedDatabaseConfigurationInner> listByKustoPool(String workspaceName, String kustoPoolName,
@@ -284,7 +281,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -293,7 +290,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttachedDatabaseConfigurationInner>> getWithResponseAsync(String workspaceName,
@@ -331,7 +328,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -341,7 +338,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AttachedDatabaseConfigurationInner>> getWithResponseAsync(String workspaceName,
@@ -377,7 +374,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -396,7 +393,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -416,7 +413,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Returns an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -435,7 +432,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -445,7 +442,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String workspaceName, String kustoPoolName,
@@ -489,7 +486,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -500,7 +497,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String workspaceName, String kustoPoolName,
@@ -543,7 +540,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -567,7 +564,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -593,7 +590,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -616,7 +613,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -640,7 +637,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -661,7 +658,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -683,7 +680,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -704,7 +701,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Creates or updates an attached database configuration.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -726,7 +723,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -772,7 +769,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -818,7 +815,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -839,7 +836,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -862,7 +859,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -881,7 +878,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -903,7 +900,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -923,7 +920,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -943,7 +940,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.
@@ -960,7 +957,7 @@ public final class KustoPoolAttachedDatabaseConfigurationsClientImpl
 
     /**
      * Deletes the attached database configuration with the given name.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param attachedDatabaseConfigurationName The name of the attached database configuration.

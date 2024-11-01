@@ -117,9 +117,10 @@ public final class IntegrationRuntimeResourceImpl
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.integrationRuntimeName = Utils.getValueFromIdByName(innerObject.id(), "integrationRuntimes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.integrationRuntimeName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationRuntimes");
     }
 
     public IntegrationRuntimeResource refresh() {

@@ -7,13 +7,15 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlPoolMaintenanceWindowOptions. */
+/**
+ * Resource collection API of SqlPoolMaintenanceWindowOptions.
+ */
 public interface SqlPoolMaintenanceWindowOptions {
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -29,9 +31,9 @@ public interface SqlPoolMaintenanceWindowOptions {
 
     /**
      * SQL pool's available maintenance windows.
-     *
-     * <p>Get list of SQL pool's available maintenance windows.
-     *
+     * 
+     * Get list of SQL pool's available maintenance windows.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

@@ -21,9 +21,8 @@ import java.util.List;
 public final class DiskEncryptionConfiguration implements JsonSerializable<DiskEncryptionConfiguration> {
 
     /*
-     * The list of disk targets Batch Service will encrypt on the compute node. If omitted, no disks on the compute
-     * nodes in the pool will be encrypted. On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk"
-     * and "TemporaryDisk" must be specified.
+     * The list of disk targets Batch Service will encrypt on the compute node. The list of disk targets Batch Service
+     * will encrypt on the compute node.
      */
     @Generated
     private List<DiskEncryptionTarget> targets;
@@ -36,9 +35,8 @@ public final class DiskEncryptionConfiguration implements JsonSerializable<DiskE
     }
 
     /**
-     * Get the targets property: The list of disk targets Batch Service will encrypt on the compute node. If omitted, no
-     * disks on the compute nodes in the pool will be encrypted. On Linux pool, only "TemporaryDisk" is supported; on
-     * Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
+     * Get the targets property: The list of disk targets Batch Service will encrypt on the compute node. The list of
+     * disk targets Batch Service will encrypt on the compute node.
      *
      * @return the targets value.
      */
@@ -48,9 +46,8 @@ public final class DiskEncryptionConfiguration implements JsonSerializable<DiskE
     }
 
     /**
-     * Set the targets property: The list of disk targets Batch Service will encrypt on the compute node. If omitted, no
-     * disks on the compute nodes in the pool will be encrypted. On Linux pool, only "TemporaryDisk" is supported; on
-     * Windows pool, "OsDisk" and "TemporaryDisk" must be specified.
+     * Set the targets property: The list of disk targets Batch Service will encrypt on the compute node. The list of
+     * disk targets Batch Service will encrypt on the compute node.
      *
      * @param targets the targets value to set.
      * @return the DiskEncryptionConfiguration object itself.

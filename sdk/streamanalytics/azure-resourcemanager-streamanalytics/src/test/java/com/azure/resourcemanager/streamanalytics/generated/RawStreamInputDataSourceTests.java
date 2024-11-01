@@ -12,19 +12,18 @@ public final class RawStreamInputDataSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RawStreamInputDataSource model = BinaryData
-            .fromString(
-                "{\"type\":\"Raw\",\"properties\":{\"payload\":\"qrhzoymibmrqyib\",\"payloadUri\":\"wfluszdt\"}}")
+            .fromString("{\"type\":\"Raw\",\"properties\":{\"payload\":\"iexpbtgiwbwo\",\"payloadUri\":\"washr\"}}")
             .toObject(RawStreamInputDataSource.class);
-        Assertions.assertEquals("qrhzoymibmrqyib", model.payload());
-        Assertions.assertEquals("wfluszdt", model.payloadUri());
+        Assertions.assertEquals("iexpbtgiwbwo", model.payload());
+        Assertions.assertEquals("washr", model.payloadUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RawStreamInputDataSource model
-            = new RawStreamInputDataSource().withPayload("qrhzoymibmrqyib").withPayloadUri("wfluszdt");
+            = new RawStreamInputDataSource().withPayload("iexpbtgiwbwo").withPayloadUri("washr");
         model = BinaryData.fromObject(model).toObject(RawStreamInputDataSource.class);
-        Assertions.assertEquals("qrhzoymibmrqyib", model.payload());
-        Assertions.assertEquals("wfluszdt", model.payloadUri());
+        Assertions.assertEquals("iexpbtgiwbwo", model.payload());
+        Assertions.assertEquals("washr", model.payloadUri());
     }
 }

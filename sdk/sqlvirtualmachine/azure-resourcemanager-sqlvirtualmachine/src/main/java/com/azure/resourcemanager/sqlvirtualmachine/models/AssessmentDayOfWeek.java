@@ -4,33 +4,48 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Day of the week to run assessment. */
+/**
+ * Day of the week to run assessment.
+ */
 public enum AssessmentDayOfWeek {
-    /** Enum value Monday. */
+    /**
+     * Enum value Monday.
+     */
     MONDAY("Monday"),
 
-    /** Enum value Tuesday. */
+    /**
+     * Enum value Tuesday.
+     */
     TUESDAY("Tuesday"),
 
-    /** Enum value Wednesday. */
+    /**
+     * Enum value Wednesday.
+     */
     WEDNESDAY("Wednesday"),
 
-    /** Enum value Thursday. */
+    /**
+     * Enum value Thursday.
+     */
     THURSDAY("Thursday"),
 
-    /** Enum value Friday. */
+    /**
+     * Enum value Friday.
+     */
     FRIDAY("Friday"),
 
-    /** Enum value Saturday. */
+    /**
+     * Enum value Saturday.
+     */
     SATURDAY("Saturday"),
 
-    /** Enum value Sunday. */
+    /**
+     * Enum value Sunday.
+     */
     SUNDAY("Sunday");
 
-    /** The actual serialized value for a AssessmentDayOfWeek instance. */
+    /**
+     * The actual serialized value for a AssessmentDayOfWeek instance.
+     */
     private final String value;
 
     AssessmentDayOfWeek(String value) {
@@ -39,11 +54,10 @@ public enum AssessmentDayOfWeek {
 
     /**
      * Parses a serialized value to a AssessmentDayOfWeek instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AssessmentDayOfWeek object, or null if unable to parse.
      */
-    @JsonCreator
     public static AssessmentDayOfWeek fromString(String value) {
         if (value == null) {
             return null;
@@ -57,8 +71,9 @@ public enum AssessmentDayOfWeek {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

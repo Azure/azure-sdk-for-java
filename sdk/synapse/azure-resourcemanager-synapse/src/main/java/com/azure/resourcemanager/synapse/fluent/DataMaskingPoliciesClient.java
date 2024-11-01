@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.DataMaskingPolicyInner;
 
-/** An instance of this class provides access to all the operations defined in DataMaskingPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataMaskingPoliciesClient.
+ */
 public interface DataMaskingPoliciesClient {
     /**
      * Creates or updates a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -31,7 +33,7 @@ public interface DataMaskingPoliciesClient {
 
     /**
      * Creates or updates a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -47,7 +49,7 @@ public interface DataMaskingPoliciesClient {
 
     /**
      * Gets a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -63,7 +65,7 @@ public interface DataMaskingPoliciesClient {
 
     /**
      * Gets a Sql pool data masking policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

@@ -41,17 +41,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in KustoPoolPrincipalAssignmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KustoPoolPrincipalAssignmentsClient.
+ */
 public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolPrincipalAssignmentsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final KustoPoolPrincipalAssignmentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of KustoPoolPrincipalAssignmentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     KustoPoolPrincipalAssignmentsClientImpl(SynapseManagementClientImpl client) {
@@ -68,8 +74,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
     @ServiceInterface(name = "SynapseManagementCli")
     public interface KustoPoolPrincipalAssignmentsService {
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/checkPrincipalAssignmentNameAvailability")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/checkPrincipalAssignmentNameAvailability")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CheckNameResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
@@ -80,8 +85,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterPrincipalAssignmentListResult>> list(@HostParam("$host") String endpoint,
@@ -91,8 +95,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ClusterPrincipalAssignmentInner>> get(@HostParam("$host") String endpoint,
@@ -103,8 +106,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -116,8 +118,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/kustoPools/{kustoPoolName}/principalAssignments/{principalAssignmentName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
@@ -130,7 +131,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -139,7 +140,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String workspaceName,
@@ -180,7 +181,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -190,7 +191,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckNameResultInner>> checkNameAvailabilityWithResponseAsync(String workspaceName,
@@ -229,7 +230,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -248,7 +249,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -268,7 +269,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Checks that the principal assignment name is valid and is not already in use.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -287,7 +288,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -295,7 +296,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto cluster principal assignments operation response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterPrincipalAssignmentInner>> listSinglePageAsync(String workspaceName,
@@ -330,7 +331,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -339,7 +340,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Kusto cluster principal assignments operation response along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ClusterPrincipalAssignmentInner>> listSinglePageAsync(String workspaceName,
@@ -374,15 +375,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ClusterPrincipalAssignmentInner> listAsync(String workspaceName, String kustoPoolName,
@@ -392,7 +393,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -400,8 +401,8 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedFlux}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ClusterPrincipalAssignmentInner> listAsync(String workspaceName, String kustoPoolName,
@@ -411,15 +412,15 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterPrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
@@ -429,7 +430,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Lists all Kusto pool principalAssignments.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -437,8 +438,8 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto cluster principal assignments operation response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list Kusto cluster principal assignments operation response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterPrincipalAssignmentInner> list(String workspaceName, String kustoPoolName,
@@ -448,7 +449,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -494,7 +495,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -539,7 +540,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -558,7 +559,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -578,7 +579,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Gets a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -597,7 +598,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -607,7 +608,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a cluster principal assignment along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String workspaceName, String kustoPoolName,
@@ -650,7 +651,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -661,7 +662,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a cluster principal assignment along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String workspaceName, String kustoPoolName,
@@ -703,7 +704,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -727,7 +728,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -753,7 +754,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -776,7 +777,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -800,7 +801,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -820,7 +821,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -842,7 +843,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -862,7 +863,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Create a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -884,7 +885,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -928,7 +929,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -973,7 +974,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -994,7 +995,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1017,7 +1018,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1036,7 +1037,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1056,7 +1057,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1075,7 +1076,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1096,7 +1097,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.
@@ -1113,7 +1114,7 @@ public final class KustoPoolPrincipalAssignmentsClientImpl implements KustoPoolP
 
     /**
      * Deletes a Kusto pool principalAssignment.
-     *
+     * 
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
      * @param principalAssignmentName The name of the Kusto principalAssignment.

@@ -13,17 +13,18 @@ public final class IntegrationRuntimeStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IntegrationRuntimeStatus model = BinaryData.fromString(
-            "{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"zdfuydzvkfvxcnqm\",\"state\":\"Offline\",\"\":{\"bemzqkzszuwi\":\"dataokmvkhlggd\",\"ljfp\":\"datatglxx\",\"pqcbfrmbodthsq\":\"datapicrmnzhrgmqgjsx\"}}")
+            "{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"k\",\"state\":\"Offline\",\"\":{\"c\":\"dataunsjlpjrtwszhvvu\"}}")
             .toObject(IntegrationRuntimeStatus.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IntegrationRuntimeStatus model = new IntegrationRuntimeStatus().withAdditionalProperties(
-            mapOf("dataFactoryName", "zdfuydzvkfvxcnqm", "state", "Offline", "type", "IntegrationRuntimeStatus"));
+            mapOf("dataFactoryName", "k", "state", "Offline", "type", "IntegrationRuntimeStatus"));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeStatus.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

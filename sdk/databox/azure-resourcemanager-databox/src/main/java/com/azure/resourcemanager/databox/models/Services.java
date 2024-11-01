@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Services. */
+/**
+ * Resource collection API of Services.
+ */
 public interface Services {
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -26,7 +28,7 @@ public interface Services {
 
     /**
      * This method provides the list of available skus for the given subscription, resource group and location.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param availableSkuRequest Filters for showing the available skus.
@@ -42,7 +44,7 @@ public interface Services {
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @param context The context to associate with this operation.
@@ -57,7 +59,7 @@ public interface Services {
     /**
      * [DEPRECATED NOTICE: This operation will soon be removed]. This method validates the customer shipping address and
      * provide alternate addresses if any.
-     *
+     * 
      * @param location The location of the resource.
      * @param validateAddress Shipping address of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,7 +71,7 @@ public interface Services {
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -84,7 +86,7 @@ public interface Services {
 
     /**
      * This method does all necessary pre-job creation validation under resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
@@ -98,7 +100,7 @@ public interface Services {
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @param context The context to associate with this operation.
@@ -112,7 +114,7 @@ public interface Services {
 
     /**
      * This method does all necessary pre-job creation validation under subscription.
-     *
+     * 
      * @param location The location of the resource.
      * @param validationRequest Inputs of the customer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -124,7 +126,7 @@ public interface Services {
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @param context The context to associate with this operation.
@@ -138,7 +140,7 @@ public interface Services {
 
     /**
      * This API provides configuration details specific to given region/location at Subscription level.
-     *
+     * 
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -151,7 +153,7 @@ public interface Services {
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.
@@ -166,7 +168,7 @@ public interface Services {
 
     /**
      * This API provides configuration details specific to given region/location at Resource group level.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param location The location of the resource.
      * @param regionConfigurationRequest Request body to get the configuration for the region at resource group level.

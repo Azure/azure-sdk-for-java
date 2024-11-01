@@ -143,10 +143,10 @@ public final class ServerBlobAuditingPolicyImpl
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.blobAuditingPolicyName
-            = BlobAuditingPolicyName.fromString(Utils.getValueFromIdByName(innerObject.id(), "auditingSettings"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.blobAuditingPolicyName = BlobAuditingPolicyName
+            .fromString(ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "auditingSettings"));
     }
 
     public ServerBlobAuditingPolicy refresh() {

@@ -27,8 +27,6 @@
 
     <!-- Skip missing Javadocs in stress tests. -->
     <doclintMissingInclusion>-</doclintMissingInclusion>
-
-    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
@@ -36,6 +34,11 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
       <version>2.7.18</version> <!-- {x-version-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity</artifactId>
+      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -67,12 +70,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-tracing-opentelemetry</artifactId>
-      <version>1.0.0-beta.50</version> <!--{x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
+      <version>1.0.0-beta.51</version> <!--{x-version-update;com.azure:azure-core-tracing-opentelemetry;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-metrics-opentelemetry</artifactId>
-      <version>1.0.0-beta.23</version> <!--{x-version-update;com.azure:azure-core-metrics-opentelemetry;dependency} -->
+      <version>1.0.0-beta.24</version> <!--{x-version-update;com.azure:azure-core-metrics-opentelemetry;dependency} -->
     </dependency>
   </dependencies>
 

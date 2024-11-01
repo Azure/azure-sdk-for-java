@@ -8,26 +8,29 @@ import com.azure.resourcemanager.timeseriesinsights.models.ReferenceDataSetResou
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ReferenceDataSets Update. */
+/**
+ * Samples for ReferenceDataSets Update.
+ */
 public final class ReferenceDataSetsUpdateSamples {
     /*
-     * x-ms-original-file: specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/ReferenceDataSetsPatchTags.json
+     * x-ms-original-file:
+     * specification/timeseriesinsights/resource-manager/Microsoft.TimeSeriesInsights/stable/2020-05-15/examples/
+     * ReferenceDataSetsPatchTags.json
      */
     /**
      * Sample code: ReferenceDataSetsUpdate.
-     *
+     * 
      * @param manager Entry point to TimeSeriesInsightsManager.
      */
-    public static void referenceDataSetsUpdate(
-        com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
-        ReferenceDataSetResource resource =
-            manager
-                .referenceDataSets()
-                .getWithResponse("rg1", "env1", "rds1", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("someKey", "someValue")).apply();
+    public static void
+        referenceDataSetsUpdate(com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager manager) {
+        ReferenceDataSetResource resource = manager.referenceDataSets()
+            .getWithResponse("rg1", "env1", "rds1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("someKey", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -13,18 +13,18 @@ public final class DeltaSerializationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DeltaSerializationProperties model
-            = BinaryData.fromString("{\"deltaTablePath\":\"ihleos\",\"partitionColumns\":[\"srmslyzr\"]}")
+            = BinaryData.fromString("{\"deltaTablePath\":\"pyy\",\"partitionColumns\":[\"dpumnzgmw\"]}")
                 .toObject(DeltaSerializationProperties.class);
-        Assertions.assertEquals("ihleos", model.deltaTablePath());
-        Assertions.assertEquals("srmslyzr", model.partitionColumns().get(0));
+        Assertions.assertEquals("pyy", model.deltaTablePath());
+        Assertions.assertEquals("dpumnzgmw", model.partitionColumns().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DeltaSerializationProperties model = new DeltaSerializationProperties().withDeltaTablePath("ihleos")
-            .withPartitionColumns(Arrays.asList("srmslyzr"));
+        DeltaSerializationProperties model = new DeltaSerializationProperties().withDeltaTablePath("pyy")
+            .withPartitionColumns(Arrays.asList("dpumnzgmw"));
         model = BinaryData.fromObject(model).toObject(DeltaSerializationProperties.class);
-        Assertions.assertEquals("ihleos", model.deltaTablePath());
-        Assertions.assertEquals("srmslyzr", model.partitionColumns().get(0));
+        Assertions.assertEquals("pyy", model.deltaTablePath());
+        Assertions.assertEquals("dpumnzgmw", model.partitionColumns().get(0));
     }
 }

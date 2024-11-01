@@ -147,9 +147,7 @@ public class FileSmbProperties {
      * @return The value of the file permission header
      */
     String setFilePermission(String filePermission, String defaultValue) {
-        return (filePermission == null) && (filePermissionKey == null)
-            ? defaultValue
-            : filePermission;
+        return (filePermission == null) && (filePermissionKey == null) ? defaultValue : filePermission;
     }
 
     /**
@@ -159,9 +157,7 @@ public class FileSmbProperties {
      * @return The value of the ntfs attributes header
      */
     String setNtfsFileAttributes(String defaultValue) {
-        return ntfsFileAttributes == null
-            ? defaultValue
-            : NtfsFileAttributes.toString(ntfsFileAttributes);
+        return ntfsFileAttributes == null ? defaultValue : NtfsFileAttributes.toString(ntfsFileAttributes);
     }
 
     /**
@@ -171,9 +167,7 @@ public class FileSmbProperties {
      * @return The value of the creation time header
      */
     String setFileCreationTime(String defaultValue) {
-        return fileCreationTime == null
-            ? defaultValue
-            : parseFileSMBDate(fileCreationTime);
+        return fileCreationTime == null ? defaultValue : parseFileSMBDate(fileCreationTime);
     }
 
     /**
@@ -183,9 +177,7 @@ public class FileSmbProperties {
      * @return The value of the last write time header
      */
     String setFileLastWriteTime(String defaultValue) {
-        return fileLastWriteTime == null
-            ? defaultValue
-            : parseFileSMBDate(fileLastWriteTime);
+        return fileLastWriteTime == null ? defaultValue : parseFileSMBDate(fileLastWriteTime);
     }
 
     /**
@@ -194,9 +186,7 @@ public class FileSmbProperties {
      * @return The value of the file change time header
      */
     String getFileChangeTimeString() {
-        return fileChangeTime == null
-            ? null
-            : parseFileSMBDate(fileChangeTime);
+        return fileChangeTime == null ? null : parseFileSMBDate(fileChangeTime);
     }
 
     /**
@@ -219,8 +209,7 @@ public class FileSmbProperties {
         this.filePermissionKey = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PERMISSION_KEY);
         String attributes = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ATTRIBUTES);
         this.ntfsFileAttributes = attributes == null ? null : NtfsFileAttributes.toAttributes(attributes);
-        String fileCreation = httpHeaders
-            .getValue(FileConstants.HeaderConstants.FILE_CREATION_TIME);
+        String fileCreation = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_CREATION_TIME);
         this.fileCreationTime = fileCreation == null ? null : OffsetDateTime.parse(fileCreation);
         String fileLastWrite = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_LAST_WRITE_TIME);
         this.fileLastWriteTime = fileLastWrite == null ? null : OffsetDateTime.parse(fileLastWrite);

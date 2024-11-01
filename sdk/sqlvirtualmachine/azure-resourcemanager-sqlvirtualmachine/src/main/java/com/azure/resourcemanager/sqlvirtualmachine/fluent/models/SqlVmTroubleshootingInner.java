@@ -5,51 +5,56 @@
 package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sqlvirtualmachine.models.TroubleshootingAdditionalProperties;
 import com.azure.resourcemanager.sqlvirtualmachine.models.TroubleshootingScenario;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Details required for SQL VM troubleshooting. */
+/**
+ * Details required for SQL VM troubleshooting.
+ */
 @Fluent
-public final class SqlVmTroubleshootingInner {
+public final class SqlVmTroubleshootingInner implements JsonSerializable<SqlVmTroubleshootingInner> {
     /*
      * Start time in UTC timezone.
      */
-    @JsonProperty(value = "startTimeUtc")
     private OffsetDateTime startTimeUtc;
 
     /*
      * End time in UTC timezone.
      */
-    @JsonProperty(value = "endTimeUtc")
     private OffsetDateTime endTimeUtc;
 
     /*
      * SQL VM troubleshooting scenario.
      */
-    @JsonProperty(value = "troubleshootingScenario")
     private TroubleshootingScenario troubleshootingScenario;
 
     /*
      * Troubleshooting properties
      */
-    @JsonProperty(value = "properties")
     private TroubleshootingAdditionalProperties properties;
 
     /*
      * Virtual machine resource id for response.
      */
-    @JsonProperty(value = "virtualMachineResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String virtualMachineResourceId;
 
-    /** Creates an instance of SqlVmTroubleshootingInner class. */
+    /**
+     * Creates an instance of SqlVmTroubleshootingInner class.
+     */
     public SqlVmTroubleshootingInner() {
     }
 
     /**
      * Get the startTimeUtc property: Start time in UTC timezone.
-     *
+     * 
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
@@ -58,7 +63,7 @@ public final class SqlVmTroubleshootingInner {
 
     /**
      * Set the startTimeUtc property: Start time in UTC timezone.
-     *
+     * 
      * @param startTimeUtc the startTimeUtc value to set.
      * @return the SqlVmTroubleshootingInner object itself.
      */
@@ -69,7 +74,7 @@ public final class SqlVmTroubleshootingInner {
 
     /**
      * Get the endTimeUtc property: End time in UTC timezone.
-     *
+     * 
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
@@ -78,7 +83,7 @@ public final class SqlVmTroubleshootingInner {
 
     /**
      * Set the endTimeUtc property: End time in UTC timezone.
-     *
+     * 
      * @param endTimeUtc the endTimeUtc value to set.
      * @return the SqlVmTroubleshootingInner object itself.
      */
@@ -89,7 +94,7 @@ public final class SqlVmTroubleshootingInner {
 
     /**
      * Get the troubleshootingScenario property: SQL VM troubleshooting scenario.
-     *
+     * 
      * @return the troubleshootingScenario value.
      */
     public TroubleshootingScenario troubleshootingScenario() {
@@ -98,7 +103,7 @@ public final class SqlVmTroubleshootingInner {
 
     /**
      * Set the troubleshootingScenario property: SQL VM troubleshooting scenario.
-     *
+     * 
      * @param troubleshootingScenario the troubleshootingScenario value to set.
      * @return the SqlVmTroubleshootingInner object itself.
      */
@@ -109,7 +114,7 @@ public final class SqlVmTroubleshootingInner {
 
     /**
      * Get the properties property: Troubleshooting properties.
-     *
+     * 
      * @return the properties value.
      */
     public TroubleshootingAdditionalProperties properties() {
@@ -118,7 +123,7 @@ public final class SqlVmTroubleshootingInner {
 
     /**
      * Set the properties property: Troubleshooting properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SqlVmTroubleshootingInner object itself.
      */
@@ -129,7 +134,7 @@ public final class SqlVmTroubleshootingInner {
 
     /**
      * Get the virtualMachineResourceId property: Virtual machine resource id for response.
-     *
+     * 
      * @return the virtualMachineResourceId value.
      */
     public String virtualMachineResourceId() {
@@ -138,12 +143,66 @@ public final class SqlVmTroubleshootingInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTimeUtc",
+            this.startTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTimeUtc));
+        jsonWriter.writeStringField("endTimeUtc",
+            this.endTimeUtc == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTimeUtc));
+        jsonWriter.writeStringField("troubleshootingScenario",
+            this.troubleshootingScenario == null ? null : this.troubleshootingScenario.toString());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlVmTroubleshootingInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlVmTroubleshootingInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlVmTroubleshootingInner.
+     */
+    public static SqlVmTroubleshootingInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlVmTroubleshootingInner deserializedSqlVmTroubleshootingInner = new SqlVmTroubleshootingInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTimeUtc".equals(fieldName)) {
+                    deserializedSqlVmTroubleshootingInner.startTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTimeUtc".equals(fieldName)) {
+                    deserializedSqlVmTroubleshootingInner.endTimeUtc = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("troubleshootingScenario".equals(fieldName)) {
+                    deserializedSqlVmTroubleshootingInner.troubleshootingScenario
+                        = TroubleshootingScenario.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSqlVmTroubleshootingInner.properties
+                        = TroubleshootingAdditionalProperties.fromJson(reader);
+                } else if ("virtualMachineResourceId".equals(fieldName)) {
+                    deserializedSqlVmTroubleshootingInner.virtualMachineResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlVmTroubleshootingInner;
+        });
     }
 }

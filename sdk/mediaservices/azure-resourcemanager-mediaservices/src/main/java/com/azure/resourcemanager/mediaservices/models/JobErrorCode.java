@@ -5,44 +5,65 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Error code describing the error. */
+/**
+ * Error code describing the error.
+ */
 public final class JobErrorCode extends ExpandableStringEnum<JobErrorCode> {
-    /** Static value ServiceError for JobErrorCode. */
+    /**
+     * Static value ServiceError for JobErrorCode.
+     */
     public static final JobErrorCode SERVICE_ERROR = fromString("ServiceError");
 
-    /** Static value ServiceTransientError for JobErrorCode. */
+    /**
+     * Static value ServiceTransientError for JobErrorCode.
+     */
     public static final JobErrorCode SERVICE_TRANSIENT_ERROR = fromString("ServiceTransientError");
 
-    /** Static value DownloadNotAccessible for JobErrorCode. */
+    /**
+     * Static value DownloadNotAccessible for JobErrorCode.
+     */
     public static final JobErrorCode DOWNLOAD_NOT_ACCESSIBLE = fromString("DownloadNotAccessible");
 
-    /** Static value DownloadTransientError for JobErrorCode. */
+    /**
+     * Static value DownloadTransientError for JobErrorCode.
+     */
     public static final JobErrorCode DOWNLOAD_TRANSIENT_ERROR = fromString("DownloadTransientError");
 
-    /** Static value UploadNotAccessible for JobErrorCode. */
+    /**
+     * Static value UploadNotAccessible for JobErrorCode.
+     */
     public static final JobErrorCode UPLOAD_NOT_ACCESSIBLE = fromString("UploadNotAccessible");
 
-    /** Static value UploadTransientError for JobErrorCode. */
+    /**
+     * Static value UploadTransientError for JobErrorCode.
+     */
     public static final JobErrorCode UPLOAD_TRANSIENT_ERROR = fromString("UploadTransientError");
 
-    /** Static value ConfigurationUnsupported for JobErrorCode. */
+    /**
+     * Static value ConfigurationUnsupported for JobErrorCode.
+     */
     public static final JobErrorCode CONFIGURATION_UNSUPPORTED = fromString("ConfigurationUnsupported");
 
-    /** Static value ContentMalformed for JobErrorCode. */
+    /**
+     * Static value ContentMalformed for JobErrorCode.
+     */
     public static final JobErrorCode CONTENT_MALFORMED = fromString("ContentMalformed");
 
-    /** Static value ContentUnsupported for JobErrorCode. */
+    /**
+     * Static value ContentUnsupported for JobErrorCode.
+     */
     public static final JobErrorCode CONTENT_UNSUPPORTED = fromString("ContentUnsupported");
 
-    /** Static value IdentityUnsupported for JobErrorCode. */
+    /**
+     * Static value IdentityUnsupported for JobErrorCode.
+     */
     public static final JobErrorCode IDENTITY_UNSUPPORTED = fromString("IdentityUnsupported");
 
     /**
      * Creates a new instance of JobErrorCode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -51,18 +72,17 @@ public final class JobErrorCode extends ExpandableStringEnum<JobErrorCode> {
 
     /**
      * Creates or finds a JobErrorCode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobErrorCode.
      */
-    @JsonCreator
     public static JobErrorCode fromString(String name) {
         return fromString(name, JobErrorCode.class);
     }
 
     /**
      * Gets known JobErrorCode values.
-     *
+     * 
      * @return known JobErrorCode values.
      */
     public static Collection<JobErrorCode> values() {

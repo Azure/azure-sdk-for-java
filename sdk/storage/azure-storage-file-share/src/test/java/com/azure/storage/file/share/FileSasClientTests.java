@@ -65,16 +65,14 @@ class FileSasClientTests extends FileShareTestBase {
     @Test
     public void fileSASNetworkTestDownloadUpload() {
         primaryFileClient.uploadRange(FileShareTestHelper.getInputStream(data.getBytes()), data.length());
-        ShareFileSasPermission permissions = new ShareFileSasPermission()
-            .setReadPermission(true)
+        ShareFileSasPermission permissions = new ShareFileSasPermission().setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true);
         ShareServiceSasSignatureValues sasValues = generateValues(permissions);
 
         String sas = primaryFileClient.generateSas(sasValues);
-        ShareFileClient client = fileBuilderHelper(shareName, filePath)
-            .endpoint(primaryFileClient.getFileUrl())
+        ShareFileClient client = fileBuilderHelper(shareName, filePath).endpoint(primaryFileClient.getFileUrl())
             .sasToken(sas)
             .buildFileClient();
 
@@ -88,28 +86,25 @@ class FileSasClientTests extends FileShareTestBase {
 
     @Test
     public void fileSASNetworkTestUploadFails() {
-        ShareFileSasPermission permissions = new ShareFileSasPermission()
-            .setReadPermission(true)
+        ShareFileSasPermission permissions = new ShareFileSasPermission().setReadPermission(true)
             .setWritePermission(false)
             .setCreatePermission(true)
             .setDeletePermission(true);
         ShareServiceSasSignatureValues sasValues = generateValues(permissions);
         String sas = primaryFileClient.generateSas(sasValues);
-        ShareFileClient client = fileBuilderHelper(shareName, filePath)
-            .endpoint(primaryFileClient.getFileUrl())
+        ShareFileClient client = fileBuilderHelper(shareName, filePath).endpoint(primaryFileClient.getFileUrl())
             .sasToken(sas)
             .buildFileClient();
-        assertThrows(ShareStorageException.class, () -> client.uploadRange(
-            FileShareTestHelper.getInputStream(data.getBytes()), data.length()));
+        assertThrows(ShareStorageException.class,
+            () -> client.uploadRange(FileShareTestHelper.getInputStream(data.getBytes()), data.length()));
         assertDoesNotThrow(client::delete);
     }
 
     @Test
     public void shareSASNetworkIdentifierPermissions() {
-        ShareSignedIdentifier identifier = new ShareSignedIdentifier()
-            .setId("0000")
-            .setAccessPolicy(new ShareAccessPolicy().setPermissions("rcwdl")
-                .setExpiresOn(testResourceNamer.now().plusDays(1)));
+        ShareSignedIdentifier identifier = new ShareSignedIdentifier().setId("0000")
+            .setAccessPolicy(
+                new ShareAccessPolicy().setPermissions("rcwdl").setExpiresOn(testResourceNamer.now().plusDays(1)));
 
         primaryShareClient.setAccessPolicy(Arrays.asList(identifier));
 
@@ -117,8 +112,7 @@ class FileSasClientTests extends FileShareTestBase {
         sleepIfRunningAgainstService(30000);
 
         // Check shareSASPermissions
-        ShareSasPermission permissions = new ShareSasPermission()
-            .setReadPermission(true)
+        ShareSasPermission permissions = new ShareSasPermission().setReadPermission(true)
             .setWritePermission(true)
             .setCreatePermission(true)
             .setDeletePermission(true)
@@ -129,20 +123,20 @@ class FileSasClientTests extends FileShareTestBase {
         ShareServiceSasSignatureValues sasValues = new ShareServiceSasSignatureValues(identifier.getId());
         String sasWithId = primaryShareClient.generateSas(sasValues);
 
-        ShareClient client1 = shareBuilderHelper(primaryShareClient.getShareName())
-            .endpoint(primaryShareClient.getShareUrl())
-            .sasToken(sasWithId)
-            .buildClient();
+        ShareClient client1
+            = shareBuilderHelper(primaryShareClient.getShareName()).endpoint(primaryShareClient.getShareUrl())
+                .sasToken(sasWithId)
+                .buildClient();
 
         client1.createDirectory("dir");
         client1.deleteDirectory("dir");
 
         sasValues = new ShareServiceSasSignatureValues(expiryTime, permissions);
         String sasWithPermissions = primaryShareClient.generateSas(sasValues);
-        ShareClient client2 = shareBuilderHelper(primaryShareClient.getShareName())
-            .endpoint(primaryFileClient.getFileUrl())
-            .sasToken(sasWithPermissions)
-            .buildClient();
+        ShareClient client2
+            = shareBuilderHelper(primaryShareClient.getShareName()).endpoint(primaryFileClient.getFileUrl())
+                .sasToken(sasWithPermissions)
+                .buildClient();
 
         client2.createDirectory("dir");
         assertDoesNotThrow(() -> client2.deleteDirectory("dir"));
@@ -150,23 +144,19 @@ class FileSasClientTests extends FileShareTestBase {
 
     @Test
     public void accountSASNetworkCreateDeleteShare() {
-        AccountSasService service = new AccountSasService()
-            .setFileAccess(true);
-        AccountSasResourceType resourceType = new AccountSasResourceType()
-            .setContainer(true)
-            .setService(true)
-            .setObject(true);
-        AccountSasPermission permissions = new AccountSasPermission()
-            .setReadPermission(true)
-            .setCreatePermission(true)
-            .setDeletePermission(true);
+        AccountSasService service = new AccountSasService().setFileAccess(true);
+        AccountSasResourceType resourceType
+            = new AccountSasResourceType().setContainer(true).setService(true).setObject(true);
+        AccountSasPermission permissions
+            = new AccountSasPermission().setReadPermission(true).setCreatePermission(true).setDeletePermission(true);
         OffsetDateTime expiryTime = testResourceNamer.now().plusDays(1);
 
-        AccountSasSignatureValues sasValues = new AccountSasSignatureValues(expiryTime, permissions, service,
-            resourceType);
+        AccountSasSignatureValues sasValues
+            = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType);
         String sas = primaryFileServiceClient.generateAccountSas(sasValues);
         ShareServiceClient sc = fileServiceBuilderHelper().endpoint(primaryFileServiceClient.getFileServiceUrl())
-            .sasToken(sas).buildClient();
+            .sasToken(sas)
+            .buildClient();
         sc.createShare("create");
         assertDoesNotThrow(() -> sc.deleteShare("create"));
     }
@@ -177,14 +167,14 @@ class FileSasClientTests extends FileShareTestBase {
      */
     @Test
     public void rememberAboutStringToSignDeprecation() {
-        ShareClient client = shareBuilderHelper(shareName).credential(ENVIRONMENT.getPrimaryAccount().getCredential())
-            .buildClient();
-        ShareServiceSasSignatureValues values = new ShareServiceSasSignatureValues(testResourceNamer.now(),
-            new ShareSasPermission());
+        ShareClient client
+            = shareBuilderHelper(shareName).credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildClient();
+        ShareServiceSasSignatureValues values
+            = new ShareServiceSasSignatureValues(testResourceNamer.now(), new ShareSasPermission());
         values.setShareName(client.getShareName());
 
-        String deprecatedStringToSign = values.generateSasQueryParameters(ENVIRONMENT.getPrimaryAccount()
-            .getCredential()).encode();
+        String deprecatedStringToSign
+            = values.generateSasQueryParameters(ENVIRONMENT.getPrimaryAccount().getCredential()).encode();
         String stringToSign = client.generateSas(values);
 
         assertEquals(deprecatedStringToSign, stringToSign);

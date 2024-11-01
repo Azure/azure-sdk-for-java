@@ -28,19 +28,23 @@
 ### Labels_CreateAndUpdate
 
 ```java
-/** Samples for Labels CreateAndUpdate. */
+
+/**
+ * Samples for Labels CreateAndUpdate.
+ */
 public final class LabelsCreateAndUpdateSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Labels_CreateAndUpdate.json
+     * x-ms-original-file:
+     * specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Labels_CreateAndUpdate.
+     * json
      */
     /**
      * Sample code: Labels.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
-        manager
-            .labels()
+        manager.labels()
             .createAndUpdate("dummyrg", "ThisisaWorkspace", "ThisisaLabel", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -49,14 +53,17 @@ public final class LabelsCreateAndUpdateSamples {
 ### Labels_Delete
 
 ```java
-/** Samples for Labels Delete. */
+/**
+ * Samples for Labels Delete.
+ */
 public final class LabelsDeleteSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Labels_Delete.json
+     * x-ms-original-file:
+     * specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Labels_Delete.json
      */
     /**
      * Sample code: Labels.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
@@ -68,21 +75,24 @@ public final class LabelsDeleteSamples {
 ### Labels_GetByWorkspace
 
 ```java
-/** Samples for Labels GetByWorkspace. */
+/**
+ * Samples for Labels GetByWorkspace.
+ */
 public final class LabelsGetByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Labels_GetByWorkspace.json
+     * x-ms-original-file:
+     * specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Labels_GetByWorkspace.
+     * json
      */
     /**
      * Sample code: Labels.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
-        manager
-            .labels()
-            .getByWorkspaceWithResponse(
-                "dummyrg", "ThisisaWorkspace", "ThisisaLabel", com.azure.core.util.Context.NONE);
+        manager.labels()
+            .getByWorkspaceWithResponse("dummyrg", "ThisisaWorkspace", "ThisisaLabel",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -90,14 +100,18 @@ public final class LabelsGetByWorkspaceSamples {
 ### Labels_ListByWorkspace
 
 ```java
-/** Samples for Labels ListByWorkspace. */
+/**
+ * Samples for Labels ListByWorkspace.
+ */
 public final class LabelsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Labels_ListByWorkspace.json
+     * x-ms-original-file:
+     * specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Labels_ListByWorkspace.
+     * json
      */
     /**
      * Sample code: Labels.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
@@ -109,19 +123,22 @@ public final class LabelsListByWorkspaceSamples {
 ### Labels_Update
 
 ```java
-/** Samples for Labels Update. */
+
+/**
+ * Samples for Labels Update.
+ */
 public final class LabelsUpdateSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Labels_Update.json
+     * x-ms-original-file:
+     * specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Labels_Update.json
      */
     /**
      * Sample code: Labels.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void labels(com.azure.resourcemanager.defendereasm.EasmManager manager) {
-        manager
-            .labels()
+        manager.labels()
             .updateWithResponse("dummyrg", "ThisisaWorkspace", "ThisisaLabel", null, com.azure.core.util.Context.NONE);
     }
 }
@@ -130,14 +147,17 @@ public final class LabelsUpdateSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Operations_List.json
      */
     /**
      * Sample code: Operations.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void operations(com.azure.resourcemanager.defendereasm.EasmManager manager) {
@@ -149,21 +169,24 @@ public final class OperationsListSamples {
 ### Tasks_GetByWorkspace
 
 ```java
-/** Samples for Tasks GetByWorkspace. */
+/**
+ * Samples for Tasks GetByWorkspace.
+ */
 public final class TasksGetByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Tasks_GetByWorkspace.json
+     * x-ms-original-file:
+     * specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Tasks_GetByWorkspace.
+     * json
      */
     /**
      * Sample code: Tasks.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void tasks(com.azure.resourcemanager.defendereasm.EasmManager manager) {
-        manager
-            .tasks()
-            .getByWorkspaceWithResponse(
-                "dummyrg", "ThisisaWorkspace", "ThisisaTaskId", com.azure.core.util.Context.NONE);
+        manager.tasks()
+            .getByWorkspaceWithResponse("dummyrg", "ThisisaWorkspace", "ThisisaTaskId",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -171,19 +194,21 @@ public final class TasksGetByWorkspaceSamples {
 ### Workspaces_CreateAndUpdate
 
 ```java
-/** Samples for Workspaces CreateAndUpdate. */
+/**
+ * Samples for Workspaces CreateAndUpdate.
+ */
 public final class WorkspacesCreateAndUpdateSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Workspaces_CreateAndUpdate.json
+     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/
+     * Workspaces_CreateAndUpdate.json
      */
     /**
      * Sample code: Workspaces.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .define("ThisisaWorkspace")
             .withRegion("West US")
             .withExistingResourceGroup("dummyrg")
@@ -195,14 +220,17 @@ public final class WorkspacesCreateAndUpdateSamples {
 ### Workspaces_Delete
 
 ```java
-/** Samples for Workspaces Delete. */
+/**
+ * Samples for Workspaces Delete.
+ */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Workspaces_Delete.json
+     * x-ms-original-file:
+     * specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Workspaces_Delete.json
      */
     /**
      * Sample code: Workspaces.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
@@ -214,19 +242,21 @@ public final class WorkspacesDeleteSamples {
 ### Workspaces_GetByResourceGroup
 
 ```java
-/** Samples for Workspaces GetByResourceGroup. */
+/**
+ * Samples for Workspaces GetByResourceGroup.
+ */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Workspaces_Get.json
+     * x-ms-original-file:
+     * specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Workspaces_Get.json
      */
     /**
      * Sample code: Workspaces.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .getByResourceGroupWithResponse("dummyrg", "ThisisaWorkspace", com.azure.core.util.Context.NONE);
     }
 }
@@ -235,14 +265,17 @@ public final class WorkspacesGetByResourceGroupSamples {
 ### Workspaces_List
 
 ```java
-/** Samples for Workspaces List. */
+/**
+ * Samples for Workspaces List.
+ */
 public final class WorkspacesListSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Workspaces_ListBySubscription.json
+     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/
+     * Workspaces_ListBySubscription.json
      */
     /**
      * Sample code: Workspaces.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
@@ -254,14 +287,17 @@ public final class WorkspacesListSamples {
 ### Workspaces_ListByResourceGroup
 
 ```java
-/** Samples for Workspaces ListByResourceGroup. */
+/**
+ * Samples for Workspaces ListByResourceGroup.
+ */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Workspaces_ListByResourceGroup.json
+     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/
+     * Workspaces_ListByResourceGroup.json
      */
     /**
      * Sample code: Workspaces.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
@@ -275,22 +311,23 @@ public final class WorkspacesListByResourceGroupSamples {
 ```java
 import com.azure.resourcemanager.defendereasm.models.WorkspaceResource;
 
-/** Samples for Workspaces Update. */
+/**
+ * Samples for Workspaces Update.
+ */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Workspaces_Update.json
+     * x-ms-original-file:
+     * specification/riskiq/resource-manager/Microsoft.Easm/preview/2023-04-01-preview/examples/Workspaces_Update.json
      */
     /**
      * Sample code: Workspaces.
-     *
+     * 
      * @param manager Entry point to EasmManager.
      */
     public static void workspaces(com.azure.resourcemanager.defendereasm.EasmManager manager) {
-        WorkspaceResource resource =
-            manager
-                .workspaces()
-                .getByResourceGroupWithResponse("dummyrg", "ThisisaWorkspace", com.azure.core.util.Context.NONE)
-                .getValue();
+        WorkspaceResource resource = manager.workspaces()
+            .getByResourceGroupWithResponse("dummyrg", "ThisisaWorkspace", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().apply();
     }
 }

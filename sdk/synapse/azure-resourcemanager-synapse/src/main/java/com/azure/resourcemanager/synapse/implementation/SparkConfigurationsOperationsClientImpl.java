@@ -30,17 +30,23 @@ import com.azure.resourcemanager.synapse.fluent.models.SparkConfigurationResourc
 import com.azure.resourcemanager.synapse.models.SparkConfigurationListResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SparkConfigurationsOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SparkConfigurationsOperationsClient.
+ */
 public final class SparkConfigurationsOperationsClientImpl implements SparkConfigurationsOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SparkConfigurationsOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SparkConfigurationsOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SparkConfigurationsOperationsClientImpl(SynapseManagementClientImpl client) {
@@ -57,8 +63,7 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SparkConfigurationsOperationsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sparkconfigurations")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sparkconfigurations")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SparkConfigurationListResponse>> listByWorkspace(@HostParam("$host") String endpoint,
@@ -77,16 +82,16 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
 
     /**
      * List the sparkConfigurations in a workspace.
-     *
-     * <p>List sparkConfigurations in a workspace.
-     *
+     * 
+     * List sparkConfigurations in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of SparkConfiguration resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SparkConfigurationResourceInner>>
@@ -118,9 +123,9 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
 
     /**
      * List the sparkConfigurations in a workspace.
-     *
-     * <p>List sparkConfigurations in a workspace.
-     *
+     * 
+     * List sparkConfigurations in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -128,7 +133,7 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of SparkConfiguration resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SparkConfigurationResourceInner>>
@@ -160,9 +165,9 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
 
     /**
      * List the sparkConfigurations in a workspace.
-     *
-     * <p>List sparkConfigurations in a workspace.
-     *
+     * 
+     * List sparkConfigurations in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,9 +184,9 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
 
     /**
      * List the sparkConfigurations in a workspace.
-     *
-     * <p>List sparkConfigurations in a workspace.
-     *
+     * 
+     * List sparkConfigurations in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -199,9 +204,9 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
 
     /**
      * List the sparkConfigurations in a workspace.
-     *
-     * <p>List sparkConfigurations in a workspace.
-     *
+     * 
+     * List sparkConfigurations in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,9 +222,9 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
 
     /**
      * List the sparkConfigurations in a workspace.
-     *
-     * <p>List sparkConfigurations in a workspace.
-     *
+     * 
+     * List sparkConfigurations in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -236,14 +241,13 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of SparkConfiguration resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SparkConfigurationResourceInner>> listByWorkspaceNextSinglePageAsync(String nextLink) {
@@ -264,15 +268,14 @@ public final class SparkConfigurationsOperationsClientImpl implements SparkConfi
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of SparkConfiguration resources along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SparkConfigurationResourceInner>> listByWorkspaceNextSinglePageAsync(String nextLink,

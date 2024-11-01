@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The configuration associated with the allocated antenna. */
+/**
+ * The configuration associated with the allocated antenna.
+ */
 @Fluent
-public final class ContactsPropertiesAntennaConfiguration {
+public final class ContactsPropertiesAntennaConfiguration
+    implements JsonSerializable<ContactsPropertiesAntennaConfiguration> {
     /*
      * The destination IP a packet can be sent to. This would for example be the TCP endpoint you would send data to.
      */
-    @JsonProperty(value = "destinationIp")
     private String destinationIp;
 
     /*
      * List of Source IP
      */
-    @JsonProperty(value = "sourceIps")
     private List<String> sourceIps;
 
-    /** Creates an instance of ContactsPropertiesAntennaConfiguration class. */
+    /**
+     * Creates an instance of ContactsPropertiesAntennaConfiguration class.
+     */
     public ContactsPropertiesAntennaConfiguration() {
     }
 
     /**
      * Get the destinationIp property: The destination IP a packet can be sent to. This would for example be the TCP
      * endpoint you would send data to.
-     *
+     * 
      * @return the destinationIp value.
      */
     public String destinationIp() {
@@ -40,7 +47,7 @@ public final class ContactsPropertiesAntennaConfiguration {
     /**
      * Set the destinationIp property: The destination IP a packet can be sent to. This would for example be the TCP
      * endpoint you would send data to.
-     *
+     * 
      * @param destinationIp the destinationIp value to set.
      * @return the ContactsPropertiesAntennaConfiguration object itself.
      */
@@ -51,7 +58,7 @@ public final class ContactsPropertiesAntennaConfiguration {
 
     /**
      * Get the sourceIps property: List of Source IP.
-     *
+     * 
      * @return the sourceIps value.
      */
     public List<String> sourceIps() {
@@ -60,7 +67,7 @@ public final class ContactsPropertiesAntennaConfiguration {
 
     /**
      * Set the sourceIps property: List of Source IP.
-     *
+     * 
      * @param sourceIps the sourceIps value to set.
      * @return the ContactsPropertiesAntennaConfiguration object itself.
      */
@@ -71,9 +78,50 @@ public final class ContactsPropertiesAntennaConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("destinationIp", this.destinationIp);
+        jsonWriter.writeArrayField("sourceIps", this.sourceIps, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContactsPropertiesAntennaConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContactsPropertiesAntennaConfiguration if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContactsPropertiesAntennaConfiguration.
+     */
+    public static ContactsPropertiesAntennaConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContactsPropertiesAntennaConfiguration deserializedContactsPropertiesAntennaConfiguration
+                = new ContactsPropertiesAntennaConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("destinationIp".equals(fieldName)) {
+                    deserializedContactsPropertiesAntennaConfiguration.destinationIp = reader.getString();
+                } else if ("sourceIps".equals(fieldName)) {
+                    List<String> sourceIps = reader.readArray(reader1 -> reader1.getString());
+                    deserializedContactsPropertiesAntennaConfiguration.sourceIps = sourceIps;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContactsPropertiesAntennaConfiguration;
+        });
     }
 }
