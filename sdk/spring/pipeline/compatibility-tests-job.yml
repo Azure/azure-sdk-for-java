@@ -1,7 +1,7 @@
 parameters:
   Matrix: ''
   MaxParallel: 10
-  SkipOptions: "-Dcheckstyle.skip -Dcodesnippet.skip -Denforcer.skip -Djacoco.skip -Dmaven.javadoc.skip -Drevapi.skip -Dspotbugs.skip"
+  SkipOptions: "-Dcheckstyle.skip=true -Dcodesnippet.skip=true -Denforcer.skip=true -Djacoco.skip=true -Dmaven.javadoc.skip=true -Drevapi.skip=true -Dspotbugs.skip=true -Dspotless.skip=true"
   BuildParallelization: '2C'
 
 jobs:
@@ -19,6 +19,7 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
           Paths:
+            - '**/*.xml'
             - 'sdk/spring'
             - 'sdk/parents/azure-client-sdk-parent'
             - 'sdk/boms/spring-cloud-azure-dependencies'
@@ -70,4 +71,12 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           goals: 'clean install -Pdev '
+      - task: PublishTestResults@2
+        condition: always()
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: '**/TEST-*.xml'
+          searchFolder: '$(System.DefaultWorkingDirectory)/sdk'
+          mergeTestResults: true
+          testRunTitle: '$(Agent.JobName)_attempt_$(System.JobAttempt)'
 
