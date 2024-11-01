@@ -87,22 +87,22 @@ public final class ApplicationsImpl implements Applications {
 
     public PagedIterable<Application> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ApplicationInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Application> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ApplicationInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Application> list() {
         PagedIterable<ApplicationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Application> list(Context context) {
         PagedIterable<ApplicationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public Response<Application> getByIdWithResponse(String applicationId, Context context) {

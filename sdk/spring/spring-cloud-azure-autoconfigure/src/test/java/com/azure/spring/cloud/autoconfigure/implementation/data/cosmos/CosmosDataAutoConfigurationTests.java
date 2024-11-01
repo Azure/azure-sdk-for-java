@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.data.cosmos;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.implementation.context.TestSpringTokenCredentialProviderContextProviderAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails;
 import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.config.CosmosConfig;
@@ -31,6 +32,7 @@ class CosmosDataAutoConfigurationTests {
     private static final String ENDPOINT = "https://test.documents.azure.com:443/";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(CosmosDataAutoConfiguration.class,
+            TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
             AzureGlobalPropertiesAutoConfiguration.class));
 
     @Test

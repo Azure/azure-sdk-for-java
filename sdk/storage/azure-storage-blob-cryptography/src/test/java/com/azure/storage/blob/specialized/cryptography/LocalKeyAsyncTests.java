@@ -31,16 +31,16 @@ public class LocalKeyAsyncTests extends BlobCryptographyTestBase {
     protected void beforeTest() {
         super.beforeTest();
         /* Insecurely generate a local key*/
-        JsonWebKey localKey = JsonWebKey.fromAes(new SecretKeySpec(getRandomByteArray(256), "AES"),
-                Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
-            .setId("local");
-        AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder()
-            .serviceVersion(CRYPTOGRAPHY_SERVICE_VERSION)
+        JsonWebKey localKey
+            = JsonWebKey
+                .fromAes(new SecretKeySpec(getRandomByteArray(256), "AES"),
+                    Arrays.asList(KeyOperation.WRAP_KEY, KeyOperation.UNWRAP_KEY))
+                .setId("local");
+        AsyncKeyEncryptionKey akek = new KeyEncryptionKeyClientBuilder().serviceVersion(CRYPTOGRAPHY_SERVICE_VERSION)
             .buildAsyncKeyEncryptionKey(localKey)
             .block();
 
-        cca = getServiceClientBuilder(ENV.getPrimaryAccount())
-            .buildAsyncClient()
+        cca = getServiceClientBuilder(ENV.getPrimaryAccount()).buildAsyncClient()
             .getBlobContainerAsyncClient(generateContainerName());
         cca.create().block();
 
@@ -53,7 +53,8 @@ public class LocalKeyAsyncTests extends BlobCryptographyTestBase {
     public void uploadDownload() {
         byte[] inputArray = getRandomByteArray(Constants.KB);
 
-        StepVerifier.create(beac.upload(Flux.just(ByteBuffer.wrap(inputArray)), null)
+        StepVerifier
+            .create(beac.upload(Flux.just(ByteBuffer.wrap(inputArray)), null)
                 .then(FluxUtil.collectBytesInByteBufferStream(beac.downloadStream())))
             .assertNext(r -> assertArraysEqual(inputArray, r))
             .verifyComplete();
@@ -63,9 +64,11 @@ public class LocalKeyAsyncTests extends BlobCryptographyTestBase {
     public void encryptionNotANoop() {
         byte[] inputArray = getRandomByteArray(Constants.KB);
 
-        StepVerifier.create(beac.upload(Flux.just(ByteBuffer.wrap(inputArray)), null)
-            .then(FluxUtil.collectBytesInByteBufferStream(cca.getBlobAsyncClient(beac.getBlobName()).downloadStream())))
-                .assertNext(r -> assertFalse(Arrays.equals(inputArray, r)))
-                .verifyComplete();
+        StepVerifier
+            .create(beac.upload(Flux.just(ByteBuffer.wrap(inputArray)), null)
+                .then(FluxUtil
+                    .collectBytesInByteBufferStream(cca.getBlobAsyncClient(beac.getBlobName()).downloadStream())))
+            .assertNext(r -> assertFalse(Arrays.equals(inputArray, r)))
+            .verifyComplete();
     }
 }

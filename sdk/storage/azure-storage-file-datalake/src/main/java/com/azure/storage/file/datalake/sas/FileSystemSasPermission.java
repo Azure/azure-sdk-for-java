@@ -34,7 +34,6 @@ public final class FileSystemSasPermission {
 
     private boolean manageAccessControlPermission;
 
-
     /**
      * Initializes an {@code FileSystemSasPermission} object with all fields set to false.
      */
@@ -59,37 +58,46 @@ public final class FileSystemSasPermission {
                 case 'r':
                     permissions.readPermission = true;
                     break;
+
                 case 'a':
                     permissions.addPermission = true;
                     break;
+
                 case 'c':
                     permissions.createPermission = true;
                     break;
+
                 case 'w':
                     permissions.writePermission = true;
                     break;
+
                 case 'd':
                     permissions.deletePermission = true;
                     break;
+
                 case 'l':
                     permissions.listPermission = true;
                     break;
+
                 case 'm':
                     permissions.movePermission = true;
                     break;
+
                 case 'e':
                     permissions.executePermission = true;
                     break;
+
                 case 'o':
                     permissions.manageOwnershipPermission = true;
                     break;
+
                 case 'p':
                     permissions.manageAccessControlPermission = true;
                     break;
+
                 default:
-                    throw new IllegalArgumentException(
-                        String.format(Locale.ROOT, Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,
-                            "Permissions", permissionString, c));
+                    throw new IllegalArgumentException(String.format(Locale.ROOT,
+                        Constants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permissionString, c));
             }
         }
         return permissions;

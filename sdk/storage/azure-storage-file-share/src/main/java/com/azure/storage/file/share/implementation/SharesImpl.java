@@ -24,6 +24,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.SharePermission;
+import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
+import com.azure.storage.file.share.implementation.models.ShareStats;
+import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
 import com.azure.storage.file.share.implementation.models.SharesAcquireLeaseHeaders;
 import com.azure.storage.file.share.implementation.models.SharesBreakLeaseHeaders;
 import com.azure.storage.file.share.implementation.models.SharesChangeLeaseHeaders;
@@ -35,15 +38,13 @@ import com.azure.storage.file.share.implementation.models.SharesGetAccessPolicyH
 import com.azure.storage.file.share.implementation.models.SharesGetPermissionHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsHeaders;
-import com.azure.storage.file.share.implementation.models.ShareSignedIdentifierWrapper;
 import com.azure.storage.file.share.implementation.models.SharesReleaseLeaseHeaders;
 import com.azure.storage.file.share.implementation.models.SharesRenewLeaseHeaders;
 import com.azure.storage.file.share.implementation.models.SharesRestoreHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetMetadataHeaders;
 import com.azure.storage.file.share.implementation.models.SharesSetPropertiesHeaders;
-import com.azure.storage.file.share.implementation.models.ShareStats;
-import com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.FilePermissionFormat;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareRootSquash;
@@ -52,7 +53,6 @@ import com.azure.storage.file.share.models.ShareTokenIntent;
 import java.util.List;
 import java.util.Map;
 import reactor.core.publisher.Mono;
-import com.azure.storage.file.share.implementation.util.ModelHelper;
 
 /**
  * An instance of this class provides access to all the operations defined in Shares.
@@ -942,14 +942,11 @@ public final class SharesImpl {
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
         Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
         Long shareProvisionedBandwidthMibps) {
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getUrl(), shareName, restype, timeout, metadata, quota,
-                accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
-                enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-                paidBurstingMaxIops, this.client.getFileRequestIntent(), shareProvisionedIops,
-                shareProvisionedBandwidthMibps, accept, context))
+            .withContext(context -> createWithResponseAsync(shareName, timeout, metadata, quota, accessTier,
+                enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
+                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops,
+                shareProvisionedBandwidthMibps, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1039,8 +1036,8 @@ public final class SharesImpl {
         return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
             paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1083,8 +1080,8 @@ public final class SharesImpl {
         return createWithResponseAsync(shareName, timeout, metadata, quota, accessTier, enabledProtocols, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
             paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1124,14 +1121,11 @@ public final class SharesImpl {
         ShareRootSquash rootSquash, Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled,
         Long paidBurstingMaxBandwidthMibps, Long paidBurstingMaxIops, Long shareProvisionedIops,
         Long shareProvisionedBandwidthMibps) {
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.createNoCustomHeaders(this.client.getUrl(), shareName, restype, timeout,
-                metadata, quota, accessTier, this.client.getVersion(), enabledProtocols, rootSquash,
-                enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-                paidBurstingMaxIops, this.client.getFileRequestIntent(), shareProvisionedIops,
-                shareProvisionedBandwidthMibps, accept, context))
+            .withContext(context -> createNoCustomHeadersWithResponseAsync(shareName, timeout, metadata, quota,
+                accessTier, enabledProtocols, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
+                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops,
+                shareProvisionedBandwidthMibps, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1343,11 +1337,8 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesGetPropertiesHeaders, Void>> getPropertiesWithResponseAsync(String shareName,
         String sharesnapshot, Integer timeout, String leaseId) {
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getProperties(this.client.getUrl(), shareName, restype, sharesnapshot,
-                timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> getPropertiesWithResponseAsync(shareName, sharesnapshot, timeout, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1446,12 +1437,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getPropertiesNoCustomHeadersWithResponseAsync(String shareName, String sharesnapshot,
         Integer timeout, String leaseId) {
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(
-                context -> service.getPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, sharesnapshot,
-                    timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> getPropertiesNoCustomHeadersWithResponseAsync(shareName, sharesnapshot, timeout,
+                leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1583,11 +1571,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesDeleteHeaders, Void>> deleteWithResponseAsync(String shareName, String sharesnapshot,
         Integer timeout, DeleteSnapshotsOptionType deleteSnapshots, String leaseId) {
-        final String restype = "share";
-        final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.delete(this.client.getUrl(), shareName, restype, sharesnapshot,
-            timeout, this.client.getVersion(), deleteSnapshots, leaseId, this.client.getFileRequestIntent(), accept,
-            context)).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+        return FluxUtil.withContext(
+            context -> deleteWithResponseAsync(shareName, sharesnapshot, timeout, deleteSnapshots, leaseId, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -1690,12 +1676,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteNoCustomHeadersWithResponseAsync(String shareName, String sharesnapshot,
         Integer timeout, DeleteSnapshotsOptionType deleteSnapshots, String leaseId) {
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.deleteNoCustomHeaders(this.client.getUrl(), shareName, restype,
-                sharesnapshot, timeout, this.client.getVersion(), deleteSnapshots, leaseId,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> deleteNoCustomHeadersWithResponseAsync(shareName, sharesnapshot, timeout,
+                deleteSnapshots, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1840,14 +1823,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesAcquireLeaseHeaders, Void>> acquireLeaseWithResponseAsync(String shareName,
         Integer timeout, Integer duration, String proposedLeaseId, String sharesnapshot, String requestId) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.acquireLease(this.client.getUrl(), shareName, comp, action, restype,
-                timeout, duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> acquireLeaseWithResponseAsync(shareName, timeout, duration, proposedLeaseId,
+                sharesnapshot, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -1949,7 +1927,7 @@ public final class SharesImpl {
         String sharesnapshot, String requestId, Context context) {
         return acquireLeaseWithResponseAsync(shareName, timeout, duration, proposedLeaseId, sharesnapshot, requestId,
             context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1978,14 +1956,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> acquireLeaseNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Integer duration, String proposedLeaseId, String sharesnapshot, String requestId) {
-        final String comp = "lease";
-        final String action = "acquire";
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.acquireLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action,
-                restype, timeout, duration, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> acquireLeaseNoCustomHeadersWithResponseAsync(shareName, timeout, duration,
+                proposedLeaseId, sharesnapshot, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -2156,14 +2129,8 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesReleaseLeaseHeaders, Void>> releaseLeaseWithResponseAsync(String shareName,
         String leaseId, Integer timeout, String sharesnapshot, String requestId) {
-        final String comp = "lease";
-        final String action = "release";
-        final String restype = "share";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.releaseLease(this.client.getUrl(), shareName, comp, action, restype,
-                timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId,
-                this.client.getFileRequestIntent(), accept, context))
+        return FluxUtil.withContext(
+            context -> releaseLeaseWithResponseAsync(shareName, leaseId, timeout, sharesnapshot, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -2273,14 +2240,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> releaseLeaseNoCustomHeadersWithResponseAsync(String shareName, String leaseId,
         Integer timeout, String sharesnapshot, String requestId) {
-        final String comp = "lease";
-        final String action = "release";
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.releaseLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action,
-                restype, timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> releaseLeaseNoCustomHeadersWithResponseAsync(shareName, leaseId, timeout,
+                sharesnapshot, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -2433,14 +2395,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesChangeLeaseHeaders, Void>> changeLeaseWithResponseAsync(String shareName,
         String leaseId, Integer timeout, String proposedLeaseId, String sharesnapshot, String requestId) {
-        final String comp = "lease";
-        final String action = "change";
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.changeLease(this.client.getUrl(), shareName, comp, action, restype, timeout,
-                leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> changeLeaseWithResponseAsync(shareName, leaseId, timeout, proposedLeaseId,
+                sharesnapshot, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -2536,7 +2493,7 @@ public final class SharesImpl {
         String sharesnapshot, String requestId, Context context) {
         return changeLeaseWithResponseAsync(shareName, leaseId, timeout, proposedLeaseId, sharesnapshot, requestId,
             context).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2563,14 +2520,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> changeLeaseNoCustomHeadersWithResponseAsync(String shareName, String leaseId,
         Integer timeout, String proposedLeaseId, String sharesnapshot, String requestId) {
-        final String comp = "lease";
-        final String action = "change";
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.changeLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action,
-                restype, timeout, leaseId, proposedLeaseId, this.client.getVersion(), sharesnapshot, requestId,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> changeLeaseNoCustomHeadersWithResponseAsync(shareName, leaseId, timeout,
+                proposedLeaseId, sharesnapshot, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -2733,13 +2685,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesRenewLeaseHeaders, Void>> renewLeaseWithResponseAsync(String shareName,
         String leaseId, Integer timeout, String sharesnapshot, String requestId) {
-        final String comp = "lease";
-        final String action = "renew";
-        final String restype = "share";
-        final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.renewLease(this.client.getUrl(), shareName, comp, action,
-            restype, timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId,
-            this.client.getFileRequestIntent(), accept, context))
+        return FluxUtil
+            .withContext(
+                context -> renewLeaseWithResponseAsync(shareName, leaseId, timeout, sharesnapshot, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -2849,14 +2797,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renewLeaseNoCustomHeadersWithResponseAsync(String shareName, String leaseId,
         Integer timeout, String sharesnapshot, String requestId) {
-        final String comp = "lease";
-        final String action = "renew";
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.renewLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action,
-                restype, timeout, leaseId, this.client.getVersion(), sharesnapshot, requestId,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> renewLeaseNoCustomHeadersWithResponseAsync(shareName, leaseId, timeout,
+                sharesnapshot, requestId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3011,14 +2954,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesBreakLeaseHeaders, Void>> breakLeaseWithResponseAsync(String shareName,
         Integer timeout, Integer breakPeriod, String leaseId, String requestId, String sharesnapshot) {
-        final String comp = "lease";
-        final String action = "break";
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.breakLease(this.client.getUrl(), shareName, comp, action, restype, timeout,
-                breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> breakLeaseWithResponseAsync(shareName, timeout, breakPeriod, leaseId, requestId,
+                sharesnapshot, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3152,14 +3090,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> breakLeaseNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Integer breakPeriod, String leaseId, String requestId, String sharesnapshot) {
-        final String comp = "lease";
-        final String action = "break";
-        final String restype = "share";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.breakLeaseNoCustomHeaders(this.client.getUrl(), shareName, comp, action,
-                restype, timeout, breakPeriod, leaseId, this.client.getVersion(), requestId, sharesnapshot,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> breakLeaseNoCustomHeadersWithResponseAsync(shareName, timeout, breakPeriod, leaseId,
+                requestId, sharesnapshot, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3329,12 +3262,7 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesCreateSnapshotHeaders, Void>> createSnapshotWithResponseAsync(String shareName,
         Integer timeout, Map<String, String> metadata) {
-        final String restype = "share";
-        final String comp = "snapshot";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.createSnapshot(this.client.getUrl(), shareName, restype, comp, timeout,
-                metadata, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context))
+        return FluxUtil.withContext(context -> createSnapshotWithResponseAsync(shareName, timeout, metadata, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3422,12 +3350,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createSnapshotNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata) {
-        final String restype = "share";
-        final String comp = "snapshot";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.createSnapshotNoCustomHeaders(this.client.getUrl(), shareName, restype,
-                comp, timeout, metadata, this.client.getVersion(), this.client.getFileRequestIntent(), accept, context))
+            .withContext(
+                context -> createSnapshotNoCustomHeadersWithResponseAsync(shareName, timeout, metadata, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3546,12 +3471,8 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesCreatePermissionHeaders, Void>> createPermissionWithResponseAsync(String shareName,
         SharePermission sharePermission, Integer timeout) {
-        final String restype = "share";
-        final String comp = "filepermission";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.createPermission(this.client.getUrl(), shareName, restype, comp, timeout,
-                this.client.getVersion(), this.client.getFileRequestIntent(), sharePermission, accept, context))
+            .withContext(context -> createPermissionWithResponseAsync(shareName, sharePermission, timeout, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3639,12 +3560,8 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> createPermissionNoCustomHeadersWithResponseAsync(String shareName,
         SharePermission sharePermission, Integer timeout) {
-        final String restype = "share";
-        final String comp = "filepermission";
-        final String accept = "application/xml";
         return FluxUtil.withContext(
-            context -> service.createPermissionNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
-                this.client.getVersion(), this.client.getFileRequestIntent(), sharePermission, accept, context))
+            context -> createPermissionNoCustomHeadersWithResponseAsync(shareName, sharePermission, timeout, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3769,13 +3686,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesGetPermissionHeaders, SharePermission>> getPermissionWithResponseAsync(
         String shareName, String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout) {
-        final String restype = "share";
-        final String comp = "filepermission";
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getPermission(this.client.getUrl(), shareName, restype, comp,
-                filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> getPermissionWithResponseAsync(shareName, filePermissionKey, filePermissionFormat,
+                timeout, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -3887,13 +3800,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SharePermission>> getPermissionNoCustomHeadersWithResponseAsync(String shareName,
         String filePermissionKey, FilePermissionFormat filePermissionFormat, Integer timeout) {
-        final String restype = "share";
-        final String comp = "filepermission";
-        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.getPermissionNoCustomHeaders(this.client.getUrl(), shareName, restype, comp,
-                filePermissionKey, filePermissionFormat, timeout, this.client.getVersion(),
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> getPermissionNoCustomHeadersWithResponseAsync(shareName, filePermissionKey,
+                filePermissionFormat, timeout, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4061,14 +3970,10 @@ public final class SharesImpl {
         Integer timeout, Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps) {
-        final String restype = "share";
-        final String comp = "properties";
-        final String accept = "application/xml";
-        return FluxUtil.withContext(context -> service.setProperties(this.client.getUrl(), shareName, restype, comp,
-            timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash,
-            enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-            paidBurstingMaxIops, this.client.getFileRequestIntent(), shareProvisionedIops,
-            shareProvisionedBandwidthMibps, accept, context))
+        return FluxUtil
+            .withContext(context -> setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId,
+                rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
+                paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4155,8 +4060,8 @@ public final class SharesImpl {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
             paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4197,8 +4102,8 @@ public final class SharesImpl {
         return setPropertiesWithResponseAsync(shareName, timeout, quota, accessTier, leaseId, rootSquash,
             enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
             paidBurstingMaxIops, shareProvisionedIops, shareProvisionedBandwidthMibps, context)
-            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
-            .flatMap(ignored -> Mono.empty());
+                .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException)
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -4235,15 +4140,11 @@ public final class SharesImpl {
         Integer quota, ShareAccessTier accessTier, String leaseId, ShareRootSquash rootSquash,
         Boolean enableSnapshotVirtualDirectoryAccess, Boolean paidBurstingEnabled, Long paidBurstingMaxBandwidthMibps,
         Long paidBurstingMaxIops, Long shareProvisionedIops, Long shareProvisionedBandwidthMibps) {
-        final String restype = "share";
-        final String comp = "properties";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.setPropertiesNoCustomHeaders(this.client.getUrl(), shareName, restype, comp,
-                timeout, this.client.getVersion(), quota, accessTier, leaseId, rootSquash,
-                enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled, paidBurstingMaxBandwidthMibps,
-                paidBurstingMaxIops, this.client.getFileRequestIntent(), shareProvisionedIops,
-                shareProvisionedBandwidthMibps, accept, context))
+            .withContext(context -> setPropertiesNoCustomHeadersWithResponseAsync(shareName, timeout, quota, accessTier,
+                leaseId, rootSquash, enableSnapshotVirtualDirectoryAccess, paidBurstingEnabled,
+                paidBurstingMaxBandwidthMibps, paidBurstingMaxIops, shareProvisionedIops,
+                shareProvisionedBandwidthMibps, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4445,12 +4346,8 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesSetMetadataHeaders, Void>> setMetadataWithResponseAsync(String shareName,
         Integer timeout, Map<String, String> metadata, String leaseId) {
-        final String restype = "share";
-        final String comp = "metadata";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.setMetadata(this.client.getUrl(), shareName, restype, comp, timeout,
-                metadata, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> setMetadataWithResponseAsync(shareName, timeout, metadata, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4543,13 +4440,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setMetadataNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         Map<String, String> metadata, String leaseId) {
-        final String restype = "share";
-        final String comp = "metadata";
-        final String accept = "application/xml";
         return FluxUtil
             .withContext(
-                context -> service.setMetadataNoCustomHeaders(this.client.getUrl(), shareName, restype, comp, timeout,
-                    metadata, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context))
+                context -> setMetadataNoCustomHeadersWithResponseAsync(shareName, timeout, metadata, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4673,12 +4566,7 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesGetAccessPolicyHeaders, ShareSignedIdentifierWrapper>>
         getAccessPolicyWithResponseAsync(String shareName, Integer timeout, String leaseId) {
-        final String restype = "share";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getAccessPolicy(this.client.getUrl(), shareName, restype, comp, timeout,
-                this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context))
+        return FluxUtil.withContext(context -> getAccessPolicyWithResponseAsync(shareName, timeout, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4767,12 +4655,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareSignedIdentifierWrapper>>
         getAccessPolicyNoCustomHeadersWithResponseAsync(String shareName, Integer timeout, String leaseId) {
-        final String restype = "share";
-        final String comp = "acl";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getAccessPolicyNoCustomHeaders(this.client.getUrl(), shareName, restype,
-                comp, timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context))
+            .withContext(
+                context -> getAccessPolicyNoCustomHeadersWithResponseAsync(shareName, timeout, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -4897,13 +4782,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesSetAccessPolicyHeaders, Void>> setAccessPolicyWithResponseAsync(String shareName,
         Integer timeout, String leaseId, List<ShareSignedIdentifier> shareAcl) {
-        final String restype = "share";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
-        return FluxUtil.withContext(context -> service.setAccessPolicy(this.client.getUrl(), shareName, restype, comp,
-            timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), shareAclConverted, accept,
-            context)).onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
+        return FluxUtil
+            .withContext(context -> setAccessPolicyWithResponseAsync(shareName, timeout, leaseId, shareAcl, context))
+            .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
     /**
@@ -4996,14 +4877,8 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setAccessPolicyNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         String leaseId, List<ShareSignedIdentifier> shareAcl) {
-        final String restype = "share";
-        final String comp = "acl";
-        final String accept = "application/xml";
-        ShareSignedIdentifierWrapper shareAclConverted = new ShareSignedIdentifierWrapper(shareAcl);
-        return FluxUtil
-            .withContext(context -> service.setAccessPolicyNoCustomHeaders(this.client.getUrl(), shareName, restype,
-                comp, timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), shareAclConverted,
-                accept, context))
+        return FluxUtil.withContext(
+            context -> setAccessPolicyNoCustomHeadersWithResponseAsync(shareName, timeout, leaseId, shareAcl, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5131,12 +5006,7 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesGetStatisticsHeaders, ShareStats>> getStatisticsWithResponseAsync(String shareName,
         Integer timeout, String leaseId) {
-        final String restype = "share";
-        final String comp = "stats";
-        final String accept = "application/xml";
-        return FluxUtil
-            .withContext(context -> service.getStatistics(this.client.getUrl(), shareName, restype, comp, timeout,
-                this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context))
+        return FluxUtil.withContext(context -> getStatisticsWithResponseAsync(shareName, timeout, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5223,12 +5093,8 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ShareStats>> getStatisticsNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         String leaseId) {
-        final String restype = "share";
-        final String comp = "stats";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.getStatisticsNoCustomHeaders(this.client.getUrl(), shareName, restype, comp,
-                timeout, this.client.getVersion(), leaseId, this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> getStatisticsNoCustomHeadersWithResponseAsync(shareName, timeout, leaseId, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5355,13 +5221,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ResponseBase<SharesRestoreHeaders, Void>> restoreWithResponseAsync(String shareName, Integer timeout,
         String requestId, String deletedShareName, String deletedShareVersion) {
-        final String restype = "share";
-        final String comp = "undelete";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.restore(this.client.getUrl(), shareName, restype, comp, timeout,
-                this.client.getVersion(), requestId, deletedShareName, deletedShareVersion,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> restoreWithResponseAsync(shareName, timeout, requestId, deletedShareName,
+                deletedShareVersion, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 
@@ -5462,13 +5324,9 @@ public final class SharesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> restoreNoCustomHeadersWithResponseAsync(String shareName, Integer timeout,
         String requestId, String deletedShareName, String deletedShareVersion) {
-        final String restype = "share";
-        final String comp = "undelete";
-        final String accept = "application/xml";
         return FluxUtil
-            .withContext(context -> service.restoreNoCustomHeaders(this.client.getUrl(), shareName, restype, comp,
-                timeout, this.client.getVersion(), requestId, deletedShareName, deletedShareVersion,
-                this.client.getFileRequestIntent(), accept, context))
+            .withContext(context -> restoreNoCustomHeadersWithResponseAsync(shareName, timeout, requestId,
+                deletedShareName, deletedShareVersion, context))
             .onErrorMap(ShareStorageExceptionInternal.class, ModelHelper::mapToShareStorageException);
     }
 

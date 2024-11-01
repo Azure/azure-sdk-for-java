@@ -8,106 +8,103 @@ import com.azure.resourcemanager.costmanagement.models.GenerateDetailedCostRepor
 import com.azure.resourcemanager.costmanagement.models.GenerateDetailedCostReportMetricType;
 import com.azure.resourcemanager.costmanagement.models.GenerateDetailedCostReportTimePeriod;
 
-/** Samples for GenerateDetailedCostReport CreateOperation. */
+/**
+ * Samples for GenerateDetailedCostReport CreateOperation.
+ */
 public final class GenerateDetailedCostReportCreateOperationSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportByBillingProfileAndInvoiceId.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * GenerateDetailedCostReportByBillingProfileAndInvoiceId.json
      */
     /**
      * Sample code: GenerateDetailedCostReportByBillingProfileAndInvoiceId.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void generateDetailedCostReportByBillingProfileAndInvoiceId(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .generateDetailedCostReports()
-            .createOperation(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
-                new GenerateDetailedCostReportDefinition()
-                    .withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
+        manager.generateDetailedCostReports()
+            .createOperation("providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                new GenerateDetailedCostReportDefinition().withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
                     .withInvoiceId("M1234567"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportByBillingAccountLegacyAndBillingPeriod.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * GenerateDetailedCostReportByBillingAccountLegacyAndBillingPeriod.json
      */
     /**
      * Sample code: GenerateDetailedCostReportByBillingAccountLegacyAndBillingPeriod.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void generateDetailedCostReportByBillingAccountLegacyAndBillingPeriod(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .generateDetailedCostReports()
-            .createOperation(
-                "providers/Microsoft.Billing/billingAccounts/12345",
-                new GenerateDetailedCostReportDefinition()
-                    .withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
+        manager.generateDetailedCostReports()
+            .createOperation("providers/Microsoft.Billing/billingAccounts/12345",
+                new GenerateDetailedCostReportDefinition().withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
                     .withBillingPeriod("202008"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportByBillingProfileAndInvoiceIdAndCustomerId.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * GenerateDetailedCostReportByBillingProfileAndInvoiceIdAndCustomerId.json
      */
     /**
      * Sample code: GenerateDetailedCostReportByBillingProfileAndInvoiceIdAndCustomerId.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void generateDetailedCostReportByBillingProfileAndInvoiceIdAndCustomerId(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .generateDetailedCostReports()
-            .createOperation(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
-                new GenerateDetailedCostReportDefinition()
-                    .withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
+        manager.generateDetailedCostReports()
+            .createOperation("providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                new GenerateDetailedCostReportDefinition().withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
                     .withInvoiceId("M1234567")
                     .withCustomerId("456789"),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportBySubscriptionAndTimePeriod.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * GenerateDetailedCostReportBySubscriptionAndTimePeriod.json
      */
     /**
      * Sample code: GenerateDetailedCostReportBySubscriptionAndTimePeriod.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void generateDetailedCostReportBySubscriptionAndTimePeriod(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .generateDetailedCostReports()
-            .createOperation(
-                "subscriptions/00000000-0000-0000-0000-000000000000",
-                new GenerateDetailedCostReportDefinition()
-                    .withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
+        manager.generateDetailedCostReports()
+            .createOperation("subscriptions/00000000-0000-0000-0000-000000000000",
+                new GenerateDetailedCostReportDefinition().withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
                     .withTimePeriod(
                         new GenerateDetailedCostReportTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/GenerateDetailedCostReportByCustomerAndTimePeriod.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * GenerateDetailedCostReportByCustomerAndTimePeriod.json
      */
     /**
      * Sample code: GenerateDetailedCostReportByCustomerAndTimePeriod.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
     public static void generateDetailedCostReportByCustomerAndTimePeriod(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .generateDetailedCostReports()
-            .createOperation(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/13579",
-                new GenerateDetailedCostReportDefinition()
-                    .withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
+        manager.generateDetailedCostReports()
+            .createOperation("providers/Microsoft.Billing/billingAccounts/12345:6789/customers/13579",
+                new GenerateDetailedCostReportDefinition().withMetric(GenerateDetailedCostReportMetricType.ACTUAL_COST)
                     .withTimePeriod(
                         new GenerateDetailedCostReportTimePeriod().withStart("2020-03-01").withEnd("2020-03-15")),
                 com.azure.core.util.Context.NONE);

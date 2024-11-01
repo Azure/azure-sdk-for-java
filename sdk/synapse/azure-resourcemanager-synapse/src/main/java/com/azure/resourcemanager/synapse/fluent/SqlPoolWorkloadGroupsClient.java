@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.WorkloadGroupInner;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolWorkloadGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolWorkloadGroupsClient.
+ */
 public interface SqlPoolWorkloadGroupsClient {
     /**
      * Sql pool's workload group
-     *
-     * <p>Get a Sql pool's workload group.
-     *
+     * 
+     * Get a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -36,9 +38,9 @@ public interface SqlPoolWorkloadGroupsClient {
 
     /**
      * Sql pool's workload group
-     *
-     * <p>Get a Sql pool's workload group.
-     *
+     * 
+     * Get a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -54,9 +56,9 @@ public interface SqlPoolWorkloadGroupsClient {
 
     /**
      * Create Or Update workload group
-     *
-     * <p>Create Or Update a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -73,9 +75,9 @@ public interface SqlPoolWorkloadGroupsClient {
 
     /**
      * Create Or Update workload group
-     *
-     * <p>Create Or Update a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -94,9 +96,9 @@ public interface SqlPoolWorkloadGroupsClient {
 
     /**
      * Create Or Update workload group
-     *
-     * <p>Create Or Update a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -113,9 +115,9 @@ public interface SqlPoolWorkloadGroupsClient {
 
     /**
      * Create Or Update workload group
-     *
-     * <p>Create Or Update a Sql pool's workload group.
-     *
+     * 
+     * Create Or Update a Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -133,9 +135,9 @@ public interface SqlPoolWorkloadGroupsClient {
 
     /**
      * Remove workload group
-     *
-     * <p>Remove Sql pool's workload group.
-     *
+     * 
+     * Remove Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -151,9 +153,9 @@ public interface SqlPoolWorkloadGroupsClient {
 
     /**
      * Remove workload group
-     *
-     * <p>Remove Sql pool's workload group.
-     *
+     * 
+     * Remove Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -170,9 +172,9 @@ public interface SqlPoolWorkloadGroupsClient {
 
     /**
      * Remove workload group
-     *
-     * <p>Remove Sql pool's workload group.
-     *
+     * 
+     * Remove Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -186,9 +188,9 @@ public interface SqlPoolWorkloadGroupsClient {
 
     /**
      * Remove workload group
-     *
-     * <p>Remove Sql pool's workload group.
-     *
+     * 
+     * Remove Sql pool's workload group.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -204,9 +206,9 @@ public interface SqlPoolWorkloadGroupsClient {
 
     /**
      * Sql pool's workload groups
-     *
-     * <p>Get list of Sql pool's workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -220,9 +222,9 @@ public interface SqlPoolWorkloadGroupsClient {
 
     /**
      * Sql pool's workload groups
-     *
-     * <p>Get list of Sql pool's workload groups.
-     *
+     * 
+     * Get list of Sql pool's workload groups.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

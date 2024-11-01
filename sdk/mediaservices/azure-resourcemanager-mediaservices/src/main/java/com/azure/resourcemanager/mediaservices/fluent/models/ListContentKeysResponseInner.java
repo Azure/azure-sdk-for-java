@@ -5,26 +5,33 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.mediaservices.models.StreamingLocatorContentKey;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Class of response for listContentKeys action. */
+/**
+ * Class of response for listContentKeys action.
+ */
 @Fluent
-public final class ListContentKeysResponseInner {
+public final class ListContentKeysResponseInner implements JsonSerializable<ListContentKeysResponseInner> {
     /*
      * ContentKeys used by current Streaming Locator
      */
-    @JsonProperty(value = "contentKeys")
     private List<StreamingLocatorContentKey> contentKeys;
 
-    /** Creates an instance of ListContentKeysResponseInner class. */
+    /**
+     * Creates an instance of ListContentKeysResponseInner class.
+     */
     public ListContentKeysResponseInner() {
     }
 
     /**
      * Get the contentKeys property: ContentKeys used by current Streaming Locator.
-     *
+     * 
      * @return the contentKeys value.
      */
     public List<StreamingLocatorContentKey> contentKeys() {
@@ -33,7 +40,7 @@ public final class ListContentKeysResponseInner {
 
     /**
      * Set the contentKeys property: ContentKeys used by current Streaming Locator.
-     *
+     * 
      * @param contentKeys the contentKeys value to set.
      * @return the ListContentKeysResponseInner object itself.
      */
@@ -44,12 +51,50 @@ public final class ListContentKeysResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (contentKeys() != null) {
             contentKeys().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("contentKeys", this.contentKeys, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListContentKeysResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListContentKeysResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListContentKeysResponseInner.
+     */
+    public static ListContentKeysResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListContentKeysResponseInner deserializedListContentKeysResponseInner = new ListContentKeysResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contentKeys".equals(fieldName)) {
+                    List<StreamingLocatorContentKey> contentKeys
+                        = reader.readArray(reader1 -> StreamingLocatorContentKey.fromJson(reader1));
+                    deserializedListContentKeysResponseInner.contentKeys = contentKeys;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListContentKeysResponseInner;
+        });
     }
 }

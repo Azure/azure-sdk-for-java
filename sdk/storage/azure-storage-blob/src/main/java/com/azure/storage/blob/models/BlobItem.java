@@ -235,8 +235,8 @@ public final class BlobItem {
      */
     public List<ObjectReplicationPolicy> getObjectReplicationSourcePolicies() {
         if (convertedObjectReplicationSourcePolicies == null) {
-            convertedObjectReplicationSourcePolicies =
-                transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata());
+            convertedObjectReplicationSourcePolicies
+                = transformObjectReplicationMetadata(blobItemInternal.getObjectReplicationMetadata());
         }
 
         return convertedObjectReplicationSourcePolicies;

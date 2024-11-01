@@ -5,6 +5,11 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.models.ClusterInfo;
 import com.azure.resourcemanager.streamanalytics.models.CompatibilityLevel;
 import com.azure.resourcemanager.streamanalytics.models.ContentStoragePolicy;
@@ -15,60 +20,54 @@ import com.azure.resourcemanager.streamanalytics.models.JobType;
 import com.azure.resourcemanager.streamanalytics.models.OutputErrorPolicy;
 import com.azure.resourcemanager.streamanalytics.models.OutputStartMode;
 import com.azure.resourcemanager.streamanalytics.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
  * The properties that are associated with a streaming job.
  */
 @Fluent
-public final class StreamingJobPropertiesInner {
+public final class StreamingJobPropertiesInner implements JsonSerializable<StreamingJobPropertiesInner> {
     /*
      * Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * A GUID uniquely identifying the streaming job. This GUID is generated upon creation of the streaming job.
      */
-    @JsonProperty(value = "jobId", access = JsonProperty.Access.WRITE_ONLY)
     private String jobId;
 
     /*
      * Describes the provisioning status of the streaming job.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Describes the state of the streaming job.
      */
-    @JsonProperty(value = "jobState", access = JsonProperty.Access.WRITE_ONLY)
     private String jobState;
 
     /*
      * Describes the type of the job. Valid modes are `Cloud` and 'Edge'.
      */
-    @JsonProperty(value = "jobType")
     private JobType jobType;
 
     /*
-     * This property should only be utilized when it is desired that the job be started immediately upon creation.
-     * Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the
-     * output event stream should start whenever the job is started, start at a custom user time stamp specified via
-     * the outputStartTime property, or start from the last event output time.
+     * This property should only be utilized when it is desired that the job be started immediately upon creation. Value
+     * may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the output
+     * event stream should start whenever the job is started, start at a custom user time stamp specified via the
+     * outputStartTime property, or start from the last event output time.
      */
-    @JsonProperty(value = "outputStartMode")
     private OutputStartMode outputStartMode;
 
     /*
-     * Value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream,
-     * or null to indicate that the output event stream will start whenever the streaming job is started. This property
+     * Value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or
+     * null to indicate that the output event stream will start whenever the streaming job is started. This property
      * must have a value if outputStartMode is set to CustomTime.
      */
-    @JsonProperty(value = "outputStartTime")
     private OffsetDateTime outputStartTime;
 
     /*
@@ -76,26 +75,22 @@ public final class StreamingJobPropertiesInner {
      * null indicating that output has not yet been produced. In case of multiple outputs or multiple streams, this
      * shows the latest value in that set.
      */
-    @JsonProperty(value = "lastOutputEventTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastOutputEventTime;
 
     /*
      * Indicates the policy to apply to events that arrive out of order in the input event stream.
      */
-    @JsonProperty(value = "eventsOutOfOrderPolicy")
     private EventsOutOfOrderPolicy eventsOutOfOrderPolicy;
 
     /*
      * Indicates the policy to apply to events that arrive at the output and cannot be written to the external storage
      * due to being malformed (missing column values, column values of wrong type or size).
      */
-    @JsonProperty(value = "outputErrorPolicy")
     private OutputErrorPolicy outputErrorPolicy;
 
     /*
      * The maximum tolerable delay in seconds where out-of-order events can be adjusted to be back in order.
      */
-    @JsonProperty(value = "eventsOutOfOrderMaxDelayInSeconds")
     private Integer eventsOutOfOrderMaxDelayInSeconds;
 
     /*
@@ -103,27 +98,23 @@ public final class StreamingJobPropertiesInner {
      * 1814399 (20.23:59:59 days) and -1 is used to specify wait indefinitely. If the property is absent, it is
      * interpreted to have a value of -1.
      */
-    @JsonProperty(value = "eventsLateArrivalMaxDelayInSeconds")
     private Integer eventsLateArrivalMaxDelayInSeconds;
 
     /*
      * The data locale of the stream analytics job. Value should be the name of a supported .NET Culture from the set
-     * https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx. Defaults to 'en-US'
-     * if none specified.
+     * https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx. Defaults to 'en-US' if
+     * none specified.
      */
-    @JsonProperty(value = "dataLocale")
     private String dataLocale;
 
     /*
      * Controls certain runtime behaviors of the streaming job.
      */
-    @JsonProperty(value = "compatibilityLevel")
     private CompatibilityLevel compatibilityLevel;
 
     /*
      * Value is an ISO-8601 formatted UTC timestamp indicating when the streaming job was created.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
@@ -131,7 +122,6 @@ public final class StreamingJobPropertiesInner {
      * this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the PATCH API
      * available for the individual input.
      */
-    @JsonProperty(value = "inputs")
     private List<InputInner> inputs;
 
     /*
@@ -139,23 +129,20 @@ public final class StreamingJobPropertiesInner {
      * transformation is required when specifying this property in a PUT request. This property cannot be modify via a
      * PATCH operation. You must use the PATCH API available for the individual transformation.
      */
-    @JsonProperty(value = "transformation")
     private TransformationInner transformation;
 
     /*
      * A list of one or more outputs for the streaming job. The name property for each output is required when
-     * specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use
-     * the PATCH API available for the individual output.
+     * specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the
+     * PATCH API available for the individual output.
      */
-    @JsonProperty(value = "outputs")
     private List<OutputInner> outputs;
 
     /*
      * A list of one or more functions for the streaming job. The name property for each function is required when
-     * specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use
-     * the PATCH API available for the individual transformation.
+     * specifying this property in a PUT request. This property cannot be modify via a PATCH operation. You must use the
+     * PATCH API available for the individual transformation.
      */
-    @JsonProperty(value = "functions")
     private List<FunctionInner> functions;
 
     /*
@@ -163,32 +150,27 @@ public final class StreamingJobPropertiesInner {
      * resource has changed between requests. You can also use it in the If-Match or If-None-Match headers for write
      * operations for optimistic concurrency.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The properties that are associated with an Azure Storage account with MSI
      */
-    @JsonProperty(value = "jobStorageAccount")
     private JobStorageAccount jobStorageAccount;
 
     /*
-     * Valid values are JobStorageAccount and SystemAccount. If set to JobStorageAccount, this requires the user to
-     * also specify jobStorageAccount property. .
+     * Valid values are JobStorageAccount and SystemAccount. If set to JobStorageAccount, this requires the user to also
+     * specify jobStorageAccount property. .
      */
-    @JsonProperty(value = "contentStoragePolicy")
     private ContentStoragePolicy contentStoragePolicy;
 
     /*
      * The storage account where the custom code artifacts are located.
      */
-    @JsonProperty(value = "externals")
     private External externals;
 
     /*
      * The cluster which streaming jobs will run on.
      */
-    @JsonProperty(value = "cluster")
     private ClusterInfo cluster;
 
     /**
@@ -268,8 +250,8 @@ public final class StreamingJobPropertiesInner {
     /**
      * Get the outputStartMode property: This property should only be utilized when it is desired that the job be
      * started immediately upon creation. Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate
-     * whether the starting point of the output event stream should start whenever the job is started, start at a
-     * custom user time stamp specified via the outputStartTime property, or start from the last event output time.
+     * whether the starting point of the output event stream should start whenever the job is started, start at a custom
+     * user time stamp specified via the outputStartTime property, or start from the last event output time.
      * 
      * @return the outputStartMode value.
      */
@@ -280,8 +262,8 @@ public final class StreamingJobPropertiesInner {
     /**
      * Set the outputStartMode property: This property should only be utilized when it is desired that the job be
      * started immediately upon creation. Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate
-     * whether the starting point of the output event stream should start whenever the job is started, start at a
-     * custom user time stamp specified via the outputStartTime property, or start from the last event output time.
+     * whether the starting point of the output event stream should start whenever the job is started, start at a custom
+     * user time stamp specified via the outputStartTime property, or start from the last event output time.
      * 
      * @param outputStartMode the outputStartMode value to set.
      * @return the StreamingJobPropertiesInner object itself.
@@ -396,9 +378,9 @@ public final class StreamingJobPropertiesInner {
     }
 
     /**
-     * Get the eventsLateArrivalMaxDelayInSeconds property: The maximum tolerable delay in seconds where events
-     * arriving late could be included. Supported range is -1 to 1814399 (20.23:59:59 days) and -1 is used to specify
-     * wait indefinitely. If the property is absent, it is interpreted to have a value of -1.
+     * Get the eventsLateArrivalMaxDelayInSeconds property: The maximum tolerable delay in seconds where events arriving
+     * late could be included. Supported range is -1 to 1814399 (20.23:59:59 days) and -1 is used to specify wait
+     * indefinitely. If the property is absent, it is interpreted to have a value of -1.
      * 
      * @return the eventsLateArrivalMaxDelayInSeconds value.
      */
@@ -407,9 +389,9 @@ public final class StreamingJobPropertiesInner {
     }
 
     /**
-     * Set the eventsLateArrivalMaxDelayInSeconds property: The maximum tolerable delay in seconds where events
-     * arriving late could be included. Supported range is -1 to 1814399 (20.23:59:59 days) and -1 is used to specify
-     * wait indefinitely. If the property is absent, it is interpreted to have a value of -1.
+     * Set the eventsLateArrivalMaxDelayInSeconds property: The maximum tolerable delay in seconds where events arriving
+     * late could be included. Supported range is -1 to 1814399 (20.23:59:59 days) and -1 is used to specify wait
+     * indefinitely. If the property is absent, it is interpreted to have a value of -1.
      * 
      * @param eventsLateArrivalMaxDelayInSeconds the eventsLateArrivalMaxDelayInSeconds value to set.
      * @return the StreamingJobPropertiesInner object itself.
@@ -421,10 +403,10 @@ public final class StreamingJobPropertiesInner {
     }
 
     /**
-     * Get the dataLocale property: The data locale of the stream analytics job. Value should be the name of a
-     * supported .NET Culture from the set
-     * https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx. Defaults to 'en-US'
-     * if none specified.
+     * Get the dataLocale property: The data locale of the stream analytics job. Value should be the name of a supported
+     * .NET Culture from the set
+     * https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx. Defaults to 'en-US' if
+     * none specified.
      * 
      * @return the dataLocale value.
      */
@@ -433,10 +415,10 @@ public final class StreamingJobPropertiesInner {
     }
 
     /**
-     * Set the dataLocale property: The data locale of the stream analytics job. Value should be the name of a
-     * supported .NET Culture from the set
-     * https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx. Defaults to 'en-US'
-     * if none specified.
+     * Set the dataLocale property: The data locale of the stream analytics job. Value should be the name of a supported
+     * .NET Culture from the set
+     * https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx. Defaults to 'en-US' if
+     * none specified.
      * 
      * @param dataLocale the dataLocale value to set.
      * @return the StreamingJobPropertiesInner object itself.
@@ -528,8 +510,8 @@ public final class StreamingJobPropertiesInner {
 
     /**
      * Get the outputs property: A list of one or more outputs for the streaming job. The name property for each output
-     * is required when specifying this property in a PUT request. This property cannot be modify via a PATCH
-     * operation. You must use the PATCH API available for the individual output.
+     * is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation.
+     * You must use the PATCH API available for the individual output.
      * 
      * @return the outputs value.
      */
@@ -539,8 +521,8 @@ public final class StreamingJobPropertiesInner {
 
     /**
      * Set the outputs property: A list of one or more outputs for the streaming job. The name property for each output
-     * is required when specifying this property in a PUT request. This property cannot be modify via a PATCH
-     * operation. You must use the PATCH API available for the individual output.
+     * is required when specifying this property in a PUT request. This property cannot be modify via a PATCH operation.
+     * You must use the PATCH API available for the individual output.
      * 
      * @param outputs the outputs value to set.
      * @return the StreamingJobPropertiesInner object itself.
@@ -697,5 +679,123 @@ public final class StreamingJobPropertiesInner {
         if (cluster() != null) {
             cluster().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("jobType", this.jobType == null ? null : this.jobType.toString());
+        jsonWriter.writeStringField("outputStartMode",
+            this.outputStartMode == null ? null : this.outputStartMode.toString());
+        jsonWriter.writeStringField("outputStartTime",
+            this.outputStartTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.outputStartTime));
+        jsonWriter.writeStringField("eventsOutOfOrderPolicy",
+            this.eventsOutOfOrderPolicy == null ? null : this.eventsOutOfOrderPolicy.toString());
+        jsonWriter.writeStringField("outputErrorPolicy",
+            this.outputErrorPolicy == null ? null : this.outputErrorPolicy.toString());
+        jsonWriter.writeNumberField("eventsOutOfOrderMaxDelayInSeconds", this.eventsOutOfOrderMaxDelayInSeconds);
+        jsonWriter.writeNumberField("eventsLateArrivalMaxDelayInSeconds", this.eventsLateArrivalMaxDelayInSeconds);
+        jsonWriter.writeStringField("dataLocale", this.dataLocale);
+        jsonWriter.writeStringField("compatibilityLevel",
+            this.compatibilityLevel == null ? null : this.compatibilityLevel.toString());
+        jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("transformation", this.transformation);
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("functions", this.functions, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("jobStorageAccount", this.jobStorageAccount);
+        jsonWriter.writeStringField("contentStoragePolicy",
+            this.contentStoragePolicy == null ? null : this.contentStoragePolicy.toString());
+        jsonWriter.writeJsonField("externals", this.externals);
+        jsonWriter.writeJsonField("cluster", this.cluster);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StreamingJobPropertiesInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StreamingJobPropertiesInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StreamingJobPropertiesInner.
+     */
+    public static StreamingJobPropertiesInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StreamingJobPropertiesInner deserializedStreamingJobPropertiesInner = new StreamingJobPropertiesInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.sku = Sku.fromJson(reader);
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.jobId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.provisioningState = reader.getString();
+                } else if ("jobState".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.jobState = reader.getString();
+                } else if ("jobType".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.jobType = JobType.fromString(reader.getString());
+                } else if ("outputStartMode".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.outputStartMode
+                        = OutputStartMode.fromString(reader.getString());
+                } else if ("outputStartTime".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.outputStartTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastOutputEventTime".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.lastOutputEventTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("eventsOutOfOrderPolicy".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.eventsOutOfOrderPolicy
+                        = EventsOutOfOrderPolicy.fromString(reader.getString());
+                } else if ("outputErrorPolicy".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.outputErrorPolicy
+                        = OutputErrorPolicy.fromString(reader.getString());
+                } else if ("eventsOutOfOrderMaxDelayInSeconds".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.eventsOutOfOrderMaxDelayInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("eventsLateArrivalMaxDelayInSeconds".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.eventsLateArrivalMaxDelayInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("dataLocale".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.dataLocale = reader.getString();
+                } else if ("compatibilityLevel".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.compatibilityLevel
+                        = CompatibilityLevel.fromString(reader.getString());
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("inputs".equals(fieldName)) {
+                    List<InputInner> inputs = reader.readArray(reader1 -> InputInner.fromJson(reader1));
+                    deserializedStreamingJobPropertiesInner.inputs = inputs;
+                } else if ("transformation".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.transformation = TransformationInner.fromJson(reader);
+                } else if ("outputs".equals(fieldName)) {
+                    List<OutputInner> outputs = reader.readArray(reader1 -> OutputInner.fromJson(reader1));
+                    deserializedStreamingJobPropertiesInner.outputs = outputs;
+                } else if ("functions".equals(fieldName)) {
+                    List<FunctionInner> functions = reader.readArray(reader1 -> FunctionInner.fromJson(reader1));
+                    deserializedStreamingJobPropertiesInner.functions = functions;
+                } else if ("etag".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.etag = reader.getString();
+                } else if ("jobStorageAccount".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.jobStorageAccount = JobStorageAccount.fromJson(reader);
+                } else if ("contentStoragePolicy".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.contentStoragePolicy
+                        = ContentStoragePolicy.fromString(reader.getString());
+                } else if ("externals".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.externals = External.fromJson(reader);
+                } else if ("cluster".equals(fieldName)) {
+                    deserializedStreamingJobPropertiesInner.cluster = ClusterInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStreamingJobPropertiesInner;
+        });
     }
 }

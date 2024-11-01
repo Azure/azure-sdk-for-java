@@ -7,6 +7,7 @@ package com.azure.resourcemanager.synapse.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.synapse.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.synapse.models.Database;
+import com.azure.resourcemanager.synapse.models.Kind;
 
 public final class DatabaseImpl implements Database {
     private DatabaseInner innerObject;
@@ -28,6 +29,10 @@ public final class DatabaseImpl implements Database {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public Kind kind() {
+        return this.innerModel().kind();
     }
 
     public String location() {

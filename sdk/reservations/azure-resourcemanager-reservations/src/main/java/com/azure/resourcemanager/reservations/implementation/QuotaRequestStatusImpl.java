@@ -50,14 +50,14 @@ public final class QuotaRequestStatusImpl implements QuotaRequestStatus {
 
     public PagedIterable<QuotaRequestDetails> list(String subscriptionId, String providerId, String location) {
         PagedIterable<QuotaRequestDetailsInner> inner = this.serviceClient().list(subscriptionId, providerId, location);
-        return Utils.mapPage(inner, inner1 -> new QuotaRequestDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaRequestDetailsImpl(inner1, this.manager()));
     }
 
     public PagedIterable<QuotaRequestDetails> list(String subscriptionId, String providerId, String location,
         String filter, Integer top, String skiptoken, Context context) {
         PagedIterable<QuotaRequestDetailsInner> inner
             = this.serviceClient().list(subscriptionId, providerId, location, filter, top, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new QuotaRequestDetailsImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaRequestDetailsImpl(inner1, this.manager()));
     }
 
     private QuotaRequestStatusClient serviceClient() {

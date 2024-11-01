@@ -27,8 +27,7 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
         }
 
         // Setup the service client
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .connectionString(connectionString);
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().connectionString(connectionString);
 
         configureClientBuilder(builder);
 

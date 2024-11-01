@@ -153,8 +153,7 @@ public class ShareCreateOptions {
      * @param snapshotVirtualDirectoryAccessEnabled the enableSnapshotVirtualDirectoryAccess value to set.
      * @return the ShareCreateOptions object itself.
      */
-    public ShareCreateOptions setSnapshotVirtualDirectoryAccessEnabled(
-        Boolean snapshotVirtualDirectoryAccessEnabled) {
+    public ShareCreateOptions setSnapshotVirtualDirectoryAccessEnabled(Boolean snapshotVirtualDirectoryAccessEnabled) {
         this.enableSnapshotVirtualDirectoryAccess = snapshotVirtualDirectoryAccessEnabled;
         return this;
     }

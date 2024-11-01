@@ -12,18 +12,18 @@ public final class CrossSiteAccessPoliciesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CrossSiteAccessPolicies model
-            = BinaryData.fromString("{\"clientAccessPolicy\":\"xbjhwuaanozjosph\",\"crossDomainPolicy\":\"ulpjr\"}")
+            = BinaryData.fromString("{\"clientAccessPolicy\":\"yqtfihwh\",\"crossDomainPolicy\":\"tzingamvpph\"}")
                 .toObject(CrossSiteAccessPolicies.class);
-        Assertions.assertEquals("xbjhwuaanozjosph", model.clientAccessPolicy());
-        Assertions.assertEquals("ulpjr", model.crossDomainPolicy());
+        Assertions.assertEquals("yqtfihwh", model.clientAccessPolicy());
+        Assertions.assertEquals("tzingamvpph", model.crossDomainPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CrossSiteAccessPolicies model
-            = new CrossSiteAccessPolicies().withClientAccessPolicy("xbjhwuaanozjosph").withCrossDomainPolicy("ulpjr");
+            = new CrossSiteAccessPolicies().withClientAccessPolicy("yqtfihwh").withCrossDomainPolicy("tzingamvpph");
         model = BinaryData.fromObject(model).toObject(CrossSiteAccessPolicies.class);
-        Assertions.assertEquals("xbjhwuaanozjosph", model.clientAccessPolicy());
-        Assertions.assertEquals("ulpjr", model.crossDomainPolicy());
+        Assertions.assertEquals("yqtfihwh", model.clientAccessPolicy());
+        Assertions.assertEquals("tzingamvpph", model.crossDomainPolicy());
     }
 }

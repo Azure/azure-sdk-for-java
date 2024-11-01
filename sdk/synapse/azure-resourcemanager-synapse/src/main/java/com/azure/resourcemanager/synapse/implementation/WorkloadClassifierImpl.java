@@ -127,11 +127,12 @@ public final class WorkloadClassifierImpl
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
-        this.sqlPoolName = Utils.getValueFromIdByName(innerObject.id(), "sqlPools");
-        this.workloadGroupName = Utils.getValueFromIdByName(innerObject.id(), "workloadGroups");
-        this.workloadClassifierName = Utils.getValueFromIdByName(innerObject.id(), "workloadClassifiers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.sqlPoolName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sqlPools");
+        this.workloadGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloadGroups");
+        this.workloadClassifierName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workloadClassifiers");
     }
 
     public WorkloadClassifier refresh() {

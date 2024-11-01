@@ -199,9 +199,9 @@ public final class LiveEventImpl implements LiveEvent, LiveEvent.Definition, Liv
         com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "mediaservices");
-        this.liveEventName = Utils.getValueFromIdByName(innerObject.id(), "liveEvents");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mediaservices");
+        this.liveEventName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "liveEvents");
     }
 
     public LiveEvent refresh() {

@@ -7,18 +7,20 @@ package com.azure.resourcemanager.dynatrace.models;
 import com.azure.resourcemanager.dynatrace.fluent.models.MetricsStatusResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of MetricsStatusResponse. */
+/**
+ * An immutable client-side representation of MetricsStatusResponse.
+ */
 public interface MetricsStatusResponse {
     /**
      * Gets the azureResourceIds property: Azure resource IDs.
-     *
+     * 
      * @return the azureResourceIds value.
      */
     List<String> azureResourceIds();
 
     /**
      * Gets the inner com.azure.resourcemanager.dynatrace.fluent.models.MetricsStatusResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     MetricsStatusResponseInner innerModel();

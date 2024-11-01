@@ -136,9 +136,9 @@ public final class AzureBareMetalStorageInstanceImpl implements AzureBareMetalSt
         com.azure.resourcemanager.baremetalinfrastructure.BareMetalInfrastructureManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
         this.azureBareMetalStorageInstanceName
-            = Utils.getValueFromIdByName(innerObject.id(), "bareMetalStorageInstances");
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "bareMetalStorageInstances");
     }
 
     public AzureBareMetalStorageInstance refresh() {

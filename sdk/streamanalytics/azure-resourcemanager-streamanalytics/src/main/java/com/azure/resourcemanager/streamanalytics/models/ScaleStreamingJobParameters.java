@@ -5,17 +5,20 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Parameters supplied to the Scale Streaming Job operation.
  */
 @Fluent
-public final class ScaleStreamingJobParameters {
+public final class ScaleStreamingJobParameters implements JsonSerializable<ScaleStreamingJobParameters> {
     /*
      * Specifies the number of streaming units that the streaming job will scale to.
      */
-    @JsonProperty(value = "streamingUnits")
     private Integer streamingUnits;
 
     /**
@@ -50,5 +53,41 @@ public final class ScaleStreamingJobParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("streamingUnits", this.streamingUnits);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScaleStreamingJobParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScaleStreamingJobParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScaleStreamingJobParameters.
+     */
+    public static ScaleStreamingJobParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScaleStreamingJobParameters deserializedScaleStreamingJobParameters = new ScaleStreamingJobParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("streamingUnits".equals(fieldName)) {
+                    deserializedScaleStreamingJobParameters.streamingUnits = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScaleStreamingJobParameters;
+        });
     }
 }

@@ -45,7 +45,6 @@ public final class DataLakeServiceProperties {
      */
     private DataLakeRetentionPolicy deleteRetentionPolicy;
 
-
     /*
      * The properties that enable an account to host a static website
      */

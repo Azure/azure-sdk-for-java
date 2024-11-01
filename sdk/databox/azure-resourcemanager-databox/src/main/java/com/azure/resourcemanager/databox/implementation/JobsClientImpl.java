@@ -47,17 +47,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobsClient.
+ */
 public final class JobsClientImpl implements JobsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JobsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataBoxManagementClientImpl client;
 
     /**
      * Initializes an instance of JobsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JobsClientImpl(DataBoxManagementClientImpl client) {
@@ -188,7 +194,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -216,7 +222,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +251,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -259,7 +265,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job Resource Collection as paginated response with {@link PagedFlux}.
@@ -272,7 +278,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -288,7 +294,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return job Resource Collection as paginated response with {@link PagedIterable}.
@@ -301,7 +307,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the subscription.
-     *
+     * 
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,9 +322,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -360,9 +366,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @param context The context to associate with this operation.
@@ -403,9 +409,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -422,9 +428,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @param context The context to associate with this operation.
@@ -442,9 +448,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Request to mark devices for a given job as shipped.
-     *
+     * 
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param resourceGroupName The Resource Group Name.
      * @param markDevicesShippedRequest Mark Devices Shipped Request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -459,7 +465,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -494,7 +500,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
@@ -529,7 +535,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -545,7 +551,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -561,7 +567,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
@@ -579,7 +585,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -594,7 +600,7 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Lists all the jobs available under the given resource group.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param skipToken $skipToken is supported on Get list of jobs, which provides the next page in the list of jobs.
      * @param context The context to associate with this operation.
@@ -611,10 +617,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param expand $expand is supported on details parameter for job, which provides details on the job stages.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -649,10 +655,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param expand $expand is supported on details parameter for job, which provides details on the job stages.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -686,10 +692,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -704,10 +710,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param expand $expand is supported on details parameter for job, which provides details on the job stages.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -723,10 +729,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Gets information about the specified job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -741,10 +747,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -784,10 +790,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -827,10 +833,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -848,10 +854,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -872,10 +878,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -891,10 +897,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -911,10 +917,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -930,10 +936,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -951,10 +957,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -969,10 +975,10 @@ public final class JobsClientImpl implements JobsClient {
     /**
      * Creates a new job with the specified parameters. Existing job cannot be updated with this API and should instead
      * be updated with the Update job API.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResource Job details from request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -988,10 +994,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1023,10 +1029,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1059,10 +1065,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1077,10 +1083,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1098,10 +1104,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1114,10 +1120,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1131,10 +1137,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1147,10 +1153,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1165,10 +1171,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1180,10 +1186,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Deletes a job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1196,13 +1202,13 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1242,13 +1248,13 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1287,13 +1293,13 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1310,10 +1316,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1332,13 +1338,13 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1357,10 +1363,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1376,13 +1382,13 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1398,13 +1404,13 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1419,10 +1425,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1439,13 +1445,13 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1461,10 +1467,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1480,13 +1486,13 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Updates the properties of an existing job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param jobResourceUpdateParameter Job update parameters from request body.
      * @param ifMatch Defines the If-Match condition. The patch will be performed only if the ETag of the job on the
-     *     server matches this value.
+     * server matches this value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1501,10 +1507,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1545,10 +1551,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1588,10 +1594,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1607,10 +1613,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1626,10 +1632,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Book shipment pick up.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param shipmentPickUpRequest Details of shipment pick up request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1645,10 +1651,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1688,10 +1694,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1731,10 +1737,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1748,10 +1754,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1767,10 +1773,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * CancelJob.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param cancellationReason Reason for cancellation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1783,15 +1789,15 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of unencrypted credentials for accessing device along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UnencryptedCredentialsInner>> listCredentialsSinglePageAsync(String resourceGroupName,
@@ -1822,16 +1828,16 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of unencrypted credentials for accessing device along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UnencryptedCredentialsInner>> listCredentialsSinglePageAsync(String resourceGroupName,
@@ -1862,10 +1868,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1878,10 +1884,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1896,10 +1902,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1912,10 +1918,10 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * This method gets the unencrypted secrets related to the job.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param jobName The name of the job Resource within the specified resource group. job names must be between 3 and
-     *     24 characters in length and use any alphanumeric and underscore only.
+     * 24 characters in length and use any alphanumeric and underscore only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1930,9 +1936,8 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1956,9 +1961,8 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1983,9 +1987,8 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2011,9 +2014,8 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

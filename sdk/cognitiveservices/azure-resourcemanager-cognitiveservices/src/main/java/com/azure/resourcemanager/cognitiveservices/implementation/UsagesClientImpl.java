@@ -30,17 +30,23 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageInner;
 import com.azure.resourcemanager.cognitiveservices.fluent.models.UsageListResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in UsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UsagesClient.
+ */
 public final class UsagesClientImpl implements UsagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final UsagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CognitiveServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of UsagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     UsagesClientImpl(CognitiveServicesManagementClientImpl client) {
@@ -74,15 +80,15 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Get usages for the requested subscription.
-     *
+     * 
      * @param location Resource location.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     *     name.value (name of the metric, can have an or of multiple names).
+     * name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usages for the requested subscription along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return usages for the requested subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listSinglePageAsync(String location, String filter) {
@@ -108,16 +114,16 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Get usages for the requested subscription.
-     *
+     * 
      * @param location Resource location.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     *     name.value (name of the metric, can have an or of multiple names).
+     * name.value (name of the metric, can have an or of multiple names).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return usages for the requested subscription along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return usages for the requested subscription along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listSinglePageAsync(String location, String filter, Context context) {
@@ -143,10 +149,10 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Get usages for the requested subscription.
-     *
+     * 
      * @param location Resource location.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     *     name.value (name of the metric, can have an or of multiple names).
+     * name.value (name of the metric, can have an or of multiple names).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -160,7 +166,7 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Get usages for the requested subscription.
-     *
+     * 
      * @param location Resource location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -176,10 +182,10 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Get usages for the requested subscription.
-     *
+     * 
      * @param location Resource location.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     *     name.value (name of the metric, can have an or of multiple names).
+     * name.value (name of the metric, can have an or of multiple names).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -194,7 +200,7 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Get usages for the requested subscription.
-     *
+     * 
      * @param location Resource location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -209,10 +215,10 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Get usages for the requested subscription.
-     *
+     * 
      * @param location Resource location.
      * @param filter An OData filter expression that describes a subset of usages to return. The supported parameter is
-     *     name.value (name of the metric, can have an or of multiple names).
+     * name.value (name of the metric, can have an or of multiple names).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -226,14 +232,13 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response to a list usage request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listNextSinglePageAsync(String nextLink) {
@@ -253,15 +258,14 @@ public final class UsagesClientImpl implements UsagesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list usage request along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response to a list usage request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listNextSinglePageAsync(String nextLink, Context context) {

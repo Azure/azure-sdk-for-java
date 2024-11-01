@@ -14,7 +14,6 @@ public class App {
             AppendBlobOutputStream.class,
             BlockBlobOutputStream.class,
             BlockBlobUpload.class,
-            BlockBlobUploadFromUrl.class,
             CommitBlockList.class,
             DownloadToFile.class,
             DownloadStream.class,
@@ -24,11 +23,9 @@ public class App {
             OpenSeekableByteChannelWrite.class,
             PageBlobOutputStream.class,
             StageBlock.class,
-            StageBlockFromUrl.class,
             Upload.class,
             UploadFromFile.class,
             UploadPages.class,
-            UploadPagesFromUrl.class
         }, args);
     }
 }

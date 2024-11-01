@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class RefreshType extends ExpandableStringEnum<RefreshType> {
      * @param name a name to look for.
      * @return the corresponding RefreshType.
      */
-    @JsonCreator
     public static RefreshType fromString(String name) {
         return fromString(name, RefreshType.class);
     }

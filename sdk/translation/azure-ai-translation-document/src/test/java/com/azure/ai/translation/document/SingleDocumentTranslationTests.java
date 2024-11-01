@@ -3,12 +3,15 @@
 
 package com.azure.ai.translation.document;
 
-import com.azure.core.util.BinaryData;
 import com.azure.ai.translation.document.models.DocumentFileDetails;
 import com.azure.ai.translation.document.models.DocumentTranslateContent;
 import com.azure.ai.translation.document.models.GlossaryFileDetails;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.test.annotation.LiveOnly;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,8 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.test.annotation.LiveOnly;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SingleDocumentTranslationTests extends DocumentTranslationClientTestBase {
     private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
@@ -53,8 +56,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
             = getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent);
         String translatedResponse = response.toString();
 
-        Assertions.assertNotNull(translatedResponse.contains("test"),
-            "Glossary 'test' not found in translated response");
+        Assertions.assertTrue(translatedResponse.contains("test"), "Glossary 'test' not found in translated response");
     }
 
     @LiveOnly
@@ -66,13 +68,9 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
             = new DocumentTranslateContent(document).setGlossary(glossaryList);
         String targetLanguage = "hi";
 
-        try {
-            BinaryData response
-                = getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent);
-        } catch (HttpResponseException e) {
-            int statusCode = e.getResponse().getStatusCode();
-            Assertions.assertEquals(400, statusCode);
-        }
+        HttpResponseException e = assertThrows(HttpResponseException.class,
+            () -> getSingleDocumentTranslationClient().documentTranslate(targetLanguage, documentTranslateContent));
+        Assertions.assertEquals(400, e.getResponse().getStatusCode());
     }
 
     private static DocumentFileDetails createDocumentContent() {

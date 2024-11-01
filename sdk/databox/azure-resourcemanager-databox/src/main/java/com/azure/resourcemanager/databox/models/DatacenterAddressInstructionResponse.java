@@ -5,28 +5,56 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** Datacenter instruction for given storage location. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "datacenterAddressType")
-@JsonTypeName("DatacenterAddressInstruction")
+/**
+ * Datacenter instruction for given storage location.
+ */
 @Immutable
 public final class DatacenterAddressInstructionResponse extends DatacenterAddressResponse {
     /*
+     * Data center address type
+     */
+    private DatacenterAddressType datacenterAddressType = DatacenterAddressType.DATACENTER_ADDRESS_INSTRUCTION;
+
+    /*
      * Data center communication instruction
      */
-    @JsonProperty(value = "communicationInstruction", access = JsonProperty.Access.WRITE_ONLY)
     private String communicationInstruction;
 
-    /** Creates an instance of DatacenterAddressInstructionResponse class. */
+    /*
+     * Azure Location where the Data Center serves primarily.
+     */
+    private String dataCenterAzureLocation;
+
+    /*
+     * List of supported carriers for return shipment.
+     */
+    private List<String> supportedCarriersForReturnShipment;
+
+    /**
+     * Creates an instance of DatacenterAddressInstructionResponse class.
+     */
     public DatacenterAddressInstructionResponse() {
     }
 
     /**
+     * Get the datacenterAddressType property: Data center address type.
+     * 
+     * @return the datacenterAddressType value.
+     */
+    @Override
+    public DatacenterAddressType datacenterAddressType() {
+        return this.datacenterAddressType;
+    }
+
+    /**
      * Get the communicationInstruction property: Data center communication instruction.
-     *
+     * 
      * @return the communicationInstruction value.
      */
     public String communicationInstruction() {
@@ -34,12 +62,78 @@ public final class DatacenterAddressInstructionResponse extends DatacenterAddres
     }
 
     /**
+     * Get the dataCenterAzureLocation property: Azure Location where the Data Center serves primarily.
+     * 
+     * @return the dataCenterAzureLocation value.
+     */
+    @Override
+    public String dataCenterAzureLocation() {
+        return this.dataCenterAzureLocation;
+    }
+
+    /**
+     * Get the supportedCarriersForReturnShipment property: List of supported carriers for return shipment.
+     * 
+     * @return the supportedCarriersForReturnShipment value.
+     */
+    @Override
+    public List<String> supportedCarriersForReturnShipment() {
+        return this.supportedCarriersForReturnShipment;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("datacenterAddressType",
+            this.datacenterAddressType == null ? null : this.datacenterAddressType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatacenterAddressInstructionResponse from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatacenterAddressInstructionResponse if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatacenterAddressInstructionResponse.
+     */
+    public static DatacenterAddressInstructionResponse fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatacenterAddressInstructionResponse deserializedDatacenterAddressInstructionResponse
+                = new DatacenterAddressInstructionResponse();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("supportedCarriersForReturnShipment".equals(fieldName)) {
+                    List<String> supportedCarriersForReturnShipment = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDatacenterAddressInstructionResponse.supportedCarriersForReturnShipment
+                        = supportedCarriersForReturnShipment;
+                } else if ("dataCenterAzureLocation".equals(fieldName)) {
+                    deserializedDatacenterAddressInstructionResponse.dataCenterAzureLocation = reader.getString();
+                } else if ("datacenterAddressType".equals(fieldName)) {
+                    deserializedDatacenterAddressInstructionResponse.datacenterAddressType
+                        = DatacenterAddressType.fromString(reader.getString());
+                } else if ("communicationInstruction".equals(fieldName)) {
+                    deserializedDatacenterAddressInstructionResponse.communicationInstruction = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatacenterAddressInstructionResponse;
+        });
     }
 }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.defendereasm.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.defendereasm.fluent.models.TaskResourceInner;
 import com.azure.resourcemanager.defendereasm.models.ResourceState;
 import com.azure.resourcemanager.defendereasm.models.TaskResource;
@@ -28,6 +29,10 @@ public final class TaskResourceImpl implements TaskResource {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String startedAt() {

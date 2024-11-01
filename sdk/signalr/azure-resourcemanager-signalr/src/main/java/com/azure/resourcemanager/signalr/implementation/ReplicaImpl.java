@@ -137,9 +137,9 @@ public final class ReplicaImpl implements Replica, Replica.Definition, Replica.U
     ReplicaImpl(ReplicaInner innerObject, com.azure.resourcemanager.signalr.SignalRManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "signalR");
-        this.replicaName = Utils.getValueFromIdByName(innerObject.id(), "replicas");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "signalR");
+        this.replicaName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicas");
     }
 
     public Replica refresh() {

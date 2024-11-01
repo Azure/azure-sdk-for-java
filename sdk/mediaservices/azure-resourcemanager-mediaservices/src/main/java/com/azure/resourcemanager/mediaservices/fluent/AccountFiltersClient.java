@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner;
 
-/** An instance of this class provides access to all the operations defined in AccountFiltersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccountFiltersClient.
+ */
 public interface AccountFiltersClient {
     /**
      * List Account Filters
-     *
-     * <p>List Account Filters in the Media Services account.
-     *
+     * 
+     * List Account Filters in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,9 +32,9 @@ public interface AccountFiltersClient {
 
     /**
      * List Account Filters
-     *
-     * <p>List Account Filters in the Media Services account.
-     *
+     * 
+     * List Account Filters in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -46,9 +48,9 @@ public interface AccountFiltersClient {
 
     /**
      * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
+     * 
+     * Get the details of an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -64,9 +66,9 @@ public interface AccountFiltersClient {
 
     /**
      * Get an Account Filter.
-     *
-     * <p>Get the details of an Account Filter in the Media Services account.
-     *
+     * 
+     * Get the details of an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -80,9 +82,9 @@ public interface AccountFiltersClient {
 
     /**
      * Create or update an Account Filter
-     *
-     * <p>Creates or updates an Account Filter in the Media Services account.
-     *
+     * 
+     * Creates or updates an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -99,9 +101,9 @@ public interface AccountFiltersClient {
 
     /**
      * Create or update an Account Filter
-     *
-     * <p>Creates or updates an Account Filter in the Media Services account.
-     *
+     * 
+     * Creates or updates an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -117,9 +119,9 @@ public interface AccountFiltersClient {
 
     /**
      * Delete an Account Filter.
-     *
-     * <p>Deletes an Account Filter in the Media Services account.
-     *
+     * 
+     * Deletes an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -134,9 +136,9 @@ public interface AccountFiltersClient {
 
     /**
      * Delete an Account Filter.
-     *
-     * <p>Deletes an Account Filter in the Media Services account.
-     *
+     * 
+     * Deletes an Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -149,9 +151,9 @@ public interface AccountFiltersClient {
 
     /**
      * Update an Account Filter
-     *
-     * <p>Updates an existing Account Filter in the Media Services account.
-     *
+     * 
+     * Updates an existing Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.
@@ -168,9 +170,9 @@ public interface AccountFiltersClient {
 
     /**
      * Update an Account Filter
-     *
-     * <p>Updates an existing Account Filter in the Media Services account.
-     *
+     * 
+     * Updates an existing Account Filter in the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param filterName The Account Filter name.

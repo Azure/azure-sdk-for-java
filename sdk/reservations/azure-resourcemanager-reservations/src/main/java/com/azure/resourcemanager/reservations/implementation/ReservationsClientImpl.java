@@ -31,6 +31,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.resourcemanager.reservations.fluent.ReservationsClient;
 import com.azure.resourcemanager.reservations.fluent.models.AvailableScopePropertiesInner;
 import com.azure.resourcemanager.reservations.fluent.models.ReservationResponseInner;
@@ -40,23 +41,28 @@ import com.azure.resourcemanager.reservations.models.PatchModel;
 import com.azure.resourcemanager.reservations.models.ReservationList;
 import com.azure.resourcemanager.reservations.models.ReservationsListResult;
 import com.azure.resourcemanager.reservations.models.SplitRequest;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReservationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReservationsClient.
+ */
 public final class ReservationsClientImpl implements ReservationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReservationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of ReservationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReservationsClientImpl(AzureReservationApiImpl client) {
@@ -188,9 +194,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -198,7 +204,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of available scope api containing scopes and their eligibilities along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> availableScopesWithResponseAsync(String reservationOrderId,
@@ -229,9 +235,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -240,7 +246,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of available scope api containing scopes and their eligibilities along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> availableScopesWithResponseAsync(String reservationOrderId,
@@ -270,9 +276,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -280,7 +286,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the response of available scope api containing scopes and their
-     *     eligibilities.
+     * eligibilities.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner>
@@ -294,9 +300,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -305,7 +311,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the response of available scope api containing scopes and their
-     *     eligibilities.
+     * eligibilities.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner>
@@ -321,9 +327,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -331,7 +337,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the response of available scope api containing scopes and their
-     *     eligibilities.
+     * eligibilities.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner>
@@ -341,9 +347,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -352,7 +358,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the response of available scope api containing scopes and their
-     *     eligibilities.
+     * eligibilities.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AvailableScopePropertiesInner>, AvailableScopePropertiesInner> beginAvailableScopes(
@@ -362,9 +368,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -372,7 +378,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of available scope api containing scopes and their eligibilities on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailableScopePropertiesInner> availableScopesAsync(String reservationOrderId, String reservationId,
@@ -383,9 +389,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -394,7 +400,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of available scope api containing scopes and their eligibilities on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AvailableScopePropertiesInner> availableScopesAsync(String reservationOrderId, String reservationId,
@@ -405,9 +411,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -424,9 +430,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get Available Scopes for `Reservation`.
-     *
-     * <p>Check whether the scopes from request is valid for `Reservation`.
-     *
+     * 
+     * Check whether the scopes from request is valid for `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param body Scopes to be checked for eligibility.
@@ -444,9 +450,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -478,9 +484,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @param context The context to associate with this operation.
@@ -513,9 +519,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -529,15 +535,15 @@ public final class ReservationsClientImpl implements ReservationsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = splitWithResponseAsync(reservationOrderId, body);
         return this.client.<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<List<ReservationResponseInner>>() {
-            }.getType(), new TypeReference<List<ReservationResponseInner>>() {
-            }.getType(), this.client.getContext());
+            }.getJavaType(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @param context The context to associate with this operation.
@@ -553,15 +559,15 @@ public final class ReservationsClientImpl implements ReservationsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = splitWithResponseAsync(reservationOrderId, body, context);
         return this.client.<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<List<ReservationResponseInner>>() {
-            }.getType(), new TypeReference<List<ReservationResponseInner>>() {
-            }.getType(), context);
+            }.getJavaType(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getJavaType(), context);
     }
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -577,9 +583,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @param context The context to associate with this operation.
@@ -596,9 +602,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -613,9 +619,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @param context The context to associate with this operation.
@@ -632,9 +638,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -649,9 +655,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Split the `Reservation`.
-     *
-     * <p>Split a `Reservation` into two `Reservation`s with specified quantity distribution.
-     *
+     * 
+     * Split a `Reservation` into two `Reservation`s with specified quantity distribution.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to Split a reservation item.
      * @param context The context to associate with this operation.
@@ -667,10 +673,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -702,10 +708,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @param context The context to associate with this operation.
@@ -738,10 +744,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -755,16 +761,16 @@ public final class ReservationsClientImpl implements ReservationsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = mergeWithResponseAsync(reservationOrderId, body);
         return this.client.<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<List<ReservationResponseInner>>() {
-            }.getType(), new TypeReference<List<ReservationResponseInner>>() {
-            }.getType(), this.client.getContext());
+            }.getJavaType(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getJavaType(), this.client.getContext());
     }
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @param context The context to associate with this operation.
@@ -780,16 +786,16 @@ public final class ReservationsClientImpl implements ReservationsClient {
         Mono<Response<Flux<ByteBuffer>>> mono = mergeWithResponseAsync(reservationOrderId, body, context);
         return this.client.<List<ReservationResponseInner>, List<ReservationResponseInner>>getLroResult(mono,
             this.client.getHttpPipeline(), new TypeReference<List<ReservationResponseInner>>() {
-            }.getType(), new TypeReference<List<ReservationResponseInner>>() {
-            }.getType(), context);
+            }.getJavaType(), new TypeReference<List<ReservationResponseInner>>() {
+            }.getJavaType(), context);
     }
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -805,10 +811,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @param context The context to associate with this operation.
@@ -825,10 +831,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -843,10 +849,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @param context The context to associate with this operation.
@@ -863,10 +869,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -881,10 +887,10 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Merges two `Reservation`s.
-     *
-     * <p>Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have
-     * same properties.
-     *
+     * 
+     * Merge the specified `Reservation`s into a new `Reservation`. The two `Reservation`s being merged must have same
+     * properties.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for commercial request for a reservation.
      * @param context The context to associate with this operation.
@@ -900,9 +906,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation`s in a given reservation Order
-     *
-     * <p>List `Reservation`s within a single `ReservationOrder`.
-     *
+     * 
+     * List `Reservation`s within a single `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -931,9 +937,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation`s in a given reservation Order
-     *
-     * <p>List `Reservation`s within a single `ReservationOrder`.
-     *
+     * 
+     * List `Reservation`s within a single `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -962,9 +968,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation`s in a given reservation Order
-     *
-     * <p>List `Reservation`s within a single `ReservationOrder`.
-     *
+     * 
+     * List `Reservation`s within a single `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -979,9 +985,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation`s in a given reservation Order
-     *
-     * <p>List `Reservation`s within a single `ReservationOrder`.
-     *
+     * 
+     * List `Reservation`s within a single `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -997,9 +1003,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation`s in a given reservation Order
-     *
-     * <p>List `Reservation`s within a single `ReservationOrder`.
-     *
+     * 
+     * List `Reservation`s within a single `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1013,9 +1019,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation`s in a given reservation Order
-     *
-     * <p>List `Reservation`s within a single `ReservationOrder`.
-     *
+     * 
+     * List `Reservation`s within a single `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1030,9 +1036,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation` details.
-     *
-     * <p>Get specific `Reservation` details.
-     *
+     * 
+     * Get specific `Reservation` details.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param expand Supported value of this query is renewProperties.
@@ -1065,9 +1071,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation` details.
-     *
-     * <p>Get specific `Reservation` details.
-     *
+     * 
+     * Get specific `Reservation` details.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param expand Supported value of this query is renewProperties.
@@ -1100,9 +1106,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation` details.
-     *
-     * <p>Get specific `Reservation` details.
-     *
+     * 
+     * Get specific `Reservation` details.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1119,9 +1125,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation` details.
-     *
-     * <p>Get specific `Reservation` details.
-     *
+     * 
+     * Get specific `Reservation` details.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param expand Supported value of this query is renewProperties.
@@ -1139,9 +1145,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation` details.
-     *
-     * <p>Get specific `Reservation` details.
-     *
+     * 
+     * Get specific `Reservation` details.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1157,9 +1163,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -1197,9 +1203,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -1237,9 +1243,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -1259,9 +1265,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -1283,9 +1289,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -1302,9 +1308,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -1322,9 +1328,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -1342,9 +1348,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -1363,9 +1369,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -1381,9 +1387,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Updates a `Reservation`.
-     *
-     * <p>Updates the applied scopes of the `Reservation`.
-     *
+     * 
+     * Updates the applied scopes of the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param parameters Information needed to patch a reservation item.
@@ -1401,9 +1407,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Archive a `Reservation`.
-     *
-     * <p>Archiving a `Reservation` moves it to `Archived` state.
-     *
+     * 
+     * Archiving a `Reservation` moves it to `Archived` state.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1434,9 +1440,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Archive a `Reservation`.
-     *
-     * <p>Archiving a `Reservation` moves it to `Archived` state.
-     *
+     * 
+     * Archiving a `Reservation` moves it to `Archived` state.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param context The context to associate with this operation.
@@ -1468,9 +1474,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Archive a `Reservation`.
-     *
-     * <p>Archiving a `Reservation` moves it to `Archived` state.
-     *
+     * 
+     * Archiving a `Reservation` moves it to `Archived` state.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1485,9 +1491,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Archive a `Reservation`.
-     *
-     * <p>Archiving a `Reservation` moves it to `Archived` state.
-     *
+     * 
+     * Archiving a `Reservation` moves it to `Archived` state.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param context The context to associate with this operation.
@@ -1503,9 +1509,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Archive a `Reservation`.
-     *
-     * <p>Archiving a `Reservation` moves it to `Archived` state.
-     *
+     * 
+     * Archiving a `Reservation` moves it to `Archived` state.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1519,9 +1525,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Unarchive a `Reservation`.
-     *
-     * <p>Restores a `Reservation` to the state it was before archiving.
-     *
+     * 
+     * Restores a `Reservation` to the state it was before archiving.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1552,9 +1558,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Unarchive a `Reservation`.
-     *
-     * <p>Restores a `Reservation` to the state it was before archiving.
-     *
+     * 
+     * Restores a `Reservation` to the state it was before archiving.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param context The context to associate with this operation.
@@ -1586,9 +1592,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Unarchive a `Reservation`.
-     *
-     * <p>Restores a `Reservation` to the state it was before archiving.
-     *
+     * 
+     * Restores a `Reservation` to the state it was before archiving.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1603,9 +1609,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Unarchive a `Reservation`.
-     *
-     * <p>Restores a `Reservation` to the state it was before archiving.
-     *
+     * 
+     * Restores a `Reservation` to the state it was before archiving.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param context The context to associate with this operation.
@@ -1621,9 +1627,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Unarchive a `Reservation`.
-     *
-     * <p>Restores a `Reservation` to the state it was before archiving.
-     *
+     * 
+     * Restores a `Reservation` to the state it was before archiving.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1637,9 +1643,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation` revisions.
-     *
-     * <p>List of all the revisions for the `Reservation`.
-     *
+     * 
+     * List of all the revisions for the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1673,9 +1679,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation` revisions.
-     *
-     * <p>List of all the revisions for the `Reservation`.
-     *
+     * 
+     * List of all the revisions for the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param context The context to associate with this operation.
@@ -1709,9 +1715,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation` revisions.
-     *
-     * <p>List of all the revisions for the `Reservation`.
-     *
+     * 
+     * List of all the revisions for the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1727,9 +1733,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation` revisions.
-     *
-     * <p>List of all the revisions for the `Reservation`.
-     *
+     * 
+     * List of all the revisions for the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param context The context to associate with this operation.
@@ -1747,9 +1753,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation` revisions.
-     *
-     * <p>List of all the revisions for the `Reservation`.
-     *
+     * 
+     * List of all the revisions for the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1764,9 +1770,9 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get `Reservation` revisions.
-     *
-     * <p>List of all the revisions for the `Reservation`.
-     *
+     * 
+     * List of all the revisions for the `Reservation`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param reservationId Id of the reservation item.
      * @param context The context to associate with this operation.
@@ -1784,23 +1790,23 @@ public final class ReservationsClientImpl implements ReservationsClient {
     /**
      * List the reservations and the roll up counts of reservations group by provisioning states that the user has
      * access to in the current tenant.
-     *
+     * 
      * @param filter May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does
-     *     not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
-     *     properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
-     *     expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
-     *     userFriendlyRenewState}.
+     * not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
+     * properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
+     * expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
+     * userFriendlyRenewState}.
      * @param orderby May be used to sort order by reservation properties.
      * @param refreshSummary To indicate whether to refresh the roll up counts of the reservations group by provisioning
-     *     states.
+     * states.
      * @param skiptoken The number of reservations to skip from the list before returning results.
      * @param selectedState The selected provisioning state.
      * @param take To number of reservations to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationResponseInner>> listAllSinglePageAsync(String filter, String orderby,
@@ -1822,15 +1828,15 @@ public final class ReservationsClientImpl implements ReservationsClient {
     /**
      * List the reservations and the roll up counts of reservations group by provisioning states that the user has
      * access to in the current tenant.
-     *
+     * 
      * @param filter May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does
-     *     not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
-     *     properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
-     *     expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
-     *     userFriendlyRenewState}.
+     * not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
+     * properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
+     * expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
+     * userFriendlyRenewState}.
      * @param orderby May be used to sort order by reservation properties.
      * @param refreshSummary To indicate whether to refresh the roll up counts of the reservations group by provisioning
-     *     states.
+     * states.
      * @param skiptoken The number of reservations to skip from the list before returning results.
      * @param selectedState The selected provisioning state.
      * @param take To number of reservations to return.
@@ -1838,8 +1844,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationResponseInner>> listAllSinglePageAsync(String filter, String orderby,
@@ -1861,15 +1867,15 @@ public final class ReservationsClientImpl implements ReservationsClient {
     /**
      * List the reservations and the roll up counts of reservations group by provisioning states that the user has
      * access to in the current tenant.
-     *
+     * 
      * @param filter May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does
-     *     not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
-     *     properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
-     *     expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
-     *     userFriendlyRenewState}.
+     * not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
+     * properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
+     * expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
+     * userFriendlyRenewState}.
      * @param orderby May be used to sort order by reservation properties.
      * @param refreshSummary To indicate whether to refresh the roll up counts of the reservations group by provisioning
-     *     states.
+     * states.
      * @param skiptoken The number of reservations to skip from the list before returning results.
      * @param selectedState The selected provisioning state.
      * @param take To number of reservations to return.
@@ -1877,7 +1883,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationResponseInner> listAllAsync(String filter, String orderby, String refreshSummary,
@@ -1890,11 +1896,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
     /**
      * List the reservations and the roll up counts of reservations group by provisioning states that the user has
      * access to in the current tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationResponseInner> listAllAsync() {
@@ -1912,15 +1918,15 @@ public final class ReservationsClientImpl implements ReservationsClient {
     /**
      * List the reservations and the roll up counts of reservations group by provisioning states that the user has
      * access to in the current tenant.
-     *
+     * 
      * @param filter May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does
-     *     not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
-     *     properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
-     *     expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
-     *     userFriendlyRenewState}.
+     * not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
+     * properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
+     * expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
+     * userFriendlyRenewState}.
      * @param orderby May be used to sort order by reservation properties.
      * @param refreshSummary To indicate whether to refresh the roll up counts of the reservations group by provisioning
-     *     states.
+     * states.
      * @param skiptoken The number of reservations to skip from the list before returning results.
      * @param selectedState The selected provisioning state.
      * @param take To number of reservations to return.
@@ -1929,7 +1935,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ReservationResponseInner> listAllAsync(String filter, String orderby, String refreshSummary,
@@ -1942,11 +1948,11 @@ public final class ReservationsClientImpl implements ReservationsClient {
     /**
      * List the reservations and the roll up counts of reservations group by provisioning states that the user has
      * access to in the current tenant.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationResponseInner> listAll() {
@@ -1962,15 +1968,15 @@ public final class ReservationsClientImpl implements ReservationsClient {
     /**
      * List the reservations and the roll up counts of reservations group by provisioning states that the user has
      * access to in the current tenant.
-     *
+     * 
      * @param filter May be used to filter by reservation properties. The filter supports 'eq', 'or', and 'and'. It does
-     *     not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
-     *     properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
-     *     expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
-     *     userFriendlyRenewState}.
+     * not currently support 'ne', 'gt', 'le', 'ge', or 'not'. Reservation properties include sku/name,
+     * properties/{appliedScopeType, archived, displayName, displayProvisioningState, effectiveDateTime, expiryDate,
+     * expiryDateTime, provisioningState, quantity, renew, reservedResourceType, term, userFriendlyAppliedScopeType,
+     * userFriendlyRenewState}.
      * @param orderby May be used to sort order by reservation properties.
      * @param refreshSummary To indicate whether to refresh the roll up counts of the reservations group by provisioning
-     *     states.
+     * states.
      * @param skiptoken The number of reservations to skip from the list before returning results.
      * @param selectedState The selected provisioning state.
      * @param take To number of reservations to return.
@@ -1979,7 +1985,7 @@ public final class ReservationsClientImpl implements ReservationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of reservations and summary of roll out count of reservations in each state as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ReservationResponseInner> listAll(String filter, String orderby, String refreshSummary,
@@ -1990,9 +1996,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2016,9 +2021,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2043,9 +2047,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2070,9 +2073,8 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2098,14 +2100,13 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationResponseInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -2126,15 +2127,14 @@ public final class ReservationsClientImpl implements ReservationsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of reservations and summary of roll out count of reservations in each state along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of reservations and summary of roll out count of reservations in each state along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReservationResponseInner>> listAllNextSinglePageAsync(String nextLink, Context context) {

@@ -47,12 +47,7 @@ public class TestHelper {
     }
 
     public static StartTranslationDetails getStartTranslationDetails(BatchRequest... batchRequests) {
-        List<BatchRequest> inputs = new ArrayList<>();
-        inputs.addAll(Arrays.asList(batchRequests));
-
-        StartTranslationDetails startTranslationDetails = new StartTranslationDetails(inputs);
-
-        return startTranslationDetails;
+        return new StartTranslationDetails(new ArrayList<>(Arrays.asList(batchRequests)));
     }
 
 }

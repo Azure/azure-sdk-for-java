@@ -1,14 +1,13 @@
 # Release History
 
-## 1.0.0-beta.51 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.0.0-beta.51 (2024-11-01)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+- Upgraded `avro` from `1.11.3` to `1.11.4`.
 
 ## 1.0.0-beta.50 (2024-10-01)
 

@@ -33,17 +33,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkspaceAadAdminsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspaceAadAdminsClient.
+ */
 public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkspaceAadAdminsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkspaceAadAdminsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkspaceAadAdminsClientImpl(SynapseManagementClientImpl client) {
@@ -60,8 +66,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
     @ServiceInterface(name = "SynapseManagementCli")
     public interface WorkspaceAadAdminsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/administrators/activeDirectory")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/administrators/activeDirectory")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkspaceAadAdminInfoInner>> get(@HostParam("$host") String endpoint,
@@ -70,8 +75,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/administrators/activeDirectory")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/administrators/activeDirectory")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -81,8 +85,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/administrators/activeDirectory")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/administrators/activeDirectory")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
@@ -93,7 +96,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Gets a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -129,7 +132,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Gets a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -165,7 +168,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Gets a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,7 +183,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Gets a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -197,7 +200,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Gets a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -212,15 +215,15 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return workspace active directory administrator along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -255,7 +258,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -263,8 +266,8 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace active directory administrator along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return workspace active directory administrator along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -298,7 +301,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -319,7 +322,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -341,7 +344,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -358,7 +361,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -376,7 +379,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -394,7 +397,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -413,7 +416,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -430,7 +433,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Creates or updates a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param aadAdminInfo Workspace active directory administrator properties.
@@ -448,7 +451,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -483,7 +486,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -519,7 +522,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -536,7 +539,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -556,7 +559,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -571,7 +574,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -588,7 +591,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -603,7 +606,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -620,7 +623,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -634,7 +637,7 @@ public final class WorkspaceAadAdminsClientImpl implements WorkspaceAadAdminsCli
 
     /**
      * Deletes a workspace active directory admin.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.

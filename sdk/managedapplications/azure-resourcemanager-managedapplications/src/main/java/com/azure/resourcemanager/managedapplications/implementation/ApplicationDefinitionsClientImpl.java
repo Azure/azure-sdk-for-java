@@ -35,17 +35,23 @@ import com.azure.resourcemanager.managedapplications.models.ApplicationDefinitio
 import com.azure.resourcemanager.managedapplications.models.ApplicationDefinitionPatchable;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApplicationDefinitionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationDefinitionsClient.
+ */
 public final class ApplicationDefinitionsClientImpl implements ApplicationDefinitionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApplicationDefinitionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApplicationClientImpl client;
 
     /**
      * Initializes an instance of ApplicationDefinitionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationDefinitionsClientImpl(ApplicationClientImpl client) {
@@ -181,7 +187,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Gets the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,7 +224,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Gets the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param context The context to associate with this operation.
@@ -254,7 +260,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Gets the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,7 +277,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Gets the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param context The context to associate with this operation.
@@ -288,7 +294,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Gets the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,7 +309,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Deletes the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -338,7 +344,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Deletes the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param context The context to associate with this operation.
@@ -374,7 +380,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Deletes the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -389,7 +395,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Deletes the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param context The context to associate with this operation.
@@ -406,7 +412,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Deletes the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -420,7 +426,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Creates or updates a managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update an managed application definition.
@@ -428,7 +434,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -463,7 +469,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Creates or updates a managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update an managed application definition.
@@ -472,7 +478,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
@@ -506,7 +512,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Creates or updates a managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update an managed application definition.
@@ -524,7 +530,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Creates or updates a managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update an managed application definition.
@@ -543,7 +549,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Creates or updates a managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update an managed application definition.
@@ -561,7 +567,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Updates the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the update a managed application definition.
@@ -569,7 +575,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> updateWithResponseAsync(String resourceGroupName,
@@ -604,7 +610,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Updates the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the update a managed application definition.
@@ -613,7 +619,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> updateWithResponseAsync(String resourceGroupName,
@@ -647,7 +653,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Updates the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the update a managed application definition.
@@ -665,7 +671,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Updates the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the update a managed application definition.
@@ -683,7 +689,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Updates the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the update a managed application definition.
@@ -700,13 +706,13 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists the managed application definitions in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>>
@@ -734,14 +740,14 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists the managed application definitions in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -769,7 +775,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists the managed application definitions in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -784,7 +790,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists the managed application definitions in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -800,7 +806,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists the managed application definitions in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -814,7 +820,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists the managed application definitions in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -829,11 +835,11 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists all the application definitions within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>> listSinglePageAsync() {
@@ -856,13 +862,13 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists all the application definitions within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>> listSinglePageAsync(Context context) {
@@ -885,7 +891,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists all the application definitions within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed application definitions as paginated response with {@link PagedFlux}.
@@ -898,7 +904,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists all the application definitions within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -913,7 +919,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists all the application definitions within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed application definitions as paginated response with {@link PagedIterable}.
@@ -925,7 +931,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Lists all the application definitions within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -939,7 +945,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Gets the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -976,7 +982,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Gets the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param context The context to associate with this operation.
@@ -1012,7 +1018,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Gets the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1028,7 +1034,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Gets the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param context The context to associate with this operation.
@@ -1045,7 +1051,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Gets the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1060,7 +1066,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Deletes the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1097,7 +1103,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Deletes the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param context The context to associate with this operation.
@@ -1133,7 +1139,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Deletes the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1149,7 +1155,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Deletes the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param context The context to associate with this operation.
@@ -1166,7 +1172,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Deletes the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1180,7 +1186,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Creates or updates a managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
@@ -1188,7 +1194,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> createOrUpdateByIdWithResponseAsync(String resourceGroupName,
@@ -1224,7 +1230,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Creates or updates a managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
@@ -1233,7 +1239,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> createOrUpdateByIdWithResponseAsync(String resourceGroupName,
@@ -1267,7 +1273,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Creates or updates a managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
@@ -1285,7 +1291,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Creates or updates a managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
@@ -1304,7 +1310,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Creates or updates a managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the create or update a managed application definition.
@@ -1322,7 +1328,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Updates the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the update a managed application definition.
@@ -1330,7 +1336,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> updateByIdWithResponseAsync(String resourceGroupName,
@@ -1365,7 +1371,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Updates the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the update a managed application definition.
@@ -1374,7 +1380,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about managed application definition along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApplicationDefinitionInner>> updateByIdWithResponseAsync(String resourceGroupName,
@@ -1408,7 +1414,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Updates the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the update a managed application definition.
@@ -1426,7 +1432,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Updates the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the update a managed application definition.
@@ -1444,7 +1450,7 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Updates the managed application definition.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationDefinitionName The name of the managed application definition.
      * @param parameters Parameters supplied to the update a managed application definition.
@@ -1462,14 +1468,13 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1491,15 +1496,14 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
@@ -1520,14 +1524,13 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1549,15 +1552,14 @@ public final class ApplicationDefinitionsClientImpl implements ApplicationDefini
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of managed application definitions along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationDefinitionInner>> listBySubscriptionNextSinglePageAsync(String nextLink,

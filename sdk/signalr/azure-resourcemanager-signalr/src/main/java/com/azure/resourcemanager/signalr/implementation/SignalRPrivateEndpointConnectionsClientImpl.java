@@ -42,15 +42,19 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in SignalRPrivateEndpointConnectionsClient.
  */
 public final class SignalRPrivateEndpointConnectionsClientImpl implements SignalRPrivateEndpointConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SignalRPrivateEndpointConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SignalRManagementClientImpl client;
 
     /**
      * Initializes an instance of SignalRPrivateEndpointConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SignalRPrivateEndpointConnectionsClientImpl(SignalRManagementClientImpl client) {
@@ -117,14 +121,14 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(String resourceGroupName,
@@ -155,7 +159,7 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -163,7 +167,7 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listSinglePageAsync(String resourceGroupName,
@@ -194,7 +198,7 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -210,7 +214,7 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -228,7 +232,7 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -243,7 +247,7 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * List private endpoint connections.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -260,16 +264,16 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Get the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified private endpoint connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String privateEndpointConnectionName,
@@ -303,17 +307,17 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Get the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified private endpoint connection along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String privateEndpointConnectionName,
@@ -345,9 +349,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Get the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,9 +368,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Get the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -383,9 +387,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Get the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -401,9 +405,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Update the state of specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The resource of private endpoint and its properties.
@@ -411,7 +415,7 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection to an azure resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(String privateEndpointConnectionName,
@@ -450,9 +454,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Update the state of specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The resource of private endpoint and its properties.
@@ -461,7 +465,7 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private endpoint connection to an azure resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(String privateEndpointConnectionName,
@@ -498,9 +502,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Update the state of specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The resource of private endpoint and its properties.
@@ -518,9 +522,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Update the state of specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The resource of private endpoint and its properties.
@@ -539,9 +543,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Update the state of specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param parameters The resource of private endpoint and its properties.
@@ -559,9 +563,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -601,9 +605,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -642,9 +646,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -663,9 +667,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -686,9 +690,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -704,9 +708,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -724,9 +728,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -743,9 +747,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -763,9 +767,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -779,9 +783,9 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Delete the specified private endpoint connection.
-     *
+     * 
      * @param privateEndpointConnectionName The name of the private endpoint connection associated with the Azure
-     *     resource.
+     * resource.
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
@@ -797,14 +801,13 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listNextSinglePageAsync(String nextLink) {
@@ -824,15 +827,14 @@ public final class SignalRPrivateEndpointConnectionsClientImpl implements Signal
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of private endpoint connections along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listNextSinglePageAsync(String nextLink,

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of LiveEvents. */
+/**
+ * Resource collection API of LiveEvents.
+ */
 public interface LiveEvents {
     /**
      * List live events
-     *
-     * <p>Lists all the live events in the account.
-     *
+     * 
+     * Lists all the live events in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -26,9 +28,9 @@ public interface LiveEvents {
 
     /**
      * List live events
-     *
-     * <p>Lists all the live events in the account.
-     *
+     * 
+     * Lists all the live events in the account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -41,9 +43,9 @@ public interface LiveEvents {
 
     /**
      * Get Live Event
-     *
-     * <p>Gets properties of a live event.
-     *
+     * 
+     * Gets properties of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -58,9 +60,9 @@ public interface LiveEvents {
 
     /**
      * Get Live Event
-     *
-     * <p>Gets properties of a live event.
-     *
+     * 
+     * Gets properties of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -73,9 +75,9 @@ public interface LiveEvents {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -87,9 +89,9 @@ public interface LiveEvents {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -102,9 +104,9 @@ public interface LiveEvents {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -116,9 +118,9 @@ public interface LiveEvents {
 
     /**
      * Allocate resources for a live event
-     *
-     * <p>A live event is in StandBy state after allocation completes, and is ready to start.
-     *
+     * 
+     * A live event is in StandBy state after allocation completes, and is ready to start.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -131,9 +133,9 @@ public interface LiveEvents {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -145,9 +147,9 @@ public interface LiveEvents {
 
     /**
      * Start Live Event
-     *
-     * <p>A live event in Stopped or StandBy state will be in Running state after the start operation completes.
-     *
+     * 
+     * A live event in Stopped or StandBy state will be in Running state after the start operation completes.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -160,9 +162,9 @@ public interface LiveEvents {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -175,9 +177,9 @@ public interface LiveEvents {
 
     /**
      * Stop Live Event
-     *
-     * <p>Stops a running live event.
-     *
+     * 
+     * Stops a running live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -192,11 +194,11 @@ public interface LiveEvents {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -208,11 +210,11 @@ public interface LiveEvents {
 
     /**
      * Reset Live Event
-     *
-     * <p>Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped
-     * and will be started again. All assets used by the live outputs and streaming locators created on these assets are
+     * 
+     * Resets an existing live event. All live outputs for the live event are deleted and the live event is stopped and
+     * will be started again. All assets used by the live outputs and streaming locators created on these assets are
      * unaffected.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -225,9 +227,9 @@ public interface LiveEvents {
 
     /**
      * Get status of one live event
-     *
-     * <p>Gets status telemetry of a live event.
-     *
+     * 
+     * Gets status telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -240,9 +242,9 @@ public interface LiveEvents {
 
     /**
      * Get status of one live event
-     *
-     * <p>Gets status telemetry of a live event.
-     *
+     * 
+     * Gets status telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -257,9 +259,9 @@ public interface LiveEvents {
 
     /**
      * Get stream events of one live event
-     *
-     * <p>Get stream events telemetry of a live event.
-     *
+     * 
+     * Get stream events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -273,9 +275,9 @@ public interface LiveEvents {
 
     /**
      * Get stream events of one live event
-     *
-     * <p>Get stream events telemetry of a live event.
-     *
+     * 
+     * Get stream events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -290,9 +292,9 @@ public interface LiveEvents {
 
     /**
      * Get track events of one live event
-     *
-     * <p>Get track ingest heartbeat events telemetry of a live event.
-     *
+     * 
+     * Get track ingest heartbeat events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -306,9 +308,9 @@ public interface LiveEvents {
 
     /**
      * Get track events of one live event
-     *
-     * <p>Get track ingest heartbeat events telemetry of a live event.
-     *
+     * 
+     * Get track ingest heartbeat events telemetry of a live event.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -323,9 +325,9 @@ public interface LiveEvents {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -340,9 +342,9 @@ public interface LiveEvents {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param operationId The ID of an ongoing async operation.
@@ -355,9 +357,9 @@ public interface LiveEvents {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -373,9 +375,9 @@ public interface LiveEvents {
 
     /**
      * Get operation status.
-     *
-     * <p>Get a live event operation status.
-     *
+     * 
+     * Get a live event operation status.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param liveEventName The name of the live event, maximum length is 32.
@@ -389,9 +391,9 @@ public interface LiveEvents {
 
     /**
      * Get Live Event
-     *
-     * <p>Gets properties of a live event.
-     *
+     * 
+     * Gets properties of a live event.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -402,9 +404,9 @@ public interface LiveEvents {
 
     /**
      * Get Live Event
-     *
-     * <p>Gets properties of a live event.
-     *
+     * 
+     * Gets properties of a live event.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -416,9 +418,9 @@ public interface LiveEvents {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -428,9 +430,9 @@ public interface LiveEvents {
 
     /**
      * Delete Live Event
-     *
-     * <p>Deletes a live event.
-     *
+     * 
+     * Deletes a live event.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -441,7 +443,7 @@ public interface LiveEvents {
 
     /**
      * Begins definition for a new LiveEvent resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new LiveEvent definition.
      */

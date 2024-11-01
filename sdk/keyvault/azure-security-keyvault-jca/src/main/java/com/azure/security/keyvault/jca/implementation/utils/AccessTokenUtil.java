@@ -5,6 +5,7 @@ package com.azure.security.keyvault.jca.implementation.utils;
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
 import org.apache.http.HttpResponse;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,8 +17,8 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import static com.azure.security.keyvault.jca.implementation.utils.HttpUtil.addTrailingSlashIfRequired;
-import static java.util.logging.Level.FINER;
 import static java.util.logging.Level.INFO;
+import static java.util.logging.Level.WARNING;
 
 /**
  * The REST client specific to getting an access token for Azure REST APIs.
@@ -118,7 +119,6 @@ public final class AccessTokenUtil {
      */
     public static AccessToken getAccessToken(String resource, String aadAuthenticationUrl, String tenantId,
         String clientId, String clientSecret) {
-
         LOGGER.entering("AccessTokenUtil", "getAccessToken",
             new Object[] { resource, tenantId, clientId, clientSecret });
         LOGGER.info("Getting access token using client ID / client secret");
@@ -140,7 +140,7 @@ public final class AccessTokenUtil {
         try {
             encodedClientSecret = URLEncoder.encode(clientSecret, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            LOGGER.warning("Failed to encode client secret for access token request");
+            LOGGER.log(WARNING, "Failed to encode client secret for access token request", e);
         }
 
         StringBuilder requestBody = new StringBuilder();
@@ -156,10 +156,14 @@ public final class AccessTokenUtil {
         String body = HttpUtil.post(oauth2Url.toString(), requestBody.toString(), "application/x-www-form-urlencoded");
 
         if (body != null) {
-            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
+            try {
+                result = JsonConverterUtil.fromJson(AccessToken::fromJson, body);
+            } catch (IOException e) {
+                LOGGER.log(WARNING, "Failed to parse access token response.", e);
+            }
         }
 
-        LOGGER.log(FINER, "Access token: {0}", result);
+        LOGGER.exiting("AccessTokenUtil", "getAccessToken", result);
 
         return result;
     }
@@ -197,7 +201,11 @@ public final class AccessTokenUtil {
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
-            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
+            try {
+                result = JsonConverterUtil.fromJson(AccessToken::fromJson, body);
+            } catch (IOException e) {
+                LOGGER.log(WARNING, "Failed to parse access token response.", e);
+            }
         }
 
         LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnAppService", result);
@@ -237,7 +245,11 @@ public final class AccessTokenUtil {
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
-            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
+            try {
+                result = JsonConverterUtil.fromJson(AccessToken::fromJson, body);
+            } catch (IOException e) {
+                LOGGER.log(WARNING, "Failed to parse access token response.", e);
+            }
         }
 
         LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnContainerApp", result);
@@ -277,7 +289,11 @@ public final class AccessTokenUtil {
         String body = HttpUtil.get(url.toString(), headers);
 
         if (body != null) {
-            result = (AccessToken) JsonConverterUtil.fromJson(body, AccessToken.class);
+            try {
+                result = JsonConverterUtil.fromJson(AccessToken::fromJson, body);
+            } catch (IOException e) {
+                LOGGER.log(WARNING, "Failed to parse access token response.", e);
+            }
         }
 
         LOGGER.exiting("AccessTokenUtil", "getAccessTokenOnOthers", result);
@@ -342,6 +358,8 @@ public final class AccessTokenUtil {
      * @return A challenge attributes map.
      */
     private static Map<String, String> extractChallengeAttributes(String authenticateHeader) {
+        LOGGER.entering("AccessTokenUtil", "extractChallengeAttributes", authenticateHeader);
+
         if (!isBearerChallenge(authenticateHeader)) {
             return Collections.emptyMap();
         }
@@ -357,6 +375,8 @@ public final class AccessTokenUtil {
 
             attributeMap.put(keyValue[0].replaceAll("\"", ""), keyValue[1].replaceAll("\"", ""));
         }
+
+        LOGGER.exiting("AccessTokenUtil", "extractChallengeAttributes", attributeMap);
 
         return attributeMap;
     }
@@ -383,6 +403,8 @@ public final class AccessTokenUtil {
      * @return A boolean indicating if the resource URI is valid or not.
      */
     private static boolean isChallengeResourceValid(String resource, String scope) {
+        LOGGER.entering("AccessTokenUtil", "isChallengeResourceValid", new Object[] { resource, scope });
+
         final URI resourceUri;
 
         try {
@@ -399,9 +421,13 @@ public final class AccessTokenUtil {
             throw new IllegalStateException("The challenge scope " + scope + " is not a valid URI.", e);
         }
 
-        // Returns false if the host specified in the scope does not match the requested domain.
-        return resourceUri.getHost()
+        boolean isValid = resourceUri.getHost()
             .toLowerCase(Locale.ROOT)
             .endsWith("." + scopeUri.getHost().toLowerCase(Locale.ROOT));
+
+        LOGGER.exiting("AccessTokenUtil", "isChallengeResourceValid", isValid);
+
+        // Returns false if the host specified in the scope does not match the requested domain.
+        return isValid;
     }
 }

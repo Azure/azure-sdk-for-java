@@ -10,8 +10,8 @@ New-Item -Path "$PSScriptRoot" -ItemType "directory" -Name "connectors" -Force |
 cd $PSScriptRoot/../..
 
 Write-Host "Rebuilding Cosmos DB connectors..."
-mvn clean package -DskipTests -Dmaven.javadoc.skip
-copy target\*-jar-with-dependencies.jar $PSScriptRoot/connectors
+mvn --% clean package -DskipTests -Dmaven.javadoc.skip
+ChildItem -Path $PSScriptRoot/../../../target -Filter "azure-cosmos-kafka-connect-*.jar" | Where-Object { $_.Name -notlike "azure-cosmos-kafka-connect-*-sources.jar" } | Copy-Item -Destination $PSScriptRoot/connectors
 cd $PSScriptRoot
 
 Write-Host "Adding custom Insert UUID SMT"

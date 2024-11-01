@@ -30,14 +30,14 @@ public final class SqlPoolReplicationLinksImpl implements SqlPoolReplicationLink
     public PagedIterable<ReplicationLink> list(String resourceGroupName, String workspaceName, String sqlPoolName) {
         PagedIterable<ReplicationLinkInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName);
-        return Utils.mapPage(inner, inner1 -> new ReplicationLinkImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationLinkImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ReplicationLink> list(String resourceGroupName, String workspaceName, String sqlPoolName,
         Context context) {
         PagedIterable<ReplicationLinkInner> inner
             = this.serviceClient().list(resourceGroupName, workspaceName, sqlPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new ReplicationLinkImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ReplicationLinkImpl(inner1, this.manager()));
     }
 
     public Response<ReplicationLink> getByNameWithResponse(String resourceGroupName, String workspaceName,

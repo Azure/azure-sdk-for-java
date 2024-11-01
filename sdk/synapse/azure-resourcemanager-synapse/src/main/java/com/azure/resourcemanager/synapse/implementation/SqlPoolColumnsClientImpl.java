@@ -25,17 +25,23 @@ import com.azure.resourcemanager.synapse.fluent.SqlPoolColumnsClient;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolColumnInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolColumnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolColumnsClient.
+ */
 public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolColumnsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolColumnsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolColumnsClientImpl(SynapseManagementClientImpl client) {
@@ -52,9 +58,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolColumnsService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns"
-            + "/{columnName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SqlPoolColumnInner>> get(@HostParam("$host") String endpoint,
@@ -67,7 +71,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
 
     /**
      * Get Sql pool column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -119,7 +123,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
 
     /**
      * Get Sql pool column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -171,7 +175,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
 
     /**
      * Get Sql pool column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -192,7 +196,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
 
     /**
      * Get Sql pool column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -214,7 +218,7 @@ public final class SqlPoolColumnsClientImpl implements SqlPoolColumnsClient {
 
     /**
      * Get Sql pool column.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

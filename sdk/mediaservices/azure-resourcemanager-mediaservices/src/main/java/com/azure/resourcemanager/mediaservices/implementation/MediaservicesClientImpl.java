@@ -44,17 +44,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in MediaservicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in MediaservicesClient.
+ */
 public final class MediaservicesClientImpl implements MediaservicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final MediaservicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of MediaservicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     MediaservicesClientImpl(AzureMediaServicesImpl client) {
@@ -71,8 +77,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
     @ServiceInterface(name = "AzureMediaServicesMe")
     public interface MediaservicesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-            + "/mediaservices")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MediaServiceCollection>> listByResourceGroup(@HostParam("$host") String endpoint,
@@ -81,8 +86,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MediaServiceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
@@ -91,8 +95,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}")
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}")
         @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
@@ -102,8 +105,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}")
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
@@ -112,8 +114,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}")
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}")
         @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
@@ -123,8 +124,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/syncStorageKeys")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/syncStorageKeys")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> syncStorageKeys(@HostParam("$host") String endpoint,
@@ -135,8 +135,7 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
             Context context);
 
         @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
-            + "/{accountName}/listEdgePolicies")
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices/{accountName}/listEdgePolicies")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EdgePoliciesInner>> listEdgePolicies(@HostParam("$host") String endpoint,
@@ -172,15 +171,15 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the resource group.
-     *
+     * 
+     * List Media Services accounts in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MediaServiceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -208,16 +207,16 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the resource group.
-     *
+     * 
+     * List Media Services accounts in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MediaServiceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
@@ -246,9 +245,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the resource group.
-     *
+     * 
+     * List Media Services accounts in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -263,9 +262,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the resource group.
-     *
+     * 
+     * List Media Services accounts in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,9 +280,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the resource group.
-     *
+     * 
+     * List Media Services accounts in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -297,9 +296,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the resource group.
-     *
+     * 
+     * List Media Services accounts in the resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -314,16 +313,16 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Get a Media Services account
-     *
-     * <p>Get the details of a Media Services account.
-     *
+     * 
+     * Get the details of a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Media Services account along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the details of a Media Services account along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MediaServiceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -353,17 +352,17 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Get a Media Services account
-     *
-     * <p>Get the details of a Media Services account.
-     *
+     * 
+     * Get the details of a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of a Media Services account along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the details of a Media Services account along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MediaServiceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
@@ -392,9 +391,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Get a Media Services account
-     *
-     * <p>Get the details of a Media Services account.
-     *
+     * 
+     * Get the details of a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -410,9 +409,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Get a Media Services account
-     *
-     * <p>Get the details of a Media Services account.
-     *
+     * 
+     * Get the details of a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -429,9 +428,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Get a Media Services account
-     *
-     * <p>Get the details of a Media Services account.
-     *
+     * 
+     * Get the details of a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -446,9 +445,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -490,9 +489,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -534,9 +533,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -556,9 +555,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -580,9 +579,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -599,9 +598,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -619,9 +618,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -639,9 +638,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -660,9 +659,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -679,9 +678,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Create or update a Media Services account
-     *
-     * <p>Creates or updates a Media Services account.
-     *
+     * 
+     * Creates or updates a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -699,9 +698,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Delete a Media Services account.
-     *
-     * <p>Deletes a Media Services account.
-     *
+     * 
+     * Deletes a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -736,9 +735,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Delete a Media Services account.
-     *
-     * <p>Deletes a Media Services account.
-     *
+     * 
+     * Deletes a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -774,9 +773,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Delete a Media Services account.
-     *
-     * <p>Deletes a Media Services account.
-     *
+     * 
+     * Deletes a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -791,9 +790,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Delete a Media Services account.
-     *
-     * <p>Deletes a Media Services account.
-     *
+     * 
+     * Deletes a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param context The context to associate with this operation.
@@ -809,9 +808,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Delete a Media Services account.
-     *
-     * <p>Deletes a Media Services account.
-     *
+     * 
+     * Deletes a Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -825,9 +824,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -869,9 +868,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -913,9 +912,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -934,9 +933,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -958,9 +957,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -977,9 +976,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -997,9 +996,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1017,9 +1016,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1038,9 +1037,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1056,9 +1055,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Update a Media Services account
-     *
-     * <p>Updates an existing Media Services account.
-     *
+     * 
+     * Updates an existing Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1076,9 +1075,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Synchronizes Storage Account Keys
-     *
-     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
-     *
+     * 
+     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1120,9 +1119,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Synchronizes Storage Account Keys
-     *
-     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
-     *
+     * 
+     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1164,9 +1163,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Synchronizes Storage Account Keys
-     *
-     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
-     *
+     * 
+     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1184,9 +1183,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Synchronizes Storage Account Keys
-     *
-     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
-     *
+     * 
+     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1204,9 +1203,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Synchronizes Storage Account Keys
-     *
-     * <p>Synchronizes storage account keys for a storage account associated with the Media Service account.
-     *
+     * 
+     * Synchronizes storage account keys for a storage account associated with the Media Service account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1221,9 +1220,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List the media edge policies associated with the Media Services account.
-     *
-     * <p>List all the media edge policies associated with the Media Services account.
-     *
+     * 
+     * List all the media edge policies associated with the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1265,9 +1264,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List the media edge policies associated with the Media Services account.
-     *
-     * <p>List all the media edge policies associated with the Media Services account.
-     *
+     * 
+     * List all the media edge policies associated with the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1309,9 +1308,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List the media edge policies associated with the Media Services account.
-     *
-     * <p>List all the media edge policies associated with the Media Services account.
-     *
+     * 
+     * List all the media edge policies associated with the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1329,9 +1328,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List the media edge policies associated with the Media Services account.
-     *
-     * <p>List all the media edge policies associated with the Media Services account.
-     *
+     * 
+     * List all the media edge policies associated with the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1349,9 +1348,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List the media edge policies associated with the Media Services account.
-     *
-     * <p>List all the media edge policies associated with the Media Services account.
-     *
+     * 
+     * List all the media edge policies associated with the Media Services account.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param parameters The request parameters.
@@ -1368,13 +1367,13 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the subscription.
-     *
+     * 
+     * List Media Services accounts in the subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MediaServiceInner>> listSinglePageAsync() {
@@ -1398,15 +1397,15 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the subscription.
-     *
+     * 
+     * List Media Services accounts in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MediaServiceInner>> listSinglePageAsync(Context context) {
@@ -1428,9 +1427,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the subscription.
-     *
+     * 
+     * List Media Services accounts in the subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of MediaService items as paginated response with {@link PagedFlux}.
@@ -1443,9 +1442,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the subscription.
-     *
+     * 
+     * List Media Services accounts in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1460,9 +1459,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the subscription.
-     *
+     * 
+     * List Media Services accounts in the subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of MediaService items as paginated response with {@link PagedIterable}.
@@ -1474,9 +1473,9 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * List Media Services accounts
-     *
-     * <p>List Media Services accounts in the subscription.
-     *
+     * 
+     * List Media Services accounts in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1490,14 +1489,13 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MediaServiceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1517,15 +1515,14 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MediaServiceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1545,14 +1542,13 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MediaServiceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -1574,15 +1570,14 @@ public final class MediaservicesClientImpl implements MediaservicesClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return a collection of MediaService items along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MediaServiceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,

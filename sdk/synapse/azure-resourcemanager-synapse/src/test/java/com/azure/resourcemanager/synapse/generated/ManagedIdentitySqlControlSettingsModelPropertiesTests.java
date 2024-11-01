@@ -15,9 +15,9 @@ public final class ManagedIdentitySqlControlSettingsModelPropertiesTests {
     public void testDeserialize() throws Exception {
         ManagedIdentitySqlControlSettingsModelProperties model = BinaryData
             .fromString(
-                "{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Enabled\",\"actualState\":\"Disabled\"}}")
+                "{\"grantSqlControlToManagedIdentity\":{\"desiredState\":\"Disabled\",\"actualState\":\"Enabling\"}}")
             .toObject(ManagedIdentitySqlControlSettingsModelProperties.class);
-        Assertions.assertEquals(DesiredState.ENABLED, model.grantSqlControlToManagedIdentity().desiredState());
+        Assertions.assertEquals(DesiredState.DISABLED, model.grantSqlControlToManagedIdentity().desiredState());
     }
 
     @org.junit.jupiter.api.Test
@@ -25,8 +25,8 @@ public final class ManagedIdentitySqlControlSettingsModelPropertiesTests {
         ManagedIdentitySqlControlSettingsModelProperties model
             = new ManagedIdentitySqlControlSettingsModelProperties().withGrantSqlControlToManagedIdentity(
                 new ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity()
-                    .withDesiredState(DesiredState.ENABLED));
+                    .withDesiredState(DesiredState.DISABLED));
         model = BinaryData.fromObject(model).toObject(ManagedIdentitySqlControlSettingsModelProperties.class);
-        Assertions.assertEquals(DesiredState.ENABLED, model.grantSqlControlToManagedIdentity().desiredState());
+        Assertions.assertEquals(DesiredState.DISABLED, model.grantSqlControlToManagedIdentity().desiredState());
     }
 }

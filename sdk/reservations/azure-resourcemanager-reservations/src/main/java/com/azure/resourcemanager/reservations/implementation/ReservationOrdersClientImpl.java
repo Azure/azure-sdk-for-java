@@ -42,17 +42,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReservationOrdersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReservationOrdersClient.
+ */
 public final class ReservationOrdersClientImpl implements ReservationOrdersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReservationOrdersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureReservationApiImpl client;
 
     /**
      * Initializes an instance of ReservationOrdersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReservationOrdersClientImpl(AzureReservationApiImpl client) {
@@ -118,15 +124,15 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Calculate price for a `ReservationOrder`.
-     *
-     * <p>Calculate price for placing a `ReservationOrder`.
-     *
+     * 
+     * Calculate price for placing a `ReservationOrder`.
+     * 
      * @param body Information needed for calculate or purchase reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of calculate price for reservation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CalculatePriceResponseInner>> calculateWithResponseAsync(PurchaseRequest body) {
@@ -148,16 +154,16 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Calculate price for a `ReservationOrder`.
-     *
-     * <p>Calculate price for placing a `ReservationOrder`.
-     *
+     * 
+     * Calculate price for placing a `ReservationOrder`.
+     * 
      * @param body Information needed for calculate or purchase reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of calculate price for reservation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CalculatePriceResponseInner>> calculateWithResponseAsync(PurchaseRequest body,
@@ -179,9 +185,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Calculate price for a `ReservationOrder`.
-     *
-     * <p>Calculate price for placing a `ReservationOrder`.
-     *
+     * 
+     * Calculate price for placing a `ReservationOrder`.
+     * 
      * @param body Information needed for calculate or purchase reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -195,9 +201,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Calculate price for a `ReservationOrder`.
-     *
-     * <p>Calculate price for placing a `ReservationOrder`.
-     *
+     * 
+     * Calculate price for placing a `ReservationOrder`.
+     * 
      * @param body Information needed for calculate or purchase reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -212,9 +218,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Calculate price for a `ReservationOrder`.
-     *
-     * <p>Calculate price for placing a `ReservationOrder`.
-     *
+     * 
+     * Calculate price for placing a `ReservationOrder`.
+     * 
      * @param body Information needed for calculate or purchase reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -228,9 +234,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get all `ReservationOrder`s.
-     *
-     * <p>List of all the `ReservationOrder`s that the user has access to in the current tenant.
-     *
+     * 
+     * List of all the `ReservationOrder`s that the user has access to in the current tenant.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of `ReservationOrder`s along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -251,9 +257,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get all `ReservationOrder`s.
-     *
-     * <p>List of all the `ReservationOrder`s that the user has access to in the current tenant.
-     *
+     * 
+     * List of all the `ReservationOrder`s that the user has access to in the current tenant.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -276,9 +282,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get all `ReservationOrder`s.
-     *
-     * <p>List of all the `ReservationOrder`s that the user has access to in the current tenant.
-     *
+     * 
+     * List of all the `ReservationOrder`s that the user has access to in the current tenant.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of `ReservationOrder`s as paginated response with {@link PagedFlux}.
@@ -290,9 +296,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get all `ReservationOrder`s.
-     *
-     * <p>List of all the `ReservationOrder`s that the user has access to in the current tenant.
-     *
+     * 
+     * List of all the `ReservationOrder`s that the user has access to in the current tenant.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -307,9 +313,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get all `ReservationOrder`s.
-     *
-     * <p>List of all the `ReservationOrder`s that the user has access to in the current tenant.
-     *
+     * 
+     * List of all the `ReservationOrder`s that the user has access to in the current tenant.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of `ReservationOrder`s as paginated response with {@link PagedIterable}.
@@ -321,9 +327,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get all `ReservationOrder`s.
-     *
-     * <p>List of all the `ReservationOrder`s that the user has access to in the current tenant.
-     *
+     * 
+     * List of all the `ReservationOrder`s that the user has access to in the current tenant.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -337,16 +343,16 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a reservation order being returned along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> purchaseWithResponseAsync(String reservationOrderId,
@@ -374,9 +380,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @param context The context to associate with this operation.
@@ -384,7 +390,7 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of a reservation order being returned along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> purchaseWithResponseAsync(String reservationOrderId, PurchaseRequest body,
@@ -410,9 +416,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -431,9 +437,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @param context The context to associate with this operation.
@@ -454,9 +460,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -472,9 +478,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @param context The context to associate with this operation.
@@ -491,9 +497,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -508,9 +514,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @param context The context to associate with this operation.
@@ -528,9 +534,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -545,9 +551,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Purchase `ReservationOrder`
-     *
-     * <p>Purchase `ReservationOrder` and create resource under the specified URI.
-     *
+     * 
+     * Purchase `ReservationOrder` and create resource under the specified URI.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed for calculate or purchase reservation.
      * @param context The context to associate with this operation.
@@ -563,16 +569,16 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get a specific `ReservationOrder`.
-     *
-     * <p>Get the details of the `ReservationOrder`.
-     *
+     * 
+     * Get the details of the `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param expand May be used to expand the planInformation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the `ReservationOrder` along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the details of the `ReservationOrder` along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReservationOrderResponseInner>> getWithResponseAsync(String reservationOrderId,
@@ -594,17 +600,17 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get a specific `ReservationOrder`.
-     *
-     * <p>Get the details of the `ReservationOrder`.
-     *
+     * 
+     * Get the details of the `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param expand May be used to expand the planInformation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the `ReservationOrder` along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the details of the `ReservationOrder` along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ReservationOrderResponseInner>> getWithResponseAsync(String reservationOrderId, String expand,
@@ -625,9 +631,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get a specific `ReservationOrder`.
-     *
-     * <p>Get the details of the `ReservationOrder`.
-     *
+     * 
+     * Get the details of the `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -642,9 +648,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get a specific `ReservationOrder`.
-     *
-     * <p>Get the details of the `ReservationOrder`.
-     *
+     * 
+     * Get the details of the `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param expand May be used to expand the planInformation.
      * @param context The context to associate with this operation.
@@ -661,9 +667,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get a specific `ReservationOrder`.
-     *
-     * <p>Get the details of the `ReservationOrder`.
-     *
+     * 
+     * Get the details of the `ReservationOrder`.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -678,9 +684,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Change directory of `ReservationOrder`.
-     *
-     * <p>Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
-     *
+     * 
+     * Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to change directory of reservation order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -714,9 +720,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Change directory of `ReservationOrder`.
-     *
-     * <p>Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
-     *
+     * 
+     * Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to change directory of reservation order.
      * @param context The context to associate with this operation.
@@ -750,9 +756,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Change directory of `ReservationOrder`.
-     *
-     * <p>Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
-     *
+     * 
+     * Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to change directory of reservation order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -769,9 +775,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Change directory of `ReservationOrder`.
-     *
-     * <p>Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
-     *
+     * 
+     * Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to change directory of reservation order.
      * @param context The context to associate with this operation.
@@ -788,9 +794,9 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Change directory of `ReservationOrder`.
-     *
-     * <p>Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
-     *
+     * 
+     * Change directory (tenant) of `ReservationOrder` and all `Reservation` under it to specified tenant id.
+     * 
      * @param reservationOrderId Order Id of the reservation.
      * @param body Information needed to change directory of reservation order.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -805,9 +811,8 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -831,9 +836,8 @@ public final class ReservationOrdersClientImpl implements ReservationOrdersClien
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

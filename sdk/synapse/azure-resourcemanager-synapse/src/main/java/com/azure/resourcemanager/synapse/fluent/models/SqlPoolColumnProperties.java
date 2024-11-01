@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.ColumnDataType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Sql pool column properties. */
+/**
+ * Sql pool column properties.
+ */
 @Fluent
-public final class SqlPoolColumnProperties {
+public final class SqlPoolColumnProperties implements JsonSerializable<SqlPoolColumnProperties> {
     /*
      * The column data type.
      */
-    @JsonProperty(value = "columnType")
     private ColumnDataType columnType;
 
     /*
      * Indicates whether column value is computed or not
      */
-    @JsonProperty(value = "isComputed", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isComputed;
 
-    /** Creates an instance of SqlPoolColumnProperties class. */
+    /**
+     * Creates an instance of SqlPoolColumnProperties class.
+     */
     public SqlPoolColumnProperties() {
     }
 
     /**
      * Get the columnType property: The column data type.
-     *
+     * 
      * @return the columnType value.
      */
     public ColumnDataType columnType() {
@@ -38,7 +44,7 @@ public final class SqlPoolColumnProperties {
 
     /**
      * Set the columnType property: The column data type.
-     *
+     * 
      * @param columnType the columnType value to set.
      * @return the SqlPoolColumnProperties object itself.
      */
@@ -49,7 +55,7 @@ public final class SqlPoolColumnProperties {
 
     /**
      * Get the isComputed property: Indicates whether column value is computed or not.
-     *
+     * 
      * @return the isComputed value.
      */
     public Boolean isComputed() {
@@ -58,9 +64,47 @@ public final class SqlPoolColumnProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("columnType", this.columnType == null ? null : this.columnType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlPoolColumnProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlPoolColumnProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlPoolColumnProperties.
+     */
+    public static SqlPoolColumnProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlPoolColumnProperties deserializedSqlPoolColumnProperties = new SqlPoolColumnProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("columnType".equals(fieldName)) {
+                    deserializedSqlPoolColumnProperties.columnType = ColumnDataType.fromString(reader.getString());
+                } else if ("isComputed".equals(fieldName)) {
+                    deserializedSqlPoolColumnProperties.isComputed = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlPoolColumnProperties;
+        });
     }
 }

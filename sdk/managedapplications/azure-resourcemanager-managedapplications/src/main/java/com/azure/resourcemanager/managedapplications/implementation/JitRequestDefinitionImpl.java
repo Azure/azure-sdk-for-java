@@ -168,8 +168,8 @@ public final class JitRequestDefinitionImpl
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.jitRequestName = Utils.getValueFromIdByName(innerObject.id(), "jitRequests");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.jitRequestName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "jitRequests");
     }
 
     public JitRequestDefinition refresh() {

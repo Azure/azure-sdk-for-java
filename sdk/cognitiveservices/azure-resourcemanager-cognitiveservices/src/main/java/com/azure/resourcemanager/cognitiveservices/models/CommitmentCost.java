@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cognitive Services account commitment cost. */
+/**
+ * Cognitive Services account commitment cost.
+ */
 @Fluent
-public final class CommitmentCost {
+public final class CommitmentCost implements JsonSerializable<CommitmentCost> {
     /*
      * Commitment meter Id.
      */
-    @JsonProperty(value = "commitmentMeterId")
     private String commitmentMeterId;
 
     /*
      * Overage meter Id.
      */
-    @JsonProperty(value = "overageMeterId")
     private String overageMeterId;
 
-    /** Creates an instance of CommitmentCost class. */
+    /**
+     * Creates an instance of CommitmentCost class.
+     */
     public CommitmentCost() {
     }
 
     /**
      * Get the commitmentMeterId property: Commitment meter Id.
-     *
+     * 
      * @return the commitmentMeterId value.
      */
     public String commitmentMeterId() {
@@ -37,7 +43,7 @@ public final class CommitmentCost {
 
     /**
      * Set the commitmentMeterId property: Commitment meter Id.
-     *
+     * 
      * @param commitmentMeterId the commitmentMeterId value to set.
      * @return the CommitmentCost object itself.
      */
@@ -48,7 +54,7 @@ public final class CommitmentCost {
 
     /**
      * Get the overageMeterId property: Overage meter Id.
-     *
+     * 
      * @return the overageMeterId value.
      */
     public String overageMeterId() {
@@ -57,7 +63,7 @@ public final class CommitmentCost {
 
     /**
      * Set the overageMeterId property: Overage meter Id.
-     *
+     * 
      * @param overageMeterId the overageMeterId value to set.
      * @return the CommitmentCost object itself.
      */
@@ -68,9 +74,48 @@ public final class CommitmentCost {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commitmentMeterId", this.commitmentMeterId);
+        jsonWriter.writeStringField("overageMeterId", this.overageMeterId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommitmentCost from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommitmentCost if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommitmentCost.
+     */
+    public static CommitmentCost fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommitmentCost deserializedCommitmentCost = new CommitmentCost();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("commitmentMeterId".equals(fieldName)) {
+                    deserializedCommitmentCost.commitmentMeterId = reader.getString();
+                } else if ("overageMeterId".equals(fieldName)) {
+                    deserializedCommitmentCost.overageMeterId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommitmentCost;
+        });
     }
 }

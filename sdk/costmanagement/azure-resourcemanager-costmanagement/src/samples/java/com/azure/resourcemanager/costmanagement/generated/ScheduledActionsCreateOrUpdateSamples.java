@@ -15,40 +15,36 @@ import com.azure.resourcemanager.costmanagement.models.WeeksOfMonth;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
-/** Samples for ScheduledActions CreateOrUpdate. */
+/**
+ * Samples for ScheduledActions CreateOrUpdate.
+ */
 public final class ScheduledActionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/scheduledActions/scheduledAction-createOrUpdate-private.json
+     * x-ms-original-file:
+     * specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/
+     * scheduledActions/scheduledAction-createOrUpdate-private.json
      */
     /**
      * Sample code: CreateOrUpdatePrivateScheduledAction.
-     *
+     * 
      * @param manager Entry point to CostManagementManager.
      */
-    public static void createOrUpdatePrivateScheduledAction(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .scheduledActions()
-            .createOrUpdateWithResponse(
-                "monthlyCostByResource",
-                new ScheduledActionInner()
-                    .withKind(ScheduledActionKind.EMAIL)
-                    .withDisplayName("Monthly Cost By Resource")
-                    .withNotification(
-                        new NotificationProperties()
-                            .withTo(Arrays.asList("user@gmail.com", "team@gmail.com"))
-                            .withSubject("Cost by resource this month"))
-                    .withSchedule(
-                        new ScheduleProperties()
-                            .withFrequency(ScheduleFrequency.MONTHLY)
-                            .withHourOfDay(10)
-                            .withDaysOfWeek(Arrays.asList(DaysOfWeek.MONDAY))
-                            .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.FIRST, WeeksOfMonth.THIRD))
-                            .withStartDate(OffsetDateTime.parse("2020-06-19T22:21:51.1287144Z"))
-                            .withEndDate(OffsetDateTime.parse("2021-06-19T22:21:51.1287144Z")))
-                    .withStatus(ScheduledActionStatus.ENABLED)
-                    .withViewId("/providers/Microsoft.CostManagement/views/swaggerExample"),
-                "",
+    public static void
+        createOrUpdatePrivateScheduledAction(com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager.scheduledActions()
+            .createOrUpdateWithResponse("monthlyCostByResource", new ScheduledActionInner()
+                .withKind(ScheduledActionKind.EMAIL)
+                .withDisplayName("Monthly Cost By Resource")
+                .withNotification(new NotificationProperties().withTo(Arrays.asList("user@gmail.com", "team@gmail.com"))
+                    .withSubject("Cost by resource this month"))
+                .withSchedule(new ScheduleProperties().withFrequency(ScheduleFrequency.MONTHLY)
+                    .withHourOfDay(10)
+                    .withDaysOfWeek(Arrays.asList(DaysOfWeek.MONDAY))
+                    .withWeeksOfMonth(Arrays.asList(WeeksOfMonth.FIRST, WeeksOfMonth.THIRD))
+                    .withStartDate(OffsetDateTime.parse("2020-06-19T22:21:51.1287144Z"))
+                    .withEndDate(OffsetDateTime.parse("2021-06-19T22:21:51.1287144Z")))
+                .withStatus(ScheduledActionStatus.ENABLED)
+                .withViewId("/providers/Microsoft.CostManagement/views/swaggerExample"), "",
                 com.azure.core.util.Context.NONE);
     }
 }

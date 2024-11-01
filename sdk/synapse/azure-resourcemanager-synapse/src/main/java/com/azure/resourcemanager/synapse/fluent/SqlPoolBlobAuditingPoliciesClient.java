@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolBlobAuditingPolicyInner;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolBlobAuditingPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolBlobAuditingPoliciesClient.
+ */
 public interface SqlPoolBlobAuditingPoliciesClient {
     /**
      * Get a SQL pool's blob auditing policy
-     *
-     * <p>Get a SQL pool's blob auditing policy.
-     *
+     * 
+     * Get a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -33,9 +35,9 @@ public interface SqlPoolBlobAuditingPoliciesClient {
 
     /**
      * Get a SQL pool's blob auditing policy
-     *
-     * <p>Get a SQL pool's blob auditing policy.
-     *
+     * 
+     * Get a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -49,9 +51,9 @@ public interface SqlPoolBlobAuditingPoliciesClient {
 
     /**
      * Creates or updates a SQL pool's blob auditing policy
-     *
-     * <p>Creates or updates a SQL pool's blob auditing policy.
-     *
+     * 
+     * Creates or updates a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -68,9 +70,9 @@ public interface SqlPoolBlobAuditingPoliciesClient {
 
     /**
      * Creates or updates a SQL pool's blob auditing policy
-     *
-     * <p>Creates or updates a SQL pool's blob auditing policy.
-     *
+     * 
+     * Creates or updates a SQL pool's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -86,7 +88,7 @@ public interface SqlPoolBlobAuditingPoliciesClient {
 
     /**
      * Lists auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -101,7 +103,7 @@ public interface SqlPoolBlobAuditingPoliciesClient {
 
     /**
      * Lists auditing settings of a Sql pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

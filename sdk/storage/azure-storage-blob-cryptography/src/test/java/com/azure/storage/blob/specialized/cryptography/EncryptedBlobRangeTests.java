@@ -23,8 +23,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
     // This test checks that the EncryptedBlobRange cna be properly constructed from a BlobRange
     @ParameterizedTest
-    @CsvSource(value = {",,bytes=0-", "3,,bytes=0-", "17,,bytes=0-", "34,,bytes=16-", "47,,bytes=16-", "48,,bytes=32-",
-        "2,6,bytes=0-15", "18,2,bytes=0-31", "38,17,bytes=16-63"})
+    @CsvSource(
+        value = {
+            ",,bytes=0-",
+            "3,,bytes=0-",
+            "17,,bytes=0-",
+            "34,,bytes=16-",
+            "47,,bytes=16-",
+            "48,,bytes=32-",
+            "2,6,bytes=0-15",
+            "18,2,bytes=0-31",
+            "38,17,bytes=16-63" })
     public void testConstructor(Integer offset, Integer count, String expectedString) {
         EncryptedBlobRange ebr = new EncryptedBlobRange(getBlobRange(offset, count),
             new EncryptionData().setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1)));
@@ -36,16 +45,14 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
     @MethodSource("constructorV2Supplier")
     public void constructorV2(Integer offset, Integer count, String expectedString) {
         EncryptedBlobRange ebr = new EncryptedBlobRange(getBlobRange(offset, count),
-            new EncryptionData()
-                .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2))
+            new EncryptionData().setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2))
                 .setEncryptedRegionInfo(new EncryptedRegionInfo(GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH)));
 
         assertEquals(expectedString, ebr.toBlobRange().toString());
     }
 
     private static Stream<Arguments> constructorV2Supplier() {
-        return Stream.of(
-            Arguments.of(null, null, "bytes=0-"), // Both null
+        return Stream.of(Arguments.of(null, null, "bytes=0-"), // Both null
             Arguments.arguments(3, null, "bytes=0-"), // Only offset specified. First region
             Arguments.of(GCM_ENCRYPTION_REGION_LENGTH - 1, null, "bytes=0-"), // 4mb + 28 - 1
             Arguments.of(GCM_ENCRYPTION_REGION_LENGTH + 1024, null, "bytes=4194332-"), // Second region
@@ -58,21 +65,21 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
 
     // This test checks that the encrypted blob range can be correctly constructed from a BlobRange header string
     @ParameterizedTest
-    @CsvSource(value = {",", "3,", "17,", "34,", "47,", "48,", "2,6", "18,2", "38,17"})
+    @CsvSource(value = { ",", "3,", "17,", "34,", "47,", "48,", "2,6", "18,2", "38,17" })
     public void testFromBlobRangeHeader(Integer offset, Integer count) {
-        EncryptionData encryptionDataV1 = new EncryptionData()
-            .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1));
-        EncryptionData encryptionDataV2 = new EncryptionData()
-            .setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2))
-            .setEncryptedRegionInfo(new EncryptedRegionInfo(GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH));
+        EncryptionData encryptionDataV1
+            = new EncryptionData().setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V1));
+        EncryptionData encryptionDataV2
+            = new EncryptionData().setEncryptionAgent(new EncryptionAgent().setProtocol(ENCRYPTION_PROTOCOL_V2))
+                .setEncryptedRegionInfo(new EncryptedRegionInfo(GCM_ENCRYPTION_REGION_LENGTH, NONCE_LENGTH));
         BlobRange range = getBlobRange(offset, count);
 
         EncryptedBlobRange encryptedRangeFromBlobRangeV1 = new EncryptedBlobRange(range, encryptionDataV1);
-        EncryptedBlobRange encryptedRangeFromHeaderV1 =
-            EncryptedBlobRange.getEncryptedBlobRangeFromHeader(range.toHeaderValue(), encryptionDataV1);
+        EncryptedBlobRange encryptedRangeFromHeaderV1
+            = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(range.toHeaderValue(), encryptionDataV1);
         EncryptedBlobRange encryptedRangeFromBlobRangeV2 = new EncryptedBlobRange(range, encryptionDataV2);
-        EncryptedBlobRange encryptedRangeFromHeaderV2 =
-            EncryptedBlobRange.getEncryptedBlobRangeFromHeader(range.toHeaderValue(), encryptionDataV2);
+        EncryptedBlobRange encryptedRangeFromHeaderV2
+            = EncryptedBlobRange.getEncryptedBlobRangeFromHeader(range.toHeaderValue(), encryptionDataV2);
 
         assertEquals(encryptedRangeFromHeaderV1.toBlobRange().toHeaderValue(),
             encryptedRangeFromBlobRangeV1.toBlobRange().toHeaderValue());
@@ -91,12 +98,7 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {
-        16,
-        4 * Constants.KB,
-        4 * Constants.MB,
-        Constants.GB
-    })
+    @ValueSource(ints = { 16, 4 * Constants.KB, 4 * Constants.MB, Constants.GB })
     public void encryptedBlobRangeFromEncryptionData(int regionLength) {
         long dataSize = 4 * Constants.MB;
         EncryptionData encryptionData = new EncryptionData()
@@ -114,7 +116,8 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
 
     @ParameterizedTest
     @MethodSource("provideRanges")
-    public void testAdjustedBlobRange(long originalOffset, long originalCount, long expectedNewOffset, long expectedNewCount, int regionLength) {
+    public void testAdjustedBlobRange(long originalOffset, long originalCount, long expectedNewOffset,
+        long expectedNewCount, int regionLength) {
         EncryptionData encryptionData = new EncryptionData()
             .setEncryptionAgent(new EncryptionAgent(ENCRYPTION_PROTOCOL_V2, EncryptionAlgorithm.AES_GCM_256))
             .setEncryptedRegionInfo(new EncryptedRegionInfo(regionLength, NONCE_LENGTH));
@@ -129,8 +132,7 @@ public class EncryptedBlobRangeTests extends BlobCryptographyTestBase {
     }
 
     private static Stream<Arguments> provideRanges() {
-        return Stream.of(
-            Arguments.of(5L, 10L, 0L, 44L, 16), // Entirely within a single region, adjustment includes nonce and tag
+        return Stream.of(Arguments.of(5L, 10L, 0L, 44L, 16), // Entirely within a single region, adjustment includes nonce and tag
             Arguments.of(16L, 16L, 44L, 44L, 16), // Exactly one region
             Arguments.of(15L, 35L, 0L, 176L, 16), // Straddles across four regions
             Arguments.of(32L, 15L, 88L, 44L, 16), // Starts exactly at the second region

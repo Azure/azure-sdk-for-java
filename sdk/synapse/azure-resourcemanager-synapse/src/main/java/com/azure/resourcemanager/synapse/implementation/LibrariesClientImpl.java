@@ -25,17 +25,23 @@ import com.azure.resourcemanager.synapse.fluent.LibrariesClient;
 import com.azure.resourcemanager.synapse.fluent.models.LibraryResourceInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LibrariesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LibrariesClient.
+ */
 public final class LibrariesClientImpl implements LibrariesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LibrariesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of LibrariesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LibrariesClientImpl(SynapseManagementClientImpl client) {
@@ -52,8 +58,7 @@ public final class LibrariesClientImpl implements LibrariesClient {
     @ServiceInterface(name = "SynapseManagementCli")
     public interface LibrariesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/libraries/{libraryName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/libraries/{libraryName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LibraryResourceInner>> get(@HostParam("$host") String endpoint,
@@ -64,9 +69,9 @@ public final class LibrariesClientImpl implements LibrariesClient {
 
     /**
      * Get library by name.
-     *
-     * <p>Get library by name in a workspace.
-     *
+     * 
+     * Get library by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
      * @param workspaceName The name of the workspace.
@@ -106,9 +111,9 @@ public final class LibrariesClientImpl implements LibrariesClient {
 
     /**
      * Get library by name.
-     *
-     * <p>Get library by name in a workspace.
-     *
+     * 
+     * Get library by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
      * @param workspaceName The name of the workspace.
@@ -148,9 +153,9 @@ public final class LibrariesClientImpl implements LibrariesClient {
 
     /**
      * Get library by name.
-     *
-     * <p>Get library by name in a workspace.
-     *
+     * 
+     * Get library by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
      * @param workspaceName The name of the workspace.
@@ -167,9 +172,9 @@ public final class LibrariesClientImpl implements LibrariesClient {
 
     /**
      * Get library by name.
-     *
-     * <p>Get library by name in a workspace.
-     *
+     * 
+     * Get library by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
      * @param workspaceName The name of the workspace.
@@ -187,9 +192,9 @@ public final class LibrariesClientImpl implements LibrariesClient {
 
     /**
      * Get library by name.
-     *
-     * <p>Get library by name in a workspace.
-     *
+     * 
+     * Get library by name in a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param libraryName Library name.
      * @param workspaceName The name of the workspace.

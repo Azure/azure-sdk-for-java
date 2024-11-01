@@ -30,15 +30,19 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in SqlPoolDataWarehouseUserActivitiesClient.
  */
 public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPoolDataWarehouseUserActivitiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlPoolDataWarehouseUserActivitiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SynapseManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlPoolDataWarehouseUserActivitiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlPoolDataWarehouseUserActivitiesClientImpl(SynapseManagementClientImpl client) {
@@ -55,8 +59,7 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
     @ServiceInterface(name = "SynapseManagementCli")
     public interface SqlPoolDataWarehouseUserActivitiesService {
         @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
-            + "/{workspaceName}/sqlPools/{sqlPoolName}/dataWarehouseUserActivities/{dataWarehouseUserActivityName}")
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces/{workspaceName}/sqlPools/{sqlPoolName}/dataWarehouseUserActivities/{dataWarehouseUserActivityName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataWarehouseUserActivitiesInner>> get(@HostParam("$host") String endpoint,
@@ -69,9 +72,9 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
 
     /**
      * Get SQL pool user activities
-     *
-     * <p>Gets the user activities of a SQL pool which includes running and suspended queries.
-     *
+     * 
+     * Gets the user activities of a SQL pool which includes running and suspended queries.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -79,8 +82,8 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user activities of a SQL pool which includes running and suspended queries along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the user activities of a SQL pool which includes running and suspended queries along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataWarehouseUserActivitiesInner>> getWithResponseAsync(String resourceGroupName,
@@ -117,9 +120,9 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
 
     /**
      * Get SQL pool user activities
-     *
-     * <p>Gets the user activities of a SQL pool which includes running and suspended queries.
-     *
+     * 
+     * Gets the user activities of a SQL pool which includes running and suspended queries.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -128,8 +131,8 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user activities of a SQL pool which includes running and suspended queries along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the user activities of a SQL pool which includes running and suspended queries along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataWarehouseUserActivitiesInner>> getWithResponseAsync(String resourceGroupName,
@@ -166,9 +169,9 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
 
     /**
      * Get SQL pool user activities
-     *
-     * <p>Gets the user activities of a SQL pool which includes running and suspended queries.
-     *
+     * 
+     * Gets the user activities of a SQL pool which includes running and suspended queries.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -177,7 +180,7 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the user activities of a SQL pool which includes running and suspended queries on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataWarehouseUserActivitiesInner> getAsync(String resourceGroupName, String workspaceName,
@@ -188,9 +191,9 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
 
     /**
      * Get SQL pool user activities
-     *
-     * <p>Gets the user activities of a SQL pool which includes running and suspended queries.
-     *
+     * 
+     * Gets the user activities of a SQL pool which includes running and suspended queries.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -199,8 +202,8 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the user activities of a SQL pool which includes running and suspended queries along with {@link
-     *     Response}.
+     * @return the user activities of a SQL pool which includes running and suspended queries along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataWarehouseUserActivitiesInner> getWithResponse(String resourceGroupName, String workspaceName,
@@ -211,9 +214,9 @@ public final class SqlPoolDataWarehouseUserActivitiesClientImpl implements SqlPo
 
     /**
      * Get SQL pool user activities
-     *
-     * <p>Gets the user activities of a SQL pool which includes running and suspended queries.
-     *
+     * 
+     * Gets the user activities of a SQL pool which includes running and suspended queries.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.

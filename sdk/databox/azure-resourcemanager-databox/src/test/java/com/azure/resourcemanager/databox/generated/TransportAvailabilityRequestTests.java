@@ -13,14 +13,14 @@ public final class TransportAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TransportAvailabilityRequest model
-            = BinaryData.fromString("{\"skuName\":\"DataBoxHeavy\"}").toObject(TransportAvailabilityRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.skuName());
+            = BinaryData.fromString("{\"skuName\":\"DataBoxDisk\"}").toObject(TransportAvailabilityRequest.class);
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.skuName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TransportAvailabilityRequest model = new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX_HEAVY);
+        TransportAvailabilityRequest model = new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX_DISK);
         model = BinaryData.fromObject(model).toObject(TransportAvailabilityRequest.class);
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.skuName());
+        Assertions.assertEquals(SkuName.DATA_BOX_DISK, model.skuName());
     }
 }

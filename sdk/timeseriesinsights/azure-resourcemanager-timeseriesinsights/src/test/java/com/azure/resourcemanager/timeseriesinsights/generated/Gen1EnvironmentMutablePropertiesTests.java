@@ -14,19 +14,19 @@ public final class Gen1EnvironmentMutablePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Gen1EnvironmentMutableProperties model = BinaryData
-            .fromString("{\"dataRetentionTime\":\"PT227H21M53S\",\"storageLimitExceededBehavior\":\"PurgeOldData\"}")
+            .fromString("{\"dataRetentionTime\":\"PT99H55M11S\",\"storageLimitExceededBehavior\":\"PauseIngress\"}")
             .toObject(Gen1EnvironmentMutableProperties.class);
-        Assertions.assertEquals(Duration.parse("PT227H21M53S"), model.dataRetentionTime());
-        Assertions.assertEquals(StorageLimitExceededBehavior.PURGE_OLD_DATA, model.storageLimitExceededBehavior());
+        Assertions.assertEquals(Duration.parse("PT99H55M11S"), model.dataRetentionTime());
+        Assertions.assertEquals(StorageLimitExceededBehavior.PAUSE_INGRESS, model.storageLimitExceededBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Gen1EnvironmentMutableProperties model
-            = new Gen1EnvironmentMutableProperties().withDataRetentionTime(Duration.parse("PT227H21M53S"))
-                .withStorageLimitExceededBehavior(StorageLimitExceededBehavior.PURGE_OLD_DATA);
+            = new Gen1EnvironmentMutableProperties().withDataRetentionTime(Duration.parse("PT99H55M11S"))
+                .withStorageLimitExceededBehavior(StorageLimitExceededBehavior.PAUSE_INGRESS);
         model = BinaryData.fromObject(model).toObject(Gen1EnvironmentMutableProperties.class);
-        Assertions.assertEquals(Duration.parse("PT227H21M53S"), model.dataRetentionTime());
-        Assertions.assertEquals(StorageLimitExceededBehavior.PURGE_OLD_DATA, model.storageLimitExceededBehavior());
+        Assertions.assertEquals(Duration.parse("PT99H55M11S"), model.dataRetentionTime());
+        Assertions.assertEquals(StorageLimitExceededBehavior.PAUSE_INGRESS, model.storageLimitExceededBehavior());
     }
 }

@@ -12,7 +12,8 @@ import com.azure.storage.blob.models.BlobQueryHeaders;
 public final class BlobQueryHeadersConstructorProxy {
     private static BlobQueryHeadersConstructorAccessor accessor;
 
-    private BlobQueryHeadersConstructorProxy() { }
+    private BlobQueryHeadersConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link BlobQueryHeaders} instance.

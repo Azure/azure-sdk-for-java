@@ -17,11 +17,13 @@ import com.azure.resourcemanager.synapse.fluent.models.DataConnectionValidationI
 import com.azure.resourcemanager.synapse.fluent.models.DataConnectionValidationListResultInner;
 import com.azure.resourcemanager.synapse.models.DataConnectionCheckNameRequest;
 
-/** An instance of this class provides access to all the operations defined in KustoPoolDataConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KustoPoolDataConnectionsClient.
+ */
 public interface KustoPoolDataConnectionsClient {
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -39,7 +41,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -56,7 +58,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -74,7 +76,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -93,7 +95,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -110,7 +112,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -128,7 +130,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -144,7 +146,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -161,7 +163,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Returns a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -179,7 +181,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Returns a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -196,7 +198,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -215,7 +217,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -235,7 +237,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -253,7 +255,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -272,7 +274,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -291,7 +293,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -311,7 +313,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -329,7 +331,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -348,7 +350,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -365,7 +367,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -383,7 +385,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -399,7 +401,7 @@ public interface KustoPoolDataConnectionsClient {
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.

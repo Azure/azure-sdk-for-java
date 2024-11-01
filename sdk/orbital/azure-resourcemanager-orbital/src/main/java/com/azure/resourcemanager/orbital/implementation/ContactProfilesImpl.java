@@ -58,33 +58,33 @@ public final class ContactProfilesImpl implements ContactProfiles {
 
     public PagedIterable<ContactProfile> list() {
         PagedIterable<ContactProfileInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ContactProfile> list(String skiptoken, Context context) {
         PagedIterable<ContactProfileInner> inner = this.serviceClient().list(skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ContactProfile> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ContactProfileInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ContactProfile> listByResourceGroup(String resourceGroupName, String skiptoken,
         Context context) {
         PagedIterable<ContactProfileInner> inner
             = this.serviceClient().listByResourceGroup(resourceGroupName, skiptoken, context);
-        return Utils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ContactProfileImpl(inner1, this.manager()));
     }
 
     public ContactProfile getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String contactProfileName = Utils.getValueFromIdByName(id, "contactProfiles");
+        String contactProfileName = ResourceManagerUtils.getValueFromIdByName(id, "contactProfiles");
         if (contactProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));
@@ -93,12 +93,12 @@ public final class ContactProfilesImpl implements ContactProfiles {
     }
 
     public Response<ContactProfile> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String contactProfileName = Utils.getValueFromIdByName(id, "contactProfiles");
+        String contactProfileName = ResourceManagerUtils.getValueFromIdByName(id, "contactProfiles");
         if (contactProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));
@@ -107,12 +107,12 @@ public final class ContactProfilesImpl implements ContactProfiles {
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String contactProfileName = Utils.getValueFromIdByName(id, "contactProfiles");
+        String contactProfileName = ResourceManagerUtils.getValueFromIdByName(id, "contactProfiles");
         if (contactProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));
@@ -121,12 +121,12 @@ public final class ContactProfilesImpl implements ContactProfiles {
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String contactProfileName = Utils.getValueFromIdByName(id, "contactProfiles");
+        String contactProfileName = ResourceManagerUtils.getValueFromIdByName(id, "contactProfiles");
         if (contactProfileName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'contactProfiles'.", id)));

@@ -31,17 +31,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlVirtualMachineTroubleshootsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlVirtualMachineTroubleshootsClient.
+ */
 public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtualMachineTroubleshootsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlVirtualMachineTroubleshootsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlVirtualMachineManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlVirtualMachineTroubleshootsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlVirtualMachineTroubleshootsClientImpl(SqlVirtualMachineManagementClientImpl client) {
@@ -71,16 +77,16 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details required for SQL VM troubleshooting along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> troubleshootWithResponseAsync(String resourceGroupName,
@@ -116,9 +122,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.
@@ -126,7 +132,7 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details required for SQL VM troubleshooting along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> troubleshootWithResponseAsync(String resourceGroupName,
@@ -160,9 +166,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,9 +188,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.
@@ -205,9 +211,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,9 +229,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.
@@ -243,9 +249,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,9 +268,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.
@@ -282,9 +288,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -300,9 +306,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.

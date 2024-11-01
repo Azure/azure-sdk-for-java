@@ -12,14 +12,14 @@ public final class UserAssignedPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserAssignedProperties model
-            = BinaryData.fromString("{\"resourceId\":\"skghsauuimj\"}").toObject(UserAssignedProperties.class);
-        Assertions.assertEquals("skghsauuimj", model.resourceId());
+            = BinaryData.fromString("{\"resourceId\":\"f\"}").toObject(UserAssignedProperties.class);
+        Assertions.assertEquals("f", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserAssignedProperties model = new UserAssignedProperties().withResourceId("skghsauuimj");
+        UserAssignedProperties model = new UserAssignedProperties().withResourceId("f");
         model = BinaryData.fromObject(model).toObject(UserAssignedProperties.class);
-        Assertions.assertEquals("skghsauuimj", model.resourceId());
+        Assertions.assertEquals("f", model.resourceId());
     }
 }

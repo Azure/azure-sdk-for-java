@@ -141,6 +141,7 @@ public class Transforms {
                             DocumentSelectionMarkState.fromString(innerSelectionMark.getState().toString()));
                         return documentSelectionMark;
                     }).collect(Collectors.toList()));
+            List<DocumentWord> documentWords = toDocumentWords(innerDocumentPage);
             DocumentPageHelper.setLines(documentPage,
                 innerDocumentPage.getLines() == null
                     ? null
@@ -150,10 +151,10 @@ public class Transforms {
                             toPolygonPoints(innerDocumentLine.getPolygon()));
                         DocumentLineHelper.setContent(documentLine, innerDocumentLine.getContent());
                         DocumentLineHelper.setSpans(documentLine, toDocumentSpans(innerDocumentLine.getSpans()));
-                        DocumentLineHelper.setPageWords(documentLine, toDocumentWords(innerDocumentPage));
+                        DocumentLineHelper.setPageWords(documentLine, documentWords);
                         return documentLine;
                     }).collect(Collectors.toList()));
-            DocumentPageHelper.setWords(documentPage, toDocumentWords(innerDocumentPage));
+            DocumentPageHelper.setWords(documentPage, documentWords);
             DocumentPageHelper.setFormulas(documentPage, fromInnerFormulas(innerDocumentPage.getFormulas()));
             DocumentPageHelper.setBarcodes(documentPage, fromInnerBarcodes(innerDocumentPage.getBarcodes()));
             return documentPage;

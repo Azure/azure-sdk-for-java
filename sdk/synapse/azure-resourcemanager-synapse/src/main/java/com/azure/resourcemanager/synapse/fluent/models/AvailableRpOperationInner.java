@@ -5,50 +5,53 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.AvailableRpOperationDisplayInfo;
 import com.azure.resourcemanager.synapse.models.OperationMetaServiceSpecification;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** An operation that is available in this resource provider. */
+/**
+ * An operation that is available in this resource provider.
+ */
 @Fluent
-public final class AvailableRpOperationInner {
+public final class AvailableRpOperationInner implements JsonSerializable<AvailableRpOperationInner> {
     /*
      * Display properties of the operation
      */
-    @JsonProperty(value = "display")
     private AvailableRpOperationDisplayInfo display;
 
     /*
      * Whether this operation is a data action
      */
-    @JsonProperty(value = "isDataAction")
     private String isDataAction;
 
     /*
      * Operation name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Operation properties
      */
-    @JsonProperty(value = "properties")
     private OperationMetaPropertyInfo innerProperties;
 
     /*
      * Operation origin
      */
-    @JsonProperty(value = "origin")
     private String origin;
 
-    /** Creates an instance of AvailableRpOperationInner class. */
+    /**
+     * Creates an instance of AvailableRpOperationInner class.
+     */
     public AvailableRpOperationInner() {
     }
 
     /**
      * Get the display property: Display properties of the operation.
-     *
+     * 
      * @return the display value.
      */
     public AvailableRpOperationDisplayInfo display() {
@@ -57,7 +60,7 @@ public final class AvailableRpOperationInner {
 
     /**
      * Set the display property: Display properties of the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the AvailableRpOperationInner object itself.
      */
@@ -68,7 +71,7 @@ public final class AvailableRpOperationInner {
 
     /**
      * Get the isDataAction property: Whether this operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public String isDataAction() {
@@ -77,7 +80,7 @@ public final class AvailableRpOperationInner {
 
     /**
      * Set the isDataAction property: Whether this operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the AvailableRpOperationInner object itself.
      */
@@ -88,7 +91,7 @@ public final class AvailableRpOperationInner {
 
     /**
      * Get the name property: Operation name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -97,7 +100,7 @@ public final class AvailableRpOperationInner {
 
     /**
      * Set the name property: Operation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the AvailableRpOperationInner object itself.
      */
@@ -108,7 +111,7 @@ public final class AvailableRpOperationInner {
 
     /**
      * Get the innerProperties property: Operation properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OperationMetaPropertyInfo innerProperties() {
@@ -117,7 +120,7 @@ public final class AvailableRpOperationInner {
 
     /**
      * Get the origin property: Operation origin.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -126,7 +129,7 @@ public final class AvailableRpOperationInner {
 
     /**
      * Set the origin property: Operation origin.
-     *
+     * 
      * @param origin the origin value to set.
      * @return the AvailableRpOperationInner object itself.
      */
@@ -137,7 +140,7 @@ public final class AvailableRpOperationInner {
 
     /**
      * Get the serviceSpecification property: Operation service specification.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public OperationMetaServiceSpecification serviceSpecification() {
@@ -146,7 +149,7 @@ public final class AvailableRpOperationInner {
 
     /**
      * Set the serviceSpecification property: Operation service specification.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the AvailableRpOperationInner object itself.
      */
@@ -160,7 +163,7 @@ public final class AvailableRpOperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -170,5 +173,53 @@ public final class AvailableRpOperationInner {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", this.display);
+        jsonWriter.writeStringField("isDataAction", this.isDataAction);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("origin", this.origin);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableRpOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableRpOperationInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableRpOperationInner.
+     */
+    public static AvailableRpOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableRpOperationInner deserializedAvailableRpOperationInner = new AvailableRpOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("display".equals(fieldName)) {
+                    deserializedAvailableRpOperationInner.display = AvailableRpOperationDisplayInfo.fromJson(reader);
+                } else if ("isDataAction".equals(fieldName)) {
+                    deserializedAvailableRpOperationInner.isDataAction = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAvailableRpOperationInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAvailableRpOperationInner.innerProperties = OperationMetaPropertyInfo.fromJson(reader);
+                } else if ("origin".equals(fieldName)) {
+                    deserializedAvailableRpOperationInner.origin = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableRpOperationInner;
+        });
     }
 }

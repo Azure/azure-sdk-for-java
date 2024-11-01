@@ -36,15 +36,19 @@ import reactor.core.publisher.Mono;
  */
 public final class GenerateDetailedCostReportOperationResultsClientImpl
     implements GenerateDetailedCostReportOperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GenerateDetailedCostReportOperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CostManagementClientImpl client;
 
     /**
      * Initializes an instance of GenerateDetailedCostReportOperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GenerateDetailedCostReportOperationResultsClientImpl(CostManagementClientImpl client) {
@@ -72,15 +76,15 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the specified operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of the specified operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getWithResponseAsync(String operationId, String scope) {
@@ -104,16 +108,16 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the specified operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of the specified operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getWithResponseAsync(String operationId, String scope, Context context) {
@@ -135,10 +139,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -158,10 +162,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -183,10 +187,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -202,10 +206,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -222,10 +226,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -239,10 +243,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -258,10 +262,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -275,10 +279,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
