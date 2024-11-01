@@ -19,7 +19,7 @@ import java.util.Locale;
  **/
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(name = "otel.sdk.disabled", havingValue = "false", matchIfMissing = true)
-@Import({DefaultLogConfig.class, LogbackSelfDiagConfig.class})
+@Import({ DefaultLogConfig.class, LogbackSelfDiagConfig.class })
 public class SelfDiagAutoConfig {
     private static final Logger LOG = LoggerFactory.getLogger(SelfDiagAutoConfig.class);
     static final String SELF_DIAGNOSTICS_LEVEL_ENV_VAR = "APPLICATIONINSIGHTS_SELF_DIAGNOSTICS_LEVEL";
@@ -34,7 +34,8 @@ public class SelfDiagAutoConfig {
             String upperCaseLevel = selfDiagLevelEnvVar.toUpperCase(Locale.ROOT);
             return SelfDiagnosticsLevel.valueOf(upperCaseLevel);
         } catch (IllegalArgumentException e) {
-            LOG.warn("Unable to find the self-diagnostics level related to " + selfDiagLevelEnvVar + "defined with " + SELF_DIAGNOSTICS_LEVEL_ENV_VAR + " environment variable.", e);
+            LOG.warn("Unable to find the self-diagnostics level related to " + selfDiagLevelEnvVar + "defined with "
+                + SELF_DIAGNOSTICS_LEVEL_ENV_VAR + " environment variable.", e);
             return SelfDiagnosticsLevel.INFO;
         }
     }

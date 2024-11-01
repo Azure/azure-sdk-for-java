@@ -11,7 +11,7 @@ public class SRVRecord {
     private final int port;
 
     private final String target;
-    
+
     private static final String PROTOCAL = "https://";
 
     public SRVRecord(String[] record) {

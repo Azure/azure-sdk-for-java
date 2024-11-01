@@ -43,7 +43,8 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
 
     @Test
     void springPropertyShouldHaveValueIfAzureCoreEnvSet() {
-        PropertiesPropertySource propertiesPropertySource = buildTestProperties(PROPERTY_AZURE_CLIENT_ID, "test-client-id");
+        PropertiesPropertySource propertiesPropertySource
+            = buildTestProperties(PROPERTY_AZURE_CLIENT_ID, "test-client-id");
 
         ConfigurableEnvironment environment = getEnvironment(propertiesPropertySource);
 
@@ -53,7 +54,8 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
 
     @Test
     void springPropertyShouldHaveValueIfAzureKeyVaultEnvSet() {
-        PropertiesPropertySource propertiesPropertySource = buildTestProperties("AZURE_KEYVAULT_ENDPOINT", "test-endpoint");
+        PropertiesPropertySource propertiesPropertySource
+            = buildTestProperties("AZURE_KEYVAULT_ENDPOINT", "test-endpoint");
 
         ConfigurableEnvironment environment = getEnvironment(propertiesPropertySource);
 
@@ -64,12 +66,14 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
 
     @Test
     void springPropertyShouldHaveValueIfAzureEventHubsEnvSet() {
-        PropertiesPropertySource propertiesPropertySource = buildTestProperties("AZURE_EVENT_HUBS_CONNECTION_STRING", "test-connection-string");
+        PropertiesPropertySource propertiesPropertySource
+            = buildTestProperties("AZURE_EVENT_HUBS_CONNECTION_STRING", "test-connection-string");
 
         ConfigurableEnvironment environment = getEnvironment(propertiesPropertySource);
 
         assertEquals("test-connection-string", environment.getProperty("AZURE_EVENT_HUBS_CONNECTION_STRING"));
-        assertEquals("test-connection-string", environment.getProperty("spring.cloud.azure.eventhubs.connection-string"));
+        assertEquals("test-connection-string",
+            environment.getProperty("spring.cloud.azure.eventhubs.connection-string"));
     }
 
     @Test
@@ -122,7 +126,8 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
         PropertiesPropertySource propertiesPropertySource = new PropertiesPropertySource("test-properties", properties);
 
         ConfigurableEnvironment environment = getEnvironment(propertiesPropertySource);
-        AzureGlobalProperties globalProperties = Binder.get(environment).bind(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class).get();
+        AzureGlobalProperties globalProperties
+            = Binder.get(environment).bind(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class).get();
 
         assertEquals("core-client-id", globalProperties.getCredential().getClientId());
         assertEquals("core-client-secret", globalProperties.getCredential().getClientSecret());
@@ -151,8 +156,8 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
         properties.put(PROPERTY_AZURE_CLIENT_ID, "client-id-from-env");
         PropertiesPropertySource propertiesPropertySource = new PropertiesPropertySource("test-properties", properties);
         ConfigurableEnvironment environment = getEnvironment(propertiesPropertySource);
-        AzureGlobalProperties globalProperties = Binder.get(environment)
-            .bind(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class).get();
+        AzureGlobalProperties globalProperties
+            = Binder.get(environment).bind(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class).get();
         assertEquals("client-id-from-env", globalProperties.getCredential().getClientId());
         assertNull(globalProperties.getCredential().getUsername());
     }
@@ -164,8 +169,8 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
         properties.put(AzureGlobalProperties.PREFIX + ".credential.client-id", "custom-client-id");
         PropertiesPropertySource propertiesPropertySource = new PropertiesPropertySource("test-properties", properties);
         ConfigurableEnvironment environment = getEnvironment(propertiesPropertySource);
-        AzureGlobalProperties globalProperties = Binder.get(environment)
-            .bind(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class).get();
+        AzureGlobalProperties globalProperties
+            = Binder.get(environment).bind(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class).get();
         assertEquals("custom-client-id", globalProperties.getCredential().getClientId());
         assertNull(globalProperties.getCredential().getUsername());
     }
@@ -179,13 +184,15 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
         PropertiesPropertySource propertiesPropertySource = new PropertiesPropertySource("test-properties", properties);
 
         ConfigurableEnvironment environment = getEnvironment(propertiesPropertySource);
-        AzureEventHubsProperties eventHubsProperties = Binder.get(environment).bind(AzureEventHubsProperties.PREFIX, AzureEventHubsProperties.class).get();
-        AzureKeyVaultSecretProperties keyVaultSecretProperties = Binder.get(environment).bind(AzureKeyVaultSecretProperties.PREFIX, AzureKeyVaultSecretProperties.class).get();
+        AzureEventHubsProperties eventHubsProperties
+            = Binder.get(environment).bind(AzureEventHubsProperties.PREFIX, AzureEventHubsProperties.class).get();
+        AzureKeyVaultSecretProperties keyVaultSecretProperties = Binder.get(environment)
+            .bind(AzureKeyVaultSecretProperties.PREFIX, AzureKeyVaultSecretProperties.class)
+            .get();
 
         assertEquals("test-connection-str", eventHubsProperties.getConnectionString());
         assertEquals("test-endpoint", keyVaultSecretProperties.getEndpoint());
     }
-
 
     private PropertiesPropertySource buildTestProperties(String key, String value) {
         Properties properties = new Properties();
@@ -193,13 +200,12 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTests {
         return new PropertiesPropertySource("test-properties", properties);
     }
 
-
     private ConfigurableEnvironment getEnvironment(PropertiesPropertySource propertiesPropertySource) {
         return getEnvironment(propertiesPropertySource, null);
     }
 
     private ConfigurableEnvironment getEnvironment(PropertiesPropertySource propertiesPropertySource,
-                                                   EnvironmentPostProcessor environmentPostProcessor) {
+        EnvironmentPostProcessor environmentPostProcessor) {
 
         ConfigurableEnvironment environment = new StandardServletEnvironment();
 

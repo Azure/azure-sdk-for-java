@@ -25,11 +25,13 @@ import static org.apache.kafka.common.security.auth.SecurityProtocol.SASL_SSL;
 class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaPropertiesBeanPostProcessor.class);
-    private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";%s";
+    private static final String SASL_CONFIG_VALUE
+        = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";%s";
 
     private final ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider;
 
-    KafkaPropertiesBeanPostProcessor(ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
+    KafkaPropertiesBeanPostProcessor(
+        ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
         this.connectionStringProvider = connectionStringProvider;
     }
 
@@ -45,12 +47,14 @@ class KafkaPropertiesBeanPostProcessor implements BeanPostProcessor {
             KafkaProperties kafkaProperties = (KafkaProperties) bean;
             String connectionString = connectionStringProvider.getConnectionString();
 
-            String bootstrapServer = new EventHubsConnectionString(connectionString).getFullyQualifiedNamespace() + ":9093";
+            String bootstrapServer
+                = new EventHubsConnectionString(connectionString).getFullyQualifiedNamespace() + ":9093";
             kafkaProperties.setBootstrapServers(new ArrayList<>(Collections.singletonList(bootstrapServer)));
             kafkaProperties.getProperties().put(SECURITY_PROTOCOL_CONFIG, SASL_SSL.name());
             kafkaProperties.getProperties().put(SASL_MECHANISM, "PLAIN");
-            kafkaProperties.getProperties().put(SASL_JAAS_CONFIG, String.format(SASL_CONFIG_VALUE,
-                connectionString, System.getProperty("line.separator")));
+            kafkaProperties.getProperties()
+                .put(SASL_JAAS_CONFIG,
+                    String.format(SASL_CONFIG_VALUE, connectionString, System.getProperty("line.separator")));
         }
         return bean;
     }

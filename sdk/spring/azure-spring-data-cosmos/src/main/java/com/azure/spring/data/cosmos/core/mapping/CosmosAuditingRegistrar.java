@@ -41,8 +41,10 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport imp
     }
 
     @Override
-    protected void postProcess(BeanDefinitionBuilder builder, AuditingConfiguration configuration, BeanDefinitionRegistry registry) {
-        final BeanDefinitionBuilder definition = BeanDefinitionBuilder.genericBeanDefinition(CosmosMappingContext.class);
+    protected void postProcess(BeanDefinitionBuilder builder, AuditingConfiguration configuration,
+        BeanDefinitionRegistry registry) {
+        final BeanDefinitionBuilder definition
+            = BeanDefinitionBuilder.genericBeanDefinition(CosmosMappingContext.class);
         definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_CONSTRUCTOR);
 
         builder.setFactoryMethod("from").addConstructorArgValue(definition.getBeanDefinition());
@@ -69,7 +71,7 @@ class CosmosAuditingRegistrar extends AuditingBeanDefinitionRegistrarSupport imp
      */
     @Override
     protected void registerAuditListenerBeanDefinition(BeanDefinition auditingHandlerDefinition,
-                                                       BeanDefinitionRegistry registry) {
+        BeanDefinitionRegistry registry) {
         // TODO: consider moving to event listener for auditing rather than injecting the
         // IsNewAwareAuditingHandler directly - this would require integrating CosmosTemplate with
         // the spring eventing system which would be a chunk of work beyond the scope of this PR

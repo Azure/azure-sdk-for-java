@@ -19,7 +19,8 @@ import java.util.List;
 /**
  * Configuration properties for Cosmos database, consistency, telemetry, connection, query metrics and diagnostics.
  */
-public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties implements CosmosClientProperties {
+public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProperties
+    implements CosmosClientProperties {
 
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 

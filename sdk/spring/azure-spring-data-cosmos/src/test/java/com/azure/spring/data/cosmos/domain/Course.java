@@ -60,9 +60,7 @@ public class Course {
             return false;
         }
         Course course = (Course) o;
-        return courseId.equals(course.courseId)
-            && name.equals(course.name)
-            && department.equals(course.department);
+        return courseId.equals(course.courseId) && name.equals(course.name) && department.equals(course.department);
     }
 
     @Override
@@ -72,16 +70,7 @@ public class Course {
 
     @Override
     public String toString() {
-        return "Course{"
-            + "courseId='"
-            + courseId
-            + '\''
-            + ", name='"
-            + name
-            + '\''
-            + ", department='"
-            + department
-            + '\''
-            + '}';
+        return "Course{" + "courseId='" + courseId + '\'' + ", name='" + name + '\'' + ", department='" + department
+            + '\'' + '}';
     }
 }

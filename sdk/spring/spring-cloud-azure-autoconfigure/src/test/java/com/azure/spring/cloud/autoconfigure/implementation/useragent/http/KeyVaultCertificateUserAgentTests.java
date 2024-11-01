@@ -30,18 +30,15 @@ class KeyVaultCertificateUserAgentTests {
     void userAgentTest(CapturedOutput output) {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureKeyVaultCertificateAutoConfiguration.class))
-            .withPropertyValues(
-                "spring.cloud.azure.profile.tenant-id=sample",
-                "spring.cloud.azure.credential.client-id=sample",
-                "spring.cloud.azure.credential.client-secret=sample",
+            .withPropertyValues("spring.cloud.azure.profile.tenant-id=sample",
+                "spring.cloud.azure.credential.client-id=sample", "spring.cloud.azure.credential.client-secret=sample",
                 "spring.cloud.azure.keyvault.certificate.enabled=true",
                 "spring.cloud.azure.keyvault.certificate.endpoint=https://sample.vault.azure.net/",
                 "spring.cloud.azure.keyvault.certificate.client.logging.level=headers",
                 "spring.cloud.azure.keyvault.certificate.client.logging.allowed-header-names=User-Agent",
                 "spring.cloud.azure.keyvault.certificate.retry.fixed.delay=1s",
                 "spring.cloud.azure.keyvault.certificate.retry.fixed.max-retries=0",
-                "spring.cloud.azure.keyvault.certificate.retry.mode=fixed"
-            )
+                "spring.cloud.azure.keyvault.certificate.retry.mode=fixed")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultCertificateAutoConfiguration.class);
@@ -58,10 +55,10 @@ class KeyVaultCertificateUserAgentTests {
                     // Eat it because we just want the log.
                 }
                 String allOutput = output.getAll();
-                String format1 = String.format("User-Agent:%s",
-                    AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
-                String format2 = String.format("\"User-Agent\":\"%s",
-                    AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
+                String format1
+                    = String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
+                String format2
+                    = String.format("\"User-Agent\":\"%s", AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_CERTIFICATES);
                 assertTrue(allOutput.contains(format1) || allOutput.contains(format2));
             });
     }

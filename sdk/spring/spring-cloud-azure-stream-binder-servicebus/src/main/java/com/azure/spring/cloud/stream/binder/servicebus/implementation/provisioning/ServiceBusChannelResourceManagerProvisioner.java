@@ -38,7 +38,7 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
      * @param serviceBusProvisioner the service Bus Provisioner
      */
     public ServiceBusChannelResourceManagerProvisioner(@NonNull String namespace,
-                                                       @NonNull ServiceBusProvisioner serviceBusProvisioner) {
+        @NonNull ServiceBusProvisioner serviceBusProvisioner) {
         Assert.hasText(namespace, "The namespace can't be null or empty");
         this.namespace = namespace;
         this.serviceBusProvisioner = serviceBusProvisioner;
@@ -46,14 +46,17 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
 
     @Override
     public ProducerDestination provisionProducerDestination(String name,
-                                                            ExtendedProducerProperties<ServiceBusProducerProperties> extendedProducerProperties) throws ProvisioningException {
+        ExtendedProducerProperties<ServiceBusProducerProperties> extendedProducerProperties)
+        throws ProvisioningException {
         ServiceBusProducerProperties producerProperties = extendedProducerProperties.getExtension();
         Assert.notNull(producerProperties.getEntityType(), "The EntityType of the producer can't be null.");
 
         if (QUEUE == producerProperties.getEntityType()) {
-            this.serviceBusProvisioner.provisionQueue(namespace, name, buildEntityProperties(producerProperties, ServiceBusQueueProperties.class));
+            this.serviceBusProvisioner.provisionQueue(namespace, name,
+                buildEntityProperties(producerProperties, ServiceBusQueueProperties.class));
         } else {
-            this.serviceBusProvisioner.provisionTopic(namespace, name, buildEntityProperties(producerProperties, ServiceBusTopicProperties.class));
+            this.serviceBusProvisioner.provisionTopic(namespace, name,
+                buildEntityProperties(producerProperties, ServiceBusTopicProperties.class));
         }
 
         return new ServiceBusProducerDestination(name);
@@ -61,22 +64,24 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
 
     @Override
     public ConsumerDestination provisionConsumerDestination(String name, String group,
-                                                            ExtendedConsumerProperties<ServiceBusConsumerProperties> extendedConsumerProperties) throws ProvisioningException {
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> extendedConsumerProperties)
+        throws ProvisioningException {
         ServiceBusConsumerProperties consumerProperties = extendedConsumerProperties.getExtension();
         Assert.notNull(consumerProperties.getEntityType(), "The EntityType of the consumer can't be null.");
 
         if (QUEUE == consumerProperties.getEntityType()) {
-            this.serviceBusProvisioner.provisionQueue(namespace, name, buildEntityProperties(consumerProperties, ServiceBusQueueProperties.class));
+            this.serviceBusProvisioner.provisionQueue(namespace, name,
+                buildEntityProperties(consumerProperties, ServiceBusQueueProperties.class));
         } else {
-            this.serviceBusProvisioner.provisionSubscription(namespace, name, group, buildEntityProperties(consumerProperties, ServiceBusTopicProperties.class));
+            this.serviceBusProvisioner.provisionSubscription(namespace, name, group,
+                buildEntityProperties(consumerProperties, ServiceBusTopicProperties.class));
         }
 
         return new ServiceBusConsumerDestination(name);
     }
 
-    private <T extends ServiceBusEntityProperties> T buildEntityProperties(
-        ServiceBusEntityOptionsProvider entityOptionsProvider,
-        Class<T> clazz) {
+    private <T extends ServiceBusEntityProperties> T
+        buildEntityProperties(ServiceBusEntityOptionsProvider entityOptionsProvider, Class<T> clazz) {
         T entityProperties = null;
         try {
             entityProperties = clazz.getDeclaredConstructor().newInstance();

@@ -89,10 +89,12 @@ class AzureHttpProxyOptionsConverterTests {
         assertEquals(ProxyOptions.Type.HTTP, target.getType());
 
         source.setType("abc");
-        assertThrows(IllegalArgumentException.class, () -> AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER.convert(source), "Wrong proxy type provided!");
+        assertThrows(IllegalArgumentException.class,
+            () -> AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER.convert(source), "Wrong proxy type provided!");
 
         source.setType(null);
-        assertThrows(IllegalArgumentException.class, () -> AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER.convert(source), "Wrong proxy type provided!");
+        assertThrows(IllegalArgumentException.class,
+            () -> AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER.convert(source), "Wrong proxy type provided!");
     }
 
 }

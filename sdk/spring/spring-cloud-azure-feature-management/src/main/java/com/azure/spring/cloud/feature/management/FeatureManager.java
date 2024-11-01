@@ -94,8 +94,11 @@ public class FeatureManager {
             return false;
         }
 
-        Stream<FeatureFilterEvaluationContext> filters = featureItem.getEnabledFor().values().stream()
-            .filter(Objects::nonNull).filter(featureFilter -> featureFilter.getName() != null);
+        Stream<FeatureFilterEvaluationContext> filters = featureItem.getEnabledFor()
+            .values()
+            .stream()
+            .filter(Objects::nonNull)
+            .filter(featureFilter -> featureFilter.getName() != null);
 
         // All Filters must be true
         if (featureItem.getRequirementType().equals("All")) {

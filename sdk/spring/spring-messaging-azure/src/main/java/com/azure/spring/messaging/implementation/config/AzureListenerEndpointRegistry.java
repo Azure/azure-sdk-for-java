@@ -84,9 +84,8 @@ public class AzureListenerEndpointRegistry
      * @throws IllegalStateException If another endpoint with the same id has already been registered.
      * @see #getListenerContainersMap()
      */
-    public void registerListenerContainer(AzureListenerEndpoint endpoint,
-                                          MessageListenerContainerFactory<?> factory,
-                                          boolean startImmediately) {
+    public void registerListenerContainer(AzureListenerEndpoint endpoint, MessageListenerContainerFactory<?> factory,
+        boolean startImmediately) {
 
         Assert.notNull(endpoint, "Endpoint must not be null");
         Assert.notNull(factory, "Factory must not be null");
@@ -128,7 +127,7 @@ public class AzureListenerEndpointRegistry
      * @throws IllegalStateException If phase mismatch is encountered between container factory and conta
      */
     protected MessageListenerContainer createListenerContainer(AzureListenerEndpoint endpoint,
-                                                               MessageListenerContainerFactory<?> factory) {
+        MessageListenerContainerFactory<?> factory) {
 
         MessageListenerContainer listenerContainer = factory.createListenerContainer(endpoint);
 

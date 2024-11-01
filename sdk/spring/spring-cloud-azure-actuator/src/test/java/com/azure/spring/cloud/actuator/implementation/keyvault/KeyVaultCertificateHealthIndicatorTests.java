@@ -19,8 +19,9 @@ class KeyVaultCertificateHealthIndicatorTests {
 
     @Test
     void certificateIsUp() {
-        @SuppressWarnings("unchecked") Response<KeyVaultCertificateWithPolicy> mockResponse =
-            (Response<KeyVaultCertificateWithPolicy>) mock(Response.class);
+        @SuppressWarnings("unchecked")
+        Response<KeyVaultCertificateWithPolicy> mockResponse
+            = (Response<KeyVaultCertificateWithPolicy>) mock(Response.class);
         CertificateAsyncClient mockAsyncClient = mock(CertificateAsyncClient.class);
         Mockito.when(mockAsyncClient.getCertificateWithResponse("spring-cloud-azure-not-existing-certificate"))
             .thenReturn(Mono.just(mockResponse));

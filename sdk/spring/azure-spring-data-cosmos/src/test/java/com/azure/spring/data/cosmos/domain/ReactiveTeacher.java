@@ -75,16 +75,7 @@ public class ReactiveTeacher {
 
     @Override
     public String toString() {
-        return "Teacher{"
-            + "id='"
-            + id
-            + '\''
-            + ", firstName='"
-            + firstName
-            + '\''
-            + ", lastName='"
-            + lastName
-            + '\''
+        return "Teacher{" + "id='" + id + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
             + '}';
     }
 }

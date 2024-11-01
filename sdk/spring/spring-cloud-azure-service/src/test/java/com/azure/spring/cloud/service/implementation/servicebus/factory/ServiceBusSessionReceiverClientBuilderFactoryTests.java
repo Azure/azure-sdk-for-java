@@ -19,10 +19,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class ServiceBusSessionReceiverClientBuilderFactoryTests extends AbstractServiceBusSubClientBuilderFactoryTests<
-    ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder,
-    ServiceBusReceiverClientTestProperties,
-    ServiceBusSessionReceiverClientBuilderFactory> {
+class ServiceBusSessionReceiverClientBuilderFactoryTests extends
+    AbstractServiceBusSubClientBuilderFactoryTests<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder, ServiceBusReceiverClientTestProperties, ServiceBusSessionReceiverClientBuilderFactory> {
 
     @Test
     void queueConfigured() {
@@ -31,7 +29,8 @@ class ServiceBusSessionReceiverClientBuilderFactoryTests extends AbstractService
         properties.setEntityType(ServiceBusEntityType.QUEUE);
         properties.setEntityName("test-queue");
 
-        final ServiceBusSessionReceiverClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
+        final ServiceBusSessionReceiverClientBuilderFactory factory
+            = createClientBuilderFactoryWithMockBuilder(properties);
         final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder = factory.build();
         builder.buildClient();
 
@@ -49,15 +48,19 @@ class ServiceBusSessionReceiverClientBuilderFactoryTests extends AbstractService
     }
 
     @Override
-    protected ServiceBusSessionReceiverClientBuilderFactory createClientBuilderFactoryWithMockBuilder(ServiceBusReceiverClientTestProperties properties) {
-        return spy(new ServiceBusSessionReceiverClientBuilderFactoryExt(getSharedServiceBusClientBuilder(properties), properties));
+    protected ServiceBusSessionReceiverClientBuilderFactory
+        createClientBuilderFactoryWithMockBuilder(ServiceBusReceiverClientTestProperties properties) {
+        return spy(new ServiceBusSessionReceiverClientBuilderFactoryExt(getSharedServiceBusClientBuilder(properties),
+            properties));
     }
 
     @Override
     void verifyServicePropertiesConfigured(boolean isShareServiceClientBuilder) {
-        ServiceBusReceiverClientTestProperties properties = getServiceBusReceiverClientTestProperties(isShareServiceClientBuilder);
+        ServiceBusReceiverClientTestProperties properties
+            = getServiceBusReceiverClientTestProperties(isShareServiceClientBuilder);
 
-        final ServiceBusSessionReceiverClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
+        final ServiceBusSessionReceiverClientBuilderFactory factory
+            = createClientBuilderFactoryWithMockBuilder(properties);
         doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
         final ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder builder = factory.build();
         builder.buildClient();
@@ -72,10 +75,12 @@ class ServiceBusSessionReceiverClientBuilderFactoryTests extends AbstractService
         verify(builder, times(1)).maxAutoLockRenewDuration(Duration.ofSeconds(5));
         verify(builder, times(1)).disableAutoComplete();
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(factory.getServiceBusClientBuilder(), times(1))
+            .fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
-    private ServiceBusReceiverClientTestProperties getServiceBusReceiverClientTestProperties(boolean isShareServiceClientBuilder) {
+    private ServiceBusReceiverClientTestProperties
+        getServiceBusReceiverClientTestProperties(boolean isShareServiceClientBuilder) {
         ServiceBusReceiverClientTestProperties properties = new ServiceBusReceiverClientTestProperties();
         properties.setNamespace("test-namespace");
         properties.setEntityName("test-topic");
@@ -96,12 +101,13 @@ class ServiceBusSessionReceiverClientBuilderFactoryTests extends AbstractService
         builder.buildClient();
     }
 
-    static class ServiceBusSessionReceiverClientBuilderFactoryExt extends ServiceBusSessionReceiverClientBuilderFactory {
+    static class ServiceBusSessionReceiverClientBuilderFactoryExt
+        extends ServiceBusSessionReceiverClientBuilderFactory {
         private ServiceBusClientBuilder serviceBusClientBuilder;
         private final ServiceBusReceiverClientTestProperties properties;
 
         ServiceBusSessionReceiverClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                         ServiceBusReceiverClientTestProperties properties) {
+            ServiceBusReceiverClientTestProperties properties) {
             super(serviceBusClientBuilder, properties);
             this.properties = properties;
             if (properties.isShareServiceBusClientBuilder() && serviceBusClientBuilder != null) {
@@ -117,7 +123,8 @@ class ServiceBusSessionReceiverClientBuilderFactoryTests extends AbstractService
         @Override
         protected ServiceBusClientBuilder getServiceBusClientBuilder() {
             if (!this.isShareServiceBusClientBuilder() && this.serviceBusClientBuilder == null) {
-                TestServiceBusClientBuilderFactory clientBuilderFactory = spy(new TestServiceBusClientBuilderFactory(properties));
+                TestServiceBusClientBuilderFactory clientBuilderFactory
+                    = spy(new TestServiceBusClientBuilderFactory(properties));
                 this.serviceBusClientBuilder = clientBuilderFactory.build();
             }
             return this.serviceBusClientBuilder;

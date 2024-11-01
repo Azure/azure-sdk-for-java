@@ -39,22 +39,21 @@ abstract class AbstractApplicationTypeCondition extends SpringBootCondition {
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
         ConditionMessage.Builder message = ConditionMessage.forCondition(getConditionTitle());
-        AadAuthenticationProperties properties =
-            Binder.get(context.getEnvironment())
-                  .bind("spring.cloud.azure.active-directory", AadAuthenticationProperties.class)
-                  .orElse(null);
+        AadAuthenticationProperties properties = Binder.get(context.getEnvironment())
+            .bind("spring.cloud.azure.active-directory", AadAuthenticationProperties.class)
+            .orElse(null);
         if (properties == null) {
             return ConditionOutcome.noMatch(message.notAvailable("Azure AD authentication properties"));
         }
 
         // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()
         AadApplicationType applicationType = Optional.ofNullable(properties.getApplicationType())
-                                                     .orElseGet(AadApplicationType::inferApplicationTypeByDependencies);
+            .orElseGet(AadApplicationType::inferApplicationTypeByDependencies);
         if (isNotTargetApplicationType(applicationType)) {
-            return ConditionOutcome.noMatch(
-                message.because("spring.cloud.azure.active-directory.application-type=" + applicationType));
+            return ConditionOutcome
+                .noMatch(message.because("spring.cloud.azure.active-directory.application-type=" + applicationType));
         }
-        return ConditionOutcome.match(
-            message.foundExactly("spring.cloud.azure.active-directory.application-type=" + applicationType));
+        return ConditionOutcome
+            .match(message.foundExactly("spring.cloud.azure.active-directory.application-type=" + applicationType));
     }
 }

@@ -49,14 +49,13 @@ class QueueClientConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, name = "queue-name")
     QueueAsyncClient queueAsyncClient(QueueServiceAsyncClient queueServiceAsyncClient,
-                                      AzureStorageQueueProperties properties) {
+        AzureStorageQueueProperties properties) {
         return queueServiceAsyncClient.getQueueAsyncClient(properties.getQueueName());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(
-        AzureStorageQueueProperties properties,
+    QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(AzureStorageQueueProperties properties,
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<QueueServiceClientBuilder>> customizers) {
         final QueueServiceClientBuilderFactory factory = new QueueServiceClientBuilderFactory(properties);
@@ -74,9 +73,11 @@ class QueueClientConfiguration {
     }
 
     @Bean
-    @ConditionalOnAnyProperty(prefixes = {AzureStorageQueueProperties.PREFIX, AzureStorageProperties.PREFIX}, name = {"connection-string"})
-    StaticConnectionStringProvider<AzureServiceType.StorageQueue> staticStorageQueueConnectionStringProvider(
-        AzureStorageQueueProperties properties) {
+    @ConditionalOnAnyProperty(
+        prefixes = { AzureStorageQueueProperties.PREFIX, AzureStorageProperties.PREFIX },
+        name = { "connection-string" })
+    StaticConnectionStringProvider<AzureServiceType.StorageQueue>
+        staticStorageQueueConnectionStringProvider(AzureStorageQueueProperties properties) {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_QUEUE, properties.getConnectionString());
     }

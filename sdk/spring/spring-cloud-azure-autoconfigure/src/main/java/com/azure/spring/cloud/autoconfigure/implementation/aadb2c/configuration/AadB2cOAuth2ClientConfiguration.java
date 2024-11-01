@@ -61,18 +61,13 @@ class AadB2cOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     ClientRegistrationRepository clientRegistrationRepository() {
-        Stream<ClientRegistration> clientRegistrationStream = properties.getUserFlows()
-                                                                        .entrySet()
-                                                                        .stream()
-                                                                        .map(this::buildUserFlowClientRegistration);
+        Stream<ClientRegistration> clientRegistrationStream
+            = properties.getUserFlows().entrySet().stream().map(this::buildUserFlowClientRegistration);
 
-        Stream<ClientRegistration> authorizationClientRegistrations = properties.getAuthorizationClients()
-                                                                                .entrySet()
-                                                                                .stream()
-                                                                                .map(this::buildClientRegistration);
-        final List<ClientRegistration> clientRegistrations = Stream.concat(clientRegistrationStream,
-                                                                       authorizationClientRegistrations)
-                                                                   .collect(Collectors.toList());
+        Stream<ClientRegistration> authorizationClientRegistrations
+            = properties.getAuthorizationClients().entrySet().stream().map(this::buildClientRegistration);
+        final List<ClientRegistration> clientRegistrations
+            = Stream.concat(clientRegistrationStream, authorizationClientRegistrations).collect(Collectors.toList());
         return new AadB2cClientRegistrationRepository(properties.getLoginFlow(), clientRegistrations);
     }
 
@@ -83,18 +78,18 @@ class AadB2cOAuth2ClientConfiguration {
      */
     private ClientRegistration buildUserFlowClientRegistration(Map.Entry<String, String> client) {
         return ClientRegistration.withRegistrationId(client.getValue()) // Use flow as registration ID.
-                                 .clientName(client.getKey())
-                                 .clientId(properties.getCredential().getClientId())
-                                 .clientSecret(properties.getCredential().getClientSecret())
-                                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                                 .redirectUri(properties.getReplyUrl())
-                                 .scope(properties.getCredential().getClientId(), "openid", "offline_access")
-                                 .authorizationUri(AadB2cUrl.getAuthorizationUrl(properties.getBaseUri()))
-                                 .tokenUri(AadB2cUrl.getTokenUrl(properties.getBaseUri(), client.getValue()))
-                                 .jwkSetUri(AadB2cUrl.getJwkSetUrl(properties.getBaseUri(), client.getValue()))
-                                 .userNameAttributeName(properties.getUserNameAttributeName())
-                                 .build();
+            .clientName(client.getKey())
+            .clientId(properties.getCredential().getClientId())
+            .clientSecret(properties.getCredential().getClientSecret())
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .redirectUri(properties.getReplyUrl())
+            .scope(properties.getCredential().getClientId(), "openid", "offline_access")
+            .authorizationUri(AadB2cUrl.getAuthorizationUrl(properties.getBaseUri()))
+            .tokenUri(AadB2cUrl.getTokenUrl(properties.getBaseUri(), client.getValue()))
+            .jwkSetUri(AadB2cUrl.getJwkSetUrl(properties.getBaseUri(), client.getValue()))
+            .userNameAttributeName(properties.getUserNameAttributeName())
+            .build();
     }
 
     /**
@@ -109,27 +104,28 @@ class AadB2cOAuth2ClientConfiguration {
             LOGGER.warn("The authorization type of the {} client registration is not supported.", client.getKey());
         }
         return ClientRegistration.withRegistrationId(client.getKey())
-                                 .clientName(client.getKey())
-                                 .clientId(properties.getCredential().getClientId())
-                                 .clientSecret(properties.getCredential().getClientSecret())
-                                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
-                                 .authorizationGrantType(authGrantType)
-                                 .scope(client.getValue().getScopes())
-                                 .tokenUri(AadB2cUrl.getAADTokenUrl(properties.getProfile().getTenantId()))
-                                 .jwkSetUri(AadB2cUrl.getAADJwkSetUrl(properties.getProfile().getTenantId()))
-                                 .build();
+            .clientName(client.getKey())
+            .clientId(properties.getCredential().getClientId())
+            .clientSecret(properties.getCredential().getClientSecret())
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_POST)
+            .authorizationGrantType(authGrantType)
+            .scope(client.getValue().getScopes())
+            .tokenUri(AadB2cUrl.getAADTokenUrl(properties.getProfile().getTenantId()))
+            .jwkSetUri(AadB2cUrl.getAADJwkSetUrl(properties.getProfile().getTenantId()))
+            .build();
     }
 
     @Bean
     @ConditionalOnMissingBean
     OAuth2AuthorizedClientManager authorizedClientManager(ClientRegistrationRepository clients,
-                                                          OAuth2AuthorizedClientRepository authorizedClients) {
+        OAuth2AuthorizedClientRepository authorizedClients) {
         OAuth2AuthorizedClientProvider authorizedClientProvider = OAuth2AuthorizedClientProviderBuilder.builder()
-                .authorizationCode()
-                .provider(azureRefreshTokenProvider())
-                .provider(azureClientCredentialProvider())
-                .build();
-        DefaultOAuth2AuthorizedClientManager manager = new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
+            .authorizationCode()
+            .provider(azureRefreshTokenProvider())
+            .provider(azureClientCredentialProvider())
+            .build();
+        DefaultOAuth2AuthorizedClientManager manager
+            = new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
         manager.setAuthorizedClientProvider(authorizedClientProvider);
         return manager;
     }
@@ -143,7 +139,8 @@ class AadB2cOAuth2ClientConfiguration {
     }
 
     private ClientCredentialsOAuth2AuthorizedClientProvider azureClientCredentialProvider() {
-        ClientCredentialsOAuth2AuthorizedClientProvider provider = new ClientCredentialsOAuth2AuthorizedClientProvider();
+        ClientCredentialsOAuth2AuthorizedClientProvider provider
+            = new ClientCredentialsOAuth2AuthorizedClientProvider();
         DefaultClientCredentialsTokenResponseClient responseClient = new DefaultClientCredentialsTokenResponseClient();
         responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         provider.setAccessTokenResponseClient(responseClient);

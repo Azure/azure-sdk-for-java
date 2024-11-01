@@ -54,14 +54,14 @@ public enum AadApplicationType {
     /**
      * The Spring security OAuth2 client class name
      */
-    public static final String SPRING_SECURITY_OAUTH2_CLIENT_CLASS_NAME =
-        "org.springframework.security.oauth2.client.registration.ClientRegistration";
+    public static final String SPRING_SECURITY_OAUTH2_CLIENT_CLASS_NAME
+        = "org.springframework.security.oauth2.client.registration.ClientRegistration";
 
     /**
      * The Spring security OAuth2 resource server class name
      */
-    public static final String SPRING_SECURITY_OAUTH2_RESOURCE_SERVER_CLASS_NAME =
-        "org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken";
+    public static final String SPRING_SECURITY_OAUTH2_RESOURCE_SERVER_CLASS_NAME
+        = "org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken";
 
     /**
      * Infer application type by dependencies

@@ -21,8 +21,7 @@ class ConfigurationWithConnectionDetailsBean {
     private final Environment environment;
     private final AzureStorageQueueConnectionDetails connectionDetails;
 
-    ConfigurationWithConnectionDetailsBean(
-        Environment environment,
+    ConfigurationWithConnectionDetailsBean(Environment environment,
         AzureStorageQueueConnectionDetails connectionDetails) {
         this.environment = environment;
         this.connectionDetails = connectionDetails;
@@ -35,8 +34,8 @@ class ConfigurationWithConnectionDetailsBean {
             .loadServiceCommonProperties(azureStorageProperties, new AzureStorageQueueProperties());
         BindResult<AzureStorageQueueProperties> bindResult = Binder.get(environment)
             .bind(AzureStorageQueueProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromServiceCommonProperties));
-        AzureStorageQueueProperties properties = bindResult.isBound() ? bindResult.get()
-            : propertiesLoadFromServiceCommonProperties;
+        AzureStorageQueueProperties properties
+            = bindResult.isBound() ? bindResult.get() : propertiesLoadFromServiceCommonProperties;
         properties.setConnectionString(connectionDetails.getConnectionString());
         properties.setEndpoint(connectionDetails.getEndpoint());
         return properties;

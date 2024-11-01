@@ -88,8 +88,8 @@ public interface AzureProfileOptionsProvider {
         private static final Map<String, CloudType> CLOUD_TYPE_MAP = initMap();
 
         private static Map<String, CloudType> initMap() {
-            return Collections.unmodifiableMap(Arrays.stream(CloudType.values())
-                         .collect(Collectors.toMap(c -> c.name(), Function.identity())));
+            return Collections.unmodifiableMap(
+                Arrays.stream(CloudType.values()).collect(Collectors.toMap(c -> c.name(), Function.identity())));
         }
 
         /**
@@ -112,91 +112,109 @@ public interface AzureProfileOptionsProvider {
          * @return The management portal URL.
          */
         String getPortal();
+
         /**
          * Return the publishing settings file URL.
          * @return the publishing settings file URL.
          */
         String getPublishingProfile();
+
         /**
          * Return the management service endpoint.
          * @return the management service endpoint.
          */
         String getManagementEndpoint();
+
         /**
          * Return the resource management endpoint.
          * @return the resource management endpoint.
          */
         String getResourceManagerEndpoint();
+
         /**
          * Return the sql server management endpoint for mobile commands.
          * @return the sql server management endpoint for mobile commands.
          */
         String getSqlManagementEndpoint();
+
         /**
          * Return the dns suffix for sql servers.
          * @return the dns suffix for sql servers.
          */
         String getSqlServerHostnameSuffix();
+
         /**
          * Return the template gallery endpoint.
          * @return the template gallery endpoint.
          */
         String getGalleryEndpoint();
+
         /**
          * Return the Active Directory login endpoint.
          * @return the Active Directory login endpoint.
          */
         String getActiveDirectoryEndpoint();
+
         /**
          * Return the resource ID to obtain AD tokens for.
          * @return The resource ID to obtain AD tokens for.
          */
         String getActiveDirectoryResourceId();
+
         /**
          * Return the Active Directory Graph endpoint.
          * @return the Active Directory Graph endpoint.
          */
         String getActiveDirectoryGraphEndpoint();
+
         /**
          * Return the Microsoft Graph endpoint.
          * @return the Microsoft Graph endpoint.
          */
         String getMicrosoftGraphEndpoint();
+
         /**
          * Return the Data Lake resource ID.
          * @return the Data Lake resource ID.
          */
         String getDataLakeEndpointResourceId();
+
         /**
          * Return the Active Directory api version.
          * @return the Active Directory api version.
          */
         String getActiveDirectoryGraphApiVersion();
+
         /**
          * The endpoint suffix for storage accounts.
          * @return the endpoint suffix for storage accounts.
          */
         String getStorageEndpointSuffix();
+
         /**
          * Return the key vault service dns suffix.
          * @return the key vault service dns suffix.
          */
         String getKeyVaultDnsSuffix();
+
         /**
          * Return the data lake store filesystem service dns suffix.
          * @return the data lake store filesystem service dns suffix.
          */
         String getAzureDataLakeStoreFileSystemEndpointSuffix();
+
         /**
          * Return the data lake analytics job and catalog service dns suffix.
          * @return the data lake analytics job and catalog service dns suffix.
          */
         String getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
+
         /**
          * Return the log analytics endpoint.
          * @return the log analytics endpoint.
          */
         String getAzureLogAnalyticsEndpoint();
+
         /**
          * Return the application insights endpoint.
          * @return the application insights endpoint.
@@ -239,8 +257,10 @@ public interface AzureProfileOptionsProvider {
             endpointsMap.put("activeDirectoryGraphApiVersion", getActiveDirectoryGraphApiVersion());
             endpointsMap.put("storageEndpointSuffix", getStorageEndpointSuffix());
             endpointsMap.put("keyVaultDnsSuffix", getKeyVaultDnsSuffix());
-            endpointsMap.put("azureDataLakeStoreFileSystemEndpointSuffix", getAzureDataLakeStoreFileSystemEndpointSuffix());
-            endpointsMap.put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix());
+            endpointsMap.put("azureDataLakeStoreFileSystemEndpointSuffix",
+                getAzureDataLakeStoreFileSystemEndpointSuffix());
+            endpointsMap.put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix",
+                getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix());
             endpointsMap.put("azureLogAnalyticsResourceId", getAzureLogAnalyticsEndpoint());
             endpointsMap.put("azureApplicationInsightsResourceId", getAzureApplicationInsightsEndpoint());
 

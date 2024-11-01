@@ -16,19 +16,19 @@ import reactor.util.function.Tuples;
 /**
  * Resource manager for Service Bus topic subscription.
  */
-public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<ServiceBusSubscription,
-    Tuple3<String, String, String>, ServiceBusTopicProperties> {
+public class ServiceBusTopicSubscriptionCrud
+    extends AbstractResourceCrud<ServiceBusSubscription, Tuple3<String, String, String>, ServiceBusTopicProperties> {
 
     private ServiceBusTopicCrud serviceBusTopicCrud;
+
     public ServiceBusTopicSubscriptionCrud(AzureResourceManager azureResourceManager,
-                                           AzureResourceMetadata azureResourceMetadata) {
+        AzureResourceMetadata azureResourceMetadata) {
         this(azureResourceManager, azureResourceMetadata,
             new ServiceBusTopicCrud(azureResourceManager, azureResourceMetadata));
     }
 
     ServiceBusTopicSubscriptionCrud(AzureResourceManager azureResourceManager,
-                                    AzureResourceMetadata azureResourceMetadata,
-                                    ServiceBusTopicCrud serviceBusTopicCrud) {
+        AzureResourceMetadata azureResourceMetadata, ServiceBusTopicCrud serviceBusTopicCrud) {
         super(azureResourceManager, azureResourceMetadata);
         this.serviceBusTopicCrud = serviceBusTopicCrud;
     }
@@ -48,9 +48,7 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
         try {
             Topic topic = this.serviceBusTopicCrud
                 .get(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()));
-            return topic == null ? null : topic
-                .subscriptions()
-                .getByName(subscriptionCoordinate.getT3());
+            return topic == null ? null : topic.subscriptions().getByName(subscriptionCoordinate.getT3());
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
@@ -71,7 +69,7 @@ public class ServiceBusTopicSubscriptionCrud extends AbstractResourceCrud<Servic
 
     @Override
     public ServiceBusSubscription internalCreate(Tuple3<String, String, String> subscriptionCoordinate,
-                                                 @Nullable ServiceBusTopicProperties topicProperties) {
+        @Nullable ServiceBusTopicProperties topicProperties) {
         return this.serviceBusTopicCrud
             .getOrCreate(Tuples.of(subscriptionCoordinate.getT1(), subscriptionCoordinate.getT2()), topicProperties)
             .subscriptions()

@@ -27,7 +27,6 @@ public class EventHubsMessageListenerContainerFactory
 
     private EventHubsErrorHandler errorHandler = new LoggingErrorHandler();
 
-
     /**
      * Construct the listener container factory with the {@link EventHubsProcessorFactory}.
      *
@@ -60,8 +59,7 @@ public class EventHubsMessageListenerContainerFactory
         @Override
         public void accept(ErrorContext errorContext) {
             LOGGER.error("Error occurred on partition: {}. Error: {}",
-                errorContext.getPartitionContext().getPartitionId(),
-                errorContext.getThrowable());
+                errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable());
         }
     }
 

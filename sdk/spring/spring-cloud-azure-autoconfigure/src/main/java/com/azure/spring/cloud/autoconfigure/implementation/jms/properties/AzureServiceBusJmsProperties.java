@@ -190,18 +190,21 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
     public void afterPropertiesSet() throws Exception {
         if (isPasswordlessEnabled()) {
             if (!StringUtils.hasText(namespace)) {
-                throw new IllegalArgumentException("Passwordless connections enabled, 'spring.jms.servicebus.namespace' should be provided.");
+                throw new IllegalArgumentException(
+                    "Passwordless connections enabled, 'spring.jms.servicebus.namespace' should be provided.");
             }
         } else {
             if (!StringUtils.hasText(connectionString)) {
-                throw new IllegalArgumentException("'spring.jms.servicebus.connection-string' should be provided, otherwise you should provide a bean 'StaticConnectionStringProvider<AzureServiceType.ServiceBus>'.");
+                throw new IllegalArgumentException(
+                    "'spring.jms.servicebus.connection-string' should be provided, otherwise you should provide a bean 'StaticConnectionStringProvider<AzureServiceType.ServiceBus>'.");
             }
         }
 
         if (null == pricingTier || !pricingTier.matches("(?i)premium|standard")) {
             String errMessage = null;
             if ("basic".equalsIgnoreCase(pricingTier)) {
-                errMessage = "The basic tier is not supported by Service Bus JMS. Please use standard or premium tier instead.";
+                errMessage
+                    = "The basic tier is not supported by Service Bus JMS. Please use standard or premium tier instead.";
             } else {
                 errMessage = "'spring.jms.servicebus.pricing-tier' is not valid.";
             }

@@ -20,9 +20,8 @@ import static com.azure.spring.cloud.service.implementation.core.PropertiesValid
  *  Service Bus extended binding properties
  */
 @ConfigurationProperties("spring.cloud.stream.servicebus")
-public class ServiceBusExtendedBindingProperties
-    extends AbstractExtendedBindingProperties<ServiceBusConsumerProperties, ServiceBusProducerProperties,
-    ServiceBusBindingProperties>
+public class ServiceBusExtendedBindingProperties extends
+    AbstractExtendedBindingProperties<ServiceBusConsumerProperties, ServiceBusProducerProperties, ServiceBusBindingProperties>
     implements InitializingBean {
 
     /**
@@ -33,6 +32,7 @@ public class ServiceBusExtendedBindingProperties
 
     private static final String DEFAULTS_PREFIX = "spring.cloud.stream.servicebus.default";
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusExtendedBindingProperties.class);
+
     @Override
     public String getDefaultsPrefix() {
         return DEFAULTS_PREFIX;
@@ -64,16 +64,16 @@ public class ServiceBusExtendedBindingProperties
 
     private void validateNamespaceProperties() {
         getBindings().values()
-                     .stream()
-                     .map(bindings -> bindings.getConsumer().getNamespace())
-                     .filter(Objects::nonNull)
-                     .forEach(PropertiesValidator::validateNamespace);
+            .stream()
+            .map(bindings -> bindings.getConsumer().getNamespace())
+            .filter(Objects::nonNull)
+            .forEach(PropertiesValidator::validateNamespace);
 
         getBindings().values()
-                     .stream()
-                     .map(bindings -> bindings.getProducer().getNamespace())
-                     .filter(Objects::nonNull)
-                     .forEach(PropertiesValidator::validateNamespace);
+            .stream()
+            .map(bindings -> bindings.getProducer().getNamespace())
+            .filter(Objects::nonNull)
+            .forEach(PropertiesValidator::validateNamespace);
 
     }
 }

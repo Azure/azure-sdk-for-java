@@ -18,7 +18,6 @@ import static com.azure.spring.cloud.core.implementation.connectionstring.Connec
 import static com.azure.spring.cloud.core.implementation.connectionstring.ConnectionStringSegments.SHARED_ACCESS_KEY_NAME;
 import static com.azure.spring.cloud.core.implementation.connectionstring.ConnectionStringSegments.SHARED_ACCESS_SIGNATURE;
 
-
 class ConnectionStringTests {
 
     @Test
@@ -26,7 +25,7 @@ class ConnectionStringTests {
         final String str = "Endpoint=https://abc;Id=my-id;Secret=";
 
         Assertions.assertThrows(IllegalArgumentException.class,
-                      () -> new ConnectionString(str, ConnectionStringType.APP_CONFIGURATION));
+            () -> new ConnectionString(str, ConnectionStringType.APP_CONFIGURATION));
     }
 
     @Test
@@ -60,7 +59,8 @@ class ConnectionStringTests {
 
     @Test
     void testEventHubsSbProtocolAndEntityPath() {
-        final String str = "Endpoint=sb://abc.servicebus.windows.net/;SharedAccessKeyName=name;SharedAccessKey=value==;EntityPath=eventhub";
+        final String str
+            = "Endpoint=sb://abc.servicebus.windows.net/;SharedAccessKeyName=name;SharedAccessKey=value==;EntityPath=eventhub";
 
         ConnectionString connectionString = new ConnectionString(str, ConnectionStringType.EVENT_HUB);
 
@@ -100,7 +100,8 @@ class ConnectionStringTests {
 
     @Test
     void testStorage() {
-        final String str = "DefaultEndpointsProtocol=https;AccountName=an;AccountKey=ak==;EndpointSuffix=core.windows.net";
+        final String str
+            = "DefaultEndpointsProtocol=https;AccountName=an;AccountKey=ak==;EndpointSuffix=core.windows.net";
 
         ConnectionString connectionString = new ConnectionString(str, ConnectionStringType.STORAGE);
 
@@ -110,6 +111,5 @@ class ConnectionStringTests {
         Assertions.assertEquals("ak==", connectionString.getSegment(ACCOUNT_KEY));
         Assertions.assertNull(connectionString.getEndpointUri());
     }
-
 
 }

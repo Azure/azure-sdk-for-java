@@ -5,8 +5,8 @@ package com.azure.spring.cloud.resourcemanager.implementation.connectionstring;
 
 import com.azure.spring.cloud.core.service.AzureServiceType;
 
-class EventHubsArmConnectionStringProviderTests extends AbstractArmConnectionStringProviderTests<AzureServiceType.EventHubs> {
-
+class EventHubsArmConnectionStringProviderTests
+    extends AbstractArmConnectionStringProviderTests<AzureServiceType.EventHubs> {
 
     @Override
     ArmConnectionStringProvider<AzureServiceType.EventHubs> getArmConnectionStringProvider() {

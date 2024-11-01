@@ -26,46 +26,41 @@ abstract class AbstractAadB2cOAuth2ClientTestConfigurations {
             String.format("%s.%s.scopes=%s", AadB2cConstants.AUTHORIZATION_CLIENTS,
                 AadB2cConstants.CLIENT_CREDENTIAL_NAME, AadB2cConstants.TEST_CLIENT_CREDENTIAL_SCOPES),
             String.format("%s.%s.authorization-grant-type=%s", AadB2cConstants.AUTHORIZATION_CLIENTS,
-                AadB2cConstants.CLIENT_CREDENTIAL_NAME, AadB2cConstants.TEST_CLIENT_CREDENTIAL_GRANT_TYPE),
-        };
+                AadB2cConstants.CLIENT_CREDENTIAL_NAME, AadB2cConstants.TEST_CLIENT_CREDENTIAL_GRANT_TYPE), };
     }
 
     @Test
     void testClientCredentialProperties() {
-        getDefaultContextRunner()
-            .withPropertyValues(getAuthorizationClientPropertyValues())
-            .run(c -> {
-                final AadB2cProperties properties = c.getBean(AadB2cProperties.class);
-                Assertions.assertNotNull(properties);
-                Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
-                Assertions.assertTrue(authorizationClients.size() > 0);
-                for (String clientName: authorizationClients.keySet()) {
-                    Assertions.assertEquals(clientName, AadB2cConstants.CLIENT_CREDENTIAL_NAME);
-                    Assertions.assertEquals(authorizationClients.get(clientName).getScopes().get(0),
-                        AadB2cConstants.TEST_CLIENT_CREDENTIAL_SCOPES);
-                    Assertions.assertEquals(authorizationClients.get(clientName).getAuthorizationGrantType(),
-                        AuthorizationGrantType.CLIENT_CREDENTIALS);
-                }
-            });
+        getDefaultContextRunner().withPropertyValues(getAuthorizationClientPropertyValues()).run(c -> {
+            final AadB2cProperties properties = c.getBean(AadB2cProperties.class);
+            Assertions.assertNotNull(properties);
+            Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
+            Assertions.assertTrue(authorizationClients.size() > 0);
+            for (String clientName : authorizationClients.keySet()) {
+                Assertions.assertEquals(clientName, AadB2cConstants.CLIENT_CREDENTIAL_NAME);
+                Assertions.assertEquals(authorizationClients.get(clientName).getScopes().get(0),
+                    AadB2cConstants.TEST_CLIENT_CREDENTIAL_SCOPES);
+                Assertions.assertEquals(authorizationClients.get(clientName).getAuthorizationGrantType(),
+                    AuthorizationGrantType.CLIENT_CREDENTIALS);
+            }
+        });
     }
 
     @Test
     void testClientRelatedBeans() {
-        getDefaultContextRunner()
-            .withPropertyValues(getAuthorizationClientPropertyValues())
-            .run(c -> {
-                final AadB2cOAuth2ClientConfiguration config = c.getBean(AadB2cOAuth2ClientConfiguration.class);
-                final ClientRegistrationRepository clientRepo = c.getBean(ClientRegistrationRepository.class);
-                final OAuth2AuthorizedClientService clientService = c.getBean(OAuth2AuthorizedClientService.class);
-                final OAuth2AuthorizedClientRepository authorizedClientRepo =
-                    c.getBean(OAuth2AuthorizedClientRepository.class);
-                final OAuth2AuthorizedClientManager clientManager = c.getBean(OAuth2AuthorizedClientManager.class);
+        getDefaultContextRunner().withPropertyValues(getAuthorizationClientPropertyValues()).run(c -> {
+            final AadB2cOAuth2ClientConfiguration config = c.getBean(AadB2cOAuth2ClientConfiguration.class);
+            final ClientRegistrationRepository clientRepo = c.getBean(ClientRegistrationRepository.class);
+            final OAuth2AuthorizedClientService clientService = c.getBean(OAuth2AuthorizedClientService.class);
+            final OAuth2AuthorizedClientRepository authorizedClientRepo
+                = c.getBean(OAuth2AuthorizedClientRepository.class);
+            final OAuth2AuthorizedClientManager clientManager = c.getBean(OAuth2AuthorizedClientManager.class);
 
-                Assertions.assertNotNull(config);
-                Assertions.assertNotNull(clientRepo);
-                Assertions.assertNotNull(clientService);
-                Assertions.assertNotNull(authorizedClientRepo);
-                Assertions.assertNotNull(clientManager);
-            });
+            Assertions.assertNotNull(config);
+            Assertions.assertNotNull(clientRepo);
+            Assertions.assertNotNull(clientService);
+            Assertions.assertNotNull(authorizedClientRepo);
+            Assertions.assertNotNull(clientManager);
+        });
     }
 }

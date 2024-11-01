@@ -33,18 +33,12 @@ public class EventHubsMessageConverter extends AbstractJacksonAzureMessageConver
 
     static final String TARGET_PROTOCOL = "target-protocol";
 
-    private static final Set<String> IGNORED_SPRING_MESSAGE_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        AzureHeaders.PARTITION_KEY,
-        AzureHeaders.BATCH_CONVERTED_PARTITION_KEY,
-        EventHubsHeaders.ENQUEUED_TIME,
-        EventHubsHeaders.BATCH_CONVERTED_ENQUEUED_TIME,
-        EventHubsHeaders.OFFSET,
-        EventHubsHeaders.BATCH_CONVERTED_OFFSET,
-        EventHubsHeaders.SEQUENCE_NUMBER,
-        EventHubsHeaders.BATCH_CONVERTED_SEQUENCE_NUMBER,
-        EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES,
-        EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES
-        )));
+    private static final Set<String> IGNORED_SPRING_MESSAGE_HEADERS = Collections.unmodifiableSet(
+        new HashSet<>(Arrays.asList(AzureHeaders.PARTITION_KEY, AzureHeaders.BATCH_CONVERTED_PARTITION_KEY,
+            EventHubsHeaders.ENQUEUED_TIME, EventHubsHeaders.BATCH_CONVERTED_ENQUEUED_TIME, EventHubsHeaders.OFFSET,
+            EventHubsHeaders.BATCH_CONVERTED_OFFSET, EventHubsHeaders.SEQUENCE_NUMBER,
+            EventHubsHeaders.BATCH_CONVERTED_SEQUENCE_NUMBER, EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES,
+            EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES)));
 
     private final ObjectMapper objectMapper;
 
@@ -99,8 +93,8 @@ public class EventHubsMessageConverter extends AbstractJacksonAzureMessageConver
             azureMessage.getProperties().put(TARGET_PROTOCOL, "amqp");
         }
 
-        ignoredHeaders.forEach(header -> LOGGER.info("Message headers {} is not supported to be set and will be "
-            + "ignored.", header));
+        ignoredHeaders.forEach(
+            header -> LOGGER.info("Message headers {} is not supported to be set and will be " + "ignored.", header));
     }
 
     @Override

@@ -92,7 +92,9 @@ public class PersistableIT {
 
         final Mono<PersistableEntity> saveSecond = reactiveRepository.save(entity);
         StepVerifier.create(saveSecond)
-            .expectErrorMatches(ex -> ex instanceof CosmosAccessException && ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.CONFLICT_STATUS_CODE)
+            .expectErrorMatches(ex -> ex instanceof CosmosAccessException
+                && ((CosmosAccessException) ex).getCosmosException().getStatusCode()
+                    == TestConstants.CONFLICT_STATUS_CODE)
             .verify();
     }
 

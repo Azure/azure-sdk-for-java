@@ -28,10 +28,12 @@ class AadPropertiesConfiguration {
     AadAuthenticationProperties aadAuthenticationProperties() {
         AadAuthenticationProperties aad = new AadAuthenticationProperties();
         aad.getProfile().setCloudType(global.getProfile().getCloudType());
-        aad.getProfile().getEnvironment().setActiveDirectoryEndpoint(
-            global.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-        aad.getProfile().getEnvironment().setMicrosoftGraphEndpoint(
-            global.getProfile().getEnvironment().getMicrosoftGraphEndpoint());
+        aad.getProfile()
+            .getEnvironment()
+            .setActiveDirectoryEndpoint(global.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+        aad.getProfile()
+            .getEnvironment()
+            .setMicrosoftGraphEndpoint(global.getProfile().getEnvironment().getMicrosoftGraphEndpoint());
         aad.getCredential().setClientId(global.getCredential().getClientId());
         aad.getCredential().setClientSecret(global.getCredential().getClientSecret());
         aad.getCredential().setClientCertificatePath(global.getCredential().getClientCertificatePath());

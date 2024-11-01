@@ -24,13 +24,16 @@ class JdbcConnectionStringEnhancerTest {
     @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
     void inconsistentPropertiesShouldThrow(DatabaseType databaseType) {
         Map<String, String> defaultEnhancedProperties = databaseType.getDefaultEnhancedProperties();
-        Map.Entry<String, String> randomDefaultEnhancedProperty = defaultEnhancedProperties.entrySet().iterator().next();
+        Map.Entry<String, String> randomDefaultEnhancedProperty
+            = defaultEnhancedProperties.entrySet().iterator().next();
 
         String queries = randomDefaultEnhancedProperty.getKey() + "=randomValue";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(jdbcConnectionString);
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(jdbcConnectionString);
         Map<String, String> configMap = new HashMap<>();
         configMap.putAll(defaultEnhancedProperties);
 
@@ -42,12 +45,15 @@ class JdbcConnectionStringEnhancerTest {
     @EnumSource(value = DatabaseType.class, names = { "MYSQL", "POSTGRESQL" })
     void consistentPropertiesShouldNotThrow(DatabaseType databaseType) {
         Map<String, String> defaultEnhancedProperties = databaseType.getDefaultEnhancedProperties();
-        Map.Entry<String, String> randomDefaultEnhancedProperty = defaultEnhancedProperties.entrySet().iterator().next();
+        Map.Entry<String, String> randomDefaultEnhancedProperty
+            = defaultEnhancedProperties.entrySet().iterator().next();
 
         String queries = randomDefaultEnhancedProperty.getKey() + "=" + randomDefaultEnhancedProperty.getValue();
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
 
         Map<String, String> configMap = new HashMap<>();
         configMap.put(randomDefaultEnhancedProperty.getKey(), randomDefaultEnhancedProperty.getValue());
@@ -56,7 +62,8 @@ class JdbcConnectionStringEnhancerTest {
         assertEquals(databaseType, jdbcConnectionStringEnhancer.getDatabaseType());
         assertNotNull(jdbcConnectionStringEnhancer.getJdbcUrl());
         assertNull(jdbcConnectionStringEnhancer.getEnhancedProperty(randomDefaultEnhancedProperty.getKey()));
-        assertEquals(randomDefaultEnhancedProperty.getValue(), jdbcConnectionStringEnhancer.getOriginalProperty(randomDefaultEnhancedProperty.getKey()));
+        assertEquals(randomDefaultEnhancedProperty.getValue(),
+            jdbcConnectionStringEnhancer.getOriginalProperty(randomDefaultEnhancedProperty.getKey()));
     }
 
     @ParameterizedTest
@@ -65,7 +72,8 @@ class JdbcConnectionStringEnhancerTest {
         String connectionString = String.format(PATH_WITHOUT_QUERY_PATTERN, databaseType.getSchema());
 
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(jdbcConnectionString);
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(jdbcConnectionString);
 
         jdbcConnectionStringEnhancer.enhanceProperties(databaseType.getDefaultEnhancedProperties());
 
@@ -80,10 +88,12 @@ class JdbcConnectionStringEnhancerTest {
     @EnumSource(DatabaseType.class)
     void enhanceConnectionStringWithProperties(DatabaseType databaseType) {
         String queries = "someProperty=someValue";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(jdbcConnectionString);
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(jdbcConnectionString);
 
         jdbcConnectionStringEnhancer.enhanceProperties(databaseType.getDefaultEnhancedProperties());
 
@@ -98,25 +108,30 @@ class JdbcConnectionStringEnhancerTest {
     @EnumSource(DatabaseType.class)
     void enhancePropertyWithExistingValueShouldThrowException(DatabaseType databaseType) {
         String queries = "applicationName=defaultApp";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(jdbcConnectionString);
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(jdbcConnectionString);
 
         Map<String, String> enhancedProperties = new HashMap<>();
         enhancedProperties.put("applicationName", "newApp");
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> jdbcConnectionStringEnhancer.enhanceProperties(enhancedProperties));
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> jdbcConnectionStringEnhancer.enhanceProperties(enhancedProperties));
     }
 
     @ParameterizedTest
     @EnumSource(DatabaseType.class)
     void enhancePropertyWithExistingValueShouldBeSilent(DatabaseType databaseType) {
         String queries = "applicationName=defaultApp";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(jdbcConnectionString);
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(jdbcConnectionString);
 
         Map<String, String> enhancedProperties = new HashMap<>();
         enhancedProperties.put("applicationName", "newApp");
@@ -130,9 +145,11 @@ class JdbcConnectionStringEnhancerTest {
     @EnumSource(DatabaseType.class)
     void enhancePropertyWithoutExistingValueShouldSet(DatabaseType databaseType) {
         String queries = "someProperty=someValue";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
 
         Map<String, String> enhancedProperties = new HashMap<>();
         enhancedProperties.put("applicationName", "newApp");
@@ -140,32 +157,38 @@ class JdbcConnectionStringEnhancerTest {
 
         Assertions.assertEquals(databaseType, jdbcConnectionStringEnhancer.getDatabaseType());
         Assertions.assertEquals("newApp", jdbcConnectionStringEnhancer.getEnhancedProperty("applicationName"));
-        Assertions.assertEquals(connectionString + databaseType.getQueryDelimiter() + "applicationName=newApp", jdbcConnectionStringEnhancer.getJdbcUrl());
+        Assertions.assertEquals(connectionString + databaseType.getQueryDelimiter() + "applicationName=newApp",
+            jdbcConnectionStringEnhancer.getJdbcUrl());
     }
 
     @ParameterizedTest
     @EnumSource(DatabaseType.class)
     void enhanceNotExistingAttributePropertyShouldSet(DatabaseType databaseType) {
         String queries = "someProperty=someValue";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("attr1", "val1");
         attributes.put("attr2", "val2");
         jdbcConnectionStringEnhancer.enhancePropertyAttributes("attributeProperty", attributes, ",", ":");
 
-        Assertions.assertEquals("attr1:val1,attr2:val2", jdbcConnectionStringEnhancer.getEnhancedProperty("attributeProperty"));
+        Assertions.assertEquals("attr1:val1,attr2:val2",
+            jdbcConnectionStringEnhancer.getEnhancedProperty("attributeProperty"));
     }
 
     @ParameterizedTest
     @EnumSource(DatabaseType.class)
     void enhanceNotExistingAttributePropertyShouldSetByOrder(DatabaseType databaseType) {
         String queries = "someProperty=someValue";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("attr5", "val5");
@@ -174,32 +197,38 @@ class JdbcConnectionStringEnhancerTest {
         attributes.put("attr2", "val2");
         jdbcConnectionStringEnhancer.enhancePropertyAttributes("attributeProperty", attributes, ",", ":");
 
-        Assertions.assertEquals("attr1:val1,attr2:val2,attr4:val4,attr5:val5", jdbcConnectionStringEnhancer.getEnhancedProperty("attributeProperty"));
+        Assertions.assertEquals("attr1:val1,attr2:val2,attr4:val4,attr5:val5",
+            jdbcConnectionStringEnhancer.getEnhancedProperty("attributeProperty"));
     }
 
     @ParameterizedTest
     @EnumSource(DatabaseType.class)
     void enhanceExistingAttributePropertyShouldMerge(DatabaseType databaseType) {
         String queries = "someProperty=someValue" + databaseType.getQueryDelimiter() + "attributeProperty=attr3:val3";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("attr1", "val1");
         attributes.put("attr2", "val2");
         jdbcConnectionStringEnhancer.enhancePropertyAttributes("attributeProperty", attributes, ",", ":");
 
-        Assertions.assertEquals("attr3:val3,attr1:val1,attr2:val2", jdbcConnectionStringEnhancer.getEnhancedProperty("attributeProperty"));
+        Assertions.assertEquals("attr3:val3,attr1:val1,attr2:val2",
+            jdbcConnectionStringEnhancer.getEnhancedProperty("attributeProperty"));
     }
 
     @ParameterizedTest
     @EnumSource(DatabaseType.class)
     void enhanceExistingAttributePropertySameAttributeDifferentValueShouldNotSet(DatabaseType databaseType) {
         String queries = "someProperty=someValue" + databaseType.getQueryDelimiter() + "attributeProperty=attr3:val3";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("attr1", "val1");
@@ -207,16 +236,19 @@ class JdbcConnectionStringEnhancerTest {
         attributes.put("attr3", "anotherVal3");
         jdbcConnectionStringEnhancer.enhancePropertyAttributes("attributeProperty", attributes, ",", ":");
 
-        Assertions.assertEquals("attr3:val3,attr1:val1,attr2:val2", jdbcConnectionStringEnhancer.getEnhancedProperty("attributeProperty"));
+        Assertions.assertEquals("attr3:val3,attr1:val1,attr2:val2",
+            jdbcConnectionStringEnhancer.getEnhancedProperty("attributeProperty"));
     }
 
     @ParameterizedTest
     @EnumSource(DatabaseType.class)
     void enhanceExistingAttributePropertyEnhancedShouldOrder(DatabaseType databaseType) {
         String queries = "someProperty=someValue" + databaseType.getQueryDelimiter() + "attributeProperty=attr3:val3";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
-        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
+        JdbcConnectionStringEnhancer jdbcConnectionStringEnhancer
+            = new JdbcConnectionStringEnhancer(JdbcConnectionString.resolve(connectionString));
 
         Map<String, String> attributes = new HashMap<>();
         attributes.put("attr2", "val2");
@@ -227,9 +259,11 @@ class JdbcConnectionStringEnhancerTest {
         String actualJdbcUrl = jdbcConnectionStringEnhancer.getJdbcUrl();
 
         String expectedAttributeValue = "attr3:val3,attr1:val1,attr2:val2,attr4:val4,attr5:val5";
-        Assertions.assertEquals(expectedAttributeValue, jdbcConnectionStringEnhancer.getEnhancedProperty("attributeProperty"));
+        Assertions.assertEquals(expectedAttributeValue,
+            jdbcConnectionStringEnhancer.getEnhancedProperty("attributeProperty"));
         String newQueries = queries + ",attr1:val1,attr2:val2,attr4:val4,attr5:val5";
-        Assertions.assertEquals(String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), newQueries), actualJdbcUrl);
+        Assertions.assertEquals(String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), newQueries), actualJdbcUrl);
     }
 
 }

@@ -13,7 +13,8 @@ import org.springframework.util.StringUtils;
 import java.lang.reflect.Method;
 import java.util.Set;
 
-public class AzureListenerAnnotationTestBeanPostProcessor extends AzureListenerAnnotationBeanPostProcessorAdapter<AzureMessageTestListener> {
+public class AzureListenerAnnotationTestBeanPostProcessor
+    extends AzureListenerAnnotationBeanPostProcessorAdapter<AzureMessageTestListener> {
 
     private static final String DEFAULT_TEST_LISTENER_CONTAINER_FACTORY_BEAN_NAME = "azureListenerContainerFactory";
 

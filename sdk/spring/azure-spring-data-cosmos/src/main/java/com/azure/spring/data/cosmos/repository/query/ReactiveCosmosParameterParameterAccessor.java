@@ -12,7 +12,7 @@ import java.util.List;
  * to find special parameters.
  */
 public class ReactiveCosmosParameterParameterAccessor extends ParametersParameterAccessor
-        implements ReactiveCosmosParameterAccessor {
+    implements ReactiveCosmosParameterAccessor {
 
     private final List<Object> values;
 

@@ -14,7 +14,7 @@ import org.springframework.data.util.TypeInformation;
  * {@link CosmosPersistentProperty}.
  */
 public class CosmosMappingContext
-        extends AbstractMappingContext<BasicCosmosPersistentEntity<?>, CosmosPersistentProperty> {
+    extends AbstractMappingContext<BasicCosmosPersistentEntity<?>, CosmosPersistentProperty> {
 
     private ApplicationContext context;
 
@@ -36,9 +36,8 @@ public class CosmosMappingContext
     }
 
     @Override
-    public CosmosPersistentProperty createPersistentProperty(Property property,
-                                                             BasicCosmosPersistentEntity<?> owner,
-                                                             SimpleTypeHolder simpleTypeHolder) {
+    public CosmosPersistentProperty createPersistentProperty(Property property, BasicCosmosPersistentEntity<?> owner,
+        SimpleTypeHolder simpleTypeHolder) {
         return new BasicCosmosPersistentProperty(property, owner, simpleTypeHolder);
     }
 

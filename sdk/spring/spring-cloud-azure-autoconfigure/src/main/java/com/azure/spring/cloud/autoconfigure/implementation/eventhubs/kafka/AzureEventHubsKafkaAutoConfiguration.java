@@ -23,7 +23,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.kafka.core.KafkaTemplate;
 
-
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Event Hubs Kafka support.
  *
@@ -33,7 +32,10 @@ import org.springframework.kafka.core.KafkaTemplate;
 @Deprecated
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(KafkaTemplate.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.kafka.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    value = "spring.cloud.azure.eventhubs.kafka.enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 @AutoConfigureAfter({ AzureEventHubsAutoConfiguration.class, AzureEventHubsResourceManagerAutoConfiguration.class })
 public class AzureEventHubsKafkaAutoConfiguration {
 
@@ -41,7 +43,9 @@ public class AzureEventHubsKafkaAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
-    @ConditionalOnMissingBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
+    @ConditionalOnMissingBean(
+        value = AzureServiceType.EventHubs.class,
+        parameterizedContainer = ServiceConnectionStringProvider.class)
     StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsKafkaConnectionString(Environment environment) {
         String connectionString = environment.getProperty("spring.cloud.azure.eventhubs.connection-string");
 
@@ -56,9 +60,11 @@ public class AzureEventHubsKafkaAutoConfiguration {
     }
 
     @Bean
-    @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
+    @ConditionalOnBean(
+        value = AzureServiceType.EventHubs.class,
+        parameterizedContainer = ServiceConnectionStringProvider.class)
     static KafkaPropertiesBeanPostProcessor kafkaPropertiesBeanPostProcessor(
-            ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
+        ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
         return new KafkaPropertiesBeanPostProcessor(connectionStringProvider);
     }
 

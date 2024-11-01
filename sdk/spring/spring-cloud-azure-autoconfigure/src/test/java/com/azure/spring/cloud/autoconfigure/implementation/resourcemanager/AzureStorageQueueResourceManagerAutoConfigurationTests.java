@@ -27,15 +27,13 @@ class AzureStorageQueueResourceManagerAutoConfigurationTests {
 
     @Test
     void testStorageQueueResourceManagerDisabled() {
-        this.contextRunner
-            .withPropertyValues(AzureStorageQueueProperties.PREFIX + "enabled=false")
+        this.contextRunner.withPropertyValues(AzureStorageQueueProperties.PREFIX + "enabled=false")
             .run(context -> assertThat(context).doesNotHaveBean(StorageQueueArmConnectionStringProvider.class));
     }
 
     @Test
     void testStorageQueueResourceManagerAutoConfigurationBeans() {
-        this.contextRunner
-            .withUserConfiguration(AzureResourceManagerAutoConfiguration.class)
+        this.contextRunner.withUserConfiguration(AzureResourceManagerAutoConfiguration.class)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .withBean(AzureStorageQueueProperties.class, AzureStorageQueueProperties::new)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
@@ -45,8 +43,7 @@ class AzureStorageQueueResourceManagerAutoConfigurationTests {
 
     @Test
     void shouldConfigureWithoutStorageQueueClientBuilderClass() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(QueueServiceClientBuilder.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(QueueServiceClientBuilder.class))
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureStorageQueueResourceManagerAutoConfiguration.class);
@@ -56,28 +53,25 @@ class AzureStorageQueueResourceManagerAutoConfigurationTests {
 
     @Test
     void testStorageQueueResourceManagerWithoutArmConnectionStringProviderClass() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(StorageQueueArmConnectionStringProvider.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(StorageQueueArmConnectionStringProvider.class))
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
-            .run(context -> assertThat(context).doesNotHaveBean(AzureStorageQueueResourceManagerAutoConfiguration.class));
+            .run(context -> assertThat(context)
+                .doesNotHaveBean(AzureStorageQueueResourceManagerAutoConfiguration.class));
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "spring.cloud.azure.storage.queue.connection-string=DefaultEndpointsProtocol=https;AccountName=test;AccountKey=key;EndpointSuffix=core.windows.net",
-        "spring.cloud.azure.credential.token-credential-bean-name=my-token-credential",
-        "spring.cloud.azure.storage.queue.credential.token-credential-bean-name=my-token-credential"
-    })
+    @ValueSource(
+        strings = {
+            "spring.cloud.azure.storage.queue.connection-string=DefaultEndpointsProtocol=https;AccountName=test;AccountKey=key;EndpointSuffix=core.windows.net",
+            "spring.cloud.azure.credential.token-credential-bean-name=my-token-credential",
+            "spring.cloud.azure.storage.queue.credential.token-credential-bean-name=my-token-credential" })
     void testNotCreateProviderBeanWhenMissingPropertiesConfigured(String missingProperty) {
         this.contextRunner
             .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
-            .withPropertyValues(
-                "spring.cloud.azure.profile.tenant-id=test-tenant",
-                "spring.cloud.azure.profile.subscription-id=test-subscription-id",
-                missingProperty
-            )
+            .withPropertyValues("spring.cloud.azure.profile.tenant-id=test-tenant",
+                "spring.cloud.azure.profile.subscription-id=test-subscription-id", missingProperty)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureResourceManager.class);
                 assertThat(context).doesNotHaveBean(StorageQueueArmConnectionStringProvider.class);

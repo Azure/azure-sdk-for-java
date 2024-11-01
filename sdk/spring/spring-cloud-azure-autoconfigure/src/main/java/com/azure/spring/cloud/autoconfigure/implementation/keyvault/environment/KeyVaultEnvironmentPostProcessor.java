@@ -57,7 +57,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
      * @param loggerFactory The logger factory to get the logger.
      * @param bootstrapContext The bootstrap context.
      */
-    public KeyVaultEnvironmentPostProcessor(DeferredLogFactory loggerFactory, ConfigurableBootstrapContext bootstrapContext) {
+    public KeyVaultEnvironmentPostProcessor(DeferredLogFactory loggerFactory,
+        ConfigurableBootstrapContext bootstrapContext) {
         this.logger = loggerFactory.getLog(getClass());
         this.bootstrapContext = bootstrapContext;
     }
@@ -72,17 +73,20 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         if (!isKeyVaultClientOnClasspath()) {
-            logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "com.azure:azure-security-keyvault-secrets doesn't exist in classpath"));
+            logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT,
+                "com.azure:azure-security-keyvault-secrets doesn't exist in classpath"));
             return;
         }
 
         final AzureKeyVaultSecretProperties secretProperties = loadProperties(environment);
         if (!secretProperties.isPropertySourceEnabled()) {
-            logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "spring.cloud.azure.keyvault.secret.property-source-enabled=false"));
+            logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT,
+                "spring.cloud.azure.keyvault.secret.property-source-enabled=false"));
             return;
         }
         if (secretProperties.getPropertySources().isEmpty()) {
-            logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "spring.cloud.azure.keyvault.secret.property-sources is empty"));
+            logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT,
+                "spring.cloud.azure.keyvault.secret.property-sources is empty"));
             return;
         }
 
@@ -105,26 +109,26 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
     }
 
     private void checkDuplicatePropertySourceNames(List<AzureKeyVaultPropertySourceProperties> propertiesList) {
-        List<String> sourceNames = propertiesList.stream()
-                                                 .map(AzureKeyVaultPropertySourceProperties::getName)
-                                                 .toList();
+        List<String> sourceNames = propertiesList.stream().map(AzureKeyVaultPropertySourceProperties::getName).toList();
         Set<String> deduplicatedSourceNames = new HashSet<>(sourceNames);
         if (propertiesList.size() != deduplicatedSourceNames.size()) {
             throw new IllegalStateException("Duplicate property source name found: " + sourceNames);
         }
     }
 
-    private List<KeyVaultPropertySource> buildKeyVaultPropertySourceList(
-            List<AzureKeyVaultPropertySourceProperties> propertiesList) {
+    private List<KeyVaultPropertySource>
+        buildKeyVaultPropertySourceList(List<AzureKeyVaultPropertySourceProperties> propertiesList) {
         List<KeyVaultPropertySource> propertySources = new ArrayList<>();
         for (int i = 0; i < propertiesList.size(); i++) {
             AzureKeyVaultPropertySourceProperties properties = propertiesList.get(i);
             if (!properties.isEnabled()) {
-                logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "spring.cloud.azure.keyvault.secret.property-sources[" + i + "].enabled = false"));
+                logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT,
+                    "spring.cloud.azure.keyvault.secret.property-sources[" + i + "].enabled = false"));
                 continue;
             }
             if (!StringUtils.hasText(properties.getEndpoint())) {
-                logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT, "spring.cloud.azure.keyvault.secret.property-sources[" + i + "].endpoint is empty"));
+                logger.debug(String.format(SKIP_CONFIGURE_REASON_FORMAT,
+                    "spring.cloud.azure.keyvault.secret.property-sources[" + i + "].endpoint is empty"));
                 continue;
             }
             propertySources.add(buildKeyVaultPropertySource(properties));
@@ -132,18 +136,14 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         return propertySources;
     }
 
-    private KeyVaultPropertySource buildKeyVaultPropertySource(
-            AzureKeyVaultPropertySourceProperties properties) {
+    private KeyVaultPropertySource buildKeyVaultPropertySource(AzureKeyVaultPropertySourceProperties properties) {
         try {
             final KeyVaultOperation keyVaultOperation = new KeyVaultOperation(buildSecretClient(properties));
-            return new KeyVaultPropertySource(
-                properties.getName(),
-                properties.getRefreshInterval(),
-                keyVaultOperation,
-                properties.getSecretKeys(),
-                properties.isCaseSensitive());
+            return new KeyVaultPropertySource(properties.getName(), properties.getRefreshInterval(), keyVaultOperation,
+                properties.getSecretKeys(), properties.isCaseSensitive());
         } catch (final Exception exception) {
-            throw new IllegalStateException("Failed to configure KeyVault property source '" + properties.getName() + "'", exception);
+            throw new IllegalStateException(
+                "Failed to configure KeyVault property source '" + properties.getName() + "'", exception);
         }
     }
 
@@ -152,13 +152,14 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         return buildSecretClient(secretProperties);
     }
 
-    private AzureKeyVaultSecretProperties toAzureKeyVaultSecretProperties(
-            AzureKeyVaultPropertySourceProperties propertySourceProperties) {
+    private AzureKeyVaultSecretProperties
+        toAzureKeyVaultSecretProperties(AzureKeyVaultPropertySourceProperties propertySourceProperties) {
         AzureKeyVaultSecretProperties secretProperties = new AzureKeyVaultSecretProperties();
         AzurePropertiesUtils.copyAzureCommonProperties(propertySourceProperties, secretProperties);
         secretProperties.setEndpoint(propertySourceProperties.getEndpoint());
         secretProperties.setServiceVersion(propertySourceProperties.getServiceVersion());
-        secretProperties.setChallengeResourceVerificationEnabled(propertySourceProperties.isChallengeResourceVerificationEnabled());
+        secretProperties
+            .setChallengeResourceVerificationEnabled(propertySourceProperties.isChallengeResourceVerificationEnabled());
         return secretProperties;
     }
 
@@ -175,10 +176,9 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
             // If TokenCredential is registered in bootstrap context, use it to build SecretClient.
             // This will ignore the credential properties configured
             TokenCredential registerCredential = bootstrapContext.get(TokenCredential.class);
-            logger.debug(registerCredential.getClass().getSimpleName() + " is registered in bootstrap context, use it to build SecretClient.");
-            factory.setTokenCredentialResolver(
-                new AzureTokenCredentialResolver(ignored -> registerCredential)
-            );
+            logger.debug(registerCredential.getClass().getSimpleName()
+                + " is registered in bootstrap context, use it to build SecretClient.");
+            factory.setTokenCredentialResolver(new AzureTokenCredentialResolver(ignored -> registerCredential));
         }
 
         return factory.build().buildClient();
@@ -186,12 +186,12 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
     AzureKeyVaultSecretProperties loadProperties(ConfigurableEnvironment environment) {
         Binder binder = Binder.get(environment);
-        AzureGlobalProperties globalProperties = binder
-            .bind(AzureGlobalProperties.PREFIX, Bindable.of(AzureGlobalProperties.class))
-            .orElseGet(AzureGlobalProperties::new);
+        AzureGlobalProperties globalProperties
+            = binder.bind(AzureGlobalProperties.PREFIX, Bindable.of(AzureGlobalProperties.class))
+                .orElseGet(AzureGlobalProperties::new);
 
-        AzureKeyVaultSecretProperties secretProperties = binder
-                .bind(AzureKeyVaultSecretProperties.PREFIX, Bindable.of(AzureKeyVaultSecretProperties.class))
+        AzureKeyVaultSecretProperties secretProperties
+            = binder.bind(AzureKeyVaultSecretProperties.PREFIX, Bindable.of(AzureKeyVaultSecretProperties.class))
                 .orElseGet(AzureKeyVaultSecretProperties::new);
 
         List<AzureKeyVaultPropertySourceProperties> list = secretProperties.getPropertySources();
@@ -212,9 +212,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         return secretProperties;
     }
 
-    private AzureKeyVaultPropertySourceProperties buildMergedProperties(
-            AzureGlobalProperties globalProperties,
-            AzureKeyVaultPropertySourceProperties propertySourceProperties) {
+    private AzureKeyVaultPropertySourceProperties buildMergedProperties(AzureGlobalProperties globalProperties,
+        AzureKeyVaultPropertySourceProperties propertySourceProperties) {
         AzureKeyVaultPropertySourceProperties mergedProperties = new AzureKeyVaultPropertySourceProperties();
         AzurePropertiesUtils.mergeAzureCommonProperties(globalProperties, propertySourceProperties, mergedProperties);
         mergedProperties.setEnabled(propertySourceProperties.isEnabled());
@@ -224,7 +223,8 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
         mergedProperties.setCaseSensitive(propertySourceProperties.isCaseSensitive());
         mergedProperties.setSecretKeys(propertySourceProperties.getSecretKeys());
         mergedProperties.setRefreshInterval(propertySourceProperties.getRefreshInterval());
-        mergedProperties.setChallengeResourceVerificationEnabled(propertySourceProperties.isChallengeResourceVerificationEnabled());
+        mergedProperties
+            .setChallengeResourceVerificationEnabled(propertySourceProperties.isChallengeResourceVerificationEnabled());
         return mergedProperties;
     }
 
@@ -234,7 +234,7 @@ public class KeyVaultEnvironmentPostProcessor implements EnvironmentPostProcesso
 
     private boolean isKeyVaultClientOnClasspath() {
         return ClassUtils.isPresent("com.azure.security.keyvault.secrets.SecretClient",
-                                    KeyVaultEnvironmentPostProcessor.class.getClassLoader());
+            KeyVaultEnvironmentPostProcessor.class.getClassLoader());
     }
 
     /**

@@ -50,14 +50,14 @@ public class PersonCrossPartitionIT {
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
-    private static final PersonCrossPartition TEST_PERSON_CP = new PersonCrossPartition(ID_1, FIRST_NAME, LAST_NAME, HOBBIES,
-        ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+    private static final PersonCrossPartition TEST_PERSON_CP
+        = new PersonCrossPartition(ID_1, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
-    private static final PersonCrossPartition TEST_PERSON_CP_2 = new PersonCrossPartition(ID_2, NEW_FIRST_NAME, NEW_LAST_NAME, HOBBIES,
-        ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+    private static final PersonCrossPartition TEST_PERSON_CP_2 = new PersonCrossPartition(ID_2, NEW_FIRST_NAME,
+        NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
-    private static final PersonCrossPartition TEST_PERSON_CP_3 = new PersonCrossPartition(ID_3, NEW_FIRST_NAME, NEW_LAST_NAME, HOBBIES,
-        ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+    private static final PersonCrossPartition TEST_PERSON_CP_3 = new PersonCrossPartition(ID_3, NEW_FIRST_NAME,
+        NEW_LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
@@ -96,9 +96,10 @@ public class PersonCrossPartitionIT {
             new PartitionKey(personCrossPartitionInfo.getPartitionKeyFieldValue(TEST_PERSON_CP_2)));
         cosmosTemplate.insert(TEST_PERSON_CP_3,
             new PartitionKey(personCrossPartitionInfo.getPartitionKeyFieldValue(TEST_PERSON_CP_3)));
-        final List<PersonCrossPartition> expected = Lists.newArrayList(TEST_PERSON_CP, TEST_PERSON_CP_2, TEST_PERSON_CP_3);
+        final List<PersonCrossPartition> expected
+            = Lists.newArrayList(TEST_PERSON_CP, TEST_PERSON_CP_2, TEST_PERSON_CP_3);
 
-        for (int i=4; i<=10; i++) {
+        for (int i = 4; i <= 10; i++) {
             PersonCrossPartition temp = new PersonCrossPartition("id_" + i, "fred", LAST_NAME + "_" + i, HOBBIES,
                 ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
             cosmosTemplate.insert(temp, new PartitionKey(personCrossPartitionInfo.getPartitionKeyFieldValue(temp)));
@@ -109,7 +110,8 @@ public class PersonCrossPartitionIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
 
         final CosmosPageRequest pageRequest = new CosmosPageRequest(0, 100, null);
-        final Page<PersonCrossPartition> page1 = cosmosTemplate.findAll(pageRequest, PersonCrossPartition.class, containerName);
+        final Page<PersonCrossPartition> page1
+            = cosmosTemplate.findAll(pageRequest, PersonCrossPartition.class, containerName);
 
         final List<PersonCrossPartition> resultPage1 = TestUtils.toList(page1);
         assertThat(resultPage1.size()).isEqualTo(expected.size());
@@ -129,9 +131,10 @@ public class PersonCrossPartitionIT {
             new PartitionKey(personCrossPartitionInfo.getPartitionKeyFieldValue(TEST_PERSON_CP_2)));
         cosmosTemplate.insert(TEST_PERSON_CP_3,
             new PartitionKey(personCrossPartitionInfo.getPartitionKeyFieldValue(TEST_PERSON_CP_3)));
-        final List<PersonCrossPartition> expected = Lists.newArrayList(TEST_PERSON_CP, TEST_PERSON_CP_2, TEST_PERSON_CP_3);
+        final List<PersonCrossPartition> expected
+            = Lists.newArrayList(TEST_PERSON_CP, TEST_PERSON_CP_2, TEST_PERSON_CP_3);
 
-        for (int i=4; i<=10; i++) {
+        for (int i = 4; i <= 10; i++) {
             PersonCrossPartition temp = new PersonCrossPartition("id_" + i, "fred", LAST_NAME + "_" + i, HOBBIES,
                 ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
             cosmosTemplate.insert(temp, new PartitionKey(personCrossPartitionInfo.getPartitionKeyFieldValue(temp)));
@@ -142,7 +145,8 @@ public class PersonCrossPartitionIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
 
         final CosmosPageRequest pageRequest = new CosmosPageRequest(0, 7, null);
-        final Page<PersonCrossPartition> page1 = cosmosTemplate.findAll(pageRequest, PersonCrossPartition.class, containerName);
+        final Page<PersonCrossPartition> page1
+            = cosmosTemplate.findAll(pageRequest, PersonCrossPartition.class, containerName);
 
         final List<PersonCrossPartition> resultPage1 = TestUtils.toList(page1);
         assertThat(resultPage1.size()).isEqualTo(7);
@@ -152,7 +156,8 @@ public class PersonCrossPartitionIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
-        final Page<PersonCrossPartition> page2 = cosmosTemplate.findAll(page1.nextPageable(), PersonCrossPartition.class, containerName);
+        final Page<PersonCrossPartition> page2
+            = cosmosTemplate.findAll(page1.nextPageable(), PersonCrossPartition.class, containerName);
 
         final List<PersonCrossPartition> resultPage2 = TestUtils.toList(page2);
         assertThat(resultPage2.size()).isEqualTo(3);
@@ -176,9 +181,10 @@ public class PersonCrossPartitionIT {
             new PartitionKey(personCrossPartitionInfo.getPartitionKeyFieldValue(TEST_PERSON_CP_2)));
         cosmosTemplate.insert(TEST_PERSON_CP_3,
             new PartitionKey(personCrossPartitionInfo.getPartitionKeyFieldValue(TEST_PERSON_CP_3)));
-        final List<PersonCrossPartition> expected = Lists.newArrayList(TEST_PERSON_CP, TEST_PERSON_CP_2, TEST_PERSON_CP_3);
+        final List<PersonCrossPartition> expected
+            = Lists.newArrayList(TEST_PERSON_CP, TEST_PERSON_CP_2, TEST_PERSON_CP_3);
 
-        for (int i=4; i<=10; i++) {
+        for (int i = 4; i <= 10; i++) {
             PersonCrossPartition temp = new PersonCrossPartition("id_" + i, "fred", LAST_NAME + "_" + i, HOBBIES,
                 ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
             cosmosTemplate.insert(temp, new PartitionKey(personCrossPartitionInfo.getPartitionKeyFieldValue(temp)));
@@ -189,7 +195,8 @@ public class PersonCrossPartitionIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
 
         final CosmosPageRequest pageRequest = new CosmosPageRequest(0, 3, null);
-        final Page<PersonCrossPartition> page1 = cosmosTemplate.findAll(pageRequest, PersonCrossPartition.class, containerName);
+        final Page<PersonCrossPartition> page1
+            = cosmosTemplate.findAll(pageRequest, PersonCrossPartition.class, containerName);
 
         final List<PersonCrossPartition> resultPage1 = TestUtils.toList(page1);
         assertThat(resultPage1.size()).isEqualTo(3);
@@ -199,7 +206,8 @@ public class PersonCrossPartitionIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
-        final Page<PersonCrossPartition> page2 = cosmosTemplate.findAll(page1.nextPageable(), PersonCrossPartition.class, containerName);
+        final Page<PersonCrossPartition> page2
+            = cosmosTemplate.findAll(page1.nextPageable(), PersonCrossPartition.class, containerName);
 
         final List<PersonCrossPartition> resultPage2 = TestUtils.toList(page2);
         assertThat(resultPage2.size()).isEqualTo(3);
@@ -209,7 +217,8 @@ public class PersonCrossPartitionIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
-        final Page<PersonCrossPartition> page3 = cosmosTemplate.findAll(page2.nextPageable(), PersonCrossPartition.class, containerName);
+        final Page<PersonCrossPartition> page3
+            = cosmosTemplate.findAll(page2.nextPageable(), PersonCrossPartition.class, containerName);
 
         final List<PersonCrossPartition> resultPage3 = TestUtils.toList(page3);
         assertThat(resultPage3.size()).isEqualTo(3);
@@ -219,7 +228,8 @@ public class PersonCrossPartitionIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
-        final Page<PersonCrossPartition> page4 = cosmosTemplate.findAll(page3.nextPageable(), PersonCrossPartition.class, containerName);
+        final Page<PersonCrossPartition> page4
+            = cosmosTemplate.findAll(page3.nextPageable(), PersonCrossPartition.class, containerName);
 
         final List<PersonCrossPartition> resultPage4 = TestUtils.toList(page4);
         assertThat(resultPage4.size()).isEqualTo(1);
@@ -247,7 +257,7 @@ public class PersonCrossPartitionIT {
             new PartitionKey(personCrossPartitionInfo.getPartitionKeyFieldValue(TEST_PERSON_CP_3)));
         final List<PersonCrossPartition> expected = Lists.newArrayList(TEST_PERSON_CP_2, TEST_PERSON_CP_3);
 
-        for (int i=4; i<=10; i++) {
+        for (int i = 4; i <= 10; i++) {
             PersonCrossPartition temp = new PersonCrossPartition("id_" + i, "fred", LAST_NAME + "_" + i, HOBBIES,
                 ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
             cosmosTemplate.insert(temp, new PartitionKey(personCrossPartitionInfo.getPartitionKeyFieldValue(temp)));
@@ -257,9 +267,9 @@ public class PersonCrossPartitionIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
 
-        final CosmosPageRequest pageRequest = CosmosPageRequest.of(1, 0, 7,
-            null, Sort.by(ASC, "id"));
-        final Page<PersonCrossPartition> page1 = cosmosTemplate.findAll(pageRequest, PersonCrossPartition.class, containerName);
+        final CosmosPageRequest pageRequest = CosmosPageRequest.of(1, 0, 7, null, Sort.by(ASC, "id"));
+        final Page<PersonCrossPartition> page1
+            = cosmosTemplate.findAll(pageRequest, PersonCrossPartition.class, containerName);
 
         final List<PersonCrossPartition> resultPage1 = TestUtils.toList(page1);
         assertThat(resultPage1.size()).isEqualTo(7);
@@ -269,7 +279,8 @@ public class PersonCrossPartitionIT {
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
-        final Page<PersonCrossPartition> page2 = cosmosTemplate.findAll(page1.nextPageable(), PersonCrossPartition.class, containerName);
+        final Page<PersonCrossPartition> page2
+            = cosmosTemplate.findAll(page1.nextPageable(), PersonCrossPartition.class, containerName);
 
         final List<PersonCrossPartition> resultPage2 = TestUtils.toList(page2);
         assertThat(resultPage2.size()).isEqualTo(2);

@@ -17,7 +17,8 @@ public final class ResourceServerCondition extends AbstractApplicationTypeCondit
 
     @Override
     boolean isTargetApplicationType(AadApplicationType applicationType) {
-        return applicationType == RESOURCE_SERVER || applicationType == RESOURCE_SERVER_WITH_OBO
+        return applicationType == RESOURCE_SERVER
+            || applicationType == RESOURCE_SERVER_WITH_OBO
             || applicationType == WEB_APPLICATION_AND_RESOURCE_SERVER;
     }
 

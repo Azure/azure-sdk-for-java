@@ -62,11 +62,10 @@ import static com.azure.spring.integration.core.instrumentation.Instrumentation.
  *
  */
 public class EventHubsMessageChannelBinder extends
-    // @formatter:off
+// @formatter:off
     AbstractMessageChannelBinder<ExtendedConsumerProperties<EventHubsConsumerProperties>, ExtendedProducerProperties<EventHubsProducerProperties>, EventHubsChannelProvisioner>
     // @formatter:on
-    implements
-    ExtendedPropertiesBinder<MessageChannel, EventHubsConsumerProperties, EventHubsProducerProperties> {
+    implements ExtendedPropertiesBinder<MessageChannel, EventHubsConsumerProperties, EventHubsProducerProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsMessageChannelBinder.class);
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
@@ -78,8 +77,8 @@ public class EventHubsMessageChannelBinder extends
     private final List<EventHubsMessageListenerContainer> eventHubsMessageListenerContainers = new ArrayList<>();
     private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
     private EventHubsExtendedBindingProperties bindingProperties = new EventHubsExtendedBindingProperties();
-    private final Map<String, ExtendedProducerProperties<EventHubsProducerProperties>>
-        extendedProducerPropertiesMap = new ConcurrentHashMap<>();
+    private final Map<String, ExtendedProducerProperties<EventHubsProducerProperties>> extendedProducerPropertiesMap
+        = new ConcurrentHashMap<>();
 
     private final List<EventHubsProducerFactoryCustomizer> producerFactoryCustomizers = new ArrayList<>();
     private final List<EventHubsProcessorFactoryCustomizer> processorFactoryCustomizers = new ArrayList<>();
@@ -95,10 +94,8 @@ public class EventHubsMessageChannelBinder extends
     }
 
     @Override
-    protected MessageHandler createProducerMessageHandler(
-        ProducerDestination destination,
-        ExtendedProducerProperties<EventHubsProducerProperties> producerProperties,
-        MessageChannel errorChannel) {
+    protected MessageHandler createProducerMessageHandler(ProducerDestination destination,
+        ExtendedProducerProperties<EventHubsProducerProperties> producerProperties, MessageChannel errorChannel) {
         extendedProducerPropertiesMap.put(destination.getName(), producerProperties);
         Assert.notNull(getEventHubTemplate(), "eventHubsTemplate can't be null when create a producer");
 
@@ -121,7 +118,7 @@ public class EventHubsMessageChannelBinder extends
 
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
-                                                     ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
+        ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
         Assert.notNull(getProcessorFactory(), "processor factory can't be null when create a consumer");
 
         boolean anonymous = !StringUtils.hasText(group);
@@ -130,8 +127,8 @@ public class EventHubsMessageChannelBinder extends
         }
 
         EventHubsContainerProperties containerProperties = createContainerProperties(destination, group, properties);
-        EventHubsMessageListenerContainer listenerContainer = new EventHubsMessageListenerContainer(
-            getProcessorFactory(), containerProperties);
+        EventHubsMessageListenerContainer listenerContainer
+            = new EventHubsMessageListenerContainer(getProcessorFactory(), containerProperties);
 
         this.eventHubsMessageListenerContainers.add(listenerContainer);
 
@@ -142,7 +139,7 @@ public class EventHubsMessageChannelBinder extends
             inboundAdapter = new EventHubsInboundChannelAdapter(listenerContainer);
         }
         inboundAdapter.setBeanFactory(getBeanFactory());
-        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" +  group);
+        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + group);
         inboundAdapter.setInstrumentationManager(instrumentationManager);
         inboundAdapter.setInstrumentationId(instrumentationId);
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, group, properties);
@@ -158,9 +155,7 @@ public class EventHubsMessageChannelBinder extends
      * @param properties the consumer properties.
      * @return the {@link EventHubsContainerProperties}.
      */
-    private EventHubsContainerProperties createContainerProperties(
-        ConsumerDestination destination,
-        String group,
+    private EventHubsContainerProperties createContainerProperties(ConsumerDestination destination, String group,
         ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
         EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
         AzurePropertiesUtils.copyAzureCommonProperties(properties.getExtension(), containerProperties);
@@ -203,8 +198,8 @@ public class EventHubsMessageChannelBinder extends
     private PropertiesSupplier<String, ProducerProperties> getProducerPropertiesSupplier() {
         return key -> {
             if (this.extendedProducerPropertiesMap.containsKey(key)) {
-                EventHubsProducerProperties producerProperties = this.extendedProducerPropertiesMap.get(key)
-                    .getExtension();
+                EventHubsProducerProperties producerProperties
+                    = this.extendedProducerPropertiesMap.get(key).getExtension();
                 producerProperties.setEventHubName(key);
                 return producerProperties;
             } else {
@@ -233,14 +228,15 @@ public class EventHubsMessageChannelBinder extends
 
     private EventHubsProcessorFactory getProcessorFactory() {
         if (this.processorFactory == null) {
-            this.processorFactory = new DefaultEventHubsNamespaceProcessorFactory(
-                this.checkpointStore, this.namespaceProperties);
+            this.processorFactory
+                = new DefaultEventHubsNamespaceProcessorFactory(this.checkpointStore, this.namespaceProperties);
 
             processorFactoryCustomizers.forEach(customizer -> customizer.customize(processorFactory));
 
             processorFactory.addListener((name, consumerGroup, processorClient) -> {
                 String instrumentationName = name + "/" + consumerGroup;
-                Instrumentation instrumentation = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
+                Instrumentation instrumentation
+                    = new EventHubsProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.setStatus(Instrumentation.Status.UP);
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });

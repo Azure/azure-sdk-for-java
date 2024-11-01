@@ -24,10 +24,8 @@ public class EventHubsMessageChannelTestBinder extends EventHubsMessageChannelBi
     private MessageProducer messageProducer;
     private EventHubsInboundChannelAdapter inboundAdapter;
 
-    public EventHubsMessageChannelTestBinder(String[] headersToEmbed,
-                                             EventHubsChannelProvisioner provisioningProvider,
-                                             DefaultMessageHandler messageHandler,
-                                             MessageProducer messageProducer) {
+    public EventHubsMessageChannelTestBinder(String[] headersToEmbed, EventHubsChannelProvisioner provisioningProvider,
+        DefaultMessageHandler messageHandler, MessageProducer messageProducer) {
         super(headersToEmbed, provisioningProvider);
         this.messageHandler = messageHandler;
         this.messageProducer = messageProducer;
@@ -35,12 +33,10 @@ public class EventHubsMessageChannelTestBinder extends EventHubsMessageChannelBi
 
     @Override
     public MessageHandler createProducerMessageHandler(ProducerDestination destination,
-                                                       ExtendedProducerProperties<EventHubsProducerProperties> producerProperties,
-                                                       MessageChannel errorChannel) {
+        ExtendedProducerProperties<EventHubsProducerProperties> producerProperties, MessageChannel errorChannel) {
         MessageHandler handler;
         if (messageHandler == null) {
-            handler = super.createProducerMessageHandler(destination, producerProperties,
-                errorChannel);
+            handler = super.createProducerMessageHandler(destination, producerProperties, errorChannel);
         } else {
             handler = messageHandler;
         }
@@ -48,9 +44,8 @@ public class EventHubsMessageChannelTestBinder extends EventHubsMessageChannelBi
     }
 
     @Override
-    public MessageProducer createConsumerEndpoint(ConsumerDestination destination,
-                                                  String group,
-                                                  ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
+    public MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
+        ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
         MessageProducer messageProducer;
         if (this.messageProducer == null) {
             messageProducer = super.createConsumerEndpoint(destination, group, properties);
@@ -62,9 +57,8 @@ public class EventHubsMessageChannelTestBinder extends EventHubsMessageChannelBi
 
     @Override
     public MessageHandler createProducerMessageHandler(ProducerDestination destination,
-                                                       ExtendedProducerProperties<EventHubsProducerProperties> producerProperties,
-                                                       MessageChannel channel,
-                                                       MessageChannel errorChannel) throws Exception {
+        ExtendedProducerProperties<EventHubsProducerProperties> producerProperties, MessageChannel channel,
+        MessageChannel errorChannel) throws Exception {
         MessageHandler handler;
         if (messageHandler == null) {
             handler = super.createProducerMessageHandler(destination, producerProperties, channel, errorChannel);

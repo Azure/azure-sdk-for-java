@@ -82,17 +82,7 @@ public class PageableMemo {
 
     @Override
     public String toString() {
-        return "PageableMemo{"
-            + "id='"
-            + id
-            + '\''
-            + ", message='"
-            + message
-            + '\''
-            + ", date="
-            + date
-            + ", importance="
-            + importance
-            + '}';
+        return "PageableMemo{" + "id='" + id + '\'' + ", message='" + message + '\'' + ", date=" + date
+            + ", importance=" + importance + '}';
     }
 }

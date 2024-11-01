@@ -23,8 +23,8 @@ public class CosmosFactoryUnitTest {
     public void userAgentSpringDataCosmosSuffix() {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder();
         try {
-            Method updateCosmosClientBuilderWithUASuffix = CosmosFactory.class.getDeclaredMethod(
-                "updateCosmosClientBuilderWithUASuffix", CosmosClientBuilder.class);
+            Method updateCosmosClientBuilderWithUASuffix = CosmosFactory.class
+                .getDeclaredMethod("updateCosmosClientBuilderWithUASuffix", CosmosClientBuilder.class);
 
             //  static method invoke call
             updateCosmosClientBuilderWithUASuffix.setAccessible(true);

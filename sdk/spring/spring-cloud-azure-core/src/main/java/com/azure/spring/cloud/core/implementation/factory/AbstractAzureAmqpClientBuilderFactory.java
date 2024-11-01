@@ -133,7 +133,8 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
         }
 
         if (proxy instanceof ProxyOptionsProvider.AmqpProxyOptions) {
-            final ProxyOptions proxyOptions = AMQP_PROXY_CONVERTER.convert((ProxyOptionsProvider.AmqpProxyOptions) proxy);
+            final ProxyOptions proxyOptions
+                = AMQP_PROXY_CONVERTER.convert((ProxyOptionsProvider.AmqpProxyOptions) proxy);
             if (proxyOptions != null) {
                 consumeProxyOptions().accept(builder, proxyOptions);
             } else {

@@ -48,8 +48,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         TEST_KEY_VAULT_1, TEST_URI_VAULT_1, TEST_LABEL_VAULT_1, KEY_VAULT_CONTENT_TYPE);
 
     private static final SecretReferenceConfigurationSetting KEY_VAULT_ITEM_INVALID_URI = createSecretReference(
-        KEY_FILTER,
-        TEST_KEY_VAULT_1, TEST_URI_VAULT_2, TEST_LABEL_VAULT_1, KEY_VAULT_CONTENT_TYPE);
+        KEY_FILTER, TEST_KEY_VAULT_1, TEST_URI_VAULT_2, TEST_LABEL_VAULT_1, KEY_VAULT_CONTENT_TYPE);
 
     private AppConfigurationApplicationSettingPropertySource propertySource;
 
@@ -96,8 +95,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     @Test
     public void testKeyVaultTest() {
         List<ConfigurationSetting> settings = List.of(KEY_VAULT_ITEM);
-        when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator())
-            .thenReturn(Collections.emptyIterator());
+        when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator()).thenReturn(Collections.emptyIterator());
         when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(keyVaultSecretListMock)
             .thenReturn(keyVaultSecretListMock);
 
@@ -113,8 +111,8 @@ public class AppConfigurationPropertySourceKeyVaultTest {
         }
 
         String[] keyNames = propertySource.getPropertyNames();
-        String[] expectedKeyNames = settings.stream()
-            .map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
+        String[] expectedKeyNames
+            = settings.stream().map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
         assertThat(propertySource.getProperty(TEST_KEY_VAULT_1)).isEqualTo("mySecretValue");
@@ -123,8 +121,7 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     @Test
     public void invalidKeyVaultReferenceInvalidURITest() {
         List<ConfigurationSetting> settings = List.of(KEY_VAULT_ITEM_INVALID_URI);
-        when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator())
-            .thenReturn(Collections.emptyIterator());
+        when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator()).thenReturn(Collections.emptyIterator());
         when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(keyVaultSecretListMock)
             .thenReturn(keyVaultSecretListMock);
 
@@ -138,16 +135,15 @@ public class AppConfigurationPropertySourceKeyVaultTest {
     @Test
     public void invalidKeyVaultReferenceParseErrorTest() {
         List<ConfigurationSetting> settings = List.of(KEY_VAULT_ITEM);
-        when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator())
-            .thenReturn(Collections.emptyIterator());
+        when(keyVaultSecretListMock.iterator()).thenReturn(settings.iterator()).thenReturn(Collections.emptyIterator());
         when(replicaClientMock.listSettings(Mockito.any(), Mockito.anyBoolean())).thenReturn(keyVaultSecretListMock)
             .thenReturn(keyVaultSecretListMock);
         when(keyVaultClientFactoryMock.getClient(Mockito.eq("https://test.key.vault.com")))
             .thenReturn(clientManagerMock);
         when(clientManagerMock.getSecret(Mockito.any())).thenThrow(new RuntimeException("Parse Failed"));
 
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> propertySource.initProperties(null, false));
+        RuntimeException exception
+            = assertThrows(RuntimeException.class, () -> propertySource.initProperties(null, false));
         assertEquals("Parse Failed", exception.getMessage());
     }
 }

@@ -55,8 +55,7 @@ class AadOAuth2UserServiceTest {
     @BeforeEach
     void setup() {
 
-        clientRegistrationBuilder = ClientRegistration
-            .withRegistrationId("registrationId")
+        clientRegistrationBuilder = ClientRegistration.withRegistrationId("registrationId")
             .clientName("registrationId")
             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
             .redirectUri("redirectUri")
@@ -102,8 +101,8 @@ class AadOAuth2UserServiceTest {
         AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
 
         // when
-        OidcUser user = aadOAuth2UserService
-            .loadUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
+        OidcUser user
+            = aadOAuth2UserService.loadUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
 
         // then
         assertThat(user).isEqualTo(mockDefaultOidcUser);
@@ -123,8 +122,8 @@ class AadOAuth2UserServiceTest {
         AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
 
         // when
-        OidcUser user = aadOAuth2UserService
-            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
+        OidcUser user
+            = aadOAuth2UserService.getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
 
         // then
         assertThat(user.getUserInfo()).isNull();
@@ -144,14 +143,13 @@ class AadOAuth2UserServiceTest {
         idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
         OidcIdToken idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
 
-        ClientRegistration clientRegistration = this.clientRegistrationBuilder
-                                                    .userNameAttributeName(StandardClaimNames.EMAIL)
-                                                    .build();
+        ClientRegistration clientRegistration
+            = this.clientRegistrationBuilder.userNameAttributeName(StandardClaimNames.EMAIL).build();
         AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
 
         // when
-        OidcUser user = aadOAuth2UserService
-            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
+        OidcUser user
+            = aadOAuth2UserService.getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
 
         // then
         assertThat(user.getName()).isEqualTo("user1@example.com");
@@ -172,8 +170,8 @@ class AadOAuth2UserServiceTest {
         AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(null, null, null);
 
         // when
-        OidcUser user = aadOAuth2UserService
-            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
+        OidcUser user
+            = aadOAuth2UserService.getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
 
         // then
         assertThat(user.getName()).isEqualTo("user1");
@@ -187,44 +185,36 @@ class AadOAuth2UserServiceTest {
         idTokenClaims.put(IdTokenClaimNames.SUB, "subject1");
         idTokenClaims.put(StandardClaimNames.NAME, "user1");
         idTokenClaims.put(StandardClaimNames.EMAIL, "user1@example.com");
-        idTokenClaims.put("roles", Stream.of("role1", "role2")
-            .collect(Collectors.toList()));
+        idTokenClaims.put("roles", Stream.of("role1", "role2").collect(Collectors.toList()));
         OidcIdToken idToken = new OidcIdToken("access-token", Instant.MIN, Instant.MAX, idTokenClaims);
 
         GroupInformation groupInformation = new GroupInformation();
-        groupInformation.setGroupsIds(Stream.of("groupId1", "groupId2")
-            .collect(Collectors.toSet()));
-        groupInformation.setGroupsNames(Stream.of("groupName1", "groupName2")
-            .collect(Collectors.toSet()));
+        groupInformation.setGroupsIds(Stream.of("groupId1", "groupId2").collect(Collectors.toSet()));
+        groupInformation.setGroupsNames(Stream.of("groupName1", "groupName2").collect(Collectors.toSet()));
         GraphClient graphClient = mock(GraphClient.class);
         when(graphClient.getGroupInformation(anyString())).thenReturn(groupInformation);
 
         AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties = new AadAuthenticationProperties();
-        properties.getUserGroup().setAllowedGroupNames(Stream.of("groupName1", "groupName2")
-            .collect(Collectors.toList()));
-        properties.getUserGroup().setAllowedGroupIds(Stream.of("groupId1", "groupId2")
-            .collect(Collectors.toSet()));
+        properties.getUserGroup()
+            .setAllowedGroupNames(Stream.of("groupName1", "groupName2").collect(Collectors.toList()));
+        properties.getUserGroup().setAllowedGroupIds(Stream.of("groupId1", "groupId2").collect(Collectors.toSet()));
 
-        ClientRegistration clientRegistration = this.clientRegistrationBuilder
-            .build();
+        ClientRegistration clientRegistration = this.clientRegistrationBuilder.build();
         AadOAuth2UserService aadOAuth2UserService = new AadOAuth2UserService(properties, graphClient, null);
 
         // when
-        OidcUser user = aadOAuth2UserService
-            .getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
+        OidcUser user
+            = aadOAuth2UserService.getUser(new OidcUserRequest(clientRegistration, this.accessToken, idToken));
 
         // then
         assertThat(user.getUserInfo()).isNull();
         assertThat(user.getClaims()).isEqualTo(idTokenClaims);
         assertThat(user.getAuthorities().size()).isEqualTo(6);
-        Set<SimpleGrantedAuthority> simpleGrantedAuthorities
-            = Stream.of(new SimpleGrantedAuthority("APPROLE_role1"),
-                new SimpleGrantedAuthority("APPROLE_role2"),
-                new SimpleGrantedAuthority("ROLE_groupId1"),
-                new SimpleGrantedAuthority("ROLE_groupId2"),
-                new SimpleGrantedAuthority("ROLE_groupName1"),
-                new SimpleGrantedAuthority("ROLE_groupName2"))
+        Set<SimpleGrantedAuthority> simpleGrantedAuthorities = Stream
+            .of(new SimpleGrantedAuthority("APPROLE_role1"), new SimpleGrantedAuthority("APPROLE_role2"),
+                new SimpleGrantedAuthority("ROLE_groupId1"), new SimpleGrantedAuthority("ROLE_groupId2"),
+                new SimpleGrantedAuthority("ROLE_groupName1"), new SimpleGrantedAuthority("ROLE_groupName2"))
             .collect(Collectors.toSet());
         assertThat(user.getAuthorities()).isEqualTo(simpleGrantedAuthorities);
     }

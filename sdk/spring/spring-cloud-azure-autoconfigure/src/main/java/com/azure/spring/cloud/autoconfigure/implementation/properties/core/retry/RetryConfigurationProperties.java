@@ -22,7 +22,6 @@ public class RetryConfigurationProperties implements RetryOptionsProvider.RetryO
     @NestedConfigurationProperty
     private final FixedRetryConfigurationProperties fixed = new FixedRetryConfigurationProperties();
 
-
     @Override
     public RetryOptionsProvider.RetryMode getMode() {
         return mode;

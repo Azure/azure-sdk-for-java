@@ -32,9 +32,7 @@ public class ExpressionResolver {
      * @return the resolved expression, may be {@literal null}
      */
     public static String resolveExpression(String expression) {
-        return embeddedValueResolver != null
-                ? embeddedValueResolver.resolveStringValue(expression)
-                : expression;
+        return embeddedValueResolver != null ? embeddedValueResolver.resolveStringValue(expression) : expression;
     }
 
     private static void setEmbeddedValueResolver(EmbeddedValueResolver embeddedValueResolver) {

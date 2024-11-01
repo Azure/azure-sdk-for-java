@@ -21,8 +21,7 @@ public class SimpleReactiveCosmosEntityMetadata<T> implements ReactiveCosmosEnti
      * @param type the actual domain class type
      * @param entityInformation cosmos entity
      */
-    public SimpleReactiveCosmosEntityMetadata(Class<T> type, CosmosEntityInformation<T,
-                                                                            String> entityInformation) {
+    public SimpleReactiveCosmosEntityMetadata(Class<T> type, CosmosEntityInformation<T, String> entityInformation) {
         Assert.notNull(type, "type must not be null!");
         Assert.notNull(entityInformation, "entityInformation must not be null!");
 

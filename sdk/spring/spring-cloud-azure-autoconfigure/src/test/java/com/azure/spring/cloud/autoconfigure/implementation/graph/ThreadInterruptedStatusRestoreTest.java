@@ -46,7 +46,6 @@ public class ThreadInterruptedStatusRestoreTest {
         LOGGER.log(LogLevel.VERBOSE, () -> Thread.currentThread().getName() + ": end assertion");
     }
 
-
     static class TestThread extends Thread {
         private final CountDownLatch latchForInWhile;
         private final CountDownLatch latchForInCatch;

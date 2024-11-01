@@ -40,8 +40,8 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
 
     @Override
     protected void setupError(String errorMessage) {
-        when(this.mockSenderClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(Mono.error(new IllegalArgumentException(
-            errorMessage)));
+        when(this.mockSenderClient.sendMessage(isA(ServiceBusMessage.class)))
+            .thenReturn(Mono.error(new IllegalArgumentException(errorMessage)));
     }
 
     @Override

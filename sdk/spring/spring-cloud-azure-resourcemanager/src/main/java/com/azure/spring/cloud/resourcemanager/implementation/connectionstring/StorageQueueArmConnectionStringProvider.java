@@ -13,7 +13,8 @@ import com.azure.spring.cloud.resourcemanager.implementation.crud.StorageAccount
  * A connection string provider reads Storage Queue connection string from Azure Resource Manager.
  * // TODO (xiada): Do blob, queue share the same connection string?
  */
-public class StorageQueueArmConnectionStringProvider extends ArmConnectionStringProvider<AzureServiceType.StorageQueue> {
+public class StorageQueueArmConnectionStringProvider
+    extends ArmConnectionStringProvider<AzureServiceType.StorageQueue> {
 
     private final String accountName;
     private final StorageAccountCrud storageAccountCrud;
@@ -25,8 +26,7 @@ public class StorageQueueArmConnectionStringProvider extends ArmConnectionString
      * @param accountName the accountName
      */
     public StorageQueueArmConnectionStringProvider(AzureResourceManager resourceManager,
-                                                   AzureResourceMetadata resourceMetadata,
-                                                   String accountName) {
+        AzureResourceMetadata resourceMetadata, String accountName) {
         super(resourceManager, resourceMetadata);
         this.accountName = accountName;
         this.storageAccountCrud = new StorageAccountCrud(resourceManager, resourceMetadata);
@@ -34,16 +34,12 @@ public class StorageQueueArmConnectionStringProvider extends ArmConnectionString
 
     @Override
     public String getConnectionString() {
-        return this.storageAccountCrud
-            .get(this.accountName)
+        return this.storageAccountCrud.get(this.accountName)
             .getKeys()
             .stream()
             .findFirst()
             .map(key -> ResourceManagerUtils.getStorageConnectionString(this.accountName, key.value(),
-                                                                        this.getAzureResourceManager()
-                                                                            .storageAccounts()
-                                                                            .manager()
-                                                                            .environment()))
+                this.getAzureResourceManager().storageAccounts().manager().environment()))
             .orElseThrow(() -> new RuntimeException("Storage account key is empty."));
     }
 

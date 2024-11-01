@@ -177,7 +177,8 @@ class AbstractAzureServiceClientBuilderFactoryTests {
 
         @Override
         protected BiConsumer<TestClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-            return (a, b) -> { };
+            return (a, b) -> {
+            };
         }
 
         @Override
@@ -198,6 +199,7 @@ class AbstractAzureServiceClientBuilderFactoryTests {
             return testConfiguration;
         }
     }
+
     static class TestClientBuilder {
 
         static final String TEST_CONFIGURATION_KEY = "test_configuration_key";
@@ -245,7 +247,8 @@ class AbstractAzureServiceClientBuilderFactoryTests {
         }
     }
 
-    static class AzureTestProperties extends AzureSdkProperties implements ConnectionStringProvider, RetryOptionsProvider {
+    static class AzureTestProperties extends AzureSdkProperties
+        implements ConnectionStringProvider, RetryOptionsProvider {
         private String connectionString;
         private final ClientProperties client = new ClientProperties();
         private final ProxyProperties proxy = new ProxyProperties();
@@ -275,7 +278,5 @@ class AbstractAzureServiceClientBuilderFactoryTests {
             return retry;
         }
     }
-
-
 
 }

@@ -28,11 +28,11 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
-    P extends ServiceBusClientCommonTestProperties,
-    F extends AbstractServiceBusSubClientBuilderFactory<B, ?>> extends AzureGenericServiceClientBuilderFactoryBaseTests<P, F> {
+abstract class AbstractServiceBusSubClientBuilderFactoryTests<B, P extends ServiceBusClientCommonTestProperties, F extends AbstractServiceBusSubClientBuilderFactory<B, ?>>
+    extends AzureGenericServiceClientBuilderFactoryBaseTests<P, F> {
 
     abstract void verifyServicePropertiesConfigured(boolean isShareServiceClientBuilder);
+
     abstract void buildClient(B builder);
 
     protected String customEndpoint = "https://custom.endpoint.test";
@@ -143,8 +143,8 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(),
-            times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(factory.getServiceBusClientBuilder(), times(1))
+            .fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
     private void verifyClientSecretTokenCredentialConfigured(boolean isShareServiceClientBuilder) {

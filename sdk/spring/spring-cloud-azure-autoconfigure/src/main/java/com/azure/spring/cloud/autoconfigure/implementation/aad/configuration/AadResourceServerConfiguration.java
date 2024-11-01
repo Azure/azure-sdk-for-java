@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 
-
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.conditions.ResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.aad.configuration.properties.AadResourceServerProperties;
@@ -50,11 +49,11 @@ class AadResourceServerConfiguration {
     @ConditionalOnMissingBean(JwtDecoder.class)
     JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties) {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
-            aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
-        NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-            .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
-                .restOperations(createRestTemplate(restTemplateBuilder))
-                .build();
+            aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
+            aadAuthenticationProperties.getProfile().getTenantId());
+        NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder.withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
+            .restOperations(createRestTemplate(restTemplateBuilder))
+            .build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
         nimbusJwtDecoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(validators));
         return nimbusJwtDecoder;
@@ -83,7 +82,7 @@ class AadResourceServerConfiguration {
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     static class DefaultAadResourceServerConfiguration {
 
-        @SuppressWarnings({"deprecation", "removal"})
+        @SuppressWarnings({ "deprecation", "removal" })
         @Bean
         @ConditionalOnBean(AadResourceServerProperties.class)
         SecurityFilterChain defaultAadResourceServerFilterChain(HttpSecurity http) throws Exception {
@@ -92,4 +91,3 @@ class AadResourceServerConfiguration {
         }
     }
 }
-

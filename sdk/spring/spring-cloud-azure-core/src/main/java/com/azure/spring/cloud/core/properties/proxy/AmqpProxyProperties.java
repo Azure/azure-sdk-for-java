@@ -34,5 +34,4 @@ public final class AmqpProxyProperties extends ProxyProperties implements ProxyO
         this.authenticationType = authenticationType;
     }
 
-
 }

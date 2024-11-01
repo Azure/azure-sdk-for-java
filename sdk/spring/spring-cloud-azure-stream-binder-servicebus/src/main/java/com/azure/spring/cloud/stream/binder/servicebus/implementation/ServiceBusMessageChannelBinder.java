@@ -69,11 +69,8 @@ import static com.azure.spring.integration.core.instrumentation.Instrumentation.
  *
  */
 public class ServiceBusMessageChannelBinder extends
-    AbstractMessageChannelBinder<ExtendedConsumerProperties<ServiceBusConsumerProperties>,
-            ExtendedProducerProperties<ServiceBusProducerProperties>,
-            ServiceBusChannelProvisioner>
-    implements
-    ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
+    AbstractMessageChannelBinder<ExtendedConsumerProperties<ServiceBusConsumerProperties>, ExtendedProducerProperties<ServiceBusProducerProperties>, ServiceBusChannelProvisioner>
+    implements ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageChannelBinder.class);
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
@@ -83,11 +80,12 @@ public class ServiceBusMessageChannelBinder extends
     private NamespaceProperties namespaceProperties;
     private ServiceBusTemplate serviceBusTemplate;
     private ServiceBusProcessorFactory processorFactory;
-    private AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter = new ServiceBusMessageConverter();
+    private AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter
+        = new ServiceBusMessageConverter();
     private final List<ServiceBusMessageListenerContainer> serviceBusMessageListenerContainers = new ArrayList<>();
     private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
-    private final Map<String, ExtendedProducerProperties<ServiceBusProducerProperties>>
-        extendedProducerPropertiesMap = new ConcurrentHashMap<>();
+    private final Map<String, ExtendedProducerProperties<ServiceBusProducerProperties>> extendedProducerPropertiesMap
+        = new ConcurrentHashMap<>();
 
     private final List<ServiceBusProducerFactoryCustomizer> producerFactoryCustomizers = new ArrayList<>();
     private final List<ServiceBusProcessorFactoryCustomizer> processorFactoryCustomizers = new ArrayList<>();
@@ -103,10 +101,8 @@ public class ServiceBusMessageChannelBinder extends
     }
 
     @Override
-    protected MessageHandler createProducerMessageHandler(
-        ProducerDestination destination,
-        ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties,
-        MessageChannel errorChannel) {
+    protected MessageHandler createProducerMessageHandler(ProducerDestination destination,
+        ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties, MessageChannel errorChannel) {
         Assert.notNull(getServiceBusTemplate(), "ServiceBusTemplate can't be null when create a producer");
 
         extendedProducerPropertiesMap.put(destination.getName(), producerProperties);
@@ -120,8 +116,8 @@ public class ServiceBusMessageChannelBinder extends
         handler.setSendCallback(new InstrumentationSendCallback(instrumentationId, instrumentationManager));
 
         if (producerProperties.isPartitioned()) {
-            handler.setPartitionKeyExpressionString(
-                "'partitionKey-' + headers['" + BinderHeaders.PARTITION_HEADER + "']");
+            handler
+                .setPartitionKeyExpressionString("'partitionKey-' + headers['" + BinderHeaders.PARTITION_HEADER + "']");
         } else {
             handler.setPartitionKeyExpression(new FunctionExpression<Message<?>>(m -> m.getPayload().hashCode()));
         }
@@ -131,11 +127,12 @@ public class ServiceBusMessageChannelBinder extends
 
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
-                                                     ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         final ServiceBusInboundChannelAdapter inboundAdapter;
 
         ServiceBusContainerProperties containerProperties = createContainerProperties(destination, group, properties);
-        ServiceBusMessageListenerContainer listenerContainer = new ServiceBusMessageListenerContainer(getProcessorFactory(), containerProperties);
+        ServiceBusMessageListenerContainer listenerContainer
+            = new ServiceBusMessageListenerContainer(getProcessorFactory(), containerProperties);
 
         serviceBusMessageListenerContainers.add(listenerContainer);
 
@@ -158,9 +155,7 @@ public class ServiceBusMessageChannelBinder extends
      * @param properties the consumer properties.
      * @return the {@link ServiceBusContainerProperties}.
      */
-    ServiceBusContainerProperties createContainerProperties(
-        ConsumerDestination destination,
-        String group,
+    ServiceBusContainerProperties createContainerProperties(ConsumerDestination destination, String group,
         ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         ServiceBusContainerProperties containerProperties = new ServiceBusContainerProperties();
         AzurePropertiesUtils.copyAzureCommonProperties(properties.getExtension(), containerProperties);
@@ -171,12 +166,11 @@ public class ServiceBusMessageChannelBinder extends
     }
 
     @Override
-    protected MessageHandler getErrorMessageHandler(ConsumerDestination destination,
-                                                    String group,
-                                                    final ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+    protected MessageHandler getErrorMessageHandler(ConsumerDestination destination, String group,
+        final ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         return message -> {
-            Assert.state(message instanceof ErrorMessage, "Expected an ErrorMessage, not a "
-                + message.getClass() + " for: " + message);
+            Assert.state(message instanceof ErrorMessage,
+                "Expected an ErrorMessage, not a " + message.getClass() + " for: " + message);
 
             ErrorMessage errorMessage = (ErrorMessage) message;
             Message<?> amqpMessage = errorMessage.getOriginalMessage();
@@ -205,13 +199,10 @@ public class ServiceBusMessageChannelBinder extends
      * @param deadLetterReason the dead-letter reason
      * @param deadLetterErrorDescription the dead-letter error description
      */
-    public <T> void deadLetter(String destination,
-                               Message<T> message,
-                               String deadLetterReason,
-                               String deadLetterErrorDescription) {
+    public <T> void deadLetter(String destination, Message<T> message, String deadLetterReason,
+        String deadLetterErrorDescription) {
         Assert.hasText(destination, "destination can't be null or empty");
-        final ServiceBusReceivedMessageContext messageContext = (ServiceBusReceivedMessageContext) message
-            .getHeaders()
+        final ServiceBusReceivedMessageContext messageContext = (ServiceBusReceivedMessageContext) message.getHeaders()
             .get(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT);
         if (messageContext != null) {
             messageContext.deadLetter();
@@ -231,8 +222,7 @@ public class ServiceBusMessageChannelBinder extends
      */
     public <T> void abandon(String destination, Message<T> message) {
         Assert.hasText(destination, "destination can't be null or empty");
-        final ServiceBusReceivedMessageContext messageContext = (ServiceBusReceivedMessageContext) message
-            .getHeaders()
+        final ServiceBusReceivedMessageContext messageContext = (ServiceBusReceivedMessageContext) message.getHeaders()
             .get(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT);
         if (messageContext != null) {
             messageContext.abandon();
@@ -301,7 +291,8 @@ public class ServiceBusMessageChannelBinder extends
                 boolean isTopic = StringUtils.hasText(subscriptionName);
                 String entityName = isTopic ? client.getTopicName() : client.getQueueName();
                 String instrumentationName = entityName + "/" + getGroup(subscriptionName);
-                Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
+                Instrumentation instrumentation
+                    = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.setStatus(Instrumentation.Status.UP);
                 instrumentationManager.addHealthInstrumentation(instrumentation);
             });
@@ -312,8 +303,8 @@ public class ServiceBusMessageChannelBinder extends
     private PropertiesSupplier<String, ProducerProperties> getProducerPropertiesSupplier() {
         return key -> {
             if (this.extendedProducerPropertiesMap.containsKey(key)) {
-                ServiceBusProducerProperties producerProperties = this.extendedProducerPropertiesMap.get(key)
-                    .getExtension();
+                ServiceBusProducerProperties producerProperties
+                    = this.extendedProducerPropertiesMap.get(key).getExtension();
                 producerProperties.setEntityName(key);
                 return producerProperties;
             } else {
@@ -332,13 +323,13 @@ public class ServiceBusMessageChannelBinder extends
         this.namespaceProperties = namespaceProperties;
     }
 
-
     /**
      * Set message converter.
      *
      * @param messageConverter the message converter
      */
-    public void setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter) {
+    public void
+        setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter) {
         this.messageConverter = messageConverter;
     }
 

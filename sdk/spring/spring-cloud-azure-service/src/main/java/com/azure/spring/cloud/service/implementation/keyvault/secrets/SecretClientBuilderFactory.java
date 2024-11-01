@@ -78,9 +78,7 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(SecretClientBuilder builder) {
-        return Arrays.asList(
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
-        );
+        return Arrays.asList(new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential));
     }
 
     @Override
@@ -89,7 +87,8 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
         map.from(secretClientProperties.getEndpoint()).to(builder::vaultUrl);
         map.from(secretClientProperties.getServiceVersion()).to(builder::serviceVersion);
         map.from(secretClientProperties.isChallengeResourceVerificationEnabled())
-            .whenFalse().to(enabled -> builder.disableChallengeResourceVerification());
+            .whenFalse()
+            .to(enabled -> builder.disableChallengeResourceVerification());
     }
 
     @Override
@@ -105,7 +104,8 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
     @Override
     protected BiConsumer<SecretClientBuilder, String> consumeConnectionString() {
         LOGGER.debug("Connection string is not supported to configure in SecretClientBuilder");
-        return (a, b) -> { };
+        return (a, b) -> {
+        };
     }
 
     @Override

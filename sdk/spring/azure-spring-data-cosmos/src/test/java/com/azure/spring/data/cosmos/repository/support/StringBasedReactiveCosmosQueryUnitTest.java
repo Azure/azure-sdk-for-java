@@ -23,10 +23,12 @@ public class StringBasedReactiveCosmosQueryUnitTest {
     ReactiveCosmosOperations reactiveCcosmosOperations;
 
     @Test
-    public void testStripExtraWhitespaceFromString() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void testStripExtraWhitespaceFromString()
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String expectedResult = "select * from a where a.city = @city";
 
-        StringBasedReactiveCosmosQuery sbrcq = new StringBasedReactiveCosmosQuery(reactiveCosmosQueryMethod, reactiveCcosmosOperations);
+        StringBasedReactiveCosmosQuery sbrcq
+            = new StringBasedReactiveCosmosQuery(reactiveCosmosQueryMethod, reactiveCcosmosOperations);
         final Method method = sbrcq.getClass().getDeclaredMethod("stripExtraWhitespaceFromString", String.class);
         method.setAccessible(true);
 

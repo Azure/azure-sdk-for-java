@@ -21,9 +21,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ExtendedBindingHandlerMappingsProviderAutoConfigurationTests {
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(EventHubsBinderConfiguration.class))
-        .withUserConfiguration(TestApp.class);
+    private final ApplicationContextRunner contextRunner
+        = new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(EventHubsBinderConfiguration.class))
+            .withUserConfiguration(TestApp.class);
 
     @Test
     void testDefaultsConsumerBindingPropertiesWithNoCustom() {
@@ -32,8 +32,10 @@ public class ExtendedBindingHandlerMappingsProviderAutoConfigurationTests {
                 "spring.cloud.stream.eventhubs.default.consumer.load-balancing.strategy=balanced",
                 "spring.cloud.stream.eventhubs.default.consumer.batch.max-size=6")
             .run(context -> {
-                EventHubsExtendedBindingProperties properties = context.getBean(EventHubsExtendedBindingProperties.class);
-                EventHubsConsumerProperties consumerProperties = properties.getExtendedConsumerProperties("process-in-0");
+                EventHubsExtendedBindingProperties properties
+                    = context.getBean(EventHubsExtendedBindingProperties.class);
+                EventHubsConsumerProperties consumerProperties
+                    = properties.getExtendedConsumerProperties("process-in-0");
 
                 assertEquals(consumerProperties.getCheckpoint().getMode(), CheckpointMode.BATCH);
                 assertEquals(consumerProperties.getLoadBalancing().getStrategy(), LoadBalancingStrategy.BALANCED);
@@ -49,8 +51,10 @@ public class ExtendedBindingHandlerMappingsProviderAutoConfigurationTests {
                 "spring.cloud.stream.eventhubs.default.consumer.batch.max-size=6",
                 "spring.cloud.stream.eventhubs.bindings.process-in-0.consumer.checkpoint.mode=manual")
             .run(context -> {
-                EventHubsExtendedBindingProperties properties = context.getBean(EventHubsExtendedBindingProperties.class);
-                EventHubsConsumerProperties consumerProperties = properties.getExtendedConsumerProperties("process-in-0");
+                EventHubsExtendedBindingProperties properties
+                    = context.getBean(EventHubsExtendedBindingProperties.class);
+                EventHubsConsumerProperties consumerProperties
+                    = properties.getExtendedConsumerProperties("process-in-0");
 
                 assertEquals(consumerProperties.getCheckpoint().getMode(), CheckpointMode.MANUAL);
                 assertEquals(consumerProperties.getLoadBalancing().getStrategy(), LoadBalancingStrategy.BALANCED);
@@ -64,8 +68,10 @@ public class ExtendedBindingHandlerMappingsProviderAutoConfigurationTests {
             .withPropertyValues("spring.cloud.stream.eventhubs.default.producer.sync=true",
                 "spring.cloud.stream.eventhubs.default.producer.send-timeout=5m")
             .run(context -> {
-                EventHubsExtendedBindingProperties properties = context.getBean(EventHubsExtendedBindingProperties.class);
-                EventHubsProducerProperties producerProperties = properties.getExtendedProducerProperties("process-out-0");
+                EventHubsExtendedBindingProperties properties
+                    = context.getBean(EventHubsExtendedBindingProperties.class);
+                EventHubsProducerProperties producerProperties
+                    = properties.getExtendedProducerProperties("process-out-0");
 
                 assertTrue(producerProperties.isSync());
                 assertEquals(producerProperties.getSendTimeout(), Duration.ofMinutes(5));
@@ -79,8 +85,10 @@ public class ExtendedBindingHandlerMappingsProviderAutoConfigurationTests {
                 "spring.cloud.stream.eventhubs.default.producer.send-timeout=5m",
                 "spring.cloud.stream.eventhubs.bindings.process-out-0.producer.sync=false")
             .run(context -> {
-                EventHubsExtendedBindingProperties properties = context.getBean(EventHubsExtendedBindingProperties.class);
-                EventHubsProducerProperties producerProperties = properties.getExtendedProducerProperties("process-out-0");
+                EventHubsExtendedBindingProperties properties
+                    = context.getBean(EventHubsExtendedBindingProperties.class);
+                EventHubsProducerProperties producerProperties
+                    = properties.getExtendedProducerProperties("process-out-0");
 
                 assertFalse(producerProperties.isSync());
                 assertEquals(producerProperties.getSendTimeout(), Duration.ofMinutes(5));

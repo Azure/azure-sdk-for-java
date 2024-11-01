@@ -24,8 +24,7 @@ public class EventHubNamespaceCrudTests extends AbstractResourceCrudTests<EventH
         EventHubNamespaces namespaces = mock(EventHubNamespaces.class);
         when(resourceManager.eventHubNamespaces()).thenReturn(namespaces);
         ManagementException exception = createManagementException(statusCode, message);
-        when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey()))
-            .thenThrow(exception);
+        when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey())).thenThrow(exception);
     }
 
     @Override
@@ -38,7 +37,8 @@ public class EventHubNamespaceCrudTests extends AbstractResourceCrudTests<EventH
         when(namespaces.define(NAMESPACE)).thenReturn(define);
         EventHubNamespace.DefinitionStages.WithGroup group = mock(EventHubNamespace.DefinitionStages.WithGroup.class);
         when(define.withRegion(resourceMetadata.getRegion())).thenReturn(group);
-        EventHubNamespace.DefinitionStages.WithCreate create = mock(EventHubNamespace.DefinitionStages.WithCreate.class);
+        EventHubNamespace.DefinitionStages.WithCreate create
+            = mock(EventHubNamespace.DefinitionStages.WithCreate.class);
         when(group.withExistingResourceGroup(resourceMetadata.getResourceGroup())).thenReturn(create);
         when(create.create()).thenThrow(exception);
     }

@@ -24,5 +24,4 @@ public interface StorageRetry extends RetryOptionsProvider.RetryOptions {
      */
     Duration getTryTimeout();
 
-
 }

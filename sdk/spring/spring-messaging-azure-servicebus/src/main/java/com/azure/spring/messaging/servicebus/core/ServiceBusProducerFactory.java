@@ -3,7 +3,6 @@
 
 package com.azure.spring.messaging.servicebus.core;
 
-
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 

@@ -57,8 +57,10 @@ public class PersistableEntity implements Persistable<String> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         PersistableEntity that = (PersistableEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(partitionKey, that.partitionKey);
     }
@@ -70,11 +72,8 @@ public class PersistableEntity implements Persistable<String> {
 
     @Override
     public String toString() {
-        return "PersistableEntity{" +
-            "id='" + id + '\'' +
-            ", partitionKey='" + partitionKey + '\'' +
-            ", version='" + version + '\'' +
-            '}';
+        return "PersistableEntity{" + "id='" + id + '\'' + ", partitionKey='" + partitionKey + '\'' + ", version='"
+            + version + '\'' + '}';
     }
 
 }

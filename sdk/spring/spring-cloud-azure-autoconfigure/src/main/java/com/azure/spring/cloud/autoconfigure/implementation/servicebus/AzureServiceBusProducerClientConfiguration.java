@@ -29,7 +29,9 @@ class AzureServiceBusProducerClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "producer.entity-type" })
+    @ConditionalOnAnyProperty(
+        prefix = "spring.cloud.azure.servicebus",
+        name = { "entity-type", "producer.entity-type" })
     ServiceBusSenderClientBuilderFactory serviceBusSenderClientBuilderFactory(
         AzureServiceBusProperties serviceBusProperties,
         ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
@@ -39,10 +41,11 @@ class AzureServiceBusProducerClientConfiguration {
 
         ServiceBusSenderClientBuilderFactory factory;
         if (isDedicatedConnection(serviceBusProperties.getProducer())) {
-            factory = new ServiceBusSenderClientBuilderFactory(serviceBusProperties.buildProducerProperties(), customizers.orderedStream().toList());
+            factory = new ServiceBusSenderClientBuilderFactory(serviceBusProperties.buildProducerProperties(),
+                customizers.orderedStream().toList());
         } else {
-            factory = new ServiceBusSenderClientBuilderFactory(
-                serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildProducerProperties());
+            factory = new ServiceBusSenderClientBuilderFactory(serviceBusClientBuilders.getIfAvailable(),
+                serviceBusProperties.buildProducerProperties());
         }
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
         connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
@@ -53,24 +56,24 @@ class AzureServiceBusProducerClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusSenderClientBuilderFactory.class)
-    ServiceBusClientBuilder.ServiceBusSenderClientBuilder serviceBusSenderClientBuilder(
-        ServiceBusSenderClientBuilderFactory builderFactory) {
+    ServiceBusClientBuilder.ServiceBusSenderClientBuilder
+        serviceBusSenderClientBuilder(ServiceBusSenderClientBuilderFactory builderFactory) {
         return builderFactory.build();
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class)
-    ServiceBusSenderAsyncClient serviceBusSenderAsyncClient(
-        ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderClientBuilder) {
+    ServiceBusSenderAsyncClient
+        serviceBusSenderAsyncClient(ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderClientBuilder) {
         return senderClientBuilder.buildAsyncClient();
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class)
-    ServiceBusSenderClient serviceBusSenderClient(
-        ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderClientBuilder) {
+    ServiceBusSenderClient
+        serviceBusSenderClient(ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderClientBuilder) {
         return senderClientBuilder.buildClient();
     }
 

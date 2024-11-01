@@ -64,19 +64,19 @@ public class ProjectRepositorySortIT {
     private static final Long FORK_COUNT_3 = 3L;
     private static final Long FORK_COUNT_4 = FORK_COUNT_3;
 
-    private static final SortedProject PROJECT_0 = new SortedProject(ID_0, NAME_0, CREATOR_0,
-        true, STAR_COUNT_0, FORK_COUNT_0);
-    private static final SortedProject PROJECT_1 = new SortedProject(ID_1, NAME_1, CREATOR_1,
-        true, STAR_COUNT_1, FORK_COUNT_1);
-    private static final SortedProject PROJECT_2 = new SortedProject(ID_2, NAME_2, CREATOR_2,
-        true, STAR_COUNT_2, FORK_COUNT_2);
-    private static final SortedProject PROJECT_3 = new SortedProject(ID_3, NAME_3, CREATOR_3,
-        true, STAR_COUNT_3, FORK_COUNT_3);
-    private static final SortedProject PROJECT_4 = new SortedProject(ID_4, NAME_4, CREATOR_4,
-        true, STAR_COUNT_4, FORK_COUNT_4);
+    private static final SortedProject PROJECT_0
+        = new SortedProject(ID_0, NAME_0, CREATOR_0, true, STAR_COUNT_0, FORK_COUNT_0);
+    private static final SortedProject PROJECT_1
+        = new SortedProject(ID_1, NAME_1, CREATOR_1, true, STAR_COUNT_1, FORK_COUNT_1);
+    private static final SortedProject PROJECT_2
+        = new SortedProject(ID_2, NAME_2, CREATOR_2, true, STAR_COUNT_2, FORK_COUNT_2);
+    private static final SortedProject PROJECT_3
+        = new SortedProject(ID_3, NAME_3, CREATOR_3, true, STAR_COUNT_3, FORK_COUNT_3);
+    private static final SortedProject PROJECT_4
+        = new SortedProject(ID_4, NAME_4, CREATOR_4, true, STAR_COUNT_4, FORK_COUNT_4);
 
-    private static final List<SortedProject> PROJECTS = Arrays.asList(PROJECT_4, PROJECT_3,
-        PROJECT_2, PROJECT_1, PROJECT_0);
+    private static final List<SortedProject> PROJECTS
+        = Arrays.asList(PROJECT_4, PROJECT_3, PROJECT_2, PROJECT_1, PROJECT_0);
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
@@ -154,9 +154,8 @@ public class ProjectRepositorySortIT {
         projectListSortedById.sort(Comparator.comparing(SortedProject::getId));
 
         final Sort sort = Sort.by(Sort.Direction.ASC, "id");
-        final List<SortedProject> results = StreamSupport.stream(this.repository.findAll(sort).spliterator(),
-            false)
-                                                         .collect(Collectors.toList());
+        final List<SortedProject> results
+            = StreamSupport.stream(this.repository.findAll(sort).spliterator(), false).collect(Collectors.toList());
 
         Assert.assertEquals(projectListSortedById, results);
     }
@@ -164,8 +163,8 @@ public class ProjectRepositorySortIT {
     @Test
     public void testFindSortWithOr() {
         final Sort sort = Sort.by(Sort.Direction.ASC, "starCount");
-        final List<SortedProject> projects = Lists.newArrayList(this.repository.findByNameOrCreator(NAME_0, CREATOR_3,
-            sort));
+        final List<SortedProject> projects
+            = Lists.newArrayList(this.repository.findByNameOrCreator(NAME_0, CREATOR_3, sort));
         final List<SortedProject> references = Arrays.asList(PROJECT_0, PROJECT_3);
 
         references.sort(Comparator.comparing(SortedProject::getStarCount));
@@ -177,8 +176,8 @@ public class ProjectRepositorySortIT {
     @Test
     public void testFindSortWithAnd() {
         final Sort sort = Sort.by(Sort.Direction.ASC, "forkCount");
-        final List<SortedProject> projects = Lists.newArrayList(repository.findByNameAndCreator(NAME_0, CREATOR_0,
-            sort));
+        final List<SortedProject> projects
+            = Lists.newArrayList(repository.findByNameAndCreator(NAME_0, CREATOR_0, sort));
         final List<SortedProject> references = Arrays.asList(PROJECT_0);
 
         references.sort(Comparator.comparing(SortedProject::getStarCount));
@@ -230,4 +229,3 @@ public class ProjectRepositorySortIT {
         validateLastPage(result, 5);
     }
 }
-

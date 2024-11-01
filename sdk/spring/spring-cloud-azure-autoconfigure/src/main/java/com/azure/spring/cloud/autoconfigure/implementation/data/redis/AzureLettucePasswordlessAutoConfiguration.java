@@ -29,17 +29,16 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnection;
 import org.springframework.data.redis.connection.lettuce.RedisCredentialsProviderFactory;
 import reactor.core.publisher.Mono;
 
-
 /**
  * Azure Redis passwordless connection configuration using Lettuce.
  *
  * @since 5.13.0
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass({LettuceConnection.class, RedisCredentials.class})
+@ConditionalOnClass({ LettuceConnection.class, RedisCredentials.class })
 @ConditionalOnExpression("${spring.data.redis.azure.passwordless-enabled:false}")
 @AutoConfigureBefore(RedisAutoConfiguration.class)
-@ConditionalOnProperty(prefix = "spring.data.redis", name = {"host"})
+@ConditionalOnProperty(prefix = "spring.data.redis", name = { "host" })
 @EnableConfigurationProperties(RedisProperties.class)
 public class AzureLettucePasswordlessAutoConfiguration {
 
@@ -52,15 +51,17 @@ public class AzureLettucePasswordlessAutoConfiguration {
     @Bean(name = "azureRedisCredentials")
     @ConditionalOnMissingBean
     AzureRedisCredentials azureRedisCredentials(RedisProperties redisProperties,
-                                                AzureRedisPasswordlessProperties azureRedisPasswordlessProperties,
-                                                AzureGlobalProperties azureGlobalProperties) {
-        AzureRedisPasswordlessProperties redisPasswordlessProperties = mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties);
+        AzureRedisPasswordlessProperties azureRedisPasswordlessProperties,
+        AzureGlobalProperties azureGlobalProperties) {
+        AzureRedisPasswordlessProperties redisPasswordlessProperties
+            = mergeAzureProperties(azureGlobalProperties, azureRedisPasswordlessProperties);
         return new AzureRedisCredentials(redisProperties.getUsername(), redisPasswordlessProperties);
     }
 
     @Bean(name = "azureLettuceClientConfigurationBuilderCustomizer")
     @ConditionalOnMissingBean
-    LettuceClientConfigurationBuilderCustomizer azureLettuceClientConfigurationBuilderCustomizer(AzureRedisCredentials azureRedisCredentials) {
+    LettuceClientConfigurationBuilderCustomizer
+        azureLettuceClientConfigurationBuilderCustomizer(AzureRedisCredentials azureRedisCredentials) {
         return builder -> builder.redisCredentialsProviderFactory(new RedisCredentialsProviderFactory() {
 
             @Override
@@ -69,16 +70,18 @@ public class AzureLettucePasswordlessAutoConfiguration {
             }
 
             @Override
-            public RedisCredentialsProvider createSentinelCredentialsProvider(RedisSentinelConfiguration redisConfiguration) {
+            public RedisCredentialsProvider
+                createSentinelCredentialsProvider(RedisSentinelConfiguration redisConfiguration) {
                 return () -> Mono.just(azureRedisCredentials);
             }
         }).clientOptions(ClientOptions.builder().protocolVersion(ProtocolVersion.RESP2).build());
     }
 
     private AzureRedisPasswordlessProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties,
-                                                                  AzureRedisPasswordlessProperties azurePasswordlessProperties) {
+        AzureRedisPasswordlessProperties azurePasswordlessProperties) {
         AzureRedisPasswordlessProperties mergedProperties = new AzureRedisPasswordlessProperties();
-        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties, mergedProperties);
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties,
+            mergedProperties);
         return mergedProperties;
     }
 }

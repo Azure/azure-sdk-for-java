@@ -48,8 +48,8 @@ class ServiceBusHealthIndicatorTests {
     @Mock
     private ProducerDestination producerDestination;
 
-    private final ServiceBusExtendedBindingProperties extendedBindingProperties =
-        new ServiceBusExtendedBindingProperties();
+    private final ServiceBusExtendedBindingProperties extendedBindingProperties
+        = new ServiceBusExtendedBindingProperties();
 
     private ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties;
 
@@ -61,14 +61,13 @@ class ServiceBusHealthIndicatorTests {
     @Mock
     private MessageChannel errorChannel;
 
-    private final ServiceBusMessageChannelTestBinder binder = new ServiceBusMessageChannelTestBinder(
-        BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
+    private final ServiceBusMessageChannelTestBinder binder
+        = new ServiceBusMessageChannelTestBinder(BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
 
     private ServiceBusHealthIndicator serviceBusHealthIndicator;
     private static final String ENTITY_NAME = "test-entity";
     private static final String GROUP = "test";
     private static final String NAMESPACE_NAME = "test-namespace";
-
 
     @BeforeEach
     void init() {
@@ -89,10 +88,11 @@ class ServiceBusHealthIndicatorTests {
         prepareProducerProperties();
         when(producerDestination.getName()).thenReturn(ENTITY_NAME);
         binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
-        ServiceBusTemplate serviceBusTemplate = (ServiceBusTemplate) ReflectionTestUtils.getField(binder,
-            "serviceBusTemplate");
-        DefaultServiceBusNamespaceProducerFactory producerFactory =
-            (DefaultServiceBusNamespaceProducerFactory) ReflectionTestUtils.getField(serviceBusTemplate, "producerFactory");
+        ServiceBusTemplate serviceBusTemplate
+            = (ServiceBusTemplate) ReflectionTestUtils.getField(binder, "serviceBusTemplate");
+        DefaultServiceBusNamespaceProducerFactory producerFactory
+            = (DefaultServiceBusNamespaceProducerFactory) ReflectionTestUtils.getField(serviceBusTemplate,
+                "producerFactory");
         producerFactory.createProducer(ENTITY_NAME);
         final Health health = serviceBusHealthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
@@ -102,16 +102,12 @@ class ServiceBusHealthIndicatorTests {
     void testServiceBusProducerHealthIndicatorIsDown() {
         prepareProducerProperties();
         when(producerDestination.getName()).thenReturn(ENTITY_NAME);
-        DefaultMessageHandler producerMessageHandler =
-            (DefaultMessageHandler) binder.createProducerMessageHandler(producerDestination, producerProperties,
-                errorChannel);
+        DefaultMessageHandler producerMessageHandler = (DefaultMessageHandler) binder
+            .createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
         producerMessageHandler.setBeanFactory(beanFactory);
-        ReflectionTestUtils.invokeMethod(producerMessageHandler,
-            DefaultMessageHandler.class,
-            "onInit");
-        producerMessageHandler.handleMessage(MessageBuilder.withPayload("test")
-                                                           .setHeader(AzureHeaders.PARTITION_KEY, "fake-key")
-                                                           .build());
+        ReflectionTestUtils.invokeMethod(producerMessageHandler, DefaultMessageHandler.class, "onInit");
+        producerMessageHandler.handleMessage(
+            MessageBuilder.withPayload("test").setHeader(AzureHeaders.PARTITION_KEY, "fake-key").build());
         binder.addProducerDownInstrumentation();
         final Health health = serviceBusHealthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.DOWN);
@@ -121,7 +117,8 @@ class ServiceBusHealthIndicatorTests {
     void testServiceBusProcessorHealthIndicatorIsUp() {
         prepareConsumerProperties();
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
-        ServiceBusInboundChannelAdapter consumerEndpoint = (ServiceBusInboundChannelAdapter) binder.createConsumerEndpoint(consumerDestination, null, consumerProperties);
+        ServiceBusInboundChannelAdapter consumerEndpoint = (ServiceBusInboundChannelAdapter) binder
+            .createConsumerEndpoint(consumerDestination, null, consumerProperties);
 
         consumerEndpoint.afterPropertiesSet();
         consumerEndpoint.start();
@@ -134,7 +131,8 @@ class ServiceBusHealthIndicatorTests {
     void testServiceBusProcessorHealthIndicatorIsDown() {
         prepareConsumerProperties();
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
-        ServiceBusInboundChannelAdapter consumerEndpoint = (ServiceBusInboundChannelAdapter) binder.createConsumerEndpoint(consumerDestination, null, consumerProperties);
+        ServiceBusInboundChannelAdapter consumerEndpoint = (ServiceBusInboundChannelAdapter) binder
+            .createConsumerEndpoint(consumerDestination, null, consumerProperties);
 
         consumerEndpoint.afterPropertiesSet();
         consumerEndpoint.start();

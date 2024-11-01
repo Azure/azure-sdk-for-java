@@ -15,7 +15,7 @@ import org.springframework.lang.NonNull;
 public class ServiceBusNamespaceCrud extends AbstractResourceCrud<ServiceBusNamespace, String, Object> {
 
     public ServiceBusNamespaceCrud(@NonNull AzureResourceManager azureResourceManager,
-                                   @NonNull AzureResourceMetadata azureResourceMetadata) {
+        @NonNull AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
     }
 
@@ -32,8 +32,8 @@ public class ServiceBusNamespaceCrud extends AbstractResourceCrud<ServiceBusName
     @Override
     public ServiceBusNamespace internalGet(String namespace) {
         try {
-            return this.resourceManager.serviceBusNamespaces().getByResourceGroup(resourceMetadata.getResourceGroup(),
-                                                                                  namespace);
+            return this.resourceManager.serviceBusNamespaces()
+                .getByResourceGroup(resourceMetadata.getResourceGroup(), namespace);
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
@@ -46,9 +46,9 @@ public class ServiceBusNamespaceCrud extends AbstractResourceCrud<ServiceBusName
     @Override
     public ServiceBusNamespace internalCreate(String namespace) {
         return this.resourceManager.serviceBusNamespaces()
-                                   .define(namespace)
-                                   .withRegion(this.resourceMetadata.getRegion())
-                                   .withExistingResourceGroup(this.resourceMetadata.getResourceGroup())
-                                   .create();
+            .define(namespace)
+            .withRegion(this.resourceMetadata.getRegion())
+            .withExistingResourceGroup(this.resourceMetadata.getResourceGroup())
+            .create();
     }
 }

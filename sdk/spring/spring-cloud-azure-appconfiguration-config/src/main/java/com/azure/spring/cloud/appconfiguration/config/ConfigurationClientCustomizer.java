@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config;
 
-
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 
 /**

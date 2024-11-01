@@ -105,8 +105,8 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
             }
 
             if (getSendFailureChannel() != null) {
-                this.messagingTemplate.send(getSendFailureChannel(), getErrorMessageStrategy()
-                    .buildErrorMessage(new AzureSendFailureException(message, ex), null));
+                this.messagingTemplate.send(getSendFailureChannel(),
+                    getErrorMessageStrategy().buildErrorMessage(new AzureSendFailureException(message, ex), null));
             }
         }).doOnSuccess(t -> {
             if (LOGGER.isDebugEnabled()) {
@@ -211,17 +211,14 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private Map<String, String> getPartitionFromExpression(Message<?> message) {
         Map<String, String> partitionMap = new HashMap<>();
 
-        evaluatePartition(message, this.partitionIdExpression)
-                .ifPresent(id -> partitionMap.put(PARTITION_ID, id));
-        evaluatePartition(message, this.partitionKeyExpression)
-                .ifPresent(key -> partitionMap.put(PARTITION_KEY, key));
+        evaluatePartition(message, this.partitionIdExpression).ifPresent(id -> partitionMap.put(PARTITION_ID, id));
+        evaluatePartition(message, this.partitionKeyExpression).ifPresent(key -> partitionMap.put(PARTITION_KEY, key));
 
         return partitionMap;
     }
 
     private Optional<String> evaluatePartition(Message<?> message, Expression expression) {
-        return Optional.ofNullable(expression)
-                       .map(exp -> exp.getValue(this.evaluationContext, message, String.class));
+        return Optional.ofNullable(expression).map(exp -> exp.getValue(this.evaluationContext, message, String.class));
     }
 
     /**
@@ -232,9 +229,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
      * @return the {@code MutableMessage}.
      */
     private Message<?> createMutableMessage(Message<?> rawMessage, Map<String, String> partitionHeaders) {
-        return MutableMessageBuilder.fromMessage(rawMessage)
-                                    .copyHeadersIfAbsent(partitionHeaders)
-                                    .build();
+        return MutableMessageBuilder.fromMessage(rawMessage).copyHeadersIfAbsent(partitionHeaders).build();
     }
 
     private Map<String, Object> buildPropertiesMap() {

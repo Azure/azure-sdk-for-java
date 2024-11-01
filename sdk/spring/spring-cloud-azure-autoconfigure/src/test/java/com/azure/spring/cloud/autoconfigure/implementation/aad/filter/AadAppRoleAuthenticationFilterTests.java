@@ -59,14 +59,9 @@ class AadAppRoleAuthenticationFilterTests {
     private UserPrincipal createUserPrincipal(Set<String> roles) {
         final JSONArray claims = new JSONArray();
         claims.addAll(roles);
-        final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-            .subject("john doe")
-            .claim("roles", claims)
-            .build();
-        final JWSObject jwsObject = new JWSObject(
-            new Builder(JWSAlgorithm.RS256).build(),
-            new Payload(jwtClaimsSet.toString())
-        );
+        final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().subject("john doe").claim("roles", claims).build();
+        final JWSObject jwsObject
+            = new JWSObject(new Builder(JWSAlgorithm.RS256).build(), new Payload(jwtClaimsSet.toString()));
         UserPrincipal userPrincipal = new UserPrincipal("", jwsObject, jwtClaimsSet);
         userPrincipal.setRoles(roles);
         return userPrincipal;
@@ -82,8 +77,7 @@ class AadAppRoleAuthenticationFilterTests {
     }
 
     @Test
-    void testDoFilterGoodCase()
-        throws ParseException, JOSEException, BadJOSEException, ServletException, IOException {
+    void testDoFilterGoodCase() throws ParseException, JOSEException, BadJOSEException, ServletException, IOException {
         Set<String> dummyValues = new HashSet<>(2);
         dummyValues.add("user");
         dummyValues.add("admin");
@@ -102,9 +96,9 @@ class AadAppRoleAuthenticationFilterTests {
             assertTrue(authentication.isAuthenticated(), "User should be authenticated!");
             assertEquals(dummyPrincipal, authentication.getPrincipal());
 
-            @SuppressWarnings("unchecked") final Collection<SimpleGrantedAuthority> authorities =
-                (Collection<SimpleGrantedAuthority>) authentication
-                    .getAuthorities();
+            @SuppressWarnings("unchecked")
+            final Collection<SimpleGrantedAuthority> authorities
+                = (Collection<SimpleGrantedAuthority>) authentication.getAuthorities();
             Assertions.assertThat(authorities).containsExactlyInAnyOrder(roleAdmin, roleUser);
         };
 
@@ -145,9 +139,9 @@ class AadAppRoleAuthenticationFilterTests {
             assertTrue(authentication.isAuthenticated(), "User should be authenticated!");
             final SimpleGrantedAuthority expectedDefaultRole = new SimpleGrantedAuthority("ROLE_USER");
 
-            @SuppressWarnings("unchecked") final Collection<SimpleGrantedAuthority> authorities =
-                (Collection<SimpleGrantedAuthority>) authentication
-                    .getAuthorities();
+            @SuppressWarnings("unchecked")
+            final Collection<SimpleGrantedAuthority> authorities
+                = (Collection<SimpleGrantedAuthority>) authentication.getAuthorities();
             Assertions.assertThat(authorities).containsExactlyInAnyOrder(expectedDefaultRole);
         };
 
@@ -167,14 +161,8 @@ class AadAppRoleAuthenticationFilterTests {
         roles.add("ADMIN");
         userPrincipal.setRoles(Collections.unmodifiableSet(roles));
         Set<SimpleGrantedAuthority> result = filter.toSimpleGrantedAuthoritySet(userPrincipal);
-        assertThat(
-            "Set should contain the two granted authority 'ROLE_user' and 'ROLE_ADMIN'.",
-            result,
-            containsInAnyOrder(
-                new SimpleGrantedAuthority("ROLE_user"),
-                new SimpleGrantedAuthority("ROLE_ADMIN")
-            )
-        );
+        assertThat("Set should contain the two granted authority 'ROLE_user' and 'ROLE_ADMIN'.", result,
+            containsInAnyOrder(new SimpleGrantedAuthority("ROLE_user"), new SimpleGrantedAuthority("ROLE_ADMIN")));
     }
 
     @Test
@@ -184,13 +172,8 @@ class AadAppRoleAuthenticationFilterTests {
         Set<String> roles = Collections.unmodifiableSet(new HashSet<>());
         userPrincipal.setRoles(roles);
         Set<SimpleGrantedAuthority> result = filter.toSimpleGrantedAuthoritySet(userPrincipal);
-        assertThat(
-            "Set should contain the default authority 'ROLE_USER'.",
-            result,
-            containsInAnyOrder(
-                new SimpleGrantedAuthority("ROLE_USER")
-            )
-        );
+        assertThat("Set should contain the default authority 'ROLE_USER'.", result,
+            containsInAnyOrder(new SimpleGrantedAuthority("ROLE_USER")));
     }
 
     @Test
@@ -208,8 +191,8 @@ class AadAppRoleAuthenticationFilterTests {
     }
 
     @Test
-    void testAlreadyAuthenticated() throws ServletException, IOException, ParseException, JOSEException,
-        BadJOSEException {
+    void testAlreadyAuthenticated()
+        throws ServletException, IOException, ParseException, JOSEException, BadJOSEException {
         final Authentication authentication = mock(Authentication.class);
         when(authentication.isAuthenticated()).thenReturn(true);
         when(userPrincipalManager.isTokenIssuedByAad(TOKEN)).thenReturn(true);

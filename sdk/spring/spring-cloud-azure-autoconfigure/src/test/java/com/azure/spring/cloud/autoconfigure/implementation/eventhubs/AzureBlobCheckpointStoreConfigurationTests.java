@@ -37,15 +37,11 @@ class AzureBlobCheckpointStoreConfigurationTests {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureBlobCheckpointStoreConfiguration.class));
 
-
     @Test
     void configureWithoutBlobCheckpointStoreClass() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(BlobCheckpointStore.class))
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa"
-            )
+        this.contextRunner.withClassLoader(new FilteredClassLoader(BlobCheckpointStore.class))
+            .withPropertyValues("spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa")
             .run(context -> assertThat(context).doesNotHaveBean(AzureBlobCheckpointStoreConfiguration.class));
     }
 
@@ -61,16 +57,15 @@ class AzureBlobCheckpointStoreConfigurationTests {
         azureEventHubsProperties.getProcessor().getCheckpointStore().setAccountName("sa");
         azureEventHubsProperties.getProcessor().getCheckpointStore().setContainerName("abc");
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa"
-            )
+            .withPropertyValues("spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa")
             .withBean(AzureEventHubsProperties.class, () -> azureEventHubsProperties)
             .withBean(BlobCheckpointStore.class, () -> mock(BlobCheckpointStore.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureBlobCheckpointStoreConfiguration.class);
                 assertThat(context).hasSingleBean(BlobServiceClientBuilderFactory.class);
-                assertThat(context).hasBean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME);
+                assertThat(context)
+                    .hasBean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME);
             });
     }
 
@@ -80,21 +75,18 @@ class AzureBlobCheckpointStoreConfigurationTests {
         azureEventHubsProperties.getProcessor().getCheckpointStore().setAccountName("sa");
         azureEventHubsProperties.getProcessor().getCheckpointStore().setContainerName("abc");
 
-        this.contextRunner
-            .withUserConfiguration(AzureStorageBlobAutoConfiguration.class)
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
+        this.contextRunner.withUserConfiguration(AzureStorageBlobAutoConfiguration.class)
+            .withPropertyValues("spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
                 "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa",
-                "spring.cloud.azure.storage.blob.account-name=sa",
-                "spring.cloud.azure.storage.blob.container-name=abc"
-            )
+                "spring.cloud.azure.storage.blob.account-name=sa", "spring.cloud.azure.storage.blob.container-name=abc")
             .withBean(AzureEventHubsProperties.class, () -> azureEventHubsProperties)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(BlobCheckpointStore.class, () -> mock(BlobCheckpointStore.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureBlobCheckpointStoreConfiguration.class);
                 assertThat(context).hasSingleBean(AzureStorageBlobAutoConfiguration.class);
-                assertThat(context).hasBean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME);
+                assertThat(context)
+                    .hasBean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME);
                 assertThat(context).hasBean(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME);
 
                 assertThat(context).hasBean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_BEAN_NAME);
@@ -113,10 +105,8 @@ class AzureBlobCheckpointStoreConfigurationTests {
     void customizerShouldBeCalled() {
         StorageBlobBuilderCustomizer customizer = new StorageBlobBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa"
-            )
+            .withPropertyValues("spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa")
             .withBean(AzureEventHubsProperties.class, AzureEventHubsProperties::new)
             .withBean("customizer1", StorageBlobBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", StorageBlobBuilderCustomizer.class, () -> customizer)
@@ -128,10 +118,8 @@ class AzureBlobCheckpointStoreConfigurationTests {
         StorageBlobBuilderCustomizer customizer = new StorageBlobBuilderCustomizer();
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa"
-            )
+            .withPropertyValues("spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa")
             .withBean(AzureEventHubsProperties.class, AzureEventHubsProperties::new)
             .withBean("customizer1", StorageBlobBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", StorageBlobBuilderCustomizer.class, () -> customizer)
@@ -144,13 +132,10 @@ class AzureBlobCheckpointStoreConfigurationTests {
 
     @Test
     void blobContainerInitializerShouldNotConfigureByDefault() {
-        this.contextRunner
-            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
+        this.contextRunner.withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withPropertyValues("spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
                 "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa",
-                "spring.cloud.azure.eventhubs.profile.cloud-type=Azure"
-            )
+                "spring.cloud.azure.eventhubs.profile.cloud-type=Azure")
             .run(context -> {
                 assertThat(context).doesNotHaveBean(BlobCheckpointStoreContainerInitializer.class);
             });
@@ -161,11 +146,9 @@ class AzureBlobCheckpointStoreConfigurationTests {
         BlobServiceClientBuilderFactory mockFactory = mockBlobServiceClientBuilderFactory();
 
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
+            .withPropertyValues("spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
                 "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa",
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.create-container-if-not-exists=true"
-            )
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.create-container-if-not-exists=true")
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME,
                 BlobServiceClientBuilderFactory.class, () -> mockFactory)
@@ -179,18 +162,16 @@ class AzureBlobCheckpointStoreConfigurationTests {
         BlobServiceClientBuilderFactory mockFactory = mockBlobServiceClientBuilderFactory();
         TestBlobCheckpointStoreContainerInitializer initializer = new TestBlobCheckpointStoreContainerInitializer();
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
+            .withPropertyValues("spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
                 "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa",
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.create-container-if-not-exists=true"
-            )
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.create-container-if-not-exists=true")
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME,
                 BlobServiceClientBuilderFactory.class, () -> mockFactory)
             .withBean(BlobCheckpointStoreContainerInitializer.class, () -> initializer)
             .run(context -> {
-                Map<String, BlobCheckpointStoreContainerInitializer> beans =
-                    context.getBeansOfType(BlobCheckpointStoreContainerInitializer.class);
+                Map<String, BlobCheckpointStoreContainerInitializer> beans
+                    = context.getBeansOfType(BlobCheckpointStoreContainerInitializer.class);
                 assertThat(beans.size()).isEqualTo(2);
                 assertThat(initializer.getCalledTimes()).isEqualTo(1);
             });
@@ -209,9 +190,11 @@ class AzureBlobCheckpointStoreConfigurationTests {
         return mockFactory;
     }
 
-    private static class TestBlobCheckpointStoreContainerInitializer implements BlobCheckpointStoreContainerInitializer {
+    private static class TestBlobCheckpointStoreContainerInitializer
+        implements BlobCheckpointStoreContainerInitializer {
 
         private int calledTimes = 0;
+
         @Override
         public void init(BlobContainerAsyncClient containerAsyncClient) {
             calledTimes++;

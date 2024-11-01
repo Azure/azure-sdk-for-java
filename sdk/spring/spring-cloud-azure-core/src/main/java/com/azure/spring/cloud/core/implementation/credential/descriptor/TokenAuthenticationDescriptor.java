@@ -22,7 +22,7 @@ public final class TokenAuthenticationDescriptor implements AuthenticationDescri
      * @param consumer The consumer to consume the resolved credential.
      */
     public TokenAuthenticationDescriptor(AzureCredentialResolver<TokenCredential> resolver,
-                                         Consumer<TokenCredential> consumer) {
+        Consumer<TokenCredential> consumer) {
         this.consumer = consumer;
         this.resolver = resolver;
     }

@@ -18,8 +18,7 @@ import org.springframework.context.annotation.Import;
 @Import({
     AzureStorageConfiguration.class,
     AzureStorageBlobPropertiesConfiguration.class,
-    BlobClientConfiguration.class
-})
+    BlobClientConfiguration.class })
 @ConditionalOnClass(BlobServiceClientBuilder.class)
 public class AzureStorageBlobAutoConfiguration {
 

@@ -37,8 +37,7 @@ class TimeCheckpointManager extends EventCheckpointManager {
     @Override
     public void checkpoint(EventContext context) {
         LocalDateTime now = LocalDateTime.now();
-        if (Duration.between(this.lastCheckpointTime.get(), now)
-            .compareTo(this.checkpointConfig.getInterval()) > 0) {
+        if (Duration.between(this.lastCheckpointTime.get(), now).compareTo(this.checkpointConfig.getInterval()) > 0) {
             context.updateCheckpointAsync()
                 .doOnError(t -> logCheckpointFail(context, context.getEventData(), t))
                 .doOnSuccess(v -> {

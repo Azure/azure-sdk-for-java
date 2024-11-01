@@ -18,8 +18,7 @@ public enum AzurePasswordlessPropertiesMapping {
     /**
      * Getter function and setter biConsumer for scopes.
      */
-    SCOPES(p -> p.getScopes(),
-        (p, s) -> p.setProperty(AuthProperty.SCOPES.getPropertyKey(), s)),
+    SCOPES(p -> p.getScopes(), (p, s) -> p.setProperty(AuthProperty.SCOPES.getPropertyKey(), s)),
 
     /**
      * Getter function and setter biConsumer for clientCertificatePassword.
@@ -54,20 +53,17 @@ public enum AzurePasswordlessPropertiesMapping {
     /**
      * Getter function and setter biConsumer for password.
      */
-    PASSWORD(p -> p.getCredential().getPassword(),
-        (p, s) -> p.setProperty(AuthProperty.PASSWORD.getPropertyKey(), s)),
+    PASSWORD(p -> p.getCredential().getPassword(), (p, s) -> p.setProperty(AuthProperty.PASSWORD.getPropertyKey(), s)),
 
     /**
      * Getter function and setter biConsumer for username.
      */
-    USERNAME(p -> p.getCredential().getUsername(),
-        (p, s) -> p.setProperty(AuthProperty.USERNAME.getPropertyKey(), s)),
+    USERNAME(p -> p.getCredential().getUsername(), (p, s) -> p.setProperty(AuthProperty.USERNAME.getPropertyKey(), s)),
 
     /**
      * Getter function and setter biConsumer for tenantId.
      */
-    TENANT_ID(p -> p.getProfile().getTenantId(),
-        (p, s) -> p.setProperty(AuthProperty.TENANT_ID.getPropertyKey(), s)),
+    TENANT_ID(p -> p.getProfile().getTenantId(), (p, s) -> p.setProperty(AuthProperty.TENANT_ID.getPropertyKey(), s)),
 
     /**
      * Getter function and setter biConsumer for authorityHost.
@@ -86,8 +82,8 @@ public enum AzurePasswordlessPropertiesMapping {
         return setter;
     }
 
-    AzurePasswordlessPropertiesMapping(Function<PasswordlessProperties, String> getter, BiConsumer<Properties,
-        String> setter) {
+    AzurePasswordlessPropertiesMapping(Function<PasswordlessProperties, String> getter,
+        BiConsumer<Properties, String> setter) {
         this.getter = getter;
         this.setter = setter;
     }

@@ -77,7 +77,7 @@ public final class StorageBlobResource extends AzureStorageResource {
      * @param contentType the content type
      */
     public StorageBlobResource(BlobServiceClient blobServiceClient, String location, Boolean autoCreateFiles,
-                               String snapshot, String versionId, String contentType) {
+        String snapshot, String versionId, String contentType) {
         assertIsAzureStorageLocation(location);
         this.autoCreateFiles = autoCreateFiles == null ? isAutoCreateFiles(location) : autoCreateFiles;
         this.blobServiceClient = blobServiceClient;

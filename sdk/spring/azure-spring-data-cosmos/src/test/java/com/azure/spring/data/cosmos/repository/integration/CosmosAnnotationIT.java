@@ -35,12 +35,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class CosmosAnnotationIT {
 
-    private static final Role TEST_ROLE_1 = new Role(TestConstants.ID_1, true, TestConstants.LEVEL,
-        TestConstants.ROLE_NAME);
-    private static final Role TEST_ROLE_2 = new Role(TestConstants.ID_2, false, TestConstants.LEVEL,
-        TestConstants.ROLE_NAME);
-    private static final Role TEST_ROLE_3 = new Role(TestConstants.ID_3, true, TestConstants.LEVEL,
-        TestConstants.ROLE_NAME);
+    private static final Role TEST_ROLE_1
+        = new Role(TestConstants.ID_1, true, TestConstants.LEVEL, TestConstants.ROLE_NAME);
+    private static final Role TEST_ROLE_2
+        = new Role(TestConstants.ID_2, false, TestConstants.LEVEL, TestConstants.ROLE_NAME);
+    private static final Role TEST_ROLE_3
+        = new Role(TestConstants.ID_3, true, TestConstants.LEVEL, TestConstants.ROLE_NAME);
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
@@ -82,8 +82,7 @@ public class CosmosAnnotationIT {
 
     @Test
     public void testSave() {
-        final Role testRole = new Role(TestConstants.ID_4, true, TestConstants.LEVEL,
-            TestConstants.ROLE_NAME);
+        final Role testRole = new Role(TestConstants.ID_4, true, TestConstants.LEVEL, TestConstants.ROLE_NAME);
         Mono<Role> save = repository.save(testRole);
         StepVerifier.create(save).expectNext(testRole).verifyComplete();
     }
@@ -109,10 +108,12 @@ public class CosmosAnnotationIT {
     @Test
     public void testTimeToLiveAnnotation() {
         Integer timeToLive = collectionManager.getEntityInformation(Role.class).getTimeToLive();
-        assertThat(timeToLive).isEqualTo(collectionManager.getContainerProperties(Role.class).getDefaultTimeToLiveInSeconds());
+        assertThat(timeToLive)
+            .isEqualTo(collectionManager.getContainerProperties(Role.class).getDefaultTimeToLiveInSeconds());
 
         timeToLive = collectionManager.getEntityInformation(TimeToLiveSample.class).getTimeToLive();
-        assertThat(timeToLive).isEqualTo(collectionManager.getContainerProperties(TimeToLiveSample.class).getDefaultTimeToLiveInSeconds());
+        assertThat(timeToLive).isEqualTo(
+            collectionManager.getContainerProperties(TimeToLiveSample.class).getDefaultTimeToLiveInSeconds());
     }
 
     @Test
@@ -122,16 +123,11 @@ public class CosmosAnnotationIT {
         Assert.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
             "unmatched collection policy indexing mode of class Role");
 
-        TestUtils.testIndexingPolicyPathsEquals(policy.getIncludedPaths()
-                                                      .stream()
-                                                      .map(IncludedPath::getPath)
-                                                      .collect(Collectors.toList()),
+        TestUtils.testIndexingPolicyPathsEquals(
+            policy.getIncludedPaths().stream().map(IncludedPath::getPath).collect(Collectors.toList()),
             TestConstants.INCLUDED_PATHS);
-        TestUtils.testIndexingPolicyPathsEquals(policy.getExcludedPaths()
-                                                      .stream()
-                                                      .map(ExcludedPath::getPath)
-                                                      .collect(Collectors.toList()),
+        TestUtils.testIndexingPolicyPathsEquals(
+            policy.getExcludedPaths().stream().map(ExcludedPath::getPath).collect(Collectors.toList()),
             TestConstants.EXCLUDED_PATHS);
     }
 }
-

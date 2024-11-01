@@ -22,8 +22,10 @@ class AzureNamedKeyCredentialResolverTests {
         namedKey.setName("test-key-name");
         namedKey.setKey("test-key");
         properties.setNamedKey(namedKey);
-        Assertions.assertEquals("test-key-name", Objects.requireNonNull(resolver.resolve(properties)).getAzureNamedKey().getName());
-        Assertions.assertEquals("test-key", Objects.requireNonNull(resolver.resolve(properties)).getAzureNamedKey().getKey());
+        Assertions.assertEquals("test-key-name",
+            Objects.requireNonNull(resolver.resolve(properties)).getAzureNamedKey().getName());
+        Assertions.assertEquals("test-key",
+            Objects.requireNonNull(resolver.resolve(properties)).getAzureNamedKey().getKey());
     }
 
     @Test
@@ -59,5 +61,5 @@ class AzureNamedKeyCredentialResolverTests {
     private static class AzurePropertiesWithoutNamedKey extends AzureAmqpSdkProperties {
 
     }
-    
+
 }

@@ -29,10 +29,10 @@ class StorageQueueContainerConnectionDetailsFactoryTests {
 
     @Container
     @ServiceConnection
-    private static final GenericContainer<?> AZURITE_CONTAINER = new GenericContainer<>(
-        "mcr.microsoft.com/azure-storage/azurite:latest")
-        .withExposedPorts(10001)
-        .withCommand("azurite --skipApiVersionCheck && azurite -l /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0");
+    private static final GenericContainer<?> AZURITE_CONTAINER
+        = new GenericContainer<>("mcr.microsoft.com/azure-storage/azurite:latest").withExposedPorts(10001)
+            .withCommand(
+                "azurite --skipApiVersionCheck && azurite -l /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0");
 
     @Autowired
     private QueueClient queueClient;
@@ -47,7 +47,8 @@ class StorageQueueContainerConnectionDetailsFactoryTests {
     }
 
     @Configuration
-    @ImportAutoConfiguration(classes = {AzureGlobalPropertiesAutoConfiguration.class, AzureStorageQueueAutoConfiguration.class})
+    @ImportAutoConfiguration(
+        classes = { AzureGlobalPropertiesAutoConfiguration.class, AzureStorageQueueAutoConfiguration.class })
     static class Config {
     }
 

@@ -16,8 +16,8 @@ import reactor.util.function.Tuple2;
 /**
  * Resource manager for Service Bus queue.
  */
-public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple2<String, String>, ServiceBusQueueProperties> {
-
+public class ServiceBusQueueCrud
+    extends AbstractResourceCrud<Queue, Tuple2<String, String>, ServiceBusQueueProperties> {
 
     public ServiceBusQueueCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
@@ -36,13 +36,11 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple2<Stri
     @Override
     public Queue internalGet(Tuple2<String, String> namespaceAndName) {
         try {
-            ServiceBusNamespace serviceBusNamespace = new ServiceBusNamespaceCrud(this.resourceManager,
-                this.resourceMetadata)
-                .get(namespaceAndName.getT1());
+            ServiceBusNamespace serviceBusNamespace
+                = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
+                    .get(namespaceAndName.getT1());
             Assert.notNull(serviceBusNamespace, "The Service Bus namespace should exist first.");
-            return serviceBusNamespace
-                .queues()
-                .getByName(namespaceAndName.getT2());
+            return serviceBusNamespace.queues().getByName(namespaceAndName.getT2());
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
@@ -62,7 +60,8 @@ public class ServiceBusQueueCrud extends AbstractResourceCrud<Queue, Tuple2<Stri
     }
 
     @Override
-    public Queue internalCreate(Tuple2<String, String> namespaceAndName, @Nullable ServiceBusQueueProperties queueProperties) {
+    public Queue internalCreate(Tuple2<String, String> namespaceAndName,
+        @Nullable ServiceBusQueueProperties queueProperties) {
         Queue.DefinitionStages.Blank blank = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
             .getOrCreate(namespaceAndName.getT1())
             .queues()

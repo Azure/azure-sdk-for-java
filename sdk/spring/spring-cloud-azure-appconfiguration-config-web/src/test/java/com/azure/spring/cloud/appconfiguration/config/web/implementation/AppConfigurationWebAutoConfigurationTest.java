@@ -36,65 +36,46 @@ public class AppConfigurationWebAutoConfigurationTest {
 
     @Test
     public void refreshMissing() {
-        CONTEXT_RUNNER
-            .withClassLoader(new FilteredClassLoader(WebEndpointProperties.class))
-            .run(context -> {
-                assertThat(context)
-                    .doesNotHaveBean("appConfigurationRefreshBusEndpoint");
-                assertThat(context)
-                    .doesNotHaveBean("appConfigurationRefreshEndpoint");
-                assertThat(context)
-                    .hasBean("configListener");
-            });
+        CONTEXT_RUNNER.withClassLoader(new FilteredClassLoader(WebEndpointProperties.class)).run(context -> {
+            assertThat(context).doesNotHaveBean("appConfigurationRefreshBusEndpoint");
+            assertThat(context).doesNotHaveBean("appConfigurationRefreshEndpoint");
+            assertThat(context).hasBean("configListener");
+        });
     }
 
     @Test
     public void busRefreshMissing() {
-        CONTEXT_RUNNER
-            .withClassLoader(new FilteredClassLoader(RefreshRemoteApplicationEvent.class))
-            .run(context -> {
-                assertThat(context)
-                    .doesNotHaveBean("appConfigurationBusRefreshEndpoint");
-                assertThat(context)
-                    .hasBean("appConfigurationRefreshEndpoint");
-                assertThat(context)
-                    .hasBean("configListener");
-            });
+        CONTEXT_RUNNER.withClassLoader(new FilteredClassLoader(RefreshRemoteApplicationEvent.class)).run(context -> {
+            assertThat(context).doesNotHaveBean("appConfigurationBusRefreshEndpoint");
+            assertThat(context).hasBean("appConfigurationRefreshEndpoint");
+            assertThat(context).hasBean("configListener");
+        });
     }
 
     @Test
     public void pullRefreshListenerMissing() {
         CONTEXT_RUNNER.withClassLoader(new FilteredClassLoader(RefreshEndpoint.class))
-            .run(context -> assertThat(context)
-                .doesNotHaveBean("configListener"));
+            .run(context -> assertThat(context).doesNotHaveBean("configListener"));
     }
 
     @Test
     public void pushRefresh() {
-        CONTEXT_RUNNER
-            .run(context -> {
-                assertThat(context)
-                    .hasBean("appConfigurationRefreshEndpoint");
-            });
+        CONTEXT_RUNNER.run(context -> {
+            assertThat(context).hasBean("appConfigurationRefreshEndpoint");
+        });
     }
 
     @Test
     public void busRefresh() {
-        CONTEXT_RUNNER
-            .run(context -> assertThat(context)
-                .hasBean("appConfigurationBusRefreshEndpoint"));
+        CONTEXT_RUNNER.run(context -> assertThat(context).hasBean("appConfigurationBusRefreshEndpoint"));
     }
 
     @Test
     public void fullRefresh() {
-        CONTEXT_RUNNER
-            .run(context -> {
-                assertThat(context)
-                    .hasBean("configListener");
-                assertThat(context)
-                    .hasBean("appConfigurationRefreshEndpoint");
-                assertThat(context)
-                    .hasBean("appConfigurationBusRefreshEndpoint");
-            });
+        CONTEXT_RUNNER.run(context -> {
+            assertThat(context).hasBean("configListener");
+            assertThat(context).hasBean("appConfigurationRefreshEndpoint");
+            assertThat(context).hasBean("appConfigurationBusRefreshEndpoint");
+        });
     }
 }

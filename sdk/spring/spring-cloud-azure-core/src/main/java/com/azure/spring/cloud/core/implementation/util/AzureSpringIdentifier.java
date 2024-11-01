@@ -19,6 +19,7 @@ public final class AzureSpringIdentifier {
     private AzureSpringIdentifier() {
 
     }
+
     //    There is 24 char limitation about the app id. So some abbreviation needs to be applied:
     //    az: for Azure
     //    sp: for Spring
@@ -90,8 +91,8 @@ public final class AzureSpringIdentifier {
     private static String getVersion() {
         String version = "unknown";
         try {
-            Properties properties = PropertiesLoaderUtils.loadProperties(
-                new ClassPathResource("azure-spring-identifier.properties"));
+            Properties properties
+                = PropertiesLoaderUtils.loadProperties(new ClassPathResource("azure-spring-identifier.properties"));
             version = properties.getProperty("version");
             //Add this logic to avoid creating app id failed
             version = formatVersion(version);

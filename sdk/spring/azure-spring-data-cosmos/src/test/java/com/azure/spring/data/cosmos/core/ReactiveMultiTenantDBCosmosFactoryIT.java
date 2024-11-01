@@ -51,8 +51,10 @@ public class ReactiveMultiTenantDBCosmosFactoryIT {
     private final String testDB1 = "Database1";
     private final String testDB2 = "Database2";
 
-    private final Person TEST_PERSON_1 = new Person(ID_1, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
-    private final Person TEST_PERSON_2 = new Person(ID_2, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+    private final Person TEST_PERSON_1
+        = new Person(ID_1, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+    private final Person TEST_PERSON_2
+        = new Person(ID_2, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
@@ -93,14 +95,18 @@ public class ReactiveMultiTenantDBCosmosFactoryIT {
         reactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
         reactiveCosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class).block();
         assertThat(cosmosFactory.getDatabaseName()).isEqualTo(testDB1);
-        reactiveCosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1))).block();
+        reactiveCosmosTemplate
+            .insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1)))
+            .block();
 
         // Create DB2 and add TEST_PERSON_2 to it
         cosmosFactory.manuallySetDatabaseName = testDB2;
         reactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
         reactiveCosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class).block();
         assertThat(cosmosFactory.getDatabaseName()).isEqualTo(testDB2);
-        reactiveCosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2))).block();
+        reactiveCosmosTemplate
+            .insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2)))
+            .block();
 
         // Check that DB2 has the correct contents
         List<Person> expectedResultsDB2 = new ArrayList<>();

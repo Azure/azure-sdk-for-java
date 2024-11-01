@@ -50,8 +50,8 @@ public class AadB2cTrustedIssuerRepository extends AadTrustedIssuerRepository {
         Assert.notNull(resolvedBaseUri, "resolvedBaseUri cannot be null.");
         Assert.notNull(userFlows, "userFlows cannot be null.");
         userFlows.values()
-                 .stream()
-                 .map(uf -> String.format("%s/tfp/%s/%s/v2.0/", resolvedBaseUri, tenantId, uf.toLowerCase(ROOT)))
-                 .forEach(this::addTrustedIssuer);
+            .stream()
+            .map(uf -> String.format("%s/tfp/%s/%s/v2.0/", resolvedBaseUri, tenantId, uf.toLowerCase(ROOT)))
+            .forEach(this::addTrustedIssuer);
     }
 }

@@ -27,8 +27,8 @@ public class SpELCosmosAnnotationIT {
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
-    private static final SpELPropertyStudent TEST_PROPERTY_STUDENT = new SpELPropertyStudent(TestConstants.ID_1,
-        TestConstants.FIRST_NAME, TestConstants.LAST_NAME);
+    private static final SpELPropertyStudent TEST_PROPERTY_STUDENT
+        = new SpELPropertyStudent(TestConstants.ID_1, TestConstants.FIRST_NAME, TestConstants.LAST_NAME);
 
     @Autowired
     private CosmosTemplate cosmosTemplate;
@@ -40,35 +40,33 @@ public class SpELCosmosAnnotationIT {
 
     @Test
     public void testDynamicContainerNameWithPropertySourceExpression() {
-        final CosmosEntityInformation<SpELPropertyStudent, Object> propertyStudentInfo =
-            new CosmosEntityInformation<>(SpELPropertyStudent.class);
+        final CosmosEntityInformation<SpELPropertyStudent, Object> propertyStudentInfo
+            = new CosmosEntityInformation<>(SpELPropertyStudent.class);
 
         assertEquals(TestConstants.DYNAMIC_PROPERTY_COLLECTION_NAME, propertyStudentInfo.getContainerName());
     }
 
     @Test
     public void testDynamicContainerNameWithBeanExpression() {
-        final CosmosEntityInformation<SpELBeanStudent, Object> beanStudentInfo =
-            new CosmosEntityInformation<>(SpELBeanStudent.class);
+        final CosmosEntityInformation<SpELBeanStudent, Object> beanStudentInfo
+            = new CosmosEntityInformation<>(SpELBeanStudent.class);
 
         assertEquals(TestConstants.DYNAMIC_BEAN_COLLECTION_NAME, beanStudentInfo.getContainerName());
     }
 
     @Test
     public void testDatabaseOperationsOnDynamicallyNamedCollection() throws ClassNotFoundException {
-        final CosmosEntityInformation<SpELPropertyStudent, Object> propertyStudentInfo =
-            new CosmosEntityInformation<>(SpELPropertyStudent.class);
+        final CosmosEntityInformation<SpELPropertyStudent, Object> propertyStudentInfo
+            = new CosmosEntityInformation<>(SpELPropertyStudent.class);
         cosmosTemplate.createContainerIfNotExists(propertyStudentInfo);
 
-        final SpELPropertyStudent insertedRecord =
-            cosmosTemplate.insert(propertyStudentInfo.getContainerName(), TEST_PROPERTY_STUDENT, null);
+        final SpELPropertyStudent insertedRecord
+            = cosmosTemplate.insert(propertyStudentInfo.getContainerName(), TEST_PROPERTY_STUDENT, null);
         assertNotNull(insertedRecord);
 
-        final SpELPropertyStudent readRecord =
-            cosmosTemplate.findById(TestConstants.DYNAMIC_PROPERTY_COLLECTION_NAME,
-                insertedRecord.getId(), SpELPropertyStudent.class);
+        final SpELPropertyStudent readRecord = cosmosTemplate.findById(TestConstants.DYNAMIC_PROPERTY_COLLECTION_NAME,
+            insertedRecord.getId(), SpELPropertyStudent.class);
         assertNotNull(readRecord);
     }
 
 }
-

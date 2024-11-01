@@ -34,10 +34,8 @@ public class AzureMessagingBootstrapConfiguration implements ImportBeanDefinitio
     @Override
     @SuppressWarnings("rawtypes")
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-        List<AzureListenerAnnotationBeanPostProcessorAdapter> bpps =
-            SpringFactoriesLoader.loadFactories(AzureListenerAnnotationBeanPostProcessorAdapter.class,
-                SpringFactoriesLoader.class.getClassLoader());
-
+        List<AzureListenerAnnotationBeanPostProcessorAdapter> bpps = SpringFactoriesLoader.loadFactories(
+            AzureListenerAnnotationBeanPostProcessorAdapter.class, SpringFactoriesLoader.class.getClassLoader());
 
         for (AzureListenerAnnotationBeanPostProcessorAdapter bpp : bpps) {
 
@@ -48,8 +46,10 @@ public class AzureMessagingBootstrapConfiguration implements ImportBeanDefinitio
             }
         }
 
-        if (!registry.containsBeanDefinition(AzureListenerAnnotationBeanPostProcessorAdapter.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME)) {
-            registry.registerBeanDefinition(AzureListenerAnnotationBeanPostProcessorAdapter.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME,
+        if (!registry.containsBeanDefinition(
+            AzureListenerAnnotationBeanPostProcessorAdapter.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME)) {
+            registry.registerBeanDefinition(
+                AzureListenerAnnotationBeanPostProcessorAdapter.DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME,
                 new RootBeanDefinition(AzureListenerEndpointRegistry.class));
         }
     }

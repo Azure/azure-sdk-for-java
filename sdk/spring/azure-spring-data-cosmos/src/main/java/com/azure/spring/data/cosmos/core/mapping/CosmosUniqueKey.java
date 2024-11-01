@@ -37,5 +37,5 @@ public @interface CosmosUniqueKey {
      *
      * @return unique paths
      */
-    String[] paths() default {};
+    String[] paths() default { };
 }

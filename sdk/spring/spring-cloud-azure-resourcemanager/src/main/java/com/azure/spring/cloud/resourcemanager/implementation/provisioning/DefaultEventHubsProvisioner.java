@@ -25,7 +25,7 @@ public class DefaultEventHubsProvisioner implements EventHubsProvisioner {
      * @param azureResourceMetadata the azure resource metadata
      */
     public DefaultEventHubsProvisioner(AzureResourceManager azureResourceManager,
-                                       AzureResourceMetadata azureResourceMetadata) {
+        AzureResourceMetadata azureResourceMetadata) {
         this.namespaceCrud = new EventHubNamespaceCrud(azureResourceManager, azureResourceMetadata);
         this.eventHubsCrud = new EventHubsCrud(azureResourceManager, azureResourceMetadata);
         this.consumerGroupCrud = new EventHubsConsumerGroupCrud(azureResourceManager, azureResourceMetadata);

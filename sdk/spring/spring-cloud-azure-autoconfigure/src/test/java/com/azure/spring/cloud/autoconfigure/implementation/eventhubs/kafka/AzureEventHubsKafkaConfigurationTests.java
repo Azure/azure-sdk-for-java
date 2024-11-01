@@ -34,45 +34,47 @@ class AzureEventHubsKafkaConfigurationTests {
 
     @SuppressWarnings("deprecation")
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class, AzureEventHubsKafkaAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class, TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureTokenCredentialAutoConfiguration.class,
-                KafkaAutoConfiguration.class, AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
-
+        .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class,
+            AzureEventHubsKafkaAutoConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class,
+            TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+            AzureTokenCredentialAutoConfiguration.class, KafkaAutoConfiguration.class,
+            AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
 
     @SuppressWarnings("removal")
     @Test
     void shouldConfigureSaslPlainWhenGivenConnectionString() {
         contextRunner
-                .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test"))
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
-                    assertThat(context).hasSingleBean(AzureGlobalProperties.class);
-                    assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
-                    assertThat(context).hasSingleBean(ConsumerFactory.class);
-                    assertThat(context).hasSingleBean(ProducerFactory.class);
-                    assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test"))
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureGlobalProperties.class);
+                assertThat(context).hasSingleBean(KafkaPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(KafkaProperties.class);
+                assertThat(context).hasSingleBean(ConsumerFactory.class);
+                assertThat(context).hasSingleBean(ProducerFactory.class);
+                assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
 
-                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-                    assertSaslPlainConfigured(kafkaProperties.buildProducerProperties());
-                    DefaultKafkaConsumerFactory<?, ?> consumerFactory = (DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class);
-                    assertSaslPlainConfigured(consumerFactory.getConfigurationProperties());
-                    DefaultKafkaProducerFactory<?, ?> producerFactory = (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);
-                    assertSaslPlainConfigured(producerFactory.getConfigurationProperties());
-                    KafkaBinderConfigurationProperties binderConfigurationProperties = context.getBean(KafkaBinderConfigurationProperties.class);
-                    assertSaslPlainConfigured(binderConfigurationProperties.mergedConsumerConfiguration());
+                KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
+                assertSaslPlainConfigured(kafkaProperties.buildProducerProperties());
+                DefaultKafkaConsumerFactory<?, ?> consumerFactory
+                    = (DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class);
+                assertSaslPlainConfigured(consumerFactory.getConfigurationProperties());
+                DefaultKafkaProducerFactory<?, ?> producerFactory
+                    = (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);
+                assertSaslPlainConfigured(producerFactory.getConfigurationProperties());
+                KafkaBinderConfigurationProperties binderConfigurationProperties
+                    = context.getBean(KafkaBinderConfigurationProperties.class);
+                assertSaslPlainConfigured(binderConfigurationProperties.mergedConsumerConfiguration());
 
-                });
+            });
     }
 
     private void assertSaslPlainConfigured(Map<String, ?> configurationProperties) {
-        assertThat(configurationProperties
-                .get(BOOTSTRAP_SERVERS_CONFIG)).isEqualTo(Collections.singletonList("test.servicebus.windows.net:9093"));
-        assertThat(configurationProperties
-                .get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
-        assertThat(configurationProperties
-                .get(SASL_MECHANISM)).isEqualTo("PLAIN");
+        assertThat(configurationProperties.get(BOOTSTRAP_SERVERS_CONFIG))
+            .isEqualTo(Collections.singletonList("test.servicebus.windows.net:9093"));
+        assertThat(configurationProperties.get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
+        assertThat(configurationProperties.get(SASL_MECHANISM)).isEqualTo("PLAIN");
     }
 
 }

@@ -117,8 +117,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             if (configStore.isEnabled() && loadNewPropertySources) {
                 // There is only one Feature Set for all AppConfigurationPropertySources
 
-                List<AppConfigurationReplicaClient> clients = clientFactory
-                    .getAvailableClients(configStore.getEndpoint(), true);
+                List<AppConfigurationReplicaClient> clients
+                    = clientFactory.getAvailableClients(configStore.getEndpoint(), true);
 
                 boolean generatedPropertySources = false;
 
@@ -128,8 +128,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 for (AppConfigurationReplicaClient client : clients) {
                     sourceList = new ArrayList<>();
 
-                    if (!STARTUP.get() && reloadFailed && !AppConfigurationRefreshUtil
-                        .checkStoreAfterRefreshFailed(client, clientFactory, configStore.getFeatureFlags())) {
+                    if (!STARTUP.get()
+                        && reloadFailed
+                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(client, clientFactory,
+                            configStore.getFeatureFlags())) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;
                     }
@@ -170,8 +172,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
                 if (featureFlagClient.getProperties().size() > 0) {
                     // This can be true if feature flags are enabled or if a Snapshot contained feature flags
-                    AppConfigurationFeatureManagementPropertySource acfmps = new AppConfigurationFeatureManagementPropertySource(
-                        featureFlagClient);
+                    AppConfigurationFeatureManagementPropertySource acfmps
+                        = new AppConfigurationFeatureManagementPropertySource(featureFlagClient);
                     composite.addPropertySource(acfmps);
                 }
 
@@ -199,8 +201,10 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
         if (monitoring.isEnabled()) {
             // Setting new ETag values for Watch
-            List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers().stream()
-                .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel(), !STARTUP.get())).toList();
+            List<ConfigurationSetting> watchKeysSettings = monitoring.getTriggers()
+                .stream()
+                .map(trigger -> client.getWatchKey(trigger.getKey(), trigger.getLabel(), !STARTUP.get()))
+                .toList();
 
             newState.setState(configStore.getEndpoint(), watchKeysSettings, monitoring.getRefreshInterval());
         }

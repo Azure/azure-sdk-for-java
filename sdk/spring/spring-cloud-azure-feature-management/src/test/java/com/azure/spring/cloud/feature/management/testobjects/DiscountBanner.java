@@ -25,7 +25,7 @@ public class DiscountBanner {
         this.color = color;
         return this;
     }
-    
+
     @Override
     public String toString() {
         return "DiscountBannder: Size " + size + " Color " + color;

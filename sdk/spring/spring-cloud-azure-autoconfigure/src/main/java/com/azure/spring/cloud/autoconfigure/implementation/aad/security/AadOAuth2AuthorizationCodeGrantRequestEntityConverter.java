@@ -52,18 +52,19 @@ public class AadOAuth2AuthorizationCodeGrantRequestEntityConverter
     @Override
     public MultiValueMap<String, String> getHttpBody(OAuth2AuthorizationCodeGrantRequest request) {
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
-        String scopes = String.join(" ", isRequestForAzureClient(request)
-            ? azureClientAccessTokenScopes
-            : request.getClientRegistration().getScopes());
+        String scopes = String.join(" ",
+            isRequestForAzureClient(request)
+                ? azureClientAccessTokenScopes
+                : request.getClientRegistration().getScopes());
         body.add("scope", scopes);
         return body;
     }
 
     private boolean isRequestForAzureClient(OAuth2AuthorizationCodeGrantRequest request) {
         return Optional.of(request)
-                       .map(AbstractOAuth2AuthorizationGrantRequest::getClientRegistration)
-                       .map(ClientRegistration::getRegistrationId)
-                       .map(id -> id.equals(AZURE_CLIENT_REGISTRATION_ID))
-                       .orElse(false);
+            .map(AbstractOAuth2AuthorizationGrantRequest::getClientRegistration)
+            .map(ClientRegistration::getRegistrationId)
+            .map(id -> id.equals(AZURE_CLIENT_REGISTRATION_ID))
+            .orElse(false);
     }
 }

@@ -6,7 +6,6 @@ package com.azure.spring.messaging.core;
 import org.springframework.messaging.Message;
 import reactor.core.publisher.Mono;
 
-
 /**
  * Operations for sending {@link Message} to a destination.
  *

@@ -20,7 +20,6 @@ import java.text.ParseException;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 class UserPrincipalAzureAdGraphTests {
 
     @Test
@@ -28,9 +27,9 @@ class UserPrincipalAzureAdGraphTests {
         final File tmpOutputFile = File.createTempFile("test-user-principal", "txt");
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(tmpOutputFile);
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-             FileInputStream fileInputStream = new FileInputStream(tmpOutputFile);
-             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            FileInputStream fileInputStream = new FileInputStream(tmpOutputFile);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
             final JWSObject jwsObject = JWSObject.parse(TestConstants.JWT_TOKEN);
             final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().subject("fake-subject").build();

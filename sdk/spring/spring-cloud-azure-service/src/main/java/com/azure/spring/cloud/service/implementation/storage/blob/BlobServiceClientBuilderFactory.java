@@ -29,7 +29,8 @@ import java.util.function.BiConsumer;
  * Storage Blob Service client builder factory, it builds the storage blob client according the configuration context
  * and blob properties.
  */
-public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientBuilderFactory<BlobServiceClientBuilder> {
+public class BlobServiceClientBuilderFactory
+    extends AbstractAzureStorageClientBuilderFactory<BlobServiceClientBuilder> {
 
     private final BlobServiceClientProperties blobServiceClientProperties;
 
@@ -54,7 +55,8 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientB
     @Override
     public void configureService(BlobServiceClientBuilder builder) {
         PropertyMapper map = new PropertyMapper();
-        map.from(blobServiceClientProperties.getCustomerProvidedKey()).to(key -> builder.customerProvidedKey(new CustomerProvidedKey(key)));
+        map.from(blobServiceClientProperties.getCustomerProvidedKey())
+            .to(key -> builder.customerProvidedKey(new CustomerProvidedKey(key)));
         map.from(blobServiceClientProperties.getEncryptionScope()).to(builder::encryptionScope);
         map.from(blobServiceClientProperties.getEndpoint()).to(builder::endpoint);
         map.from(blobServiceClientProperties.getServiceVersion()).to(builder::serviceVersion);
@@ -102,11 +104,9 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientB
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(BlobServiceClientBuilder builder) {
-        return Arrays.asList(
-            new StorageSharedKeyAuthenticationDescriptor(builder::credential),
+        return Arrays.asList(new StorageSharedKeyAuthenticationDescriptor(builder::credential),
             new SasAuthenticationDescriptor(builder::credential),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
-        );
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential));
     }
 
     @Override

@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.service.eventhubs.consumer;
 
-
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.cloud.service.listener.MessageListener;
 

@@ -16,7 +16,8 @@ class AzureKafkaPropertiesUtilsTest {
 
     @Test
     void testCopyJaasPropertyToAzureProperties() {
-        String jaasConfig = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required azure.configured=\"true\";";
+        String jaasConfig
+            = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required azure.configured=\"true\";";
         AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
 
         copyJaasPropertyToAzureProperties(jaasConfig, properties);
@@ -27,8 +28,9 @@ class AzureKafkaPropertiesUtilsTest {
 
     @Test
     void testCopyJaasPropertyWithCustomizedValuesToAzureProperties() {
-        String jaasConfig = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required azure.configured=\"true\" "
-            + "azure.credential.managed-identity-enabled=\"true\" azure.credential.client-id=\"test\" azure.profile.cloud-type=\"azure\";";
+        String jaasConfig
+            = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required azure.configured=\"true\" "
+                + "azure.credential.managed-identity-enabled=\"true\" azure.credential.client-id=\"test\" azure.profile.cloud-type=\"azure\";";
         AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
 
         copyJaasPropertyToAzureProperties(jaasConfig, properties);

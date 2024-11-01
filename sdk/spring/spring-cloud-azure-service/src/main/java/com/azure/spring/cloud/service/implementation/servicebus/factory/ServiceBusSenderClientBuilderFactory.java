@@ -15,16 +15,15 @@ import java.util.List;
 /**
  * Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder.ServiceBusSenderClientBuilder}.
  */
-public class ServiceBusSenderClientBuilderFactory
-    extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusSenderClientBuilder,
-        ServiceBusSenderClientProperties> {
+public class ServiceBusSenderClientBuilderFactory extends
+    AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusSenderClientBuilder, ServiceBusSenderClientProperties> {
 
     /**
      * Create a {@link ServiceBusSenderClientBuilderFactory} instance with the {@link ServiceBusSenderClientProperties}.
      * @param senderClientProperties the properties of a Service Bus sender client.
      */
     public ServiceBusSenderClientBuilderFactory(ServiceBusSenderClientProperties senderClientProperties,
-                                                List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceClientBuilderCustomizers) {
+        List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceClientBuilderCustomizers) {
         this(null, senderClientProperties, serviceClientBuilderCustomizers);
     }
 
@@ -37,13 +36,13 @@ public class ServiceBusSenderClientBuilderFactory
      * @param senderClientProperties the properties of the Service Bus sender client.
      */
     public ServiceBusSenderClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                ServiceBusSenderClientProperties senderClientProperties) {
+        ServiceBusSenderClientProperties senderClientProperties) {
         this(serviceBusClientBuilder, senderClientProperties, null);
     }
 
     private ServiceBusSenderClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                 ServiceBusSenderClientProperties senderClientProperties,
-                                                 List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceClientBuilderCustomizers) {
+        ServiceBusSenderClientProperties senderClientProperties,
+        List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceClientBuilderCustomizers) {
         super(serviceBusClientBuilder, senderClientProperties, serviceClientBuilderCustomizers);
     }
 

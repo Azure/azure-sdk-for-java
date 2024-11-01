@@ -128,8 +128,8 @@ public class AppConfigurationReplicaClientTest {
         List<ConfigurationSetting> configurations = List.of(configurationSetting);
 
         PagedFlux<ConfigurationSetting> pagedFlux = new PagedFlux<>(supplierMock);
-        PagedResponse<ConfigurationSetting> pagedResponse = new PagedResponseBase<Object, ConfigurationSetting>(null,
-            200, null, configurations, null, null);
+        PagedResponse<ConfigurationSetting> pagedResponse
+            = new PagedResponseBase<Object, ConfigurationSetting>(null, 200, null, configurations, null, null);
         when(supplierMock.get()).thenReturn(Mono.just(pagedResponse));
 
         when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
@@ -162,8 +162,8 @@ public class AppConfigurationReplicaClientTest {
 
         PagedFlux<ConfigurationSetting> pagedFlux = new PagedFlux<>(supplierMock);
         HttpHeaders headers = new HttpHeaders().add(HttpHeaderName.ETAG, "fake-etag");
-        PagedResponse<ConfigurationSetting> pagedResponse = new PagedResponseBase<Object, ConfigurationSetting>(null,
-            200, headers, configurations, null, null);
+        PagedResponse<ConfigurationSetting> pagedResponse
+            = new PagedResponseBase<Object, ConfigurationSetting>(null, 200, headers, configurations, null, null);
 
         when(supplierMock.get()).thenReturn(Mono.just(pagedResponse));
 
@@ -218,8 +218,7 @@ public class AppConfigurationReplicaClientTest {
 
         when(clientMock.getConfigurationSettingWithResponse(Mockito.any(), Mockito.isNull(), Mockito.anyBoolean(),
             Mockito.any())).thenReturn(mockResponse);
-        when(mockResponse.getValue())
-            .thenThrow(new CredentialUnavailableException("No Credential"));
+        when(mockResponse.getValue()).thenThrow(new CredentialUnavailableException("No Credential"));
 
         assertThrows(CredentialUnavailableException.class, () -> client.getWatchKey("key", "label", false));
     }
@@ -295,8 +294,8 @@ public class AppConfigurationReplicaClientTest {
 
         when(clientMock.getSnapshot(Mockito.any())).thenReturn(snapshot);
 
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class,
-            () -> client.listSettingSnapshot("SnapshotName"));
+        IllegalArgumentException e
+            = assertThrows(IllegalArgumentException.class, () -> client.listSettingSnapshot("SnapshotName"));
         assertEquals("Snapshot SnapshotName needs to be of type Key.", e.getMessage());
     }
 
@@ -325,8 +324,8 @@ public class AppConfigurationReplicaClientTest {
         PagedFlux<ConfigurationSetting> pagedFlux = new PagedFlux<>(supplierMock);
         HttpHeaders headers = new HttpHeaders().add(HttpHeaderName.ETAG, "fake-etag");
         try {
-            PagedResponse<ConfigurationSetting> pagedResponse = new PagedResponseBase<Object, ConfigurationSetting>(
-                null, 200, headers, configurations, null, null);
+            PagedResponse<ConfigurationSetting> pagedResponse
+                = new PagedResponseBase<Object, ConfigurationSetting>(null, 200, headers, configurations, null, null);
 
             when(supplierMock.get()).thenReturn(Mono.just(pagedResponse));
 
@@ -340,12 +339,13 @@ public class AppConfigurationReplicaClientTest {
         }
 
         try {
-            PagedResponse<ConfigurationSetting> pagedResponse = new PagedResponseBase<Object, ConfigurationSetting>(
-                null, 304, headers, configurations, null, null);
+            PagedResponse<ConfigurationSetting> pagedResponse
+                = new PagedResponseBase<Object, ConfigurationSetting>(null, 304, headers, configurations, null, null);
 
             when(supplierMock.get()).thenReturn(Mono.just(pagedResponse));
 
-            when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any())).thenReturn(new PagedIterable<>(pagedFlux));
+            when(clientMock.listConfigurationSettings(Mockito.any(), Mockito.any()))
+                .thenReturn(new PagedIterable<>(pagedFlux));
 
             assertFalse(client.checkWatchKeys(new SettingSelector(), false));
             pagedResponse.close();

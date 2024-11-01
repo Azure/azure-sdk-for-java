@@ -38,7 +38,8 @@ public class ReactiveUUIDIdDomainRepositoryIT {
     private static final UUIDIdDomain DOMAIN_2 = new UUIDIdDomain(ID_2, NAME_2);
 
     @ClassRule
-    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+    public static final ReactiveIntegrationTestCollectionManager collectionManager
+        = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
     private ReactiveCosmosTemplate template;
@@ -194,8 +195,7 @@ public class ReactiveUUIDIdDomainRepositoryIT {
                 return false;
             }
             InvalidDomain that = (InvalidDomain) o;
-            return count == that.count
-                && Objects.equals(location, that.location);
+            return count == that.count && Objects.equals(location, that.location);
         }
 
         @Override
@@ -205,13 +205,7 @@ public class ReactiveUUIDIdDomainRepositoryIT {
 
         @Override
         public String toString() {
-            return "InvalidDomain{"
-                + "count="
-                + count
-                + ", location='"
-                + location
-                + '\''
-                + '}';
+            return "InvalidDomain{" + "count=" + count + ", location='" + location + '\'' + '}';
         }
     }
 }

@@ -13,7 +13,8 @@ import java.util.concurrent.ExecutorService;
 /**
  * A credential builder factory for the {@link com.azure.identity.AadCredentialBuilderBase}.
  */
-public abstract class AzureAadCredentialBuilderFactory<T extends AadCredentialBuilderBase<T>> extends AbstractAzureCredentialBuilderFactory<T> {
+public abstract class AzureAadCredentialBuilderFactory<T extends AadCredentialBuilderBase<T>>
+    extends AbstractAzureCredentialBuilderFactory<T> {
 
     private ExecutorService executorService = null;
 

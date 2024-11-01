@@ -44,7 +44,8 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     /**
      * Invalid Connection String error message
      */
-    public static final String NON_EMPTY_MSG = "%s property should not be null or empty in the connection string of Azure Config Service.";
+    public static final String NON_EMPTY_MSG
+        = "%s property should not be null or empty in the connection string of Azure Config Service.";
 
     public static final String RETRY_MODE_PROPERTY_NAME = "retry.mode";
 
@@ -66,8 +67,8 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
     /**
      * Invalid Formatted Connection String Error message
      */
-    public static final String ENDPOINT_ERR_MSG = String.format("Connection string does not follow format %s.",
-        CONN_STRING_REGEXP);
+    public static final String ENDPOINT_ERR_MSG
+        = String.format("Connection string does not follow format %s.", CONN_STRING_REGEXP);
 
     private static final Pattern CONN_STRING_PATTERN = Pattern.compile(CONN_STRING_REGEXP);
 
@@ -143,8 +144,8 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
                 "More than 1 connection method was set for connecting to App Configuration.");
         }
 
-        boolean connectionStringIsPresent = configStore.getConnectionString() != null
-            || configStore.getConnectionStrings().size() > 0;
+        boolean connectionStringIsPresent
+            = configStore.getConnectionString() != null || configStore.getConnectionStrings().size() > 0;
 
         if (credentialConfigured && connectionStringIsPresent) {
             throw new IllegalArgumentException(
@@ -216,8 +217,8 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint,
         Integer replicaCount) {
-        TracingInfo tracingInfo = new TracingInfo(isDev, isKeyVaultConfigured, replicaCount,
-            Configuration.getGlobalConfiguration());
+        TracingInfo tracingInfo
+            = new TracingInfo(isDev, isKeyVaultConfigured, replicaCount, Configuration.getGlobalConfiguration());
         builder.addPolicy(new BaseAppConfigurationPolicy(tracingInfo));
 
         if (clientProvider != null) {
@@ -351,8 +352,10 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
             this.baseUri = baseUri;
             this.id = id;
             this.secret = secret;
-            if (this.baseUri == null || CoreUtils.isNullOrEmpty(this.id)
-                || this.secret == null || this.secret.length() == 0) {
+            if (this.baseUri == null
+                || CoreUtils.isNullOrEmpty(this.id)
+                || this.secret == null
+                || this.secret.length() == 0) {
                 throw new IllegalArgumentException("Could not parse 'connectionString'."
                     + " Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:" + connectionString);
             }

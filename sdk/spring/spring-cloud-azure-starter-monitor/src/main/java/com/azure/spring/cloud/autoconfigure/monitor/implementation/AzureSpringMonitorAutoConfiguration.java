@@ -27,17 +27,24 @@ class AzureSpringMonitorAutoConfiguration {
 
     private static final Logger LOG = LoggerFactory.getLogger(AzureSpringMonitorAutoConfiguration.class);
 
-    private static final AutoConfigurationCustomizerProvider DISABLE_OTEL_CUSTOMER_PROVIDER = autoConfigurationCustomizer -> autoConfigurationCustomizer.addPropertiesCustomizer(configProperties -> singletonMap("otel.sdk.disabled", "true"));
+    private static final AutoConfigurationCustomizerProvider DISABLE_OTEL_CUSTOMER_PROVIDER
+        = autoConfigurationCustomizer -> autoConfigurationCustomizer
+            .addPropertiesCustomizer(configProperties -> singletonMap("otel.sdk.disabled", "true"));
 
-    private static final AutoConfigurationCustomizerProvider NO_EXPORT_CUSTOMER_PROVIDER = autoConfigurationCustomizer -> autoConfigurationCustomizer.addPropertiesCustomizer(configProperties -> new HashMap<String, String>(3) {{
-            put("otel.traces.exporter", "none");
-            put("otel.metrics.exporter", "none");
-            put("otel.logs.exporter", "none");
-            }});
+    private static final AutoConfigurationCustomizerProvider NO_EXPORT_CUSTOMER_PROVIDER
+        = autoConfigurationCustomizer -> autoConfigurationCustomizer
+            .addPropertiesCustomizer(configProperties -> new HashMap<String, String>(3) {
+                {
+                    put("otel.traces.exporter", "none");
+                    put("otel.metrics.exporter", "none");
+                    put("otel.logs.exporter", "none");
+                }
+            });
 
     {
         if (!isNativeRuntimeExecution()) {
-            LOG.warn("You are using Application Insights for Spring in a non-native GraalVM runtime environment. We recommend using the Application Insights Java agent.");
+            LOG.warn(
+                "You are using Application Insights for Spring in a non-native GraalVM runtime environment. We recommend using the Application Insights Java agent.");
         }
     }
 
@@ -56,27 +63,35 @@ class AzureSpringMonitorAutoConfiguration {
     }
 
     @Bean
-    AutoConfigurationCustomizerProvider autoConfigurationCustomizerProvider(@Value("${applicationinsights.connection.string:#{null}}") String connectionString, ObjectProvider<AzureMonitorExporterOptions> azureMonitorExporterOptions) {
+    AutoConfigurationCustomizerProvider autoConfigurationCustomizerProvider(
+        @Value("${applicationinsights.connection.string:#{null}}") String connectionString,
+        ObjectProvider<AzureMonitorExporterOptions> azureMonitorExporterOptions) {
 
         if (!isNativeRuntimeExecution() && applicationInsightsAgentIsAttached()) {
-            LOG.warn("The spring-cloud-azure-starter-monitor Spring starter is disabled because the Application Insights Java agent is enabled."
-                + " You can remove this message by using the otel.sdk.disabled=true property.");
+            LOG.warn(
+                "The spring-cloud-azure-starter-monitor Spring starter is disabled because the Application Insights Java agent is enabled."
+                    + " You can remove this message by using the otel.sdk.disabled=true property.");
             return DISABLE_OTEL_CUSTOMER_PROVIDER;
         }
 
         AzureMonitorExporterOptions providedAzureMonitorExporterOptions = azureMonitorExporterOptions.getIfAvailable();
         if (providedAzureMonitorExporterOptions != null) {
-            if (System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING") == null && System.getProperty("applicationinsights.connection.string") == null && (connectionString != null && !connectionString.isEmpty())) {
-                LOG.warn("You have created an AzureMonitorExporterBuilder bean and set the applicationinsights.connection.string property in a .properties or .yml file."
-                    + " This property is ignored.");
+            if (System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING") == null
+                && System.getProperty("applicationinsights.connection.string") == null
+                && (connectionString != null && !connectionString.isEmpty())) {
+                LOG.warn(
+                    "You have created an AzureMonitorExporterBuilder bean and set the applicationinsights.connection.string property in a .properties or .yml file."
+                        + " This property is ignored.");
             }
             // The AzureMonitor class (OpenTelemetry exporter library) is able to use the APPLICATIONINSIGHTS_CONNECTION_STRING environment variable or the applicationinsights.connection.string JVM property
-            return autoConfigurationCustomizer -> AzureMonitorExporter.customize(autoConfigurationCustomizer, providedAzureMonitorExporterOptions);
+            return autoConfigurationCustomizer -> AzureMonitorExporter.customize(autoConfigurationCustomizer,
+                providedAzureMonitorExporterOptions);
         }
 
         if (connectionString == null || connectionString.isEmpty()) {
-            LOG.warn("Unable to find the Application Insights connection string. The telemetry data won't be sent to Azure."
-                + " If you want to disable the spring-cloud-azure-starter-monitor Spring starter and not display this warning, set the otel.sdk.disabled=true property.");
+            LOG.warn(
+                "Unable to find the Application Insights connection string. The telemetry data won't be sent to Azure."
+                    + " If you want to disable the spring-cloud-azure-starter-monitor Spring starter and not display this warning, set the otel.sdk.disabled=true property.");
             // If the user does not provide a connection, we disable the export and leave the instrumentation enabled to spot potential failures from
             // the instrumentation, with the customer automatic tests for example.
             return NO_EXPORT_CUSTOMER_PROVIDER;
@@ -86,7 +101,8 @@ class AzureSpringMonitorAutoConfiguration {
             throw new WrongConnectionStringException(); // To fail fast, before the OpenTelemetry exporter
         }
 
-        return autoConfigurationCustomizer -> AzureMonitorExporter.customize(autoConfigurationCustomizer, connectionString);
+        return autoConfigurationCustomizer -> AzureMonitorExporter.customize(autoConfigurationCustomizer,
+            connectionString);
     }
 
     @Bean

@@ -29,8 +29,8 @@ class AzureEventHubsClientBuilderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    EventHubClientBuilder eventHubClientBuilder(@Qualifier(EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-                                                    EventHubClientBuilderFactory factory) {
+    EventHubClientBuilder eventHubClientBuilder(
+        @Qualifier(EVENT_HUB_CLIENT_BUILDER_FACTORY_BEAN_NAME) EventHubClientBuilderFactory factory) {
         return factory.build();
     }
 

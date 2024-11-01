@@ -20,11 +20,11 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass({ CosmosRepository.class })
-@ConditionalOnMissingBean({ CosmosRepositoryFactoryBean.class,
-    CosmosRepositoryConfigurationExtension.class })
+@ConditionalOnMissingBean({ CosmosRepositoryFactoryBean.class, CosmosRepositoryConfigurationExtension.class })
 @AutoConfigureAfter(com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosDataAutoConfiguration.class)
 @ConditionalOnBean(CosmosTemplate.class)
-@ConditionalOnProperty(prefix = "spring.cloud.azure.cosmos.repositories",
+@ConditionalOnProperty(
+    prefix = "spring.cloud.azure.cosmos.repositories",
     name = "enabled",
     havingValue = "true",
     matchIfMissing = true)

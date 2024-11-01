@@ -42,7 +42,7 @@ public class StorageQueueMessageSource extends AbstractMessageSource<Message<?>>
      *                          The timeout must be between 1 second and 7 days
      */
     public StorageQueueMessageSource(String destination, StorageQueueTemplate storageQueueTemplate,
-                                     Duration visibilityTimeout) {
+        Duration visibilityTimeout) {
         Assert.hasText(destination, "destination can't be null or empty");
         this.storageQueueTemplate = storageQueueTemplate;
         this.destination = destination;

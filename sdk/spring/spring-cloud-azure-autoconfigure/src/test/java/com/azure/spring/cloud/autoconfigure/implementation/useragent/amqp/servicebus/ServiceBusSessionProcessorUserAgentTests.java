@@ -27,8 +27,7 @@ class ServiceBusSessionProcessorUserAgentTests {
             "spring.cloud.azure.servicebus.connection-string=Endpoint=sb://sample.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key",
             "spring.cloud.azure.servicebus.processor.entity-name=sample",
             "spring.cloud.azure.servicebus.processor.entity-type=QUEUE",
-            "spring.cloud.azure.servicebus.processor.session-enabled=true"
-        );
+            "spring.cloud.azure.servicebus.processor.session-enabled=true");
     }
 
     @Test
@@ -38,24 +37,29 @@ class ServiceBusSessionProcessorUserAgentTests {
             "spring.cloud.azure.servicebus.processor.entity-name=sample",
             "spring.cloud.azure.servicebus.processor.entity-type=QUEUE",
             "spring.cloud.azure.servicebus.processor.session-enabled=true",
-            "spring.cloud.azure.servicebus.processor.namespace=sample"
-        );
+            "spring.cloud.azure.servicebus.processor.namespace=sample");
     }
 
     void userAgentTest(String... propertyValues) {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
+        new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> { })
-            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> { })
+            .withBean(ServiceBusRecordMessageListener.class, () -> messageContext -> {
+            })
+            .withBean(ServiceBusErrorHandler.class, () -> errorContext -> {
+            })
             .withPropertyValues(propertyValues)
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusSessionProcessorClientBuilderFactory.class);
-                assertThat(context).hasSingleBean(ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class);
+                assertThat(context)
+                    .hasSingleBean(ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class);
 
-                ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorClientBuilder = context.getBean(ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class);
-                ServiceBusClientBuilder builder = (ServiceBusClientBuilder) getField(ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class, "this$0", processorClientBuilder);
-                ClientOptions options = (ClientOptions) getField(ServiceBusClientBuilder.class, "clientOptions", builder);
+                ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder processorClientBuilder
+                    = context.getBean(ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class);
+                ServiceBusClientBuilder builder = (ServiceBusClientBuilder) getField(
+                    ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class, "this$0",
+                    processorClientBuilder);
+                ClientOptions options
+                    = (ClientOptions) getField(ServiceBusClientBuilder.class, "clientOptions", builder);
                 Assertions.assertNotNull(options);
                 Assertions.assertEquals(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS, options.getApplicationId());
 

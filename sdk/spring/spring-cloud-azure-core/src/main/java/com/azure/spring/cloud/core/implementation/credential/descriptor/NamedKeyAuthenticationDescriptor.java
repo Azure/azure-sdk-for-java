@@ -24,7 +24,6 @@ public final class NamedKeyAuthenticationDescriptor implements AuthenticationDes
         this.consumer = consumer;
     }
 
-
     @Override
     public Class<AzureNamedKeyCredential> getAzureCredentialType() {
         return AzureNamedKeyCredential.class;

@@ -16,19 +16,18 @@ import org.springframework.cloud.stream.provisioning.ProvisioningProvider;
  *
  */
 public class EventHubsChannelProvisioner implements
-        ProvisioningProvider<ExtendedConsumerProperties<EventHubsConsumerProperties>,
-                ExtendedProducerProperties<EventHubsProducerProperties>> {
+    ProvisioningProvider<ExtendedConsumerProperties<EventHubsConsumerProperties>, ExtendedProducerProperties<EventHubsProducerProperties>> {
 
     @Override
     public ProducerDestination provisionProducerDestination(String name,
-            ExtendedProducerProperties<EventHubsProducerProperties> properties) throws ProvisioningException {
+        ExtendedProducerProperties<EventHubsProducerProperties> properties) throws ProvisioningException {
         validateOrCreateForProducer(name);
         return new EventHubsProducerDestination(name);
     }
 
     @Override
     public ConsumerDestination provisionConsumerDestination(String name, String group,
-            ExtendedConsumerProperties<EventHubsConsumerProperties> properties) throws ProvisioningException {
+        ExtendedConsumerProperties<EventHubsConsumerProperties> properties) throws ProvisioningException {
         validateOrCreateForConsumer(name, group);
         return new EventHubsConsumerDestination(name);
     }

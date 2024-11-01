@@ -12,23 +12,20 @@ class ClientCertificatePropertiesConditionTests extends AbstractCondition {
     @Test
     void match() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.credential.client-certificate-path = client-certificate-path",
-                "spring.cloud.azure.credential.client-certificate-password = client-certificate-password"
-            )
+            .withPropertyValues("spring.cloud.azure.credential.client-certificate-path = client-certificate-path",
+                "spring.cloud.azure.credential.client-certificate-password = client-certificate-password")
             .withUserConfiguration(ClientCertificateProperties.class)
             .run(assertConditionMatch(true));
     }
 
     @Test
     void noMatch() {
-        this.contextRunner
-            .withUserConfiguration(ClientCertificateProperties.class)
-            .run(assertConditionMatch(false));
+        this.contextRunner.withUserConfiguration(ClientCertificateProperties.class).run(assertConditionMatch(false));
     }
 
     @Configuration
     @Conditional(ClientCertificatePropertiesCondition.class)
-    static class ClientCertificateProperties extends Config { }
+    static class ClientCertificateProperties extends Config {
+    }
 
 }

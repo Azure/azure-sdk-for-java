@@ -21,7 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static com.azure.spring.data.cosmos.domain.Address.TEST_ADDRESS1_PARTITION1;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestRepositoryConfig.class, ErrorEventListenerConfig.class})
+@ContextConfiguration(classes = { TestRepositoryConfig.class, ErrorEventListenerConfig.class })
 public class ApplicationContextEventErrorIT {
 
     @ClassRule
@@ -40,6 +40,7 @@ public class ApplicationContextEventErrorIT {
 
     @Test(expected = CosmosAccessException.class)
     public void shouldThrowExceptionIfEventListenerThrowsException() {
-        repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(), new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity()));
+        repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(),
+            new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity()));
     }
 }

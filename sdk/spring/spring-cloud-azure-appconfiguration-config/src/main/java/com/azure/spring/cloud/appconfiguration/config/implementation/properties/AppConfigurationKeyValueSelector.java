@@ -90,7 +90,9 @@ public final class AppConfigurationKeyValueSelector {
         }
 
         // The use of trim makes label= dev,prod and label= dev, prod equal.
-        List<String> labels = Arrays.stream(labelFilter.split(LABEL_SEPARATOR)).map(this::mapLabel).distinct()
+        List<String> labels = Arrays.stream(labelFilter.split(LABEL_SEPARATOR))
+            .map(this::mapLabel)
+            .distinct()
             .collect(Collectors.toList());
 
         if (labelFilter.endsWith(",")) {
@@ -124,7 +126,7 @@ public final class AppConfigurationKeyValueSelector {
     public void setSnapshotName(String snapshotName) {
         this.snapshotName = snapshotName;
     }
-    
+
     /**
      * Validates key-filter and label-filter are valid.
      */

@@ -15,14 +15,13 @@ class SpringMessagingAzureServiceBusRuntimeHints implements RuntimeHintsRegistra
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
         ReflectionHints reflectionHints = hints.reflection();
-        Stream.of(
-                "com.azure.spring.messaging.servicebus.core.properties.CommonProperties",
+        Stream
+            .of("com.azure.spring.messaging.servicebus.core.properties.CommonProperties",
                 "com.azure.spring.messaging.servicebus.core.properties.ConsumerProperties",
                 "com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties",
                 "com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties",
                 "com.azure.spring.messaging.servicebus.core.properties.ProducerProperties",
-                "com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties"
-                )
+                "com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties")
             .forEach(typeName -> reflectionHints.registerTypeIfPresent(classLoader, typeName,
                 builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS)));
     }

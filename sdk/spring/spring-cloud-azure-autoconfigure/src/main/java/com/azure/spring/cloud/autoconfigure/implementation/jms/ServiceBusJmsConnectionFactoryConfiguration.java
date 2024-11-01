@@ -23,38 +23,44 @@ import java.util.stream.Collectors;
 
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnMissingBean(ConnectionFactory.class)
-class ServiceBusJmsConnectionFactoryConfiguration  {
+class ServiceBusJmsConnectionFactoryConfiguration {
 
-    private ServiceBusJmsConnectionFactory createJmsConnectionFactory(AzureServiceBusJmsProperties serviceBusJmsProperties,
-                                                                             ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+    private ServiceBusJmsConnectionFactory createJmsConnectionFactory(
+        AzureServiceBusJmsProperties serviceBusJmsProperties,
+        ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
         return new ServiceBusJmsConnectionFactoryFactory(serviceBusJmsProperties,
             factoryCustomizers.orderedStream().collect(Collectors.toList()))
-            .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
+                .createConnectionFactory(ServiceBusJmsConnectionFactory.class);
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "false",
+    @ConditionalOnProperty(
+        prefix = "spring.jms.servicebus.pool",
+        name = "enabled",
+        havingValue = "false",
         matchIfMissing = true)
     class SimpleConnectionFactoryConfiguration {
-
 
         @Bean
         @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "false")
         ServiceBusJmsConnectionFactory jmsConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                            ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+            ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
             return createJmsConnectionFactory(properties, factoryCustomizers);
         }
 
         @Configuration(proxyBeanMethods = false)
         @ConditionalOnClass(CachingConnectionFactory.class)
-        @ConditionalOnProperty(prefix = "spring.jms.cache", name = "enabled", havingValue = "true",
+        @ConditionalOnProperty(
+            prefix = "spring.jms.cache",
+            name = "enabled",
+            havingValue = "true",
             matchIfMissing = true)
         class CachingConnectionFactoryConfiguration {
 
             @Bean
             CachingConnectionFactory jmsConnectionFactory(JmsProperties jmsProperties,
-                                                          AzureServiceBusJmsProperties properties,
-                                                          ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+                AzureServiceBusJmsProperties properties,
+                ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
                 ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
                 CachingConnectionFactory connectionFactory = new CachingConnectionFactory(factory);
                 JmsProperties.Cache cacheProperties = jmsProperties.getCache();
@@ -74,10 +80,9 @@ class ServiceBusJmsConnectionFactoryConfiguration  {
         @Bean(destroyMethod = "stop")
         @ConditionalOnProperty(prefix = "spring.jms.servicebus.pool", name = "enabled", havingValue = "true")
         JmsPoolConnectionFactory jmsPoolConnectionFactory(AzureServiceBusJmsProperties properties,
-                                                          ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+            ObjectProvider<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
             ServiceBusJmsConnectionFactory factory = createJmsConnectionFactory(properties, factoryCustomizers);
-            return new JmsPoolConnectionFactoryFactory(properties.getPool())
-                .createPooledConnectionFactory(factory);
+            return new JmsPoolConnectionFactoryFactory(properties.getPool()).createPooledConnectionFactory(factory);
         }
     }
 }

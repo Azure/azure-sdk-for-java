@@ -69,8 +69,7 @@ public class ServiceBusMessageListenerContainerFactory
 
         @Override
         public void accept(ServiceBusErrorContext errorContext) {
-            LOGGER.error("Error occurred on entity {}. Error: {}",
-                errorContext.getEntityPath(),
+            LOGGER.error("Error occurred on entity {}. Error: {}", errorContext.getEntityPath(),
                 errorContext.getException());
         }
     }

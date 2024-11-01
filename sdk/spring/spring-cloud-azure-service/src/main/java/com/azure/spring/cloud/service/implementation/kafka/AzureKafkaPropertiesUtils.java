@@ -33,6 +33,9 @@ public final class AzureKafkaPropertiesUtils {
     static final String PROFILE_PREFIX = "azure.profile.";
     static final String ENVIRONMENT_PREFIX = PROFILE_PREFIX + "environment.";
 
+    private static final String ANALYTICS_CATALOG_SUFFIX = "azure-data-lake-analytics-catalog-and-job-endpoint-suffix";
+    private static final String FILE_SYSTEM_SUFFIX = "azure-data-lake-store-file-system-endpoint-suffix";
+
     public static void copyJaasPropertyToAzureProperties(String source, AzurePasswordlessProperties target) {
         JaasResolver resolver = new JaasResolver();
         Jaas jaas = resolver.resolve(source).orElse(new Jaas(OAuthBearerLoginModule.class.getName()));
@@ -49,31 +52,26 @@ public final class AzureKafkaPropertiesUtils {
             (p, s) -> p.getCredential().setClientCertificatePassword(s)),
 
         CLIENT_CERTIFICATE_PATH(CREDENTIAL_PREFIX + "client-certificate-path",
-            p -> p.getCredential().getClientCertificatePath(),
-            (p, s) -> p.getCredential().setClientCertificatePath(s)),
+            p -> p.getCredential().getClientCertificatePath(), (p, s) -> p.getCredential().setClientCertificatePath(s)),
 
-        CLIENT_ID(CREDENTIAL_PREFIX + "client-id",
-            p -> p.getCredential().getClientId(),
+        CLIENT_ID(CREDENTIAL_PREFIX + "client-id", p -> p.getCredential().getClientId(),
             (p, s) -> p.getCredential().setClientId(s)),
 
-        CLIENT_SECRET(CREDENTIAL_PREFIX + "client-secret",
-            p -> p.getCredential().getClientSecret(),
+        CLIENT_SECRET(CREDENTIAL_PREFIX + "client-secret", p -> p.getCredential().getClientSecret(),
             (p, s) -> p.getCredential().setClientSecret(s)),
 
         MANAGED_IDENTITY_ENABLED(CREDENTIAL_PREFIX + "managed-identity-enabled",
             p -> String.valueOf(p.getCredential().isManagedIdentityEnabled()),
-            (p, s) -> p.getCredential().setManagedIdentityEnabled(Boolean.valueOf(s))),
+            (p, s) -> p.getCredential().setManagedIdentityEnabled(Boolean.parseBoolean(s))),
 
-        PASSWORD(CREDENTIAL_PREFIX + "password",
-            p -> p.getCredential().getPassword(),
+        PASSWORD(CREDENTIAL_PREFIX + "password", p -> p.getCredential().getPassword(),
             (p, s) -> p.getCredential().setPassword(s)),
 
-        USERNAME(CREDENTIAL_PREFIX + "username",
-            p -> p.getCredential().getUsername(),
+        USERNAME(CREDENTIAL_PREFIX + "username", p -> p.getCredential().getUsername(),
             (p, s) -> p.getCredential().setUsername(s)),
 
         CLOUD_TYPE(PROFILE_PREFIX + "cloud-type",
-            p -> Optional.ofNullable(p.getProfile().getCloudType()).map(v -> v.name()).orElse(null),
+            p -> Optional.ofNullable(p.getProfile().getCloudType()).map(Enum::name).orElse(null),
             (p, s) -> p.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.fromString(s))),
 
         ACTIVE_DIRECTORY_ENDPOINT(ENVIRONMENT_PREFIX + "active-directory-endpoint",
@@ -96,11 +94,11 @@ public final class AzureKafkaPropertiesUtils {
             p -> p.getProfile().getEnvironment().getAzureApplicationInsightsEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setAzureApplicationInsightsEndpoint(s)),
 
-        AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX(ENVIRONMENT_PREFIX + "azure-data-lake-analytics-catalog-and-job-endpoint-suffix",
+        AZURE_DATA_LAKE_ANALYTICS_CATALOG_AND_JOB_ENDPOINT_SUFFIX(ENVIRONMENT_PREFIX + ANALYTICS_CATALOG_SUFFIX,
             p -> p.getProfile().getEnvironment().getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(s)),
 
-        AZURE_DATA_LAKE_STORE_FILE_SYSTEM_ENDPOINT_SUFFIX(ENVIRONMENT_PREFIX + "azure-data-lake-store-file-system-endpoint-suffix",
+        AZURE_DATA_LAKE_STORE_FILE_SYSTEM_ENDPOINT_SUFFIX(ENVIRONMENT_PREFIX + FILE_SYSTEM_SUFFIX,
             p -> p.getProfile().getEnvironment().getAzureDataLakeStoreFileSystemEndpointSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setAzureDataLakeStoreFileSystemEndpointSuffix(s)),
 
@@ -128,8 +126,7 @@ public final class AzureKafkaPropertiesUtils {
             p -> p.getProfile().getEnvironment().getMicrosoftGraphEndpoint(),
             (p, s) -> p.getProfile().getEnvironment().setMicrosoftGraphEndpoint(s)),
 
-        PORTAL(ENVIRONMENT_PREFIX + "portal",
-            p -> p.getProfile().getEnvironment().getPortal(),
+        PORTAL(ENVIRONMENT_PREFIX + "portal", p -> p.getProfile().getEnvironment().getPortal(),
             (p, s) -> p.getProfile().getEnvironment().setPortal(s)),
 
         PUBLISHING_PROFILE(ENVIRONMENT_PREFIX + "publishing-profile",
@@ -152,12 +149,10 @@ public final class AzureKafkaPropertiesUtils {
             p -> p.getProfile().getEnvironment().getStorageEndpointSuffix(),
             (p, s) -> p.getProfile().getEnvironment().setStorageEndpointSuffix(s)),
 
-        SUBSCRIPTION_ID(PROFILE_PREFIX + "subscription-id",
-            p -> p.getProfile().getSubscriptionId(),
+        SUBSCRIPTION_ID(PROFILE_PREFIX + "subscription-id", p -> p.getProfile().getSubscriptionId(),
             (p, s) -> p.getProfile().setSubscriptionId(s)),
 
-        TENANT_ID(PROFILE_PREFIX + "tenant-id",
-            p -> p.getProfile().getTenantId(),
+        TENANT_ID(PROFILE_PREFIX + "tenant-id", p -> p.getProfile().getTenantId(),
             (p, s) -> p.getProfile().setTenantId(s));
 
         private static final List<String> PROPERTY_KEYS = buildPropertyKeys();
@@ -167,15 +162,17 @@ public final class AzureKafkaPropertiesUtils {
         }
 
         private static List<String> buildPropertyKeys() {
-            return Collections.unmodifiableList(Stream.of(AzureKafkaPasswordlessPropertiesMapping.values()).map(m -> m.propertyKey).collect(Collectors.toList()));
+            return Collections.unmodifiableList(Stream.of(AzureKafkaPasswordlessPropertiesMapping.values())
+                .map(m -> m.propertyKey)
+                .collect(Collectors.toList()));
         }
 
         private String propertyKey;
         private Function<AzureProperties, String> getter;
         private BiConsumer<AzurePasswordlessProperties, String> setter;
 
-        AzureKafkaPasswordlessPropertiesMapping(String propertyKey, Function<AzureProperties, String> getter, BiConsumer<AzurePasswordlessProperties,
-            String> setter) {
+        AzureKafkaPasswordlessPropertiesMapping(String propertyKey, Function<AzureProperties, String> getter,
+            BiConsumer<AzurePasswordlessProperties, String> setter) {
             this.propertyKey = propertyKey;
             this.getter = getter;
             this.setter = setter;

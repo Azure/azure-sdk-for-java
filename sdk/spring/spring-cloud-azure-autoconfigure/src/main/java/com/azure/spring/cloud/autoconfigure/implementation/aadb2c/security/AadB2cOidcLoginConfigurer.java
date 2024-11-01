@@ -45,9 +45,8 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      * @param resolver the AAD B2C authorization request resolver
      * @param accessTokenResponseClient the AAD B2C access token response client
      */
-    public AadB2cOidcLoginConfigurer(LogoutSuccessHandler handler,
-                                     OAuth2AuthorizationRequestResolver resolver,
-                                     OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient) {
+    public AadB2cOidcLoginConfigurer(LogoutSuccessHandler handler, OAuth2AuthorizationRequestResolver resolver,
+        OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient) {
         this(handler, resolver, accessTokenResponseClient, null);
     }
 
@@ -60,10 +59,9 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      * @param restTemplateBuilder the RestTemplateBuilder used to build OAuth2AccessTokenResponseClient.
      *                           It will be used only when accessTokenResponseClient is null.
      */
-    public AadB2cOidcLoginConfigurer(LogoutSuccessHandler handler,
-                                     OAuth2AuthorizationRequestResolver resolver,
-                                     OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient,
-                                     RestTemplateBuilder restTemplateBuilder) {
+    public AadB2cOidcLoginConfigurer(LogoutSuccessHandler handler, OAuth2AuthorizationRequestResolver resolver,
+        OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> accessTokenResponseClient,
+        RestTemplateBuilder restTemplateBuilder) {
         this.handler = handler;
         this.resolver = resolver;
         this.accessTokenResponseClient = accessTokenResponseClient;
@@ -76,7 +74,7 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      * @param http the http
      * @throws Exception failed to initialize SecurityBuilder
      */
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings({ "deprecation", "removal" })
     @Override
     public void init(HttpSecurity http) throws Exception {
         // @formatter:off

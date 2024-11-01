@@ -10,7 +10,8 @@ import java.time.Duration;
 /**
  * Properties of the exponential retry mode.
  */
-public class ExponentialRetryConfigurationProperties implements RetryOptionsProvider.RetryOptions.ExponentialRetryOptions {
+public class ExponentialRetryConfigurationProperties
+    implements RetryOptionsProvider.RetryOptions.ExponentialRetryOptions {
 
     /**
      * The maximum number of attempts.

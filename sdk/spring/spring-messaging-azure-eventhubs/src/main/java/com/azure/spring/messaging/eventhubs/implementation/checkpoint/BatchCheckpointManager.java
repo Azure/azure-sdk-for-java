@@ -19,10 +19,10 @@ import java.util.List;
  */
 class BatchCheckpointManager extends EventCheckpointManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(BatchCheckpointManager.class);
-    private static final String CHECKPOINT_FAIL_MSG = "Consumer group '%s' failed to checkpoint offset %s of message "
-        + "on partition %s in batch mode";
-    private static final String CHECKPOINT_SUCCESS_MSG =
-        "Consumer group '%s' succeed to checkpoint offset %s of message on partition %s in batch mode";
+    private static final String CHECKPOINT_FAIL_MSG
+        = "Consumer group '%s' failed to checkpoint offset %s of message " + "on partition %s in batch mode";
+    private static final String CHECKPOINT_SUCCESS_MSG
+        = "Consumer group '%s' succeed to checkpoint offset %s of message on partition %s in batch mode";
 
     BatchCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
@@ -36,14 +36,12 @@ class BatchCheckpointManager extends EventCheckpointManager {
     }
 
     void logCheckpointFail(String consumerGroup, String partitionId, Long offset, Throwable t) {
-        getLogger().warn(String
-            .format(CHECKPOINT_FAIL_MSG, consumerGroup, offset, partitionId), t);
+        getLogger().warn(String.format(CHECKPOINT_FAIL_MSG, consumerGroup, offset, partitionId), t);
     }
 
     void logCheckpointSuccess(String consumerGroup, String partitionId, Long offset) {
         if (getLogger().isDebugEnabled()) {
-            getLogger().debug(String
-                .format(CHECKPOINT_SUCCESS_MSG, consumerGroup, offset, partitionId));
+            getLogger().debug(String.format(CHECKPOINT_SUCCESS_MSG, consumerGroup, offset, partitionId));
         }
     }
 

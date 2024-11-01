@@ -36,7 +36,8 @@ public class AppConfigurationPropertiesTest {
 
     private static final String NO_ENDPOINT_CONN_STRING = "Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
 
-    private static final String NO_ID_CONN_STRING = "Endpoint=https://fake.test.config.io;Secret=ZmFrZS1jb25uLXNlY3JldA==";
+    private static final String NO_ID_CONN_STRING
+        = "Endpoint=https://fake.test.config.io;Secret=ZmFrZS1jb25uLXNlY3JldA==";
 
     private static final String NO_SECRET_CONN_STRING = "Endpoint=https://fake.test.config.io;Id=fake-conn-id;";
 
@@ -62,8 +63,7 @@ public class AppConfigurationPropertiesTest {
 
     @Test
     public void validInputShouldCreatePropertiesBean() {
-        this.contextRunner
-            .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING))
+        this.contextRunner.withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING))
             .withPropertyValues(propPair(FAIL_FAST_PROP, "false"))
             .run(context -> assertThat(context).hasSingleBean(AppConfigurationProperties.class));
     }
@@ -84,29 +84,23 @@ public class AppConfigurationPropertiesTest {
     }
 
     private void testConnStringFields(String connString) {
-        this.contextRunner
-            .withPropertyValues(propPair(CONN_STRING_PROP, connString))
+        this.contextRunner.withPropertyValues(propPair(CONN_STRING_PROP, connString))
             .run(context -> assertThat(context).getFailure().hasStackTraceContaining(ENDPOINT_ERR_MSG));
     }
 
     @Test
     public void asteriskShouldNotBeIncludedInTheLabels() {
         this.contextRunner
-            .withPropertyValues(
-                propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                propPair(KEY_PROP, VALID_KEY),
+            .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING), propPair(KEY_PROP, VALID_KEY),
                 propPair(LABEL_PROP, ILLEGAL_LABELS))
-            .run(context -> assertThat(context)
-                .getFailure()
+            .run(context -> assertThat(context).getFailure()
                 .hasStackTraceContaining("LabelFilter must not contain asterisk(*)"));
     }
 
     @Test
     public void storeNameCanBeInitIfConnectionStringConfigured() {
         this.contextRunner
-            .withPropertyValues(
-                propPair(CONN_STRING_PROP, TEST_CONN_STRING),
-                propPair(STORE_ENDPOINT_PROP, ""))
+            .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING), propPair(STORE_ENDPOINT_PROP, ""))
             .withPropertyValues(propPair(FAIL_FAST_PROP, "false"))
             .run(context -> {
                 AppConfigurationProperties properties = context.getBean(AppConfigurationProperties.class);
@@ -119,18 +113,14 @@ public class AppConfigurationPropertiesTest {
     @Test
     public void duplicateConnectionStringIsNotAllowed() {
         this.contextRunner
-            .withPropertyValues(
-                propPair(CONN_STRING_PROP, TEST_CONN_STRING),
+            .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING),
                 propPair(CONN_STRING_PROP_NEW, TEST_CONN_STRING))
-            .run(context -> assertThat(context)
-                .getFailure()
-                .hasStackTraceContaining("Duplicate store name exists"));
+            .run(context -> assertThat(context).getFailure().hasStackTraceContaining("Duplicate store name exists"));
     }
 
     @Test
     public void minValidWatchTime() {
-        this.contextRunner
-            .withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING))
+        this.contextRunner.withPropertyValues(propPair(CONN_STRING_PROP, TEST_CONN_STRING))
             .withPropertyValues(propPair(REFRESH_INTERVAL_PROP, "1s"))
             .run(context -> assertThat(context).hasSingleBean(AppConfigurationProperties.class));
     }

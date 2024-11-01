@@ -46,7 +46,6 @@ public class AddressRepositoryNoMetricsIT {
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
 
-
     @Before
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);

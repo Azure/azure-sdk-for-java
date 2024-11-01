@@ -27,7 +27,6 @@ public class ProcessorPropertiesMerger implements PropertiesMerger<ProcessorProp
             second = new ProcessorProperties();
         }
 
-
         AzurePropertiesUtils.mergeAzureCommonProperties(second, first, properties);
 
         copyProcessorPropertiesIfNotNull(second, properties);
@@ -48,12 +47,16 @@ public class ProcessorPropertiesMerger implements PropertiesMerger<ProcessorProp
         propertyMapper.from(source.getPrefetchCount()).to(target::setPrefetchCount);
         propertyMapper.from(source.getConsumerGroup()).to(target::setConsumerGroup);
 
-        propertyMapper.from(source.getTrackLastEnqueuedEventProperties()).to(target::setTrackLastEnqueuedEventProperties);
-        propertyMapper.from(source.getInitialPartitionEventPosition()).to(m -> target.getInitialPartitionEventPosition().putAll(m));
+        propertyMapper.from(source.getTrackLastEnqueuedEventProperties())
+            .to(target::setTrackLastEnqueuedEventProperties);
+        propertyMapper.from(source.getInitialPartitionEventPosition())
+            .to(m -> target.getInitialPartitionEventPosition().putAll(m));
         propertyMapper.from(source.getBatch().getMaxSize()).to(target.getBatch()::setMaxSize);
         propertyMapper.from(source.getBatch().getMaxWaitTime()).to(target.getBatch()::setMaxWaitTime);
-        propertyMapper.from(source.getLoadBalancing().getPartitionOwnershipExpirationInterval()).to(target.getLoadBalancing()::setPartitionOwnershipExpirationInterval);
+        propertyMapper.from(source.getLoadBalancing().getPartitionOwnershipExpirationInterval())
+            .to(target.getLoadBalancing()::setPartitionOwnershipExpirationInterval);
         propertyMapper.from(source.getLoadBalancing().getStrategy()).to(target.getLoadBalancing()::setStrategy);
-        propertyMapper.from(source.getLoadBalancing().getUpdateInterval()).to(target.getLoadBalancing()::setUpdateInterval);
+        propertyMapper.from(source.getLoadBalancing().getUpdateInterval())
+            .to(target.getLoadBalancing()::setUpdateInterval);
     }
 }

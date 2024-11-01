@@ -46,13 +46,11 @@ class AadRestTemplateCreatorTest {
 
     @Test
     void testAadRestOperationConfiguration() {
-        new ApplicationContextRunner()
-                .withUserConfiguration(RestTemplateAutoConfiguration.class)
-                .run((context) -> {
-                    RestTemplateBuilder builder = context.getBean(RestTemplateBuilder.class);
-                    testCreateOAuth2ErrorResponseHandledRestTemplate(builder);
-                    testCreateOAuth2AccessTokenResponseClientRestTemplate(builder);
-                });
+        new ApplicationContextRunner().withUserConfiguration(RestTemplateAutoConfiguration.class).run((context) -> {
+            RestTemplateBuilder builder = context.getBean(RestTemplateBuilder.class);
+            testCreateOAuth2ErrorResponseHandledRestTemplate(builder);
+            testCreateOAuth2AccessTokenResponseClientRestTemplate(builder);
+        });
     }
 
     private void testCreateOAuth2ErrorResponseHandledRestTemplate(RestTemplateBuilder builder) {
@@ -81,13 +79,11 @@ class AadRestTemplateCreatorTest {
             throw new IllegalStateException(e);
         }
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
-        mockServer
-                .expect(ExpectedCount.once(), requestTo(url))
-                .andRespond(withStatus(HttpStatus.OK)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .body(readAccessTokenResponse()));
-        OAuth2AccessTokenResponse response = restTemplate
-                .exchange(new RequestEntity<>(HttpMethod.POST, url), OAuth2AccessTokenResponse.class)
+        mockServer.expect(ExpectedCount.once(), requestTo(url))
+            .andRespond(
+                withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(readAccessTokenResponse()));
+        OAuth2AccessTokenResponse response
+            = restTemplate.exchange(new RequestEntity<>(HttpMethod.POST, url), OAuth2AccessTokenResponse.class)
                 .getBody();
         assertNotNull(response);
         assertEquals("test_access_token_value", response.getAccessToken().getTokenValue());
@@ -95,8 +91,8 @@ class AadRestTemplateCreatorTest {
 
     private String readAccessTokenResponse() {
         try {
-            return new String(Files.readAllBytes(
-                    Paths.get("src/test/resources/aad/access-token-response.json")), StandardCharsets.UTF_8);
+            return new String(Files.readAllBytes(Paths.get("src/test/resources/aad/access-token-response.json")),
+                StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }
@@ -105,13 +101,12 @@ class AadRestTemplateCreatorTest {
     @Test
     void testRestOperationProxyConfiguration() {
         new ApplicationContextRunner()
-                .withUserConfiguration(
-                        RestTemplateAutoConfiguration.class,
-                        RestTemplateProxyCustomizerTestConfiguration.class)
-                .run((context) -> {
-                    RestTemplate restTemplate = context.getBean(RestTemplateBuilder.class).build();
-                    assertSame(restTemplate.getRequestFactory(), FACTORY);
-                });
+            .withUserConfiguration(RestTemplateAutoConfiguration.class,
+                RestTemplateProxyCustomizerTestConfiguration.class)
+            .run((context) -> {
+                RestTemplate restTemplate = context.getBean(RestTemplateBuilder.class).build();
+                assertSame(restTemplate.getRequestFactory(), FACTORY);
+            });
     }
 
 }

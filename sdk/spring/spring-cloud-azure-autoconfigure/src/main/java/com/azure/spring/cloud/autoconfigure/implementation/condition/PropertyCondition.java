@@ -23,8 +23,8 @@ abstract class PropertyCondition extends SpringBootCondition {
 
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        List<AnnotationAttributes> allAnnotationAttributes = annotationAttributesFromMultiValueMap(
-            metadata.getAllAnnotationAttributes(getAnnotationName()));
+        List<AnnotationAttributes> allAnnotationAttributes
+            = annotationAttributesFromMultiValueMap(metadata.getAllAnnotationAttributes(getAnnotationName()));
         List<ConditionMessage> noMatch = new ArrayList<>();
         List<ConditionMessage> match = new ArrayList<>();
         for (AnnotationAttributes annotationAttributes : allAnnotationAttributes) {
@@ -38,12 +38,12 @@ abstract class PropertyCondition extends SpringBootCondition {
     }
 
     protected abstract ConditionOutcome determineOutcome(AnnotationAttributes annotationAttributes,
-                                                         PropertyResolver resolver);
+        PropertyResolver resolver);
 
     protected abstract String getAnnotationName();
 
-    protected List<AnnotationAttributes> annotationAttributesFromMultiValueMap(
-        MultiValueMap<String, Object> multiValueMap) {
+    protected List<AnnotationAttributes>
+        annotationAttributesFromMultiValueMap(MultiValueMap<String, Object> multiValueMap) {
         List<Map<String, Object>> maps = new ArrayList<>();
 
         if (multiValueMap != null) {

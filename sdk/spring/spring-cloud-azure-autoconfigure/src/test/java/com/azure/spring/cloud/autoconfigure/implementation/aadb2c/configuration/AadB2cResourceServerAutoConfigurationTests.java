@@ -44,26 +44,21 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     private WebApplicationContextRunner getResourceServerContextRunner() {
         return new WebApplicationContextRunner()
             .withClassLoader(new FilteredClassLoader(OAuth2LoginAuthenticationFilter.class))
-            .withConfiguration(AutoConfigurations.of(
-                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class,
-                WebResourceServerTestApp.class,
-                AadB2cResourceServerAutoConfiguration.class,
-                HttpMessageConvertersAutoConfiguration.class,
-                RestTemplateAutoConfiguration.class))
+            .withConfiguration(
+                AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+                    AzureGlobalPropertiesAutoConfiguration.class, WebResourceServerTestApp.class,
+                    AadB2cResourceServerAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+                    RestTemplateAutoConfiguration.class))
             .withPropertyValues(getB2CResourceServerProperties());
     }
 
     @Override
     WebApplicationContextRunner getDefaultContextRunner() {
         return new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(
-                WebOAuth2ClientTestApp.class,
+            .withConfiguration(AutoConfigurations.of(WebOAuth2ClientTestApp.class,
                 TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class,
-                AadB2cResourceServerAutoConfiguration.class,
-                HttpMessageConvertersAutoConfiguration.class,
-                RestTemplateAutoConfiguration.class))
+                AzureGlobalPropertiesAutoConfiguration.class, AadB2cResourceServerAutoConfiguration.class,
+                HttpMessageConvertersAutoConfiguration.class, RestTemplateAutoConfiguration.class))
             .withPropertyValues(getB2CResourceServerProperties());
     }
 
@@ -75,14 +70,13 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
             String.format("%s=%s", AadB2cConstants.CLIENT_ID, AadB2cConstants.TEST_CLIENT_ID),
             String.format("%s=%s", AadB2cConstants.APP_ID_URI, AadB2cConstants.TEST_APP_ID_URI),
             String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS, AadB2cConstants.TEST_KEY_SIGN_UP_OR_IN,
-                AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME),
-        };
+                AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME), };
     }
 
     private ContextConsumer<ApplicationContext> b2CAutoConfigurationBean() {
         return (c) -> {
-            final AadB2cResourceServerAutoConfiguration autoResourceConfig =
-                c.getBean(AadB2cResourceServerAutoConfiguration.class);
+            final AadB2cResourceServerAutoConfiguration autoResourceConfig
+                = c.getBean(AadB2cResourceServerAutoConfiguration.class);
             Assertions.assertNotNull(autoResourceConfig);
         };
     }
@@ -112,7 +106,7 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     @Test
     void testB2COAuth2ClientAutoConfigurationBean() {
         getDefaultContextRunner().withPropertyValues(getAuthorizationClientPropertyValues())
-                                 .run(b2CAutoConfigurationBean());
+            .run(b2CAutoConfigurationBean());
     }
 
     @Test
@@ -123,7 +117,7 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     @Test
     void testB2COAuth2ClientResourceServerPropertiesBean() {
         getDefaultContextRunner().withPropertyValues(getAuthorizationClientPropertyValues())
-                                 .run(b2CResourceServerPropertiesBean());
+            .run(b2CResourceServerPropertiesBean());
     }
 
     @Test
@@ -134,7 +128,7 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     @Test
     void testB2COAuth2ClientResourceServerBean() {
         getDefaultContextRunner().withPropertyValues(getAuthorizationClientPropertyValues())
-                                 .run(b2CResourceServerBean());
+            .run(b2CResourceServerBean());
     }
 
     @Test
@@ -145,28 +139,26 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     @Test
     void testResourceServerConditionsIsInvokedWhenAADB2CEnableFileExists() {
         try (MockedStatic<BeanUtils> beanUtils = mockStatic(BeanUtils.class, Mockito.CALLS_REAL_METHODS)) {
-            AadB2cConditions.ClientRegistrationCondition clientRegistrationCondition =
-                spy(AadB2cConditions.ClientRegistrationCondition.class);
+            AadB2cConditions.ClientRegistrationCondition clientRegistrationCondition
+                = spy(AadB2cConditions.ClientRegistrationCondition.class);
             beanUtils.when(() -> BeanUtils.instantiateClass(AadB2cConditions.ClientRegistrationCondition.class))
-                     .thenReturn(clientRegistrationCondition);
-            getDefaultContextRunner()
-                .withPropertyValues(getAuthorizationClientPropertyValues())
-                .run(c -> {
-                    verify(clientRegistrationCondition, atLeastOnce()).getMatchOutcome(any(), any());
-                });
+                .thenReturn(clientRegistrationCondition);
+            getDefaultContextRunner().withPropertyValues(getAuthorizationClientPropertyValues()).run(c -> {
+                verify(clientRegistrationCondition, atLeastOnce()).getMatchOutcome(any(), any());
+            });
         }
     }
 
     @Test
     void testResourceServerConditionsIsNotInvokedWhenAADB2CEnableFileDoesNotExists() {
         try (MockedStatic<BeanUtils> beanUtils = mockStatic(BeanUtils.class, Mockito.CALLS_REAL_METHODS)) {
-            AadB2cConditions.ClientRegistrationCondition clientRegistrationCondition =
-                mock(AadB2cConditions.ClientRegistrationCondition.class);
+            AadB2cConditions.ClientRegistrationCondition clientRegistrationCondition
+                = mock(AadB2cConditions.ClientRegistrationCondition.class);
             beanUtils.when(() -> BeanUtils.instantiateClass(AadB2cConditions.ClientRegistrationCondition.class))
-                     .thenReturn(clientRegistrationCondition);
+                .thenReturn(clientRegistrationCondition);
             new WebApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(WebOAuth2ClientTestApp.class,
-                    AadB2cResourceServerAutoConfiguration.class))
+                .withConfiguration(
+                    AutoConfigurations.of(WebOAuth2ClientTestApp.class, AadB2cResourceServerAutoConfiguration.class))
                 .withPropertyValues(getB2CResourceServerProperties())
                 .withPropertyValues(getAuthorizationClientPropertyValues())
                 .run(c -> {
@@ -177,12 +169,11 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
 
     @Test
     void testExistAADB2CTrustedIssuerRepositoryBean() {
-        getDefaultContextRunner()
-            .withPropertyValues(getB2CResourceServerProperties())
+        getDefaultContextRunner().withPropertyValues(getB2CResourceServerProperties())
             .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
             .run(context -> {
-                final AadB2cTrustedIssuerRepository aadb2CTrustedIssuerRepository =
-                    context.getBean(AadB2cTrustedIssuerRepository.class);
+                final AadB2cTrustedIssuerRepository aadb2CTrustedIssuerRepository
+                    = context.getBean(AadB2cTrustedIssuerRepository.class);
                 assertThat(aadb2CTrustedIssuerRepository).isNotNull();
                 assertThat(aadb2CTrustedIssuerRepository).isExactlyInstanceOf(AadB2cTrustedIssuerRepository.class);
             });
@@ -191,8 +182,7 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     @Test
     @SuppressWarnings({ "unchecked", "rawtypes" })
     void testExistjwtProcessorBean() {
-        getDefaultContextRunner()
-            .withPropertyValues(getB2CResourceServerProperties())
+        getDefaultContextRunner().withPropertyValues(getB2CResourceServerProperties())
             .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
             .run(context -> {
                 JWTProcessor<SecurityContext> jwtProcessor = context.getBean(JWTProcessor.class);
@@ -203,8 +193,7 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
 
     @Test
     void testExistJwtDecoderBean() {
-        getDefaultContextRunner()
-            .withPropertyValues(getB2CResourceServerProperties())
+        getDefaultContextRunner().withPropertyValues(getB2CResourceServerProperties())
             .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
             .run(context -> {
                 final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
@@ -216,12 +205,11 @@ class AadB2cResourceServerAutoConfigurationTests extends AbstractAadB2cOAuth2Cli
     @Test
     @SuppressWarnings({ "unchecked", "rawtypes" })
     void testExistJWTClaimsSetAwareJWSKeySelectorBean() {
-        getDefaultContextRunner()
-            .withPropertyValues(getB2CResourceServerProperties())
+        getDefaultContextRunner().withPropertyValues(getB2CResourceServerProperties())
             .withUserConfiguration(AadB2cResourceServerAutoConfiguration.class)
             .run(context -> {
-                final JWTClaimsSetAwareJWSKeySelector jwsKeySelector =
-                    context.getBean(JWTClaimsSetAwareJWSKeySelector.class);
+                final JWTClaimsSetAwareJWSKeySelector jwsKeySelector
+                    = context.getBean(JWTClaimsSetAwareJWSKeySelector.class);
                 assertThat(jwsKeySelector).isNotNull();
                 assertThat(jwsKeySelector).isExactlyInstanceOf(AadIssuerJwsKeySelector.class);
             });

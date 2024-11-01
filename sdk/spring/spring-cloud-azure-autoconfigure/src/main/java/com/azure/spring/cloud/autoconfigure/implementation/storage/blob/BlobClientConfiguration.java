@@ -36,7 +36,7 @@ class BlobClientConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageBlobProperties.PREFIX, name = "blob-name")
     BlobAsyncClient blobAsyncClient(AzureStorageBlobProperties properties,
-                                    BlobContainerAsyncClient blobContainerAsyncClient) {
+        BlobContainerAsyncClient blobContainerAsyncClient) {
         return blobContainerAsyncClient.getBlobAsyncClient(properties.getBlobName());
     }
 
@@ -44,22 +44,21 @@ class BlobClientConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageBlobProperties.PREFIX, name = "container-name")
     BlobContainerAsyncClient blobContainerAsyncClient(AzureStorageBlobProperties properties,
-                                                      BlobServiceAsyncClient blobServiceAsyncClient) {
+        BlobServiceAsyncClient blobServiceAsyncClient) {
         return blobServiceAsyncClient.getBlobContainerAsyncClient(properties.getContainerName());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    BlobServiceAsyncClient blobServiceAsyncClient(
-        @Qualifier(STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME) BlobServiceClientBuilder builder) {
+    BlobServiceAsyncClient
+        blobServiceAsyncClient(@Qualifier(STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME) BlobServiceClientBuilder builder) {
         return builder.buildAsyncClient();
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageBlobProperties.PREFIX, name = "blob-name")
-    BlobClient blobClient(AzureStorageBlobProperties properties,
-                          BlobContainerClient blobContainerClient) {
+    BlobClient blobClient(AzureStorageBlobProperties properties, BlobContainerClient blobContainerClient) {
         return blobContainerClient.getBlobClient(properties.getBlobName());
     }
 
@@ -67,21 +66,20 @@ class BlobClientConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageBlobProperties.PREFIX, name = "container-name")
     BlobContainerClient blobContainerClient(AzureStorageBlobProperties properties,
-                                            BlobServiceClient blobServiceClient) {
+        BlobServiceClient blobServiceClient) {
         return blobServiceClient.getBlobContainerClient(properties.getContainerName());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    BlobServiceClient blobServiceClient(
-        @Qualifier(STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME) BlobServiceClientBuilder builder) {
+    BlobServiceClient
+        blobServiceClient(@Qualifier(STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME) BlobServiceClientBuilder builder) {
         return builder.buildClient();
     }
 
     @Bean(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     @ConditionalOnMissingBean(name = STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    BlobServiceClientBuilderFactory blobServiceClientBuilderFactory(
-        AzureStorageBlobProperties properties,
+    BlobServiceClientBuilderFactory blobServiceClientBuilderFactory(AzureStorageBlobProperties properties,
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.StorageBlob>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<BlobServiceClientBuilder>> customizers) {
         BlobServiceClientBuilderFactory factory = new BlobServiceClientBuilderFactory(properties);
@@ -94,17 +92,17 @@ class BlobClientConfiguration {
 
     @Bean(STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME)
     @ConditionalOnMissingBean(name = STORAGE_BLOB_CLIENT_BUILDER_BEAN_NAME)
-    BlobServiceClientBuilder blobServiceClientBuilder(@Qualifier(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-                                                      BlobServiceClientBuilderFactory factory) {
+    BlobServiceClientBuilder blobServiceClientBuilder(
+        @Qualifier(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME) BlobServiceClientBuilderFactory factory) {
         return factory.build();
     }
 
     @Bean
     @ConditionalOnAnyProperty(
-        prefixes = {AzureStorageBlobProperties.PREFIX, AzureStorageProperties.PREFIX},
-        name = {"connection-string"})
-    StaticConnectionStringProvider<AzureServiceType.StorageBlob> staticStorageBlobConnectionStringProvider(
-        AzureStorageBlobProperties properties) {
+        prefixes = { AzureStorageBlobProperties.PREFIX, AzureStorageProperties.PREFIX },
+        name = { "connection-string" })
+    StaticConnectionStringProvider<AzureServiceType.StorageBlob>
+        staticStorageBlobConnectionStringProvider(AzureStorageBlobProperties properties) {
         return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_BLOB, properties.getConnectionString());
     }
 

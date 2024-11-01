@@ -26,10 +26,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 class AzureDefaultAzureCredentialBuilderFactoryTests extends
-    AzureHttpClientBuilderFactoryBaseTests<
-        DefaultAzureCredentialBuilder,
-        AzureIdentityTestProperties,
-        AzureDefaultAzureCredentialBuilderFactoryTests.DefaultAzureCredentialBuilderFactoryExt> {
+    AzureHttpClientBuilderFactoryBaseTests<DefaultAzureCredentialBuilder, AzureIdentityTestProperties, AzureDefaultAzureCredentialBuilderFactoryTests.DefaultAzureCredentialBuilderFactoryExt> {
 
     @Test
     void executorServiceConfigured() {
@@ -47,7 +44,8 @@ class AzureDefaultAzureCredentialBuilderFactoryTests extends
     }
 
     @Override
-    protected DefaultAzureCredentialBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(AzureIdentityTestProperties properties) {
+    protected DefaultAzureCredentialBuilderFactoryExt
+        createClientBuilderFactoryWithMockBuilder(AzureIdentityTestProperties properties) {
         return new DefaultAzureCredentialBuilderFactoryExt(properties);
     }
 
@@ -74,8 +72,7 @@ class AzureDefaultAzureCredentialBuilderFactoryTests extends
 
     @Override
     protected void verifyCredentialCalled(DefaultAzureCredentialBuilder builder,
-                                          Class<? extends TokenCredential> tokenCredentialClass,
-                                          VerificationMode mode) {
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         // do nothing
     }
 
@@ -95,7 +92,8 @@ class AzureDefaultAzureCredentialBuilderFactoryTests extends
     }
 
     @Override
-    protected void verifyRetryOptionsCalled(DefaultAzureCredentialBuilder builder, AzureIdentityTestProperties properties, VerificationMode mode) {
+    protected void verifyRetryOptionsCalled(DefaultAzureCredentialBuilder builder,
+        AzureIdentityTestProperties properties, VerificationMode mode) {
         verify(builder, mode).retryPolicy(any(RetryPolicy.class));
     }
 

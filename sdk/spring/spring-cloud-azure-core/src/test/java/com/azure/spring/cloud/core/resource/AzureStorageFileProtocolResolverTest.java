@@ -46,11 +46,13 @@ class AzureStorageFileProtocolResolverTest extends AbstractAzureStorageProtocolR
     protected void initializeSDKClient() {
         this.shareServiceClient = mock(ShareServiceClient.class);
 
-        Tuple2<ShareClient, ShareFileClient> clientTuple2 = mockClientsForExistingShareAndFile(this.shareServiceClient, CONTAINER_NAME, EXISTING_ITEM_NAME);
+        Tuple2<ShareClient, ShareFileClient> clientTuple2
+            = mockClientsForExistingShareAndFile(this.shareServiceClient, CONTAINER_NAME, EXISTING_ITEM_NAME);
         this.shareClient = clientTuple2.getT1();
         this.shareFileClient = clientTuple2.getT2();
 
-        mockClientsForNonExistingShareAndFile(this.shareServiceClient, NON_EXISTING_CONTAINER_NAME, NON_EXISTING_ITEM_NAME);
+        mockClientsForNonExistingShareAndFile(this.shareServiceClient, NON_EXISTING_CONTAINER_NAME,
+            NON_EXISTING_ITEM_NAME);
         mockClientsForNonExistingFile(this.shareClient, CONTAINER_NAME, NON_EXISTING_ITEM_NAME);
     }
 
@@ -64,7 +66,7 @@ class AzureStorageFileProtocolResolverTest extends AbstractAzureStorageProtocolR
         when(shareServiceClient.getShareClient(anyString())).thenReturn(shareClient);
         when(shareClient.getFileClient(anyString())).thenReturn(shareFileClient);
 
-        String[] locations = new String[] {"azure-file://test/test", "azure-file://test/test2"};
+        String[] locations = new String[] { "azure-file://test/test", "azure-file://test/test2" };
         Resource[] resources = getResources(locations);
         assertEquals(locations.length, resources.length, "Correct number of resources found");
     }
@@ -74,13 +76,13 @@ class AzureStorageFileProtocolResolverTest extends AbstractAzureStorageProtocolR
         when(shareServiceClient.getShareClient(anyString())).thenReturn(shareClient);
         when(shareClient.getFileClient(anyString())).thenReturn(shareFileClient);
 
-        String[] locations = new String[]{"azurefile:test/test", "otherfile:test/test2"};
+        String[] locations = new String[] { "azurefile:test/test", "otherfile:test/test2" };
         Resource[] resources = getResources(locations);
         assertEquals(0, resources.length, "No resolved resources found");
     }
 
-    private Tuple2<ShareClient, ShareFileClient> mockClientsForExistingShareAndFile(
-        ShareServiceClient shareServiceClient, String shareName, String fileName) {
+    private Tuple2<ShareClient, ShareFileClient>
+        mockClientsForExistingShareAndFile(ShareServiceClient shareServiceClient, String shareName, String fileName) {
         ShareClient shareClient = mock(ShareClient.class);
         ShareFileClient shareFileClient = mock(ShareFileClient.class);
 
@@ -101,7 +103,7 @@ class AzureStorageFileProtocolResolverTest extends AbstractAzureStorageProtocolR
     }
 
     private void mockClientsForNonExistingShareAndFile(ShareServiceClient shareServiceClient, String shareName,
-                                                       String fileName) {
+        String fileName) {
         ShareClient nonExistingShareClient = mock(ShareClient.class);
         ShareFileClient nonExistingShareFileClient = mock(ShareFileClient.class);
 

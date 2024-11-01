@@ -12,5 +12,4 @@ import com.azure.spring.cloud.service.listener.MessageListener;
 @FunctionalInterface
 public interface ServiceBusRecordMessageListener extends MessageListener<ServiceBusReceivedMessageContext> {
 
-
 }

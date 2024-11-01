@@ -35,8 +35,8 @@ public class RecordMessagingMessageListenerAdapter extends MessagingMessageListe
         Map<String, Object> headers = new HashMap<>();
         headers.put(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext);
 
-        Message<?> message = getMessageConverter().toMessage(messageContext.getMessage(), new MessageHeaders(headers),
-            payloadType);
+        Message<?> message
+            = getMessageConverter().toMessage(messageContext.getMessage(), new MessageHeaders(headers), payloadType);
         invokeHandler(message);
     }
 

@@ -20,11 +20,10 @@ public class AadB2cClientRegistrationRepository implements ClientRegistrationRep
     private final InMemoryClientRegistrationRepository clientRegistrations;
     private final List<ClientRegistration> signUpOrSignInRegistrations;
 
-
     public AadB2cClientRegistrationRepository(String loginFlow, List<ClientRegistration> clientRegistrations) {
         this.signUpOrSignInRegistrations = clientRegistrations.stream()
-                                                              .filter(client -> loginFlow.equals(client.getClientName()))
-                                                              .collect(Collectors.toList());
+            .filter(client -> loginFlow.equals(client.getClientName()))
+            .collect(Collectors.toList());
         this.clientRegistrations = new InMemoryClientRegistrationRepository(clientRegistrations);
     }
 

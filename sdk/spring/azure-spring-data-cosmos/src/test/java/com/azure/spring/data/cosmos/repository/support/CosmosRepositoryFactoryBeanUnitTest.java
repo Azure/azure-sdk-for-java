@@ -20,8 +20,8 @@ public class CosmosRepositoryFactoryBeanUnitTest {
 
     @Test
     public void testCreateRepositoryFactory() {
-        final CosmosRepositoryFactoryBean<?, ?, ?> factoryBean =
-                new CosmosRepositoryFactoryBean<>(PersonRepository.class);
+        final CosmosRepositoryFactoryBean<?, ?, ?> factoryBean
+            = new CosmosRepositoryFactoryBean<>(PersonRepository.class);
         factoryBean.setCosmosOperations(template);
         final RepositoryFactorySupport factory = factoryBean.createRepositoryFactory();
         assertThat(factory).isNotNull();

@@ -30,7 +30,8 @@ public class AzurePasswordlessEnvironmentPostProcessor implements EnvironmentPos
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         Properties properties = new Properties();
         List<String> passwordlessCredentialSupplier = new ArrayList<>();
-        properties.setProperty("spring.cloud.function.ineligible-definitions", String.join(",", passwordlessCredentialSupplier));
+        properties.setProperty("spring.cloud.function.ineligible-definitions",
+            String.join(",", passwordlessCredentialSupplier));
         environment.getPropertySources().addLast(new PropertiesPropertySource("passwordless", properties));
     }
 

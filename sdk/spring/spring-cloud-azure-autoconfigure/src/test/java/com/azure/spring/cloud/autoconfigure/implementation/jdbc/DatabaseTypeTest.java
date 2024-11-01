@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 abstract class DatabaseTypeTest {
 
     abstract void databaseTypeConstructor();
+
     abstract void databasePluginAvailable();
 
     @Test

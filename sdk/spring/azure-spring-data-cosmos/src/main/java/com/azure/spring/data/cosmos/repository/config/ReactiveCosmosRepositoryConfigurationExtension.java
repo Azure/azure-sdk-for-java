@@ -59,7 +59,6 @@ public class ReactiveCosmosRepositoryConfigurationExtension extends RepositoryCo
         return Collections.emptyList();
     }
 
-
     @Override
     public void registerBeansForRoot(BeanDefinitionRegistry registry, RepositoryConfigurationSource config) {
         super.registerBeansForRoot(registry, config);

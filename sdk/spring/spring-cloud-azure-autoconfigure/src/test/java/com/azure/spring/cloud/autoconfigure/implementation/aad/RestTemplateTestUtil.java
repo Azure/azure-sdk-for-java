@@ -46,66 +46,83 @@ public final class RestTemplateTestUtil {
         assertRestTemplateWellConfiguredForJwtDecoderFactory(context);
     }
 
-    private static void assertRestTemplateWellConfiguredForOAuth2AuthorizationCodeAuthenticationProvider(ApplicationContext context) {
-        OAuth2AuthorizationCodeAuthenticationProvider provider = getOAuth2AuthorizationCodeAuthenticationProvider(context);
-        OAuth2AccessTokenResponseClient<?> client = (OAuth2AccessTokenResponseClient<?>) getField(provider.getClass(), "accessTokenResponseClient", provider);
+    private static void
+        assertRestTemplateWellConfiguredForOAuth2AuthorizationCodeAuthenticationProvider(ApplicationContext context) {
+        OAuth2AuthorizationCodeAuthenticationProvider provider
+            = getOAuth2AuthorizationCodeAuthenticationProvider(context);
+        OAuth2AccessTokenResponseClient<?> client
+            = (OAuth2AccessTokenResponseClient<?>) getField(provider.getClass(), "accessTokenResponseClient", provider);
         assertRestTemplateWellConfiguredInOAuth2AccessTokenResponseClient(client);
     }
 
-    private static OAuth2AuthorizationCodeAuthenticationProvider getOAuth2AuthorizationCodeAuthenticationProvider(ApplicationContext context) {
+    private static OAuth2AuthorizationCodeAuthenticationProvider
+        getOAuth2AuthorizationCodeAuthenticationProvider(ApplicationContext context) {
         FilterChainProxy proxy = context.getBean(FilterChainProxy.class);
         OAuth2LoginAuthenticationFilter filter = proxy.getFilterChains()
-                .get(0)
-                .getFilters()
-                .stream()
-                .filter(f -> f instanceof OAuth2LoginAuthenticationFilter)
-                .map(f -> (OAuth2LoginAuthenticationFilter) f)
-                .findAny()
-                .orElse(null);
-        ProviderManager manager = (ProviderManager) getField(OAuth2LoginAuthenticationFilter.class, "authenticationManager", filter);
+            .get(0)
+            .getFilters()
+            .stream()
+            .filter(f -> f instanceof OAuth2LoginAuthenticationFilter)
+            .map(f -> (OAuth2LoginAuthenticationFilter) f)
+            .findAny()
+            .orElse(null);
+        ProviderManager manager
+            = (ProviderManager) getField(OAuth2LoginAuthenticationFilter.class, "authenticationManager", filter);
         OAuth2LoginAuthenticationProvider provider = manager.getProviders()
-                .stream()
-                .filter(p -> p instanceof OAuth2LoginAuthenticationProvider)
-                .map(p -> (OAuth2LoginAuthenticationProvider) p)
-                .findAny()
-                .orElse(null);
-        return (OAuth2AuthorizationCodeAuthenticationProvider) getField(OAuth2LoginAuthenticationProvider.class, "authorizationCodeAuthenticationProvider", provider);
+            .stream()
+            .filter(p -> p instanceof OAuth2LoginAuthenticationProvider)
+            .map(p -> (OAuth2LoginAuthenticationProvider) p)
+            .findAny()
+            .orElse(null);
+        return (OAuth2AuthorizationCodeAuthenticationProvider) getField(OAuth2LoginAuthenticationProvider.class,
+            "authorizationCodeAuthenticationProvider", provider);
     }
 
-    private static void assertRestTemplateWellConfiguredForAllOAuth2AuthorizedClientProviders(ApplicationContext context) {
-        List<OAuth2AuthorizedClientProvider> providers = getAllOAuth2AuthorizedClientProviderThatShouldConfiguredRestTemplate(context);
+    private static void
+        assertRestTemplateWellConfiguredForAllOAuth2AuthorizedClientProviders(ApplicationContext context) {
+        List<OAuth2AuthorizedClientProvider> providers
+            = getAllOAuth2AuthorizedClientProviderThatShouldConfiguredRestTemplate(context);
         // 3 providers: refreshToken, clientCredential.
         assertTrue(providers.size() >= 2);
         providers.forEach(provider -> {
-            OAuth2AccessTokenResponseClient<?> client = (OAuth2AccessTokenResponseClient<?>) getField(provider.getClass(), "accessTokenResponseClient", provider);
+            OAuth2AccessTokenResponseClient<?> client
+                = (OAuth2AccessTokenResponseClient<?>) getField(provider.getClass(), "accessTokenResponseClient",
+                    provider);
             assertRestTemplateWellConfiguredInOAuth2AccessTokenResponseClient(client);
         });
     }
 
     @SuppressWarnings("unchecked")
-    private static List<OAuth2AuthorizedClientProvider> getAllOAuth2AuthorizedClientProviderThatShouldConfiguredRestTemplate(ApplicationContext context) {
-        final DefaultOAuth2AuthorizedClientManager manager = context.getBean(DefaultOAuth2AuthorizedClientManager.class);
-        DelegatingOAuth2AuthorizedClientProvider delegatingProvider =
-                (DelegatingOAuth2AuthorizedClientProvider) getField(DefaultOAuth2AuthorizedClientManager.class, "authorizedClientProvider", manager);
-        List<OAuth2AuthorizedClientProvider> providers =
-                (List<OAuth2AuthorizedClientProvider>) getField(DelegatingOAuth2AuthorizedClientProvider.class, "authorizedClientProviders", delegatingProvider);
+    private static List<OAuth2AuthorizedClientProvider>
+        getAllOAuth2AuthorizedClientProviderThatShouldConfiguredRestTemplate(ApplicationContext context) {
+        final DefaultOAuth2AuthorizedClientManager manager
+            = context.getBean(DefaultOAuth2AuthorizedClientManager.class);
+        DelegatingOAuth2AuthorizedClientProvider delegatingProvider
+            = (DelegatingOAuth2AuthorizedClientProvider) getField(DefaultOAuth2AuthorizedClientManager.class,
+                "authorizedClientProvider", manager);
+        List<OAuth2AuthorizedClientProvider> providers
+            = (List<OAuth2AuthorizedClientProvider>) getField(DelegatingOAuth2AuthorizedClientProvider.class,
+                "authorizedClientProviders", delegatingProvider);
         return providers.stream()
-                .filter(provider -> !(provider instanceof AuthorizationCodeOAuth2AuthorizedClientProvider))
-                .filter(provider -> !(provider instanceof AadAzureDelegatedOAuth2AuthorizedClientProvider))
-                .collect(Collectors.toList());
+            .filter(provider -> !(provider instanceof AuthorizationCodeOAuth2AuthorizedClientProvider))
+            .filter(provider -> !(provider instanceof AadAzureDelegatedOAuth2AuthorizedClientProvider))
+            .collect(Collectors.toList());
     }
 
-    private static void assertRestTemplateWellConfiguredInOAuth2AccessTokenResponseClient(OAuth2AccessTokenResponseClient<?> client) {
+    private static void
+        assertRestTemplateWellConfiguredInOAuth2AccessTokenResponseClient(OAuth2AccessTokenResponseClient<?> client) {
         RestTemplate restTemplate = (RestTemplate) getField(client.getClass(), "restOperations", client);
         assertEquals(FACTORY, restTemplate.getRequestFactory());
     }
 
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings({ "unchecked", "deprecation" })
     private static void assertRestTemplateWellConfiguredForJwtDecoderFactory(ApplicationContext context) {
-        JwtDecoderFactory<ClientRegistration> factory = (JwtDecoderFactory<ClientRegistration>) context.getBean(JwtDecoderFactory.class);
+        JwtDecoderFactory<ClientRegistration> factory
+            = (JwtDecoderFactory<ClientRegistration>) context.getBean(JwtDecoderFactory.class);
         JwtDecoder jwtDecoder = factory.createDecoder(clientRegistration());
         assertTrue(jwtDecoder instanceof NimbusJwtDecoder);
-        DefaultJWTProcessor<?> processor = (DefaultJWTProcessor<?>) getField(NimbusJwtDecoder.class, "jwtProcessor", jwtDecoder);
+        DefaultJWTProcessor<?> processor
+            = (DefaultJWTProcessor<?>) getField(NimbusJwtDecoder.class, "jwtProcessor", jwtDecoder);
         JWSVerificationKeySelector<?> selector = (JWSVerificationKeySelector<?>) processor.getJWSKeySelector();
         RemoteJWKSet<?> source = (RemoteJWKSet<?>) selector.getJWKSource();
         ResourceRetriever retriever = source.getResourceRetriever();
@@ -114,21 +131,20 @@ public final class RestTemplateTestUtil {
     }
 
     private static ClientRegistration clientRegistration() {
-        return ClientRegistration
-                .withRegistrationId("registration-id-1")
-                .redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .scope("scope-1")
-                .authorizationUri("https://example1.com/login/oauth/authorize")
-                .tokenUri("https://example1.com/login/oauth/access_token")
-                .jwkSetUri("https://example1.com/oauth2/jwk")
-                .issuerUri("https://example1.com")
-                .userInfoUri("https://api.example1.com/user")
-                .userNameAttributeName("id-1")
-                .clientName("Client Name 1")
-                .clientId("client-id-1")
-                .clientSecret("client-secret-1")
-                .build();
+        return ClientRegistration.withRegistrationId("registration-id-1")
+            .redirectUri("{baseUrl}/{action}/oauth2/code/{registrationId}")
+            .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .scope("scope-1")
+            .authorizationUri("https://example1.com/login/oauth/authorize")
+            .tokenUri("https://example1.com/login/oauth/access_token")
+            .jwkSetUri("https://example1.com/oauth2/jwk")
+            .issuerUri("https://example1.com")
+            .userInfoUri("https://api.example1.com/user")
+            .userNameAttributeName("id-1")
+            .clientName("Client Name 1")
+            .clientId("client-id-1")
+            .clientSecret("client-secret-1")
+            .build();
     }
 }

@@ -17,8 +17,8 @@ class AadJwtIssuerValidatorTests {
 
     private final AadAuthenticationProperties aadAuthenticationProperties = mock(AadAuthenticationProperties.class);
     private final Jwt jwt = mock(Jwt.class);
-    private final AadTrustedIssuerRepository aadTrustedIssuerRepository = new AadTrustedIssuerRepository("fake-tenant"
-        + "-id");
+    private final AadTrustedIssuerRepository aadTrustedIssuerRepository
+        = new AadTrustedIssuerRepository("fake-tenant" + "-id");
 
     @Test
     void testNoStructureIssuerSuccessVerify() {

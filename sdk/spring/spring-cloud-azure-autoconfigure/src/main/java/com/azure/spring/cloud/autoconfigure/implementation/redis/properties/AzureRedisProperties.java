@@ -19,7 +19,8 @@ public class AzureRedisProperties {
     private String name;
 
     @NestedConfigurationProperty
-    private final AzureResourceMetadataConfigurationProperties resource = new AzureResourceMetadataConfigurationProperties();
+    private final AzureResourceMetadataConfigurationProperties resource
+        = new AzureResourceMetadataConfigurationProperties();
 
     public String getName() {
         return name;

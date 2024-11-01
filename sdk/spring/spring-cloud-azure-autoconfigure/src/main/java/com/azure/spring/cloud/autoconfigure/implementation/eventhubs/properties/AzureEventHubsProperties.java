@@ -107,21 +107,25 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
         propertyMapper.from(this.processor.getPrefetchCount()).to(properties::setPrefetchCount);
         propertyMapper.from(this.processor.getConsumerGroup()).to(properties::setConsumerGroup);
 
-        propertyMapper.from(this.processor.trackLastEnqueuedEventProperties).to(properties::setTrackLastEnqueuedEventProperties);
-        propertyMapper.from(this.processor.initialPartitionEventPosition).when(c -> !CollectionUtils.isEmpty(c))
-                      .to(m -> {
-                          Map<String, Processor.StartPosition> eventPositionMap = m.entrySet()
-                                                                                   .stream()
-                                                                                   .filter(entry -> entry.getValue() != null)
-                                                                                   .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-                          properties.getInitialPartitionEventPosition().putAll(eventPositionMap);
-                      });
+        propertyMapper.from(this.processor.trackLastEnqueuedEventProperties)
+            .to(properties::setTrackLastEnqueuedEventProperties);
+        propertyMapper.from(this.processor.initialPartitionEventPosition)
+            .when(c -> !CollectionUtils.isEmpty(c))
+            .to(m -> {
+                Map<String, Processor.StartPosition> eventPositionMap = m.entrySet()
+                    .stream()
+                    .filter(entry -> entry.getValue() != null)
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+                properties.getInitialPartitionEventPosition().putAll(eventPositionMap);
+            });
         propertyMapper.from(this.processor.batch.getMaxSize()).to(properties.batch::setMaxSize);
         propertyMapper.from(this.processor.batch.getMaxWaitTime()).to(properties.batch::setMaxWaitTime);
         propertyMapper.from(this.processor.loadBalancing.getStrategy()).to(properties.loadBalancing::setStrategy);
-        propertyMapper.from(this.processor.loadBalancing.getUpdateInterval()).to(properties.loadBalancing::setUpdateInterval);
+        propertyMapper.from(this.processor.loadBalancing.getUpdateInterval())
+            .to(properties.loadBalancing::setUpdateInterval);
 
-        AzurePropertiesUtils.mergeAzureCommonProperties(properties, this.processor.getCheckpointStore(), properties.checkpointStore);
+        AzurePropertiesUtils.mergeAzureCommonProperties(properties, this.processor.getCheckpointStore(),
+            properties.checkpointStore);
         BeanUtils.copyProperties(this.processor.checkpointStore, properties.checkpointStore);
 
         return properties;
@@ -374,7 +378,6 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
              */
             private boolean createContainerIfNotExists = false;
 
-
             public boolean isCreateContainerIfNotExists() {
                 return createContainerIfNotExists;
             }
@@ -396,7 +399,7 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties
 
     private void validateNamespaceProperties() {
         Stream.of(getNamespace(), producer.getNamespace(), consumer.getNamespace(), processor.getNamespace())
-              .filter(Objects::nonNull)
-              .forEach(PropertiesValidator::validateNamespace);
+            .filter(Objects::nonNull)
+            .forEach(PropertiesValidator::validateNamespace);
     }
 }

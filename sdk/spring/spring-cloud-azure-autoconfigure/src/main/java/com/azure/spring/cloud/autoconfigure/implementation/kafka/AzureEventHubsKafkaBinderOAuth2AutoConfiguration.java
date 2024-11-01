@@ -18,7 +18,10 @@ import org.springframework.context.annotation.Bean;
  * @since 4.4.0
  */
 @ConditionalOnClass(KafkaBinderConfiguration.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.kafka.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    value = "spring.cloud.azure.eventhubs.kafka.enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 public class AzureEventHubsKafkaBinderOAuth2AutoConfiguration {
 
     @Bean

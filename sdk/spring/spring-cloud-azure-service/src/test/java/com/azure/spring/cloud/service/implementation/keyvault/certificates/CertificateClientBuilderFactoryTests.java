@@ -24,10 +24,7 @@ import static org.mockito.Mockito.verify;
  *
  */
 class CertificateClientBuilderFactoryTests extends
-    AzureHttpClientBuilderFactoryBaseTests<
-        CertificateClientBuilder,
-        AzureKeyVaultCertificateTestProperties,
-        CertificateClientBuilderFactoryTests.CertificateClientBuilderFactoryExt> {
+    AzureHttpClientBuilderFactoryBaseTests<CertificateClientBuilder, AzureKeyVaultCertificateTestProperties, CertificateClientBuilderFactoryTests.CertificateClientBuilderFactoryExt> {
 
     private static final String ENDPOINT = "https://abc.vault.azure.net/";
 
@@ -37,8 +34,8 @@ class CertificateClientBuilderFactoryTests extends
     }
 
     @Override
-    protected CertificateClientBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(
-        AzureKeyVaultCertificateTestProperties properties) {
+    protected CertificateClientBuilderFactoryExt
+        createClientBuilderFactoryWithMockBuilder(AzureKeyVaultCertificateTestProperties properties) {
         return new CertificateClientBuilderFactoryExt(properties);
     }
 
@@ -63,15 +60,13 @@ class CertificateClientBuilderFactoryTests extends
 
     @Override
     protected void verifyCredentialCalled(CertificateClientBuilder builder,
-                                          Class<? extends TokenCredential> tokenCredentialClass,
-                                          VerificationMode mode) {
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         verify(builder, mode).credential(any(tokenCredentialClass));
     }
 
     @Override
     protected void verifyRetryOptionsCalled(CertificateClientBuilder builder,
-                                            AzureKeyVaultCertificateTestProperties properties,
-                                            VerificationMode mode) {
+        AzureKeyVaultCertificateTestProperties properties, VerificationMode mode) {
         // TODO (xiada) change this when the CertificateClientBuilder support RetryOptions
         verify(builder, mode).retryPolicy(any(RetryPolicy.class));
     }
@@ -90,7 +85,6 @@ class CertificateClientBuilderFactoryTests extends
     protected List<HttpPipelinePolicy> getHttpPipelinePolicies(CertificateClientBuilderFactoryExt builderFactory) {
         return builderFactory.getHttpPipelinePolicies();
     }
-
 
     static class CertificateClientBuilderFactoryExt extends CertificateClientBuilderFactory {
 
@@ -114,4 +108,3 @@ class CertificateClientBuilderFactoryTests extends
         }
     }
 }
-

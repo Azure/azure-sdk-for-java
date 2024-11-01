@@ -6,10 +6,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.storage.queue.proper
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
 
-@Import({
-    ConfigurationWithConnectionDetailsBean.class,
-    ConfigurationWithoutConnectionDetailsBean.class,
-})
+@Import({ ConfigurationWithConnectionDetailsBean.class, ConfigurationWithoutConnectionDetailsBean.class, })
 @EnableConfigurationProperties
 public class AzureStorageQueuePropertiesConfiguration {
 

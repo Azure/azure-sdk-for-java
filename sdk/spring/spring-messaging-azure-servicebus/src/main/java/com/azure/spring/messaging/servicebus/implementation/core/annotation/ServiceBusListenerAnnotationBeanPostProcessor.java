@@ -40,11 +40,13 @@ import java.util.Set;
  * @see AzureListenerEndpointRegistrar
  * @see AzureListenerEndpointRegistry
  */
-public class ServiceBusListenerAnnotationBeanPostProcessor extends AzureListenerAnnotationBeanPostProcessorAdapter<ServiceBusListener> {
+public class ServiceBusListenerAnnotationBeanPostProcessor
+    extends AzureListenerAnnotationBeanPostProcessorAdapter<ServiceBusListener> {
 
-
-    private static final String DEFAULT_SERVICE_BUS_LISTENER_ANNOTATION_BPP_BEAN_NAME = "serviceBusListenerAnnotationBeanPostProcessor";
-    private static final String DEFAULT_SERVICE_BUS_LISTENER_CONTAINER_FACTORY_BEAN_NAME = "azureServiceBusListenerContainerFactory";
+    private static final String DEFAULT_SERVICE_BUS_LISTENER_ANNOTATION_BPP_BEAN_NAME
+        = "serviceBusListenerAnnotationBeanPostProcessor";
+    private static final String DEFAULT_SERVICE_BUS_LISTENER_CONTAINER_FACTORY_BEAN_NAME
+        = "azureServiceBusListenerContainerFactory";
 
     /**
      * Construct an {@link ServiceBusListenerAnnotationBeanPostProcessor} instance with default configuration.
@@ -61,11 +63,9 @@ public class ServiceBusListenerAnnotationBeanPostProcessor extends AzureListener
 
     @Override
     protected AzureListenerEndpoint createAndConfigureMethodListenerEndpoint(ServiceBusListener listenerAnnotation,
-                                                                             Object bean, Method method,
-                                                                             BeanFactory beanFactory,
-                                                                             MessageHandlerMethodFactory messageHandlerMethodFactory) {
+        Object bean, Method method, BeanFactory beanFactory, MessageHandlerMethodFactory messageHandlerMethodFactory) {
         MethodServiceBusListenerEndpoint endpoint = new MethodServiceBusListenerEndpoint();
-        
+
         endpoint.setBean(bean);
         endpoint.setMethod(method);
         endpoint.setBeanFactory(beanFactory);

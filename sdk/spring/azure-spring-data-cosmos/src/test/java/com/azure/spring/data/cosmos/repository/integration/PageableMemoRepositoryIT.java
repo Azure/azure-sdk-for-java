@@ -86,9 +86,8 @@ public class PageableMemoRepositoryIT {
         }
 
         // Set of memos with NORMAL importance
-        normalMemos = memoSet.stream()
-            .filter(m -> m.getImportance().equals(Importance.NORMAL))
-            .collect(Collectors.toSet());
+        normalMemos
+            = memoSet.stream().filter(m -> m.getImportance().equals(Importance.NORMAL)).collect(Collectors.toSet());
 
         isSetupDone = true;
     }
@@ -128,7 +127,6 @@ public class PageableMemoRepositoryIT {
         verifyItemsWithOffsetAndLimit(skipCount, takeCount, takeCount);
     }
 
-
     @Test
     public void testOffsetAndLimitGreaterThanTotal() {
         final int skipCount = 300;
@@ -165,21 +163,19 @@ public class PageableMemoRepositoryIT {
 
         final CosmosAsyncClient cosmosAsyncClient = applicationContext.getBean(CosmosAsyncClient.class);
         return cosmosAsyncClient.getDatabase(cosmosFactory.getDatabaseName())
-                           .getContainer(collectionManager.getContainerName(PageableMemo.class))
-                           .queryItems(query, options, PageableMemo.class)
-                           .byPage();
+            .getContainer(collectionManager.getContainerName(PageableMemo.class))
+            .queryItems(query, options, PageableMemo.class)
+            .byPage();
     }
 
     private void verifyItemsWithOffsetAndLimit(int skipCount, int takeCount, int verifyCount) {
         final List<PageableMemo> itemsWithOffsetAndLimit = new ArrayList<>();
-        final Flux<FeedResponse<PageableMemo>> itemsWithOffsetAndLimitFlux =
-            getItemsWithOffsetAndLimit(skipCount, takeCount);
-        StepVerifier.create(itemsWithOffsetAndLimitFlux)
-                    .thenConsumeWhile(cosmosItemPropertiesFeedResponse -> {
-                        itemsWithOffsetAndLimit.addAll(cosmosItemPropertiesFeedResponse.getResults());
-                        return true;
-                    })
-                    .verifyComplete();
+        final Flux<FeedResponse<PageableMemo>> itemsWithOffsetAndLimitFlux
+            = getItemsWithOffsetAndLimit(skipCount, takeCount);
+        StepVerifier.create(itemsWithOffsetAndLimitFlux).thenConsumeWhile(cosmosItemPropertiesFeedResponse -> {
+            itemsWithOffsetAndLimit.addAll(cosmosItemPropertiesFeedResponse.getResults());
+            return true;
+        }).verifyComplete();
         assertThat(itemsWithOffsetAndLimit.size()).isEqualTo(verifyCount);
     }
 

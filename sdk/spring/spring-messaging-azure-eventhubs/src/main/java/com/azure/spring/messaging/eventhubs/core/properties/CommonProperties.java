@@ -11,7 +11,8 @@ import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventH
 /**
  * Common properties shared by event hub namespace, a producer, and a consumer.
  */
-public abstract class CommonProperties extends AzureAmqpSdkProperties implements EventHubClientCommonProperties, ConnectionStringProvider {
+public abstract class CommonProperties extends AzureAmqpSdkProperties
+    implements EventHubClientCommonProperties, ConnectionStringProvider {
 
     /**
      * Create an instance of {@link CommonProperties}.
@@ -42,7 +43,6 @@ public abstract class CommonProperties extends AzureAmqpSdkProperties implements
         }
         return new EventHubsConnectionString(this.connectionString).getEntityPath();
     }
-
 
     // FQDN = the FQDN of the EventHubs namespace you created (it includes the EventHubs namespace name followed by
     // servicebus.windows.net)

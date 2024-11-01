@@ -19,16 +19,16 @@ import java.util.Map;
 public final class AadB2cConditions {
 
     private static final String KEY_OF_USER_FLOWS = "user-flows";
+
     /**
      * OAuth2 client beans condition.
      */
     public static final class ClientRegistrationCondition extends SpringBootCondition {
 
         @Override
-        public ConditionOutcome getMatchOutcome(final ConditionContext context,
-                                                final AnnotatedTypeMetadata metadata) {
-            ConditionMessage.Builder message = ConditionMessage.forCondition(
-                "AAD B2C OAuth 2.0 Clients Configured Condition");
+        public ConditionOutcome getMatchOutcome(final ConditionContext context, final AnnotatedTypeMetadata metadata) {
+            ConditionMessage.Builder message
+                = ConditionMessage.forCondition("AAD B2C OAuth 2.0 Clients Configured Condition");
             AadB2cProperties aadb2CProperties = getAadB2cProperties(context);
             if (aadb2CProperties == null) {
                 return ConditionOutcome.noMatch(message.notAvailable("aad b2c properties"));
@@ -36,8 +36,8 @@ public final class AadB2cConditions {
 
             if (CollectionUtils.isEmpty(aadb2CProperties.getUserFlows())
                 && CollectionUtils.isEmpty(aadb2CProperties.getAuthorizationClients())) {
-                return ConditionOutcome.noMatch(message.didNotFind("registered clients")
-                                                       .items(KEY_OF_USER_FLOWS, "authorization-clients"));
+                return ConditionOutcome.noMatch(
+                    message.didNotFind("registered clients").items(KEY_OF_USER_FLOWS, "authorization-clients"));
             }
 
             StringBuilder details = new StringBuilder();
@@ -45,8 +45,7 @@ public final class AadB2cConditions {
                 details.append(getConditionResult(KEY_OF_USER_FLOWS, aadb2CProperties.getUserFlows()));
             }
             if (!CollectionUtils.isEmpty(aadb2CProperties.getAuthorizationClients())) {
-                details.append(getConditionResult("authorization-clients",
-                    aadb2CProperties.getAuthorizationClients()));
+                details.append(getConditionResult("authorization-clients", aadb2CProperties.getAuthorizationClients()));
             }
             return ConditionOutcome.match(message.foundExactly(details.toString()));
         }
@@ -58,10 +57,9 @@ public final class AadB2cConditions {
     public static final class UserFlowCondition extends SpringBootCondition {
 
         @Override
-        public ConditionOutcome getMatchOutcome(final ConditionContext context,
-                                                final AnnotatedTypeMetadata metadata) {
-            ConditionMessage.Builder message = ConditionMessage.forCondition(
-                "AAD B2C User Flow Clients Configured Condition");
+        public ConditionOutcome getMatchOutcome(final ConditionContext context, final AnnotatedTypeMetadata metadata) {
+            ConditionMessage.Builder message
+                = ConditionMessage.forCondition("AAD B2C User Flow Clients Configured Condition");
             AadB2cProperties aadb2CProperties = getAadB2cProperties(context);
             if (aadb2CProperties == null) {
                 return ConditionOutcome.noMatch(message.notAvailable("aad b2c properties"));
@@ -71,8 +69,8 @@ public final class AadB2cConditions {
                 return ConditionOutcome.noMatch(message.didNotFind("user flows").atAll());
             }
 
-            return ConditionOutcome.match(message.foundExactly(
-                getConditionResult(KEY_OF_USER_FLOWS, aadb2CProperties.getUserFlows())));
+            return ConditionOutcome
+                .match(message.foundExactly(getConditionResult(KEY_OF_USER_FLOWS, aadb2CProperties.getUserFlows())));
         }
     }
 
@@ -83,8 +81,8 @@ public final class AadB2cConditions {
      */
     private static AadB2cProperties getAadB2cProperties(ConditionContext context) {
         return Binder.get(context.getEnvironment())
-                     .bind("spring.cloud.azure.active-directory.b2c", AadB2cProperties.class)
-                     .orElse(null);
+            .bind("spring.cloud.azure.active-directory.b2c", AadB2cProperties.class)
+            .orElse(null);
     }
 
     /**

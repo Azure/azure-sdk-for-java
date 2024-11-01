@@ -30,33 +30,28 @@ class AzureRedisAutoConfigurationTests {
     private static final int PORT = 6379;
     private static final boolean IS_SSL = true;
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class));
+    private final ApplicationContextRunner contextRunner
+        = new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureRedisAutoConfiguration.class));
 
     @Test
     void testAzureRedisDisabled() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.redis.enabled=false")
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureRedisAutoConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureRedisProperties.class);
-            });
+        this.contextRunner.withPropertyValues("spring.cloud.azure.redis.enabled=false").run(context -> {
+            assertThat(context).doesNotHaveBean(AzureRedisAutoConfiguration.class);
+            assertThat(context).doesNotHaveBean(AzureRedisProperties.class);
+        });
     }
 
     @Test
     void testWithoutRedisOperationsClass() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(RedisOperations.class))
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureRedisAutoConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureRedisProperties.class);
-            });
+        this.contextRunner.withClassLoader(new FilteredClassLoader(RedisOperations.class)).run(context -> {
+            assertThat(context).doesNotHaveBean(AzureRedisAutoConfiguration.class);
+            assertThat(context).doesNotHaveBean(AzureRedisProperties.class);
+        });
     }
 
     @Test
     void shouldNotConfigureWithoutRedisName() {
-        this.contextRunner
-            .withBean(AzureResourceManager.class, this::mockResourceManager)
+        this.contextRunner.withBean(AzureResourceManager.class, this::mockResourceManager)
             .withPropertyValues("spring.cloud.azure.redis.resource.resource-group=rg")
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AzureRedisAutoConfiguration.class);
@@ -66,8 +61,7 @@ class AzureRedisAutoConfigurationTests {
 
     @Test
     void shouldNotConfigureWithoutRedisResourceGroup() {
-        this.contextRunner
-            .withBean(AzureResourceManager.class, this::mockResourceManager)
+        this.contextRunner.withBean(AzureResourceManager.class, this::mockResourceManager)
             .withPropertyValues("spring.cloud.azure.redis.name=redis")
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AzureRedisAutoConfiguration.class);
@@ -78,10 +72,8 @@ class AzureRedisAutoConfigurationTests {
     @Test
     void shouldNotConfigureWithoutAzureResourceManager() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.redis.name=redis",
-                "spring.cloud.azure.redis.resource.resource-group=rg"
-            )
+            .withPropertyValues("spring.cloud.azure.redis.name=redis",
+                "spring.cloud.azure.redis.resource.resource-group=rg")
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AzureRedisAutoConfiguration.class);
                 assertThat(context).doesNotHaveBean(AzureRedisProperties.class);
@@ -90,43 +82,38 @@ class AzureRedisAutoConfigurationTests {
 
     @Test
     void shouldConfigureWithNameAndResourceGroupAndResourceManager() {
-        this.contextRunner
-            .withBean(AzureResourceManager.class, this::mockResourceManager)
-            .withPropertyValues(
-                "spring.cloud.azure.redis.name=redis",
-                "spring.cloud.azure.redis.resource.resource-group=rg"
-            )
-            .run(
-                context -> {
-                    assertThat(context).hasSingleBean(AzureRedisAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(AzureRedisProperties.class);
+        this.contextRunner.withBean(AzureResourceManager.class, this::mockResourceManager)
+            .withPropertyValues("spring.cloud.azure.redis.name=redis",
+                "spring.cloud.azure.redis.resource.resource-group=rg")
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureRedisAutoConfiguration.class);
+                assertThat(context).hasSingleBean(AzureRedisProperties.class);
 
-                    AzureRedisProperties azureRedisProperties = context.getBean(AzureRedisProperties.class);
-                    assertThat(azureRedisProperties.getName()).isEqualTo("redis");
-                    assertThat(azureRedisProperties.getResource().getResourceGroup()).isEqualTo("rg");
+                AzureRedisProperties azureRedisProperties = context.getBean(AzureRedisProperties.class);
+                assertThat(azureRedisProperties.getName()).isEqualTo("redis");
+                assertThat(azureRedisProperties.getResource().getResourceGroup()).isEqualTo("rg");
 
-                    assertThat(context).hasSingleBean(RedisProperties.class);
-                    RedisProperties redisProperties = context.getBean(RedisProperties.class);
-                    assertThat(redisProperties.getPassword()).isEqualTo(KEY);
-                    assertThat(redisProperties.getHost()).isEqualTo(HOST);
-                    assertThat(redisProperties.getPort()).isEqualTo(PORT);
-                    Method isSsl = ReflectionUtils.findMethod(RedisProperties.class, "isSsl");
-                    if (isSsl == null) {
-                        Object ssl = ReflectionUtils.findMethod(RedisProperties.class, "getSsl").invoke(redisProperties);
-                        Class<?>[] innerClasses = RedisProperties.class.getDeclaredClasses();
-                        Class<?> targetInnerClass = null;
-                        for (Class<?> innerClass : innerClasses) {
-                            if (innerClass.getSimpleName().equals("Ssl")) {
-                                targetInnerClass = innerClass;
-                                break;
-                            }
+                assertThat(context).hasSingleBean(RedisProperties.class);
+                RedisProperties redisProperties = context.getBean(RedisProperties.class);
+                assertThat(redisProperties.getPassword()).isEqualTo(KEY);
+                assertThat(redisProperties.getHost()).isEqualTo(HOST);
+                assertThat(redisProperties.getPort()).isEqualTo(PORT);
+                Method isSsl = ReflectionUtils.findMethod(RedisProperties.class, "isSsl");
+                if (isSsl == null) {
+                    Object ssl = ReflectionUtils.findMethod(RedisProperties.class, "getSsl").invoke(redisProperties);
+                    Class<?>[] innerClasses = RedisProperties.class.getDeclaredClasses();
+                    Class<?> targetInnerClass = null;
+                    for (Class<?> innerClass : innerClasses) {
+                        if (innerClass.getSimpleName().equals("Ssl")) {
+                            targetInnerClass = innerClass;
+                            break;
                         }
-                        assertThat(ReflectionUtils.findMethod(targetInnerClass, "isEnabled")
-                                                  .invoke(ssl).equals(IS_SSL));
-                    } else {
-                        assertThat(isSsl.invoke(redisProperties).equals(IS_SSL));
                     }
-                });
+                    assertThat(ReflectionUtils.findMethod(targetInnerClass, "isEnabled").invoke(ssl).equals(IS_SSL));
+                } else {
+                    assertThat(isSsl.invoke(redisProperties).equals(IS_SSL));
+                }
+            });
     }
 
     private AzureResourceManager mockResourceManager() {

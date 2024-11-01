@@ -30,8 +30,7 @@ import org.springframework.context.annotation.Import;
     AzureEventHubsConsumerClientConfiguration.class,
     AzureEventHubsProducerClientConfiguration.class,
     AzureBlobCheckpointStoreConfiguration.class,
-    AzureEventHubsProcessorClientConfiguration.class
-})
+    AzureEventHubsProcessorClientConfiguration.class })
 public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBase {
 
     AzureEventHubsAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
@@ -46,8 +45,8 @@ public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBa
 
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
-    StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsStaticConnectionStringProvider(
-        AzureEventHubsProperties eventHubsProperties) {
+    StaticConnectionStringProvider<AzureServiceType.EventHubs>
+        eventHubsStaticConnectionStringProvider(AzureEventHubsProperties eventHubsProperties) {
         return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS,
             eventHubsProperties.getConnectionString());
     }

@@ -13,18 +13,12 @@ import java.util.Objects;
 
 @CosmosIndexingPolicy(
     mode = IndexingMode.CONSISTENT,
-    includePaths = {
-        TestConstants.INCLUDED_PATH_0,
-        TestConstants.INCLUDED_PATH_1,
-        TestConstants.INCLUDED_PATH_2,
-    },
-    excludePaths = {
-        TestConstants.EXCLUDED_PATH_0,
-        TestConstants.EXCLUDED_PATH_1,
-        TestConstants.EXCLUDED_PATH_2,
-    })
-@Container(containerName = TestConstants.ROLE_COLLECTION_NAME,
-    autoCreateContainer = false, ru = TestConstants.DEFAULT_MINIMUM_RU)
+    includePaths = { TestConstants.INCLUDED_PATH_0, TestConstants.INCLUDED_PATH_1, TestConstants.INCLUDED_PATH_2, },
+    excludePaths = { TestConstants.EXCLUDED_PATH_0, TestConstants.EXCLUDED_PATH_1, TestConstants.EXCLUDED_PATH_2, })
+@Container(
+    containerName = TestConstants.ROLE_COLLECTION_NAME,
+    autoCreateContainer = false,
+    ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class Role {
     @Id
     String id;
@@ -87,8 +81,10 @@ public class Role {
             return false;
         }
         Role role = (Role) o;
-        return developer == role.developer && Objects.equals(id, role.id)
-            && Objects.equals(name, role.name) && Objects.equals(level, role.level);
+        return developer == role.developer
+            && Objects.equals(id, role.id)
+            && Objects.equals(name, role.name)
+            && Objects.equals(level, role.level);
     }
 
     @Override
@@ -98,12 +94,7 @@ public class Role {
 
     @Override
     public String toString() {
-        return "Role{"
-            + "id='" + id + '\''
-            + ", isDeveloper=" + developer
-            + ", name='" + name + '\''
-            + ", level='" + level + '\''
-            + '}';
+        return "Role{" + "id='" + id + '\'' + ", isDeveloper=" + developer + ", name='" + name + '\'' + ", level='"
+            + level + '\'' + '}';
     }
 }
-

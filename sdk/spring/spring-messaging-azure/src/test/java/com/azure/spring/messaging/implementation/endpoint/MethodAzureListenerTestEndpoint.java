@@ -44,22 +44,24 @@ public class MethodAzureListenerTestEndpoint extends AbstractAzureListenerEndpoi
 
     @Override
     protected StringBuilder getEndpointDescription() {
-        return super.getEndpointDescription()
-                    .append(" | bean='").append(this.bean).append("'")
-                    .append(" | method='").append(this.method).append("'");
+        return super.getEndpointDescription().append(" | bean='")
+            .append(this.bean)
+            .append("'")
+            .append(" | method='")
+            .append(this.method)
+            .append("'");
     }
-
 
     @Override
     protected MessagingMessageListenerAdapter createMessageListener(MessageListenerContainer listenerContainer,
-                                                                    AzureMessageConverter<?, ?> messageConverter) {
+        AzureMessageConverter<?, ?> messageConverter) {
 
         Assert.state(this.messageHandlerMethodFactory != null,
             "Could not create message listener - MessageHandlerMethodFactory not set");
         MessagingMessageListenerAdapter messageListener = createMessageListenerInstance(messageConverter);
 
-        InvocableHandlerMethod invocableHandlerMethod = this.messageHandlerMethodFactory.createInvocableHandlerMethod(
-            getBean(), getMethod());
+        InvocableHandlerMethod invocableHandlerMethod
+            = this.messageHandlerMethodFactory.createInvocableHandlerMethod(getBean(), getMethod());
 
         messageListener.setHandlerMethod(invocableHandlerMethod);
 
@@ -72,8 +74,8 @@ public class MethodAzureListenerTestEndpoint extends AbstractAzureListenerEndpoi
      * @param messageConverter the converter (maybe null).
      * @return the {@link MessagingMessageListenerAdapter} instance.
      */
-    protected MessagingMessageListenerAdapter createMessageListenerInstance(
-        @Nullable AzureMessageConverter<?, ?> messageConverter) {
+    protected MessagingMessageListenerAdapter
+        createMessageListenerInstance(@Nullable AzureMessageConverter<?, ?> messageConverter) {
 
         MessagingMessageListenerAdapter listener = new SimpleMessagingMessageListener();
         listener.setMessageConverter(messageConverter);
@@ -108,4 +110,3 @@ public class MethodAzureListenerTestEndpoint extends AbstractAzureListenerEndpoi
         this.messageHandlerMethodFactory = messageHandlerMethodFactory;
     }
 }
-

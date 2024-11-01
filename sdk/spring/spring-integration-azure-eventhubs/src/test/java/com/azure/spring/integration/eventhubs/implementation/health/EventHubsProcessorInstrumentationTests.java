@@ -13,16 +13,14 @@ import java.time.Duration;
 
 class EventHubsProcessorInstrumentationTests extends AbstractProcessorInstrumentationTests<ErrorContext> {
 
-
     @Override
     public ErrorContext getErrorContext(RuntimeException exception) {
-        return new ErrorContext(
-            new PartitionContext("test", "test", "test", "test"), exception);
+        return new ErrorContext(new PartitionContext("test", "test", "test", "test"), exception);
     }
 
     @Override
     public AbstractProcessorInstrumentation<ErrorContext> getProcessorInstrumentation(Instrumentation.Type type,
-                                                                                      Duration window) {
+        Duration window) {
         return new EventHubsProcessorInstrumentation("test", type, window);
     }
 }

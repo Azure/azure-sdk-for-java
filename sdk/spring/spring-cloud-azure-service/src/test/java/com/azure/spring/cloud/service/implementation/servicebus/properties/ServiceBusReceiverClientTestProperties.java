@@ -8,7 +8,8 @@ import com.azure.messaging.servicebus.models.SubQueue;
 
 import java.time.Duration;
 
-public class ServiceBusReceiverClientTestProperties extends ServiceBusClientCommonTestProperties implements ServiceBusReceiverClientProperties {
+public class ServiceBusReceiverClientTestProperties extends ServiceBusClientCommonTestProperties
+    implements ServiceBusReceiverClientProperties {
 
     private String subscriptionName;
     private Boolean sessionEnabled;

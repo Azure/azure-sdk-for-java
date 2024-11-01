@@ -25,7 +25,6 @@ public class RetryProperties implements RetryOptionsProvider.RetryOptions {
 
     private final ExponentialRetryProperties exponential = new ExponentialRetryProperties();
 
-
     @Override
     public RetryOptionsProvider.RetryMode getMode() {
         return mode;

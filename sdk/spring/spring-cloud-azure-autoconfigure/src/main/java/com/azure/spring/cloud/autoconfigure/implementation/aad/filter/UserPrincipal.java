@@ -136,9 +136,7 @@ public class UserPrincipal implements Serializable {
      */
     public boolean isMemberOf(AadAuthenticationProperties aadAuthenticationProperties, String group) {
         return aadAuthenticationProperties.isAllowedGroup(group)
-            && Optional.of(groups)
-                       .map(g -> g.contains(group))
-                       .orElse(false);
+            && Optional.of(groups).map(g -> g.contains(group)).orElse(false);
     }
 
     /**
@@ -223,4 +221,3 @@ public class UserPrincipal implements Serializable {
         return PERSONAL_ACCOUNT_TENANT_ID.equals(getTenantId());
     }
 }
-

@@ -28,13 +28,10 @@ class AadAuthenticationPropertiesTests {
 
     @Test
     void mapPropertiesSetting() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.authorization-clients.test.authorizationGrantType = authorization_code",
-                "spring.cloud.azure.active-directory.authorization-clients.test.scopes = test1,test2",
-                "spring.cloud.azure.active-directory.authenticate-additional-parameters.prompt = login"
-            )
-            .run(context -> {
+        webApplicationContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory.authorization-clients.test.authorizationGrantType = authorization_code",
+            "spring.cloud.azure.active-directory.authorization-clients.test.scopes = test1,test2",
+            "spring.cloud.azure.active-directory.authenticate-additional-parameters.prompt = login").run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
 
                 Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
@@ -54,17 +51,16 @@ class AadAuthenticationPropertiesTests {
         webApplicationContextRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = on_behalf_of")
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void webAppWithJwtBearerWithExceptionTest() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = urn:ietf:params:oauth:grant-type:jwt-bearer")
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
+        webApplicationContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = urn:ietf:params:oauth:grant-type:jwt-bearer")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
@@ -72,17 +68,16 @@ class AadAuthenticationPropertiesTests {
         resourceServerContextRunner()
             .withPropertyValues(
                 "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = on_behalf_of")
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void resourceServerJwtBearerWithExceptionTest() {
-        resourceServerContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = urn:ietf:params:oauth:grant-type:jwt-bearer")
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
+        resourceServerContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = urn:ietf:params:oauth:grant-type:jwt-bearer")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
@@ -93,21 +88,18 @@ class AadAuthenticationPropertiesTests {
     }
 
     private void supportedClientAuthenticationMethodsByRunnerApplicationType(WebApplicationContextRunner runner) {
-        runner
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.authorization-clients.one.client-authentication-method = basic",
-                "spring.cloud.azure.active-directory.authorization-clients.one.scopes = test",
-                "spring.cloud.azure.active-directory.authorization-clients.two.client-authentication-method = client_secret_basic",
-                "spring.cloud.azure.active-directory.authorization-clients.two.scopes = test",
-                "spring.cloud.azure.active-directory.authorization-clients.three.client-authentication-method = post",
-                "spring.cloud.azure.active-directory.authorization-clients.three.scopes = test",
-                "spring.cloud.azure.active-directory.authorization-clients.four.client-authentication-method = client_secret_post",
-                "spring.cloud.azure.active-directory.authorization-clients.four.scopes = test",
-                "spring.cloud.azure.active-directory.authorization-clients.five.client-authentication-method = private_key_jwt",
-                "spring.cloud.azure.active-directory.authorization-clients.five.scopes = test"
-            )
-            .run(context ->
-                assertThat(context.getBean(AadAuthenticationProperties.class)).isNotNull());
+        runner.withPropertyValues(
+            "spring.cloud.azure.active-directory.authorization-clients.one.client-authentication-method = basic",
+            "spring.cloud.azure.active-directory.authorization-clients.one.scopes = test",
+            "spring.cloud.azure.active-directory.authorization-clients.two.client-authentication-method = client_secret_basic",
+            "spring.cloud.azure.active-directory.authorization-clients.two.scopes = test",
+            "spring.cloud.azure.active-directory.authorization-clients.three.client-authentication-method = post",
+            "spring.cloud.azure.active-directory.authorization-clients.three.scopes = test",
+            "spring.cloud.azure.active-directory.authorization-clients.four.client-authentication-method = client_secret_post",
+            "spring.cloud.azure.active-directory.authorization-clients.four.scopes = test",
+            "spring.cloud.azure.active-directory.authorization-clients.five.client-authentication-method = private_key_jwt",
+            "spring.cloud.azure.active-directory.authorization-clients.five.scopes = test")
+            .run(context -> assertThat(context.getBean(AadAuthenticationProperties.class)).isNotNull());
     }
 
     @Test
@@ -118,20 +110,17 @@ class AadAuthenticationPropertiesTests {
     }
 
     private void unsupportedClientAuthenticationMethodsByRunnerApplicationType(WebApplicationContextRunner runner) {
-        runner
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.authorization-clients.one.client-authentication-method = client_secret_jwt",
-                "spring.cloud.azure.active-directory.authorization-clients.one.scopes = test"
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
+        runner.withPropertyValues(
+            "spring.cloud.azure.active-directory.authorization-clients.one.client-authentication-method = client_secret_jwt",
+            "spring.cloud.azure.active-directory.authorization-clients.one.scopes = test")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void overrideClientAuthenticationMethodForClientAzure() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.authorization-clients.azure.client-authentication-method = private_key_jwt")
+        webApplicationContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory.authorization-clients.azure.client-authentication-method = private_key_jwt")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 assertThat(properties).isNotNull();
@@ -143,58 +132,54 @@ class AadAuthenticationPropertiesTests {
 
     @Test
     void configureScopesNullWithExceptionTest() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.authorization-clients.test.client-authentication-method = private_key_jwt")
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
+        webApplicationContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory.authorization-clients.test.client-authentication-method = private_key_jwt")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void graphUriConfigurationTest() {
-        webApplicationContextRunner()
-            .run(context -> {
-                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
-                assertEquals(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint(), "https://graph.microsoft.com/");
-                assertEquals(properties.getGraphMembershipUri(), "https://graph.microsoft.com/v1.0/me/memberOf");
-            });
+        webApplicationContextRunner().run(context -> {
+            AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+            assertEquals(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint(),
+                "https://graph.microsoft.com/");
+            assertEquals(properties.getGraphMembershipUri(), "https://graph.microsoft.com/v1.0/me/memberOf");
+        });
 
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint=https://microsoftgraph.chinacloudapi.cn"
-            )
+        webApplicationContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint=https://microsoftgraph.chinacloudapi.cn")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
-                assertEquals(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint(), "https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint(),
+                    "https://microsoftgraph.chinacloudapi.cn/");
                 assertEquals(properties.getGraphMembershipUri(),
                     "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
             });
 
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory..profile.environment.microsoft-graph-endpoint=https://microsoftgraph.chinacloudapi.cn/"
-            )
+        webApplicationContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory..profile.environment.microsoft-graph-endpoint=https://microsoftgraph.chinacloudapi.cn/")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
-                assertEquals(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint(), "https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint(),
+                    "https://microsoftgraph.chinacloudapi.cn/");
                 assertEquals(properties.getGraphMembershipUri(),
                     "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
             });
 
-        webApplicationContextRunner()
-            .run(context -> {
-                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
-                assertEquals(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint(), "https://graph.microsoft.com/");
-                assertEquals(properties.getGraphMembershipUri(), "https://graph.microsoft.com/v1.0/me/memberOf");
-            });
+        webApplicationContextRunner().run(context -> {
+            AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+            assertEquals(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint(),
+                "https://graph.microsoft.com/");
+            assertEquals(properties.getGraphMembershipUri(), "https://graph.microsoft.com/v1.0/me/memberOf");
+        });
 
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint=https://microsoftgraph.chinacloudapi.cn/"
-            )
+        webApplicationContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory.profile.environment.microsoft-graph-endpoint=https://microsoftgraph.chinacloudapi.cn/")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
-                assertEquals(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint(), "https://microsoftgraph.chinacloudapi.cn/");
+                assertEquals(properties.getProfile().getEnvironment().getMicrosoftGraphEndpoint(),
+                    "https://microsoftgraph.chinacloudapi.cn/");
                 assertEquals(properties.getGraphMembershipUri(),
                     "https://microsoftgraph.chinacloudapi.cn/v1.0/me/memberOf");
             });
@@ -203,110 +188,83 @@ class AadAuthenticationPropertiesTests {
     @Test
     void multiTenantWithAllowedGroupsConfiguredTest1() {
         webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.profile.tenant-id=",
-                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2"
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class))
-            );
+            .withPropertyValues("spring.cloud.azure.active-directory.profile.tenant-id=",
+                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void multiTenantWithAllowedGroupsConfiguredTest2() {
         webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.profile.tenant-id=common",
-                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2"
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class))
-            );
+            .withPropertyValues("spring.cloud.azure.active-directory.profile.tenant-id=common",
+                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void multiTenantWithAllowedGroupsConfiguredTest3() {
         webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.profile.tenant-id=organizations",
-                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2"
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class))
-            );
+            .withPropertyValues("spring.cloud.azure.active-directory.profile.tenant-id=organizations",
+                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void multiTenantWithAllowedGroupsIdConfiguredTest1() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.profile.tenant-id=",
-                "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
-                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class))
-            );
+        webApplicationContextRunner().withPropertyValues("spring.cloud.azure.active-directory.profile.tenant-id=",
+            "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                + "39087533-2593-4b5b-ad05-4a73a01ea6a9")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void multiTenantWithAllowedGroupsIdConfiguredTest2() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.profile.tenant-id=common",
-                "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
-                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class))
-            );
+        webApplicationContextRunner().withPropertyValues("spring.cloud.azure.active-directory.profile.tenant-id=common",
+            "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                + "39087533-2593-4b5b-ad05-4a73a01ea6a9")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void multiTenantWithAllowedGroupsIdConfiguredTest3() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.profile.tenant-id=organizations",
-                "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
-                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class))
-            );
+        webApplicationContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory.profile.tenant-id=organizations",
+            "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                + "39087533-2593-4b5b-ad05-4a73a01ea6a9")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void multiTenantWithAllowedGroupsIdConfiguredTest4() {
-        webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.profile.tenant-id=consumers",
-                "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
-                    + "39087533-2593-4b5b-ad05-4a73a01ea6a9"
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class))
-            );
+        webApplicationContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory.profile.tenant-id=consumers",
+            "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718,"
+                + "39087533-2593-4b5b-ad05-4a73a01ea6a9")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void multiTenantWithAllowedGroupsConfiguredTest4() {
         webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.profile.tenant-id=consumers",
-                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2"
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class))
-            );
+            .withPropertyValues("spring.cloud.azure.active-directory.profile.tenant-id=consumers",
+                "spring.cloud.azure.active-directory.user-group.allowed-group-names=group1,group2")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void applicationTypeOfWebApplication() {
-        webApplicationContextRunner()
-            .run(context -> {
-                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
-                assertEquals(properties.getApplicationType(), AadApplicationType.WEB_APPLICATION);
-            });
+        webApplicationContextRunner().run(context -> {
+            AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+            assertEquals(properties.getApplicationType(), AadApplicationType.WEB_APPLICATION);
+        });
 
         webApplicationContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.application-type=web_application")
@@ -325,16 +283,13 @@ class AadAuthenticationPropertiesTests {
 
     @Test
     void applicationTypeWithResourceServer() {
-        resourceServerContextRunner()
-            .run(context -> {
-                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
-                assertEquals(properties.getApplicationType(), AadApplicationType.RESOURCE_SERVER);
-            });
+        resourceServerContextRunner().run(context -> {
+            AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+            assertEquals(properties.getApplicationType(), AadApplicationType.RESOURCE_SERVER);
+        });
 
         resourceServerContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.application-type=resource_server"
-            )
+            .withPropertyValues("spring.cloud.azure.active-directory.application-type=resource_server")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 assertEquals(properties.getApplicationType(), AadApplicationType.RESOURCE_SERVER);
@@ -350,16 +305,13 @@ class AadAuthenticationPropertiesTests {
 
     @Test
     void applicationTypeOfResourceServerWithOBO() {
-        resourceServerWithOboContextRunner()
-            .run(context -> {
-                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
-                assertEquals(properties.getApplicationType(), AadApplicationType.RESOURCE_SERVER_WITH_OBO);
-            });
+        resourceServerWithOboContextRunner().run(context -> {
+            AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+            assertEquals(properties.getApplicationType(), AadApplicationType.RESOURCE_SERVER_WITH_OBO);
+        });
 
         resourceServerWithOboContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.application-type=resource_server_with_obo"
-            )
+            .withPropertyValues("spring.cloud.azure.active-directory.application-type=resource_server_with_obo")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 assertEquals(properties.getApplicationType(), AadApplicationType.RESOURCE_SERVER_WITH_OBO);
@@ -370,8 +322,7 @@ class AadAuthenticationPropertiesTests {
     void applicationTypeWithWebApplicationAndResourceServer() {
         resourceServerWithOboContextRunner()
             .withPropertyValues(
-                "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server"
-            )
+                "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 assertEquals(properties.getApplicationType(), AadApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER);
@@ -380,77 +331,70 @@ class AadAuthenticationPropertiesTests {
 
     @Test
     void applicationTypeWithWebApplicationAndResourceServerWithWrongAuthorizationGrantTypeConfigured() {
-        resourceServerWithOboContextRunner()
-                .withPropertyValues(
-                        "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server",
-                        "spring.cloud.azure.active-directory.authorization-clients.azure.authorization-grant-type=client_credential"
-                )
-                .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
+        resourceServerWithOboContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server",
+            "spring.cloud.azure.active-directory.authorization-clients.azure.authorization-grant-type=client_credential")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void applicationTypeWithWebApplicationAndResourceServerWithRightAuthorizationGrantTypeConfigured() {
-        resourceServerWithOboContextRunner()
-                .withPropertyValues(
-                        "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server",
-                        "spring.cloud.azure.active-directory.authorization-clients.azure.authorization-grant-type=authorization_code"
-                )
-                .run(context -> {
-                    AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
-                    assertEquals(properties.getApplicationType(), AadApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER);
-                });
+        resourceServerWithOboContextRunner().withPropertyValues(
+            "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server",
+            "spring.cloud.azure.active-directory.authorization-clients.azure.authorization-grant-type=authorization_code")
+            .run(context -> {
+                AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
+                assertEquals(properties.getApplicationType(), AadApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER);
+            });
     }
 
     @Test
     void testInvalidApplicationType() {
         resourceServerContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.application-type=web_application"
-            )
-            .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
+            .withPropertyValues("spring.cloud.azure.active-directory.application-type=web_application")
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
 
         webApplicationContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.application-type=resource_server")
-            .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 
     @Test
     void setDefaultValueFromAzureGlobalPropertiesTest() {
-        oauthClientRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.enabled = true",
-                "spring.cloud.azure.credential.client-id = global-client-id",
-                "spring.cloud.azure.credential.client-secret = global-client-secret",
-                "spring.cloud.azure.profile.tenant-id = global-tenant-id",
-                "spring.cloud.azure.active-directory.credential.client-id = aad-client-id",
-                "spring.cloud.azure.active-directory.credential.client-secret = aad-client-secret",
-                "spring.cloud.azure.active-directory.credential.client-certificate-path = certificate.pfx",
-                "spring.cloud.azure.active-directory.credential.client-certificate-password = aad-client-certificate-password",
-                "spring.cloud.azure.active-directory.profile.tenant-id = aad-tenant-id"
-            )
-            .run(context -> {
+        oauthClientRunner().withPropertyValues("spring.cloud.azure.active-directory.enabled = true",
+            "spring.cloud.azure.credential.client-id = global-client-id",
+            "spring.cloud.azure.credential.client-secret = global-client-secret",
+            "spring.cloud.azure.profile.tenant-id = global-tenant-id",
+            "spring.cloud.azure.active-directory.credential.client-id = aad-client-id",
+            "spring.cloud.azure.active-directory.credential.client-secret = aad-client-secret",
+            "spring.cloud.azure.active-directory.credential.client-certificate-path = certificate.pfx",
+            "spring.cloud.azure.active-directory.credential.client-certificate-password = aad-client-certificate-password",
+            "spring.cloud.azure.active-directory.profile.tenant-id = aad-tenant-id").run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 assertEquals("aad-client-id", properties.getCredential().getClientId());
                 assertEquals("aad-client-secret", properties.getCredential().getClientSecret());
                 assertEquals("certificate.pfx", properties.getCredential().getClientCertificatePath());
-                assertEquals("aad-client-certificate-password", properties.getCredential().getClientCertificatePassword());
+                assertEquals("aad-client-certificate-password",
+                    properties.getCredential().getClientCertificatePassword());
                 assertEquals("aad-tenant-id", properties.getProfile().getTenantId());
             });
         oauthClientRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.enabled = true",
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled = true",
                 "spring.cloud.azure.credential.client-id = global-client-id",
                 "spring.cloud.azure.credential.client-secret = global-client-secret",
                 "spring.cloud.azure.credential.client-certificate-path = certificate.p12",
                 "spring.cloud.azure.credential.client-certificate-password = aad-client-certificate-password",
-                "spring.cloud.azure.profile.tenant-id = global-tenant-id"
-            )
+                "spring.cloud.azure.profile.tenant-id = global-tenant-id")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
                 assertEquals("global-client-id", properties.getCredential().getClientId());
                 assertEquals("global-client-secret", properties.getCredential().getClientSecret());
                 assertEquals("certificate.p12", properties.getCredential().getClientCertificatePath());
-                assertEquals("aad-client-certificate-password", properties.getCredential().getClientCertificatePassword());
+                assertEquals("aad-client-certificate-password",
+                    properties.getCredential().getClientCertificatePassword());
                 assertEquals("global-tenant-id", properties.getProfile().getTenantId());
             });
     }
@@ -458,6 +402,6 @@ class AadAuthenticationPropertiesTests {
     @Test
     void constructorWhenJwkSourceNullThenThrowIllegalArgumentException() {
         assertThatIllegalArgumentException().isThrownBy(() -> new AadJwtEncoder(null))
-                                            .withMessage("jwkSource cannot be null");
+            .withMessage("jwkSource cannot be null");
     }
 }

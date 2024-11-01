@@ -31,7 +31,7 @@ public class InstrumentationSendCallback implements ListenableFutureCallback<Voi
     @Override
     public void onFailure(Throwable ex) {
         this.instrumentationManager.getHealthInstrumentation(instrumentationId)
-                                   .setStatus(Instrumentation.Status.DOWN, ex);
+            .setStatus(Instrumentation.Status.DOWN, ex);
     }
 
     @Override

@@ -61,13 +61,6 @@ public class GenIdEntity {
 
     @Override
     public String toString() {
-        return "GenIdEntity{"
-            + "id='"
-            + id
-            + '\''
-            + ", foo='"
-            + foo
-            + '\''
-            + '}';
+        return "GenIdEntity{" + "id='" + id + '\'' + ", foo='" + foo + '\'' + '}';
     }
 }

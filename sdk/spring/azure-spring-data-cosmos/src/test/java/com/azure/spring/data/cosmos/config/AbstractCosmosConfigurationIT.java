@@ -36,32 +36,32 @@ public class AbstractCosmosConfigurationIT {
 
     @Test
     public void containsExpressionResolver() {
-        final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-            TestCosmosConfiguration.class);
+        final AbstractApplicationContext context
+            = new AnnotationConfigApplicationContext(TestCosmosConfiguration.class);
 
         assertNotNull(context.getBean(ExpressionResolver.class));
     }
 
     @Test
     public void containsCosmosFactory() {
-        final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-            TestCosmosConfiguration.class);
+        final AbstractApplicationContext context
+            = new AnnotationConfigApplicationContext(TestCosmosConfiguration.class);
 
         Assertions.assertThat(context.getBean(CosmosFactory.class)).isNotNull();
     }
 
     @Test(expected = NoSuchBeanDefinitionException.class)
     public void defaultObjectMapperBeanNotExists() {
-        final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-            TestCosmosConfiguration.class);
+        final AbstractApplicationContext context
+            = new AnnotationConfigApplicationContext(TestCosmosConfiguration.class);
 
         context.getBean(ObjectMapper.class);
     }
 
     @Test
     public void objectMapperIsConfigurable() {
-        final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-            ObjectMapperConfiguration.class);
+        final AbstractApplicationContext context
+            = new AnnotationConfigApplicationContext(ObjectMapperConfiguration.class);
 
         Assertions.assertThat(context.getBean(ObjectMapper.class)).isNotNull();
         Assertions.assertThat(context.getBean(Constants.OBJECT_MAPPER_BEAN_NAME)).isNotNull();
@@ -69,19 +69,18 @@ public class AbstractCosmosConfigurationIT {
 
     @Test
     public void testCosmosClientBuilderConfigurable() throws IllegalAccessException, NoSuchFieldException {
-        final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
-            RequestOptionsConfiguration.class);
+        final AbstractApplicationContext context
+            = new AnnotationConfigApplicationContext(RequestOptionsConfiguration.class);
         final CosmosFactory factory = context.getBean(CosmosFactory.class);
 
         Assertions.assertThat(factory).isNotNull();
 
-        final CosmosAsyncClient cosmosAsyncClient =  factory.getCosmosAsyncClient();
+        final CosmosAsyncClient cosmosAsyncClient = factory.getCosmosAsyncClient();
 
         Assertions.assertThat(cosmosAsyncClient).isNotNull();
         Field desiredConsistencyLevel = cosmosAsyncClient.getClass().getDeclaredField("desiredConsistencyLevel");
         desiredConsistencyLevel.setAccessible(true);
-        ConsistencyLevel consistencyLevel =
-            (ConsistencyLevel) desiredConsistencyLevel.get(cosmosAsyncClient);
+        ConsistencyLevel consistencyLevel = (ConsistencyLevel) desiredConsistencyLevel.get(cosmosAsyncClient);
         Assertions.assertThat(consistencyLevel).isEqualTo(ConsistencyLevel.CONSISTENT_PREFIX);
     }
 
@@ -100,9 +99,7 @@ public class AbstractCosmosConfigurationIT {
 
         @Bean
         public CosmosClientBuilder getCosmosClientBuilder() {
-            return new CosmosClientBuilder()
-                .endpoint(cosmosDbUri)
-                .key(cosmosDbKey);
+            return new CosmosClientBuilder().endpoint(cosmosDbUri).key(cosmosDbKey);
         }
 
         @Override
@@ -134,8 +131,7 @@ public class AbstractCosmosConfigurationIT {
 
         @Bean
         public CosmosClientBuilder getCosmosClientBuilder() {
-            return new CosmosClientBuilder()
-                .key(cosmosDbKey)
+            return new CosmosClientBuilder().key(cosmosDbKey)
                 .endpoint(cosmosDbUri)
                 .consistencyLevel(ConsistencyLevel.CONSISTENT_PREFIX);
         }

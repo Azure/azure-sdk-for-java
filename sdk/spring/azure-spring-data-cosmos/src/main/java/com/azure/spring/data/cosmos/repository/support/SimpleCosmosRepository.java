@@ -45,8 +45,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * @param metadata for cosmos entity information
      * @param dbOperations for cosmosDB operation
      */
-    public SimpleCosmosRepository(CosmosEntityInformation<T, ID> metadata,
-                                  CosmosOperations dbOperations) {
+    public SimpleCosmosRepository(CosmosEntityInformation<T, ID> metadata, CosmosOperations dbOperations) {
         this.operation = dbOperations;
         this.information = metadata;
 
@@ -115,7 +114,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * @param <S> domainType of entity
      */
     @Override
-    public <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations) {
+    public <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType,
+        CosmosPatchOperations patchOperations) {
         Assert.notNull(id, "id must not be null");
         Assert.notNull(partitionKey, "partitionKey must not be null");
         // patch items
@@ -131,7 +131,8 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * @param <S> domainType of entity
      */
     @Override
-    public <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
+    public <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType,
+        CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options) {
         Assert.notNull(id, "id must not be null");
         Assert.notNull(partitionKey, "partitionKey must not be null");
         // patch items
@@ -195,21 +196,18 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public Optional<T> findById(ID id) {
         Assert.notNull(id, "id must not be null");
 
-        if (id instanceof String
-            && !StringUtils.hasText((String) id)) {
+        if (id instanceof String && !StringUtils.hasText((String) id)) {
             return Optional.empty();
         }
 
-        return Optional.ofNullable(operation.findById(information.getContainerName(), id,
-            information.getJavaType()));
+        return Optional.ofNullable(operation.findById(information.getContainerName(), id, information.getJavaType()));
     }
 
     @Override
     public Optional<T> findById(ID id, PartitionKey partitionKey) {
         Assert.notNull(id, "id must not be null");
 
-        if (id instanceof String
-            && !StringUtils.hasText((String) id)) {
+        if (id instanceof String && !StringUtils.hasText((String) id)) {
             return Optional.empty();
         }
 
@@ -310,8 +308,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     @Override
     public Iterable<T> findAll(@NonNull Sort sort) {
         Assert.notNull(sort, "sort of findAll should not be null");
-        final CosmosQuery query =
-            new CosmosQuery(Criteria.getInstance(CriteriaType.ALL)).with(sort);
+        final CosmosQuery query = new CosmosQuery(Criteria.getInstance(CriteriaType.ALL)).with(sort);
 
         return operation.find(query, information.getJavaType(), information.getContainerName());
     }
@@ -327,8 +324,7 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public Page<T> findAll(Pageable pageable) {
         Assert.notNull(pageable, "pageable should not be null");
 
-        return operation.findAll(pageable, information.getJavaType(),
-            information.getContainerName());
+        return operation.findAll(pageable, information.getJavaType(), information.getContainerName());
     }
 
     @Override

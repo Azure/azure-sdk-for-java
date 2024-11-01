@@ -99,7 +99,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
      * @param listenerMode the listen mode
      */
     public ServiceBusInboundChannelAdapter(ServiceBusMessageListenerContainer listenerContainer,
-                                           ListenerMode listenerMode) {
+        ListenerMode listenerMode) {
         this.listenerContainer = listenerContainer;
         this.listenerMode = listenerMode;
         this.isAutoComplete = !Boolean.FALSE.equals(listenerContainer.getContainerProperties().getAutoComplete());
@@ -124,7 +124,8 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
      *
      * @param messageConverter the message converter
      */
-    public void setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter) {
+    public void
+        setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter) {
         this.recordListener.setMessageConverter(messageConverter);
     }
 
@@ -160,10 +161,8 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
         @Override
         public void accept(ServiceBusErrorContext errorContext) {
-            LOGGER.error("Error in the operation {} occurred on entity {}. Error: {}",
-                errorContext.getErrorSource(),
-                errorContext.getEntityPath(),
-                errorContext.getException());
+            LOGGER.error("Error in the operation {} occurred on entity {}. Error: {}", errorContext.getErrorSource(),
+                errorContext.getEntityPath(), errorContext.getException());
             updateInstrumentation(errorContext);
         }
 
@@ -197,8 +196,8 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 
-            Message<?> message = getMessageConverter().toMessage(messageContext.getMessage(), new MessageHeaders(headers),
-                payloadType);
+            Message<?> message = getMessageConverter().toMessage(messageContext.getMessage(),
+                new MessageHeaders(headers), payloadType);
             sendMessage(message);
         }
 

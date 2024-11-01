@@ -32,9 +32,8 @@ public class EventHubsCrud extends AbstractResourceCrud<EventHub, Tuple2<String,
     public EventHub internalGet(Tuple2<String, String> namespaceAndName) {
         try {
             return this.resourceManager.eventHubs()
-                                       .getByName(this.resourceMetadata.getResourceGroup(),
-                                                  namespaceAndName.getT1(),
-                                                  namespaceAndName.getT2());
+                .getByName(this.resourceMetadata.getResourceGroup(), namespaceAndName.getT1(),
+                    namespaceAndName.getT2());
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
@@ -47,10 +46,9 @@ public class EventHubsCrud extends AbstractResourceCrud<EventHub, Tuple2<String,
     @Override
     public EventHub internalCreate(Tuple2<String, String> namespaceAndName) {
         return this.resourceManager.eventHubs()
-                                   .define(namespaceAndName.getT2())
-                                   .withExistingNamespace(new EventHubNamespaceCrud(this.resourceManager,
-                                                                                    this.resourceMetadata)
-                                                              .getOrCreate(namespaceAndName.getT1()))
-                                   .create();
+            .define(namespaceAndName.getT2())
+            .withExistingNamespace(new EventHubNamespaceCrud(this.resourceManager, this.resourceMetadata)
+                .getOrCreate(namespaceAndName.getT1()))
+            .create();
     }
 }

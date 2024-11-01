@@ -64,20 +64,14 @@ public class AddressRepositoryIT {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    CosmosPatchOperations patchSetOperation = CosmosPatchOperations
-        .create()
-        .set("/street", TestConstants.NEW_STREET);
+    CosmosPatchOperations patchSetOperation = CosmosPatchOperations.create().set("/street", TestConstants.NEW_STREET);
 
-    CosmosPatchOperations patchReplaceOperation = CosmosPatchOperations
-        .create()
-        .replace("/street", TestConstants.NEW_STREET);
+    CosmosPatchOperations patchReplaceOperation
+        = CosmosPatchOperations.create().replace("/street", TestConstants.NEW_STREET);
 
-    CosmosPatchOperations patchRemoveOperation = CosmosPatchOperations
-        .create()
-        .remove("/street");
+    CosmosPatchOperations patchRemoveOperation = CosmosPatchOperations.create().remove("/street");
 
     private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
-
 
     @Before
     public void setUp() {
@@ -91,7 +85,9 @@ public class AddressRepositoryIT {
         // test findById (ID id) cross partition
         final Address result = repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode()).get();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics().toString().contains("\"requestOperationType\":\"Query\"")).isTrue();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()
+            .toString()
+            .contains("\"requestOperationType\":\"Query\"")).isTrue();
         assertThat(result).isEqualTo(TEST_ADDRESS1_PARTITION1);
     }
 
@@ -106,7 +102,8 @@ public class AddressRepositoryIT {
     @Test
     public void testFindByIdWithPartitionKey() {
         final Optional<Address> addressById = repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(),
-            new PartitionKey(collectionManager.getEntityInformation(Address.class).getPartitionKeyFieldValue(TEST_ADDRESS1_PARTITION1)));
+            new PartitionKey(collectionManager.getEntityInformation(Address.class)
+                .getPartitionKeyFieldValue(TEST_ADDRESS1_PARTITION1)));
 
         if (!addressById.isPresent()) {
             fail("address not found");
@@ -147,8 +144,8 @@ public class AddressRepositoryIT {
     @Test
     public void testFindByPostalCodeAndCityIn() {
         final String city = TEST_ADDRESS1_PARTITION1.getCity();
-        final List<String> postalCodes = Lists.newArrayList(TEST_ADDRESS1_PARTITION1.getPostalCode(),
-            TEST_ADDRESS2_PARTITION1.getPostalCode());
+        final List<String> postalCodes
+            = Lists.newArrayList(TEST_ADDRESS1_PARTITION1.getPostalCode(), TEST_ADDRESS2_PARTITION1.getPostalCode());
         final List<Address> result = TestUtils.toList(repository.findByPostalCodeInAndCity(postalCodes, city));
 
         assertThat(result.size()).isEqualTo(2);
@@ -161,8 +158,8 @@ public class AddressRepositoryIT {
         final String street = TEST_ADDRESS1_PARTITION2.getStreet();
 
         final List<Address> result = TestUtils.toList(repository.findByStreetOrCity(street, city));
-        final List<Address> reference = Arrays.asList(
-            TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2, TEST_ADDRESS2_PARTITION1);
+        final List<Address> reference
+            = Arrays.asList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2, TEST_ADDRESS2_PARTITION1);
 
         result.sort(Comparator.comparing(Address::getPostalCode));
         reference.sort(Comparator.comparing(Address::getPostalCode));
@@ -193,8 +190,8 @@ public class AddressRepositoryIT {
         final long count = repository.count();
         assertThat(count).isEqualTo(4);
 
-        repository.deleteByPostalCodeAndCity(
-            TEST_ADDRESS1_PARTITION1.getPostalCode(), TEST_ADDRESS1_PARTITION1.getCity());
+        repository.deleteByPostalCodeAndCity(TEST_ADDRESS1_PARTITION1.getPostalCode(),
+            TEST_ADDRESS1_PARTITION1.getCity());
 
         final List<Address> result = TestUtils.toList(repository.findAll());
 
@@ -237,18 +234,17 @@ public class AddressRepositoryIT {
 
     @Test
     public void testFindAllByPartitionKey() {
-        List<Address> findAll =
-            TestUtils.toList(repository.findAll(new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity())));
+        List<Address> findAll
+            = TestUtils.toList(repository.findAll(new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity())));
         //  Since there are two addresses with partition1
         assertThat(findAll.size()).isEqualTo(2);
-        assertThat(findAll.containsAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1,
-            TEST_ADDRESS2_PARTITION1))).isTrue();
+        assertThat(findAll.containsAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS2_PARTITION1)))
+            .isTrue();
 
         findAll = TestUtils.toList(repository.findAll(new PartitionKey(TEST_ADDRESS1_PARTITION2.getCity())));
         //  Since there is one address with partition2
         assertThat(findAll.size()).isEqualTo(1);
         assertThat(findAll.contains(TEST_ADDRESS1_PARTITION2)).isTrue();
-
 
         findAll = TestUtils.toList(repository.findAll(new PartitionKey(TEST_ADDRESS4_PARTITION3.getCity())));
         //  Since there is one address with partition3
@@ -263,9 +259,8 @@ public class AddressRepositoryIT {
 
         repository.save(updatedAddress);
 
-        final List<Address> results =
-            TestUtils.toList(repository.findByPostalCodeAndCity(updatedAddress.getPostalCode(),
-                updatedAddress.getCity()));
+        final List<Address> results = TestUtils
+            .toList(repository.findByPostalCodeAndCity(updatedAddress.getPostalCode(), updatedAddress.getCity()));
 
         assertThat(results.size()).isEqualTo(1);
         assertThat(results.get(0).getStreet()).isEqualTo(updatedAddress.getStreet());
@@ -274,25 +269,30 @@ public class AddressRepositoryIT {
 
     @Test
     public void testPatchEntitySet() {
-        Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchSetOperation);
+        Address patchedAddress
+            = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchSetOperation);
         assertThat(patchedAddress.getStreet()).isEqualTo(TestConstants.NEW_STREET);
     }
 
     @Test
     public void testPatchEntityReplace() {
-        Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchReplaceOperation);
+        Address patchedAddress
+            = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchReplaceOperation);
         assertThat(patchedAddress.getStreet()).isEqualTo(TestConstants.NEW_STREET);
     }
 
     @Test
     public void testPatchEntityRemove() {
-        Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchRemoveOperation);
+        Address patchedAddress
+            = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchRemoveOperation);
         assertNull(patchedAddress.getStreet());
     }
+
     @Test
     public void testPatchPreConditionSuccess() {
-        options.setFilterPredicate("FROM address a WHERE a.city = '"+CITY+"'");
-        Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchSetOperation, options);
+        options.setFilterPredicate("FROM address a WHERE a.city = '" + CITY + "'");
+        Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class,
+            patchSetOperation, options);
         assertThat(patchedAddress.getStreet()).isEqualTo(TestConstants.NEW_STREET);
     }
 
@@ -300,14 +300,15 @@ public class AddressRepositoryIT {
     public void testPatchPreConditionFail() {
         try {
             options.setFilterPredicate("FROM address a WHERE a.city = 'dummy'");
-            Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class, patchSetOperation, options);
+            Address patchedAddress = repository.save(TestConstants.POSTAL_CODE, new PartitionKey(CITY), Address.class,
+                patchSetOperation, options);
             assertThat(patchedAddress.getStreet()).isEqualTo(TestConstants.NEW_STREET);
             Assert.fail();
         } catch (CosmosAccessException ex) {
-            assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
+            assertThat(ex.getCosmosException().getStatusCode())
+                .isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
         }
     }
-
 
     @Test
     public void queryDatabaseWithQueryMetricsEnabled() {
@@ -370,8 +371,7 @@ public class AddressRepositoryIT {
 
     @Test
     public void testFindAllByStreetNotNull() {
-        Address TEST_ADDRESS_TEMP = new Address(
-            TestConstants.POSTAL_CODE, null, TestConstants.CITY);
+        Address TEST_ADDRESS_TEMP = new Address(TestConstants.POSTAL_CODE, null, TestConstants.CITY);
         final List<Address> result = TestUtils.toList(repository.findAllByStreetNotNull());
         assertThat(result.size()).isEqualTo(4);
         assertThat(result).isEqualTo(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,
@@ -390,14 +390,13 @@ public class AddressRepositoryIT {
     public void testFindTop3ByOrderByStreetDesc() {
         List<Address> result = TestUtils.toList(repository.findTop3ByOrderByStreetDesc());
         assertThat(result.size()).isEqualTo(3);
-        assertThat(result).isEqualTo(Lists.newArrayList(TEST_ADDRESS2_PARTITION1,
-            TEST_ADDRESS4_PARTITION3, TEST_ADDRESS1_PARTITION2));
+        assertThat(result).isEqualTo(
+            Lists.newArrayList(TEST_ADDRESS2_PARTITION1, TEST_ADDRESS4_PARTITION3, TEST_ADDRESS1_PARTITION2));
     }
 
     @Test
     public void testCountByStreetNotNull() {
-        Address TEST_ADDRESS_TEMP = new Address(
-            TestConstants.POSTAL_CODE, null, TestConstants.CITY);
+        Address TEST_ADDRESS_TEMP = new Address(TestConstants.POSTAL_CODE, null, TestConstants.CITY);
         final Long result = repository.countByStreetNotNull();
         assertThat(result).isEqualTo(4);
     }

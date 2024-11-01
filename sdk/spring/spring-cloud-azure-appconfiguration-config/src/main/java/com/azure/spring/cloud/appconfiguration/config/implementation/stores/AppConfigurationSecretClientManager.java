@@ -31,7 +31,7 @@ public final class AppConfigurationSecretClientManager {
     private final SecretClientBuilderFactory secretClientFactory;
 
     private final boolean credentialConfigured;
-    
+
     private final int timeout;
 
     /**

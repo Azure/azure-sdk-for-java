@@ -16,12 +16,12 @@ import org.springframework.context.annotation.Configuration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(properties = {
-    "spring.docker.compose.skip.in-tests=false",
-    "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/storage/storage-compose.yaml",
-    "spring.docker.compose.stop.command=down",
-    "spring.cloud.azure.storage.queue.queue-name=devstoreaccount1/tc-queue"
-})
+@SpringBootTest(
+    properties = {
+        "spring.docker.compose.skip.in-tests=false",
+        "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/storage/storage-compose.yaml",
+        "spring.docker.compose.stop.command=down",
+        "spring.cloud.azure.storage.queue.queue-name=devstoreaccount1/tc-queue" })
 @EnabledOnOs(OS.LINUX)
 class StorageQueueDockerComposeConnectionDetailsFactoryTests {
 
@@ -38,9 +38,8 @@ class StorageQueueDockerComposeConnectionDetailsFactoryTests {
     }
 
     @Configuration
-    @ImportAutoConfiguration(classes = {
-        AzureGlobalPropertiesAutoConfiguration.class,
-        AzureStorageQueueAutoConfiguration.class})
+    @ImportAutoConfiguration(
+        classes = { AzureGlobalPropertiesAutoConfiguration.class, AzureStorageQueueAutoConfiguration.class })
     static class Config {
     }
 

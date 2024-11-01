@@ -7,20 +7,15 @@ enum ConnectionStringType {
 
     EVENT_HUB(new String[] {
         "Endpoint=<>;SharedAccessKeyName=<>;SharedAccessKey=<>;",
-        "Endpoint=<>;SharedAccessKeyName=<>;SharedAccessKey=<>;EntityPath=<>",
-    }),
+        "Endpoint=<>;SharedAccessKeyName=<>;SharedAccessKey=<>;EntityPath=<>", }),
     SERVICE_BUS(new String[] {
         "Endpoint=<>;SharedAccessKeyName=<>;SharedAccessKey=<>;",
         "Endpoint=<>;SharedAccessKeyName=<>;SharedAccessKey=<>;EntityPath=<>",
         "Endpoint=<>;SharedAccessSignature=SharedAccessSignature <>",
-        "Endpoint=<>;SharedAccessSignature=SharedAccessSignature <>;EntityPath=<>"
-    }),
-    STORAGE(new String[] {
-        "DefaultEndpointsProtocol=<>;AccountName=<>;AccountKey=<>;EndpointSuffix=<>"
-    }),
-    APP_CONFIGURATION(new String[] {
-        "Endpoint=<>;Id=<>;Secret=<>"
-    });
+        "Endpoint=<>;SharedAccessSignature=SharedAccessSignature <>;EntityPath=<>" }),
+    STORAGE(new String[] { "DefaultEndpointsProtocol=<>;AccountName=<>;AccountKey=<>;EndpointSuffix=<>" }),
+    APP_CONFIGURATION(new String[] { "Endpoint=<>;Id=<>;Secret=<>" });
+
     private final String[] schemas;
 
     ConnectionStringType(String[] schemas) {

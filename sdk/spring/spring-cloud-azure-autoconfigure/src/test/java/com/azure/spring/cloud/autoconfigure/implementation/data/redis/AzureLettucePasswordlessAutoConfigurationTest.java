@@ -17,61 +17,45 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureLettucePasswordlessAutoConfigurationTest {
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withBean(AzureGlobalProperties.class, () -> new AzureGlobalProperties())
-        .withBean("springTokenCredentialProviderContextProvider", SpringTokenCredentialProviderContextProvider.class,
-            SpringTokenCredentialProviderContextProvider::new)
-        .withConfiguration(AutoConfigurations.of(AzureLettucePasswordlessAutoConfiguration.class));
+    private final ApplicationContextRunner contextRunner
+        = new ApplicationContextRunner().withBean(AzureGlobalProperties.class, () -> new AzureGlobalProperties())
+            .withBean("springTokenCredentialProviderContextProvider",
+                SpringTokenCredentialProviderContextProvider.class, SpringTokenCredentialProviderContextProvider::new)
+            .withConfiguration(AutoConfigurations.of(AzureLettucePasswordlessAutoConfiguration.class));
 
     @Test
     void configureWithoutSpringDataLettuceConnection() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(LettuceConnection.class))
-            .withPropertyValues(
-                "spring.data.redis.azure.passwordless-enabled=true",
-                "spring.data.redis.host=localhost"
-            )
+        this.contextRunner.withClassLoader(new FilteredClassLoader(LettuceConnection.class))
+            .withPropertyValues("spring.data.redis.azure.passwordless-enabled=true", "spring.data.redis.host=localhost")
             .run((context) -> assertThat(context).doesNotHaveBean(AzureLettucePasswordlessAutoConfiguration.class));
     }
 
     @Test
     void configureWithoutLettuceCore() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(RedisCredentials.class))
-            .withPropertyValues(
-                "spring.data.redis.azure.passwordless-enabled=true",
-                "spring.data.redis.host=localhost"
-            )
+        this.contextRunner.withClassLoader(new FilteredClassLoader(RedisCredentials.class))
+            .withPropertyValues("spring.data.redis.azure.passwordless-enabled=true", "spring.data.redis.host=localhost")
             .run((context) -> assertThat(context).doesNotHaveBean(AzureLettucePasswordlessAutoConfiguration.class));
     }
 
     @Test
     void configureWithPasswordlessDisabled() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.data.redis.azure.passwordless-enabled=false",
-                "spring.data.redis.host=localhost"
-            )
+            .withPropertyValues("spring.data.redis.azure.passwordless-enabled=false",
+                "spring.data.redis.host=localhost")
             .run(context -> assertThat(context).doesNotHaveBean(AzureLettucePasswordlessAutoConfiguration.class));
     }
 
     @Test
     void configureWithoutHost() {
-        this.contextRunner
-            .withPropertyValues(
-                "spring.data.redis.azure.passwordless-enabled=true"
-            )
+        this.contextRunner.withPropertyValues("spring.data.redis.azure.passwordless-enabled=true")
             .run(context -> assertThat(context).doesNotHaveBean(AzureLettucePasswordlessAutoConfiguration.class));
     }
 
     @Test
     void configureWithPasswordlessEnabled() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.data.redis.azure.passwordless-enabled=true",
-                "spring.data.redis.host=localhost",
-                "spring.data.redis.username=azure-username"
-            )
+            .withPropertyValues("spring.data.redis.azure.passwordless-enabled=true", "spring.data.redis.host=localhost",
+                "spring.data.redis.username=azure-username")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureLettucePasswordlessAutoConfiguration.class);
                 assertThat(context).hasSingleBean(AzureRedisCredentials.class);

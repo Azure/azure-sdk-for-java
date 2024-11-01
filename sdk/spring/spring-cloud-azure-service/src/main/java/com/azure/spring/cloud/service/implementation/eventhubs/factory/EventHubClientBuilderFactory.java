@@ -85,7 +85,8 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
             if (StringUtils.hasText(this.eventHubsProperties.getEventHubName())) {
                 builder.connectionString(connectionString, this.eventHubsProperties.getEventHubName());
             } else {
-                LOGGER.info("The eventhub name is not configured, will call credential method instead of connectionString method.");
+                LOGGER.info(
+                    "The eventhub name is not configured, will call credential method instead of connectionString method.");
                 final ConnectionStringProperties properties = new ConnectionStringProperties(connectionString);
                 TokenCredential tokenCredential = getTokenCredential(properties);
                 builder.credential(tokenCredential);
@@ -103,7 +104,6 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
         return this.eventHubsProperties;
     }
 
-
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
 
     @Override
@@ -116,8 +116,8 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
 
         if (this.eventHubsProperties instanceof EventHubsNamespaceProperties) {
             mapper.from(((EventHubsNamespaceProperties) this.eventHubsProperties).getSharedConnection())
-                  .whenTrue()
-                  .to(t -> builder.shareConnection());
+                .whenTrue()
+                .to(t -> builder.shareConnection());
         }
 
         if (this.eventHubsProperties instanceof EventHubConsumerProperties) {
@@ -127,7 +127,6 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
         }
     }
 
-
     //Credentials have not been set. They can be set using:
     // connectionString(String),
     // connectionString(String, String),
@@ -135,11 +134,9 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
     // or setting the environment variable 'AZURE_EVENT_HUBS_CONNECTION_STRING' with a connection string
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventHubClientBuilder builder) {
-        return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(builder::credential),
+        return Arrays.asList(new NamedKeyAuthenticationDescriptor(builder::credential),
             new SasAuthenticationDescriptor(builder::credential),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, c -> builder.credential(c))
-        );
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, c -> builder.credential(c)));
     }
 
     private TokenCredential getTokenCredential(ConnectionStringProperties properties) {

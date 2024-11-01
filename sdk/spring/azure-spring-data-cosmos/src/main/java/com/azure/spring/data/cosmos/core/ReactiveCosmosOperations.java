@@ -53,7 +53,7 @@ public interface ReactiveCosmosOperations {
      * @return CosmosContainerProperties
      */
     Mono<CosmosContainerProperties> replaceContainerProperties(String containerName,
-                                                               CosmosContainerProperties properties);
+        CosmosContainerProperties properties);
 
     /**
      * Find all items in a given container
@@ -190,7 +190,8 @@ public interface ReactiveCosmosOperations {
      * @param <T> type class of domain type
      * @return Mono with the patched item
      */
-    <T> Mono<T> patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
+    <T> Mono<T> patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations,
+        CosmosPatchItemRequestOptions options);
 
     /**
      * Upsert an item with partition key

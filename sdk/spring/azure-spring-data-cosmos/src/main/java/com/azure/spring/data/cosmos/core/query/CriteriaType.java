@@ -165,7 +165,7 @@ public enum CriteriaType {
         PART_TREE_TYPE_TO_CRITERIA = Collections.unmodifiableMap(map);
     }
 
-    @ConstructorProperties({"sqlKeyword"})
+    @ConstructorProperties({ "sqlKeyword" })
     CriteriaType(String sqlKeyword) {
         this.sqlKeyword = sqlKeyword;
     }
@@ -210,8 +210,7 @@ public enum CriteriaType {
         final CriteriaType criteriaType = PART_TREE_TYPE_TO_CRITERIA.get(partType);
 
         if (criteriaType == null) {
-            throw new UnsupportedOperationException("Unsupported part type: "
-                + partType);
+            throw new UnsupportedOperationException("Unsupported part type: " + partType);
         }
 
         return criteriaType;
@@ -229,6 +228,7 @@ public enum CriteriaType {
             case AND:
             case OR:
                 return true;
+
             default:
                 return false;
         }
@@ -262,6 +262,7 @@ public enum CriteriaType {
             case ARRAY_CONTAINS:
             case STRING_EQUALS:
                 return true;
+
             default:
                 return false;
         }
@@ -284,6 +285,7 @@ public enum CriteriaType {
             case ARRAY_CONTAINS:
             case STRING_EQUALS:
                 return true;
+
             default:
                 return false;
         }
@@ -303,6 +305,7 @@ public enum CriteriaType {
             case STARTS_WITH:
             case STRING_EQUALS:
                 return true;
+
             default:
                 return false;
         }
@@ -321,6 +324,7 @@ public enum CriteriaType {
             case TRUE:
             case FALSE:
                 return true;
+
             default:
                 return false;
         }

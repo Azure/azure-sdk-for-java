@@ -33,15 +33,22 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties
 @ConditionalOnClass(CertificateClientBuilder.class)
-@ConditionalOnProperty(value = { "spring.cloud.azure.keyvault.certificate.enabled", "spring.cloud.azure.keyvault.enabled" }, havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure.keyvault.certificate", "spring.cloud.azure.keyvault" }, name = { "endpoint" })
+@ConditionalOnProperty(
+    value = { "spring.cloud.azure.keyvault.certificate.enabled", "spring.cloud.azure.keyvault.enabled" },
+    havingValue = "true",
+    matchIfMissing = true)
+@ConditionalOnAnyProperty(
+    prefixes = { "spring.cloud.azure.keyvault.certificate", "spring.cloud.azure.keyvault" },
+    name = { "endpoint" })
 @Import(AzureKeyVaultConfiguration.class)
 public class AzureKeyVaultCertificateAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = AzureKeyVaultCertificateProperties.PREFIX)
-    AzureKeyVaultCertificateProperties azureKeyVaultCertificateProperties(AzureKeyVaultProperties azureKeyVaultProperties) {
-        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureKeyVaultProperties, new AzureKeyVaultCertificateProperties());
+    AzureKeyVaultCertificateProperties
+        azureKeyVaultCertificateProperties(AzureKeyVaultProperties azureKeyVaultProperties) {
+        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureKeyVaultProperties,
+            new AzureKeyVaultCertificateProperties());
     }
 
     @Bean
@@ -64,8 +71,7 @@ public class AzureKeyVaultCertificateAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    CertificateClientBuilderFactory certificateClientBuilderFactory(
-        AzureKeyVaultCertificateProperties properties,
+    CertificateClientBuilderFactory certificateClientBuilderFactory(AzureKeyVaultCertificateProperties properties,
         ObjectProvider<AzureServiceClientBuilderCustomizer<CertificateClientBuilder>> customizers) {
         CertificateClientBuilderFactory factory = new CertificateClientBuilderFactory(properties);
 

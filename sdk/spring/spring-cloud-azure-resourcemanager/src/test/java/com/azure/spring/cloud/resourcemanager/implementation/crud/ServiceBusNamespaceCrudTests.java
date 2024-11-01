@@ -24,8 +24,7 @@ public class ServiceBusNamespaceCrudTests extends AbstractResourceCrudTests<Serv
         ServiceBusNamespaces namespaces = mock(ServiceBusNamespaces.class);
         when(resourceManager.serviceBusNamespaces()).thenReturn(namespaces);
         ManagementException exception = createManagementException(statusCode, message);
-        when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey()))
-            .thenThrow(exception);
+        when(namespaces.getByResourceGroup(resourceMetadata.getResourceGroup(), getKey())).thenThrow(exception);
     }
 
     @Override
@@ -37,10 +36,12 @@ public class ServiceBusNamespaceCrudTests extends AbstractResourceCrudTests<Serv
         ServiceBusNamespace.DefinitionStages.Blank define = mock(ServiceBusNamespace.DefinitionStages.Blank.class);
         when(namespaces.define(NAMESPACE)).thenReturn(define);
 
-        ServiceBusNamespace.DefinitionStages.WithGroup group = mock(ServiceBusNamespace.DefinitionStages.WithGroup.class);
+        ServiceBusNamespace.DefinitionStages.WithGroup group
+            = mock(ServiceBusNamespace.DefinitionStages.WithGroup.class);
         when(define.withRegion(resourceMetadata.getRegion())).thenReturn(group);
 
-        ServiceBusNamespace.DefinitionStages.WithCreate write = mock(ServiceBusNamespace.DefinitionStages.WithCreate.class);
+        ServiceBusNamespace.DefinitionStages.WithCreate write
+            = mock(ServiceBusNamespace.DefinitionStages.WithCreate.class);
         when(group.withExistingResourceGroup(resourceMetadata.getResourceGroup())).thenReturn(write);
         when(write.create()).thenThrow(exception);
     }

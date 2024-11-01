@@ -11,7 +11,8 @@ import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOption
 /**
  * A credential builder factory for the {@link ClientSecretCredentialBuilder}.
  */
-public class ClientSecretCredentialBuilderFactory extends AzureAadCredentialBuilderFactory<ClientSecretCredentialBuilder> {
+public class ClientSecretCredentialBuilderFactory
+    extends AzureAadCredentialBuilderFactory<ClientSecretCredentialBuilder> {
 
     /**
      * Create a {@link ClientSecretCredentialBuilderFactory} instance with {@link AzureProperties}.

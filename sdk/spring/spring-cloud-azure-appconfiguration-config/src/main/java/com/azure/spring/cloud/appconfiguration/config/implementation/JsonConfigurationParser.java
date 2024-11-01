@@ -51,9 +51,7 @@ final class JsonConfigurationParser {
             JsonNode json = MAPPER.readTree(setting.getValue());
             parseSetting(setting.getKey(), json, settings);
         } catch (JsonProcessingException e) {
-            throw new InvalidConfigurationPropertyValueException(
-                setting.getKey(),
-                "<Redacted>",
+            throw new InvalidConfigurationPropertyValueException(setting.getKey(), "<Redacted>",
                 "Expected type: JSON String, Number, Array, Object or token 'null', 'true' or 'false'");
         }
         return settings;
@@ -67,6 +65,7 @@ final class JsonConfigurationParser {
                     parseSetting(newKey, currentValue.get(i), settings);
                 }
                 break;
+
             case OBJECT:
                 Iterator<String> fieldNames = currentValue.fieldNames();
                 while (fieldNames.hasNext()) {
@@ -75,6 +74,7 @@ final class JsonConfigurationParser {
                     parseSetting(newKey, currentValue.get(fieldName), settings);
                 }
                 break;
+
             default:
                 settings.put(currentKey, currentValue.asText());
                 break;

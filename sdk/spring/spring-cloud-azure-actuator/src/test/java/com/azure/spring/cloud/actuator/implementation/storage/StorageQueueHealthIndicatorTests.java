@@ -23,8 +23,8 @@ class StorageQueueHealthIndicatorTests {
     @Test
     void storageQueueIsUp() {
         QueueServiceAsyncClient mockAsyncClient = getMockQueueServiceAsyncClient();
-        @SuppressWarnings("unchecked") Response<QueueServiceProperties> mockResponse =
-            (Response<QueueServiceProperties>) Mockito.mock(Response.class);
+        @SuppressWarnings("unchecked")
+        Response<QueueServiceProperties> mockResponse = (Response<QueueServiceProperties>) Mockito.mock(Response.class);
         when(mockAsyncClient.getPropertiesWithResponse()).thenReturn(Mono.just(mockResponse));
         StorageQueueHealthIndicator indicator = new StorageQueueHealthIndicator(mockAsyncClient);
         Health health = indicator.health();

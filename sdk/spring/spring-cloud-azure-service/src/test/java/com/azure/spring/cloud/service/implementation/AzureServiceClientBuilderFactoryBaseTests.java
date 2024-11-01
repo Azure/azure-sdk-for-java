@@ -15,15 +15,19 @@ import org.mockito.verification.VerificationMode;
 
 import static org.mockito.Mockito.times;
 
-public abstract class AzureServiceClientBuilderFactoryBaseTests<B, P extends AzureSdkProperties,
-                                                                  F extends AzureServiceClientBuilderFactory<B>>
+public abstract class AzureServiceClientBuilderFactoryBaseTests<B, P extends AzureSdkProperties, F extends AzureServiceClientBuilderFactory<B>>
     extends AzureGenericServiceClientBuilderFactoryBaseTests<P, F> {
 
     protected abstract void buildClient(B builder);
+
     protected abstract P createMinimalServiceProperties();
+
     protected abstract F createClientBuilderFactoryWithMockBuilder(P properties);
+
     protected abstract void verifyServicePropertiesConfigured();
-    protected abstract void verifyCredentialCalled(B builder, Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode);
+
+    protected abstract void verifyCredentialCalled(B builder, Class<? extends TokenCredential> tokenCredentialClass,
+        VerificationMode mode);
 
     @Test
     void minimalSettingsCanWork() {

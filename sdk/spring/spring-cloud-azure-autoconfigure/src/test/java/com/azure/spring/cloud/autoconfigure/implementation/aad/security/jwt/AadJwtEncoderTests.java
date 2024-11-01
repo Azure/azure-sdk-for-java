@@ -42,14 +42,14 @@ public class AadJwtEncoderTests {
     @Test
     public void constructorWhenJwkSourceNullThenThrowIllegalArgumentException() {
         assertThatIllegalArgumentException().isThrownBy(() -> new AadJwtEncoder(null))
-                                            .withMessage("jwkSource cannot be null");
+            .withMessage("jwkSource cannot be null");
     }
 
     @Test
     public void encodeWhenHeadersNullThenThrowIllegalArgumentException() {
         Map<String, Object> jwtClaimsSet = TestJwtClaimsSets.jwtClaimsSet();
         assertThatIllegalArgumentException().isThrownBy(() -> this.jwtEncoder.encode(null, jwtClaimsSet))
-                                            .withMessage("jwsHeader cannot be null");
+            .withMessage("jwsHeader cannot be null");
     }
 
     @Test
@@ -57,7 +57,7 @@ public class AadJwtEncoderTests {
         Map<String, Object> jwsHeader = new HashMap<>();
         jwsHeader.put("alg", SignatureAlgorithm.RS256.getName());
         assertThatIllegalArgumentException().isThrownBy(() -> this.jwtEncoder.encode(jwsHeader, null))
-                                            .withMessage("jwtClaimsSet cannot be null");
+            .withMessage("jwtClaimsSet cannot be null");
     }
 
     @Test
@@ -71,8 +71,7 @@ public class AadJwtEncoderTests {
         jwsHeader.put("alg", SignatureAlgorithm.RS256.getName());
         Map<String, Object> jwtClaimsSet = TestJwtClaimsSets.jwtClaimsSet();
 
-        assertThatExceptionOfType(JwtException.class)
-            .isThrownBy(() -> this.jwtEncoder.encode(jwsHeader, jwtClaimsSet))
+        assertThatExceptionOfType(JwtException.class).isThrownBy(() -> this.jwtEncoder.encode(jwsHeader, jwtClaimsSet))
             .withMessageContaining("Failed to select a JWK signing key -> key source error");
     }
 }

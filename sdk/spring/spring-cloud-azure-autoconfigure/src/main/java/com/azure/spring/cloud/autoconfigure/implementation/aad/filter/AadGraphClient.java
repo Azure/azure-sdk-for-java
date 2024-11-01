@@ -43,7 +43,6 @@ import java.util.stream.Collectors;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadRestTemplateCreator.createRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.constants.Constants.DEFAULT_AUTHORITY_SET;
 
-
 /**
  * Microsoft Graph client encapsulation.
  */
@@ -68,11 +67,8 @@ class AadGraphClient {
      * @param aadAuthenticationProperties the AAD authentication properties
      * @param endpoints the AAF authorization server endpoints
      */
-    AadGraphClient(String clientId,
-                          String clientSecret,
-                          AadAuthenticationProperties aadAuthenticationProperties,
-                          AadAuthorizationServerEndpoints endpoints,
-                          RestTemplateBuilder restTemplateBuilder) {
+    AadGraphClient(String clientId, String clientSecret, AadAuthenticationProperties aadAuthenticationProperties,
+        AadAuthorizationServerEndpoints endpoints, RestTemplateBuilder restTemplateBuilder) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.aadAuthenticationProperties = aadAuthenticationProperties;
@@ -95,8 +91,7 @@ class AadGraphClient {
         if (response.getStatusCode() == HttpStatus.OK) {
             return response.getBody();
         } else {
-            throw new IllegalStateException(
-                    "Response is not " + HttpStatus.OK + ", response json: " + responseInJson);
+            throw new IllegalStateException("Response is not " + HttpStatus.OK + ", response json: " + responseInJson);
         }
     }
 
@@ -113,13 +108,11 @@ class AadGraphClient {
             String membershipsJson = getUserMemberships(graphApiToken, aadMembershipRestUri);
             Memberships memberships = objectMapper.readValue(membershipsJson, Memberships.class);
             memberships.getValue()
-                       .stream()
-                       .filter(this::isGroupObject)
-                       .map(Membership::getDisplayName)
-                       .forEach(groups::add);
-            aadMembershipRestUri = Optional.of(memberships)
-                                           .map(Memberships::getOdataNextLink)
-                                           .orElse(null);
+                .stream()
+                .filter(this::isGroupObject)
+                .map(Membership::getDisplayName)
+                .forEach(groups::add);
+            aadMembershipRestUri = Optional.of(memberships).map(Memberships::getOdataNextLink).orElse(null);
         }
         return groups;
     }
@@ -135,14 +128,11 @@ class AadGraphClient {
      * @return the granted authority set
      */
     public Set<SimpleGrantedAuthority> toGrantedAuthoritySet(final Set<String> groups) {
-        Set<SimpleGrantedAuthority> grantedAuthoritySet =
-            groups.stream()
-                  .filter(aadAuthenticationProperties::isAllowedGroup)
-                  .map(group -> new SimpleGrantedAuthority(AuthorityPrefix.ROLE + group))
-                  .collect(Collectors.toSet());
-        return Optional.of(grantedAuthoritySet)
-                       .filter(g -> !g.isEmpty())
-                       .orElse(DEFAULT_AUTHORITY_SET);
+        Set<SimpleGrantedAuthority> grantedAuthoritySet = groups.stream()
+            .filter(aadAuthenticationProperties::isAllowedGroup)
+            .map(group -> new SimpleGrantedAuthority(AuthorityPrefix.ROLE + group))
+            .collect(Collectors.toSet());
+        return Optional.of(grantedAuthoritySet).filter(g -> !g.isEmpty()).orElse(DEFAULT_AUTHORITY_SET);
     }
 
     /**
@@ -156,16 +146,15 @@ class AadGraphClient {
      */
     public IAuthenticationResult acquireTokenForGraphApi(String idToken, String tenantId)
         throws ServiceUnavailableException {
-        final IClientCredential clientCredential =
-            ClientCredentialFactory.createFromSecret(clientSecret);
+        final IClientCredential clientCredential = ClientCredentialFactory.createFromSecret(clientSecret);
         final UserAssertion assertion = new UserAssertion(idToken);
         IAuthenticationResult result = null;
         try {
-            final ConfidentialClientApplication application = ConfidentialClientApplication
-                .builder(clientId, clientCredential)
-                .authority(endpoints.getBaseUri() + tenantId + "/")
-                .correlationId(getCorrelationId())
-                .build();
+            final ConfidentialClientApplication application
+                = ConfidentialClientApplication.builder(clientId, clientCredential)
+                    .authority(endpoints.getBaseUri() + tenantId + "/")
+                    .correlationId(getCorrelationId())
+                    .build();
             final Set<String> scopes = new HashSet<>();
             scopes.add(MICROSOFT_GRAPH_SCOPE);
             final OnBehalfOfParameters onBehalfOfParameters = OnBehalfOfParameters.builder(scopes, assertion).build();
@@ -186,8 +175,7 @@ class AadGraphClient {
             LOGGER.error("acquire on behalf of token for graph api error", e);
         }
         if (result == null) {
-            throw new ServiceUnavailableException("unable to acquire on_behalf_of token for client "
-                + clientId);
+            throw new ServiceUnavailableException("unable to acquire on_behalf_of token for client " + clientId);
         }
         return result;
     }

@@ -17,7 +17,6 @@ import org.junit.jupiter.api.Test;
 
 class AzureTokenCredentialResolverTests {
 
-
     private final AzureTokenCredentialResolver resolver = new AzureTokenCredentialResolver();
 
     @Test
@@ -84,9 +83,10 @@ class AzureTokenCredentialResolverTests {
         properties.getCredential().setClientSecret("test-client-secret");
 
         ClientSecretCredential tokenCredential = (ClientSecretCredential) resolver.resolve(properties);
-        IdentityClient identityClient = (IdentityClient) ReflectionUtils.getField(ClientSecretCredential.class, "identityClient",
-            tokenCredential);
-        Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT, identityClient.getIdentityClientOptions().getAuthorityHost());
+        IdentityClient identityClient = (IdentityClient) ReflectionUtils.getField(ClientSecretCredential.class,
+            "identityClient", tokenCredential);
+        Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT,
+            identityClient.getIdentityClientOptions().getAuthorityHost());
     }
 
     @Test
@@ -98,9 +98,10 @@ class AzureTokenCredentialResolverTests {
         properties.getCredential().setClientCertificatePath("test-client-cert-path");
 
         ClientCertificateCredential tokenCredential = (ClientCertificateCredential) resolver.resolve(properties);
-        IdentityClient identityClient = (IdentityClient) ReflectionUtils.getField(ClientCertificateCredential.class, "identityClient",
-            tokenCredential);
-        Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT, identityClient.getIdentityClientOptions().getAuthorityHost());
+        IdentityClient identityClient = (IdentityClient) ReflectionUtils.getField(ClientCertificateCredential.class,
+            "identityClient", tokenCredential);
+        Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT,
+            identityClient.getIdentityClientOptions().getAuthorityHost());
     }
 
     @Test
@@ -112,9 +113,10 @@ class AzureTokenCredentialResolverTests {
         properties.getCredential().setPassword("test-password");
 
         UsernamePasswordCredential tokenCredential = (UsernamePasswordCredential) resolver.resolve(properties);
-        IdentityClient identityClient = (IdentityClient) ReflectionUtils.getField(UsernamePasswordCredential.class, "identityClient",
-            tokenCredential);
-        Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT, identityClient.getIdentityClientOptions().getAuthorityHost());
+        IdentityClient identityClient = (IdentityClient) ReflectionUtils.getField(UsernamePasswordCredential.class,
+            "identityClient", tokenCredential);
+        Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT,
+            identityClient.getIdentityClientOptions().getAuthorityHost());
     }
 
     @Test
@@ -125,5 +127,5 @@ class AzureTokenCredentialResolverTests {
     private static class AzureTestProperties extends AzureAmqpSdkProperties {
 
     }
-    
+
 }

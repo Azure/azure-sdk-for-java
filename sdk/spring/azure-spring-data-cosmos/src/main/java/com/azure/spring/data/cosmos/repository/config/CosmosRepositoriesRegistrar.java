@@ -29,5 +29,4 @@ public class CosmosRepositoriesRegistrar extends RepositoryBeanDefinitionRegistr
         return new CosmosRepositoryConfigurationExtension();
     }
 
-
 }

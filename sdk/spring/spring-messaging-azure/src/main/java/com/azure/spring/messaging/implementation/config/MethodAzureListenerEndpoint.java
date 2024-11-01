@@ -26,7 +26,6 @@ public interface MethodAzureListenerEndpoint extends BeanFactoryAware, AzureList
     @Override
     void setBeanFactory(@Nullable BeanFactory beanFactory) throws BeansException;
 
-
     /**
      * Get the object instance that should manage this endpoint.
      * @return the target bean instance.

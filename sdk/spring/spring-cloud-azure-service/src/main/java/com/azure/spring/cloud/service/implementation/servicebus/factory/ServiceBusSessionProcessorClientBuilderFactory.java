@@ -18,7 +18,8 @@ import java.util.List;
 /**
  * Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder}.
  */
-public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder, ServiceBusProcessorClientProperties> {
+public class ServiceBusSessionProcessorClientBuilderFactory extends
+    AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder, ServiceBusProcessorClientProperties> {
 
     private final MessageListener<?> messageListener;
     private final ServiceBusErrorHandler errorHandler;
@@ -32,9 +33,8 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
      * @param errorHandler the error handler.
      */
     public ServiceBusSessionProcessorClientBuilderFactory(ServiceBusProcessorClientProperties properties,
-                                                          List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers,
-                                                          MessageListener<?> messageListener,
-                                                          ServiceBusErrorHandler errorHandler) {
+        List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers,
+        MessageListener<?> messageListener, ServiceBusErrorHandler errorHandler) {
         this(null, properties, serviceBusClientBuilderCustomizers, messageListener, errorHandler);
     }
 
@@ -49,17 +49,15 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
      * @param errorHandler the error handler.
      */
     public ServiceBusSessionProcessorClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                          ServiceBusProcessorClientProperties properties,
-                                                          MessageListener<?> processingListener,
-                                                          ServiceBusErrorHandler errorHandler) {
+        ServiceBusProcessorClientProperties properties, MessageListener<?> processingListener,
+        ServiceBusErrorHandler errorHandler) {
         this(serviceBusClientBuilder, properties, null, processingListener, errorHandler);
     }
 
     private ServiceBusSessionProcessorClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                           ServiceBusProcessorClientProperties properties,
-                                                           List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers,
-                                                           MessageListener<?> messageListener,
-                                                           ServiceBusErrorHandler errorHandler) {
+        ServiceBusProcessorClientProperties properties,
+        List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers,
+        MessageListener<?> messageListener, ServiceBusErrorHandler errorHandler) {
         super(serviceBusClientBuilder, properties, serviceBusClientBuilderCustomizers);
         this.messageListener = messageListener;
         this.errorHandler = errorHandler;
@@ -101,9 +99,9 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
         if (messageListener instanceof ServiceBusRecordMessageListener) {
             builder.processMessage(((ServiceBusRecordMessageListener) messageListener)::onMessage);
         } else {
-            throw new IllegalArgumentException("Listener must be a '"
-                + ServiceBusRecordMessageListener.class.getSimpleName()
-                + "' not " + messageListener.getClass().getName());
+            throw new IllegalArgumentException(
+                "Listener must be a '" + ServiceBusRecordMessageListener.class.getSimpleName() + "' not "
+                    + messageListener.getClass().getName());
         }
     }
 

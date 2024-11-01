@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.keyvault.environment;
 
-
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import org.junit.jupiter.api.AfterEach;
@@ -25,7 +24,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
 
 public class KeyVaultPropertySourceTests {
 
@@ -49,12 +47,9 @@ public class KeyVaultPropertySourceTests {
     private static final String TEST_AZURE_KEYVAULT_NAME = "acme-myproject-person-firstname";
     private static final String TEST_AZURE_KEYVAULT_VALUE = "testValue";
 
-    private static final List<String> TEST_SPRING_RELAXED_BINDING_NAMES = Arrays.asList(
-        TEST_SPRING_RELAXED_BINDING_NAME_0,
-        TEST_SPRING_RELAXED_BINDING_NAME_1,
-        TEST_SPRING_RELAXED_BINDING_NAME_2,
-        TEST_SPRING_RELAXED_BINDING_NAME_3
-    );
+    private static final List<String> TEST_SPRING_RELAXED_BINDING_NAMES
+        = Arrays.asList(TEST_SPRING_RELAXED_BINDING_NAME_0, TEST_SPRING_RELAXED_BINDING_NAME_1,
+            TEST_SPRING_RELAXED_BINDING_NAME_2, TEST_SPRING_RELAXED_BINDING_NAME_3);
 
     @BeforeEach
     public void setup() {
@@ -71,7 +66,8 @@ public class KeyVaultPropertySourceTests {
         KeyVaultSecret keyVaultSecret = new KeyVaultSecret(TEST_PROPERTY_NAME_1, TEST_PROPERTY_VALUE_1);
         when(keyVaultOperation.listSecrets(null)).thenReturn(List.of(keyVaultSecret));
 
-        KeyVaultPropertySource keyVaultPropertySource = new KeyVaultPropertySource("azure-key-vault-secret-property-source", Duration.ZERO, keyVaultOperation, null, true);
+        KeyVaultPropertySource keyVaultPropertySource = new KeyVaultPropertySource(
+            "azure-key-vault-secret-property-source", Duration.ZERO, keyVaultOperation, null, true);
         final String[] result = keyVaultPropertySource.getPropertyNames();
 
         assertThat(result.length).isEqualTo(1);
@@ -83,7 +79,8 @@ public class KeyVaultPropertySourceTests {
         KeyVaultSecret keyVaultSecret = new KeyVaultSecret(TEST_PROPERTY_NAME_1, TEST_PROPERTY_VALUE_1);
         when(keyVaultOperation.listSecrets(null)).thenReturn(List.of(keyVaultSecret));
 
-        KeyVaultPropertySource keyVaultPropertySource = new KeyVaultPropertySource("azure-key-vault-secret-property-source", Duration.ZERO, keyVaultOperation, null, true);
+        KeyVaultPropertySource keyVaultPropertySource = new KeyVaultPropertySource(
+            "azure-key-vault-secret-property-source", Duration.ZERO, keyVaultOperation, null, true);
         final String result = keyVaultPropertySource.getProperty(TEST_PROPERTY_NAME_1);
 
         assertThat(result).isEqualTo(TEST_PROPERTY_VALUE_1);
@@ -95,7 +92,8 @@ public class KeyVaultPropertySourceTests {
         KeyVaultSecret keyVaultSecret2 = new KeyVaultSecret("Key2", "value2");
         when(keyVaultOperation.listSecrets(null)).thenReturn(List.of(keyVaultSecret1, keyVaultSecret2));
 
-        KeyVaultPropertySource keyVaultPropertySource = new KeyVaultPropertySource("azure-key-vault-secret-property-source", Duration.ZERO, keyVaultOperation, null, true);
+        KeyVaultPropertySource keyVaultPropertySource = new KeyVaultPropertySource(
+            "azure-key-vault-secret-property-source", Duration.ZERO, keyVaultOperation, null, true);
 
         assertEquals("value1", keyVaultPropertySource.getProperty("KEY1"));
         assertEquals(null, keyVaultPropertySource.getProperty("key1"));
@@ -107,7 +105,8 @@ public class KeyVaultPropertySourceTests {
     public void setTestSpringRelaxedBindingNames() {
         KeyVaultSecret keyVaultSecret = new KeyVaultSecret(TEST_AZURE_KEYVAULT_NAME, TEST_AZURE_KEYVAULT_VALUE);
         when(keyVaultOperation.listSecrets(null)).thenReturn(List.of(keyVaultSecret));
-        KeyVaultPropertySource kvPropertySource = new KeyVaultPropertySource("KeyVault", Duration.ZERO, keyVaultOperation, null, false);
+        KeyVaultPropertySource kvPropertySource
+            = new KeyVaultPropertySource("KeyVault", Duration.ZERO, keyVaultOperation, null, false);
 
         TEST_SPRING_RELAXED_BINDING_NAMES
             .forEach(n -> assertThat(kvPropertySource.getProperty(n)).isEqualTo(TEST_AZURE_KEYVAULT_VALUE));
@@ -117,10 +116,8 @@ public class KeyVaultPropertySourceTests {
     @Timeout(6)
     public void refreshTwoKeyVaultsPropertySources() throws InterruptedException {
         CountDownLatch latchForRefreshing = new CountDownLatch(2);
-        new SecretRefreshing(latchForRefreshing, "KeyVault1", "test1",
-            "value1", "value1Updated").start();
-        new SecretRefreshing(latchForRefreshing, "KeyVault2", "test2",
-            "value2", "value2Updated").start();
+        new SecretRefreshing(latchForRefreshing, "KeyVault1", "test1", "value1", "value1Updated").start();
+        new SecretRefreshing(latchForRefreshing, "KeyVault2", "test2", "value2", "value2Updated").start();
         latchForRefreshing.await();
     }
 
@@ -133,11 +130,8 @@ public class KeyVaultPropertySourceTests {
         private final String updatedSecretValue;
         private static final int REFRESH_IN_SECONDS = 3;
 
-        SecretRefreshing(CountDownLatch latchForRefreshing,
-                         String propertySourceName,
-                         String secretName,
-                         String initialSecretValue,
-                         String updatedSecretValue) {
+        SecretRefreshing(CountDownLatch latchForRefreshing, String propertySourceName, String secretName,
+            String initialSecretValue, String updatedSecretValue) {
             this.latchForRefreshing = latchForRefreshing;
             this.propertySourceName = propertySourceName;
             this.secretClient = mock(SecretClient.class);
@@ -150,15 +144,12 @@ public class KeyVaultPropertySourceTests {
         public void run() {
             KeyVaultOperation secretOperation = new KeyVaultOperation(secretClient);
 
-            KeyVaultSecret initialKeyVaultSecret = mockSecretClientGetSecretMethod(secretClient, secretName, initialSecretValue);
+            KeyVaultSecret initialKeyVaultSecret
+                = mockSecretClientGetSecretMethod(secretClient, secretName, initialSecretValue);
             mockSecretClientListPropertiesOfSecrets(secretClient, initialKeyVaultSecret.getProperties());
 
-            KeyVaultPropertySource propertySource = new KeyVaultPropertySource(
-                propertySourceName,
-                Duration.ofSeconds(REFRESH_IN_SECONDS),
-                secretOperation,
-                null,
-                true);
+            KeyVaultPropertySource propertySource = new KeyVaultPropertySource(propertySourceName,
+                Duration.ofSeconds(REFRESH_IN_SECONDS), secretOperation, null, true);
             assertThat(propertySource.getProperty(this.secretName)).isEqualTo(initialSecretValue);
 
             mockSecretClientGetSecretMethod(secretClient, secretName, updatedSecretValue);

@@ -11,14 +11,24 @@ public class ClassNameResolverPredicateTest {
     @Test
     void testResolve() {
         ClassNameResolverPredicate predicate = new ClassNameResolverPredicate();
-        Assertions.assertTrue(predicate.resolve("com.azure.spring.cloud.autoconfigure.implementation.compatibility.ClassNameResolverPredicateTest"));
-        Assertions.assertTrue(predicate.resolve("com.azure.spring.cloud.autoconfigure.implementation.compatibility.ClassNameResolverPredicateTest,testMethod"));
-        Assertions.assertTrue(predicate.resolve("com.azure.spring.cloud.autoconfigure.implementation.compatibility.ClassNameResolverPredicateTest,testMethod2,boolean"));
-        Assertions.assertTrue(predicate.resolve("com.azure.spring.cloud.autoconfigure.implementation.compatibility.ClassNameResolverPredicateTest,testMethod3,boolean,java.lang.String"));
-        Assertions.assertFalse(predicate.resolve("com.azure.spring.cloud.autoconfigure.implementation.compatibility.ClassNameResolverPredicateTest,testMethod4"));
+        Assertions.assertTrue(predicate.resolve(
+            "com.azure.spring.cloud.autoconfigure.implementation.compatibility.ClassNameResolverPredicateTest"));
+        Assertions.assertTrue(predicate.resolve(
+            "com.azure.spring.cloud.autoconfigure.implementation.compatibility.ClassNameResolverPredicateTest,testMethod"));
+        Assertions.assertTrue(predicate.resolve(
+            "com.azure.spring.cloud.autoconfigure.implementation.compatibility.ClassNameResolverPredicateTest,testMethod2,boolean"));
+        Assertions.assertTrue(predicate.resolve(
+            "com.azure.spring.cloud.autoconfigure.implementation.compatibility.ClassNameResolverPredicateTest,testMethod3,boolean,java.lang.String"));
+        Assertions.assertFalse(predicate.resolve(
+            "com.azure.spring.cloud.autoconfigure.implementation.compatibility.ClassNameResolverPredicateTest,testMethod4"));
     }
 
-    public void testMethod() {}
-    public void testMethod2(boolean b) {}
-    public void testMethod3(boolean b, String a) {}
+    public void testMethod() {
+    }
+
+    public void testMethod2(boolean b) {
+    }
+
+    public void testMethod3(boolean b, String a) {
+    }
 }

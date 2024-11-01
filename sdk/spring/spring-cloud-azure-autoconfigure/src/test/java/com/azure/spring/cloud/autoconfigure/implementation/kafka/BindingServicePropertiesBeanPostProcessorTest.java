@@ -71,12 +71,14 @@ class BindingServicePropertiesBeanPostProcessorTest {
         Map<String, Object> env = new LinkedHashMap<>();
         Map<String, Object> mainPropertiesMap = buildSpringMainPropertiesMap(env, "main", "sources", "test");
         bpp.configureSpringMainSources(mainPropertiesMap);
-        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES + ",test", ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES + ",test",
+            ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
 
         env.clear();
         mainPropertiesMap = buildSpringMainPropertiesMap(env, "main", "profiles", "active");
         bpp.configureSpringMainSources(mainPropertiesMap);
-        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES,
+            ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
     }
 
     @ParameterizedTest(name = "{displayName} [{index}]")
@@ -85,9 +87,9 @@ class BindingServicePropertiesBeanPostProcessorTest {
         BindingServiceProperties bindingServiceProperties = new BindingServiceProperties();
         mockBinderTypeRegistry(binderTypes, bindingServiceProperties);
         bpp.postProcessBeforeInitialization(bindingServiceProperties, null);
-        Map<String, Object> env = bindingServiceProperties.getBinders().get("kafka")
-                                                          .getEnvironment();
-        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        Map<String, Object> env = bindingServiceProperties.getBinders().get("kafka").getEnvironment();
+        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES,
+            ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
     }
 
     @ParameterizedTest(name = "{displayName} [{index}]")
@@ -97,12 +99,13 @@ class BindingServicePropertiesBeanPostProcessorTest {
         bindingServiceProperties.setDefaultBinder("kafka");
         mockBinderTypeRegistry(binderTypes, bindingServiceProperties);
         bpp.postProcessBeforeInitialization(bindingServiceProperties, null);
-        Map<String, Object> env = bindingServiceProperties.getBinders().get("kafka")
-                                                          .getEnvironment();
-        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        Map<String, Object> env = bindingServiceProperties.getBinders().get("kafka").getEnvironment();
+        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES,
+            ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
     }
 
-    private void mockBinderTypeRegistry(Map<String, BinderType> binderTypes, BindingServiceProperties bindingServiceProperties) {
+    private void mockBinderTypeRegistry(Map<String, BinderType> binderTypes,
+        BindingServiceProperties bindingServiceProperties) {
         ApplicationContext applicationContext = spy(new GenericWebApplicationContext());
         BinderTypeRegistry binderTypeRegistry = spy(new DefaultBinderTypeRegistry(binderTypes));
 
@@ -111,13 +114,13 @@ class BindingServicePropertiesBeanPostProcessorTest {
     }
 
     private static Stream<Arguments> binderTypesSupplier() {
-        return Stream.of(
-            Arguments.of(new HashMap<String, BinderType>() {
-                {
-                    put("kafka", new BinderType("kafka", null));
-                }
-            }));
+        return Stream.of(Arguments.of(new HashMap<String, BinderType>() {
+            {
+                put("kafka", new BinderType("kafka", null));
+            }
+        }));
     }
+
     @Test
     void testBindKafkaWithNonKafkaByDefaultBinderProperty() {
         String nonKafka = "non-kafka";
@@ -136,9 +139,9 @@ class BindingServicePropertiesBeanPostProcessorTest {
         bindingServiceProperties.setBinders(binders);
 
         bpp.postProcessBeforeInitialization(bindingServiceProperties, null);
-        Map<String, Object> env = bindingServiceProperties.getBinders().get("kafka")
-                .getEnvironment();
-        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        Map<String, Object> env = bindingServiceProperties.getBinders().get("kafka").getEnvironment();
+        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES,
+            ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
     }
 
     @Test
@@ -164,12 +167,13 @@ class BindingServicePropertiesBeanPostProcessorTest {
         bindingServiceProperties.setBinders(binders);
 
         bpp.postProcessBeforeInitialization(bindingServiceProperties, null);
-        Map<String, Object> env = bindingServiceProperties.getBinders().get("test")
-                .getEnvironment();
-        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        Map<String, Object> env = bindingServiceProperties.getBinders().get("test").getEnvironment();
+        assertEquals(KAFKA_OAUTH2_SPRING_MAIN_SOURCES,
+            ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
     }
 
-    private Map<String, Object> buildSpringMainPropertiesMap(Map<String, Object> env, String secondProperty, String thirdProperty, String value) {
+    private Map<String, Object> buildSpringMainPropertiesMap(Map<String, Object> env, String secondProperty,
+        String thirdProperty, String value) {
         if (StringUtils.hasText(secondProperty)) {
             Map<String, Object> second = new LinkedHashMap<>();
             second.put(thirdProperty, value);

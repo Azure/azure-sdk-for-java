@@ -36,14 +36,14 @@ public class ConnectionManagerTest {
 
     @Mock
     private AppConfigurationReplicaClient replicaClient2;
-    
+
     @Mock
     private ReplicaLookUp replicaLookUpMock;
 
     private ConnectionManager connectionManager;
 
     private ConfigStore configStore;
-    
+
     private MockitoSession session;
 
     @BeforeEach
@@ -58,7 +58,7 @@ public class ConnectionManagerTest {
 
         connectionManager = null;
     }
-    
+
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
@@ -170,7 +170,7 @@ public class ConnectionManagerTest {
 
         verify(replicaClient1, times(1)).updateSyncToken(Mockito.eq(fakeToken));
     }
-    
+
     @Test
     public void getAvailableClientsNotLoadedTest() {
         ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore, replicaLookUpMock);

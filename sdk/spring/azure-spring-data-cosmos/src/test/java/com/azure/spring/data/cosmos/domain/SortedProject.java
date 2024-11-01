@@ -112,22 +112,7 @@ public class SortedProject {
 
     @Override
     public String toString() {
-        return "SortedProject{"
-            + "id='"
-            + id
-            + '\''
-            + ", name='"
-            + name
-            + '\''
-            + ", creator='"
-            + creator
-            + '\''
-            + ", hasReleased="
-            + hasReleased
-            + ", starCount="
-            + starCount
-            + ", forkCount="
-            + forkCount
-            + '}';
+        return "SortedProject{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", creator='" + creator + '\''
+            + ", hasReleased=" + hasReleased + ", starCount=" + starCount + ", forkCount=" + forkCount + '}';
     }
 }

@@ -33,8 +33,8 @@ public class TracingInfo {
     }
 
     public String getValue(boolean watchRequests) {
-        String track = configuration
-            .get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
+        String track
+            = configuration.get(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
         if (track != null && Boolean.valueOf(track)) {
             return "";
         }
@@ -63,7 +63,7 @@ public class TracingInfo {
         if (replicaCount > 0) {
             sb.append(",").append(RequestTracingConstants.REPLICA_COUNT).append("=").append(replicaCount);
         }
-        
+
         sb = getFeatureManagementUsage(sb);
 
         return sb.toString();
@@ -91,7 +91,7 @@ public class TracingInfo {
 
         return hostType.toString();
     }
-    
+
     private static StringBuilder getFeatureManagementUsage(StringBuilder sb) {
         ClassLoader loader = ClassLoader.getSystemClassLoader();
         Package ff = loader.getDefinedPackage("com.azure.spring.cloud.feature.management.models");

@@ -42,13 +42,11 @@ public class AzureRedisAutoConfiguration {
     @Primary
     @Bean
     RedisProperties redisProperties(AzureRedisProperties azureRedisProperties,
-                                    AzureResourceManager azureResourceManager) throws InvocationTargetException,
-        IllegalAccessException {
+        AzureResourceManager azureResourceManager) throws InvocationTargetException, IllegalAccessException {
         String cacheName = azureRedisProperties.getName();
 
         String resourceGroup = azureRedisProperties.getResource().getResourceGroup();
-        RedisCache redisCache = azureResourceManager.redisCaches()
-                                                    .getByResourceGroup(resourceGroup, cacheName);
+        RedisCache redisCache = azureResourceManager.redisCaches().getByResourceGroup(resourceGroup, cacheName);
 
         RedisProperties redisProperties = new RedisProperties();
 
@@ -78,14 +76,12 @@ public class AzureRedisAutoConfiguration {
                     break;
                 }
             }
-            ReflectionUtils.findMethod(targetInnerClass, "setEnabled", boolean.class)
-                           .invoke(ssl, useSsl);
+            ReflectionUtils.findMethod(targetInnerClass, "setEnabled", boolean.class).invoke(ssl, useSsl);
         } else {
             setSsl.invoke(redisProperties, useSsl);
         }
 
         return redisProperties;
     }
-
 
 }

@@ -39,8 +39,8 @@ public class AzureListenerAnnotationBeanPostProcessorTests {
 
     @Test
     public void simpleMessageListener() throws Exception {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(Config.class, SimpleMessageListenerTestBean.class);
+        ConfigurableApplicationContext context
+            = new AnnotationConfigApplicationContext(Config.class, SimpleMessageListenerTestBean.class);
 
         AzureListenerContainerTestFactory factory = context.getBean(AzureListenerContainerTestFactory.class);
         assertEquals(1, factory.getListenerContainers().size(), "One container should have been registered");
@@ -63,8 +63,8 @@ public class AzureListenerAnnotationBeanPostProcessorTests {
 
     @Test
     public void metaAnnotationIsDiscovered() throws Exception {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(Config.class, MetaAnnotationTestBean.class);
+        ConfigurableApplicationContext context
+            = new AnnotationConfigApplicationContext(Config.class, MetaAnnotationTestBean.class);
 
         try {
             AzureListenerContainerTestFactory factory = context.getBean(AzureListenerContainerTestFactory.class);
@@ -121,7 +121,8 @@ public class AzureListenerAnnotationBeanPostProcessorTests {
 
         @Bean
         public AzureListenerAnnotationTestBeanPostProcessor postProcessor() {
-            AzureListenerAnnotationTestBeanPostProcessor postProcessor = new AzureListenerAnnotationTestBeanPostProcessor();
+            AzureListenerAnnotationTestBeanPostProcessor postProcessor
+                = new AzureListenerAnnotationTestBeanPostProcessor();
             postProcessor.setContainerFactoryBeanName("testFactory");
             return postProcessor;
         }

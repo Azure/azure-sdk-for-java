@@ -18,10 +18,14 @@ import java.util.Map;
 public class AzureSpringBootVersionVerifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringBootVersionVerifier.class);
 
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_0 = "org.springframework.boot.autoconfigure.validation.ValidationConfigurationCustomizer";
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_1 = "org.springframework.boot.autoconfigure.validation.ValidationConfigurationCustomizer.ValidationConfigurationCustomizer,setIgnoreRegistrationFailure,";
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_2 = "org.springframework.boot.autoconfigure.web.client.RestClientSsl";
-    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_3 = "org.springframework.boot.autoconfigure.ldap.PropertiesLdapConnectionDetails";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_0
+        = "org.springframework.boot.autoconfigure.validation.ValidationConfigurationCustomizer";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_1
+        = "org.springframework.boot.autoconfigure.validation.ValidationConfigurationCustomizer.ValidationConfigurationCustomizer,setIgnoreRegistrationFailure,";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_2
+        = "org.springframework.boot.autoconfigure.web.client.RestClientSsl";
+    static final String SPRINGBOOT_CONDITIONAL_CLASS_NAME_OF_3_3
+        = "org.springframework.boot.autoconfigure.ldap.PropertiesLdapConnectionDetails";
     /**
      * Versions supported by Spring Cloud Azure, for present is [3.0, 3.1, 3.2, 3.3]. Update this value if needed.
      */
@@ -39,7 +43,6 @@ public class AzureSpringBootVersionVerifier {
         this.classNameResolver = classNameResolver;
         initDefaultSupportedBootVersionCheckMeta();
     }
-
 
     /**
      * Init default supported Spring Boot Version compatibility check meta data.
@@ -61,30 +64,29 @@ public class AzureSpringBootVersionVerifier {
         if (this.springBootVersionMatches()) {
             return VerificationResult.compatible();
         } else {
-            List<VerificationResult> errors =
-                new ArrayList<>(Collections.singleton(VerificationResult.notCompatible(this.errorDescription(),
-                    this.action())));
+            List<VerificationResult> errors = new ArrayList<>(
+                Collections.singleton(VerificationResult.notCompatible(this.errorDescription(), this.action())));
             throw new AzureCompatibilityNotMetException(errors);
         }
     }
 
     private String errorDescription() {
         String versionFromManifest = this.getVersionFromManifest();
-        return StringUtils.hasText(versionFromManifest) ? String.format("Spring Boot [%s] is not compatible with this"
-            + " Spring Cloud Azure version.", versionFromManifest) : "Spring Boot is not compatible with this "
-            + "Spring Cloud Azure version.";
+        return StringUtils.hasText(versionFromManifest)
+            ? String.format("Spring Boot [%s] is not compatible with this" + " Spring Cloud Azure version.",
+                versionFromManifest)
+            : "Spring Boot is not compatible with this " + "Spring Cloud Azure version.";
     }
 
     private String action() {
-        return String.format("Change Spring Boot version to one of the following versions %s.%n"
+        return String.format(
+            "Change Spring Boot version to one of the following versions %s.%n"
                 + "You can find the latest Spring Boot versions here [%s].%n"
                 + "If you want to learn more about the Spring Cloud Azure compatibility, "
                 + "you can visit this page [%s] and check the [Which Version of Spring Cloud Azure Should I Use] "
                 + "section.%n If you want to disable this check, "
                 + "just set the property [spring.cloud.azure.compatibility-verifier.enabled=false].",
-            this.acceptedVersions,
-            "https://spring.io/projects/spring-boot#learn",
-            "https://aka.ms/spring/versions");
+            this.acceptedVersions, "https://spring.io/projects/spring-boot#learn", "https://aka.ms/spring/versions");
     }
 
     String getVersionFromManifest() {

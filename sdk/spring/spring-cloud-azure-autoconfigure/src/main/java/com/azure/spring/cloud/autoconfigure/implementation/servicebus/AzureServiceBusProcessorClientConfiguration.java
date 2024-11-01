@@ -35,50 +35,46 @@ import org.springframework.util.StringUtils;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-name", "processor.entity-name" })
 @Import({
     AzureServiceBusProcessorClientConfiguration.SessionProcessorClientConfiguration.class,
-    AzureServiceBusProcessorClientConfiguration.NoneSessionProcessorClientConfiguration.class
-})
+    AzureServiceBusProcessorClientConfiguration.NoneSessionProcessorClientConfiguration.class })
 @Conditional(AzureServiceBusProcessorCondition.class)
 class AzureServiceBusProcessorClientConfiguration {
 
     @Bean
     @ConditionalOnBean(ServiceBusProcessorClient.class)
     @ConditionalOnMissingBean(ServiceBusProcessorClientLifecycleManager.class)
-    @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.auto-startup", havingValue = "true",
+    @ConditionalOnProperty(
+        value = "spring.cloud.azure.servicebus.processor.auto-startup",
+        havingValue = "true",
         matchIfMissing = true)
     @ConditionalOnClass(ServiceBusProcessorClientLifecycleManager.class)
-    ServiceBusProcessorClientLifecycleManager processorClientLifecycleManager(ServiceBusProcessorClient processorClient) {
+    ServiceBusProcessorClientLifecycleManager
+        processorClientLifecycleManager(ServiceBusProcessorClient processorClient) {
         return new ServiceBusProcessorClientLifecycleManager(processorClient);
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.session-enabled", havingValue = "false",
+    @ConditionalOnProperty(
+        value = "spring.cloud.azure.servicebus.processor.session-enabled",
+        havingValue = "false",
         matchIfMissing = true)
     static class NoneSessionProcessorClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
         ServiceBusProcessorClientBuilderFactory serviceBusProcessorClientBuilderFactory(
-            AzureServiceBusProperties serviceBusProperties,
-            ServiceBusRecordMessageListener messageListener,
-            ServiceBusErrorHandler errorHandler,
-            ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
+            AzureServiceBusProperties serviceBusProperties, ServiceBusRecordMessageListener messageListener,
+            ServiceBusErrorHandler errorHandler, ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorCustomizers) {
 
             ServiceBusProcessorClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
-                factory = new ServiceBusProcessorClientBuilderFactory(
-                    serviceBusProperties.buildProcessorProperties(),
-                    customizers.orderedStream().toList(),
-                    messageListener,
-                    errorHandler);
+                factory = new ServiceBusProcessorClientBuilderFactory(serviceBusProperties.buildProcessorProperties(),
+                    customizers.orderedStream().toList(), messageListener, errorHandler);
             } else {
-                factory = new ServiceBusProcessorClientBuilderFactory(
-                    serviceBusClientBuilders.getIfAvailable(),
-                    serviceBusProperties.buildProcessorProperties(),
-                    messageListener,
-                    errorHandler);
+                factory = new ServiceBusProcessorClientBuilderFactory(serviceBusClientBuilders.getIfAvailable(),
+                    serviceBusProperties.buildProcessorProperties(), messageListener, errorHandler);
             }
 
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
@@ -89,15 +85,15 @@ class AzureServiceBusProcessorClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusClientBuilder.ServiceBusProcessorClientBuilder serviceBusProcessorClientBuilder(
-            ServiceBusProcessorClientBuilderFactory builderFactory) {
+        ServiceBusClientBuilder.ServiceBusProcessorClientBuilder
+            serviceBusProcessorClientBuilder(ServiceBusProcessorClientBuilderFactory builderFactory) {
             return builderFactory.build();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusProcessorClient serviceBusProcessorClient(
-            ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorClientBuilder) {
+        ServiceBusProcessorClient
+            serviceBusProcessorClient(ServiceBusClientBuilder.ServiceBusProcessorClientBuilder processorClientBuilder) {
             return processorClientBuilder.buildProcessorClient();
         }
 
@@ -110,10 +106,8 @@ class AzureServiceBusProcessorClientConfiguration {
         @Bean
         @ConditionalOnMissingBean
         ServiceBusSessionProcessorClientBuilderFactory serviceBusSessionProcessorClientBuilderFactory(
-            AzureServiceBusProperties serviceBusProperties,
-            ServiceBusRecordMessageListener messageListener,
-            ServiceBusErrorHandler errorHandler,
-            ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
+            AzureServiceBusProperties serviceBusProperties, ServiceBusRecordMessageListener messageListener,
+            ServiceBusErrorHandler errorHandler, ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorCustomizers) {
@@ -121,16 +115,11 @@ class AzureServiceBusProcessorClientConfiguration {
             ServiceBusSessionProcessorClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
                 factory = new ServiceBusSessionProcessorClientBuilderFactory(
-                    serviceBusProperties.buildProcessorProperties(),
-                    customizers.orderedStream().toList(),
-                    messageListener,
-                    errorHandler);
+                    serviceBusProperties.buildProcessorProperties(), customizers.orderedStream().toList(),
+                    messageListener, errorHandler);
             } else {
-                factory = new ServiceBusSessionProcessorClientBuilderFactory(
-                    serviceBusClientBuilders.getIfAvailable(),
-                    serviceBusProperties.buildProcessorProperties(),
-                    messageListener,
-                    errorHandler);
+                factory = new ServiceBusSessionProcessorClientBuilderFactory(serviceBusClientBuilders.getIfAvailable(),
+                    serviceBusProperties.buildProcessorProperties(), messageListener, errorHandler);
             }
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
@@ -140,8 +129,8 @@ class AzureServiceBusProcessorClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder serviceBusSessionProcessorClientBuilder(
-            ServiceBusSessionProcessorClientBuilderFactory builderFactory) {
+        ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder
+            serviceBusSessionProcessorClientBuilder(ServiceBusSessionProcessorClientBuilderFactory builderFactory) {
             return builderFactory.build();
         }
 

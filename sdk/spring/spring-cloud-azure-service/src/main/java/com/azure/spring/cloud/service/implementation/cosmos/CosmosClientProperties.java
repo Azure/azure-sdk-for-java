@@ -113,7 +113,6 @@ public interface CosmosClientProperties extends AzureProperties, KeyProvider {
      */
     ThrottlingRetryOptions getThrottlingRetryOptions();
 
-
     interface GatewayConnectionProperties {
 
         Integer getMaxConnectionPoolSize();
@@ -139,6 +138,5 @@ public interface CosmosClientProperties extends AzureProperties, KeyProvider {
         Integer getMaxRequestsPerConnection();
 
     }
-
 
 }

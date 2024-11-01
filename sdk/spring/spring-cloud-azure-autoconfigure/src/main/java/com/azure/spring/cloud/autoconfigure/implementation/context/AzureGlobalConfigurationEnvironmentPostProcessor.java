@@ -53,7 +53,6 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         return Ordered.LOWEST_PRECEDENCE;
     }
 
-
     enum AzureCoreEnvMapping {
 
         CLIENT_ID(PROPERTY_AZURE_CLIENT_ID, "credential.client-id"),
@@ -62,7 +61,8 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         CLIENT_CERTIFICATE_PATH(PROPERTY_AZURE_CLIENT_CERTIFICATE_PATH, "credential.client-certificate-path"),
 
-        CLIENT_CERTIFICATE_PASSWORD(PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD, "credential.client-certificate-password"),
+        CLIENT_CERTIFICATE_PASSWORD(PROPERTY_AZURE_CLIENT_CERTIFICATE_PASSWORD,
+            "credential.client-certificate-password"),
 
         USERNAME(PROPERTY_AZURE_USERNAME, "credential.username"),
 
@@ -82,16 +82,18 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         HTTP_LOG_LEVEL(PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, "client.http.logging.level"),
 
-        HTTP_CONNECT_TIMEOUT(PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, "client.http.connect-timeout", convertMillisToDuration()),
+        HTTP_CONNECT_TIMEOUT(PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, "client.http.connect-timeout",
+            convertMillisToDuration()),
 
         HTTP_READ_TIMEOUT(PROPERTY_AZURE_REQUEST_READ_TIMEOUT, "client.http.read-timeout", convertMillisToDuration()),
 
-        HTTP_WRITE_TIMEOUT(PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, "client.http.write-timeout", convertMillisToDuration()),
+        HTTP_WRITE_TIMEOUT(PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, "client.http.write-timeout",
+            convertMillisToDuration()),
 
-        HTTP_RESPONSE_TIMEOUT(PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, "client.http.response-timeout", convertMillisToDuration()),
+        HTTP_RESPONSE_TIMEOUT(PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, "client.http.response-timeout",
+            convertMillisToDuration()),
 
         HTTP_NO_PROXY(PROPERTY_NO_PROXY, "proxy.http.non-proxy-hosts");
-
 
         // TODO (xiada): how to set this proxy?
         // proxy(PROPERTY_HTTP_PROXY, PROPERTY_HTTPS_PROXY)
@@ -147,6 +149,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
             this.converter = converter;
         }
     }
+
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
         Map<String, Object> source = new HashMap<>();
@@ -186,6 +189,5 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
             super(name, source);
         }
     }
-
 
 }

@@ -50,7 +50,6 @@ public abstract class AbstractCosmosQuery implements RepositoryQuery {
         return execution.execute(query, processor.getReturnedType().getDomainType(), container);
     }
 
-
     /**
      * Determines the appropriate execution path for a query
      *

@@ -18,7 +18,6 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
-
 final class TestKeys {
 
     public static final KeyFactory KF;

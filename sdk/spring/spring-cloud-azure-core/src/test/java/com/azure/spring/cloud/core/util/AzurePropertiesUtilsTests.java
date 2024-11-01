@@ -33,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 class AzurePropertiesUtilsTests {
 
     @Test
@@ -71,7 +70,8 @@ class AzurePropertiesUtilsTests {
         assertEquals("profile-tenant-id-A", target.profile.getTenantId());
         assertEquals("profile-sub-id-A", target.profile.getSubscriptionId());
         assertEquals("aad-endpoint-A", target.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(), target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(),
+            target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("proxy-type-A", target.proxy.getType());
         assertEquals("proxy-hostname-A", target.proxy.getHostname());
         assertEquals(1234, target.proxy.getPort());
@@ -125,7 +125,8 @@ class AzurePropertiesUtilsTests {
         assertEquals("profile-tenant-id-B", target.profile.getTenantId());
         assertEquals("profile-sub-id-B", target.profile.getSubscriptionId());
         assertEquals("aad-endpoint-B", target.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(), target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(),
+            target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("proxy-type-B", target.proxy.getType());
         assertEquals("proxy-hostname-B", target.proxy.getHostname());
         assertEquals(1234, target.proxy.getPort());
@@ -160,8 +161,10 @@ class AzurePropertiesUtilsTests {
         assertEquals(AZURE_CHINA, target.profile.getCloudType());
         assertEquals("profile-tenant-id-A", target.profile.getTenantId());
         assertNull(target.profile.getSubscriptionId());
-        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(), target.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(), target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
+            target.profile.getEnvironment().getActiveDirectoryEndpoint());
+        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(),
+            target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertNull(target.proxy.getType());
         assertEquals("proxy-hostname-A", target.proxy.getHostname());
         assertNull(target.proxy.getPort());
@@ -215,7 +218,8 @@ class AzurePropertiesUtilsTests {
         assertEquals("profile-tenant-id-B", target.profile.getTenantId());
         assertEquals("profile-sub-id-B", target.profile.getSubscriptionId());
         assertEquals("aad-endpoint-B", target.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(), target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(),
+            target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("proxy-type-B", target.proxy.getType());
         assertEquals("proxy-hostname-B", target.proxy.getHostname());
         assertEquals(1234, target.proxy.getPort());
@@ -253,7 +257,8 @@ class AzurePropertiesUtilsTests {
         assertEquals("profile-tenant-id-A", target.profile.getTenantId());
         assertEquals("profile-sub-id-B", target.profile.getSubscriptionId());
         assertEquals("aad-endpoint-A", target.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(), target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(),
+            target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("proxy-type-B", target.proxy.getType());
         assertEquals("proxy-hostname-A", target.proxy.getHostname());
         assertEquals(1234, target.proxy.getPort());
@@ -306,7 +311,8 @@ class AzurePropertiesUtilsTests {
         assertEquals("profile-tenant-id-B", defaultProperties.profile.getTenantId());
         assertEquals("profile-sub-id-B", defaultProperties.profile.getSubscriptionId());
         assertEquals("aad-endpoint-B", defaultProperties.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(), defaultProperties.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(),
+            defaultProperties.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("proxy-type-B", defaultProperties.proxy.getType());
         assertEquals("proxy-hostname-B", defaultProperties.proxy.getHostname());
         assertEquals(1234, defaultProperties.proxy.getPort());
@@ -336,7 +342,6 @@ class AzurePropertiesUtilsTests {
         propertiesToOverride.retry.getFixed().setMaxRetries(17);
         propertiesToOverride.credential.setClientId("credential-client-id-A");
 
-
         AzurePropertiesB result = new AzurePropertiesB();
         AzurePropertiesUtils.mergeAzureCommonProperties(defaultProperties, propertiesToOverride, result);
 
@@ -346,7 +351,8 @@ class AzurePropertiesUtilsTests {
         assertEquals("profile-tenant-id-A", result.profile.getTenantId());
         assertEquals("profile-sub-id-B", result.profile.getSubscriptionId());
         assertEquals("aad-endpoint-A", result.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(), result.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(),
+            result.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("proxy-type-B", result.proxy.getType());
         assertEquals("proxy-hostname-A", result.proxy.getHostname());
         assertEquals(1234, result.proxy.getPort());
@@ -393,7 +399,6 @@ class AzurePropertiesUtilsTests {
         assertEquals(AZURE, source.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
             target.profile.getEnvironment().getActiveDirectoryEndpoint());
-
 
         // source properties should not be updated
         assertNull(source.credential.getClientSecret());

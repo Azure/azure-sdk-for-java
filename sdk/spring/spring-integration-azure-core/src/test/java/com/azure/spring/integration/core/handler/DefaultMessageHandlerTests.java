@@ -53,13 +53,13 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
     @Mock
     private ConfigurableListableBeanFactory beanFactory;
 
-
     public DefaultMessageHandlerTests() {
         Map<String, Object> valueMap = new HashMap<>(2);
         valueMap.put("key1", "value1");
         valueMap.put("key2", "value2");
         message = new GenericMessage<>("testPayload", valueMap);
     }
+
     public abstract void setUp();
 
     @Test
@@ -112,7 +112,8 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
     @Test
     @SuppressWarnings("unchecked")
     public void testSendTimeout() {
-        when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class))).thenReturn(Mono.empty().timeout(Mono.empty()));
+        when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class)))
+            .thenReturn(Mono.empty().timeout(Mono.empty()));
         this.handler.setSync(true);
         this.handler.setSendTimeout(1);
 
@@ -129,9 +130,7 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
         this.handler.setPartitionIdExpression(partitionIdExpression);
         Message<?> message = new GenericMessage<>(payloadBytes, Collections.unmodifiableMap(headers));
         Map<String, String> partitionHeaders = ReflectionTestUtils.invokeMethod(this.handler,
-            DefaultMessageHandler.class,
-            GET_PARTITION_FROM_EXPRESSION_METHOD_NAME,
-            message);
+            DefaultMessageHandler.class, GET_PARTITION_FROM_EXPRESSION_METHOD_NAME, message);
         assertThat(partitionHeaders.get(AzureHeaders.PARTITION_ID)).isEqualTo("3");
         assertThat(partitionHeaders.get(AzureHeaders.PARTITION_KEY)).isNull();
     }
@@ -143,9 +142,7 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
         this.handler.setPartitionKeyExpression(partitionKeyExpression);
         Message<?> message = new GenericMessage<>(payloadBytes);
         Map<String, String> partitionHeaders = ReflectionTestUtils.invokeMethod(this.handler,
-            DefaultMessageHandler.class,
-            GET_PARTITION_FROM_EXPRESSION_METHOD_NAME,
-            message);
+            DefaultMessageHandler.class, GET_PARTITION_FROM_EXPRESSION_METHOD_NAME, message);
         assertThat(partitionHeaders.get(AzureHeaders.PARTITION_ID)).isNull();
         assertThat(partitionHeaders.get(AzureHeaders.PARTITION_KEY)).isEqualTo(String.valueOf(payloadBytes.hashCode()));
     }
@@ -156,11 +153,8 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
         Message<?> message = new GenericMessage<>(payload.getBytes(StandardCharsets.UTF_8));
 
         Map<String, String> expressionGeneratedHeaders = new HashMap<>();
-        Message<?> mutableMessage = ReflectionTestUtils.invokeMethod(this.handler,
-            DefaultMessageHandler.class,
-            CREATE_MUTABLE_MESSAGE_METHOD_NAME,
-            message,
-            expressionGeneratedHeaders);
+        Message<?> mutableMessage = ReflectionTestUtils.invokeMethod(this.handler, DefaultMessageHandler.class,
+            CREATE_MUTABLE_MESSAGE_METHOD_NAME, message, expressionGeneratedHeaders);
 
         assertThat(mutableMessage.getHeaders()).isEqualTo(message.getHeaders());
     }
@@ -171,17 +165,15 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
         Map<String, String> rawMessageHeaders = new HashMap<>();
         rawMessageHeaders.put(AzureHeaders.PARTITION_ID, "1");
         rawMessageHeaders.put(AzureHeaders.PARTITION_KEY, "key1");
-        Message<?> message = new GenericMessage<>(payload.getBytes(StandardCharsets.UTF_8), Collections.unmodifiableMap(rawMessageHeaders));
+        Message<?> message = new GenericMessage<>(payload.getBytes(StandardCharsets.UTF_8),
+            Collections.unmodifiableMap(rawMessageHeaders));
 
         Map<String, String> expressionGeneratedHeaders = new HashMap<>(2);
         expressionGeneratedHeaders.put(AzureHeaders.PARTITION_ID, "2");
         expressionGeneratedHeaders.put(AzureHeaders.PARTITION_KEY, "key2");
 
-        Message<?> mutableMessage = ReflectionTestUtils.invokeMethod(this.handler,
-            DefaultMessageHandler.class,
-            CREATE_MUTABLE_MESSAGE_METHOD_NAME,
-            message,
-            expressionGeneratedHeaders);
+        Message<?> mutableMessage = ReflectionTestUtils.invokeMethod(this.handler, DefaultMessageHandler.class,
+            CREATE_MUTABLE_MESSAGE_METHOD_NAME, message, expressionGeneratedHeaders);
         assertThat(mutableMessage.getHeaders().get(AzureHeaders.PARTITION_ID)).isEqualTo("1");
         assertThat(mutableMessage.getHeaders().get(AzureHeaders.PARTITION_KEY)).isEqualTo("key1");
     }
@@ -193,11 +185,8 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
         Map<String, String> expressionGeneratedHeaders = new HashMap<>();
         expressionGeneratedHeaders.put(AzureHeaders.PARTITION_ID, "2");
         expressionGeneratedHeaders.put(AzureHeaders.PARTITION_KEY, "key2");
-        Message<?> mutableMessage = ReflectionTestUtils.invokeMethod(this.handler,
-            DefaultMessageHandler.class,
-            CREATE_MUTABLE_MESSAGE_METHOD_NAME,
-            message,
-            expressionGeneratedHeaders);
+        Message<?> mutableMessage = ReflectionTestUtils.invokeMethod(this.handler, DefaultMessageHandler.class,
+            CREATE_MUTABLE_MESSAGE_METHOD_NAME, message, expressionGeneratedHeaders);
         assertThat(mutableMessage.getHeaders().get(AzureHeaders.PARTITION_ID)).isEqualTo("2");
         assertThat(mutableMessage.getHeaders().get(AzureHeaders.PARTITION_KEY)).isEqualTo("key2");
     }
@@ -207,11 +196,8 @@ public abstract class DefaultMessageHandlerTests<O extends SendOperation> {
 
         Message<?> message = new GenericMessage<>(payload.getBytes(StandardCharsets.UTF_8));
         Map<String, String> expressionGeneratedHeaders = new HashMap<>();
-        Message<?> mutableMessage = ReflectionTestUtils.invokeMethod(this.handler,
-            DefaultMessageHandler.class,
-            CREATE_MUTABLE_MESSAGE_METHOD_NAME,
-            message,
-            expressionGeneratedHeaders);
+        Message<?> mutableMessage = ReflectionTestUtils.invokeMethod(this.handler, DefaultMessageHandler.class,
+            CREATE_MUTABLE_MESSAGE_METHOD_NAME, message, expressionGeneratedHeaders);
         assertThat(mutableMessage.getHeaders().get(AzureHeaders.PARTITION_ID)).isNull();
         assertThat(mutableMessage.getHeaders().get(AzureHeaders.PARTITION_KEY)).isNull();
     }

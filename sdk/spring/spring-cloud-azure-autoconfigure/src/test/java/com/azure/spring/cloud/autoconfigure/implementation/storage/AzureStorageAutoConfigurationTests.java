@@ -35,15 +35,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 class AzureStorageAutoConfigurationTests {
 
-    private static final String STORAGE_CONNECTION_STRING_PATTERN = "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net";
+    private static final String STORAGE_CONNECTION_STRING_PATTERN
+        = "DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureStorageBlobAutoConfiguration.class))
         .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class));
 
     @Test
     void configureWithStorageGlobalDisabled() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.storage.enabled=false")
+        this.contextRunner.withPropertyValues("spring.cloud.azure.storage.enabled=false")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
             .run(context -> {
@@ -56,12 +56,9 @@ class AzureStorageAutoConfigurationTests {
     @Test
     void configureWithStorageGlobalEnabledAndServicesDisabled() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.storage.enabled=true",
-                "spring.cloud.azure.storage.blob.enabled=false",
-                "spring.cloud.azure.storage.fileshare.enabled=false",
-                "spring.cloud.azure.storage.queue.enabled=false"
-            )
+            .withPropertyValues("spring.cloud.azure.storage.enabled=true",
+                "spring.cloud.azure.storage.blob.enabled=false", "spring.cloud.azure.storage.fileshare.enabled=false",
+                "spring.cloud.azure.storage.queue.enabled=false")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
             .run(context -> {
@@ -72,16 +69,15 @@ class AzureStorageAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "spring.cloud.azure.storage.blob.account-name=test-account-name", "spring.cloud.azure.storage.account-name=test-account-name" })
+    @ValueSource(
+        strings = {
+            "spring.cloud.azure.storage.blob.account-name=test-account-name",
+            "spring.cloud.azure.storage.account-name=test-account-name" })
     void configureWithStorageGlobalAndBlobEnabled(String accountNameProperty) {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.storage.enabled=true",
-                "spring.cloud.azure.storage.blob.enabled=true",
-                "spring.cloud.azure.storage.fileshare.enabled=false",
-                "spring.cloud.azure.storage.queue.enabled=false",
-                accountNameProperty
-            )
+            .withPropertyValues("spring.cloud.azure.storage.enabled=true",
+                "spring.cloud.azure.storage.blob.enabled=true", "spring.cloud.azure.storage.fileshare.enabled=false",
+                "spring.cloud.azure.storage.queue.enabled=false", accountNameProperty)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
             .run(context -> {
@@ -96,12 +92,10 @@ class AzureStorageAutoConfigurationTests {
         String accountName = "test-account-name";
         String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.storage.blob.connection-string=" + connectionString,
+            .withPropertyValues("spring.cloud.azure.storage.blob.connection-string=" + connectionString,
                 "spring.cloud.azure.storage.blob.account-name=test-account-name",
                 "spring.cloud.azure.storage.fileshare.connection-string=" + connectionString,
-                "spring.cloud.azure.storage.fileshare.account-name=test-account-name"
-            )
+                "spring.cloud.azure.storage.fileshare.account-name=test-account-name")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertNotNull(context.getBean("staticStorageBlobConnectionStringProvider"));
@@ -119,14 +113,12 @@ class AzureStorageAutoConfigurationTests {
         String accountName = "test-account-name";
         String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.storage.blob.connection-string=" + connectionString,
+            .withPropertyValues("spring.cloud.azure.storage.blob.connection-string=" + connectionString,
                 "spring.cloud.azure.storage.blob.account-name=test-account-name",
                 "spring.cloud.azure.storage.fileshare.connection-string=" + connectionString,
                 "spring.cloud.azure.storage.fileshare.account-name=test-account-name",
                 "spring.cloud.azure.storage.queue.connection-string=" + connectionString,
-                "spring.cloud.azure.storage.queue.account-name=test-account-name"
-            )
+                "spring.cloud.azure.storage.queue.account-name=test-account-name")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
             .run(context -> {
@@ -157,10 +149,8 @@ class AzureStorageAutoConfigurationTests {
         String accountName = "test-account-name";
         String connectionString = String.format(STORAGE_CONNECTION_STRING_PATTERN, accountName, "test-key");
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.storage.connection-string=" + connectionString,
-                "spring.cloud.azure.storage.account-name=test-account-name"
-            )
+            .withPropertyValues("spring.cloud.azure.storage.connection-string=" + connectionString,
+                "spring.cloud.azure.storage.account-name=test-account-name")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withUserConfiguration(AzureStorageQueueAutoConfiguration.class)
             .run(context -> {

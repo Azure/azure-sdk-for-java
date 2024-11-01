@@ -33,15 +33,21 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties
 @ConditionalOnClass(SecretClientBuilder.class)
-@ConditionalOnProperty(value = { "spring.cloud.azure.keyvault.secret.enabled", "spring.cloud.azure.keyvault.enabled" }, havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure.keyvault.secret", "spring.cloud.azure.keyvault" }, name = { "endpoint" })
+@ConditionalOnProperty(
+    value = { "spring.cloud.azure.keyvault.secret.enabled", "spring.cloud.azure.keyvault.enabled" },
+    havingValue = "true",
+    matchIfMissing = true)
+@ConditionalOnAnyProperty(
+    prefixes = { "spring.cloud.azure.keyvault.secret", "spring.cloud.azure.keyvault" },
+    name = { "endpoint" })
 @Import(AzureKeyVaultConfiguration.class)
 public class AzureKeyVaultSecretAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(prefix = AzureKeyVaultSecretProperties.PREFIX)
     AzureKeyVaultSecretProperties azureKeyVaultSecretProperties(AzureKeyVaultProperties azureKeyVaultProperties) {
-        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureKeyVaultProperties, new AzureKeyVaultSecretProperties());
+        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureKeyVaultProperties,
+            new AzureKeyVaultSecretProperties());
     }
 
     @Bean
@@ -64,8 +70,7 @@ public class AzureKeyVaultSecretAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    SecretClientBuilderFactory secretClientBuilderFactory(
-        AzureKeyVaultSecretProperties properties,
+    SecretClientBuilderFactory secretClientBuilderFactory(AzureKeyVaultSecretProperties properties,
         ObjectProvider<AzureServiceClientBuilderCustomizer<SecretClientBuilder>> customizers) {
         SecretClientBuilderFactory factory = new SecretClientBuilderFactory(properties);
 

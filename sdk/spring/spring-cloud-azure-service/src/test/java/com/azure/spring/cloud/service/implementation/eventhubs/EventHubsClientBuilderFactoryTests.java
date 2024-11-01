@@ -22,12 +22,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class EventHubsClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryBaseTests<
-    EventHubClientBuilder,
-    AzureEventHubsTestProperties,
-    EventHubsClientBuilderFactoryTests.EventHubClientBuilderFactoryExt> {
+class EventHubsClientBuilderFactoryTests extends
+    AzureAmqpClientBuilderFactoryBaseTests<EventHubClientBuilder, AzureEventHubsTestProperties, EventHubsClientBuilderFactoryTests.EventHubClientBuilderFactoryExt> {
 
-    private static final String CONNECTION_STRING = String.format(EventHubsTestUtils.CONNECTION_STRING_FORMAT, "test-namespace");
+    private static final String CONNECTION_STRING
+        = String.format(EventHubsTestUtils.CONNECTION_STRING_FORMAT, "test-namespace");
 
     @Test
     void builderWithConnectionStringProvidedCanBuildMultipleClients() {
@@ -130,7 +129,8 @@ class EventHubsClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryBa
     }
 
     @Override
-    protected EventHubClientBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(AzureEventHubsTestProperties properties) {
+    protected EventHubClientBuilderFactoryExt
+        createClientBuilderFactoryWithMockBuilder(AzureEventHubsTestProperties properties) {
         return new EventHubClientBuilderFactoryExt(properties);
     }
 
@@ -141,8 +141,7 @@ class EventHubsClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryBa
 
     @Override
     protected void verifyCredentialCalled(EventHubClientBuilder builder,
-                                          Class<? extends TokenCredential> tokenCredentialClass,
-                                          VerificationMode mode) {
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         verify(builder, mode).credential(any(tokenCredentialClass));
     }
 

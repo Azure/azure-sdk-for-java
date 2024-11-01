@@ -9,7 +9,9 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
-@Container(containerName = "nested-partition-key-with-generated-value", partitionKeyPath = "/nestedEntity/nestedPartitionKey",
+@Container(
+    containerName = "nested-partition-key-with-generated-value",
+    partitionKeyPath = "/nestedEntity/nestedPartitionKey",
     ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class NestedPartitionKeyEntityWithGeneratedValue {
 
@@ -63,9 +65,7 @@ public class NestedPartitionKeyEntityWithGeneratedValue {
 
     @Override
     public String toString() {
-        return "NestedPartitionKeyEntityWithGeneratedValue{"
-            + "id='" + id + '\''
-            + ", nestedEntity=" + nestedEntity
+        return "NestedPartitionKeyEntityWithGeneratedValue{" + "id='" + id + '\'' + ", nestedEntity=" + nestedEntity
             + '}';
     }
 }

@@ -9,8 +9,8 @@ import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.core.provider.authentication.KeyProvider;
 import com.azure.spring.cloud.core.provider.authentication.SasTokenProvider;
 
-public interface EventGridPublisherClientProperties extends AzureProperties, RetryOptionsProvider, KeyProvider,
-    SasTokenProvider {
+public interface EventGridPublisherClientProperties
+    extends AzureProperties, RetryOptionsProvider, KeyProvider, SasTokenProvider {
 
     String getEndpoint();
 

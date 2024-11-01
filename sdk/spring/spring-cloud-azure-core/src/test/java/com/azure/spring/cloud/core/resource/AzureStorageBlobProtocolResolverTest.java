@@ -32,26 +32,25 @@ import static org.mockito.Mockito.when;
 
 class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolResolverTests {
 
-
     private BlobServiceClient blobServiceClient;
     private BlobClient blobClient;
     private BlockBlobClient blockBlobClient;
     private BlobContainerClient blobContainerClient;
     private ConfigurableListableBeanFactory beanFactory;
 
-
     @Override
     protected void initializeSDKClient() {
         blobServiceClient = mock(BlobServiceClient.class);
 
-        Tuple3<BlobContainerClient, BlobClient, BlockBlobClient> clientTuple3 =
-            mockClientsForExistingContainerAndBlob(this.blobServiceClient, CONTAINER_NAME, EXISTING_ITEM_NAME);
+        Tuple3<BlobContainerClient, BlobClient, BlockBlobClient> clientTuple3
+            = mockClientsForExistingContainerAndBlob(this.blobServiceClient, CONTAINER_NAME, EXISTING_ITEM_NAME);
 
         this.blobContainerClient = clientTuple3.getT1();
         this.blobClient = clientTuple3.getT2();
         this.blockBlobClient = clientTuple3.getT3();
 
-        mockClientsForNonExistingContainerAndBlob(this.blobServiceClient, NON_EXISTING_CONTAINER_NAME, NON_EXISTING_ITEM_NAME);
+        mockClientsForNonExistingContainerAndBlob(this.blobServiceClient, NON_EXISTING_CONTAINER_NAME,
+            NON_EXISTING_ITEM_NAME);
         mockClientsForNonExistingBlob(this.blobContainerClient, CONTAINER_NAME, NON_EXISTING_ITEM_NAME);
     }
 
@@ -75,7 +74,6 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
         verify(blockBlobClient, times(1)).exists();
     }
 
-
     @Test
     void testValidObject() throws Exception {
         super.testValidObject();
@@ -87,7 +85,7 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
         when(blobServiceClient.getBlobContainerClient(anyString())).thenReturn(blobContainerClient);
         when(blobContainerClient.getBlobClient(anyString())).thenReturn(blobClient);
 
-        String[] locations = new String[]{"azure-blob://test/test", "azure-blob://test/test2"};
+        String[] locations = new String[] { "azure-blob://test/test", "azure-blob://test/test2" };
         Resource[] resources = getResources(locations);
         assertEquals(locations.length, resources.length, "Correct number of resources found");
     }
@@ -97,7 +95,7 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
         when(blobServiceClient.getBlobContainerClient(anyString())).thenReturn(blobContainerClient);
         when(blobContainerClient.getBlobClient(anyString())).thenReturn(blobClient);
 
-        String[] locations = new String[]{"azureblob:test/test", "otherblob:test/test2"};
+        String[] locations = new String[] { "azureblob:test/test", "otherblob:test/test2" };
         Resource[] resources = getResources(locations);
         assertEquals(0, resources.length, "No resolved resources found");
     }
@@ -117,8 +115,10 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
 
         when(blockBlobClient.getContainerName()).thenReturn(containerName);
         when(blockBlobClient.getBlobName()).thenReturn(blobName);
-        when(blockBlobClient.openInputStream(any(BlobInputStreamOptions.class))).thenReturn(mock(BlobInputStream.class));
-        when(blockBlobClient.getBlobOutputStream(any(BlockBlobOutputStreamOptions.class))).thenReturn(mock(BlobOutputStream.class));
+        when(blockBlobClient.openInputStream(any(BlobInputStreamOptions.class)))
+            .thenReturn(mock(BlobInputStream.class));
+        when(blockBlobClient.getBlobOutputStream(any(BlockBlobOutputStreamOptions.class)))
+            .thenReturn(mock(BlobOutputStream.class));
         when(blockBlobClient.exists()).thenReturn(true);
 
         BlobProperties blobProperties = mock(BlobProperties.class);
@@ -127,9 +127,8 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
         return Tuples.of(blobContainerClient, blobClient, blockBlobClient);
     }
 
-    private void mockClientsForNonExistingContainerAndBlob(BlobServiceClient blobServiceClient,
-                                                           String containerName,
-                                                           String blobName) {
+    private void mockClientsForNonExistingContainerAndBlob(BlobServiceClient blobServiceClient, String containerName,
+        String blobName) {
         BlobContainerClient nonExistingBlobContainer = mock(BlobContainerClient.class);
         BlobClient nonExistingBlob = mock(BlobClient.class);
         BlockBlobClient nonExistingBlockBlob = mock(BlockBlobClient.class);
@@ -149,7 +148,8 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
         when(nonExistingBlockBlob.openInputStream()).thenThrow(blobStorageException);
     }
 
-    private void mockClientsForNonExistingBlob(BlobContainerClient blobContainerClient, String containerName, String blobName) {
+    private void mockClientsForNonExistingBlob(BlobContainerClient blobContainerClient, String containerName,
+        String blobName) {
         BlobClient nonExistingBlob = mock(BlobClient.class);
         BlockBlobClient nonExistingBlockBlob = mock(BlockBlobClient.class);
 

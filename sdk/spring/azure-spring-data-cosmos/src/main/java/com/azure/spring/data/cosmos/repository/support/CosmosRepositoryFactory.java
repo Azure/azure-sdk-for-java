@@ -54,22 +54,21 @@ public class CosmosRepositoryFactory extends RepositoryFactorySupport {
     }
 
     @Override
-    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(
-            QueryLookupStrategy.Key key, QueryMethodEvaluationContextProvider evaluationContextProvider) {
+    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(QueryLookupStrategy.Key key,
+        QueryMethodEvaluationContextProvider evaluationContextProvider) {
         return Optional.of(new CosmosDbQueryLookupStrategy(cosmosOperations, evaluationContextProvider));
     }
 
     private static class CosmosDbQueryLookupStrategy implements QueryLookupStrategy {
         private final CosmosOperations dbOperations;
 
-        CosmosDbQueryLookupStrategy(
-                CosmosOperations operations, QueryMethodEvaluationContextProvider provider) {
+        CosmosDbQueryLookupStrategy(CosmosOperations operations, QueryMethodEvaluationContextProvider provider) {
             this.dbOperations = operations;
         }
 
         @Override
-        public RepositoryQuery resolveQuery(Method method, RepositoryMetadata metadata,
-                                            ProjectionFactory factory, NamedQueries namedQueries) {
+        public RepositoryQuery resolveQuery(Method method, RepositoryMetadata metadata, ProjectionFactory factory,
+            NamedQueries namedQueries) {
             final CosmosQueryMethod queryMethod = new CosmosQueryMethod(method, metadata, factory);
 
             Assert.notNull(queryMethod, "queryMethod must not be null!");

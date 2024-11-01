@@ -31,18 +31,19 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderFactoryBaseTests<
-    EventProcessorClientBuilder,
-    AzureEventHubsTestProperties.Processor,
-    EventProcessorClientBuilderFactoryTests.EventProcessorClientBuilderFactoryExt> {
+class EventProcessorClientBuilderFactoryTests extends
+    AzureServiceClientBuilderFactoryBaseTests<EventProcessorClientBuilder, AzureEventHubsTestProperties.Processor, EventProcessorClientBuilderFactoryTests.EventProcessorClientBuilderFactoryExt> {
 
     @Test
     void errorHandlerConfigured() {
         AzureEventHubsTestProperties.Processor properties = new AzureEventHubsTestProperties.Processor();
-        EventHubsErrorHandler errorHandler = errorContext -> { };
-        EventHubsRecordMessageListener messageListener = eventContext -> { };
+        EventHubsErrorHandler errorHandler = errorContext -> {
+        };
+        EventHubsRecordMessageListener messageListener = eventContext -> {
+        };
 
-        final EventProcessorClientBuilderFactoryExt builderFactory = new EventProcessorClientBuilderFactoryExt(properties, null, messageListener, errorHandler);
+        final EventProcessorClientBuilderFactoryExt builderFactory
+            = new EventProcessorClientBuilderFactoryExt(properties, null, messageListener, errorHandler);
         final EventProcessorClientBuilder builder = builderFactory.build();
 
         verify(builder, times(1)).processError(errorHandler);
@@ -51,9 +52,11 @@ class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderF
     @Test
     void initializationContextConsumerConfigured() {
         AzureEventHubsTestProperties.Processor properties = new AzureEventHubsTestProperties.Processor();
-        Consumer<InitializationContext> initializationContextConsumer = initializationContext -> { };
+        Consumer<InitializationContext> initializationContextConsumer = initializationContext -> {
+        };
 
-        final EventProcessorClientBuilderFactoryExt builderFactory = createClientBuilderFactoryWithMockBuilder(properties);
+        final EventProcessorClientBuilderFactoryExt builderFactory
+            = createClientBuilderFactoryWithMockBuilder(properties);
         builderFactory.setInitializationContextConsumer(initializationContextConsumer);
         final EventProcessorClientBuilder builder = builderFactory.build();
 
@@ -63,9 +66,11 @@ class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderF
     @Test
     void closeContextConsumerConfigured() {
         AzureEventHubsTestProperties.Processor properties = new AzureEventHubsTestProperties.Processor();
-        Consumer<CloseContext> closeContextConsumer = closeContext -> { };
+        Consumer<CloseContext> closeContextConsumer = closeContext -> {
+        };
 
-        final EventProcessorClientBuilderFactoryExt builderFactory = createClientBuilderFactoryWithMockBuilder(properties);
+        final EventProcessorClientBuilderFactoryExt builderFactory
+            = createClientBuilderFactoryWithMockBuilder(properties);
         builderFactory.setCloseContextConsumer(closeContextConsumer);
         final EventProcessorClientBuilder builder = builderFactory.build();
 
@@ -75,11 +80,14 @@ class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderF
     @Test
     void checkpointStoreConfigured() {
         AzureEventHubsTestProperties.Processor properties = new AzureEventHubsTestProperties.Processor();
-        EventHubsErrorHandler errorHandler = errorContext -> { };
-        EventHubsRecordMessageListener messageListener = eventContext -> { };
+        EventHubsErrorHandler errorHandler = errorContext -> {
+        };
+        EventHubsRecordMessageListener messageListener = eventContext -> {
+        };
         CheckpointStore checkpointStore = mock(CheckpointStore.class);
 
-        final EventProcessorClientBuilderFactoryExt builderFactory = new EventProcessorClientBuilderFactoryExt(properties, checkpointStore, messageListener, errorHandler);
+        final EventProcessorClientBuilderFactoryExt builderFactory
+            = new EventProcessorClientBuilderFactoryExt(properties, checkpointStore, messageListener, errorHandler);
         final EventProcessorClientBuilder builder = builderFactory.build();
 
         verify(builder, times(1)).checkpointStore(checkpointStore);
@@ -88,10 +96,13 @@ class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderF
     @Test
     void messageListenerConfigured() {
         AzureEventHubsTestProperties.Processor properties = new AzureEventHubsTestProperties.Processor();
-        EventHubsErrorHandler errorHandler = errorContext -> { };
-        EventHubsRecordMessageListener messageListener = eventContext -> { };
+        EventHubsErrorHandler errorHandler = errorContext -> {
+        };
+        EventHubsRecordMessageListener messageListener = eventContext -> {
+        };
 
-        final EventProcessorClientBuilderFactoryExt builderFactory = new EventProcessorClientBuilderFactoryExt(properties, null, messageListener, errorHandler);
+        final EventProcessorClientBuilderFactoryExt builderFactory
+            = new EventProcessorClientBuilderFactoryExt(properties, null, messageListener, errorHandler);
         final EventProcessorClientBuilder builder = builderFactory.build();
 
         verify(builder, times(1)).processEvent(any());
@@ -103,11 +114,15 @@ class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderF
         properties.getBatch().setMaxSize(5);
         properties.getBatch().setMaxWaitTime(Duration.ofSeconds(3));
 
-        EventHubsErrorHandler errorHandler = errorContext -> { };
-        Consumer<EventBatchContext> consumer = eventBatchContext -> { };
-        EventHubsBatchMessageListener messageListener = eventBatchContext -> { };
+        EventHubsErrorHandler errorHandler = errorContext -> {
+        };
+        Consumer<EventBatchContext> consumer = eventBatchContext -> {
+        };
+        EventHubsBatchMessageListener messageListener = eventBatchContext -> {
+        };
 
-        final EventProcessorClientBuilderFactoryExt builderFactory = new EventProcessorClientBuilderFactoryExt(properties, null, messageListener, errorHandler);
+        final EventProcessorClientBuilderFactoryExt builderFactory
+            = new EventProcessorClientBuilderFactoryExt(properties, null, messageListener, errorHandler);
         final EventProcessorClientBuilder builder = builderFactory.build();
 
         verify(builder, times(1)).processEventBatch(any(), eq(5), eq(Duration.ofSeconds(3)));
@@ -116,9 +131,11 @@ class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderF
     @Test
     void wrongMessageListenerTypeWillThrow() {
         AzureEventHubsTestProperties.Processor properties = new AzureEventHubsTestProperties.Processor();
-        MessageListener<?> messageListener = eventContext -> { };
+        MessageListener<?> messageListener = eventContext -> {
+        };
 
-        final EventProcessorClientBuilderFactoryExt builderFactory = new EventProcessorClientBuilderFactoryExt(properties, null, messageListener, null);
+        final EventProcessorClientBuilderFactoryExt builderFactory
+            = new EventProcessorClientBuilderFactoryExt(properties, null, messageListener, null);
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> builderFactory.build());
     }
@@ -131,7 +148,8 @@ class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderF
     }
 
     @Override
-    protected EventProcessorClientBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(AzureEventHubsTestProperties.Processor properties) {
+    protected EventProcessorClientBuilderFactoryExt
+        createClientBuilderFactoryWithMockBuilder(AzureEventHubsTestProperties.Processor properties) {
         return new EventProcessorClientBuilderFactoryExt(properties);
     }
 
@@ -142,8 +160,7 @@ class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderF
 
     @Override
     protected void verifyCredentialCalled(EventProcessorClientBuilder builder,
-                                          Class<? extends TokenCredential> tokenCredentialClass,
-                                          VerificationMode mode) {
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         verify(builder, mode).credential(any(tokenCredentialClass));
     }
 
@@ -164,7 +181,8 @@ class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderF
         positionProperties.setOffset("earliest");
         properties.getInitialPartitionEventPosition().put("0", positionProperties);
 
-        final EventProcessorClientBuilderFactoryExt builderFactory = createClientBuilderFactoryWithMockBuilder(properties);
+        final EventProcessorClientBuilderFactoryExt builderFactory
+            = createClientBuilderFactoryWithMockBuilder(properties);
         final EventProcessorClientBuilder builder = builderFactory.build();
 
         verify(builder, times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
@@ -182,13 +200,12 @@ class EventProcessorClientBuilderFactoryTests extends AzureServiceClientBuilderF
     static class EventProcessorClientBuilderFactoryExt extends EventProcessorClientBuilderFactory {
 
         EventProcessorClientBuilderFactoryExt(AzureEventHubsTestProperties.Processor properties) {
-            super(properties, null, mock(EventHubsRecordMessageListener.class), errorContext -> { });
+            super(properties, null, mock(EventHubsRecordMessageListener.class), errorContext -> {
+            });
         }
 
         EventProcessorClientBuilderFactoryExt(AzureEventHubsTestProperties.Processor properties,
-                                              CheckpointStore checkpointStore,
-                                              MessageListener<?> listener,
-                                              EventHubsErrorHandler errorHandler) {
+            CheckpointStore checkpointStore, MessageListener<?> listener, EventHubsErrorHandler errorHandler) {
             super(properties, checkpointStore, listener, errorHandler);
         }
 

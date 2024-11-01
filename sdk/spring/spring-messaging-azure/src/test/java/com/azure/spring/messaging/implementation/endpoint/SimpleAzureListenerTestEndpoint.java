@@ -17,10 +17,9 @@ import com.azure.spring.messaging.implementation.listener.adapter.MessagingMessa
  */
 public class SimpleAzureListenerTestEndpoint extends AbstractAzureListenerEndpoint {
 
-
     @Override
     protected MessagingMessageListenerAdapter createMessageListener(MessageListenerContainer listenerContainer,
-                                                                    AzureMessageConverter<?, ?> messageConverter) {
+        AzureMessageConverter<?, ?> messageConverter) {
         return new SimpleMessagingMessageListener();
     }
 }

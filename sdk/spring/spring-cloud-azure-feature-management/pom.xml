@@ -22,9 +22,6 @@
       <name>Microsoft Corporation</name>
     </developer>
   </developers>
-  <properties>
-    <spotless.skip>true</spotless.skip>
-  </properties>
   <dependencies>
     <dependency>
       <groupId>org.springframework</groupId>

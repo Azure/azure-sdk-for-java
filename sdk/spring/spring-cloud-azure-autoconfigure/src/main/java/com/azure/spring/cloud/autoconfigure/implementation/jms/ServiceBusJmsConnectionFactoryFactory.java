@@ -26,14 +26,15 @@ class ServiceBusJmsConnectionFactoryFactory {
     private final TokenCredentialProvider tokenCredentialProvider;
 
     ServiceBusJmsConnectionFactoryFactory(AzureServiceBusJmsProperties properties,
-                                          List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
+        List<AzureServiceBusJmsConnectionFactoryCustomizer> factoryCustomizers) {
         Assert.notNull(properties, "Properties must not be null");
         this.properties = properties;
         this.factoryCustomizers = (factoryCustomizers != null) ? factoryCustomizers : Collections.emptyList();
         if (properties.isPasswordlessEnabled()) {
             Properties passwordlessProperties = properties.toPasswordlessProperties();
             enhancePasswordlessProperties(AzureServiceBusJmsProperties.PREFIX, properties, passwordlessProperties);
-            this.tokenCredentialProvider = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(passwordlessProperties));
+            this.tokenCredentialProvider
+                = TokenCredentialProvider.createDefault(new TokenCredentialProviderOptions(passwordlessProperties));
         } else {
             this.tokenCredentialProvider = null;
         }
@@ -55,34 +56,39 @@ class ServiceBusJmsConnectionFactoryFactory {
 
     private <T extends ServiceBusJmsConnectionFactory> void setPrefetchPolicy(T factory) {
         AzureServiceBusJmsProperties.PrefetchPolicy prefetchProperties = this.properties.getPrefetchPolicy();
-        factory.getSettings().getConfigurationOptions().put("jms.prefetchPolicy.durableTopicPrefetch",
-            String.valueOf(prefetchProperties.getDurableTopicPrefetch()));
-        factory.getSettings().getConfigurationOptions().put("jms.prefetchPolicy.queueBrowserPrefetch",
-            String.valueOf(prefetchProperties.getQueueBrowserPrefetch()));
-        factory.getSettings().getConfigurationOptions().put("jms.prefetchPolicy.queuePrefetch",
-            String.valueOf(prefetchProperties.getQueuePrefetch()));
-        factory.getSettings().getConfigurationOptions().put("jms.prefetchPolicy.topicPrefetch",
-            String.valueOf(prefetchProperties.getTopicPrefetch()));
+        factory.getSettings()
+            .getConfigurationOptions()
+            .put("jms.prefetchPolicy.durableTopicPrefetch",
+                String.valueOf(prefetchProperties.getDurableTopicPrefetch()));
+        factory.getSettings()
+            .getConfigurationOptions()
+            .put("jms.prefetchPolicy.queueBrowserPrefetch",
+                String.valueOf(prefetchProperties.getQueueBrowserPrefetch()));
+        factory.getSettings()
+            .getConfigurationOptions()
+            .put("jms.prefetchPolicy.queuePrefetch", String.valueOf(prefetchProperties.getQueuePrefetch()));
+        factory.getSettings()
+            .getConfigurationOptions()
+            .put("jms.prefetchPolicy.topicPrefetch", String.valueOf(prefetchProperties.getTopicPrefetch()));
     }
 
     private <T extends ServiceBusJmsConnectionFactory> T createConnectionFactoryInstance(Class<T> factoryClass) {
         try {
             T factory;
             if (properties.isPasswordlessEnabled()) {
-                String hostName =
-                    properties.getNamespace() + "." + properties.getProfile().getEnvironment().getServiceBusDomainName();
+                String hostName = properties.getNamespace() + "."
+                    + properties.getProfile().getEnvironment().getServiceBusDomainName();
                 TokenCredential tokenCredential = tokenCredentialProvider.get();
-                factory = factoryClass.getConstructor(TokenCredential.class, String.class,
-                                          ServiceBusJmsConnectionFactorySettings.class)
-                                      .newInstance(tokenCredential, hostName,
-                                          new ServiceBusJmsConnectionFactorySettings());
+                factory = factoryClass
+                    .getConstructor(TokenCredential.class, String.class, ServiceBusJmsConnectionFactorySettings.class)
+                    .newInstance(tokenCredential, hostName, new ServiceBusJmsConnectionFactorySettings());
             } else {
                 factory = factoryClass.getConstructor(String.class, ServiceBusJmsConnectionFactorySettings.class)
-                                      .newInstance(properties.getConnectionString(),
-                                          new ServiceBusJmsConnectionFactorySettings());
+                    .newInstance(properties.getConnectionString(), new ServiceBusJmsConnectionFactorySettings());
             }
             return factory;
-        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+            | IllegalArgumentException | InvocationTargetException ex) {
             throw new IllegalStateException("Unable to create JmsConnectionFactory", ex);
         }
     }

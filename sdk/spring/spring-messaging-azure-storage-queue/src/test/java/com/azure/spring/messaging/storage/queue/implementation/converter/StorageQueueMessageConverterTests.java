@@ -31,7 +31,8 @@ public class StorageQueueMessageConverterTests extends UnaryAzureMessageConverte
         if (payloadClass == String.class) {
             assertEquals(azureMessage.getBody().toString(), message.getPayload());
         } else if (payloadClass == byte[].class) {
-            assertEquals(azureMessage.getBody().toString(), new String((byte[]) message.getPayload(), StandardCharsets.UTF_8));
+            assertEquals(azureMessage.getBody().toString(),
+                new String((byte[]) message.getPayload(), StandardCharsets.UTF_8));
         } else {
             Object msg = azureMessage.getBody().toObject(payloadClass);
             assertEquals(msg, message.getPayload());

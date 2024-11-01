@@ -59,7 +59,8 @@ class DefaultEventHubsNamespaceProducerFactoryTests {
     @Test
     void customizerShouldBeCalledOnEachCreatedClient() {
         AtomicInteger calledTimes = new AtomicInteger();
-        DefaultEventHubsNamespaceProducerFactory factory = (DefaultEventHubsNamespaceProducerFactory) this.producerFactory;
+        DefaultEventHubsNamespaceProducerFactory factory
+            = (DefaultEventHubsNamespaceProducerFactory) this.producerFactory;
 
         factory.addBuilderCustomizer(builder -> calledTimes.getAndIncrement());
 
@@ -74,7 +75,8 @@ class DefaultEventHubsNamespaceProducerFactoryTests {
     void dedicatedCustomizerShouldBeCalledOnlyWhenMatchingClientsCreated() {
         AtomicInteger customizer1CalledTimes = new AtomicInteger();
         AtomicInteger customizer2CalledTimes = new AtomicInteger();
-        DefaultEventHubsNamespaceProducerFactory factory = (DefaultEventHubsNamespaceProducerFactory) this.producerFactory;
+        DefaultEventHubsNamespaceProducerFactory factory
+            = (DefaultEventHubsNamespaceProducerFactory) this.producerFactory;
 
         factory.addBuilderCustomizer("eventhub-1", builder -> customizer1CalledTimes.getAndIncrement());
         factory.addBuilderCustomizer("eventhub-2", builder -> customizer2CalledTimes.getAndIncrement());

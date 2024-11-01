@@ -17,11 +17,14 @@ import org.springframework.context.annotation.Bean;
  * @since 4.0.0
  */
 @ConditionalOnClass({ AzureStorageFileProtocolResolver.class })
-@ConditionalOnProperty(value = { "spring.cloud.azure.storage.fileshare.enabled", "spring.cloud.azure.storage.enabled" }, havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    value = { "spring.cloud.azure.storage.fileshare.enabled", "spring.cloud.azure.storage.enabled" },
+    havingValue = "true",
+    matchIfMissing = true)
 @ConditionalOnAnyProperty(
     prefixes = { "spring.cloud.azure.storage.fileshare", "spring.cloud.azure.storage" },
     name = { "account-name", "endpoint", "connection-string" })
-public class AzureStorageFileShareResourceAutoConfiguration  {
+public class AzureStorageFileShareResourceAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean

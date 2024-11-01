@@ -34,9 +34,10 @@ public class ServiceBusMessageListenerContainer extends AbstractMessageListenerC
      * @param containerProperties the container properties.
      */
     public ServiceBusMessageListenerContainer(ServiceBusProcessorFactory processorFactory,
-                                              ServiceBusContainerProperties containerProperties) {
+        ServiceBusContainerProperties containerProperties) {
         this.processorFactory = processorFactory;
-        this.containerProperties = containerProperties == null ? new ServiceBusContainerProperties() : containerProperties;
+        this.containerProperties
+            = containerProperties == null ? new ServiceBusContainerProperties() : containerProperties;
     }
 
     @Override

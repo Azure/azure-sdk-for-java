@@ -16,20 +16,20 @@ import static org.mockito.Mockito.when;
 
 public class KeyVaultSecretClientMockUtils {
 
-    public static void mockSecretClientListPropertiesOfSecrets(SecretClient secretClient, SecretProperties... secretPropertiesList) {
+    public static void mockSecretClientListPropertiesOfSecrets(SecretClient secretClient,
+        SecretProperties... secretPropertiesList) {
         OnePageResponse<SecretProperties> secretResponse = new OnePageResponse<>(List.of(secretPropertiesList));
         when(secretClient.listPropertiesOfSecrets())
             .thenReturn(new PagedIterable<>(new PagedFlux<>(() -> Mono.just(secretResponse))));
     }
 
-    public static KeyVaultSecret mockSecretClientGetSecretMethod(SecretClient secretClient, String secretName, String secretValue) {
+    public static KeyVaultSecret mockSecretClientGetSecretMethod(SecretClient secretClient, String secretName,
+        String secretValue) {
         return mockSecretClientGetSecretMethod(secretClient, secretName, secretValue, true);
     }
 
-    public static KeyVaultSecret mockSecretClientGetSecretMethod(SecretClient secretClient,
-                                                                 String secretName,
-                                                                 String secretValue,
-                                                                 boolean enabled) {
+    public static KeyVaultSecret mockSecretClientGetSecretMethod(SecretClient secretClient, String secretName,
+        String secretValue, boolean enabled) {
         KeyVaultSecret keyVaultSecret = new KeyVaultSecret(secretName, secretValue);
         keyVaultSecret.getProperties().setEnabled(enabled);
         when(secretClient.getSecret(secretName, null)).thenReturn(keyVaultSecret);

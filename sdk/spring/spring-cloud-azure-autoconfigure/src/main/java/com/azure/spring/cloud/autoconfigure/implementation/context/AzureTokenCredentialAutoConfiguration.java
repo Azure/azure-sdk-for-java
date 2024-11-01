@@ -59,7 +59,8 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     private final GenericApplicationContext applicationContext;
     private final IdentityClientProperties identityClientProperties;
 
-    AzureTokenCredentialAutoConfiguration(GenericApplicationContext applicationContext, AzureGlobalProperties azureGlobalProperties) {
+    AzureTokenCredentialAutoConfiguration(GenericApplicationContext applicationContext,
+        AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
         this.applicationContext = applicationContext;
         this.identityClientProperties = loadProperties(azureGlobalProperties, new IdentityClientProperties());
@@ -69,7 +70,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
     TokenCredential tokenCredential(DefaultAzureCredentialBuilderFactory factory,
-                                    AzureTokenCredentialResolver resolver) {
+        AzureTokenCredentialResolver resolver) {
         TokenCredential globalTokenCredential = resolver.resolve(this.identityClientProperties);
         if (globalTokenCredential != null) {
             return globalTokenCredential;
@@ -84,7 +85,8 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     DefaultAzureCredentialBuilderFactory azureCredentialBuilderFactory(
         ObjectProvider<AzureServiceClientBuilderCustomizer<DefaultAzureCredentialBuilder>> customizers,
         @Qualifier(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME) ThreadPoolTaskExecutor threadPoolTaskExecutor) {
-        DefaultAzureCredentialBuilderFactory factory = new DefaultAzureCredentialBuilderFactory(identityClientProperties);
+        DefaultAzureCredentialBuilderFactory factory
+            = new DefaultAzureCredentialBuilderFactory(identityClientProperties);
         factory.setExecutorService(threadPoolTaskExecutor.getThreadPoolExecutor());
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
@@ -119,24 +121,23 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
 
                 if (isClientIdSet && StringUtils.hasText(properties.getClientSecret())) {
                     return clientSecretCredentialBuilderFactory.build()
-                                                               .authorityHost(authorityHost)
-                                                               .clientId(clientId)
-                                                               .clientSecret(properties.getClientSecret())
-                                                               .tenantId(tenantId)
-                                                               .build();
+                        .authorityHost(authorityHost)
+                        .clientId(clientId)
+                        .clientSecret(properties.getClientSecret())
+                        .tenantId(tenantId)
+                        .build();
                 }
 
                 String clientCertificatePath = properties.getClientCertificatePath();
                 if (StringUtils.hasText(clientCertificatePath)) {
-                    ClientCertificateCredentialBuilder builder = clientCertificateCredentialBuilderFactory
-                        .build()
+                    ClientCertificateCredentialBuilder builder = clientCertificateCredentialBuilderFactory.build()
                         .authorityHost(authorityHost)
                         .tenantId(tenantId)
                         .clientId(clientId);
 
                     if (StringUtils.hasText(properties.getClientCertificatePassword())) {
                         builder.pfxCertificate(clientCertificatePath)
-                               .clientCertificatePassword(properties.getClientCertificatePassword());
+                            .clientCertificatePassword(properties.getClientCertificatePassword());
                     } else {
                         builder.pemCertificate(clientCertificatePath);
                     }
@@ -145,15 +146,16 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
                 }
             }
 
-            if (isClientIdSet && StringUtils.hasText(properties.getUsername())
+            if (isClientIdSet
+                && StringUtils.hasText(properties.getUsername())
                 && StringUtils.hasText(properties.getPassword())) {
                 return usernamePasswordCredentialBuilderFactory.build()
-                                                               .authorityHost(authorityHost)
-                                                               .username(properties.getUsername())
-                                                               .password(properties.getPassword())
-                                                               .clientId(clientId)
-                                                               .tenantId(tenantId)
-                                                               .build();
+                    .authorityHost(authorityHost)
+                    .username(properties.getUsername())
+                    .password(properties.getPassword())
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .build();
             }
 
             if (properties.isManagedIdentityEnabled()) {
@@ -172,7 +174,8 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     ClientSecretCredentialBuilderFactory clientSecretCredentialBuilderFactory(
         @Qualifier(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME) ThreadPoolTaskExecutor threadPoolTaskExecutor,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ClientSecretCredentialBuilder>> customizers) {
-        ClientSecretCredentialBuilderFactory factory = new ClientSecretCredentialBuilderFactory(identityClientProperties);
+        ClientSecretCredentialBuilderFactory factory
+            = new ClientSecretCredentialBuilderFactory(identityClientProperties);
         factory.setExecutorService(threadPoolTaskExecutor.getThreadPoolExecutor());
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
@@ -183,7 +186,8 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     ClientCertificateCredentialBuilderFactory clientCertificateCredentialBuilderFactory(
         @Qualifier(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME) ThreadPoolTaskExecutor threadPoolTaskExecutor,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ClientCertificateCredentialBuilder>> customizers) {
-        ClientCertificateCredentialBuilderFactory factory = new ClientCertificateCredentialBuilderFactory(identityClientProperties);
+        ClientCertificateCredentialBuilderFactory factory
+            = new ClientCertificateCredentialBuilderFactory(identityClientProperties);
         factory.setExecutorService(threadPoolTaskExecutor.getThreadPoolExecutor());
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
@@ -194,7 +198,8 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     ManagedIdentityCredentialBuilderFactory managedIdentityCredentialBuilderFactory(
         ObjectProvider<AzureServiceClientBuilderCustomizer<ManagedIdentityCredentialBuilder>> customizers) {
 
-        ManagedIdentityCredentialBuilderFactory factory = new ManagedIdentityCredentialBuilderFactory(identityClientProperties);
+        ManagedIdentityCredentialBuilderFactory factory
+            = new ManagedIdentityCredentialBuilderFactory(identityClientProperties);
 
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
 
@@ -206,7 +211,8 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     UsernamePasswordCredentialBuilderFactory usernamePasswordCredentialBuilderFactory(
         ObjectProvider<AzureServiceClientBuilderCustomizer<UsernamePasswordCredentialBuilder>> customizers) {
 
-        UsernamePasswordCredentialBuilderFactory factory = new UsernamePasswordCredentialBuilderFactory(identityClientProperties);
+        UsernamePasswordCredentialBuilderFactory factory
+            = new UsernamePasswordCredentialBuilderFactory(identityClientProperties);
 
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);
 
@@ -226,8 +232,7 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @Bean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME)
     ThreadPoolTaskExecutor credentialTaskExecutor() {
-        return new TaskExecutorBuilder()
-            .corePoolSize(8)
+        return new TaskExecutorBuilder().corePoolSize(8)
             .allowCoreThreadTimeOut(true)
             .threadNamePrefix(DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX)
             .build();

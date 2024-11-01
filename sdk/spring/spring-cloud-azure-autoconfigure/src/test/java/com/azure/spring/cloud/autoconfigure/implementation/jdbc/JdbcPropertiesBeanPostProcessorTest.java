@@ -36,12 +36,16 @@ import static org.postgresql.PGProperty.APPLICATION_NAME;
 class JdbcPropertiesBeanPostProcessorTest {
 
     private static final String MYSQL_CONNECTION_STRING = "jdbc:mysql://host/database?enableSwitch1&property1=value1";
-    private static final String POSTGRESQL_CONNECTION_STRING = "jdbc:postgresql://host/database?enableSwitch1&property1=value1";
+    private static final String POSTGRESQL_CONNECTION_STRING
+        = "jdbc:postgresql://host/database?enableSwitch1&property1=value1";
     private static final String PASSWORD = "password";
-    private static final String US_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.us/";
-    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=";
-    private static final String POSTGRESQL_ASSUME_MIN_SERVER_VERSION = POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION + "="
-        + POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
+    private static final String US_AUTHORITY_HOST_STRING
+        = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.us/";
+    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING
+        = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=";
+    private static final String POSTGRESQL_ASSUME_MIN_SERVER_VERSION
+        = POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION + "="
+            + POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
     protected static final String MANAGED_IDENTITY_ENABLED_DEFAULT = "azure.managedIdentityEnabled=false";
     protected static final String SCOPES_DEFAULT = "azure.scopes=https://ossrdbms-aad.database.windows.net/.default";
     private static final String DEFAULT_PASSWORDLESS_PROPERTIES_SUFFIX = ".spring.datasource.azure";
@@ -58,7 +62,8 @@ class JdbcPropertiesBeanPostProcessorTest {
         this.azureGlobalProperties = mock(AzureGlobalProperties.class);
         when(this.azureGlobalProperties.getProfile()).thenReturn(new AzureProfileConfigurationProperties());
         when(this.azureGlobalProperties.getCredential()).thenReturn(new TokenCredentialConfigurationProperties());
-        when(this.applicationContext.getBean(AzureTokenCredentialResolver.class)).thenReturn(new AzureTokenCredentialResolver());
+        when(this.applicationContext.getBean(AzureTokenCredentialResolver.class))
+            .thenReturn(new AzureTokenCredentialResolver());
         when(this.applicationContext.getBean(AzureGlobalProperties.class)).thenReturn(azureGlobalProperties);
         this.jdbcPropertiesBeanPostProcessor = new JdbcPropertiesBeanPostProcessor();
         jdbcPropertiesBeanPostProcessor.setEnvironment(this.mockEnvironment);
@@ -70,7 +75,8 @@ class JdbcPropertiesBeanPostProcessorTest {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
         dataSourceProperties.setPassword(PASSWORD);
 
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
 
         assertNull(dataSourceProperties.getUrl());
     }
@@ -79,7 +85,8 @@ class JdbcPropertiesBeanPostProcessorTest {
     void testNoURL() {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
 
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
 
         assertNull(dataSourceProperties.getUrl());
     }
@@ -89,7 +96,8 @@ class JdbcPropertiesBeanPostProcessorTest {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
         dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
 
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
 
         assertEquals(MYSQL_CONNECTION_STRING, dataSourceProperties.getUrl());
     }
@@ -100,28 +108,27 @@ class JdbcPropertiesBeanPostProcessorTest {
         dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
 
         this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
 
-        String expectedJdbcUrl = enhanceJdbcUrl(
-            DatabaseType.MYSQL,
-            MYSQL_CONNECTION_STRING,
-            MANAGED_IDENTITY_ENABLED_DEFAULT,
-            SCOPES_DEFAULT,
-            MYSQL_USER_AGENT
-        );
+        String expectedJdbcUrl = enhanceJdbcUrl(DatabaseType.MYSQL, MYSQL_CONNECTION_STRING,
+            MANAGED_IDENTITY_ENABLED_DEFAULT, SCOPES_DEFAULT, MYSQL_USER_AGENT);
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { MYSQL_PROPERTY_NAME_DEFAULT_AUTHENTICATION_PLUGIN, MYSQL_PROPERTY_NAME_AUTHENTICATION_PLUGINS })
+    @ValueSource(
+        strings = { MYSQL_PROPERTY_NAME_DEFAULT_AUTHENTICATION_PLUGIN, MYSQL_PROPERTY_NAME_AUTHENTICATION_PLUGINS })
     void ignorePostprocessWhenUsingNonAzureAuthForMySQL(String authenticationParameterKey) {
-        String connStr = "jdbc:mysql://host/database?enableSwitch1&property1=value1&" + authenticationParameterKey + "=NonAzurePlugin";
+        String connStr = "jdbc:mysql://host/database?enableSwitch1&property1=value1&" + authenticationParameterKey
+            + "=NonAzurePlugin";
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
         dataSourceProperties.setUrl(connStr);
 
         this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
         assertEquals(connStr, dataSourceProperties.getUrl());
     }
 
@@ -133,13 +140,15 @@ class JdbcPropertiesBeanPostProcessorTest {
         dataSourceProperties.setUrl(connStr);
 
         this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
         assertEquals(connStr, dataSourceProperties.getUrl());
     }
 
     @Test
     void shouldGetCloudTypeFromAzureUsGov() {
-        AzureProfileConfigurationProperties azureProfileConfigurationProperties = new AzureProfileConfigurationProperties();
+        AzureProfileConfigurationProperties azureProfileConfigurationProperties
+            = new AzureProfileConfigurationProperties();
         azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
         when(this.azureGlobalProperties.getProfile()).thenReturn(azureProfileConfigurationProperties);
 
@@ -147,16 +156,11 @@ class JdbcPropertiesBeanPostProcessorTest {
         dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
 
         this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
 
-        String expectedJdbcUrl = enhanceJdbcUrl(
-            DatabaseType.MYSQL,
-            MYSQL_CONNECTION_STRING,
-            MANAGED_IDENTITY_ENABLED_DEFAULT,
-            SCOPES_DEFAULT,
-            MYSQL_USER_AGENT,
-            US_AUTHORITY_HOST_STRING
-        );
+        String expectedJdbcUrl = enhanceJdbcUrl(DatabaseType.MYSQL, MYSQL_CONNECTION_STRING,
+            MANAGED_IDENTITY_ENABLED_DEFAULT, SCOPES_DEFAULT, MYSQL_USER_AGENT, US_AUTHORITY_HOST_STRING);
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
@@ -167,15 +171,11 @@ class JdbcPropertiesBeanPostProcessorTest {
         dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
 
         this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
 
-        String expectedJdbcUrl = enhanceJdbcUrl(
-            DatabaseType.MYSQL,
-            MYSQL_CONNECTION_STRING,
-            MANAGED_IDENTITY_ENABLED_DEFAULT,
-            SCOPES_DEFAULT,
-            MYSQL_USER_AGENT
-        );
+        String expectedJdbcUrl = enhanceJdbcUrl(DatabaseType.MYSQL, MYSQL_CONNECTION_STRING,
+            MANAGED_IDENTITY_ENABLED_DEFAULT, SCOPES_DEFAULT, MYSQL_USER_AGENT);
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
@@ -183,20 +183,17 @@ class JdbcPropertiesBeanPostProcessorTest {
     @Test
     void mySqlUserAgentShouldConfigureIfConnectionAttributesIsNotEmpty() {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
-        String baseUrl = MYSQL_CONNECTION_STRING
-            + DatabaseType.MYSQL.getQueryDelimiter()
-            + "connectionAttributes=attr1:val1";
+        String baseUrl
+            = MYSQL_CONNECTION_STRING + DatabaseType.MYSQL.getQueryDelimiter() + "connectionAttributes=attr1:val1";
         dataSourceProperties.setUrl(baseUrl);
 
         this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
 
-        String expectedJdbcUrl = enhanceJdbcUrl(
-            DatabaseType.MYSQL,
+        String expectedJdbcUrl = enhanceJdbcUrl(DatabaseType.MYSQL,
             baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-            MANAGED_IDENTITY_ENABLED_DEFAULT,
-            SCOPES_DEFAULT
-        );
+            MANAGED_IDENTITY_ENABLED_DEFAULT, SCOPES_DEFAULT);
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
@@ -204,20 +201,17 @@ class JdbcPropertiesBeanPostProcessorTest {
     @Test
     void mySqlUserAgentShouldConfigureIfConnectionAttributes() {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
-        String baseUrl = MYSQL_CONNECTION_STRING
-            + DatabaseType.MYSQL.getQueryDelimiter()
-            + "connectionAttributes=attr1:val1";
+        String baseUrl
+            = MYSQL_CONNECTION_STRING + DatabaseType.MYSQL.getQueryDelimiter() + "connectionAttributes=attr1:val1";
         dataSourceProperties.setUrl(baseUrl);
 
         this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
 
-        String expectedJdbcUrl = enhanceJdbcUrl(
-            DatabaseType.MYSQL,
+        String expectedJdbcUrl = enhanceJdbcUrl(DatabaseType.MYSQL,
             baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-            MANAGED_IDENTITY_ENABLED_DEFAULT,
-            SCOPES_DEFAULT
-        );
+            MANAGED_IDENTITY_ENABLED_DEFAULT, SCOPES_DEFAULT);
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
 
@@ -228,16 +222,12 @@ class JdbcPropertiesBeanPostProcessorTest {
         dataSourceProperties.setUrl(baseUrl);
 
         this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
 
-        String expectedJdbcUrl = enhanceJdbcUrl(
-            DatabaseType.POSTGRESQL,
-            baseUrl,
-            MANAGED_IDENTITY_ENABLED_DEFAULT,
-            SCOPES_DEFAULT,
-            APPLICATION_NAME.getName() + "=" + AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH,
-            POSTGRESQL_ASSUME_MIN_SERVER_VERSION
-        );
+        String expectedJdbcUrl = enhanceJdbcUrl(DatabaseType.POSTGRESQL, baseUrl, MANAGED_IDENTITY_ENABLED_DEFAULT,
+            SCOPES_DEFAULT, APPLICATION_NAME.getName() + "=" + AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH,
+            POSTGRESQL_ASSUME_MIN_SERVER_VERSION);
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
@@ -245,21 +235,16 @@ class JdbcPropertiesBeanPostProcessorTest {
     @Test
     void postgreSqlUserAgentShouldNotConfigureIfApplicationNameExists() {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
-        String baseUrl = POSTGRESQL_CONNECTION_STRING
-            + DatabaseType.POSTGRESQL.getQueryDelimiter()
+        String baseUrl = POSTGRESQL_CONNECTION_STRING + DatabaseType.POSTGRESQL.getQueryDelimiter()
             + APPLICATION_NAME.getName() + "=" + APPLICATION_NAME.getDefaultValue();
         dataSourceProperties.setUrl(baseUrl);
 
         this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
 
-        String expectedJdbcUrl = enhanceJdbcUrl(
-            DatabaseType.POSTGRESQL,
-            baseUrl,
-            MANAGED_IDENTITY_ENABLED_DEFAULT,
-            SCOPES_DEFAULT,
-            POSTGRESQL_ASSUME_MIN_SERVER_VERSION
-        );
+        String expectedJdbcUrl = enhanceJdbcUrl(DatabaseType.POSTGRESQL, baseUrl, MANAGED_IDENTITY_ENABLED_DEFAULT,
+            SCOPES_DEFAULT, POSTGRESQL_ASSUME_MIN_SERVER_VERSION);
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
@@ -269,14 +254,10 @@ class JdbcPropertiesBeanPostProcessorTest {
         DataSourceProperties dataSourceProperties = new DataSourceProperties();
         dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
         this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
-        String expectedJdbcUrl = enhanceJdbcUrl(
-            DatabaseType.MYSQL,
-            MYSQL_CONNECTION_STRING,
-            MANAGED_IDENTITY_ENABLED_DEFAULT,
-            SCOPES_DEFAULT,
-            MYSQL_USER_AGENT
-        );
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
+        String expectedJdbcUrl = enhanceJdbcUrl(DatabaseType.MYSQL, MYSQL_CONNECTION_STRING,
+            MANAGED_IDENTITY_ENABLED_DEFAULT, SCOPES_DEFAULT, MYSQL_USER_AGENT);
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
 
@@ -286,17 +267,15 @@ class JdbcPropertiesBeanPostProcessorTest {
         dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
         String tokenCredentialBeanName = "test-bean-name";
         this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
-        this.mockEnvironment.setProperty("spring.datasource.azure.credential.token-credential-bean-name", tokenCredentialBeanName);
-        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
-        String expectedJdbcUrl = enhanceJdbcUrl(
-            DatabaseType.MYSQL,
-            MYSQL_CONNECTION_STRING,
-            MANAGED_IDENTITY_ENABLED_DEFAULT,
-            SCOPES_DEFAULT,
-            MYSQL_USER_AGENT,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
-            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + tokenCredentialBeanName
-        );
+        this.mockEnvironment.setProperty("spring.datasource.azure.credential.token-credential-bean-name",
+            tokenCredentialBeanName);
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties,
+            "dataSourceProperties");
+        String expectedJdbcUrl = enhanceJdbcUrl(DatabaseType.MYSQL, MYSQL_CONNECTION_STRING,
+            MANAGED_IDENTITY_ENABLED_DEFAULT, SCOPES_DEFAULT, MYSQL_USER_AGENT,
+            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "="
+                + SpringTokenCredentialProvider.class.getName(),
+            PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING + tokenCredentialBeanName);
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
 }

@@ -87,16 +87,13 @@ public interface ReactiveCosmosQueryExecution {
 
         @Override
         public Object execute(CosmosQuery query, Class<?> type, String container) {
-            return operations.find(query, type, container)
-                .buffer(2)
-                .map((vals) -> {
-                    if (vals.size() > 1) {
-                        throw new CosmosAccessException("Too many results - Expected Mono<"
-                            + returnedType.getReturnedType()
-                            + "> but query returned multiple results");
-                    }
-                    return vals.iterator().next();
-                });
+            return operations.find(query, type, container).buffer(2).map((vals) -> {
+                if (vals.size() > 1) {
+                    throw new CosmosAccessException("Too many results - Expected Mono<" + returnedType.getReturnedType()
+                        + "> but query returned multiple results");
+                }
+                return vals.iterator().next();
+            });
         }
     }
 

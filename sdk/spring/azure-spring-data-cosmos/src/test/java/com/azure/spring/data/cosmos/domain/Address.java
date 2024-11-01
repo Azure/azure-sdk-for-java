@@ -13,14 +13,14 @@ import java.util.Objects;
 @Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class Address {
 
-    public static final Address TEST_ADDRESS1_PARTITION1 = new Address(
-        TestConstants.POSTAL_CODE, TestConstants.STREET, TestConstants.CITY);
-    public static final Address TEST_ADDRESS2_PARTITION1 = new Address(
-        TestConstants.POSTAL_CODE_0, TestConstants.STREET_0, TestConstants.CITY);
-    public static final Address TEST_ADDRESS1_PARTITION2 = new Address(
-        TestConstants.POSTAL_CODE_1, TestConstants.STREET_1, TestConstants.CITY_0);
-    public static final Address TEST_ADDRESS4_PARTITION3 = new Address(
-        TestConstants.POSTAL_CODE, TestConstants.STREET_2, TestConstants.CITY_1);
+    public static final Address TEST_ADDRESS1_PARTITION1
+        = new Address(TestConstants.POSTAL_CODE, TestConstants.STREET, TestConstants.CITY);
+    public static final Address TEST_ADDRESS2_PARTITION1
+        = new Address(TestConstants.POSTAL_CODE_0, TestConstants.STREET_0, TestConstants.CITY);
+    public static final Address TEST_ADDRESS1_PARTITION2
+        = new Address(TestConstants.POSTAL_CODE_1, TestConstants.STREET_1, TestConstants.CITY_0);
+    public static final Address TEST_ADDRESS4_PARTITION3
+        = new Address(TestConstants.POSTAL_CODE, TestConstants.STREET_2, TestConstants.CITY_1);
 
     @Id
     String postalCode;
@@ -77,13 +77,21 @@ public class Address {
         this.city = city;
     }
 
-    public void setLongId(Long longId) { this.longId = longId; }
+    public void setLongId(Long longId) {
+        this.longId = longId;
+    }
 
-    public void setHomeNumber(Integer homeNumber) { this.homeNumber = homeNumber; }
+    public void setHomeNumber(Integer homeNumber) {
+        this.homeNumber = homeNumber;
+    }
 
-    public void setRegistrationDate(LocalDate registrationDate) { this.registrationDate = registrationDate; }
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = registrationDate;
+    }
 
-    public void setIsOffice(boolean isOffice) { this.isOffice = isOffice; }
+    public void setIsOffice(boolean isOffice) {
+        this.isOffice = isOffice;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -106,16 +114,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address{"
-            + "postalCode='"
-            + postalCode
-            + '\''
-            + ", street='"
-            + street
-            + '\''
-            + ", city='"
-            + city
-            + '\''
+        return "Address{" + "postalCode='" + postalCode + '\'' + ", street='" + street + '\'' + ", city='" + city + '\''
             + '}';
     }
 

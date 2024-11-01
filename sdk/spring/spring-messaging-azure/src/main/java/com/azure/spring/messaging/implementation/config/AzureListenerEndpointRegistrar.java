@@ -59,8 +59,8 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
         synchronized (this.mutex) {
             for (AzureListenerEndpointDescriptor descriptor : this.endpointDescriptors) {
                 Assert.state(this.endpointRegistry != null, "No AzureListenerEndpointRegistry set");
-                this.endpointRegistry
-                    .registerListenerContainer(descriptor.endpoint, resolveContainerFactory(descriptor));
+                this.endpointRegistry.registerListenerContainer(descriptor.endpoint,
+                    resolveContainerFactory(descriptor));
             }
             this.startImmediately = true;  // trigger immediate startup
         }
@@ -74,7 +74,8 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
         } else if (this.containerFactoryBeanName != null) {
             Assert.state(this.beanFactory != null, "BeanFactory must be set to obtain container factory by bean name");
             // Consider changing this if live change of the factory is required...
-            this.containerFactory = this.beanFactory.getBean(this.containerFactoryBeanName, MessageListenerContainerFactory.class);
+            this.containerFactory
+                = this.beanFactory.getBean(this.containerFactoryBeanName, MessageListenerContainerFactory.class);
             return this.containerFactory;
         } else {
             throw new IllegalStateException(
@@ -102,8 +103,8 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
         synchronized (this.mutex) {
             if (this.startImmediately) {  // register and start immediately
                 Assert.state(this.endpointRegistry != null, "No AzureListenerEndpointRegistry set");
-                this.endpointRegistry
-                    .registerListenerContainer(descriptor.endpoint, resolveContainerFactory(descriptor), true);
+                this.endpointRegistry.registerListenerContainer(descriptor.endpoint,
+                    resolveContainerFactory(descriptor), true);
             } else {
                 this.endpointDescriptors.add(descriptor);
             }
@@ -177,7 +178,7 @@ public class AzureListenerEndpointRegistrar implements BeanFactoryAware, Initial
         private final MessageListenerContainerFactory<?> containerFactory;
 
         AzureListenerEndpointDescriptor(AzureListenerEndpoint endpoint,
-                                        @Nullable MessageListenerContainerFactory<?> containerFactory) {
+            @Nullable MessageListenerContainerFactory<?> containerFactory) {
 
             this.endpoint = endpoint;
             this.containerFactory = containerFactory;

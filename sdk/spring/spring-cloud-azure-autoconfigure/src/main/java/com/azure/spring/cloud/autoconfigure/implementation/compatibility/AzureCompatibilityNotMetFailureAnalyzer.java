@@ -11,7 +11,8 @@ import java.util.List;
 /**
  * FailureAnalyzer of Spring Cloud Azure Compatibility
  */
-public class AzureCompatibilityNotMetFailureAnalyzer extends AbstractFailureAnalyzer<AzureCompatibilityNotMetException> {
+public class AzureCompatibilityNotMetFailureAnalyzer
+    extends AbstractFailureAnalyzer<AzureCompatibilityNotMetException> {
 
     @Override
     protected FailureAnalysis analyze(Throwable rootFailure, AzureCompatibilityNotMetException cause) {
@@ -19,7 +20,8 @@ public class AzureCompatibilityNotMetFailureAnalyzer extends AbstractFailureAnal
     }
 
     private String getDescription(AzureCompatibilityNotMetException ex) {
-        return String.format("Your project setup is incompatible with our requirements due to following reasons:%s", this.descriptions(ex.getResults()));
+        return String.format("Your project setup is incompatible with our requirements due to following reasons:%s",
+            this.descriptions(ex.getResults()));
     }
 
     private String descriptions(List<VerificationResult> results) {

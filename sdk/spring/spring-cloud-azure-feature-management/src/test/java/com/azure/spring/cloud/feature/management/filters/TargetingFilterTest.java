@@ -59,7 +59,7 @@ public class TargetingFilterTest {
 
         assertTrue(filter.evaluate(context));
     }
-    
+
     @Test
     public void targetedUserLower() {
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
@@ -136,7 +136,7 @@ public class TargetingFilterTest {
 
         assertTrue(filter.evaluate(context));
     }
-    
+
     @Test
     public void targetedGroupLower() {
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();

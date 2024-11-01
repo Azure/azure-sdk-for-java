@@ -29,8 +29,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<ServiceBusSubscription,
-    Tuple3<String, String, String>, ServiceBusTopicProperties> {
+class ServiceBusTopicSubscriptionCrudTests extends
+    AbstractResourceCrudTests<ServiceBusSubscription, Tuple3<String, String, String>, ServiceBusTopicProperties> {
 
     private static final String NAMESPACE = "namespace";
     private static final String TOPIC_NAME = "topic";
@@ -48,7 +48,8 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
     }
 
     @Override
-    AbstractResourceCrud<ServiceBusSubscription, Tuple3<String, String, String>, ServiceBusTopicProperties> getResourceCrud() {
+    AbstractResourceCrud<ServiceBusSubscription, Tuple3<String, String, String>, ServiceBusTopicProperties>
+        getResourceCrud() {
         return new ServiceBusTopicSubscriptionCrud(resourceManager, resourceMetadata, this.topicCrud);
     }
 
@@ -80,7 +81,8 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         ManagementException exception = createManagementException(500, "Create service bus namespace exception");
         Topic topic = mock(Topic.class);
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
-        ServiceBusSubscription.DefinitionStages.Blank define = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
+        ServiceBusSubscription.DefinitionStages.Blank define
+            = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
 
         when(this.topicCrud.getOrCreate(any(Tuple2.class), any(ServiceBusTopicProperties.class))).thenReturn(topic);
         when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
@@ -105,8 +107,8 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
         when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);
 
-        ServiceBusSubscription.DefinitionStages.Blank define =
-            mock(ServiceBusSubscription.DefinitionStages.Blank.class);
+        ServiceBusSubscription.DefinitionStages.Blank define
+            = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
         when(serviceBusSubscriptions.define(subscriptionKey.getT3())).thenReturn(define);
         ServiceBusSubscription serviceBusSubscription = mock(ServiceBusSubscription.class);
         when(define.create()).thenReturn(serviceBusSubscription);
@@ -127,8 +129,8 @@ class ServiceBusTopicSubscriptionCrudTests extends AbstractResourceCrudTests<Ser
         Topic topic = mock(Topic.class);
         ServiceBusSubscriptions serviceBusSubscriptions = mock(ServiceBusSubscriptions.class);
         ServiceBusSubscription subscription = mock(ServiceBusSubscription.class);
-        ServiceBusSubscription.DefinitionStages.Blank define =
-            mock(ServiceBusSubscription.DefinitionStages.Blank.class);
+        ServiceBusSubscription.DefinitionStages.Blank define
+            = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
 
         when(this.topicCrud.getOrCreate(any(Tuple2.class), any(ServiceBusTopicProperties.class))).thenReturn(topic);
         when(topic.subscriptions()).thenReturn(serviceBusSubscriptions);

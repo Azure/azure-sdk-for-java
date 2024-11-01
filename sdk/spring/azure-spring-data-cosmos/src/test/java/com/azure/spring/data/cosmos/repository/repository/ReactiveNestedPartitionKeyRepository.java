@@ -7,6 +7,7 @@ import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ReactiveNestedPartitionKeyRepository extends ReactiveCosmosRepository<NestedPartitionKeyEntity, String> {
+public interface ReactiveNestedPartitionKeyRepository
+    extends ReactiveCosmosRepository<NestedPartitionKeyEntity, String> {
 
 }

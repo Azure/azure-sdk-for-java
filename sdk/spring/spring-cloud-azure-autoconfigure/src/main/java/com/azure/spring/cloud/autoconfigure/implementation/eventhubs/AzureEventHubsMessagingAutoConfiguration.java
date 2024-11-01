@@ -46,12 +46,11 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 @ConditionalOnClass(EventHubsTemplate.class)
 @AutoConfigureAfter(AzureEventHubsAutoConfiguration.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = {"connection-string", "namespace"})
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
 @ConditionalOnBean(AzureEventHubsProperties.class)
 @Import({
     AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class,
-    AzureEventHubsMessagingAutoConfiguration.ProcessorContainerConfiguration.class
-})
+    AzureEventHubsMessagingAutoConfiguration.ProcessorContainerConfiguration.class })
 public class AzureEventHubsMessagingAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsMessagingAutoConfiguration.class);
@@ -59,16 +58,17 @@ public class AzureEventHubsMessagingAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     NamespaceProperties eventHubsNamespaceProperties(AzureEventHubsProperties properties,
-                                                     ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
+        ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         BeanUtils.copyProperties(properties, namespaceProperties);
         copyAzureCommonProperties(properties, namespaceProperties);
         if (namespaceProperties.getConnectionString() == null) {
-            ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider =
-                connectionStringProviders.getIfAvailable();
+            ServiceConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider
+                = connectionStringProviders.getIfAvailable();
             if (connectionStringProvider != null) {
                 namespaceProperties.setConnectionString(connectionStringProvider.getConnectionString());
-                LOGGER.info("Event Hubs connection string is set from {} now.", connectionStringProvider.getClass().getName());
+                LOGGER.info("Event Hubs connection string is set from {} now.",
+                    connectionStringProvider.getClass().getName());
             }
         }
         return namespaceProperties;
@@ -80,8 +80,8 @@ public class AzureEventHubsMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        EventHubsProcessorFactory defaultEventHubsNamespaceProcessorFactory(
-            NamespaceProperties properties, CheckpointStore checkpointStore,
+        EventHubsProcessorFactory defaultEventHubsNamespaceProcessorFactory(NamespaceProperties properties,
+            CheckpointStore checkpointStore,
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers) {
             return new DefaultEventHubsNamespaceProcessorFactory(checkpointStore, properties,
                 suppliers.getIfAvailable());
@@ -94,22 +94,26 @@ public class AzureEventHubsMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        EventHubsProducerFactory defaultEventHubsNamespaceProducerFactory(
-            NamespaceProperties properties,
+        EventHubsProducerFactory defaultEventHubsNamespaceProducerFactory(NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers) {
             return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable());
         }
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "true", matchIfMissing = true)
+        @ConditionalOnProperty(
+            value = "spring.cloud.azure.message-converter.isolated-object-mapper",
+            havingValue = "true",
+            matchIfMissing = true)
         EventHubsMessageConverter defaultEventHubsMessageConverter() {
             return new EventHubsMessageConverter(ObjectMapperHolder.OBJECT_MAPPER);
         }
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "false")
+        @ConditionalOnProperty(
+            value = "spring.cloud.azure.message-converter.isolated-object-mapper",
+            havingValue = "false")
         EventHubsMessageConverter eventHubsMessageConverter(ObjectMapper objectMapper) {
             return new EventHubsMessageConverter(objectMapper);
         }
@@ -117,7 +121,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         EventHubsTemplate eventHubsTemplate(EventHubsProducerFactory producerFactory,
-                                            EventHubsMessageConverter messageConverter) {
+            EventHubsMessageConverter messageConverter) {
             EventHubsTemplate eventHubsTemplate = new EventHubsTemplate(producerFactory);
             eventHubsTemplate.setMessageConverter(messageConverter);
             return eventHubsTemplate;

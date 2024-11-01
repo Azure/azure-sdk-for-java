@@ -30,8 +30,7 @@ public class RedisCacheCrud extends AbstractResourceCrud<RedisCache, String, Obj
     @Override
     public RedisCache internalGet(String name) {
         try {
-            return resourceManager.redisCaches().getByResourceGroup(resourceMetadata.getResourceGroup(),
-                                                                    name);
+            return resourceManager.redisCaches().getByResourceGroup(resourceMetadata.getResourceGroup(), name);
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
@@ -44,10 +43,10 @@ public class RedisCacheCrud extends AbstractResourceCrud<RedisCache, String, Obj
     @Override
     public RedisCache internalCreate(String name) {
         return resourceManager.redisCaches()
-                              .define(name)
-                              .withRegion(resourceMetadata.getRegion())
-                              .withExistingResourceGroup(resourceMetadata.getResourceGroup())
-                              .withBasicSku()
-                              .create();
+            .define(name)
+            .withRegion(resourceMetadata.getRegion())
+            .withExistingResourceGroup(resourceMetadata.getResourceGroup())
+            .withBasicSku()
+            .create();
     }
 }

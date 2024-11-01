@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Persistent
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
+@Target({ ElementType.TYPE })
 public @interface Container {
     /**
      * To set container name
@@ -63,7 +63,7 @@ public @interface Container {
      *
      * @return list of partition key paths
      */
-    String[] hierarchicalPartitionKeyPaths() default {};
+    String[] hierarchicalPartitionKeyPaths() default { };
 
     /**
      * To enable auto scale for container RU limit

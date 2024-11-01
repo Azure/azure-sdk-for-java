@@ -23,10 +23,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServiceBusSubClientBuilderFactoryTests<
-    ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder,
-    ServiceBusProcessorClientTestProperties,
-    ServiceBusSessionProcessorClientBuilderFactory> {
+class ServiceBusSessionProcessorClientBuilderFactoryTests extends
+    AbstractServiceBusSubClientBuilderFactoryTests<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder, ServiceBusProcessorClientTestProperties, ServiceBusSessionProcessorClientBuilderFactory> {
 
     @Test
     void queueConfigured() {
@@ -35,7 +33,8 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         properties.setEntityType(ServiceBusEntityType.QUEUE);
         properties.setEntityName("test-queue");
 
-        final ServiceBusSessionProcessorClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
+        final ServiceBusSessionProcessorClientBuilderFactory factory
+            = createClientBuilderFactoryWithMockBuilder(properties);
         final ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = factory.build();
         builder.buildProcessorClient();
 
@@ -44,14 +43,14 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
 
     @Test
     void errorHandlerConfigured() {
-        ServiceBusErrorHandler errorHandler = errorContext -> { };
-        ServiceBusRecordMessageListener messageListener = eventContext -> { };
+        ServiceBusErrorHandler errorHandler = errorContext -> {
+        };
+        ServiceBusRecordMessageListener messageListener = eventContext -> {
+        };
 
-        final ServiceBusProcessorClientBuilderFactory factory = new ServiceBusProcessorClientBuilderFactoryTests.ServiceBusProcessorClientBuilderFactoryExt(
-            mock(ServiceBusClientBuilder.class),
-            createMinimalServiceProperties(),
-            messageListener,
-            errorHandler);
+        final ServiceBusProcessorClientBuilderFactory factory
+            = new ServiceBusProcessorClientBuilderFactoryTests.ServiceBusProcessorClientBuilderFactoryExt(
+                mock(ServiceBusClientBuilder.class), createMinimalServiceProperties(), messageListener, errorHandler);
         ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder = factory.build();
 
         verify(builder, times(1)).processError(errorHandler);
@@ -59,14 +58,14 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
 
     @Test
     void messageListenerConfigured() {
-        ServiceBusErrorHandler errorHandler = errorContext -> { };
-        ServiceBusRecordMessageListener messageListener = message -> { };
+        ServiceBusErrorHandler errorHandler = errorContext -> {
+        };
+        ServiceBusRecordMessageListener messageListener = message -> {
+        };
 
-        final ServiceBusProcessorClientBuilderFactory factory = new ServiceBusProcessorClientBuilderFactoryTests.ServiceBusProcessorClientBuilderFactoryExt(
-            mock(ServiceBusClientBuilder.class),
-            createMinimalServiceProperties(),
-            messageListener,
-            errorHandler);
+        final ServiceBusProcessorClientBuilderFactory factory
+            = new ServiceBusProcessorClientBuilderFactoryTests.ServiceBusProcessorClientBuilderFactoryExt(
+                mock(ServiceBusClientBuilder.class), createMinimalServiceProperties(), messageListener, errorHandler);
         ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder = factory.build();
 
         verify(builder, times(1)).processMessage(any());
@@ -74,14 +73,14 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
 
     @Test
     void wrongMessageListenerTypeWillThrow() {
-        ServiceBusErrorHandler errorHandler = errorContext -> { };
-        MessageListener<?> messageListener = message -> { };
+        ServiceBusErrorHandler errorHandler = errorContext -> {
+        };
+        MessageListener<?> messageListener = message -> {
+        };
 
-        final ServiceBusProcessorClientBuilderFactory factory = new ServiceBusProcessorClientBuilderFactoryTests.ServiceBusProcessorClientBuilderFactoryExt(
-            mock(ServiceBusClientBuilder.class),
-            createMinimalServiceProperties(),
-            messageListener,
-            errorHandler);
+        final ServiceBusProcessorClientBuilderFactory factory
+            = new ServiceBusProcessorClientBuilderFactoryTests.ServiceBusProcessorClientBuilderFactoryExt(
+                mock(ServiceBusClientBuilder.class), createMinimalServiceProperties(), messageListener, errorHandler);
 
         Assertions.assertThrows(IllegalArgumentException.class, factory::build);
     }
@@ -97,15 +96,19 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
     }
 
     @Override
-    protected ServiceBusSessionProcessorClientBuilderFactory createClientBuilderFactoryWithMockBuilder(ServiceBusProcessorClientTestProperties properties) {
-        return spy(new ServiceBusSessionProcessorClientBuilderFactoryExt(getSharedServiceBusClientBuilder(properties), properties));
+    protected ServiceBusSessionProcessorClientBuilderFactory
+        createClientBuilderFactoryWithMockBuilder(ServiceBusProcessorClientTestProperties properties) {
+        return spy(new ServiceBusSessionProcessorClientBuilderFactoryExt(getSharedServiceBusClientBuilder(properties),
+            properties));
     }
 
     @Override
     void verifyServicePropertiesConfigured(boolean isShareServiceClientBuilder) {
-        ServiceBusProcessorClientTestProperties properties = getServiceBusProcessorClientTestProperties(isShareServiceClientBuilder);
+        ServiceBusProcessorClientTestProperties properties
+            = getServiceBusProcessorClientTestProperties(isShareServiceClientBuilder);
 
-        final ServiceBusSessionProcessorClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
+        final ServiceBusSessionProcessorClientBuilderFactory factory
+            = createClientBuilderFactoryWithMockBuilder(properties);
         final ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder builder = factory.build();
         doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
         builder.buildProcessorClient();
@@ -122,10 +125,12 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         verify(builder, times(1)).maxConcurrentCalls(10);
         verify(builder, times(1)).maxConcurrentSessions(20);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(factory.getServiceBusClientBuilder(), times(1))
+            .fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
-    private ServiceBusProcessorClientTestProperties getServiceBusProcessorClientTestProperties(boolean isShareServiceClientBuilder) {
+    private ServiceBusProcessorClientTestProperties
+        getServiceBusProcessorClientTestProperties(boolean isShareServiceClientBuilder) {
         ServiceBusProcessorClientTestProperties properties = new ServiceBusProcessorClientTestProperties();
         properties.setNamespace("test-namespace");
         properties.setEntityName("test-topic");
@@ -148,12 +153,16 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         builder.buildProcessorClient();
     }
 
-    static class ServiceBusSessionProcessorClientBuilderFactoryExt extends ServiceBusSessionProcessorClientBuilderFactory {
+    static class ServiceBusSessionProcessorClientBuilderFactoryExt
+        extends ServiceBusSessionProcessorClientBuilderFactory {
         private ServiceBusClientBuilder serviceBusClientBuilder;
         private final ServiceBusProcessorClientTestProperties properties;
+
         ServiceBusSessionProcessorClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                          ServiceBusProcessorClientTestProperties properties) {
-            super(serviceBusClientBuilder, properties, (ServiceBusRecordMessageListener) message -> { }, errorContext -> { });
+            ServiceBusProcessorClientTestProperties properties) {
+            super(serviceBusClientBuilder, properties, (ServiceBusRecordMessageListener) message -> {
+            }, errorContext -> {
+            });
             this.properties = properties;
             if (properties.isShareServiceBusClientBuilder() && serviceBusClientBuilder != null) {
                 this.serviceBusClientBuilder = serviceBusClientBuilder;
@@ -168,7 +177,8 @@ class ServiceBusSessionProcessorClientBuilderFactoryTests extends AbstractServic
         @Override
         protected ServiceBusClientBuilder getServiceBusClientBuilder() {
             if (!this.isShareServiceBusClientBuilder() && this.serviceBusClientBuilder == null) {
-                TestServiceBusClientBuilderFactory clientBuilderFactory = spy(new TestServiceBusClientBuilderFactory(properties));
+                TestServiceBusClientBuilderFactory clientBuilderFactory
+                    = spy(new TestServiceBusClientBuilderFactory(properties));
                 this.serviceBusClientBuilder = clientBuilderFactory.build();
             }
             return this.serviceBusClientBuilder;

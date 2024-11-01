@@ -40,7 +40,7 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
      * @param dbOperations the reactive cosmos operations
      */
     public StringBasedReactiveCosmosQuery(ReactiveCosmosQueryMethod queryMethod,
-                                          ReactiveCosmosOperations dbOperations) {
+        ReactiveCosmosOperations dbOperations) {
         super(queryMethod, dbOperations);
         this.query = queryMethod.getQueryAnnotation();
     }
@@ -52,8 +52,8 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
 
     @Override
     public Object execute(final Object[] parameters) {
-        final ReactiveCosmosParameterAccessor accessor = new ReactiveCosmosParameterParameterAccessor(getQueryMethod(),
-                                                                                              parameters);
+        final ReactiveCosmosParameterAccessor accessor
+            = new ReactiveCosmosParameterParameterAccessor(getQueryMethod(), parameters);
         final ResultProcessor processor = getQueryMethod().getResultProcessor().withDynamicProjection(accessor);
 
         /*
@@ -72,21 +72,25 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
             String paramName = queryParam.getName().orElse("");
             if (!("").equals(paramName)) {
                 String inParamCheck = "array_contains(@" + paramName.toLowerCase(Locale.US);
-                if (parameters[paramIndex] instanceof Collection  && !modifiedExpandedQuery.contains(inParamCheck)) {
-                    List<Object> expandParam = ((Collection<?>) parameters[paramIndex]).stream().collect(Collectors.toList());
+                if (parameters[paramIndex] instanceof Collection && !modifiedExpandedQuery.contains(inParamCheck)) {
+                    List<Object> expandParam
+                        = ((Collection<?>) parameters[paramIndex]).stream().collect(Collectors.toList());
                     List<String> expandedParamKeys = new ArrayList<>();
                     for (int arrayIndex = 0; arrayIndex < expandParam.size(); arrayIndex++) {
                         expandedParamKeys.add("@" + paramName + arrayIndex);
-                        sqlParameters.add(new SqlParameter("@" + paramName + arrayIndex, toCosmosDbValue(expandParam.get(arrayIndex))));
+                        sqlParameters.add(new SqlParameter("@" + paramName + arrayIndex,
+                            toCosmosDbValue(expandParam.get(arrayIndex))));
                     }
-                    expandedQuery = expandedQuery.replaceAll("@" + queryParam.getName().orElse(""), String.join(",", expandedParamKeys));
+                    expandedQuery = expandedQuery.replaceAll("@" + queryParam.getName().orElse(""),
+                        String.join(",", expandedParamKeys));
                 } else {
                     if (!Pageable.class.isAssignableFrom(queryParam.getType())
                         && !Sort.class.isAssignableFrom(queryParam.getType())) {
                         if (!(parameters[paramIndex] instanceof Optional<?>)
                             || (parameters[paramIndex] instanceof Optional<?>
-                            && ((Optional<?>) parameters[paramIndex]).isPresent())) {
-                            sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
+                                && ((Optional<?>) parameters[paramIndex]).isPresent())) {
+                            sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""),
+                                toCosmosDbValue(parameters[paramIndex])));
                         }
                     }
                 }
@@ -95,12 +99,13 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
 
         SqlQuerySpec querySpec = new SqlQuerySpec(stripExtraWhitespaceFromString(expandedQuery), sqlParameters);
         if (isCountQuery()) {
-            final String container = ((SimpleReactiveCosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
+            final String container
+                = ((SimpleReactiveCosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
             final Mono<Long> mono = this.operations.count(querySpec, container);
             return mono;
         } else {
-            Flux<?> flux = this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
-                                                    processor.getReturnedType().getReturnedType());
+            Flux<?> flux = this.operations.runQuery(querySpec, accessor.getSort(),
+                processor.getReturnedType().getDomainType(), processor.getReturnedType().getReturnedType());
             return flux;
         }
     }

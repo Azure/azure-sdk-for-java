@@ -24,13 +24,14 @@ import java.util.Collection;
  * make {@link OAuth2ResourceServerConfigurer.JwtConfigurer } and {@link AadJwtGrantedAuthoritiesConverter} take effect.
  *
  */
-public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigurer<AadResourceServerHttpSecurityConfigurer, HttpSecurity> {
+public class AadResourceServerHttpSecurityConfigurer
+    extends AbstractHttpConfigurer<AadResourceServerHttpSecurityConfigurer, HttpSecurity> {
 
     private AadResourceServerProperties properties;
 
     private Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter;
 
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings({ "deprecation", "removal" })
     @Override
     public void init(HttpSecurity builder) throws Exception {
         super.init(builder);

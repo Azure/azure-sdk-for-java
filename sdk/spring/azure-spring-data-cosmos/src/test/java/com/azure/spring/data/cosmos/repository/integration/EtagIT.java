@@ -68,7 +68,8 @@ public class EtagIT {
         Assert.assertNotNull(updatedPersonWithEtag.getEtag());
         Assert.assertNotEquals(insertedPersonWithEtag.getEtag(), updatedPersonWithEtag.getEtag());
 
-        final Optional<PersonWithEtag> foundPersonWithEtag = personWithEtagRepository.findById(insertedPersonWithEtag.getId());
+        final Optional<PersonWithEtag> foundPersonWithEtag
+            = personWithEtagRepository.findById(insertedPersonWithEtag.getId());
         Assert.assertTrue(foundPersonWithEtag.isPresent());
         Assert.assertNotNull(foundPersonWithEtag.get().getEtag());
         Assert.assertEquals(updatedPersonWithEtag.getEtag(), foundPersonWithEtag.get().getEtag());
@@ -93,9 +94,7 @@ public class EtagIT {
             Assert.assertNotEquals(insertedPersonWithEtag.getEtag(), updatedPersonWithEtag.getEtag());
         }
 
-        final List<String> peopleIds = updatedPeople.stream()
-            .map(PersonWithEtag::getId)
-            .collect(Collectors.toList());
+        final List<String> peopleIds = updatedPeople.stream().map(PersonWithEtag::getId).collect(Collectors.toList());
         final List<PersonWithEtag> foundPeople = toList(personWithEtagRepository.findAllById(peopleIds));
         for (int i = 0; i < foundPeople.size(); i++) {
             PersonWithEtag updatedPersonWithEtag = updatedPeople.get(i);
@@ -106,8 +105,7 @@ public class EtagIT {
     }
 
     private List<PersonWithEtag> toList(Iterable<PersonWithEtag> people) {
-        return StreamSupport.stream(people.spliterator(), false)
-            .collect(Collectors.toList());
+        return StreamSupport.stream(people.spliterator(), false).collect(Collectors.toList());
     }
 
     @Test

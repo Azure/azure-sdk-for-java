@@ -36,8 +36,7 @@ public class CosmosUtils {
      * @param cosmosDiagnostics response from cosmos
      * @param feedResponse response from feed
      */
-    public static <T> void fillAndProcessResponseDiagnostics(
-        ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
+    public static <T> void fillAndProcessResponseDiagnostics(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
         CosmosDiagnostics cosmosDiagnostics, FeedResponse<T> feedResponse) {
         if (responseDiagnosticsProcessor == null) {
             return;
@@ -50,8 +49,8 @@ public class CosmosUtils {
             LOGGER.debug("Empty response diagnostics");
             return;
         }
-        final ResponseDiagnostics responseDiagnostics =
-            new ResponseDiagnostics(cosmosDiagnostics, cosmosResponseStatistics);
+        final ResponseDiagnostics responseDiagnostics
+            = new ResponseDiagnostics(cosmosDiagnostics, cosmosResponseStatistics);
 
         //  Process response diagnostics
         responseDiagnosticsProcessor.processResponseDiagnostics(responseDiagnostics);
@@ -62,8 +61,8 @@ public class CosmosUtils {
      * @param responseDiagnosticsProcessor response diagnostics processor
      * @param cosmosException cosmos exception
      */
-    public static void fillAndProcessCosmosExceptionDiagnostics(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
-                                                         CosmosException cosmosException) {
+    public static void fillAndProcessCosmosExceptionDiagnostics(
+        ResponseDiagnosticsProcessor responseDiagnosticsProcessor, CosmosException cosmosException) {
         if (responseDiagnosticsProcessor == null) {
             return;
         }

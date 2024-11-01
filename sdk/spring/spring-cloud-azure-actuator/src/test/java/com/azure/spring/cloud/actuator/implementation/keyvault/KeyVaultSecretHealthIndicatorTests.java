@@ -19,8 +19,8 @@ class KeyVaultSecretHealthIndicatorTests {
 
     @Test
     void keyvaultIsUp() {
-        @SuppressWarnings("unchecked") Response<KeyVaultSecret> mockResponse =
-            (Response<KeyVaultSecret>) mock(Response.class);
+        @SuppressWarnings("unchecked")
+        Response<KeyVaultSecret> mockResponse = (Response<KeyVaultSecret>) mock(Response.class);
         SecretAsyncClient mockAsyncClient = mock(SecretAsyncClient.class);
         Mockito.when(mockAsyncClient.getSecretWithResponse("spring-cloud-azure-not-existing-secret", ""))
             .thenReturn(Mono.just(mockResponse));

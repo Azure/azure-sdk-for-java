@@ -11,7 +11,7 @@ import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOption
 /**
  * Unified properties for Azure SDK clients.
  */
-public interface AzureProperties extends ClientOptionsProvider, ProxyOptionsProvider,
-    TokenCredentialOptionsProvider, AzureProfileOptionsProvider {
+public interface AzureProperties
+    extends ClientOptionsProvider, ProxyOptionsProvider, TokenCredentialOptionsProvider, AzureProfileOptionsProvider {
 
 }

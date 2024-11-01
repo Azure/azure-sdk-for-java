@@ -13,7 +13,8 @@ import java.util.concurrent.ExecutorService;
 /**
  * A credential builder factory for the {@link DefaultAzureCredentialBuilder}.
  */
-public class DefaultAzureCredentialBuilderFactory extends AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> {
+public class DefaultAzureCredentialBuilderFactory
+    extends AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> {
 
     private ExecutorService executorService = null;
 
@@ -38,8 +39,8 @@ public class DefaultAzureCredentialBuilderFactory extends AbstractAzureCredentia
         mapper.from(profile.getTenantId()).to(builder::tenantId);
         mapper.from(profile.getEnvironment().getActiveDirectoryEndpoint()).to(builder::authorityHost);
         mapper.from(azureProperties.getCredential().getClientId())
-              .when(p -> azureProperties.getCredential().isManagedIdentityEnabled())
-              .to(builder::managedIdentityClientId);
+            .when(p -> azureProperties.getCredential().isManagedIdentityEnabled())
+            .to(builder::managedIdentityClientId);
         mapper.from(executorService).to(builder::executorService);
     }
 

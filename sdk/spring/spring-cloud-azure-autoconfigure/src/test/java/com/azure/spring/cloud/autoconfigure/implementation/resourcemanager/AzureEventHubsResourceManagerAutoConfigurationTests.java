@@ -27,24 +27,20 @@ class AzureEventHubsResourceManagerAutoConfigurationTests {
         .withConfiguration(AutoConfigurations.of(AzureEventHubsResourceManagerAutoConfiguration.class));
 
     private final String connectionString = "connection-string=Endpoint=sb://eventhub-test-1"
-        + ".servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;"
-        + "SharedAccessKey=ByyyxxxUw=";
+        + ".servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;" + "SharedAccessKey=ByyyxxxUw=";
 
     @Test
     void testEventHubResourceManagerDisabled() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.eventhubs.enabled=false")
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureEventHubsResourceManagerAutoConfiguration.class);
-                assertThat(context).doesNotHaveBean(EventHubsArmConnectionStringProvider.class);
-                assertThat(context).doesNotHaveBean(EventHubsProvisioner.class);
-            });
+        this.contextRunner.withPropertyValues("spring.cloud.azure.eventhubs.enabled=false").run(context -> {
+            assertThat(context).doesNotHaveBean(AzureEventHubsResourceManagerAutoConfiguration.class);
+            assertThat(context).doesNotHaveBean(EventHubsArmConnectionStringProvider.class);
+            assertThat(context).doesNotHaveBean(EventHubsProvisioner.class);
+        });
     }
 
     @Test
     void testEventHubResourceManagerWithoutEventHubClientBuilderClass() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(EventHubClientBuilder.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(EventHubClientBuilder.class))
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsResourceManagerAutoConfiguration.class);
@@ -56,33 +52,28 @@ class AzureEventHubsResourceManagerAutoConfigurationTests {
 
     @Test
     void testEventHubResourceManagerWithoutEventHubsProvisionerClass() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(EventHubsProvisioner.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(EventHubsProvisioner.class))
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsResourceManagerAutoConfiguration.class));
     }
 
     @Test
     void testEventHubResourceManagerWithoutResourceManagerClass() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(AzureResourceManager.class))
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(EventHubsArmConnectionStringProvider.class);
-                assertThat(context).doesNotHaveBean(EventHubsProvisioner.class);
-            });
+        this.contextRunner.withClassLoader(new FilteredClassLoader(AzureResourceManager.class)).run(context -> {
+            assertThat(context).doesNotHaveBean(EventHubsArmConnectionStringProvider.class);
+            assertThat(context).doesNotHaveBean(EventHubsProvisioner.class);
+        });
     }
 
     @Test
     void testEventHubArmConnectionStringProviderBeanDisabled() {
-        this.contextRunner
-            .withPropertyValues(AzureEventHubsProperties.PREFIX + "." + connectionString)
+        this.contextRunner.withPropertyValues(AzureEventHubsProperties.PREFIX + "." + connectionString)
             .run(context -> assertThat(context).doesNotHaveBean(EventHubsArmConnectionStringProvider.class));
     }
 
     @Test
     void testAzureEventHubsResourceManagerAutoConfigurationBeans() {
-        this.contextRunner
-            .withUserConfiguration(AzureResourceManagerAutoConfiguration.class)
+        this.contextRunner.withUserConfiguration(AzureResourceManagerAutoConfiguration.class)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .withBean(AzureEventHubsProperties.class, AzureEventHubsProperties::new)
@@ -90,20 +81,18 @@ class AzureEventHubsResourceManagerAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "spring.cloud.azure.eventhubs.connection-string=Endpoint=sb://eventhub-test-1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ByyyxxxUw=",
-        "spring.cloud.azure.credential.token-credential-bean-name=my-token-credential",
-        "spring.cloud.azure.eventhubs.token-credential-bean-name=my-token-credential"
-    })
+    @ValueSource(
+        strings = {
+            "spring.cloud.azure.eventhubs.connection-string=Endpoint=sb://eventhub-test-1.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=ByyyxxxUw=",
+            "spring.cloud.azure.credential.token-credential-bean-name=my-token-credential",
+            "spring.cloud.azure.eventhubs.token-credential-bean-name=my-token-credential" })
     void testNotCreateProviderBeanWhenMissingPropertiesConfigured(String missingProperty) {
         this.contextRunner
-            .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class)
+            .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+                AzureGlobalPropertiesAutoConfiguration.class)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
-            .withPropertyValues(
-                "spring.cloud.azure.profile.tenant-id=test-tenant",
-                "spring.cloud.azure.profile.subscription-id=test-subscription-id",
-                missingProperty
-            )
+            .withPropertyValues("spring.cloud.azure.profile.tenant-id=test-tenant",
+                "spring.cloud.azure.profile.subscription-id=test-subscription-id", missingProperty)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureResourceManager.class);
                 assertThat(context).doesNotHaveBean(EventHubsArmConnectionStringProvider.class);

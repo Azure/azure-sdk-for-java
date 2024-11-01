@@ -21,7 +21,10 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(KafkaTemplate.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.kafka.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    value = "spring.cloud.azure.eventhubs.kafka.enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 public class AzureEventHubsKafkaOAuth2AutoConfiguration {
 
     @Bean(PASSWORDLESS_KAFKA_PROPERTIES_BEAN_POST_PROCESSOR_BEAN_NAME)

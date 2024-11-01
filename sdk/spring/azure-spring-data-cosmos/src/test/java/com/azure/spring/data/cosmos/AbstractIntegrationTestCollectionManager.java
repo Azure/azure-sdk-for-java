@@ -18,16 +18,18 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
+@SuppressWarnings({ "rawtypes", "unchecked" })
 public abstract class AbstractIntegrationTestCollectionManager<T> implements TestRule {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractIntegrationTestCollectionManager.class);
     private static final Duration LEASE_DURATION = Duration.ofSeconds(5 * 60);
-    private static final ConcurrentMap<String, DeleteContainerAction> CONTAINER_CLEANUP_REGISTRY = new ConcurrentHashMap<>();
+    private static final ConcurrentMap<String, DeleteContainerAction> CONTAINER_CLEANUP_REGISTRY
+        = new ConcurrentHashMap<>();
 
     static {
         // since collections are sometimes re-used between tests, wait until the end of the test run to delete them
-        Runtime.getRuntime().addShutdownHook(new Thread(AbstractIntegrationTestCollectionManager::deleteRegisteredCollections));
+        Runtime.getRuntime()
+            .addShutdownHook(new Thread(AbstractIntegrationTestCollectionManager::deleteRegisteredCollections));
     }
 
     public static void registerContainerForCleanup(Object template, String containerName) {
@@ -37,7 +39,8 @@ public abstract class AbstractIntegrationTestCollectionManager<T> implements Tes
         } else if (template instanceof ReactiveCosmosTemplate) {
             action = new DeleteContainerAction((ReactiveCosmosTemplate) template, containerName);
         } else {
-            throw new IllegalStateException("Template must be instance of CosmosTemplate or ReactiveCosmosTemplate, was " + template);
+            throw new IllegalStateException(
+                "Template must be instance of CosmosTemplate or ReactiveCosmosTemplate, was " + template);
         }
         CONTAINER_CLEANUP_REGISTRY.putIfAbsent(containerName, action);
     }
@@ -51,8 +54,11 @@ public abstract class AbstractIntegrationTestCollectionManager<T> implements Tes
     private boolean isSetupDone;
 
     protected abstract ContainerLock createLock(CosmosEntityInformation entityInfo, Duration leaseDuration);
+
     protected abstract CosmosContainerProperties createContainerIfNotExists(CosmosEntityInformation entityInfo);
+
     protected abstract void deleteContainerData(CosmosEntityInformation entityInfo);
+
     protected abstract void deleteContainer(CosmosEntityInformation entityInfo);
 
     public void ensureContainersCreated(T template, Class... entityTypes) {
@@ -134,7 +140,8 @@ public abstract class AbstractIntegrationTestCollectionManager<T> implements Tes
         CosmosContainerProperties cosmosContainerProperties;
         ContainerLock lock;
 
-        public ContainerRefs(CosmosEntityInformation cosmosEntityInformation, CosmosContainerProperties cosmosContainerProperties, ContainerLock lock) {
+        public ContainerRefs(CosmosEntityInformation cosmosEntityInformation,
+            CosmosContainerProperties cosmosContainerProperties, ContainerLock lock) {
             this.cosmosEntityInformation = cosmosEntityInformation;
             this.cosmosContainerProperties = cosmosContainerProperties;
             this.lock = lock;

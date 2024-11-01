@@ -293,7 +293,6 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         }
     }
 
-
     @Override
     public void afterPropertiesSet() throws Exception {
         try {
@@ -305,7 +304,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
     private void validateNamespaceProperties() {
         Stream.of(getNamespace(), producer.getNamespace(), consumer.getNamespace(), processor.getNamespace())
-              .filter(Objects::nonNull)
-              .forEach(PropertiesValidator::validateNamespace);
+            .filter(Objects::nonNull)
+            .forEach(PropertiesValidator::validateNamespace);
     }
 }

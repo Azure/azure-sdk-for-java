@@ -13,8 +13,7 @@ class SpringMonitorPropertyFileTest {
 
     @Test
     void shouldContainProjectProperties() {
-        Map<String, String> properties =
-            CoreUtils.getProperties("azure-spring-cloud-azure-starter-monitor.properties");
+        Map<String, String> properties = CoreUtils.getProperties("azure-spring-cloud-azure-starter-monitor.properties");
 
         assertThat(properties).hasFieldOrPropertyWithValue("name", "spring-cloud-azure-starter-monitor");
         assertThat(properties).hasEntrySatisfying("version", value -> assertThat(value).matches("[0-9].[0-9].[0-9].*"));

@@ -25,8 +25,8 @@ import java.util.Optional;
  */
 public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRequestResolver {
 
-    private static final String REQUEST_BASE_URI =
-            OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI;
+    private static final String REQUEST_BASE_URI
+        = OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI;
 
     private static final String REGISTRATION_ID_NAME = "registrationId";
 
@@ -50,8 +50,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
      * @param repository the client registration repository
      * @param properties the AAD B2C properties
      */
-    public AadB2cAuthorizationRequestResolver(ClientRegistrationRepository repository,
-                                              AadB2cProperties properties) {
+    public AadB2cAuthorizationRequestResolver(ClientRegistrationRepository repository, AadB2cProperties properties) {
         this(properties, new DefaultOAuth2AuthorizationRequestResolver(repository, REQUEST_BASE_URI));
     }
 
@@ -62,7 +61,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
      * @param delegateResolver the delegate resolver.
      */
     public AadB2cAuthorizationRequestResolver(AadB2cProperties properties,
-                                              OAuth2AuthorizationRequestResolver delegateResolver) {
+        OAuth2AuthorizationRequestResolver delegateResolver) {
         this.properties = properties;
         this.passwordResetUserFlow = this.properties.getPasswordReset();
         this.delegateResolver = delegateResolver;
@@ -106,8 +105,7 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
         return null;
     }
 
-    private OAuth2AuthorizationRequest getB2cAuthorizationRequest(OAuth2AuthorizationRequest request,
-                                                                  String userFlow) {
+    private OAuth2AuthorizationRequest getB2cAuthorizationRequest(OAuth2AuthorizationRequest request, String userFlow) {
         Assert.hasText(userFlow, "User flow should contain text.");
 
         if (request == null) {
@@ -116,8 +114,8 @@ public class AadB2cAuthorizationRequestResolver implements OAuth2AuthorizationRe
 
         final Map<String, Object> additionalParameters = new HashMap<>();
         Optional.ofNullable(this.properties)
-                .map(AadB2cProperties::getAuthenticateAdditionalParameters)
-                .ifPresent(additionalParameters::putAll);
+            .map(AadB2cProperties::getAuthenticateAdditionalParameters)
+            .ifPresent(additionalParameters::putAll);
         additionalParameters.put("p", userFlow);
         additionalParameters.put(PARAMETER_X_CLIENT_SKU, AAD_B2C_USER_AGENT);
 

@@ -43,7 +43,8 @@ class OtelSelfDiag implements CommandLineRunner {
         }
     }
 
-    private void checkBeanComesFromOtelJavaInstrumentationConfig(BeanDefinitionRegistry beanDefinitionRegistry, Class<?> clazz) {
+    private void checkBeanComesFromOtelJavaInstrumentationConfig(BeanDefinitionRegistry beanDefinitionRegistry,
+        Class<?> clazz) {
         String[] beanNames = applicationContext.getBeanNamesForType(clazz);
         String beanName = beanNames[0];
         BeanDefinition beanDefinition = beanDefinitionRegistry.getBeanDefinition(beanName);

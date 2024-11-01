@@ -15,7 +15,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE, ElementType.METHOD})
+@Target({ ElementType.TYPE, ElementType.METHOD })
 @Documented
 @Conditional(ConditionalOnDatabaseConfigured.ConditionalDatabaseConfiguredCondition.class)
 @interface ConditionalOnDatabaseConfigured {
@@ -30,7 +30,8 @@ import java.lang.annotation.Target;
         static class DataBasePropertyConfigured {
         }
 
-        @ConditionalOnBean(type = "com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails")
+        @ConditionalOnBean(
+            type = "com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosConnectionDetails")
         static class ConnectionDetailBeanConfigured {
         }
     }

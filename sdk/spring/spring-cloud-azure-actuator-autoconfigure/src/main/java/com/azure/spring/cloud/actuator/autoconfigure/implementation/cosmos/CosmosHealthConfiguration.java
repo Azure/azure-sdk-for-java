@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
  * CosmosHealthConfiguration
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass({ CosmosAsyncClient.class, HealthIndicator.class})
+@ConditionalOnClass({ CosmosAsyncClient.class, HealthIndicator.class })
 @ConditionalOnBean(CosmosAsyncClient.class)
 @AutoConfigureAfter(AzureCosmosAutoConfiguration.class)
 @ConditionalOnEnabledHealthIndicator("azure-cosmos")
@@ -27,10 +27,9 @@ public class CosmosHealthConfiguration {
 
     @Bean
     HealthIndicator cosmosHealthContributor(AzureCosmosProperties azureCosmosProperties,
-                                            CosmosAsyncClient cosmosAsyncClient) {
-        return new CosmosHealthIndicator(cosmosAsyncClient,
-                                         azureCosmosProperties.getDatabase(),
-                                         azureCosmosProperties.getEndpoint());
+        CosmosAsyncClient cosmosAsyncClient) {
+        return new CosmosHealthIndicator(cosmosAsyncClient, azureCosmosProperties.getDatabase(),
+            azureCosmosProperties.getEndpoint());
     }
 
 }

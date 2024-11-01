@@ -49,8 +49,7 @@ public class IntegerIdDomain {
             return false;
         }
         IntegerIdDomain that = (IntegerIdDomain) o;
-        return Objects.equals(number, that.number)
-            && Objects.equals(name, that.name);
+        return Objects.equals(number, that.number) && Objects.equals(name, that.name);
     }
 
     @Override
@@ -60,12 +59,6 @@ public class IntegerIdDomain {
 
     @Override
     public String toString() {
-        return "IntegerIdDomain{"
-            + "number="
-            + number
-            + ", name='"
-            + name
-            + '\''
-            + '}';
+        return "IntegerIdDomain{" + "number=" + number + ", name='" + name + '\'' + '}';
     }
 }

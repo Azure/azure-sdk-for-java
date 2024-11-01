@@ -30,8 +30,8 @@ class ServiceBusChannelProvisionerTests {
     @SuppressWarnings("deprecation")
     @Test
     void provisionProducerDestination() {
-        ExtendedProducerProperties<ServiceBusProducerProperties> extendedProperties =
-            new ExtendedProducerProperties<>(producerProperties);
+        ExtendedProducerProperties<ServiceBusProducerProperties> extendedProperties
+            = new ExtendedProducerProperties<>(producerProperties);
 
         provisioner.provisionProducerDestination("test", extendedProperties);
         verify(provisioner, times(1)).validateOrCreateForProducer("test", producerProperties.getEntityType());
@@ -40,8 +40,8 @@ class ServiceBusChannelProvisionerTests {
     @SuppressWarnings("deprecation")
     @Test
     void provisionConsumerDestination() {
-        ExtendedConsumerProperties<ServiceBusConsumerProperties> extendedProperties =
-            new ExtendedConsumerProperties<>(consumerProperties);
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> extendedProperties
+            = new ExtendedConsumerProperties<>(consumerProperties);
 
         provisioner.provisionConsumerDestination("test", "group", extendedProperties);
         verify(provisioner, times(1)).validateOrCreateForConsumer("test", "group", consumerProperties.getEntityType());

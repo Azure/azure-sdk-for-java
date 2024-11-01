@@ -38,7 +38,7 @@ class DefaultServiceBusProvisionerTests {
 
     private ServiceBusNamespaces serviceBusNamespaces;
     private ServiceBusNamespace serviceBusNamespace;
-    
+
     private static final String NAMESPACE = "namespace";
     private static final String QUEUE_NAME = "queue-name";
     private static final String TOPIC_NAME = "topic-name";
@@ -62,12 +62,10 @@ class DefaultServiceBusProvisionerTests {
     @Test
     void provisionExceptionWhenNamespaceNotExist() {
         when(resourceManager.serviceBusNamespaces()).thenThrow(exception);
-        assertThrows(IllegalArgumentException.class, () ->
-            provisioner.provisionQueue(NAMESPACE, QUEUE_NAME));
-        assertThrows(IllegalArgumentException.class, () ->
-            provisioner.provisionTopic(NAMESPACE, TOPIC_NAME));
-        assertThrows(IllegalArgumentException.class, () ->
-            provisioner.provisionSubscription(NAMESPACE, TOPIC_NAME, SUBSCRIPTION_NAME));
+        assertThrows(IllegalArgumentException.class, () -> provisioner.provisionQueue(NAMESPACE, QUEUE_NAME));
+        assertThrows(IllegalArgumentException.class, () -> provisioner.provisionTopic(NAMESPACE, TOPIC_NAME));
+        assertThrows(IllegalArgumentException.class,
+            () -> provisioner.provisionSubscription(NAMESPACE, TOPIC_NAME, SUBSCRIPTION_NAME));
     }
 
     @Test
@@ -93,7 +91,7 @@ class DefaultServiceBusProvisionerTests {
         when((serviceBusNamespace).topics()).thenReturn(topics);
         when(topics.getByName(TOPIC_NAME)).thenReturn(null, topic);
 
-        Topic.DefinitionStages.Blank topicStage = mock(Topic.DefinitionStages.Blank .class);
+        Topic.DefinitionStages.Blank topicStage = mock(Topic.DefinitionStages.Blank.class);
         when(topics.define(TOPIC_NAME)).thenReturn(topicStage);
 
         provisioner.provisionTopic(NAMESPACE, TOPIC_NAME);
@@ -113,7 +111,8 @@ class DefaultServiceBusProvisionerTests {
         when(topic.subscriptions()).thenReturn(subscriptions);
         when(subscriptions.getByName(SUBSCRIPTION_NAME)).thenReturn(null, subscription);
 
-        ServiceBusSubscription.DefinitionStages.Blank  subscriptionStage = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
+        ServiceBusSubscription.DefinitionStages.Blank subscriptionStage
+            = mock(ServiceBusSubscription.DefinitionStages.Blank.class);
         when(subscriptions.define(SUBSCRIPTION_NAME)).thenReturn(subscriptionStage);
 
         provisioner.provisionSubscription(NAMESPACE, TOPIC_NAME, SUBSCRIPTION_NAME);
@@ -139,7 +138,7 @@ class DefaultServiceBusProvisionerTests {
          * @param azureResourceMetadata the azure resource metadata
          */
         TestDefaultServiceBusProvisioner(AzureResourceManager azureResourceManager,
-                                                AzureResourceMetadata azureResourceMetadata) {
+            AzureResourceMetadata azureResourceMetadata) {
             super(azureResourceManager, azureResourceMetadata);
 
             this.queueCrud = new ServiceBusQueueCrud(azureResourceManager, azureResourceMetadata);

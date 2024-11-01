@@ -45,16 +45,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveCosmosTemplatePartitionIT {
-    private static final PartitionPerson TEST_PERSON = new PartitionPerson(TestConstants.ID_1,
-        TestConstants.FIRST_NAME, TestConstants.ZIP_CODE,
-        TestConstants.HOBBIES, TestConstants.ADDRESSES);
+    private static final PartitionPerson TEST_PERSON = new PartitionPerson(TestConstants.ID_1, TestConstants.FIRST_NAME,
+        TestConstants.ZIP_CODE, TestConstants.HOBBIES, TestConstants.ADDRESSES);
 
     private static final PartitionPerson TEST_PERSON_2 = new PartitionPerson(TestConstants.ID_2,
-        TestConstants.NEW_FIRST_NAME,
-        TestConstants.NEW_ZIP_CODE, TestConstants.HOBBIES, TestConstants.ADDRESSES);
+        TestConstants.NEW_FIRST_NAME, TestConstants.NEW_ZIP_CODE, TestConstants.HOBBIES, TestConstants.ADDRESSES);
 
     @ClassRule
-    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+    public static final ReactiveIntegrationTestCollectionManager collectionManager
+        = new ReactiveIntegrationTestCollectionManager();
 
     private static CosmosFactory cosmosFactory;
     private static ReactiveCosmosTemplate cosmosTemplate;
@@ -78,14 +77,12 @@ public class ReactiveCosmosTemplatePartitionIT {
             cosmosFactory = new CosmosFactory(client, TestConstants.DB_NAME);
 
             final CosmosMappingContext mappingContext = new CosmosMappingContext();
-            personInfo =
-                new CosmosEntityInformation<>(PartitionPerson.class);
+            personInfo = new CosmosEntityInformation<>(PartitionPerson.class);
             containerName = personInfo.getContainerName();
 
             mappingContext.setInitialEntitySet(new EntityScanner(this.applicationContext).scan(Persistent.class));
 
-            final MappingCosmosConverter dbConverter = new MappingCosmosConverter(mappingContext,
-                null);
+            final MappingCosmosConverter dbConverter = new MappingCosmosConverter(mappingContext, null);
             cosmosTemplate = new ReactiveCosmosTemplate(cosmosFactory, cosmosConfig, dbConverter);
         }
         collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, PartitionPerson.class);
@@ -97,9 +94,8 @@ public class ReactiveCosmosTemplatePartitionIT {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_ZIP_CODE,
             Collections.singletonList(TestConstants.ZIP_CODE), Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
-        final Flux<PartitionPerson> partitionPersonFlux = cosmosTemplate.find(query,
-            PartitionPerson.class,
-            PartitionPerson.class.getSimpleName());
+        final Flux<PartitionPerson> partitionPersonFlux
+            = cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName());
         StepVerifier.create(partitionPersonFlux).consumeNextWith(actual -> {
             Assert.assertEquals(actual.getFirstName(), TEST_PERSON.getFirstName());
             Assert.assertEquals(actual.getZipCode(), TEST_PERSON.getZipCode());
@@ -107,7 +103,8 @@ public class ReactiveCosmosTemplatePartitionIT {
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge())
+            .isGreaterThan(0);
     }
 
     //  TODO: Find a way to test the query plan cache contents without using implementation package
@@ -116,20 +113,19 @@ public class ReactiveCosmosTemplatePartitionIT {
         Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_ZIP_CODE,
             Collections.singletonList(TestConstants.ZIP_CODE), Part.IgnoreCaseType.NEVER);
         CosmosQuery query = new CosmosQuery(criteria);
-//        SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
-        Flux<PartitionPerson> partitionPersonFlux = cosmosTemplate.find(query,
-            PartitionPerson.class,
-            PartitionPerson.class.getSimpleName());
+        //        SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        Flux<PartitionPerson> partitionPersonFlux
+            = cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName());
         StepVerifier.create(partitionPersonFlux).consumeNextWith(actual -> {
             Assert.assertEquals(actual.getFirstName(), TEST_PERSON.getFirstName());
             Assert.assertEquals(actual.getZipCode(), TEST_PERSON.getZipCode());
         }).verifyComplete();
 
-//        CosmosAsyncClient cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
-//        AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
-//        Map<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
-//        assertThat(initialCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
-//        int initialSize = initialCache.size();
+        //        CosmosAsyncClient cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
+        //        AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
+        //        Map<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
+        //        assertThat(initialCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
+        //        int initialSize = initialCache.size();
 
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getZipCode())).block();
 
@@ -137,18 +133,16 @@ public class ReactiveCosmosTemplatePartitionIT {
         criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_ZIP_CODE,
             Collections.singletonList(TestConstants.NEW_ZIP_CODE), Part.IgnoreCaseType.NEVER);
         query = new CosmosQuery(criteria);
-//        sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
-        partitionPersonFlux = cosmosTemplate.find(query,
-            PartitionPerson.class,
-            PartitionPerson.class.getSimpleName());
+        //        sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        partitionPersonFlux = cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName());
         StepVerifier.create(partitionPersonFlux).consumeNextWith(actual -> {
             Assert.assertEquals(actual.getFirstName(), TEST_PERSON_2.getFirstName());
             Assert.assertEquals(actual.getZipCode(), TEST_PERSON_2.getZipCode());
         }).verifyComplete();
 
-//        Map<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
-//        assertThat(postQueryCallCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
-//        assertThat(postQueryCallCache.size()).isEqualTo(initialSize);
+        //        Map<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
+        //        assertThat(postQueryCallCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
+        //        assertThat(postQueryCallCache.size()).isEqualTo(initialSize);
     }
 
     @Test
@@ -156,9 +150,8 @@ public class ReactiveCosmosTemplatePartitionIT {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, TestConstants.PROPERTY_ZIP_CODE,
             Collections.singletonList(TestConstants.ZIP_CODE), Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
-        final Flux<PartitionPerson> partitionPersonFlux = cosmosTemplate.find(query,
-            PartitionPerson.class,
-            PartitionPerson.class.getSimpleName());
+        final Flux<PartitionPerson> partitionPersonFlux
+            = cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName());
         StepVerifier.create(partitionPersonFlux).consumeNextWith(actual -> {
             Assert.assertEquals(actual.getFirstName(), TEST_PERSON.getFirstName());
             Assert.assertEquals(actual.getZipCode(), TEST_PERSON.getZipCode());
@@ -166,15 +159,14 @@ public class ReactiveCosmosTemplatePartitionIT {
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge())
+            .isGreaterThan(0);
     }
-
 
     @Test
     public void testFindByIdWithPartition() {
         final Mono<PartitionPerson> partitionPersonMono = cosmosTemplate.findById(TEST_PERSON.getId(),
-            PartitionPerson.class,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
+            PartitionPerson.class, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
         StepVerifier.create(partitionPersonMono).consumeNextWith(actual -> {
             Assert.assertEquals(actual.getFirstName(), TEST_PERSON.getFirstName());
             Assert.assertEquals(actual.getZipCode(), TEST_PERSON.getZipCode());
@@ -185,8 +177,7 @@ public class ReactiveCosmosTemplatePartitionIT {
 
     @Test
     public void testFindByIdWithPartitionNotExists() {
-        final Mono<PartitionPerson> partitionPersonMono = cosmosTemplate.findById(NOT_EXIST_ID,
-            PartitionPerson.class,
+        final Mono<PartitionPerson> partitionPersonMono = cosmosTemplate.findById(NOT_EXIST_ID, PartitionPerson.class,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
         StepVerifier.create(partitionPersonMono).expectNextCount(0).verifyComplete();
 
@@ -196,9 +187,8 @@ public class ReactiveCosmosTemplatePartitionIT {
     @Test
     public void testUpsertNewDocumentPartition() {
         final String firstName = TestConstants.NEW_FIRST_NAME + "_" + UUID.randomUUID().toString();
-        final PartitionPerson newPerson = new PartitionPerson(UUID.randomUUID().toString(),
-            firstName, TestConstants.NEW_ZIP_CODE,
-            null, null);
+        final PartitionPerson newPerson
+            = new PartitionPerson(UUID.randomUUID().toString(), firstName, TestConstants.NEW_ZIP_CODE, null, null);
         final Mono<PartitionPerson> upsert = cosmosTemplate.upsert(newPerson);
         StepVerifier.create(upsert).expectNextCount(1).verifyComplete();
 
@@ -208,20 +198,21 @@ public class ReactiveCosmosTemplatePartitionIT {
     @Test
     public void testUpdateWithPartition() {
         final PartitionPerson updated = new PartitionPerson(TEST_PERSON.getId(), TestConstants.UPDATED_FIRST_NAME,
-            TEST_PERSON.getZipCode(), TEST_PERSON.getHobbies(),
-            TEST_PERSON.getShippingAddresses());
+            TEST_PERSON.getZipCode(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses());
         cosmosTemplate.upsert(updated).block();
 
-        final PartitionPerson person = cosmosTemplate
-            .findAll(PartitionPerson.class.getSimpleName(), PartitionPerson.class)
-            .toStream()
-            .filter(p -> TEST_PERSON.getId().equals(p.getId()))
-            .findFirst().get();
+        final PartitionPerson person
+            = cosmosTemplate.findAll(PartitionPerson.class.getSimpleName(), PartitionPerson.class)
+                .toStream()
+                .filter(p -> TEST_PERSON.getId().equals(p.getId()))
+                .findFirst()
+                .get();
         assertEquals(person, updated);
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge())
+            .isGreaterThan(0);
     }
 
     @Test
@@ -229,15 +220,16 @@ public class ReactiveCosmosTemplatePartitionIT {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getZipCode())).block();
         StepVerifier.create(cosmosTemplate.findAll(PartitionPerson.class)).expectNextCount(2).verifyComplete();
 
-        cosmosTemplate.deleteById(PartitionPerson.class.getSimpleName(),
-            TEST_PERSON.getId(), new PartitionKey(TEST_PERSON.getZipCode())).block();
-        StepVerifier.create(cosmosTemplate.findAll(PartitionPerson.class))
-                    .expectNext(TEST_PERSON_2)
-                    .verifyComplete();
+        cosmosTemplate
+            .deleteById(PartitionPerson.class.getSimpleName(), TEST_PERSON.getId(),
+                new PartitionKey(TEST_PERSON.getZipCode()))
+            .block();
+        StepVerifier.create(cosmosTemplate.findAll(PartitionPerson.class)).expectNext(TEST_PERSON_2).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge())
+            .isGreaterThan(0);
     }
 
     @Test
@@ -245,26 +237,24 @@ public class ReactiveCosmosTemplatePartitionIT {
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getZipCode())).block();
         StepVerifier.create(cosmosTemplate.findAll(PartitionPerson.class)).expectNextCount(2).verifyComplete();
         cosmosTemplate.deleteAll(containerName, PartitionPerson.class).block();
-        StepVerifier.create(cosmosTemplate.findAll(PartitionPerson.class))
-                    .expectNextCount(0)
-                    .verifyComplete();
+        StepVerifier.create(cosmosTemplate.findAll(PartitionPerson.class)).expectNextCount(0).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge())
+            .isGreaterThan(0);
     }
 
     @Test
     public void testCountForPartitionedCollection() {
-        StepVerifier.create(cosmosTemplate.count(containerName))
-                    .expectNext((long) 1).verifyComplete();
+        StepVerifier.create(cosmosTemplate.count(containerName)).expectNext((long) 1).verifyComplete();
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getZipCode())).block();
-        StepVerifier.create(cosmosTemplate.count(containerName))
-                    .expectNext((long) 2).verifyComplete();
+        StepVerifier.create(cosmosTemplate.count(containerName)).expectNext((long) 2).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge())
+            .isGreaterThan(0);
     }
 
     @Test
@@ -273,12 +263,12 @@ public class ReactiveCosmosTemplatePartitionIT {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(TEST_PERSON_2.getFirstName()), Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
-        StepVerifier.create(cosmosTemplate.count(query, containerName))
-                    .expectNext((long) 1).verifyComplete();
+        StepVerifier.create(cosmosTemplate.count(query, containerName)).expectNext((long) 1).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge())
+            .isGreaterThan(0);
     }
 
     @Test
@@ -287,12 +277,11 @@ public class ReactiveCosmosTemplatePartitionIT {
         final Criteria criteriaIgnoreCase = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(TEST_PERSON_2.getFirstName().toUpperCase()), Part.IgnoreCaseType.ALWAYS);
         final CosmosQuery queryIgnoreCase = new CosmosQuery(criteriaIgnoreCase);
-        StepVerifier.create(cosmosTemplate.count(queryIgnoreCase, containerName))
-                    .expectNext((long) 1).verifyComplete();
+        StepVerifier.create(cosmosTemplate.count(queryIgnoreCase, containerName)).expectNext((long) 1).verifyComplete();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
-        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge())
+            .isGreaterThan(0);
     }
 }
-

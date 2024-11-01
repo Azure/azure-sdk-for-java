@@ -60,8 +60,7 @@ public class CosmosPageRequest extends PageRequest {
         this.requestContinuation = requestContinuation;
     }
 
-    private CosmosPageRequest(long offset, int page, int size, String requestContinuation,
-                              Sort sort) {
+    private CosmosPageRequest(long offset, int page, int size, String requestContinuation, Sort sort) {
         super(page, size, sort);
         this.offset = offset;
         this.requestContinuation = requestContinuation;
@@ -96,8 +95,8 @@ public class CosmosPageRequest extends PageRequest {
 
     @Override
     public PageRequest next() {
-        return new CosmosPageRequest(this.offset + (long) this.getPageSize(),
-            this.getPageNumber() + 1, getPageSize(), this.requestContinuation, getSort());
+        return new CosmosPageRequest(this.offset + (long) this.getPageSize(), this.getPageNumber() + 1, getPageSize(),
+            this.requestContinuation, getSort());
     }
 
     @Override
@@ -117,8 +116,7 @@ public class CosmosPageRequest extends PageRequest {
     public int hashCode() {
         int result = super.hashCode();
 
-        result = 31 * result
-                    + (requestContinuation != null ? requestContinuation.hashCode() : 0);
+        result = 31 * result + (requestContinuation != null ? requestContinuation.hashCode() : 0);
 
         return result;
     }
@@ -137,7 +135,6 @@ public class CosmosPageRequest extends PageRequest {
 
         final boolean continuationTokenEquals = Objects.equals(requestContinuation, that.requestContinuation);
 
-        return continuationTokenEquals
-            && super.equals(that);
+        return continuationTokenEquals && super.equals(that);
     }
 }

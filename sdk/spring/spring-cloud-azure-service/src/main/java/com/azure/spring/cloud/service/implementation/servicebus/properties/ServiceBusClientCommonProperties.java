@@ -11,7 +11,8 @@ import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType
 /**
  *
  */
-public interface ServiceBusClientCommonProperties extends AzureProperties, RetryOptionsProvider, ConnectionStringProvider {
+public interface ServiceBusClientCommonProperties
+    extends AzureProperties, RetryOptionsProvider, ConnectionStringProvider {
 
     String getFullyQualifiedNamespace();
 

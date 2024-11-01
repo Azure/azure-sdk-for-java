@@ -51,7 +51,7 @@ import java.lang.annotation.Target;
  * @see EnableAzureMessaging
  * @see AzureListenerAnnotationBeanPostProcessorAdapter
  */
-@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @MessageMapping

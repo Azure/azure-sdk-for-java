@@ -50,8 +50,7 @@ class AadJwtClientAuthenticationParametersConverterTests {
 
     @Test
     void convertNull() {
-        ClientRegistration clientRegistration = ClientRegistration
-            .withRegistrationId("test")
+        ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("test")
             .clientId("test")
             .clientSecret("test-secret")
             .clientAuthenticationMethod(CLIENT_SECRET_JWT)
@@ -59,15 +58,14 @@ class AadJwtClientAuthenticationParametersConverterTests {
             .tokenUri("http://localhost/token")
             .build();
 
-        OAuth2ClientCredentialsGrantRequest clientCredentialsGrantRequest =
-            new OAuth2ClientCredentialsGrantRequest(clientRegistration);
+        OAuth2ClientCredentialsGrantRequest clientCredentialsGrantRequest
+            = new OAuth2ClientCredentialsGrantRequest(clientRegistration);
         assertNull(this.converter.convert(clientCredentialsGrantRequest));
     }
 
     @Test
     void resolveNullJwkThenThrowOAuth2AuthorizationException() {
-        ClientRegistration clientRegistration = ClientRegistration
-            .withRegistrationId("test")
+        ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("test")
             .clientId("test")
             .clientSecret("test-secret")
             .clientAuthenticationMethod(PRIVATE_KEY_JWT)
@@ -75,8 +73,8 @@ class AadJwtClientAuthenticationParametersConverterTests {
             .tokenUri("http://localhost/token")
             .build();
 
-        OAuth2ClientCredentialsGrantRequest clientCredentialsGrantRequest =
-            new OAuth2ClientCredentialsGrantRequest(clientRegistration);
+        OAuth2ClientCredentialsGrantRequest clientCredentialsGrantRequest
+            = new OAuth2ClientCredentialsGrantRequest(clientRegistration);
         assertThatExceptionOfType(OAuth2AuthorizationException.class)
             .isThrownBy(() -> this.converter.convert(clientCredentialsGrantRequest))
             .withMessage("[invalid_key] Failed to resolve JWK signing key for client registration 'test'.");
@@ -89,8 +87,7 @@ class AadJwtClientAuthenticationParametersConverterTests {
         given(this.jwkResolver.apply(any())).willReturn(rsaJwk);
         given(rsaJwk.getX509CertThumbprint()).willReturn(new Base64URL("dGVzdA"));
 
-        ClientRegistration clientRegistration = ClientRegistration
-            .withRegistrationId("test")
+        ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("test")
             .clientId("test")
             .clientSecret("test-secret")
             .clientAuthenticationMethod(PRIVATE_KEY_JWT)
@@ -98,8 +95,8 @@ class AadJwtClientAuthenticationParametersConverterTests {
             .tokenUri("http://localhost/token")
             .build();
 
-        OAuth2ClientCredentialsGrantRequest clientCredentialsGrantRequest =
-            new OAuth2ClientCredentialsGrantRequest(clientRegistration);
+        OAuth2ClientCredentialsGrantRequest clientCredentialsGrantRequest
+            = new OAuth2ClientCredentialsGrantRequest(clientRegistration);
         MultiValueMap<String, String> parameters = this.converter.convert(clientCredentialsGrantRequest);
 
         assertThat(parameters.getFirst(OAuth2ParameterNames.CLIENT_ASSERTION_TYPE))

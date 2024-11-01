@@ -23,16 +23,15 @@ class AdditionalSpringConfigurationMetadataTests {
 
     @Test
     void validatePropertyNames() {
-        final List<String> invalidatePropertyNames = loadRepository()
-            .getAllProperties()
+        final List<String> invalidatePropertyNames = loadRepository().getAllProperties()
             .values()
             .stream()
             .map(this::validatePropertyName)
             .filter(Objects::nonNull)
             .collect(Collectors.toList());
 
-        assertThat(invalidatePropertyNames)
-            .describedAs("Names should be kebab-case ('-' separated), lowercase alpha-numeric characters and must start with a letter")
+        assertThat(invalidatePropertyNames).describedAs(
+            "Names should be kebab-case ('-' separated), lowercase alpha-numeric characters and must start with a letter")
             .isEmpty();
     }
 
@@ -40,10 +39,7 @@ class AdditionalSpringConfigurationMetadataTests {
         try {
             ConfigurationPropertyName.of(property.getId());
         } catch (InvalidConfigurationPropertyNameException e) {
-            String invalid = e.getInvalidCharacters()
-                .stream()
-                .map(this::quote)
-                .collect(Collectors.joining(", "));
+            String invalid = e.getInvalidCharacters().stream().map(this::quote).collect(Collectors.joining(", "));
             return String.format("Property '%s' contains invalid character(s): %s", e.getName(), invalid);
         }
         return null;

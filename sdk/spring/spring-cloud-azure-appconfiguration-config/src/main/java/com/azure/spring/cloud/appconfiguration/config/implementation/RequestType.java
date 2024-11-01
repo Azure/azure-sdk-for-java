@@ -11,7 +11,7 @@ public enum RequestType {
      * Startup Request
      */
     STARTUP("Startup"),
-    
+
     /**
      * Watch Request
      */

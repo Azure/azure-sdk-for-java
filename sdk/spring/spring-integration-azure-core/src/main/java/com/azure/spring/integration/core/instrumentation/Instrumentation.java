@@ -62,6 +62,7 @@ public interface Instrumentation {
      * @param exception the exception thrown by the component.
      */
     void setStatus(Status status, Throwable exception);
+
     /**
      * Get the unique id.
      * @return the id string.

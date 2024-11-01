@@ -11,16 +11,13 @@ import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import org.springframework.data.annotation.Id;
 
 @Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
-@CosmosIndexingPolicy(compositeIndexes = {
-    @CompositeIndex(paths = {
-        @CompositeIndexPath(path = "/fieldOne"),
-        @CompositeIndexPath(path = "/fieldTwo")
-    }),
-    @CompositeIndex(paths = {
-        @CompositeIndexPath(path = "/fieldThree", order = CompositePathSortOrder.DESCENDING),
-        @CompositeIndexPath(path = "/fieldFour", order = CompositePathSortOrder.DESCENDING)
-    })
-})
+@CosmosIndexingPolicy(
+    compositeIndexes = {
+        @CompositeIndex(paths = { @CompositeIndexPath(path = "/fieldOne"), @CompositeIndexPath(path = "/fieldTwo") }),
+        @CompositeIndex(
+            paths = {
+                @CompositeIndexPath(path = "/fieldThree", order = CompositePathSortOrder.DESCENDING),
+                @CompositeIndexPath(path = "/fieldFour", order = CompositePathSortOrder.DESCENDING) }) })
 public class CompositeIndexEntity {
 
     @Id

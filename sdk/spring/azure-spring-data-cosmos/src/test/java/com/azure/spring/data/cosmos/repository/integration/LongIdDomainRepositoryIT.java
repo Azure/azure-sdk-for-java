@@ -107,16 +107,16 @@ public class LongIdDomainRepositoryIT {
         final Set<LongIdDomain> entitiesToSave = Stream.of(DOMAIN_1, DOMAIN_2).collect(Collectors.toSet());
         this.repository.saveAll(entitiesToSave);
 
-        final Set<LongIdDomain> savedEntities = StreamSupport.stream(this.repository.findAll().spliterator(), false)
-                                                             .collect(Collectors.toSet());
+        final Set<LongIdDomain> savedEntities
+            = StreamSupport.stream(this.repository.findAll().spliterator(), false).collect(Collectors.toSet());
 
         Assert.assertTrue(entitiesToSave.containsAll(savedEntities));
     }
 
     @Test
     public void testFindAllById() {
-        final Iterable<LongIdDomain> allById =
-            TestUtils.toList(this.repository.findAllById(Arrays.asList(DOMAIN_1.getNumber(), DOMAIN_2.getNumber())));
+        final Iterable<LongIdDomain> allById
+            = TestUtils.toList(this.repository.findAllById(Arrays.asList(DOMAIN_1.getNumber(), DOMAIN_2.getNumber())));
         Assert.assertTrue(((ArrayList) allById).size() == 2);
         Iterator<LongIdDomain> it = allById.iterator();
         assertLongIdDomainEquals(Arrays.asList(it.next(), it.next()), Arrays.asList(DOMAIN_1, DOMAIN_2));
@@ -182,18 +182,16 @@ public class LongIdDomainRepositoryIT {
         this.repository.save(DOMAIN_1);
 
         final Sort ascSort = Sort.by(Sort.Direction.ASC, "number");
-        final List<LongIdDomain> ascending = StreamSupport
-            .stream(this.repository.findAll(ascSort).spliterator(), false)
-            .collect(Collectors.toList());
+        final List<LongIdDomain> ascending
+            = StreamSupport.stream(this.repository.findAll(ascSort).spliterator(), false).collect(Collectors.toList());
         Assert.assertEquals(3, ascending.size());
         Assert.assertEquals(DOMAIN_1, ascending.get(0));
         Assert.assertEquals(other, ascending.get(1));
         Assert.assertEquals(DOMAIN_2, ascending.get(2));
 
         final Sort descSort = Sort.by(Sort.Direction.DESC, "number");
-        final List<LongIdDomain> descending = StreamSupport
-            .stream(this.repository.findAll(descSort).spliterator(), false)
-            .collect(Collectors.toList());
+        final List<LongIdDomain> descending
+            = StreamSupport.stream(this.repository.findAll(descSort).spliterator(), false).collect(Collectors.toList());
         Assert.assertEquals(3, descending.size());
         Assert.assertEquals(DOMAIN_2, descending.get(0));
         Assert.assertEquals(other, descending.get(1));
@@ -261,8 +259,7 @@ public class LongIdDomainRepositoryIT {
                 return false;
             }
             InvalidDomain that = (InvalidDomain) o;
-            return count == that.count
-                && Objects.equals(location, that.location);
+            return count == that.count && Objects.equals(location, that.location);
         }
 
         @Override
@@ -272,13 +269,7 @@ public class LongIdDomainRepositoryIT {
 
         @Override
         public String toString() {
-            return "InvalidDomain{"
-                + "count="
-                + count
-                + ", location='"
-                + location
-                + '\''
-                + '}';
+            return "InvalidDomain{" + "count=" + count + ", location='" + location + '\'' + '}';
         }
     }
 }

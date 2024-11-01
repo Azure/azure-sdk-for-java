@@ -10,8 +10,7 @@ import java.util.List;
 /**
  * {@link ParametersParameterAccessor} implementation and store all special parameters in a List.
  */
-public class CosmosParameterParameterAccessor extends ParametersParameterAccessor
-        implements CosmosParameterAccessor {
+public class CosmosParameterParameterAccessor extends ParametersParameterAccessor implements CosmosParameterAccessor {
 
     private final List<Object> values;
 

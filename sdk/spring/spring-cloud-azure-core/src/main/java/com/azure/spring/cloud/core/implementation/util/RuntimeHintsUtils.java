@@ -32,8 +32,8 @@ public final class RuntimeHintsUtils {
         MetadataReaderFactory metadataReaderFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
 
         List<Class> candidates = new ArrayList<>();
-        String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
-            + resolveBasePackage(basePackage) + "/" + "**/*.class";
+        String packageSearchPath
+            = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + resolveBasePackage(basePackage) + "/" + "**/*.class";
         Resource[] resources = resourcePatternResolver.getResources(packageSearchPath);
         for (Resource resource : resources) {
             if (resource.isReadable()) {

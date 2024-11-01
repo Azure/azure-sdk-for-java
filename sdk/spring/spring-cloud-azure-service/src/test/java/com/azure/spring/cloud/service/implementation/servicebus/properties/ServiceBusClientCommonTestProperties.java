@@ -7,7 +7,6 @@ import com.azure.spring.cloud.core.implementation.connectionstring.ServiceBusCon
 import com.azure.spring.cloud.core.implementation.properties.AzureAmqpSdkProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 
-
 public class ServiceBusClientCommonTestProperties extends AzureAmqpSdkProperties
     implements ServiceBusClientCommonProperties {
 

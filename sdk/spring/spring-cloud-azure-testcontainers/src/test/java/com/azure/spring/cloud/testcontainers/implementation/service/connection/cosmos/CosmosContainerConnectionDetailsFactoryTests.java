@@ -48,9 +48,10 @@ class CosmosContainerConnectionDetailsFactoryTests {
 
     @Container
     @ServiceConnection
-    private static final CosmosDBEmulatorContainer COSMOS_DB_EMULATOR_CONTAINER = new CosmosDBEmulatorContainer(DockerImageName.parse("mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest"))
-        .waitingFor(Wait.forHttps("/_explorer/emulator.pem").forStatusCode(200).allowInsecure())
-        .withStartupTimeout(Duration.ofMinutes(3));
+    private static final CosmosDBEmulatorContainer COSMOS_DB_EMULATOR_CONTAINER = new CosmosDBEmulatorContainer(
+        DockerImageName.parse("mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest"))
+            .waitingFor(Wait.forHttps("/_explorer/emulator.pem").forStatusCode(200).allowInsecure())
+            .withStartupTimeout(Duration.ofMinutes(3));
 
     @Autowired
     private PersonRepository personRepository;
@@ -59,7 +60,8 @@ class CosmosContainerConnectionDetailsFactoryTests {
     static void beforeAll() throws IOException, CertificateException, KeyStoreException, NoSuchAlgorithmException {
         Path keyStoreFile = new File(tempFolder, "azure-cosmos-emulator.keystore").toPath();
         KeyStore keyStore = COSMOS_DB_EMULATOR_CONTAINER.buildNewKeyStore();
-        keyStore.store(Files.newOutputStream(keyStoreFile.toFile().toPath()), COSMOS_DB_EMULATOR_CONTAINER.getEmulatorKey().toCharArray());
+        keyStore.store(Files.newOutputStream(keyStoreFile.toFile().toPath()),
+            COSMOS_DB_EMULATOR_CONTAINER.getEmulatorKey().toCharArray());
 
         System.setProperty("javax.net.ssl.trustStore", keyStoreFile.toString());
         System.setProperty("javax.net.ssl.trustStorePassword", COSMOS_DB_EMULATOR_CONTAINER.getEmulatorKey());
@@ -101,7 +103,11 @@ class CosmosContainerConnectionDetailsFactoryTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ImportAutoConfiguration(classes = {AzureGlobalPropertiesAutoConfiguration.class, AzureCosmosAutoConfiguration.class, CosmosDataAutoConfiguration.class})
+    @ImportAutoConfiguration(
+        classes = {
+            AzureGlobalPropertiesAutoConfiguration.class,
+            AzureCosmosAutoConfiguration.class,
+            CosmosDataAutoConfiguration.class })
     @EnableCosmosRepositories(considerNestedRepositories = true)
     static class Config {
     }

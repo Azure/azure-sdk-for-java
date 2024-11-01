@@ -59,8 +59,10 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     private final CheckpointStore checkpointStore;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
     private final Map<ConsumerIdentifier, EventProcessorClient> processorClientMap = new ConcurrentHashMap<>();
-    private final List<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers = new ArrayList<>();
-    private final Map<String, List<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>>> dedicatedCustomizers = new HashMap<>();
+    private final List<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers
+        = new ArrayList<>();
+    private final Map<String, List<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>>> dedicatedCustomizers
+        = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
     private TokenCredential defaultCredential = null;
 
@@ -78,7 +80,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * @param namespaceProperties the namespace properties.
      */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
-                                                     NamespaceProperties namespaceProperties) {
+        NamespaceProperties namespaceProperties) {
         this(checkpointStore, namespaceProperties, key -> null);
     }
 
@@ -88,7 +90,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each event hub.
      */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
-                                                     PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> supplier) {
+        PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> supplier) {
         this(checkpointStore, null, supplier);
     }
 
@@ -99,8 +101,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * @param supplier the {@link PropertiesSupplier} to supply {@link ProcessorProperties} for each event hub.
      */
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore,
-                                                     NamespaceProperties namespaceProperties,
-                                                     PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> supplier) {
+        NamespaceProperties namespaceProperties, PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> supplier) {
         Assert.notNull(checkpointStore, "CheckpointStore must be provided.");
         this.checkpointStore = checkpointStore;
         this.namespaceProperties = namespaceProperties;
@@ -109,16 +110,16 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
 
     @Override
     public EventProcessorClient createProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
-                                                @NonNull MessageListener<?> listener,
-                                                @NonNull EventHubsErrorHandler errorHandler) {
+        @NonNull MessageListener<?> listener, @NonNull EventHubsErrorHandler errorHandler) {
         return doCreateProcessor(eventHub, consumerGroup, listener, errorHandler, null, null,
             this.propertiesSupplier.getProperties(new ConsumerIdentifier(eventHub, consumerGroup)));
     }
 
     @Override
-    public EventProcessorClient createProcessor(String eventHub, String consumerGroup, EventHubsContainerProperties containerProperties) {
-        ProcessorProperties propertiesSupplied = this.propertiesSupplier.getProperties(new ConsumerIdentifier(eventHub,
-            consumerGroup));
+    public EventProcessorClient createProcessor(String eventHub, String consumerGroup,
+        EventHubsContainerProperties containerProperties) {
+        ProcessorProperties propertiesSupplied
+            = this.propertiesSupplier.getProperties(new ConsumerIdentifier(eventHub, consumerGroup));
 
         ProcessorPropertiesMerger propertiesMerger = new ProcessorPropertiesMerger();
         ProcessorProperties processorProperties = propertiesMerger.merge(containerProperties, propertiesSupplied);
@@ -130,8 +131,7 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
         Assert.notNull(messageListener, "A message listener consumer must be provided!");
 
         return doCreateProcessor(eventHub, consumerGroup, messageListener, errorHandler,
-            containerProperties.getInitializationContextConsumer(),
-            containerProperties.getCloseContextConsumer(),
+            containerProperties.getInitializationContextConsumer(), containerProperties.getCloseContextConsumer(),
             processorProperties);
     }
 
@@ -146,21 +146,20 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
     }
 
     private EventProcessorClient doCreateProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
-                                                   @NonNull MessageListener<?> messageListener,
-                                                   @NonNull EventHubsErrorHandler errorHandler,
-                                                   @Nullable Consumer<InitializationContext> initializationContextConsumer,
-                                                   @Nullable Consumer<CloseContext> closeContextConsumer,
-                                                   @Nullable ProcessorProperties properties) {
+        @NonNull MessageListener<?> messageListener, @NonNull EventHubsErrorHandler errorHandler,
+        @Nullable Consumer<InitializationContext> initializationContextConsumer,
+        @Nullable Consumer<CloseContext> closeContextConsumer, @Nullable ProcessorProperties properties) {
         ConsumerIdentifier key = new ConsumerIdentifier(eventHub, consumerGroup);
         return processorClientMap.computeIfAbsent(key, k -> {
 
             ProcessorPropertiesParentMerger propertiesParentMerger = new ProcessorPropertiesParentMerger();
-            ProcessorProperties processorProperties = propertiesParentMerger.merge(properties, this.namespaceProperties);
+            ProcessorProperties processorProperties
+                = propertiesParentMerger.merge(properties, this.namespaceProperties);
             processorProperties.setEventHubName(k.getDestination());
             processorProperties.setConsumerGroup(k.getGroup());
 
-            EventProcessorClientBuilderFactory factory = new EventProcessorClientBuilderFactory(
-                processorProperties, this.checkpointStore, messageListener, errorHandler);
+            EventProcessorClientBuilderFactory factory = new EventProcessorClientBuilderFactory(processorProperties,
+                this.checkpointStore, messageListener, errorHandler);
 
             factory.setCloseContextConsumer(closeContextConsumer);
             factory.setInitializationContextConsumer(initializationContextConsumer);
@@ -172,7 +171,8 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
             EventProcessorClientBuilder builder = factory.build();
             customizeBuilder(eventHub, consumerGroup, builder);
             EventProcessorClient client = builder.buildEventProcessorClient();
-            LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", k.getDestination(), k.getGroup());
+            LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", k.getDestination(),
+                k.getGroup());
 
             this.listeners.forEach(l -> l.processorAdded(k.getDestination(), k.getGroup(), client));
 
@@ -226,20 +226,20 @@ public final class DefaultEventHubsNamespaceProcessorFactory implements EventHub
      * @param consumerGroup the consumer group of the client.
      * @param customizer the provided customizer.
      */
-    public void addBuilderCustomizer(String eventHub, String consumerGroup, AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder> customizer) {
+    public void addBuilderCustomizer(String eventHub, String consumerGroup,
+        AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug("The provided customizer is null, will ignore it.");
             return;
         }
-        this.dedicatedCustomizers
-            .computeIfAbsent(getCustomizerKey(eventHub, consumerGroup), key -> new ArrayList<>())
+        this.dedicatedCustomizers.computeIfAbsent(getCustomizerKey(eventHub, consumerGroup), key -> new ArrayList<>())
             .add(customizer);
     }
 
     private void customizeBuilder(String eventHub, String consumerGroup, EventProcessorClientBuilder builder) {
         this.customizers.forEach(customizer -> customizer.customize(builder));
         this.dedicatedCustomizers.getOrDefault(getCustomizerKey(eventHub, consumerGroup), new ArrayList<>())
-                                 .forEach(customizer -> customizer.customize(builder));
+            .forEach(customizer -> customizer.customize(builder));
     }
 
     private String getCustomizerKey(String eventHub, String consumerGroup) {

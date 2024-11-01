@@ -72,8 +72,8 @@ public final class Criteria {
      * @param ignoreCase ignore case flag
      * @return Criteria instance
      */
-    public static Criteria getInstance(CriteriaType type, @NonNull String subject,
-                                       @NonNull List<Object> values, @NonNull Part.IgnoreCaseType ignoreCase) {
+    public static Criteria getInstance(CriteriaType type, @NonNull String subject, @NonNull List<Object> values,
+        @NonNull Part.IgnoreCaseType ignoreCase) {
         final Criteria criteria = new Criteria(type);
 
         criteria.subject = subject;

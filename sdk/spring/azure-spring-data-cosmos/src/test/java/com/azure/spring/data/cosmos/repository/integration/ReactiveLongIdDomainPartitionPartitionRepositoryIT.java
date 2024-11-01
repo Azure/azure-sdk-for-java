@@ -39,7 +39,8 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
     private static final LongIdDomainPartition DOMAIN_2 = new LongIdDomainPartition(ID_2, NAME_2);
 
     @ClassRule
-    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+    public static final ReactiveIntegrationTestCollectionManager collectionManager
+        = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
     private ReactiveCosmosTemplate template;
@@ -62,22 +63,22 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
         Mono<Void> deletedMono = this.repository.deleteAll();
         StepVerifier.create(deletedMono).thenAwait().verifyComplete();
 
-        Mono<LongIdDomainPartition> idMono = this.repository.findById(ID_1,
-            new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
+        Mono<LongIdDomainPartition> idMono
+            = this.repository.findById(ID_1, new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
         StepVerifier.create(idMono).expectNextCount(0).verifyComplete();
 
         Mono<LongIdDomainPartition> saveMono = this.repository.save(DOMAIN_1);
         StepVerifier.create(saveMono).expectNext(DOMAIN_1).expectComplete().verify();
 
-        Mono<LongIdDomainPartition> findIdMono = this.repository.findById(ID_1,
-            new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
+        Mono<LongIdDomainPartition> findIdMono
+            = this.repository.findById(ID_1, new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
         StepVerifier.create(findIdMono).expectNext(DOMAIN_1).expectComplete().verify();
 
         Mono<Void> deleteMono = this.repository.delete(DOMAIN_1);
         StepVerifier.create(deleteMono).verifyComplete();
 
-        Mono<LongIdDomainPartition> afterDelIdMono = this.repository.findById(ID_1,
-            new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
+        Mono<LongIdDomainPartition> afterDelIdMono
+            = this.repository.findById(ID_1, new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
         StepVerifier.create(afterDelIdMono).expectNextCount(0).verifyComplete();
     }
 
@@ -116,8 +117,8 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
             new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
         StepVerifier.create(deleteMono).verifyComplete();
 
-        Mono<LongIdDomainPartition> findIdMono = this.repository.findById(ID_1,
-            new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
+        Mono<LongIdDomainPartition> findIdMono
+            = this.repository.findById(ID_1, new PartitionKey(entityInformation.getPartitionKeyFieldValue(DOMAIN_1)));
         StepVerifier.create(findIdMono).expectNextCount(0).verifyComplete();
     }
 
@@ -178,8 +179,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
 
     @Test
     public void testFindAllSort() {
-        final LongIdDomainPartition other = new LongIdDomainPartition(
-            DOMAIN_1.getNumber() + 1, "other-name");
+        final LongIdDomainPartition other = new LongIdDomainPartition(DOMAIN_1.getNumber() + 1, "other-name");
         Flux<LongIdDomainPartition> savedAllFlux = this.repository.saveAll(Arrays.asList(DOMAIN_1, other));
         StepVerifier.create(savedAllFlux).thenConsumeWhile(domain -> true).expectComplete().verify();
 
@@ -231,8 +231,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
                 return false;
             }
             InvalidDomain that = (InvalidDomain) o;
-            return count == that.count
-                && Objects.equals(location, that.location);
+            return count == that.count && Objects.equals(location, that.location);
         }
 
         @Override
@@ -242,13 +241,7 @@ public class ReactiveLongIdDomainPartitionPartitionRepositoryIT {
 
         @Override
         public String toString() {
-            return "InvalidDomain{"
-                + "count="
-                + count
-                + ", location='"
-                + location
-                + '\''
-                + '}';
+            return "InvalidDomain{" + "count=" + count + ", location='" + location + '\'' + '}';
         }
     }
 }

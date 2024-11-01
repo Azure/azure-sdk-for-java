@@ -11,19 +11,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class BasicCosmosPersistentEntityUnitTest {
 
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings({ "deprecation", "removal" })
     @Test
     public void testGetCollection() {
-        final BasicCosmosPersistentEntity<Person> entity = new BasicCosmosPersistentEntity<Person>(
-                ClassTypeInformation.from(Person.class));
+        final BasicCosmosPersistentEntity<Person> entity
+            = new BasicCosmosPersistentEntity<Person>(ClassTypeInformation.from(Person.class));
         assertThat(entity.getContainer()).isEqualTo("");
     }
 
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings({ "deprecation", "removal" })
     @Test
     public void testGetLanguage() {
-        final BasicCosmosPersistentEntity<Person> entity = new BasicCosmosPersistentEntity<Person>(
-                ClassTypeInformation.from(Person.class));
+        final BasicCosmosPersistentEntity<Person> entity
+            = new BasicCosmosPersistentEntity<Person>(ClassTypeInformation.from(Person.class));
         assertThat(entity.getLanguage()).isEqualTo("");
     }
 

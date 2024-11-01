@@ -127,8 +127,8 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByBeforeWithAndOr() {
-        List<Memo> memos = TestUtils.toList(this.repository.findByDateBeforeAndMessage(memoDate,
-            TestConstants.NEW_MESSAGE));
+        List<Memo> memos
+            = TestUtils.toList(this.repository.findByDateBeforeAndMessage(memoDate, TestConstants.NEW_MESSAGE));
 
         Assert.assertTrue(memos.isEmpty());
 
@@ -191,8 +191,8 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByBetween() {
-        List<Memo> memos = TestUtils.toList(this.repository
-            .findByDateBetween(testMemo1.getDate(), testMemo3.getDate()));
+        List<Memo> memos
+            = TestUtils.toList(this.repository.findByDateBetween(testMemo1.getDate(), testMemo3.getDate()));
         List<Memo> reference = Arrays.asList(testMemo1, testMemo2, testMemo3);
 
         assertMemoListEquals(memos, reference);
@@ -210,15 +210,15 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByBetweenWithAnd() {
-        final List<Memo> memos = TestUtils.toList(this.repository
-            .findByDateBetweenAndMessage(testMemo1.getDate(), testMemo2.getDate(), TestConstants.MESSAGE));
+        final List<Memo> memos = TestUtils.toList(this.repository.findByDateBetweenAndMessage(testMemo1.getDate(),
+            testMemo2.getDate(), TestConstants.MESSAGE));
         assertMemoListEquals(memos, Collections.singletonList(testMemo1));
     }
 
     @Test
     public void testFindByBetweenWithOr() {
-        final List<Memo> memos = TestUtils.toList(this.repository
-            .findByDateBetweenOrMessage(testMemo1.getDate(), testMemo2.getDate(), TestConstants.NEW_MESSAGE));
+        final List<Memo> memos = TestUtils.toList(this.repository.findByDateBetweenOrMessage(testMemo1.getDate(),
+            testMemo2.getDate(), TestConstants.NEW_MESSAGE));
         assertMemoListEquals(memos, Arrays.asList(testMemo1, testMemo2, testMemo3));
     }
 
@@ -238,8 +238,8 @@ public class MemoRepositoryIT {
 
     @Test
     public void testFindByStartsWith() {
-        final List<Memo> result =
-            TestUtils.toList(repository.findByMessageStartsWith(testMemo1.getMessage().substring(0, 10)));
+        final List<Memo> result
+            = TestUtils.toList(repository.findByMessageStartsWith(testMemo1.getMessage().substring(0, 10)));
         Assert.assertEquals(testMemo1, result.get(0));
         Assert.assertEquals(1, result.size());
     }

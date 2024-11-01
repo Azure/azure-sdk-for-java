@@ -31,14 +31,16 @@ public class ServiceBusHealthIndicator extends AbstractHealthIndicator {
             builder.unknown();
             return;
         }
-        if (instrumentationManager.getAllHealthInstrumentation().stream()
-                                  .allMatch(instr -> Instrumentation.Status.UP == instr.getStatus())) {
+        if (instrumentationManager.getAllHealthInstrumentation()
+            .stream()
+            .allMatch(instr -> Instrumentation.Status.UP == instr.getStatus())) {
             builder.up();
             return;
         }
         builder.down();
-        instrumentationManager.getAllHealthInstrumentation().stream()
-                              .filter(instr -> Instrumentation.Status.DOWN == instr.getStatus())
-                              .forEach(instr -> builder.withDetail(instr.getId(), instr.getException()));
+        instrumentationManager.getAllHealthInstrumentation()
+            .stream()
+            .filter(instr -> Instrumentation.Status.DOWN == instr.getStatus())
+            .forEach(instr -> builder.withDetail(instr.getId(), instr.getException()));
     }
 }

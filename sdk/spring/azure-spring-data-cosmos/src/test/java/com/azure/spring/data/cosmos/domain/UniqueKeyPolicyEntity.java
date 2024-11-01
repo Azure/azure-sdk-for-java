@@ -10,10 +10,8 @@ import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Id;
 
 @Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
-@CosmosUniqueKeyPolicy(uniqueKeys = {
-    @CosmosUniqueKey(paths = {"/lastName", "/zipCode"}),
-    @CosmosUniqueKey(paths = {"/city"})
-})
+@CosmosUniqueKeyPolicy(
+    uniqueKeys = { @CosmosUniqueKey(paths = { "/lastName", "/zipCode" }), @CosmosUniqueKey(paths = { "/city" }) })
 public class UniqueKeyPolicyEntity {
 
     @Id
@@ -34,7 +32,8 @@ public class UniqueKeyPolicyEntity {
         this.city = city;
     }
 
-    public UniqueKeyPolicyEntity() {}
+    public UniqueKeyPolicyEntity() {
+    }
 
     public String getId() {
         return id;

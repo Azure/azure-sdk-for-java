@@ -42,10 +42,9 @@ public class CosmosTemplateIllegalTest {
 
     @Test
     public void deleteIllegalShouldFail() throws NoSuchMethodException {
-        final Method method = cosmosTemplateClass.getMethod("delete",
-            CosmosQuery.class, Class.class, String.class);
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL,
-            "faker", Arrays.asList("faker-value"), Part.IgnoreCaseType.NEVER);
+        final Method method = cosmosTemplateClass.getMethod("delete", CosmosQuery.class, Class.class, String.class);
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "faker", Arrays.asList("faker-value"),
+            Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
 
         checkIllegalArgument(method, null, Person.class, DUMMY_COLL);

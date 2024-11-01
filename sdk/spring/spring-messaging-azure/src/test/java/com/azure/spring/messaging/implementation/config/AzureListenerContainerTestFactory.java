@@ -15,7 +15,8 @@ import java.util.Map;
 /**
  *
  */
-public class AzureListenerContainerTestFactory implements MessageListenerContainerFactory<MessageListenerTestContainer> {
+public class AzureListenerContainerTestFactory
+    implements MessageListenerContainerFactory<MessageListenerTestContainer> {
 
     private final Map<String, MessageListenerTestContainer> listenerContainers = new LinkedHashMap<>();
     private boolean autoStartup = true;

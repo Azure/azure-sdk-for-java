@@ -28,7 +28,8 @@ import java.util.function.BiConsumer;
  * Storage Queue Service client builder factory, it builds the storage blob client according the configuration context
  * and blob properties.
  */
-public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClientBuilderFactory<QueueServiceClientBuilder> {
+public class QueueServiceClientBuilderFactory
+    extends AbstractAzureStorageClientBuilderFactory<QueueServiceClientBuilder> {
 
     private final QueueServiceClientProperties queueServiceClientProperties;
 
@@ -77,8 +78,7 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(QueueServiceClientBuilder builder) {
-        return Arrays.asList(
-            new StorageSharedKeyAuthenticationDescriptor(builder::credential),
+        return Arrays.asList(new StorageSharedKeyAuthenticationDescriptor(builder::credential),
             new SasAuthenticationDescriptor(builder::credential),
             new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential));
     }

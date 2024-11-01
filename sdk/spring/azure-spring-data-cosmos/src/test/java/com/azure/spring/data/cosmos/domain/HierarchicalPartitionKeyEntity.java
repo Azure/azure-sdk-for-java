@@ -7,8 +7,7 @@ import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.GeneratedValue;
 import org.springframework.data.annotation.Id;
 
-@Container(hierarchicalPartitionKeyPaths = {"/id", "/firstName", "/lastName"},
-    ru = TestConstants.DEFAULT_MINIMUM_RU)
+@Container(hierarchicalPartitionKeyPaths = { "/id", "/firstName", "/lastName" }, ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class HierarchicalPartitionKeyEntity {
 
     @Id

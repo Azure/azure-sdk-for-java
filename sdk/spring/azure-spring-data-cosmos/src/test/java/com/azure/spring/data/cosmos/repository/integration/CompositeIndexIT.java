@@ -43,7 +43,8 @@ public class CompositeIndexIT {
     @Autowired
     ReactiveCosmosTemplate reactiveTemplate;
 
-    CosmosEntityInformation<CompositeIndexEntity, String> information = new CosmosEntityInformation<>(CompositeIndexEntity.class);
+    CosmosEntityInformation<CompositeIndexEntity, String> information
+        = new CosmosEntityInformation<>(CompositeIndexEntity.class);
 
     @Before
     public void setup() {
@@ -77,7 +78,8 @@ public class CompositeIndexIT {
     public void canSetCompositeIndexReactive() {
         collectionManager.deleteContainer(information);
         new SimpleReactiveCosmosRepository<>(information, reactiveTemplate);
-        CosmosContainerProperties properties = reactiveTemplate.getContainerProperties(information.getContainerName()).block();
+        CosmosContainerProperties properties
+            = reactiveTemplate.getContainerProperties(information.getContainerName()).block();
         List<List<CompositePath>> indexes = properties.getIndexingPolicy().getCompositeIndexes();
 
         assertThat(indexes.get(0).get(0).getPath()).isEqualTo("/fieldOne");
@@ -90,7 +92,6 @@ public class CompositeIndexIT {
         assertThat(indexes.get(1).get(1).getPath()).isEqualTo("/fieldFour");
         assertThat(indexes.get(1).get(1).getOrder()).isEqualTo(CompositePathSortOrder.DESCENDING);
     }
-
 
     @Test
     public void canNotUpdateCompositeIndex() {
@@ -147,7 +148,8 @@ public class CompositeIndexIT {
         new SimpleReactiveCosmosRepository<>(spyEntityInformation, reactiveTemplate);
 
         // retrieve new policy
-        CosmosContainerProperties properties = reactiveTemplate.getContainerProperties(information.getContainerName()).block();
+        CosmosContainerProperties properties
+            = reactiveTemplate.getContainerProperties(information.getContainerName()).block();
         List<List<CompositePath>> indexes = properties.getIndexingPolicy().getCompositeIndexes();
 
         // assert

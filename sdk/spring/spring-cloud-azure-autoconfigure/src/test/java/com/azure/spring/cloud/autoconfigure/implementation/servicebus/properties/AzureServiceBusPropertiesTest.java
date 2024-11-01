@@ -63,7 +63,7 @@ class AzureServiceBusPropertiesTest {
         AzureServiceBusProperties serviceBusProperties = new AzureServiceBusProperties();
         serviceBusProperties.getProfile().setCloudType(AZURE_CHINA);
         assertEquals(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName(),
-                serviceBusProperties.getDomainName());
+            serviceBusProperties.getDomainName());
     }
 
     @Test
@@ -72,7 +72,7 @@ class AzureServiceBusPropertiesTest {
         serviceBusProperties.setDomainName(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName());
         serviceBusProperties.getProfile().setCloudType(AZURE_CHINA);
         assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(),
-                serviceBusProperties.getDomainName());
+            serviceBusProperties.getDomainName());
     }
 
     @Test

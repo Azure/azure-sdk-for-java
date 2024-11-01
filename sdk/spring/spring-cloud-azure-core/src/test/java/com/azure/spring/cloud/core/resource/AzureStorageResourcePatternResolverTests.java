@@ -55,7 +55,6 @@ class AzureStorageResourcePatternResolverTests {
         blobProtocolResolver.postProcessBeanFactory(beanFactory);
         fileProtocolResolver.postProcessBeanFactory(beanFactory);
 
-
     }
 
     public BlobServiceClient getBlobServiceClient() {
@@ -107,15 +106,13 @@ class AzureStorageResourcePatternResolverTests {
         shareFileList.add(shareFileItem1);
         OnePageResponse<ShareFileItem> shareFilesResponse = new OnePageResponse<>(shareFileList);
 
-
         when(client.listShares(any(ListSharesOptions.class), isNull(), isNull()))
             .thenReturn(new PagedIterable<>(new PagedFlux<>(() -> Mono.just(sharesResponse))));
 
         when(client.getShareClient("mycontainer")).thenReturn(shareClient);
         when(shareClient.getRootDirectoryClient()).thenReturn(shareDirectoryClient);
         when(shareDirectoryClient.listFilesAndDirectories(any(String.class), isNull(), isNull(), isNull()))
-            .thenReturn(
-                new PagedIterable<>(new PagedFlux<>(() -> Mono.just(shareFilesResponse))));
+            .thenReturn(new PagedIterable<>(new PagedFlux<>(() -> Mono.just(shareFilesResponse))));
 
         return client;
     }

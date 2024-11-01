@@ -126,7 +126,8 @@ public final class AppConfigurationStoreMonitoring {
             }
         }
         Assert.isTrue(refreshInterval.getSeconds() >= 1, "Minimum refresh interval time is 1 Second.");
-        Assert.isTrue(featureFlagRefreshInterval.getSeconds() >= 1, "Minimum Feature Flag refresh interval time is 1 Second.");
+        Assert.isTrue(featureFlagRefreshInterval.getSeconds() >= 1,
+            "Minimum Feature Flag refresh interval time is 1 Second.");
     }
 
     /**

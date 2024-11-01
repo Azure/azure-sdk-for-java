@@ -4,6 +4,7 @@
 package com.azure.spring.messaging.eventhubs.support;
 
 import com.azure.spring.messaging.AzureHeaders;
+
 /**
  * Azure Event Hubs internal headers for Spring Messaging messages.
  */
@@ -61,5 +62,6 @@ public final class EventHubsHeaders extends AzureHeaders {
     /**
      * Batch converted application properties.
      */
-    public static final String BATCH_CONVERTED_APPLICATION_PROPERTIES = PREFIX + "batch_converted_application_properties";
+    public static final String BATCH_CONVERTED_APPLICATION_PROPERTIES
+        = PREFIX + "batch_converted_application_properties";
 }

@@ -26,22 +26,23 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
     private static final String POSTGRESQL_AUTHENTICATIONPLUGINCLASSNAME_PROPERTY
         = POSTGRESQL_PROPERTY_NAME_AUTHENTICATION_PLUGIN_CLASSNAME + "=" + POSTGRES_AUTH_PLUGIN_CLASS_NAME;
     private static final String AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
-        = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName();
+        = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "="
+            + SpringTokenCredentialProvider.class.getName();
     private static final String AUTHPROPERTY_CREDENTIAL_BEAN_NAME
         = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
 
-    private static final String POSTGRESQL_USER_AGENT = POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME + "="
-        + AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH;
-    private static final String POSTGRESQL_ASSUME_MIN_SERVER_VERSION = POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION + "="
-        + POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
+    private static final String POSTGRESQL_USER_AGENT
+        = POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME + "=" + AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH;
+    private static final String POSTGRESQL_ASSUME_MIN_SERVER_VERSION
+        = POSTGRESQL_PROPERTY_NAME_ASSUME_MIN_SERVER_VERSION + "="
+            + POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
 
     @Override
     void pluginNotOnClassPath() {
 
         String connectionString = "jdbc:postgresql://postgre:5432/test";
 
-        this.contextRunner
-            .withPropertyValues("spring.datasource.url = " + connectionString)
+        this.contextRunner.withPropertyValues("spring.datasource.url = " + connectionString)
             .withClassLoader(new FilteredClassLoader("org.postgresql.plugin.AuthenticationPlugin"))
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
@@ -52,32 +53,22 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
     @Override
     void wrongJdbcUrl() {
         String connectionString = "jdbc:postgr://postgre:5432/test";
-        this.contextRunner
-            .withPropertyValues("spring.datasource.url = " + connectionString)
-            .run((context) -> {
-                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                assertEquals(connectionString, dataSourceProperties.getUrl());
-            });
+        this.contextRunner.withPropertyValues("spring.datasource.url = " + connectionString).run((context) -> {
+            DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
+            assertEquals(connectionString, dataSourceProperties.getUrl());
+        });
     }
 
     @Override
     void enhanceUrlWithDefaultCredential() {
         String connectionString = "jdbc:postgresql://postgre:5432/test";
-        this.contextRunner
-            .withPropertyValues("spring.datasource.url = " + connectionString)
+        this.contextRunner.withPropertyValues("spring.datasource.url = " + connectionString)
             .withPropertyValues("spring.datasource.azure.passwordlessEnabled = " + true)
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
-                    DatabaseType.POSTGRESQL,
-                    false,
-                    connectionString,
-                    PUBLIC_AUTHORITY_HOST_STRING,
-                    MANAGED_IDENTITY_ENABLED_DEFAULT,
-                    SCOPES_DEFAULT,
-                    POSTGRESQL_USER_AGENT,
-                    POSTGRESQL_ASSUME_MIN_SERVER_VERSION
-                );
+                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(DatabaseType.POSTGRESQL, false,
+                    connectionString, PUBLIC_AUTHORITY_HOST_STRING, MANAGED_IDENTITY_ENABLED_DEFAULT, SCOPES_DEFAULT,
+                    POSTGRESQL_USER_AGENT, POSTGRESQL_ASSUME_MIN_SERVER_VERSION);
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
     }
@@ -85,27 +76,18 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
     @Override
     void enhanceUrlWithCustomCredential() {
         String connectionString = "jdbc:postgresql://postgre:5432/test";
-        this.contextRunner
-            .withPropertyValues("spring.datasource.url = " + connectionString)
+        this.contextRunner.withPropertyValues("spring.datasource.url = " + connectionString)
             .withPropertyValues("spring.datasource.azure.passwordlessEnabled = " + true)
             .withPropertyValues("spring.datasource.azure.profile.tenantId = " + "fake-tenantId")
             .withPropertyValues("spring.datasource.azure.credential.clientSecret = " + "fake-clientSecret")
             .withPropertyValues("spring.datasource.azure.credential.clientId = " + "fake-clientId")
             .run((context) -> {
                 DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                String expectedUrl = JdbcConnectionStringUtils.enhanceJdbcUrl(
-                    DatabaseType.POSTGRESQL,
-                    false,
-                    connectionString,
-                    PUBLIC_AUTHORITY_HOST_STRING,
-                    POSTGRESQL_USER_AGENT,
-                    POSTGRESQL_ASSUME_MIN_SERVER_VERSION,
-                    "azure.clientId=fake-clientId",
-                    "azure.clientSecret=fake-clientSecret",
-                    MANAGED_IDENTITY_ENABLED_DEFAULT,
-                    SCOPES_DEFAULT,
-                    "azure.tenantId=fake-tenantId"
-                );
+                String expectedUrl
+                    = JdbcConnectionStringUtils.enhanceJdbcUrl(DatabaseType.POSTGRESQL, false, connectionString,
+                        PUBLIC_AUTHORITY_HOST_STRING, POSTGRESQL_USER_AGENT, POSTGRESQL_ASSUME_MIN_SERVER_VERSION,
+                        "azure.clientId=fake-clientId", "azure.clientSecret=fake-clientSecret",
+                        MANAGED_IDENTITY_ENABLED_DEFAULT, SCOPES_DEFAULT, "azure.tenantId=fake-tenantId");
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });
     }

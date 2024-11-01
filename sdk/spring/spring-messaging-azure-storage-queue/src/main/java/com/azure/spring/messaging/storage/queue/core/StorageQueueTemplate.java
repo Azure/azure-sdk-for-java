@@ -37,7 +37,8 @@ public class StorageQueueTemplate implements SendOperation {
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in storage queue '%s'";
     private final StorageQueueClientFactory storageQueueClientFactory;
 
-    private AzureMessageConverter<QueueMessageItem, QueueMessageItem> messageConverter = new StorageQueueMessageConverter();
+    private AzureMessageConverter<QueueMessageItem, QueueMessageItem> messageConverter
+        = new StorageQueueMessageConverter();
 
     private Class<?> messagePayloadType = byte[].class;
 
@@ -69,29 +70,25 @@ public class StorageQueueTemplate implements SendOperation {
     public Mono<Message<?>> receiveAsync(String queueName, Duration visibilityTimeout) {
         Assert.hasText(queueName, "queueName can't be null or empty");
         QueueAsyncClient queueClient = storageQueueClientFactory.createQueueClient(queueName);
-        return queueClient.receiveMessages(1, visibilityTimeout)
-            .next()
-            .flatMap(messageItem -> {
-                Map<String, Object> headers = new HashMap<>();
-                Checkpointer checkpointer = new AzureCheckpointer(() -> checkpoint(queueClient, messageItem));
-                headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
-                return Mono.justOrEmpty(messageConverter.toMessage(messageItem, new MessageHeaders(headers), messagePayloadType));
-            });
+        return queueClient.receiveMessages(1, visibilityTimeout).next().flatMap(messageItem -> {
+            Map<String, Object> headers = new HashMap<>();
+            Checkpointer checkpointer = new AzureCheckpointer(() -> checkpoint(queueClient, messageItem));
+            headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
+            return Mono
+                .justOrEmpty(messageConverter.toMessage(messageItem, new MessageHeaders(headers), messagePayloadType));
+        });
     }
 
     private Mono<Void> checkpoint(QueueAsyncClient queueClient, QueueMessageItem messageItem) {
-        return queueClient
-            .deleteMessage(messageItem.getMessageId(), messageItem.getPopReceipt())
-            .doOnSuccess(v -> {
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug(buildCheckpointSuccessMessage(messageItem, queueClient.getQueueName()));
-                }
-            })
-            .doOnError(t -> {
-                if (LOG.isWarnEnabled()) {
-                    LOG.warn(buildCheckpointFailMessage(messageItem, queueClient.getQueueName()), t);
-                }
-            });
+        return queueClient.deleteMessage(messageItem.getMessageId(), messageItem.getPopReceipt()).doOnSuccess(v -> {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug(buildCheckpointSuccessMessage(messageItem, queueClient.getQueueName()));
+            }
+        }).doOnError(t -> {
+            if (LOG.isWarnEnabled()) {
+                LOG.warn(buildCheckpointFailMessage(messageItem, queueClient.getQueueName()), t);
+            }
+        });
     }
 
     private Map<String, Object> buildProperties() {

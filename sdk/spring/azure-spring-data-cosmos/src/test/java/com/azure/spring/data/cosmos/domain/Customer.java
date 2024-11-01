@@ -72,15 +72,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{"
-            + "id='"
-            + id
-            + '\''
-            + ", level="
-            + level
-            + ", user="
-            + user
-            + '}';
+        return "Customer{" + "id='" + id + '\'' + ", level=" + level + ", user=" + user + '}';
     }
 
     public static class User {
@@ -122,8 +114,7 @@ public class Customer {
                 return false;
             }
             User user = (User) o;
-            return Objects.equals(name, user.name)
-                && Objects.equals(age, user.age);
+            return Objects.equals(name, user.name) && Objects.equals(age, user.age);
         }
 
         @Override
@@ -133,13 +124,7 @@ public class Customer {
 
         @Override
         public String toString() {
-            return "User{"
-                + "name='"
-                + name
-                + '\''
-                + ", age="
-                + age
-                + '}';
+            return "User{" + "name='" + name + '\'' + ", age=" + age + '}';
         }
     }
 }

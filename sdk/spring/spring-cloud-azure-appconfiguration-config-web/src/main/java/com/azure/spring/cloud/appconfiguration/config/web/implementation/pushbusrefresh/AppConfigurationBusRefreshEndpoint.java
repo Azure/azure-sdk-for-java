@@ -47,8 +47,7 @@ public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
      * @param appConfiguration properties set for client library.
      */
     public AppConfigurationBusRefreshEndpoint(ApplicationEventPublisher context, String appId,
-        Destination.Factory destinationFactory,
-        AppConfigurationProperties appConfiguration) {
+        Destination.Factory destinationFactory, AppConfigurationProperties appConfiguration) {
         super(context, appId, destinationFactory);
         this.appConfiguration = appConfiguration;
     }
@@ -70,8 +69,7 @@ public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
 
         AppConfigurationEndpoint endpoint;
         try {
-            endpoint = new AppConfigurationEndpoint(request, appConfiguration.getStores(),
-                allRequestParams);
+            endpoint = new AppConfigurationEndpoint(request, appConfiguration.getStores(), allRequestParams);
         } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage());
             return HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
@@ -87,12 +85,12 @@ public class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoint {
             if (!endpoint.authenticate()) {
                 return HttpStatus.UNAUTHORIZED.getReasonPhrase();
             }
-            
+
             if (endpoint.triggerRefresh()) {
                 // Spring Bus is in use, will publish a RefreshRemoteApplicationEvent
 
                 publish(new AppConfigurationBusRefreshEvent(endpoint.getEndpoint(), syncToken, this, getInstanceId(),
-                        new PathDestinationFactory().getDestination(null)));
+                    new PathDestinationFactory().getDestination(null)));
                 return HttpStatus.OK.getReasonPhrase();
             } else {
                 LOGGER.debug("Non Refreshable notification");

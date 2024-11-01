@@ -23,7 +23,8 @@ public final class JaasResolver {
         }
         try {
             String[] arr = parseJaasComponents(jaasConfig);
-            return Optional.of(new Jaas(arr[0], Jaas.ControlFlag.fromString(arr[1]), convertJaasOptionsFromStringToMap(arr[2])));
+            return Optional
+                .of(new Jaas(arr[0], Jaas.ControlFlag.fromString(arr[1]), convertJaasOptionsFromStringToMap(arr[2])));
         } catch (IllegalArgumentException exception) {
             LOGGER.info(exception.getMessage());
             return Optional.empty();

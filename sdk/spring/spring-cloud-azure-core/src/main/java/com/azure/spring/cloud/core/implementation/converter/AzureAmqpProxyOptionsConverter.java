@@ -18,7 +18,8 @@ import java.util.Locale;
 /**
  * Converts a {@link ProxyOptionsProvider.AmqpProxyOptions} to a {@link ProxyOptions}.
  */
-public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOptionsProvider.AmqpProxyOptions, ProxyOptions> {
+public final class AzureAmqpProxyOptionsConverter
+    implements Converter<ProxyOptionsProvider.AmqpProxyOptions, ProxyOptions> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureAmqpProxyOptionsConverter.class);
     public static final AzureAmqpProxyOptionsConverter AMQP_PROXY_CONVERTER = new AzureAmqpProxyOptionsConverter();
@@ -44,9 +45,11 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOpti
                 case "basic":
                     authenticationType = ProxyAuthenticationType.BASIC;
                     break;
+
                 case "digest":
                     authenticationType = ProxyAuthenticationType.DIGEST;
                     break;
+
                 default:
             }
         }
@@ -56,9 +59,11 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyOpti
             case "http":
                 type = Proxy.Type.HTTP;
                 break;
+
             case "socks":
                 type = Proxy.Type.SOCKS;
                 break;
+
             default:
                 throw new IllegalArgumentException("Wrong proxy type provided!");
         }

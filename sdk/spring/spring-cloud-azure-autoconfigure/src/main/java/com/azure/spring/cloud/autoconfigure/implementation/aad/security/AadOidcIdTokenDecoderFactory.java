@@ -28,11 +28,10 @@ public class AadOidcIdTokenDecoderFactory implements JwtDecoderFactory<ClientReg
      * @param restOperations The RestOperations used to retrieve jwk from jwkSetUri.
      */
     public AadOidcIdTokenDecoderFactory(String jwkSetUri, RestOperations restOperations) {
-        this.jwtDecoder = NimbusJwtDecoder
-                .withJwkSetUri(jwkSetUri)
-                .jwsAlgorithm(SignatureAlgorithm.RS256)
-                .restOperations(restOperations)
-                .build();
+        this.jwtDecoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri)
+            .jwsAlgorithm(SignatureAlgorithm.RS256)
+            .restOperations(restOperations)
+            .build();
     }
 
     @Override

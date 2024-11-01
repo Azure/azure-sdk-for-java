@@ -25,8 +25,7 @@ class ExtendedBindingHandlerMappingsProviderConfiguration {
     BindingHandlerAdvise.MappingsProvider serviceBusExtendedPropertiesDefaultMappingsProvider() {
         return () -> {
             Map<ConfigurationPropertyName, ConfigurationPropertyName> mappings = new HashMap<>();
-            mappings.put(
-                ConfigurationPropertyName.of("spring.cloud.stream.servicebus.bindings"),
+            mappings.put(ConfigurationPropertyName.of("spring.cloud.stream.servicebus.bindings"),
                 ConfigurationPropertyName.of("spring.cloud.stream.servicebus.default"));
             return mappings;
         };

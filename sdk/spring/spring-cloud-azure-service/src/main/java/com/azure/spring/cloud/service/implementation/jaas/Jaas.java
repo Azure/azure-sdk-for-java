@@ -89,16 +89,13 @@ public class Jaas {
     }
 
     public enum ControlFlag {
-        REQUIRED,
-        REQUISITE,
-        SUFFICIENT,
-        OPTIONAL;
+        REQUIRED, REQUISITE, SUFFICIENT, OPTIONAL;
 
         private static final Map<String, ControlFlag> CONTROL_FLAG_MAP = initMap();
 
         private static Map<String, ControlFlag> initMap() {
-            return Collections.unmodifiableMap(Arrays.stream(ControlFlag.values())
-                .collect(Collectors.toMap(f -> f.name(), Function.identity())));
+            return Collections.unmodifiableMap(
+                Arrays.stream(ControlFlag.values()).collect(Collectors.toMap(f -> f.name(), Function.identity())));
         }
 
         public static ControlFlag fromString(String value) {

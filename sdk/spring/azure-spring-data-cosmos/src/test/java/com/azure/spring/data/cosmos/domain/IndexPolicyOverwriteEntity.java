@@ -8,11 +8,7 @@ import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import org.springframework.data.annotation.Id;
 
 @Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
-@CosmosIndexingPolicy(
-    overwritePolicy = true,
-    includePaths = {"/\"_etag\"/?"},
-    excludePaths = {"/*"}
-)
+@CosmosIndexingPolicy(overwritePolicy = true, includePaths = { "/\"_etag\"/?" }, excludePaths = { "/*" })
 public class IndexPolicyOverwriteEntity {
 
     @Id

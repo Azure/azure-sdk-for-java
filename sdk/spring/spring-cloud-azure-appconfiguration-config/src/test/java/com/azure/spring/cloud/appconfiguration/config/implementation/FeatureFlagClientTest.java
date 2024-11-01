@@ -47,14 +47,13 @@ public class FeatureFlagClientTest {
     private FeatureFlagClient featureFlagClient;
 
     private String[] emptyLabelList = { "\0" };
-    
-    private static final FeatureFlagConfigurationSetting TELEMETRY_FEATURE = createItemFeatureFlag(
-        ".appconfig.featureflag/", "Delta",
-        FEATURE_VALUE_TELEMETRY, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
-    
-    private static final FeatureFlagConfigurationSetting ALL_FEATURE = createItemFeatureFlag(
-        ".appconfig.featureflag/", "Delta",
-        FEATURE_VALUE_ALL, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
+    private static final FeatureFlagConfigurationSetting TELEMETRY_FEATURE
+        = createItemFeatureFlag(".appconfig.featureflag/", "Delta", FEATURE_VALUE_TELEMETRY, FEATURE_LABEL,
+            FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
+    private static final FeatureFlagConfigurationSetting ALL_FEATURE = createItemFeatureFlag(".appconfig.featureflag/",
+        "Delta", FEATURE_VALUE_ALL, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
 
     private MockitoSession session;
 
@@ -78,8 +77,8 @@ public class FeatureFlagClientTest {
         FeatureFlags featureFlags = new FeatureFlags(null, settings);
         when(clientMock.listFeatureFlags(Mockito.any(), Mockito.anyBoolean())).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
-            false);
+        List<FeatureFlags> featureFlagsList
+            = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, false);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals("FakeKey", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
@@ -93,8 +92,8 @@ public class FeatureFlagClientTest {
         FeatureFlags featureFlags = new FeatureFlags(null, settings);
         when(clientMock.listFeatureFlags(Mockito.any(), Mockito.anyBoolean())).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
-            false);
+        List<FeatureFlags> featureFlagsList
+            = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, false);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
@@ -109,8 +108,8 @@ public class FeatureFlagClientTest {
         FeatureFlags featureFlags = new FeatureFlags(null, settings);
         when(clientMock.listFeatureFlags(Mockito.any(), Mockito.anyBoolean())).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
-            false);
+        List<FeatureFlags> featureFlagsList
+            = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, false);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/Alpha", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
@@ -168,14 +167,14 @@ public class FeatureFlagClientTest {
         FeatureFlags featureFlags = new FeatureFlags(null, settings);
         when(clientMock.listFeatureFlags(Mockito.any(), Mockito.anyBoolean())).thenReturn(featureFlags);
 
-        List<FeatureFlags> featureFlagsList = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList,
-            false);
+        List<FeatureFlags> featureFlagsList
+            = featureFlagClient.loadFeatureFlags(clientMock, null, emptyLabelList, false);
         assertEquals(1, featureFlagsList.size());
         assertEquals(featureFlags, featureFlagsList.get(0));
         assertEquals(".appconfig.featureflag/TargetingTest", featureFlagsList.get(0).getFeatureFlags().get(0).getKey());
         assertEquals(1, featureFlagClient.getProperties().size());
     }
-    
+
     @Test
     public void testAndRequirementType() {
         Feature feature = FeatureFlagClient.createFeature(ALL_FEATURE, TEST_ENDPOINT);

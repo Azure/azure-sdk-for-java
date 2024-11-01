@@ -13,7 +13,8 @@ class CosmosContainerConnectionDetailsFactory
     extends ContainerConnectionDetailsFactory<CosmosDBEmulatorContainer, AzureCosmosConnectionDetails> {
 
     @Override
-    protected AzureCosmosConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<CosmosDBEmulatorContainer> source) {
+    protected AzureCosmosConnectionDetails
+        getContainerConnectionDetails(ContainerConnectionSource<CosmosDBEmulatorContainer> source) {
         return new CosmosContainerConnectionDetails(source);
     }
 

@@ -13,7 +13,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
-
 public interface ReactiveTeacherRepository extends ReactiveCosmosRepository<ReactiveTeacher, String> {
 
     Mono<Boolean> existsByFirstNameIsNotNull();

@@ -23,11 +23,8 @@ class BlobServiceUserAgentTests {
 
     @Test
     void userAgentTest() {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureStorageBlobAutoConfiguration.class))
-            .withPropertyValues(
-                "spring.cloud.azure.storage.blob.account-name=sample"
-            )
+        new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureStorageBlobAutoConfiguration.class))
+            .withPropertyValues("spring.cloud.azure.storage.blob.account-name=sample")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureStorageBlobAutoConfiguration.class);

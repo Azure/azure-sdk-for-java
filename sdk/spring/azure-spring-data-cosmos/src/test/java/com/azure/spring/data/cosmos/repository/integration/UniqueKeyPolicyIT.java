@@ -40,16 +40,16 @@ public class UniqueKeyPolicyIT {
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
 
-    private static final UniqueKeyPolicyEntity ENTITY_1 = new UniqueKeyPolicyEntity("id-1", "firstName-1", "lastName"
-        + "-1", "100", "city-1");
-    private static final UniqueKeyPolicyEntity ENTITY_2 = new UniqueKeyPolicyEntity("id-2", "firstName-1", "lastName"
-        + "-2", "100", "city-2");
-    private static final UniqueKeyPolicyEntity ENTITY_3 = new UniqueKeyPolicyEntity("id-3", "firstName-2", "lastName"
-        + "-3", "100", "city-1");
-    private static final UniqueKeyPolicyEntity ENTITY_4 = new UniqueKeyPolicyEntity("id-4", "firstName-2", "lastName"
-        + "-4", "100", "city-2");
-    private static final UniqueKeyPolicyEntity ENTITY_5 = new UniqueKeyPolicyEntity("id-5", "firstName-3", "lastName"
-        + "-5", "100", "city-3");
+    private static final UniqueKeyPolicyEntity ENTITY_1
+        = new UniqueKeyPolicyEntity("id-1", "firstName-1", "lastName" + "-1", "100", "city-1");
+    private static final UniqueKeyPolicyEntity ENTITY_2
+        = new UniqueKeyPolicyEntity("id-2", "firstName-1", "lastName" + "-2", "100", "city-2");
+    private static final UniqueKeyPolicyEntity ENTITY_3
+        = new UniqueKeyPolicyEntity("id-3", "firstName-2", "lastName" + "-3", "100", "city-1");
+    private static final UniqueKeyPolicyEntity ENTITY_4
+        = new UniqueKeyPolicyEntity("id-4", "firstName-2", "lastName" + "-4", "100", "city-2");
+    private static final UniqueKeyPolicyEntity ENTITY_5
+        = new UniqueKeyPolicyEntity("id-5", "firstName-3", "lastName" + "-5", "100", "city-3");
 
     @Autowired
     UniqueKeyPolicyEntityRepository repository;
@@ -60,8 +60,8 @@ public class UniqueKeyPolicyIT {
     @Autowired
     ReactiveCosmosTemplate reactiveTemplate;
 
-    private static CosmosEntityInformation<UniqueKeyPolicyEntity, String> information =
-        new CosmosEntityInformation<>(UniqueKeyPolicyEntity.class);
+    private static CosmosEntityInformation<UniqueKeyPolicyEntity, String> information
+        = new CosmosEntityInformation<>(UniqueKeyPolicyEntity.class);
 
     @Before
     public void setup() {
@@ -92,8 +92,8 @@ public class UniqueKeyPolicyIT {
     @Test
     public void canSetUniqueKeyPolicyReactive() {
         new SimpleReactiveCosmosRepository<>(information, reactiveTemplate);
-        CosmosContainerProperties properties =
-            reactiveTemplate.getContainerProperties(information.getContainerName()).block();
+        CosmosContainerProperties properties
+            = reactiveTemplate.getContainerProperties(information.getContainerName()).block();
         UniqueKeyPolicy uniqueKeyPolicy = properties.getUniqueKeyPolicy();
         List<UniqueKey> uniqueKeys = uniqueKeyPolicy.getUniqueKeys();
 
@@ -109,8 +109,7 @@ public class UniqueKeyPolicyIT {
     public void canSaveNewEntityWithDifferentUniqueKeys() {
         long count = repository.count();
         assertThat(count).isEqualTo(5);
-        UniqueKeyPolicyEntity entity = new UniqueKeyPolicyEntity("id-6", "firstName-3", "lastName-6",
-            "100", "city-1");
+        UniqueKeyPolicyEntity entity = new UniqueKeyPolicyEntity("id-6", "firstName-3", "lastName-6", "100", "city-1");
         repository.save(entity);
         count = repository.count();
         assertThat(count).isEqualTo(6);
@@ -122,15 +121,14 @@ public class UniqueKeyPolicyIT {
     @Test
     public void cannotSaveNewEntityWithUniqueKeysLastNameAndZipCode() {
         //  save with same lastName and zip code (which already exists in the same logical partition), though with a new id
-        UniqueKeyPolicyEntity entity = new UniqueKeyPolicyEntity("id-6", "firstName-3", "lastName-5",
-            "100", "city-6");
+        UniqueKeyPolicyEntity entity = new UniqueKeyPolicyEntity("id-6", "firstName-3", "lastName-5", "100", "city-6");
         try {
             repository.save(entity);
             fail("Save call should have failed with unique constraints exception");
         } catch (CosmosAccessException cosmosAccessException) {
             assertThat(cosmosAccessException.getCosmosException().getStatusCode()).isEqualTo(409);
-            assertThat(cosmosAccessException.getCosmosException().getMessage()).contains("Unique index constraint "
-                + "violation.");
+            assertThat(cosmosAccessException.getCosmosException().getMessage())
+                .contains("Unique index constraint " + "violation.");
         }
         //  change logical partition, now the entity should be saved
         entity.setFirstName("firstName-2");
@@ -145,15 +143,14 @@ public class UniqueKeyPolicyIT {
     @Test
     public void cannotSaveNewEntityWithUniqueKeysCity() {
         //  save with same city (which already exists in the same logical partition), though with a new id
-        UniqueKeyPolicyEntity entity = new UniqueKeyPolicyEntity("id-6", "firstName-3", "lastName-6",
-            "100", "city-3");
+        UniqueKeyPolicyEntity entity = new UniqueKeyPolicyEntity("id-6", "firstName-3", "lastName-6", "100", "city-3");
         try {
             repository.save(entity);
             fail("Save call should have failed with unique constraints exception");
         } catch (CosmosAccessException cosmosAccessException) {
             assertThat(cosmosAccessException.getCosmosException().getStatusCode()).isEqualTo(409);
-            assertThat(cosmosAccessException.getCosmosException().getMessage()).contains("Unique index constraint "
-                + "violation.");
+            assertThat(cosmosAccessException.getCosmosException().getMessage())
+                .contains("Unique index constraint " + "violation.");
         }
         //  change logical partition, now the entity should be saved
         entity.setFirstName("firstName-2");

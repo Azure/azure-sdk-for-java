@@ -21,8 +21,7 @@ public abstract class ArmConnectionStringProvider<T> implements ServiceConnectio
      * @param resourceManager the azure resource manager
      * @param resourceMetadata the azure resource metadata
      */
-    public ArmConnectionStringProvider(AzureResourceManager resourceManager,
-                                       AzureResourceMetadata resourceMetadata) {
+    public ArmConnectionStringProvider(AzureResourceManager resourceManager, AzureResourceMetadata resourceMetadata) {
         this.azureResourceManager = resourceManager;
         this.azureResourceMetadata = resourceMetadata;
     }

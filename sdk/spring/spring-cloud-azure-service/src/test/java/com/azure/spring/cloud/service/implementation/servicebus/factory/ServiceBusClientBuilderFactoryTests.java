@@ -19,12 +19,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class ServiceBusClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryBaseTests<
-    ServiceBusClientBuilder,
-    ServiceBusClientCommonTestProperties,
-    ServiceBusClientBuilderFactoryTests.ServiceBusClientBuilderFactoryExt> {
+class ServiceBusClientBuilderFactoryTests extends
+    AzureAmqpClientBuilderFactoryBaseTests<ServiceBusClientBuilder, ServiceBusClientCommonTestProperties, ServiceBusClientBuilderFactoryTests.ServiceBusClientBuilderFactoryExt> {
 
-    static final String CONNECTION_STRING_FORMAT = "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
+    static final String CONNECTION_STRING_FORMAT
+        = "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
 
     @Test
     void namespaceClientPropertiesConfigured() {
@@ -59,8 +58,8 @@ class ServiceBusClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryB
     }
 
     @Override
-    protected ServiceBusClientBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(
-        ServiceBusClientCommonTestProperties properties) {
+    protected ServiceBusClientBuilderFactoryExt
+        createClientBuilderFactoryWithMockBuilder(ServiceBusClientCommonTestProperties properties) {
         return new ServiceBusClientBuilderFactoryExt(properties);
     }
 
@@ -97,8 +96,7 @@ class ServiceBusClientBuilderFactoryTests extends AzureAmqpClientBuilderFactoryB
 
     @Override
     protected void verifyCredentialCalled(ServiceBusClientBuilder builder,
-                                          Class<? extends TokenCredential> tokenCredentialClass,
-                                          VerificationMode mode) {
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         verify(builder, mode).credential(any(tokenCredentialClass));
     }
 

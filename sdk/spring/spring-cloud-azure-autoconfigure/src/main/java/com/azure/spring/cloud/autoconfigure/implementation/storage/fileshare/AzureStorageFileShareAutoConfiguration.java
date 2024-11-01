@@ -43,7 +43,10 @@ import org.springframework.context.annotation.Import;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties
 @ConditionalOnClass(ShareServiceClientBuilder.class)
-@ConditionalOnProperty(value = { "spring.cloud.azure.storage.fileshare.enabled", "spring.cloud.azure.storage.enabled" }, havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    value = { "spring.cloud.azure.storage.fileshare.enabled", "spring.cloud.azure.storage.enabled" },
+    havingValue = "true",
+    matchIfMissing = true)
 @ConditionalOnAnyProperty(
     prefixes = { "spring.cloud.azure.storage.fileshare", "spring.cloud.azure.storage" },
     name = { "account-name", "endpoint", "connection-string" })
@@ -52,8 +55,10 @@ public class AzureStorageFileShareAutoConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureStorageFileShareProperties.PREFIX)
-    AzureStorageFileShareProperties azureStorageFileShareProperties(@Qualifier("azureStorageProperties") AzureStorageProperties azureStorageProperties) {
-        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureStorageProperties, new AzureStorageFileShareProperties());
+    AzureStorageFileShareProperties azureStorageFileShareProperties(
+        @Qualifier("azureStorageProperties") AzureStorageProperties azureStorageProperties) {
+        return AzureServicePropertiesUtils.loadServiceCommonProperties(azureStorageProperties,
+            new AzureStorageFileShareProperties());
     }
 
     /**
@@ -75,8 +80,7 @@ public class AzureStorageFileShareAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(
-        AzureStorageFileShareProperties properties,
+    ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(AzureStorageFileShareProperties properties,
         ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.StorageFileShare>> connectionStringProviders,
         ObjectProvider<AzureServiceClientBuilderCustomizer<ShareServiceClientBuilder>> customizers) {
         ShareServiceClientBuilderFactory factory = new ShareServiceClientBuilderFactory(properties);
@@ -97,7 +101,7 @@ public class AzureStorageFileShareAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "share-name")
     ShareAsyncClient shareAsyncClient(AzureStorageFileShareProperties properties,
-                                             ShareServiceAsyncClient shareServiceAsyncClient) {
+        ShareServiceAsyncClient shareServiceAsyncClient) {
         return shareServiceAsyncClient.getShareAsyncClient(properties.getShareName());
     }
 
@@ -112,15 +116,14 @@ public class AzureStorageFileShareAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "file-path")
     ShareFileAsyncClient shareFileAsyncClient(AzureStorageFileShareProperties properties,
-                                                     ShareAsyncClient shareAsyncClient) {
+        ShareAsyncClient shareAsyncClient) {
         return shareAsyncClient.getFileClient(properties.getFilePath());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "file-path")
-    ShareFileClient shareFileClient(AzureStorageFileShareProperties properties,
-                                           ShareClient shareClient) {
+    ShareFileClient shareFileClient(AzureStorageFileShareProperties properties, ShareClient shareClient) {
         return shareClient.getFileClient(properties.getFilePath());
     }
 
@@ -128,24 +131,25 @@ public class AzureStorageFileShareAutoConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "directory-path")
     ShareDirectoryAsyncClient shareDirectoryAsyncClient(AzureStorageFileShareProperties properties,
-                                                               ShareAsyncClient shareAsyncClient) {
+        ShareAsyncClient shareAsyncClient) {
         return shareAsyncClient.getDirectoryClient(properties.getDirectoryPath());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureStorageFileShareProperties.PREFIX, name = "directory-path")
-    ShareDirectoryClient shareDirectoryClient(AzureStorageFileShareProperties properties,
-                                                     ShareClient shareClient) {
+    ShareDirectoryClient shareDirectoryClient(AzureStorageFileShareProperties properties, ShareClient shareClient) {
         return shareClient.getDirectoryClient(properties.getDirectoryPath());
     }
 
     @Bean
-    @ConditionalOnAnyProperty(prefixes = { AzureStorageFileShareProperties.PREFIX, AzureStorageProperties.PREFIX }, name = { "connection-string" })
-    StaticConnectionStringProvider<AzureServiceType.StorageFileShare> staticStorageFileShareConnectionStringProvider(
-        AzureStorageFileShareProperties properties) {
-        return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_FILE_SHARE, properties.getConnectionString());
+    @ConditionalOnAnyProperty(
+        prefixes = { AzureStorageFileShareProperties.PREFIX, AzureStorageProperties.PREFIX },
+        name = { "connection-string" })
+    StaticConnectionStringProvider<AzureServiceType.StorageFileShare>
+        staticStorageFileShareConnectionStringProvider(AzureStorageFileShareProperties properties) {
+        return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_FILE_SHARE,
+            properties.getConnectionString());
     }
-
 
 }

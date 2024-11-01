@@ -64,27 +64,23 @@ public class AadAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
      * @param filterChain the filterChain
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest,
-                                    HttpServletResponse httpServletResponse,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+        FilterChain filterChain) throws ServletException, IOException {
         String aadIssuedBearerToken = Optional.of(httpServletRequest)
-                                              .map(r -> r.getHeader(HttpHeaders.AUTHORIZATION))
-                                              .map(String::trim)
-                                              .filter(s -> s.startsWith(Constants.BEARER_PREFIX))
-                                              .map(s -> s.replace(Constants.BEARER_PREFIX, ""))
-                                              .filter(principalManager::isTokenIssuedByAad)
-                                              .orElse(null);
+            .map(r -> r.getHeader(HttpHeaders.AUTHORIZATION))
+            .map(String::trim)
+            .filter(s -> s.startsWith(Constants.BEARER_PREFIX))
+            .map(s -> s.replace(Constants.BEARER_PREFIX, ""))
+            .filter(principalManager::isTokenIssuedByAad)
+            .orElse(null);
         if (aadIssuedBearerToken == null || alreadyAuthenticated()) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
         try {
             final UserPrincipal userPrincipal = principalManager.buildUserPrincipal(aadIssuedBearerToken);
-            final Authentication authentication = new PreAuthenticatedAuthenticationToken(
-                userPrincipal,
-                null,
-                toSimpleGrantedAuthoritySet(userPrincipal)
-            );
+            final Authentication authentication = new PreAuthenticatedAuthenticationToken(userPrincipal, null,
+                toSimpleGrantedAuthoritySet(userPrincipal));
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             try {
@@ -103,9 +99,9 @@ public class AadAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
 
     private boolean alreadyAuthenticated() {
         return Optional.of(SecurityContextHolder.getContext())
-                       .map(SecurityContext::getAuthentication)
-                       .map(Authentication::isAuthenticated)
-                       .orElse(false);
+            .map(SecurityContext::getAuthentication)
+            .map(Authentication::isAuthenticated)
+            .orElse(false);
     }
 
     /**
@@ -115,17 +111,14 @@ public class AadAppRoleStatelessAuthenticationFilter extends OncePerRequestFilte
      * @return A set of SimpleGrantedAuthoritys
      */
     protected Set<SimpleGrantedAuthority> toSimpleGrantedAuthoritySet(UserPrincipal userPrincipal) {
-        Set<SimpleGrantedAuthority> simpleGrantedAuthoritySet =
-            Optional.of(userPrincipal)
-                    .map(UserPrincipal::getRoles)
-                    .map(Collection::stream)
-                    .orElseGet(Stream::empty)
-                    .filter(StringUtils::hasText)
-                    .map(s -> new SimpleGrantedAuthority(AuthorityPrefix.ROLE + s))
-                    .collect(Collectors.toSet());
-        return Optional.of(simpleGrantedAuthoritySet)
-                       .filter(r -> !r.isEmpty())
-                       .orElse(DEFAULT_AUTHORITY_SET);
+        Set<SimpleGrantedAuthority> simpleGrantedAuthoritySet = Optional.of(userPrincipal)
+            .map(UserPrincipal::getRoles)
+            .map(Collection::stream)
+            .orElseGet(Stream::empty)
+            .filter(StringUtils::hasText)
+            .map(s -> new SimpleGrantedAuthority(AuthorityPrefix.ROLE + s))
+            .collect(Collectors.toSet());
+        return Optional.of(simpleGrantedAuthoritySet).filter(r -> !r.isEmpty()).orElse(DEFAULT_AUTHORITY_SET);
 
     }
 }

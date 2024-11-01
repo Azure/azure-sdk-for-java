@@ -15,7 +15,8 @@ public class AppConfigurationConstants {
     /**
      * App Configurations Key Vault Reference Content Type
      */
-    public static final String KEY_VAULT_CONTENT_TYPE = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
+    public static final String KEY_VAULT_CONTENT_TYPE
+        = "application/vnd.microsoft.appconfig.keyvaultref+json;charset=utf-8";
 
     /**
      * Feature Management Key Prefix

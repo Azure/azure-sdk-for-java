@@ -102,11 +102,8 @@ public interface CosmosQueryExecution {
             } else if (results.size() == 1) {
                 result = results.get(0);
             } else {
-                throw new CosmosAccessException("Too many results - return type "
-                    + returnedType.getReturnedType()
-                    + " is not of type Iterable but find returned "
-                    + results.size()
-                    + " results");
+                throw new CosmosAccessException("Too many results - return type " + returnedType.getReturnedType()
+                    + " is not of type Iterable but find returned " + results.size() + " results");
             }
 
             if (returnedType.getReturnedType() == Optional.class) {
@@ -181,8 +178,7 @@ public interface CosmosQueryExecution {
 
         @Override
         public Object execute(CosmosQuery query, Class<?> type, String container) {
-            if (pageable.getPageNumber() != 0
-                && !(pageable instanceof CosmosPageRequest)) {
+            if (pageable.getPageNumber() != 0 && !(pageable instanceof CosmosPageRequest)) {
                 throw new IllegalStateException("Not the first page but Pageable is not a valid "
                     + "CosmosPageRequest, requestContinuation is required for non first page request");
             }
@@ -213,8 +209,7 @@ public interface CosmosQueryExecution {
 
         @Override
         public Object execute(CosmosQuery query, Class<?> type, String container) {
-            if (pageable.getPageNumber() != 0
-                && !(pageable instanceof CosmosPageRequest)) {
+            if (pageable.getPageNumber() != 0 && !(pageable instanceof CosmosPageRequest)) {
                 throw new IllegalStateException("Not the first page but Pageable is not a valid "
                     + "CosmosPageRequest, requestContinuation is required for non first page request");
             }

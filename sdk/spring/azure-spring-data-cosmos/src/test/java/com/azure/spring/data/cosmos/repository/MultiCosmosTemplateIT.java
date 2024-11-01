@@ -26,7 +26,7 @@ import static com.azure.spring.data.cosmos.common.TestConstants.AGE;
 import static com.azure.spring.data.cosmos.common.TestConstants.PASSPORT_IDS_BY_COUNTRY;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {TestRepositoryConfig.class, SecondaryTestRepositoryConfig.class})
+@ContextConfiguration(classes = { TestRepositoryConfig.class, SecondaryTestRepositoryConfig.class })
 public class MultiCosmosTemplateIT {
     private static final Person PRIMARY_TEST_PERSON = new Person(TestConstants.ID_1, TestConstants.FIRST_NAME,
         TestConstants.LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
@@ -34,7 +34,8 @@ public class MultiCosmosTemplateIT {
         TestConstants.NEW_LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
     @ClassRule
-    public static final ReactiveIntegrationTestCollectionManager primaryCollectionManager = new ReactiveIntegrationTestCollectionManager();
+    public static final ReactiveIntegrationTestCollectionManager primaryCollectionManager
+        = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
     @Qualifier("secondaryReactiveCosmosTemplate")
@@ -50,8 +51,9 @@ public class MultiCosmosTemplateIT {
     @Test
     public void testPrimaryTemplate() {
         primaryCollectionManager.ensureContainersCreatedAndEmpty(primaryReactiveCosmosTemplate, Person.class);
-        primaryReactiveCosmosTemplate.insert(PRIMARY_TEST_PERSON,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(PRIMARY_TEST_PERSON))).block();
+        primaryReactiveCosmosTemplate
+            .insert(PRIMARY_TEST_PERSON, new PartitionKey(personInfo.getPartitionKeyFieldValue(PRIMARY_TEST_PERSON)))
+            .block();
         final Mono<Person> findById = primaryReactiveCosmosTemplate.findById(PRIMARY_TEST_PERSON.getId(), Person.class);
         Assertions.assertThat(findById.block().getFirstName()).isEqualTo(TestConstants.FIRST_NAME);
     }
@@ -59,9 +61,12 @@ public class MultiCosmosTemplateIT {
     @Test
     public void testSecondaryTemplate() {
         secondaryReactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
-        secondaryReactiveCosmosTemplate.insert(SECONDARY_TEST_PERSON,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(SECONDARY_TEST_PERSON))).block();
-        final Mono<Person> findById = secondaryReactiveCosmosTemplate.findById(SECONDARY_TEST_PERSON.getId(), Person.class);
+        secondaryReactiveCosmosTemplate
+            .insert(SECONDARY_TEST_PERSON,
+                new PartitionKey(personInfo.getPartitionKeyFieldValue(SECONDARY_TEST_PERSON)))
+            .block();
+        final Mono<Person> findById
+            = secondaryReactiveCosmosTemplate.findById(SECONDARY_TEST_PERSON.getId(), Person.class);
         Assertions.assertThat(findById.block().getFirstName()).isEqualTo(TestConstants.NEW_FIRST_NAME);
         secondaryReactiveCosmosTemplate.deleteAll(Person.class.getSimpleName(), Person.class).block();
         secondaryReactiveCosmosTemplate.deleteContainer(personInfo.getContainerName());
@@ -70,9 +75,12 @@ public class MultiCosmosTemplateIT {
     @Test
     public void testSecondaryTemplateWithDiffDatabase() {
         secondaryDiffDatabaseReactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
-        secondaryDiffDatabaseReactiveCosmosTemplate.insert(SECONDARY_TEST_PERSON,
-            new PartitionKey(personInfo.getPartitionKeyFieldValue(SECONDARY_TEST_PERSON))).block();
-        final Mono<Person> findById = secondaryDiffDatabaseReactiveCosmosTemplate.findById(SECONDARY_TEST_PERSON.getId(), Person.class);
+        secondaryDiffDatabaseReactiveCosmosTemplate
+            .insert(SECONDARY_TEST_PERSON,
+                new PartitionKey(personInfo.getPartitionKeyFieldValue(SECONDARY_TEST_PERSON)))
+            .block();
+        final Mono<Person> findById
+            = secondaryDiffDatabaseReactiveCosmosTemplate.findById(SECONDARY_TEST_PERSON.getId(), Person.class);
         Assertions.assertThat(findById.block().getFirstName()).isEqualTo(TestConstants.NEW_FIRST_NAME);
         secondaryDiffDatabaseReactiveCosmosTemplate.deleteAll(Person.class.getSimpleName(), Person.class).block();
         secondaryDiffDatabaseReactiveCosmosTemplate.deleteContainer(personInfo.getContainerName());

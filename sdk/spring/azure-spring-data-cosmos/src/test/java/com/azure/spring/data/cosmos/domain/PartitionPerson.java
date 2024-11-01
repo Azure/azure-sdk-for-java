@@ -26,7 +26,8 @@ public class PartitionPerson {
     public PartitionPerson() {
     }
 
-    public PartitionPerson(String id, String firstName, Integer zipCode, List<String> hobbies, List<Address> shippingAddresses) {
+    public PartitionPerson(String id, String firstName, Integer zipCode, List<String> hobbies,
+        List<Address> shippingAddresses) {
         this.id = id;
         this.firstName = firstName;
         this.zipCode = zipCode;
@@ -97,20 +98,7 @@ public class PartitionPerson {
 
     @Override
     public String toString() {
-        return "PartitionPerson{"
-            + "id='"
-            + id
-            + '\''
-            + ", firstName='"
-            + firstName
-            + '\''
-            + ", lastName='"
-            + zipCode
-            + '\''
-            + ", hobbies="
-            + hobbies
-            + ", shippingAddresses="
-            + shippingAddresses
-            + '}';
+        return "PartitionPerson{" + "id='" + id + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + zipCode
+            + '\'' + ", hobbies=" + hobbies + ", shippingAddresses=" + shippingAddresses + '}';
     }
 }

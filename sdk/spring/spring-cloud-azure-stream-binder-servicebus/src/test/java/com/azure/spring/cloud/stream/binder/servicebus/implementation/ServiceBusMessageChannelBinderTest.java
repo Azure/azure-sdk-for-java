@@ -44,15 +44,15 @@ class ServiceBusMessageChannelBinderTest {
     @Captor
     private ArgumentCaptor<DeadLetterOptions> captor;
 
-    private final ServiceBusExtendedBindingProperties extendedBindingProperties =
-        new ServiceBusExtendedBindingProperties();
+    private final ServiceBusExtendedBindingProperties extendedBindingProperties
+        = new ServiceBusExtendedBindingProperties();
 
     private ExtendedConsumerProperties<ServiceBusConsumerProperties> consumerProperties;
 
     private final ServiceBusConsumerProperties serviceBusConsumerProperties = new ServiceBusConsumerProperties();
 
-    private final ServiceBusMessageChannelTestBinder binder = new ServiceBusMessageChannelTestBinder(
-        BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
+    private final ServiceBusMessageChannelTestBinder binder
+        = new ServiceBusMessageChannelTestBinder(BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
 
     private static final String ENTITY_NAME = "test-entity";
     private static final String GROUP = "test";
@@ -72,14 +72,12 @@ class ServiceBusMessageChannelBinderTest {
         prepareConsumerProperties();
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
         binder.createConsumerEndpoint(consumerDestination, GROUP, consumerProperties);
-        MessageHandler handler = ReflectionTestUtils.invokeMethod(
-            binder,
-            ServiceBusMessageChannelTestBinder.class,
-            GET_ERROR_MESSAGE_HANDLER_METHOD_NAME,
-            consumerDestination, GROUP, consumerProperties);
+        MessageHandler handler = ReflectionTestUtils.invokeMethod(binder, ServiceBusMessageChannelTestBinder.class,
+            GET_ERROR_MESSAGE_HANDLER_METHOD_NAME, consumerDestination, GROUP, consumerProperties);
         ServiceBusReceivedMessageContext messageContext = mock(ServiceBusReceivedMessageContext.class);
         Message<String> originalMessage = MessageBuilder.withPayload("test")
-            .setHeader(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext).build();
+            .setHeader(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext)
+            .build();
         ErrorMessage msg = new ErrorMessage(new RuntimeException(), originalMessage);
         handler.handleMessage(msg);
         verify(messageContext).abandon();
@@ -91,15 +89,13 @@ class ServiceBusMessageChannelBinderTest {
         consumerProperties.getExtension().setRequeueRejected(true);
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
         binder.createConsumerEndpoint(consumerDestination, GROUP, consumerProperties);
-        MessageHandler handler = ReflectionTestUtils.invokeMethod(
-            binder,
-            ServiceBusMessageChannelTestBinder.class,
-            GET_ERROR_MESSAGE_HANDLER_METHOD_NAME,
-            consumerDestination, GROUP, consumerProperties);
+        MessageHandler handler = ReflectionTestUtils.invokeMethod(binder, ServiceBusMessageChannelTestBinder.class,
+            GET_ERROR_MESSAGE_HANDLER_METHOD_NAME, consumerDestination, GROUP, consumerProperties);
         ServiceBusReceivedMessageContext messageContext = mock(ServiceBusReceivedMessageContext.class);
 
         Message<String> originalMessage = MessageBuilder.withPayload("test")
-            .setHeader(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext).build();
+            .setHeader(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext)
+            .build();
         String description = "testDescription";
         ErrorMessage msg = new ErrorMessage(new RuntimeException(description), originalMessage);
         handler.handleMessage(msg);
@@ -112,18 +108,17 @@ class ServiceBusMessageChannelBinderTest {
     void testCreateContainerProperties() {
         prepareConsumerProperties();
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
-        ServiceBusContainerProperties containerProperties = ReflectionTestUtils.invokeMethod(
-            binder,
-            ServiceBusMessageChannelTestBinder.class,
-            CREATE_CONTAINER_PROPERTIES_METHOD_NAME,
-            consumerDestination, GROUP, consumerProperties);
+        ServiceBusContainerProperties containerProperties
+            = ReflectionTestUtils.invokeMethod(binder, ServiceBusMessageChannelTestBinder.class,
+                CREATE_CONTAINER_PROPERTIES_METHOD_NAME, consumerDestination, GROUP, consumerProperties);
 
         assertThat(containerProperties.getEntityName()).isEqualTo(consumerDestination.getName());
         assertThat(containerProperties.getSubscriptionName()).isEqualTo(GROUP);
         assertThat(containerProperties.getNamespace()).isEqualTo(serviceBusConsumerProperties.getNamespace());
         assertThat(containerProperties.getEntityType()).isEqualTo(serviceBusConsumerProperties.getEntityType());
         assertThat(containerProperties.getAutoComplete()).isEqualTo(serviceBusConsumerProperties.getAutoComplete());
-        assertThat(containerProperties.getRetry().getTryTimeout()).isEqualTo(serviceBusConsumerProperties.getRetry().getTryTimeout());
+        assertThat(containerProperties.getRetry().getTryTimeout())
+            .isEqualTo(serviceBusConsumerProperties.getRetry().getTryTimeout());
 
     }
 

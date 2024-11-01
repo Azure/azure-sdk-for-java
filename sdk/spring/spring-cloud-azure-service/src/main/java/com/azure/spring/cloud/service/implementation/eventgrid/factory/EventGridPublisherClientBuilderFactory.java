@@ -30,7 +30,8 @@ import java.util.function.BiConsumer;
 /**
  * Azure Event Grid Publisher client builder factory, it builds the {@link EventGridPublisherClientBuilder}.
  */
-public class EventGridPublisherClientBuilderFactory extends AbstractAzureHttpClientBuilderFactory<EventGridPublisherClientBuilder> {
+public class EventGridPublisherClientBuilderFactory
+    extends AbstractAzureHttpClientBuilderFactory<EventGridPublisherClientBuilder> {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(EventGridPublisherClientBuilderFactory.class);
 
@@ -82,11 +83,9 @@ public class EventGridPublisherClientBuilderFactory extends AbstractAzureHttpCli
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventGridPublisherClientBuilder builder) {
-        return Arrays.asList(
-            new KeyAuthenticationDescriptor(builder::credential),
+        return Arrays.asList(new KeyAuthenticationDescriptor(builder::credential),
             new SasAuthenticationDescriptor(builder::credential),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
-        );
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential));
     }
 
     @Override
@@ -109,6 +108,7 @@ public class EventGridPublisherClientBuilderFactory extends AbstractAzureHttpCli
     @Override
     protected BiConsumer<EventGridPublisherClientBuilder, String> consumeConnectionString() {
         LOGGER.debug("Connection string is not supported to configure in EventGridPublisherClientBuilder");
-        return (a, b) -> { };
+        return (a, b) -> {
+        };
     }
 }

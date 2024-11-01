@@ -73,9 +73,8 @@ public abstract class AbstractJacksonAzureMessageConverter<I, O> implements Azur
 
     @Override
     @SuppressWarnings("unchecked")
-    public <U> Message<U> toMessage(@NonNull I azureMessage,
-                                    Map<String, Object> headers,
-                                    @NonNull Class<U> targetPayloadClass) {
+    public <U> Message<U> toMessage(@NonNull I azureMessage, Map<String, Object> headers,
+        @NonNull Class<U> targetPayloadClass) {
         Map<String, Object> mergedHeaders = new HashMap<>();
         mergedHeaders.putAll(buildCustomHeaders(azureMessage));
         mergedHeaders.putAll(headers);
@@ -120,8 +119,7 @@ public abstract class AbstractJacksonAzureMessageConverter<I, O> implements Azur
         return emptyHeaders();
     }
 
-
-    private  Map<String, Object> emptyHeaders() {
+    private Map<String, Object> emptyHeaders() {
         return new HashMap<>();
     }
 
@@ -151,7 +149,8 @@ public abstract class AbstractJacksonAzureMessageConverter<I, O> implements Azur
      * @param <U> the target payload class.
      * @return the converted Spring message.
      */
-    protected  <U> Message<?> internalToMessage(I azureMessage, Map<String, Object> headers, Class<U> targetPayloadClass) {
+    protected <U> Message<?> internalToMessage(I azureMessage, Map<String, Object> headers,
+        Class<U> targetPayloadClass) {
         Object payload = getPayload(azureMessage);
         Assert.isTrue(payload != null, "payload must not be null");
         if (targetPayloadClass.isInstance(azureMessage)) {
@@ -159,7 +158,9 @@ public abstract class AbstractJacksonAzureMessageConverter<I, O> implements Azur
         }
 
         if (targetPayloadClass == String.class) {
-            return MessageBuilder.withPayload(new String((byte[]) payload, StandardCharsets.UTF_8)).copyHeaders(headers).build();
+            return MessageBuilder.withPayload(new String((byte[]) payload, StandardCharsets.UTF_8))
+                .copyHeaders(headers)
+                .build();
         }
 
         if (targetPayloadClass == byte[].class) {

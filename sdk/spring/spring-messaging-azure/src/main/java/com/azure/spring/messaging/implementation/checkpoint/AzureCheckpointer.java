@@ -30,8 +30,7 @@ public class AzureCheckpointer implements Checkpointer {
      * @param success the {@link Supplier} for a success operation.
      * @param fail the {@link Supplier} for a failure operation.
      */
-    public AzureCheckpointer(@NonNull Supplier<Mono<Void>> success,
-                             Supplier<Mono<Void>> fail) {
+    public AzureCheckpointer(@NonNull Supplier<Mono<Void>> success, Supplier<Mono<Void>> fail) {
         this.success = success;
         this.fail = fail;
     }

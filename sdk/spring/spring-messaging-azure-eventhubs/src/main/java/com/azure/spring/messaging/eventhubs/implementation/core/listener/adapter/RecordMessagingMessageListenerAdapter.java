@@ -41,7 +41,6 @@ public class RecordMessagingMessageListenerAdapter extends MessagingMessageListe
 
         final EventData event = eventContext.getEventData();
 
-
         Message<?> message = this.getMessageConverter().toMessage(event, new MessageHeaders(headers), payloadType);
 
         invokeHandler(message);

@@ -33,7 +33,8 @@ class EventHubsMessageListenerContainerTests {
     private EventProcessorClient anotherDelegateEventProcessorClient;
 
     private EventHubsMessageListenerContainer listenerContainer;
-    private final EventHubsRecordMessageListener listener = eventContext -> { };
+    private final EventHubsRecordMessageListener listener = eventContext -> {
+    };
     private AutoCloseable closeable;
     private final String consumerGroup = "consumer-group";
     private final String anotherConsumerGroup = "another-consumer-group";
@@ -43,12 +44,10 @@ class EventHubsMessageListenerContainerTests {
     void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
         when(this.mockProcessorFactory.createProcessor(eq(destination), eq(consumerGroup),
-            isA(EventHubsContainerProperties.class)))
-            .thenReturn(this.delegateEventProcessorClient);
+            isA(EventHubsContainerProperties.class))).thenReturn(this.delegateEventProcessorClient);
 
         when(this.mockProcessorFactory.createProcessor(eq(destination), eq(anotherConsumerGroup),
-            isA(EventHubsContainerProperties.class)))
-            .thenReturn(this.anotherDelegateEventProcessorClient);
+            isA(EventHubsContainerProperties.class))).thenReturn(this.anotherDelegateEventProcessorClient);
 
         EventHubsContainerProperties containerProperties = new EventHubsContainerProperties();
         containerProperties.setEventHubName(destination);
@@ -94,7 +93,8 @@ class EventHubsMessageListenerContainerTests {
         containerProperties.setEventHubName(destination);
         containerProperties.setConsumerGroup(anotherConsumerGroup);
         containerProperties.setMessageListener(listener);
-        EventHubsMessageListenerContainer anotherListenerContainer = new EventHubsMessageListenerContainer(this.mockProcessorFactory, containerProperties);
+        EventHubsMessageListenerContainer anotherListenerContainer
+            = new EventHubsMessageListenerContainer(this.mockProcessorFactory, containerProperties);
         this.listenerContainer.start();
         verify(this.delegateEventProcessorClient, times(1)).start();
 
@@ -108,9 +108,8 @@ class EventHubsMessageListenerContainerTests {
     }
 
     private void verifySubscriberCreatorCalled() {
-        verify(this.mockProcessorFactory, atLeastOnce())
-            .createProcessor(anyString(), anyString(), isA(EventHubsContainerProperties.class));
+        verify(this.mockProcessorFactory, atLeastOnce()).createProcessor(anyString(), anyString(),
+            isA(EventHubsContainerProperties.class));
     }
-
 
 }

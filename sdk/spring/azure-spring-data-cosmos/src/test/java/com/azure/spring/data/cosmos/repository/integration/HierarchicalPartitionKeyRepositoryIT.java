@@ -31,11 +31,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class HierarchicalPartitionKeyRepositoryIT {
 
-    private static final HierarchicalPartitionKeyEntity HIERARCHICAL_ENTITY_1 =
-        new HierarchicalPartitionKeyEntity("id_1", "John", "Doe", "12345");
+    private static final HierarchicalPartitionKeyEntity HIERARCHICAL_ENTITY_1
+        = new HierarchicalPartitionKeyEntity("id_1", "John", "Doe", "12345");
 
-    private static final HierarchicalPartitionKeyEntity HIERARCHICAL_ENTITY_2 =
-            new HierarchicalPartitionKeyEntity("id_2", "Michael", "Smith", "23456");
+    private static final HierarchicalPartitionKeyEntity HIERARCHICAL_ENTITY_2
+        = new HierarchicalPartitionKeyEntity("id_2", "Michael", "Smith", "23456");
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
@@ -50,7 +50,8 @@ public class HierarchicalPartitionKeyRepositoryIT {
     HierarchicalPartitionKeyRepository repository;
 
     @BeforeClass
-    public static void init() { }
+    public static void init() {
+    }
 
     @Before
     public void setUp() {
@@ -84,11 +85,10 @@ public class HierarchicalPartitionKeyRepositoryIT {
     public void testFindAllByPartitionKey() {
         repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
 
-        PartitionKey pk = new PartitionKeyBuilder()
-                .add(HIERARCHICAL_ENTITY_1.getId())
-                .add(HIERARCHICAL_ENTITY_1.getFirstName())
-                .add(HIERARCHICAL_ENTITY_1.getLastName())
-                .build();
+        PartitionKey pk = new PartitionKeyBuilder().add(HIERARCHICAL_ENTITY_1.getId())
+            .add(HIERARCHICAL_ENTITY_1.getFirstName())
+            .add(HIERARCHICAL_ENTITY_1.getLastName())
+            .build();
         Iterable<HierarchicalPartitionKeyEntity> results = repository.findAll(pk);
         assertThat(TestUtils.toList(results).size()).isEqualTo(1);
         assertThat(results.iterator().hasNext()).isTrue();
@@ -99,11 +99,10 @@ public class HierarchicalPartitionKeyRepositoryIT {
     public void testFindByIdAndPartitionKey() {
         repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
 
-        PartitionKey pk = new PartitionKeyBuilder()
-                .add(HIERARCHICAL_ENTITY_2.getId())
-                .add(HIERARCHICAL_ENTITY_2.getFirstName())
-                .add(HIERARCHICAL_ENTITY_2.getLastName())
-                .build();
+        PartitionKey pk = new PartitionKeyBuilder().add(HIERARCHICAL_ENTITY_2.getId())
+            .add(HIERARCHICAL_ENTITY_2.getFirstName())
+            .add(HIERARCHICAL_ENTITY_2.getLastName())
+            .build();
         Optional<HierarchicalPartitionKeyEntity> results = repository.findById(HIERARCHICAL_ENTITY_2.getId(), pk);
         HierarchicalPartitionKeyEntity result = results.get();
         assertThat(result.getId()).isEqualTo(HIERARCHICAL_ENTITY_2.getId());
@@ -113,11 +112,10 @@ public class HierarchicalPartitionKeyRepositoryIT {
     public void testDeleteByIdAndPartitionKey() {
         repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
 
-        PartitionKey pk = new PartitionKeyBuilder()
-                .add(HIERARCHICAL_ENTITY_1.getId())
-                .add(HIERARCHICAL_ENTITY_1.getFirstName())
-                .add(HIERARCHICAL_ENTITY_1.getLastName())
-                .build();
+        PartitionKey pk = new PartitionKeyBuilder().add(HIERARCHICAL_ENTITY_1.getId())
+            .add(HIERARCHICAL_ENTITY_1.getFirstName())
+            .add(HIERARCHICAL_ENTITY_1.getLastName())
+            .build();
         repository.deleteById(HIERARCHICAL_ENTITY_1.getId(), pk);
         Iterable<HierarchicalPartitionKeyEntity> iterable = repository.findAll();
         List<HierarchicalPartitionKeyEntity> hierarchicalPartitionKeyValues = TestUtils.toList(iterable);

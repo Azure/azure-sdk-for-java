@@ -30,10 +30,14 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
  *
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "event-hub-name", "producer.event-hub-name" })
+@ConditionalOnAnyProperty(
+    prefix = "spring.cloud.azure.eventhubs",
+    name = { "event-hub-name", "producer.event-hub-name" })
 class AzureEventHubsProducerClientConfiguration {
 
-    @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace" })
+    @ConditionalOnMissingProperty(
+        prefix = "spring.cloud.azure.eventhubs.producer",
+        name = { "connection-string", "namespace" })
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
     @ConditionalOnBean(EventHubClientBuilder.class)
     @Configuration(proxyBeanMethods = false)
@@ -51,7 +55,9 @@ class AzureEventHubsProducerClientConfiguration {
         }
     }
 
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs.producer", name = { "connection-string", "namespace" })
+    @ConditionalOnAnyProperty(
+        prefix = "spring.cloud.azure.eventhubs.producer",
+        name = { "connection-string", "namespace" })
     @Configuration(proxyBeanMethods = false)
     static class DedicatedProducerConnectionConfiguration {
 
@@ -86,15 +92,15 @@ class AzureEventHubsProducerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        EventHubProducerAsyncClient eventHubProducerAsyncClient(@Qualifier(EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
-                                                                EventHubClientBuilder builder) {
+        EventHubProducerAsyncClient eventHubProducerAsyncClient(
+            @Qualifier(EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME) EventHubClientBuilder builder) {
             return builder.buildAsyncProducerClient();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        EventHubProducerClient eventHubProducerClient(@Qualifier(EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME)
-                                                      EventHubClientBuilder builder) {
+        EventHubProducerClient eventHubProducerClient(
+            @Qualifier(EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME) EventHubClientBuilder builder) {
             return builder.buildProducerClient();
         }
 

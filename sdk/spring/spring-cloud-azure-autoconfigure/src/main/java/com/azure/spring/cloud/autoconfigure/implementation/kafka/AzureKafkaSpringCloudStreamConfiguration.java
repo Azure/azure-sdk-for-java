@@ -22,8 +22,8 @@ import org.springframework.context.annotation.Import;
 public class AzureKafkaSpringCloudStreamConfiguration {
 
     @Bean
-    static KafkaBinderConfigurationPropertiesBeanPostProcessor kafkaBinderConfigurationPropertiesBeanPostProcessor(
-            AzureGlobalProperties azureGlobalProperties) {
+    static KafkaBinderConfigurationPropertiesBeanPostProcessor
+        kafkaBinderConfigurationPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
         return new KafkaBinderConfigurationPropertiesBeanPostProcessor(azureGlobalProperties);
     }
 }

@@ -22,7 +22,7 @@ public class AppConfigurationEventListenerTest {
     public void setup() {
         MockitoAnnotations.openMocks(this);
     }
-    
+
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();

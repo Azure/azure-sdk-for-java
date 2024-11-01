@@ -26,8 +26,7 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
 
     @Test
     void withoutObjectMapperShouldNotConfigure() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ObjectMapper.class))
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true")
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
@@ -36,8 +35,7 @@ public class AzureStorageQueueMessagingAutoConfigurationTests {
 
     @Test
     void withIsolatedObjectMapper() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.storage.queue.enabled=true")
+        this.contextRunner.withPropertyValues("spring.cloud.azure.storage.queue.enabled=true")
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withUserConfiguration(AzureStorageQueuePropertiesTestConfiguration.class)
             .run(context -> {

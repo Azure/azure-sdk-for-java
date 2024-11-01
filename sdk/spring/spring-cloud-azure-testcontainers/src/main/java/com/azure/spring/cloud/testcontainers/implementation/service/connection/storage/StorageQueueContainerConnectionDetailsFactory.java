@@ -19,7 +19,8 @@ class StorageQueueContainerConnectionDetailsFactory
     }
 
     @Override
-    protected AzureStorageQueueConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<Container<?>> source) {
+    protected AzureStorageQueueConnectionDetails
+        getContainerConnectionDetails(ContainerConnectionSource<Container<?>> source) {
         return new StorageQueueContainerConnectionDetails(source);
     }
 

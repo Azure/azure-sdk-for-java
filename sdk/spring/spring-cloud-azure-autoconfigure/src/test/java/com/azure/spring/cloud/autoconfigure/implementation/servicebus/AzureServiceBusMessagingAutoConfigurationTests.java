@@ -25,50 +25,45 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     @Test
     void disableServiceBusShouldNotConfigure() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.servicebus.enabled=false",
-                "spring.cloud.azure.servicebus.namespace=test-namespace"
-            )
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
+            .withPropertyValues("spring.cloud.azure.servicebus.enabled=false",
+                "spring.cloud.azure.servicebus.namespace=test-namespace")
+            .run(context -> assertThat(context)
+                .doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
     }
 
     @Test
     void withoutServiceBusTemplateShouldNotConfigure() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ServiceBusTemplate.class))
-            .withPropertyValues(
-                "spring.cloud.azure.servicebus.namespace=test-namespace"
-            )
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusTemplate.class))
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=test-namespace")
+            .run(context -> assertThat(context)
+                .doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
     }
 
     @Test
     void withoutServiceBusConnectionShouldNotConfigure() {
-        this.contextRunner
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
+        this.contextRunner.withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .run(context -> assertThat(context)
+                .doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
     }
 
     @Test
     void connectionInfoAndCheckpointStoreProvidedShouldConfigure() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
-            )
+            .withPropertyValues("spring.cloud.azure.servicebus.connection-string="
+                + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusProcessorFactory.class);
-                assertThat(context).hasSingleBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class);
+                assertThat(context)
+                    .hasSingleBean(AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class);
             });
     }
 
     @Test
     void withoutObjectMapperShouldNotConfigure() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
-            .withPropertyValues(
-                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
-            )
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ObjectMapper.class))
+            .withPropertyValues("spring.cloud.azure.servicebus.connection-string="
+                + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> assertThatIllegalStateException());
@@ -77,7 +72,8 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     @Test
     void withIsolatedObjectMapper() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
+            .withPropertyValues("spring.cloud.azure.servicebus.connection-string="
+                + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
             .run(context -> {
@@ -90,7 +86,9 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     @Test
     void withNonIsolatedObjectMapper() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.connection-string="
+                    + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withConfiguration(AutoConfigurations.of(JacksonAutoConfiguration.class))
@@ -104,7 +102,9 @@ class AzureServiceBusMessagingAutoConfigurationTests {
     @Test
     void withUserProvidedObjectMapper() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.connection-string="
+                    + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
                 "spring.cloud.azure.message-converter.isolated-object-mapper=false")
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean("userObjectMapper", ObjectMapper.class, () -> new ObjectMapper())

@@ -31,7 +31,7 @@ public class AzureStorageQueueResourceManagerAutoConfiguration extends AzureServ
     private final StorageQueueResourceMetadata resourceMetadata;
 
     AzureStorageQueueResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
-                                                      StorageQueueResourceMetadata resourceMetadata) {
+        StorageQueueResourceMetadata resourceMetadata) {
         super(azureResourceManager);
         this.resourceMetadata = resourceMetadata;
     }
@@ -41,10 +41,8 @@ public class AzureStorageQueueResourceManagerAutoConfiguration extends AzureServ
     @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, value = "account-name")
     @Order
     StorageQueueArmConnectionStringProvider storageQueueArmConnectionStringProvider() {
-        return new StorageQueueArmConnectionStringProvider(this.azureResourceManager,
-                                                           this.resourceMetadata,
-                                                           this.resourceMetadata.getName());
+        return new StorageQueueArmConnectionStringProvider(this.azureResourceManager, this.resourceMetadata,
+            this.resourceMetadata.getName());
     }
 
 }
-

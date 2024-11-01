@@ -48,7 +48,6 @@ public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCo
         return new EventHubsConnectionString(this.connectionString).getEntityPath();
     }
 
-
     // FQDN = the FQDN of the EventHubs namespace you created (it includes the EventHubs namespace name followed by
     // servicebus.windows.net)
     // Endpoint=sb://<FQDN>/;SharedAccessKeyName=<KeyName>;SharedAccessKey=<KeyValue>
@@ -65,7 +64,7 @@ public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCo
     }
 
     public String getDomainName() {
-        return domainName ==  null ? getProfile().getEnvironment().getServiceBusDomainName() : domainName;
+        return domainName == null ? getProfile().getEnvironment().getServiceBusDomainName() : domainName;
     }
 
     public void setDomainName(String domainName) {

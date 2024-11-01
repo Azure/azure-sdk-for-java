@@ -30,18 +30,15 @@ class KeyVaultSecretUserAgentTests {
     void userAgentTest(CapturedOutput output) {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureKeyVaultSecretAutoConfiguration.class))
-            .withPropertyValues(
-                "spring.cloud.azure.profile.tenant-id=sample",
-                "spring.cloud.azure.credential.client-id=sample",
-                "spring.cloud.azure.credential.client-secret=sample",
+            .withPropertyValues("spring.cloud.azure.profile.tenant-id=sample",
+                "spring.cloud.azure.credential.client-id=sample", "spring.cloud.azure.credential.client-secret=sample",
                 "spring.cloud.azure.keyvault.secret.enabled=true",
                 "spring.cloud.azure.keyvault.secret.endpoint=https://sample.vault.azure.net/",
                 "spring.cloud.azure.keyvault.secret.client.logging.level=headers",
                 "spring.cloud.azure.keyvault.secret.client.logging.allowed-header-names=User-Agent",
                 "spring.cloud.azure.keyvault.secret.retry.fixed.delay=1",
                 "spring.cloud.azure.keyvault.secret.retry.fixed.max-retries=0",
-                "spring.cloud.azure.keyvault.secret.retry.mode=fixed"
-            )
+                "spring.cloud.azure.keyvault.secret.retry.mode=fixed")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultSecretAutoConfiguration.class);
@@ -59,8 +56,8 @@ class KeyVaultSecretUserAgentTests {
                 }
                 String allOutput = output.getAll();
                 String format1 = String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS);
-                String format2 = String.format("\"User-Agent\":\"%s",
-                    AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS);
+                String format2
+                    = String.format("\"User-Agent\":\"%s", AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT_SECRETS);
                 assertTrue(allOutput.contains(format1) || allOutput.contains(format2));
             });
     }

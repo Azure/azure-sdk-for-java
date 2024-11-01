@@ -25,18 +25,18 @@ public class CosmosRepositoryConfigurationExtensionUnitTest {
     ResourceLoader loader = new PathMatchingResourcePatternResolver();
     Environment environment = new StandardEnvironment();
     RepositoryConfigurationSource configurationSource = new AnnotationRepositoryConfigurationSource(metadata,
-            EnableCosmosRepositories.class, loader, environment, new DefaultListableBeanFactory(), null);
+        EnableCosmosRepositories.class, loader, environment, new DefaultListableBeanFactory(), null);
 
     private static void assertHashRepo(Class<?> repositoryInterface,
-                                       Collection<RepositoryConfiguration<RepositoryConfigurationSource>> configs) {
+        Collection<RepositoryConfiguration<RepositoryConfigurationSource>> configs) {
         for (final RepositoryConfiguration<?> config : configs) {
             if (config.getRepositoryInterface().equals(repositoryInterface.getName())) {
                 return;
             }
         }
 
-        fail("expected to find config for repository interface "
-                + repositoryInterface.getName() + ", but got: " + configs.toString());
+        fail("expected to find config for repository interface " + repositoryInterface.getName() + ", but got: "
+            + configs.toString());
     }
 
     @Test

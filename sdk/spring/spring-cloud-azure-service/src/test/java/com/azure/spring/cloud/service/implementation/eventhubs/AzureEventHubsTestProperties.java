@@ -82,7 +82,8 @@ class AzureEventHubsTestProperties extends AzureEventHubsCommonTestProperties im
             return initialPartitionEventPosition;
         }
 
-        public void setInitialPartitionEventPosition(Map<String, StartPositionProperties> initialPartitionEventPosition) {
+        public void
+            setInitialPartitionEventPosition(Map<String, StartPositionProperties> initialPartitionEventPosition) {
             this.initialPartitionEventPosition = initialPartitionEventPosition;
         }
 
@@ -103,9 +104,7 @@ class AzureEventHubsTestProperties extends AzureEventHubsCommonTestProperties im
          */
         public static class BlobCheckpointStore extends AzureStorageBlobTestProperties {
 
-
         }
     }
-
 
 }

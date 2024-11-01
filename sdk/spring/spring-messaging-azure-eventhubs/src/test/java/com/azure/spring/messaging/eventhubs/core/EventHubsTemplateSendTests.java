@@ -28,7 +28,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
 public class EventHubsTemplateSendTests extends SendOperationTests<EventHubsTemplate> {
 
     @Mock
@@ -48,8 +47,7 @@ public class EventHubsTemplateSendTests extends SendOperationTests<EventHubsTemp
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
 
         when(this.producerFactory.createProducer(eq(this.destination))).thenReturn(this.mockProducerClient);
-        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
-            .thenReturn(Mono.just(eventDataBatch));
+        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class))).thenReturn(Mono.just(eventDataBatch));
         when(this.mockProducerClient.send(any(EventDataBatch.class))).thenReturn(this.mono);
         when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true);
 
@@ -81,9 +79,7 @@ public class EventHubsTemplateSendTests extends SendOperationTests<EventHubsTemp
 
     @Test
     public void testGetPartitionIdFromMessageHeader() {
-        Message<String> message = MessageBuilder.withPayload("test")
-                                                .setHeader(PARTITION_ID, "partition-id")
-                                                .build();
+        Message<String> message = MessageBuilder.withPayload("test").setHeader(PARTITION_ID, "partition-id").build();
         PartitionSupplier partitionSupplier = sendOperation.buildPartitionSupplier(message);
         assertEquals(partitionSupplier.getPartitionId(), "partition-id");
         assertNull(partitionSupplier.getPartitionKey());
@@ -91,9 +87,7 @@ public class EventHubsTemplateSendTests extends SendOperationTests<EventHubsTemp
 
     @Test
     public void testGetPartitionKeyFromMessageHeader() {
-        Message<String> message = MessageBuilder.withPayload("test")
-                                                .setHeader(PARTITION_KEY, "partition-key")
-                                                .build();
+        Message<String> message = MessageBuilder.withPayload("test").setHeader(PARTITION_KEY, "partition-key").build();
         PartitionSupplier partitionSupplier = sendOperation.buildPartitionSupplier(message);
         assertNull(partitionSupplier.getPartitionId());
         assertEquals(partitionSupplier.getPartitionKey(), "partition-key");
@@ -102,9 +96,9 @@ public class EventHubsTemplateSendTests extends SendOperationTests<EventHubsTemp
     @Test
     public void testGetPartitionIdAndKeyFromMessageHeader() {
         Message<String> message = MessageBuilder.withPayload("test")
-                                                .setHeader(PARTITION_ID, "partition-id")
-                                                .setHeader(PARTITION_KEY, "partition-key")
-                                                .build();
+            .setHeader(PARTITION_ID, "partition-id")
+            .setHeader(PARTITION_KEY, "partition-key")
+            .build();
         PartitionSupplier partitionSupplier = sendOperation.buildPartitionSupplier(message);
         assertEquals(partitionSupplier.getPartitionId(), "partition-id");
         assertEquals(partitionSupplier.getPartitionKey(), "partition-key");

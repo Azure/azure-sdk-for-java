@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.useragent.http;
 
-
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
@@ -30,8 +29,7 @@ class EventGridUserAgentTests {
     @Test
     @SuppressWarnings("unchecked")
     void userAgentTest(CapturedOutput output) {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureEventGridAutoConfiguration.class))
+        new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureEventGridAutoConfiguration.class))
             .withPropertyValues(
                 "spring.cloud.azure.eventgrid.endpoint=https://sample.somelocation.eventgrid.azure.net/api/eventseventgrid.azure.net/api/events",
                 "spring.cloud.azure.eventgrid.key=some-key",
@@ -39,8 +37,7 @@ class EventGridUserAgentTests {
                 "spring.cloud.azure.eventgrid.client.logging.allowed-header-names=User-Agent",
                 "spring.cloud.azure.eventgrid.retry.fixed.delay=1",
                 "spring.cloud.azure.eventgrid.retry.fixed.max-retries=0",
-                "spring.cloud.azure.eventgrid.retry.mode=fixed"
-            )
+                "spring.cloud.azure.eventgrid.retry.mode=fixed")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventGridAutoConfiguration.class);
@@ -50,8 +47,8 @@ class EventGridUserAgentTests {
                 assertThat(context).hasSingleBean(EventGridPublisherClient.class);
                 assertThat(context).hasSingleBean(EventGridPublisherAsyncClient.class);
 
-                EventGridPublisherClient<EventGridEvent> eventGridPublisherClient =
-                    (EventGridPublisherClient<EventGridEvent>) context.getBean(EventGridPublisherClient.class);
+                EventGridPublisherClient<EventGridEvent> eventGridPublisherClient
+                    = (EventGridPublisherClient<EventGridEvent>) context.getBean(EventGridPublisherClient.class);
                 try {
                     EventGridEvent event = new EventGridEvent("A user is created", "User.Created.Object",
                         BinaryData.fromObject("user1"), "0.1");  // topic must be set when sending to an Event Grid
@@ -62,8 +59,7 @@ class EventGridUserAgentTests {
                 }
                 String allOutput = output.getAll();
                 String format1 = String.format("User-Agent:%s", AzureSpringIdentifier.AZURE_SPRING_EVENT_GRID);
-                String format2 = String.format("\"User-Agent\":\"%s",
-                    AzureSpringIdentifier.AZURE_SPRING_EVENT_GRID);
+                String format2 = String.format("\"User-Agent\":\"%s", AzureSpringIdentifier.AZURE_SPRING_EVENT_GRID);
                 assertTrue(allOutput.contains(format1) || allOutput.contains(format2));
             });
     }

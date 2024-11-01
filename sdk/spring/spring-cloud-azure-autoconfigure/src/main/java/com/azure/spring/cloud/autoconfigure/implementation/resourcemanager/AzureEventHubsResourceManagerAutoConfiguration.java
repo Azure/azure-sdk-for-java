@@ -24,7 +24,11 @@ import org.springframework.core.annotation.Order;
  *
  * @since 4.0.0
  */
-@ConditionalOnProperty(prefix = AzureEventHubsProperties.PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    prefix = AzureEventHubsProperties.PREFIX,
+    value = "enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 @ConditionalOnBean(AzureResourceManager.class)
 @ConditionalOnClass(EventHubsProvisioner.class)
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
@@ -34,7 +38,7 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
     private final EventHubsResourceMetadata resourceMetadata;
 
     AzureEventHubsResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
-                                                   EventHubsResourceMetadata resourceMetadata) {
+        EventHubsResourceMetadata resourceMetadata) {
         super(azureResourceManager);
         this.resourceMetadata = resourceMetadata;
     }

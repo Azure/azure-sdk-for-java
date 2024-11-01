@@ -23,11 +23,11 @@ import java.nio.charset.Charset;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(properties = {
-    "spring.docker.compose.skip.in-tests=false",
-    "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/storage/storage-compose.yaml",
-    "spring.docker.compose.stop.command=down"
-})
+@SpringBootTest(
+    properties = {
+        "spring.docker.compose.skip.in-tests=false",
+        "spring.docker.compose.file=classpath:com/azure/spring/cloud/docker/compose/implementation/service/connection/storage/storage-compose.yaml",
+        "spring.docker.compose.stop.command=down" })
 @EnabledOnOs(OS.LINUX)
 class StorageBlobDockerComposeConnectionDetailsFactoryTests {
 
@@ -45,10 +45,11 @@ class StorageBlobDockerComposeConnectionDetailsFactoryTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ImportAutoConfiguration(classes = {
-        AzureGlobalPropertiesAutoConfiguration.class,
-        AzureStorageBlobAutoConfiguration.class,
-        AzureStorageBlobResourceAutoConfiguration.class})
+    @ImportAutoConfiguration(
+        classes = {
+            AzureGlobalPropertiesAutoConfiguration.class,
+            AzureStorageBlobAutoConfiguration.class,
+            AzureStorageBlobResourceAutoConfiguration.class })
     static class Config {
     }
 }

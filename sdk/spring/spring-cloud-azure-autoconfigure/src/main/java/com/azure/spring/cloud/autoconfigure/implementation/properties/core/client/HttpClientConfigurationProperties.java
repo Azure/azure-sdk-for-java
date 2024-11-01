@@ -14,7 +14,8 @@ import java.util.List;
 /**
  *
  */
-public class HttpClientConfigurationProperties extends ClientConfigurationProperties implements ClientOptionsProvider.HttpClientOptions {
+public class HttpClientConfigurationProperties extends ClientConfigurationProperties
+    implements ClientOptionsProvider.HttpClientOptions {
 
     /**
      * Amount of time(Duration) each request being sent over the wire.

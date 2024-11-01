@@ -25,9 +25,7 @@ class QueueServiceUserAgentTests {
     void userAgentTest() {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureStorageQueueAutoConfiguration.class))
-            .withPropertyValues(
-                "spring.cloud.azure.storage.queue.account-name=sample"
-            )
+            .withPropertyValues("spring.cloud.azure.storage.queue.account-name=sample")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureStorageQueueAutoConfiguration.class);

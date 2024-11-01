@@ -29,10 +29,7 @@ import static org.mockito.Mockito.verify;
  *
  */
 class AzureStorageFileShareClientBuilderFactoryTests extends
-    AzureHttpClientBuilderFactoryBaseTests<
-        ShareServiceClientBuilder,
-        AzureStorageFileShareTestProperties,
-        AzureStorageFileShareClientBuilderFactoryTests.ShareServiceClientBuilderFactoryExt> {
+    AzureHttpClientBuilderFactoryBaseTests<ShareServiceClientBuilder, AzureStorageFileShareTestProperties, AzureStorageFileShareClientBuilderFactoryTests.ShareServiceClientBuilderFactoryExt> {
 
     private static final String ENDPOINT = "https://abc.file.core.windows.net/";
     private static final String CONNECTION_STRING = "BlobEndpoint=https://test.blob.core.windows.net/;"
@@ -77,7 +74,8 @@ class AzureStorageFileShareClientBuilderFactoryTests extends
     }
 
     @Override
-    protected ShareServiceClientBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(AzureStorageFileShareTestProperties properties) {
+    protected ShareServiceClientBuilderFactoryExt
+        createClientBuilderFactoryWithMockBuilder(AzureStorageFileShareTestProperties properties) {
         return new ShareServiceClientBuilderFactoryExt(properties);
     }
 
@@ -116,14 +114,13 @@ class AzureStorageFileShareClientBuilderFactoryTests extends
 
     @Override
     protected void verifyRetryOptionsCalled(ShareServiceClientBuilder builder,
-                                            AzureStorageFileShareTestProperties properties, VerificationMode mode) {
+        AzureStorageFileShareTestProperties properties, VerificationMode mode) {
         verify(builder, mode).retryOptions(any(RequestRetryOptions.class));
     }
 
     @Override
     protected void verifyCredentialCalled(ShareServiceClientBuilder builder,
-                                          Class<? extends TokenCredential> tokenCredentialClass,
-                                          VerificationMode mode) {
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         // the file share doesn't support token credential
     }
 
@@ -149,4 +146,3 @@ class AzureStorageFileShareClientBuilderFactoryTests extends
         }
     }
 }
-

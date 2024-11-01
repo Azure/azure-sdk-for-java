@@ -20,7 +20,7 @@ public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespac
      * @param azureResourceMetadata The Azure resource metadata.
      */
     public EventHubNamespaceCrud(AzureResourceManager azureResourceManager,
-                                 AzureResourceMetadata azureResourceMetadata) {
+        AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
     }
 
@@ -38,7 +38,7 @@ public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespac
     public EventHubNamespace internalGet(String namespace) {
         try {
             return this.resourceManager.eventHubNamespaces()
-                                       .getByResourceGroup(this.resourceMetadata.getResourceGroup(), namespace);
+                .getByResourceGroup(this.resourceMetadata.getResourceGroup(), namespace);
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
@@ -51,9 +51,9 @@ public class EventHubNamespaceCrud extends AbstractResourceCrud<EventHubNamespac
     @Override
     public EventHubNamespace internalCreate(String namespace) {
         return this.resourceManager.eventHubNamespaces()
-                                   .define(namespace)
-                                   .withRegion(this.resourceMetadata.getRegion())
-                                   .withExistingResourceGroup(this.resourceMetadata.getResourceGroup())
-                                   .create();
+            .define(namespace)
+            .withRegion(this.resourceMetadata.getRegion())
+            .withExistingResourceGroup(this.resourceMetadata.getResourceGroup())
+            .create();
     }
 }

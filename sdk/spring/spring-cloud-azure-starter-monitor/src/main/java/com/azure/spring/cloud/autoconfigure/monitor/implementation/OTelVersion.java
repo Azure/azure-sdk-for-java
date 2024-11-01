@@ -6,13 +6,13 @@ import java.util.Comparator;
 
 class OTelVersion {
 
-    private static final Comparator<OTelVersion> VERSION_COMPARATOR = Comparator.comparingInt(OTelVersion::getMajorVersion)
-        .thenComparing(OTelVersion::getMinorVersion)
-        .thenComparing(OTelVersion::getPatchVersion);
+    private static final Comparator<OTelVersion> VERSION_COMPARATOR
+        = Comparator.comparingInt(OTelVersion::getMajorVersion)
+            .thenComparing(OTelVersion::getMinorVersion)
+            .thenComparing(OTelVersion::getPatchVersion);
     final int majorVersion;
     private final int minorVersion;
     private final int patchVersion;
-
 
     private int getMajorVersion() {
         return majorVersion;

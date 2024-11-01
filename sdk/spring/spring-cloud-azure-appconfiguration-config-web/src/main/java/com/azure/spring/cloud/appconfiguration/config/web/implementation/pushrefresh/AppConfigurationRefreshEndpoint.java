@@ -68,11 +68,10 @@ public class AppConfigurationRefreshEndpoint implements ApplicationEventPublishe
     @ResponseBody
     public String refresh(HttpServletRequest request, HttpServletResponse response,
         @RequestParam Map<String, String> allRequestParams) throws IOException {
-        
+
         AppConfigurationEndpoint endpoint;
         try {
-            endpoint = new AppConfigurationEndpoint(request, appConfiguration.getStores(),
-                allRequestParams);
+            endpoint = new AppConfigurationEndpoint(request, appConfiguration.getStores(), allRequestParams);
         } catch (IllegalArgumentException e) {
             LOGGER.error(e.getMessage());
             return HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase();
@@ -88,7 +87,7 @@ public class AppConfigurationRefreshEndpoint implements ApplicationEventPublishe
             if (!endpoint.authenticate()) {
                 return HttpStatus.UNAUTHORIZED.getReasonPhrase();
             }
-            
+
             if (contextRefresher != null) {
                 if (endpoint.triggerRefresh()) {
                     publisher.publishEvent(new AppConfigurationRefreshEvent(endpoint.getEndpoint(), syncToken));

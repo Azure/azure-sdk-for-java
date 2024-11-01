@@ -26,9 +26,9 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor, Ap
 
     static final String SPRING_MAIN_SOURCES_PROPERTY = "spring.main.sources";
 
-    static final String KAFKA_OAUTH2_SPRING_MAIN_SOURCES = String.join(",",
-        AzureKafkaSpringCloudStreamConfiguration.class.getName(),
-        AzureEventHubsKafkaOAuth2AutoConfiguration.class.getName());
+    static final String KAFKA_OAUTH2_SPRING_MAIN_SOURCES
+        = String.join(",", AzureKafkaSpringCloudStreamConfiguration.class.getName(),
+            AzureEventHubsKafkaOAuth2AutoConfiguration.class.getName());
     private static final String DEFAULT_KAFKA_BINDER_NAME = "kafka";
     private static final String KAFKA_BINDER_TYPE = "kafka";
 
@@ -50,7 +50,9 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor, Ap
                     BinderTypeRegistry binderTypeRegistry = applicationContext.getBean(BinderTypeRegistry.class);
                     Map<String, BinderType> allBinders = binderTypeRegistry.getAll();
                     // Only kafka binder on the classpath.
-                    if (allBinders != null && allBinders.containsKey(DEFAULT_KAFKA_BINDER_NAME) && allBinders.size() == 1) {
+                    if (allBinders != null
+                        && allBinders.containsKey(DEFAULT_KAFKA_BINDER_NAME)
+                        && allBinders.size() == 1) {
                         Map<String, Object> environment = new HashMap<>();
                         Map<String, Object> springMainPropertiesMap = getOrCreateSpringMainPropertiesMap(environment);
                         configureSpringMainSources(springMainPropertiesMap);
@@ -71,7 +73,8 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor, Ap
                         boolean isBinderNameKafka = DEFAULT_KAFKA_BINDER_NAME.equalsIgnoreCase(entry.getKey());
                         if (isBinderTypeKafka || isBinderNameKafka) {
                             Map<String, Object> environment = entry.getValue().getEnvironment();
-                            Map<String, Object> springMainPropertiesMap = getOrCreateSpringMainPropertiesMap(environment);
+                            Map<String, Object> springMainPropertiesMap
+                                = getOrCreateSpringMainPropertiesMap(environment);
                             configureSpringMainSources(springMainPropertiesMap);
                         }
                     }
@@ -91,7 +94,8 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor, Ap
 
     @SuppressWarnings("unchecked")
     Map<String, Object> getOrCreateSpringMainPropertiesMap(Map<String, Object> map) {
-        Map<String, Object> spring = (Map<String, Object>) map.computeIfAbsent("spring", k -> new LinkedHashMap<String, Object>());
+        Map<String, Object> spring
+            = (Map<String, Object>) map.computeIfAbsent("spring", k -> new LinkedHashMap<String, Object>());
         return (Map<String, Object>) spring.computeIfAbsent("main", k -> new LinkedHashMap<String, Object>());
     }
 }

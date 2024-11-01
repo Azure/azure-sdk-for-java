@@ -67,14 +67,17 @@ public class ServiceBusJmsAutoConfiguration {
     @Bean
     @ConditionalOnExpression("'standard'.equalsIgnoreCase('${spring.jms.servicebus.pricing-tier}')")
     @SuppressWarnings("unchecked")
-    AzureServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
+    AzureServiceBusJmsConnectionFactoryCustomizer amqpOpenPropertiesCustomizer(
+        ObjectProvider<AzureServiceBusJmsCredentialSupplier> azureServiceBusJmsCredentialSupplier) {
         return factory -> {
-            JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils.getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
-            EnumMap<JmsConnectionExtensions, BiFunction<Connection, URI, Object>> extensionMap =
-                (EnumMap) ReflectionUtils.getField(JmsConnectionFactory.class, "extensionMap", jmsFactory);
+            JmsConnectionFactory jmsFactory = (JmsConnectionFactory) ReflectionUtils
+                .getField(ServiceBusJmsConnectionFactory.class, "factory", factory);
+            EnumMap<JmsConnectionExtensions, BiFunction<Connection, URI, Object>> extensionMap
+                = (EnumMap) ReflectionUtils.getField(JmsConnectionFactory.class, "extensionMap", jmsFactory);
 
             if (extensionMap.containsKey(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES)) {
-                Map<String, Object> properties = (Map) extensionMap.get(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES).apply(null, null);
+                Map<String, Object> properties
+                    = (Map) extensionMap.get(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES).apply(null, null);
                 if (properties.containsKey("com.microsoft:is-client-provider")) {
                     jmsFactory.setExtension(JmsConnectionExtensions.AMQP_OPEN_PROPERTIES.toString(),
                         (connection, uri) -> {
@@ -94,9 +97,11 @@ public class ServiceBusJmsAutoConfiguration {
         return new AzureServiceBusJmsPropertiesBeanPostProcessor(connectionStringProviders);
     }
 
-    private AzureServiceBusJmsProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties, AzureServiceBusJmsProperties azurePasswordlessProperties) {
+    private AzureServiceBusJmsProperties mergeAzureProperties(AzureGlobalProperties azureGlobalProperties,
+        AzureServiceBusJmsProperties azurePasswordlessProperties) {
         AzureServiceBusJmsProperties mergedProperties = new AzureServiceBusJmsProperties();
-        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties, mergedProperties);
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties,
+            mergedProperties);
         return mergedProperties;
     }
 }

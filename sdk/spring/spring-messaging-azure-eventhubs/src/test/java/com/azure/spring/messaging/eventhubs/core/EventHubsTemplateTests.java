@@ -31,7 +31,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
 class EventHubsTemplateTests {
     private static final ClientLogger LOGGER = new ClientLogger(EventHubsTemplateTests.class);
 
@@ -52,7 +51,6 @@ class EventHubsTemplateTests {
         when(this.mockProducerClient.send(any(EventDataBatch.class))).thenReturn(this.empty);
     }
 
-
     /**
      * test the three batches case
      */
@@ -60,21 +58,19 @@ class EventHubsTemplateTests {
     void testSendAsyncForMessagesWithThreeBatch() {
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
 
-        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
-            .thenReturn(Mono.just(eventDataBatch));
-        when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, true, false, true, true,
-            false, true);
+        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class))).thenReturn(Mono.just(eventDataBatch));
+        when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, true, false, true, true, false, true);
         when(eventDataBatch.getCount()).thenReturn(2, 2, 1);
         List<String> messagesList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             messagesList.add("abcde");
         }
-        List<Message<String>> messages =
-            messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
+        List<Message<String>> messages = messagesList.stream()
+            .map((Function<String, GenericMessage<String>>) GenericMessage::new)
+            .collect(Collectors.toList());
 
         Mono<Void> mono = this.eventHubsTemplate.sendAsync(this.destination, messages, null);
-        StepVerifier.create(mono)
-                    .verifyComplete();
+        StepVerifier.create(mono).verifyComplete();
         verify(this.mockProducerClient, times(3)).send(any(EventDataBatch.class));
     }
 
@@ -85,25 +81,23 @@ class EventHubsTemplateTests {
     void testSendAsyncForMessagesOneBatchAndSendCompletely() {
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
 
-        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
-            .thenReturn(Mono.just(eventDataBatch));
+        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class))).thenReturn(Mono.just(eventDataBatch));
         when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, true, true, true, true);
         when(eventDataBatch.getCount()).thenReturn(5);
         List<String> messagesList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             messagesList.add("abcde");
         }
-        List<Message<String>> messages =
-            messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
+        List<Message<String>> messages = messagesList.stream()
+            .map((Function<String, GenericMessage<String>>) GenericMessage::new)
+            .collect(Collectors.toList());
 
         Mono<Void> mono = this.eventHubsTemplate.sendAsync(this.destination, messages, null)
             .doOnSuccess(t -> LOGGER.log(LogLevel.VERBOSE, () -> "do on success:" + t));
 
-        StepVerifier.create(mono)
-                    .verifyComplete();
+        StepVerifier.create(mono).verifyComplete();
         verify(this.mockProducerClient, times(1)).send(any(EventDataBatch.class));
     }
-
 
     /**
      * test the normal one batch case with one exception at the first
@@ -112,26 +106,28 @@ class EventHubsTemplateTests {
     void testSendAsyncForMessagesOneBatchAndSendCompletelyWithException() {
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
 
-        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
-            .thenReturn(Mono.just(eventDataBatch));
-        when(eventDataBatch.tryAdd(any(EventData.class))).thenThrow(new AmqpException(false,
-            AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-            String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
-                1024 * 1024 / 1024),
-            null)).thenReturn(true, true, true, true);
+        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class))).thenReturn(Mono.just(eventDataBatch));
+        when(eventDataBatch.tryAdd(any(EventData.class)))
+            .thenThrow(
+                new AmqpException(
+                    false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                    String.format(Locale.US, "Size of the payload exceeded maximum message size: %s kb",
+                        1024 * 1024 / 1024),
+                    null))
+            .thenReturn(true, true, true, true);
         when(eventDataBatch.getCount()).thenReturn(5);
         List<String> messagesList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             messagesList.add("abcde");
         }
-        List<Message<String>> messages =
-            messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
+        List<Message<String>> messages = messagesList.stream()
+            .map((Function<String, GenericMessage<String>>) GenericMessage::new)
+            .collect(Collectors.toList());
 
         Mono<Void> mono = this.eventHubsTemplate.sendAsync(this.destination, messages, null)
             .doOnError(ex -> LOGGER.log(LogLevel.VERBOSE, () -> "do on Error", ex))
             .doOnSuccess(t -> LOGGER.log(LogLevel.VERBOSE, () -> "do on success:" + t));
-        StepVerifier.create(mono)
-                    .verifyComplete();
+        StepVerifier.create(mono).verifyComplete();
         verify(this.mockProducerClient, times(1)).send(any(EventDataBatch.class));
     }
 
@@ -142,28 +138,26 @@ class EventHubsTemplateTests {
     void testSendAsyncForMessagesTwoBatchAndSendCompletelyWithException() {
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
 
-        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
-            .thenReturn(Mono.just(eventDataBatch));
-        when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, false, true).
-                                                         thenThrow(new AmqpException(false,
-                                                             AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
-                                                             String.format(Locale.US, "Size of the payload exceeded "
-                                                                     + "maximum message size: %s kb",
-                                                                 1024 * 1024 / 1024),
-                                                             null)).thenReturn(true, true);
+        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class))).thenReturn(Mono.just(eventDataBatch));
+        when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, false, true)
+            .thenThrow(new AmqpException(false, AmqpErrorCondition.LINK_PAYLOAD_SIZE_EXCEEDED,
+                String.format(Locale.US, "Size of the payload exceeded " + "maximum message size: %s kb",
+                    1024 * 1024 / 1024),
+                null))
+            .thenReturn(true, true);
         when(eventDataBatch.getCount()).thenReturn(5);
         List<String> messagesList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             messagesList.add("abcde");
         }
-        List<Message<String>> messages =
-            messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
+        List<Message<String>> messages = messagesList.stream()
+            .map((Function<String, GenericMessage<String>>) GenericMessage::new)
+            .collect(Collectors.toList());
 
         Mono<Void> mono = this.eventHubsTemplate.sendAsync(this.destination, messages, null)
             .doOnError(ex -> LOGGER.log(LogLevel.VERBOSE, () -> "do on Error", ex))
             .doOnSuccess(t -> LOGGER.log(LogLevel.VERBOSE, () -> "do on success:" + t));
-        StepVerifier.create(mono)
-                    .verifyComplete();
+        StepVerifier.create(mono).verifyComplete();
         verify(this.mockProducerClient, times(2)).send(any(EventDataBatch.class));
     }
 
@@ -174,22 +168,21 @@ class EventHubsTemplateTests {
     void testSendAsyncForMessagesWithTheSecondEventTooLargeForOneNewBatch() {
         EventDataBatch eventDataBatch = mock(EventDataBatch.class);
 
-        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class)))
-            .thenReturn(Mono.just(eventDataBatch));
+        when(this.mockProducerClient.createBatch(any(CreateBatchOptions.class))).thenReturn(Mono.just(eventDataBatch));
         when(eventDataBatch.tryAdd(any(EventData.class))).thenReturn(true, false, false).thenReturn(true, true, true);
         when(eventDataBatch.getCount()).thenReturn(5);
         List<String> messagesList = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             messagesList.add("abcde");
         }
-        List<Message<String>> messages =
-            messagesList.stream().map((Function<String, GenericMessage<String>>) GenericMessage::new).collect(Collectors.toList());
+        List<Message<String>> messages = messagesList.stream()
+            .map((Function<String, GenericMessage<String>>) GenericMessage::new)
+            .collect(Collectors.toList());
 
         Mono<Void> mono = this.eventHubsTemplate.sendAsync(this.destination, messages, null)
             .doOnError(ex -> LOGGER.log(LogLevel.VERBOSE, () -> "do on Error", ex))
             .doOnSuccess(t -> LOGGER.log(LogLevel.VERBOSE, () -> "do on success:" + t));
-        StepVerifier.create(mono)
-                    .verifyComplete();
+        StepVerifier.create(mono).verifyComplete();
         verify(this.mockProducerClient, times(2)).send(any(EventDataBatch.class));
     }
 }

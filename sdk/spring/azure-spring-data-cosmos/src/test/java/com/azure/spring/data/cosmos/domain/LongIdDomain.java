@@ -49,8 +49,7 @@ public class LongIdDomain {
             return false;
         }
         LongIdDomain that = (LongIdDomain) o;
-        return Objects.equals(number, that.number)
-            && Objects.equals(name, that.name);
+        return Objects.equals(number, that.number) && Objects.equals(name, that.name);
     }
 
     @Override
@@ -60,12 +59,6 @@ public class LongIdDomain {
 
     @Override
     public String toString() {
-        return "LongIdDomain{"
-            + "number="
-            + number
-            + ", name='"
-            + name
-            + '\''
-            + '}';
+        return "LongIdDomain{" + "number=" + number + ", name='" + name + '\'' + '}';
     }
 }

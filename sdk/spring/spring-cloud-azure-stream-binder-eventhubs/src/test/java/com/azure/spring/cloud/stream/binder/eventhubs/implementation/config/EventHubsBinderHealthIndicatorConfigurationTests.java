@@ -15,10 +15,10 @@ import static org.mockito.Mockito.mock;
 
 public class EventHubsBinderHealthIndicatorConfigurationTests {
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withBean(AzureGlobalProperties.class, () -> mock(AzureGlobalProperties.class))
-        .withBean(EventHubsMessageChannelBinder.class, () -> mock(EventHubsMessageChannelBinder.class))
-        .withConfiguration(AutoConfigurations.of(EventHubsBinderHealthIndicatorConfiguration.class));
+    private final ApplicationContextRunner contextRunner
+        = new ApplicationContextRunner().withBean(AzureGlobalProperties.class, () -> mock(AzureGlobalProperties.class))
+            .withBean(EventHubsMessageChannelBinder.class, () -> mock(EventHubsMessageChannelBinder.class))
+            .withConfiguration(AutoConfigurations.of(EventHubsBinderHealthIndicatorConfiguration.class));
 
     @Test
     void runShouldCreateIndicator() {
@@ -28,6 +28,6 @@ public class EventHubsBinderHealthIndicatorConfigurationTests {
     @Test
     void runWhenDisabledShouldNotCreateIndicator() {
         this.contextRunner.withPropertyValues("management.health.binders.enabled:false")
-                          .run((context) -> assertThat(context).doesNotHaveBean(EventHubsHealthIndicator.class));
+            .run((context) -> assertThat(context).doesNotHaveBean(EventHubsHealthIndicator.class));
     }
 }

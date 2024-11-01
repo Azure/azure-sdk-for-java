@@ -34,7 +34,7 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
      * @param resourceMetadata The Azure resource metadata.
      */
     protected AbstractResourceCrud(@NonNull AzureResourceManager resourceManager,
-                                @NonNull AzureResourceMetadata resourceMetadata) {
+        @NonNull AzureResourceMetadata resourceMetadata) {
         this.resourceManager = resourceManager;
         this.resourceMetadata = resourceMetadata;
     }
@@ -60,7 +60,8 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
             LOGGER.info("Fetching {} with name '{}' ...", resourceType, name);
             return internalGet(key);
         } catch (ManagementException e) {
-            String message = String.format("Fetching %s with name '%s' failed due to: %s", resourceType, name, e.toString());
+            String message
+                = String.format("Fetching %s with name '%s' failed due to: %s", resourceType, name, e.toString());
             throw new RuntimeException(message, e);
         } finally {
             stopWatch.stop();
@@ -90,7 +91,8 @@ public abstract class AbstractResourceCrud<T, K, P> implements ResourceCrud<T, K
             LOGGER.info("Creating {} with name '{}' ...", resourceType, name);
             return internalCreate(key, properties);
         } catch (ManagementException e) {
-            String message = String.format("Creating %s with name '%s' failed due to: %s", resourceType, name, e.toString());
+            String message
+                = String.format("Creating %s with name '%s' failed due to: %s", resourceType, name, e.toString());
             throw new RuntimeException(message, e);
         } finally {
             stopWatch.stop();

@@ -18,8 +18,7 @@ public class TestUtils {
         return null;
     }
 
-    public static <T> void testIndexingPolicyPathsEquals(List<T> policyPaths,
-                                                         String[] pathsExpected) {
+    public static <T> void testIndexingPolicyPathsEquals(List<T> policyPaths, String[] pathsExpected) {
         if (policyPaths == null) {
             throw new IllegalStateException("policyPaths should not be null");
         } else if (pathsExpected == null) {
@@ -30,11 +29,10 @@ public class TestUtils {
 
         Assert.isTrue(pathsExpected.length == policyPaths.size(), "unmatched size of policy paths");
 
-        for (final String path: pathsExpected) {
+        for (final String path : pathsExpected) {
             Assert.isTrue(pathIterator.hasNext(), "policy path iterator should have next");
             final T includedPath = pathIterator.next();
             Assert.isTrue(includedPath.toString().equals(path), "unmatched policy path");
         }
     }
 }
-

@@ -32,7 +32,6 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-
 class UserPrincipalManagerTests {
 
     private static ImmutableJWKSet<SecurityContext> immutableJWKSet;
@@ -40,20 +39,20 @@ class UserPrincipalManagerTests {
     @BeforeAll
     static void setupClass() throws Exception {
         final X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509")
-                                                                         .generateCertificate(Files.newInputStream(Paths.get("src/test/resources/aad/test-public-key.txt")));
+            .generateCertificate(Files.newInputStream(Paths.get("src/test/resources/aad/test-public-key.txt")));
         immutableJWKSet = new ImmutableJWKSet<>(new JWKSet(JWK.parse(cert)));
     }
 
     private UserPrincipalManager userPrincipalManager;
 
-
     @Test
     void testAlgIsTakenFromJWT() throws Exception {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
-        final UserPrincipal userPrincipal = userPrincipalManager.buildUserPrincipal(
-            readFileToString("src/test/resources/aad/jwt-signed.txt"));
-        assertThat(userPrincipal).isNotNull().extracting(UserPrincipal::getIssuer, UserPrincipal::getSubject)
-                                 .containsExactly("https://sts.windows.net/test", "test@example.com");
+        final UserPrincipal userPrincipal
+            = userPrincipalManager.buildUserPrincipal(readFileToString("src/test/resources/aad/jwt-signed.txt"));
+        assertThat(userPrincipal).isNotNull()
+            .extracting(UserPrincipal::getIssuer, UserPrincipal::getSubject)
+            .containsExactly("https://sts.windows.net/test", "test@example.com");
     }
 
     @Test
@@ -68,8 +67,7 @@ class UserPrincipalManagerTests {
     @MethodSource("readJwtValidIssuerTxtStream")
     void validIssuer(final String token) {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
-        assertThatCode(() -> userPrincipalManager.buildUserPrincipal(token))
-            .doesNotThrowAnyException();
+        assertThatCode(() -> userPrincipalManager.buildUserPrincipal(token)).doesNotThrowAnyException();
     }
 
     @Test
@@ -88,9 +86,7 @@ class UserPrincipalManagerTests {
     }
 
     private void rolesExtractedAsExpected(Object rolesClaimValue, Collection<String> expected) {
-        JWTClaimsSet set = new JWTClaimsSet.Builder()
-                .claim("roles", rolesClaimValue)
-                .build();
+        JWTClaimsSet set = new JWTClaimsSet.Builder().claim("roles", rolesClaimValue).build();
         Set<String> actual = new UserPrincipalManager(null).getRoles(set);
         assertEquals(expected.size(), actual.size());
         assertTrue(expected.containsAll(actual));

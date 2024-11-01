@@ -35,7 +35,7 @@ class DefaultEventHubsProvisionerTests {
 
     private EventHubNamespaces eventHubNamespaces;
     private EventHubNamespace eventHubNamespace;
-    
+
     private static final String NAMESPACE = "namespace";
     private static final String EVENTHUB_NAME = "eventhub-name";
     private static final String CONSUMER_GROUP_NAME = "consumer-group-name";
@@ -65,7 +65,8 @@ class DefaultEventHubsProvisionerTests {
         when(eventHubNamespaces.define(NAMESPACE)).thenReturn(define);
         EventHubNamespace.DefinitionStages.WithGroup group = mock(EventHubNamespace.DefinitionStages.WithGroup.class);
         when(define.withRegion(resourceMetadata.getRegion())).thenReturn(group);
-        EventHubNamespace.DefinitionStages.WithCreate create = mock(EventHubNamespace.DefinitionStages.WithCreate.class);
+        EventHubNamespace.DefinitionStages.WithCreate create
+            = mock(EventHubNamespace.DefinitionStages.WithCreate.class);
         when(group.withExistingResourceGroup(resourceMetadata.getResourceGroup())).thenReturn(create);
 
         provisioner.provisionNamespace(NAMESPACE);
@@ -79,13 +80,14 @@ class DefaultEventHubsProvisionerTests {
         EventHub eventHub = mock(EventHub.class);
 
         when((resourceManager).eventHubs()).thenReturn(eventHubs);
-        when(eventHubs.getByName(resourceMetadata.getResourceGroup(), NAMESPACE, EVENTHUB_NAME))
-            .thenReturn(null, eventHub);
+        when(eventHubs.getByName(resourceMetadata.getResourceGroup(), NAMESPACE, EVENTHUB_NAME)).thenReturn(null,
+            eventHub);
 
         EventHub.DefinitionStages.Blank define = mock(EventHub.DefinitionStages.Blank.class);
         when(eventHubs.define(EVENTHUB_NAME)).thenReturn(define);
 
-        EventHub.DefinitionStages.WithCaptureProviderOrCreate create = mock(EventHub.DefinitionStages.WithCaptureProviderOrCreate.class);
+        EventHub.DefinitionStages.WithCaptureProviderOrCreate create
+            = mock(EventHub.DefinitionStages.WithCaptureProviderOrCreate.class);
         when(define.withExistingNamespace(eventHubNamespace)).thenReturn(create);
 
         provisioner.provisionEventHub(NAMESPACE, EVENTHUB_NAME);
@@ -104,13 +106,14 @@ class DefaultEventHubsProvisionerTests {
         when(eventHubs.consumerGroups()).thenReturn(groups);
 
         EventHubConsumerGroup group = mock(EventHubConsumerGroup.class);
-        when(groups.getByName(resourceMetadata.getResourceGroup(),
-            NAMESPACE, EVENTHUB_NAME, CONSUMER_GROUP_NAME)).thenReturn(null, group);
+        when(groups.getByName(resourceMetadata.getResourceGroup(), NAMESPACE, EVENTHUB_NAME, CONSUMER_GROUP_NAME))
+            .thenReturn(null, group);
 
-        EventHubConsumerGroup.DefinitionStages.Blank define = mock(EventHubConsumerGroup.DefinitionStages.Blank .class);
+        EventHubConsumerGroup.DefinitionStages.Blank define = mock(EventHubConsumerGroup.DefinitionStages.Blank.class);
         when(groups.define(CONSUMER_GROUP_NAME)).thenReturn(define);
 
-        EventHubConsumerGroup.DefinitionStages.WithCreate create = mock(EventHubConsumerGroup.DefinitionStages.WithCreate.class);
+        EventHubConsumerGroup.DefinitionStages.WithCreate create
+            = mock(EventHubConsumerGroup.DefinitionStages.WithCreate.class);
         when(define.withExistingEventHub(eventHub)).thenReturn(create);
 
         provisioner.provisionConsumerGroup(NAMESPACE, EVENTHUB_NAME, CONSUMER_GROUP_NAME);
@@ -136,7 +139,7 @@ class DefaultEventHubsProvisionerTests {
          * @param azureResourceMetadata the azure resource metadata
          */
         TestDefaultEventHubsProvisioner(AzureResourceManager azureResourceManager,
-                                                AzureResourceMetadata azureResourceMetadata) {
+            AzureResourceMetadata azureResourceMetadata) {
             super(azureResourceManager, azureResourceMetadata);
 
             this.namespaceCrud = new EventHubNamespaceCrud(azureResourceManager, azureResourceMetadata);

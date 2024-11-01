@@ -5,5 +5,6 @@ package com.azure.spring.cloud.autoconfigure.implementation.servicebus;
 
 abstract class ServiceBusTestUtils {
 
-    static final String CONNECTION_STRING_FORMAT = "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
+    static final String CONNECTION_STRING_FORMAT
+        = "Endpoint=sb://%s.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key";
 }

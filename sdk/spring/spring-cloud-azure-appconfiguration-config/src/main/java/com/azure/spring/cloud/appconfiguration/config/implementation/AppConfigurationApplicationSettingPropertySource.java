@@ -33,8 +33,8 @@ import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
  */
 class AppConfigurationApplicationSettingPropertySource extends AppConfigurationPropertySource {
 
-    private static final Logger LOGGER = LoggerFactory
-        .getLogger(AppConfigurationApplicationSettingPropertySource.class);
+    private static final Logger LOGGER
+        = LoggerFactory.getLogger(AppConfigurationApplicationSettingPropertySource.class);
 
     private final AppConfigurationKeyVaultClientFactory keyVaultClientFactory;
 
@@ -60,7 +60,8 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
      * @param keyPrefixTrimValues prefixs to trim from key values
      * @throws InvalidConfigurationPropertyValueException thrown if fails to parse Json content type
      */
-    public void initProperties(List<String> keyPrefixTrimValues, boolean isRefresh) throws InvalidConfigurationPropertyValueException {
+    public void initProperties(List<String> keyPrefixTrimValues, boolean isRefresh)
+        throws InvalidConfigurationPropertyValueException {
 
         List<String> labels = Arrays.asList(labelFilters);
         // Reverse labels so they have the right priority order.
@@ -70,14 +71,13 @@ class AppConfigurationApplicationSettingPropertySource extends AppConfigurationP
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter + "*").setLabelFilter(label);
 
             // * for wildcard match
-            processConfigurationSettings(replicaClient.listSettings(settingSelector, isRefresh), settingSelector.getKeyFilter(),
-                keyPrefixTrimValues);
+            processConfigurationSettings(replicaClient.listSettings(settingSelector, isRefresh),
+                settingSelector.getKeyFilter(), keyPrefixTrimValues);
         }
     }
 
     protected void processConfigurationSettings(List<ConfigurationSetting> settings, String keyFilter,
-        List<String> keyPrefixTrimValues)
-        throws InvalidConfigurationPropertyValueException {
+        List<String> keyPrefixTrimValues) throws InvalidConfigurationPropertyValueException {
         for (ConfigurationSetting setting : settings) {
             if (keyPrefixTrimValues == null && StringUtils.hasText(keyFilter)) {
                 keyPrefixTrimValues = new ArrayList<>();

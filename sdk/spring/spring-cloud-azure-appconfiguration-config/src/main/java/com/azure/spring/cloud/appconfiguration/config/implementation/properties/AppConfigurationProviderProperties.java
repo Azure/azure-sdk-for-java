@@ -131,7 +131,7 @@ public class AppConfigurationProviderProperties {
     public void setDefaultMaxBackoff(Long defaultMaxBackoff) {
         this.defaultMaxBackoff = defaultMaxBackoff;
     }
-    
+
     @PostConstruct
     public void validateAndInit() {
         Assert.hasLength(version, "A version of app configuration should be set.");

@@ -38,10 +38,10 @@ class AppConfigurationWebAutoConfiguration {
     }
 
     @Configuration
-    @ConditionalOnClass(name = {
-        "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
-        "org.springframework.cloud.endpoint.RefreshEndpoint"
-    })
+    @ConditionalOnClass(
+        name = {
+            "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
+            "org.springframework.cloud.endpoint.RefreshEndpoint" })
     static class AppConfigurationPushRefreshConfiguration {
 
         @Bean
@@ -51,18 +51,19 @@ class AppConfigurationWebAutoConfiguration {
         }
 
         @Bean
-        AppConfigurationRefreshEventListener appConfigurationRefreshEventListener(
-            AppConfigurationRefresh appConfigurationRefresh) {
+        AppConfigurationRefreshEventListener
+            appConfigurationRefreshEventListener(AppConfigurationRefresh appConfigurationRefresh) {
             return new AppConfigurationRefreshEventListener(appConfigurationRefresh);
         }
     }
 
     @Configuration
-    @ConditionalOnClass(name = {
-        "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
-        "org.springframework.cloud.bus.BusProperties",
-        "org.springframework.cloud.bus.event.RefreshRemoteApplicationEvent",
-        "org.springframework.cloud.endpoint.RefreshEndpoint" })
+    @ConditionalOnClass(
+        name = {
+            "org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties",
+            "org.springframework.cloud.bus.BusProperties",
+            "org.springframework.cloud.bus.event.RefreshRemoteApplicationEvent",
+            "org.springframework.cloud.endpoint.RefreshEndpoint" })
     static class AppConfigurationBusConfiguration {
 
         @Bean
@@ -72,8 +73,8 @@ class AppConfigurationWebAutoConfiguration {
         }
 
         @Bean
-        AppConfigurationBusRefreshEventListener appConfigurationBusRefreshEventListener(
-            AppConfigurationRefresh appConfigurationRefresh) {
+        AppConfigurationBusRefreshEventListener
+            appConfigurationBusRefreshEventListener(AppConfigurationRefresh appConfigurationRefresh) {
             return new AppConfigurationBusRefreshEventListener(appConfigurationRefresh);
         }
     }

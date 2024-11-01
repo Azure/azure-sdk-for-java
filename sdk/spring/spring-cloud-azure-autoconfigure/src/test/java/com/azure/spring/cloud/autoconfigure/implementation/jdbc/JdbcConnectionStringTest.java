@@ -21,7 +21,8 @@ class JdbcConnectionStringTest {
     @EnumSource(DatabaseType.class)
     void testConnectionStringWithNonValueProperties(DatabaseType databaseType) {
         String queries = "enableSwitch1" + databaseType.getQueryDelimiter() + "property1=value1";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
 
@@ -34,7 +35,8 @@ class JdbcConnectionStringTest {
     @EnumSource(DatabaseType.class)
     void testConnectionStringWithMultipleProperties(DatabaseType databaseType) {
         String queries = "property1=value1" + databaseType.getQueryDelimiter() + "property2=value2";
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), queries);
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), queries);
 
         JdbcConnectionString jdbcConnectionString = JdbcConnectionString.resolve(connectionString);
 
@@ -57,7 +59,8 @@ class JdbcConnectionStringTest {
     @ParameterizedTest
     @EnumSource(DatabaseType.class)
     void testConnectionStringWithInvalidProperties(DatabaseType databaseType) {
-        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(), databaseType.getPathQueryDelimiter(), "=");
+        String connectionString = String.format(PATH_WITH_QUERY_PATTERN, databaseType.getSchema(),
+            databaseType.getPathQueryDelimiter(), "=");
 
         assertThrows(IllegalArgumentException.class, () -> JdbcConnectionString.resolve(connectionString),
             String.format(INVALID_PROPERTY_PAIR_FORMAT, connectionString));

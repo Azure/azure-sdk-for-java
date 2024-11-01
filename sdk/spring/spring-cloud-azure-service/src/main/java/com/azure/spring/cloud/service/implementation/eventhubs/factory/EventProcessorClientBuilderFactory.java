@@ -43,7 +43,8 @@ import static com.azure.spring.cloud.service.implementation.converter.EventPosit
  * Event Hub client builder factory, it builds the {@link EventHubClientBuilder} according the configuration context and
  * blob properties.
  */
-public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventProcessorClientBuilder> {
+public class EventProcessorClientBuilderFactory
+    extends AbstractAzureAmqpClientBuilderFactory<EventProcessorClientBuilder> {
 
     private final EventProcessorClientProperties eventProcessorClientProperties;
     private final CheckpointStore checkpointStore;
@@ -61,9 +62,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
      * @param errorHandler the error handler.
      */
     public EventProcessorClientBuilderFactory(EventProcessorClientProperties eventProcessorClientProperties,
-                                              CheckpointStore checkpointStore,
-                                              MessageListener<?> listener,
-                                              EventHubsErrorHandler errorHandler) {
+        CheckpointStore checkpointStore, MessageListener<?> listener, EventHubsErrorHandler errorHandler) {
         this.eventProcessorClientProperties = eventProcessorClientProperties;
         this.checkpointStore = checkpointStore;
         this.messageListener = listener;
@@ -110,19 +109,24 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
         map.from(eventProcessorClientProperties.getConsumerGroup()).to(builder::consumerGroup);
         map.from(eventProcessorClientProperties.getPrefetchCount()).to(builder::prefetchCount);
         map.from(eventProcessorClientProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
-        map.from(eventProcessorClientProperties.getTrackLastEnqueuedEventProperties()).to(builder::trackLastEnqueuedEventProperties);
-        map.from(eventProcessorClientProperties.getLoadBalancing().getPartitionOwnershipExpirationInterval()).to(builder::partitionOwnershipExpirationInterval);
+        map.from(eventProcessorClientProperties.getTrackLastEnqueuedEventProperties())
+            .to(builder::trackLastEnqueuedEventProperties);
+        map.from(eventProcessorClientProperties.getLoadBalancing().getPartitionOwnershipExpirationInterval())
+            .to(builder::partitionOwnershipExpirationInterval);
         map.from(eventProcessorClientProperties.getLoadBalancing().getStrategy()).to(builder::loadBalancingStrategy);
-        map.from(eventProcessorClientProperties.getLoadBalancing().getUpdateInterval()).to(builder::loadBalancingUpdateInterval);
+        map.from(eventProcessorClientProperties.getLoadBalancing().getUpdateInterval())
+            .to(builder::loadBalancingUpdateInterval);
 
-        map.from(eventProcessorClientProperties.getInitialPartitionEventPosition()).when(c -> !CollectionUtils.isEmpty(c))
-                .to(m -> {
-                    Map<String, EventPosition> eventPositionMap = m.entrySet()
-                        .stream()
-                        .filter(entry -> entry.getValue() != null)
-                        .collect(Collectors.toMap(Map.Entry::getKey, entry -> EVENT_POSITION_CONVERTER.convert(entry.getValue())));
-                    builder.initialPartitionEventPosition(eventPositionMap);
-                });
+        map.from(eventProcessorClientProperties.getInitialPartitionEventPosition())
+            .when(c -> !CollectionUtils.isEmpty(c))
+            .to(m -> {
+                Map<String, EventPosition> eventPositionMap = m.entrySet()
+                    .stream()
+                    .filter(entry -> entry.getValue() != null)
+                    .collect(Collectors.toMap(Map.Entry::getKey,
+                        entry -> EVENT_POSITION_CONVERTER.convert(entry.getValue())));
+                builder.initialPartitionEventPosition(eventPositionMap);
+            });
 
         map.from(this.errorHandler).to(builder::processError);
         map.from(this.initializationContextConsumer).to(builder::processPartitionInitialization);
@@ -139,11 +143,9 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     // or setting the environment variable 'AZURE_EVENT_HUBS_CONNECTION_STRING' with a connection string
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventProcessorClientBuilder builder) {
-        return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(builder::credential),
+        return Arrays.asList(new NamedKeyAuthenticationDescriptor(builder::credential),
             new SasAuthenticationDescriptor(builder::credential),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, c -> builder.credential(c))
-        );
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, c -> builder.credential(c)));
     }
 
     @Override
@@ -170,8 +172,8 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
 
         if (messageListener instanceof EventHubsBatchMessageListener) {
             Assert.notNull(batch.getMaxSize(), "Batch max size must be provided");
-            builder.processEventBatch(((EventHubsBatchMessageListener) messageListener)::onMessage,
-                batch.getMaxSize(), batch.getMaxWaitTime());
+            builder.processEventBatch(((EventHubsBatchMessageListener) messageListener)::onMessage, batch.getMaxSize(),
+                batch.getMaxWaitTime());
         } else if (messageListener instanceof EventHubsRecordMessageListener) {
             builder.processEvent(((EventHubsRecordMessageListener) messageListener)::onMessage);
         } else {

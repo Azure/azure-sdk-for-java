@@ -144,7 +144,8 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testFindByWithRepeatedParameters() {
-        List<Project> projects = TestUtils.toList(this.repository.findByNameAndCreatorOrNameAndCreator(NAME_1, CREATOR_1, NAME_2, CREATOR_2));
+        List<Project> projects = TestUtils
+            .toList(this.repository.findByNameAndCreatorOrNameAndCreator(NAME_1, CREATOR_1, NAME_2, CREATOR_2));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_1, PROJECT_2));
     }
@@ -166,8 +167,8 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testFindByWithAndOr() {
-        List<Project> projects = TestUtils.toList(repository.findByNameAndCreatorOrForkCount(NAME_0, CREATOR_1,
-            FORK_COUNT_2));
+        List<Project> projects
+            = TestUtils.toList(repository.findByNameAndCreatorOrForkCount(NAME_0, CREATOR_1, FORK_COUNT_2));
 
         assertProjectListEquals(projects, Collections.singletonList(PROJECT_2));
 
@@ -182,8 +183,8 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testFindByWithOrAnd() {
-        List<Project> projects = TestUtils.toList(repository.findByNameOrCreatorAndForkCount(NAME_0, CREATOR_1,
-            FORK_COUNT_2));
+        List<Project> projects
+            = TestUtils.toList(repository.findByNameOrCreatorAndForkCount(NAME_0, CREATOR_1, FORK_COUNT_2));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4));
 
@@ -198,8 +199,8 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testFindByWithOrOr() {
-        List<Project> projects = TestUtils.toList(repository.findByNameOrCreatorOrForkCount(NAME_0, CREATOR_1,
-            FORK_COUNT_2));
+        List<Project> projects
+            = TestUtils.toList(repository.findByNameOrCreatorOrForkCount(NAME_0, CREATOR_1, FORK_COUNT_2));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_1, PROJECT_2, PROJECT_4));
 
@@ -210,19 +211,18 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testFindByWithOrAndOr() {
-        List<Project> projects = TestUtils.toList(repository.findByNameOrCreatorAndForkCountOrStarCount(NAME_1,
-            CREATOR_0,
-            FORK_COUNT_2, STAR_COUNT_3));
+        List<Project> projects = TestUtils.toList(
+            repository.findByNameOrCreatorAndForkCountOrStarCount(NAME_1, CREATOR_0, FORK_COUNT_2, STAR_COUNT_3));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_1, PROJECT_3));
 
-        projects = TestUtils.toList(repository.findByNameOrCreatorAndForkCountOrStarCount(NAME_1, CREATOR_0,
-            FORK_COUNT_0, STAR_COUNT_3));
+        projects = TestUtils.toList(
+            repository.findByNameOrCreatorAndForkCountOrStarCount(NAME_1, CREATOR_0, FORK_COUNT_0, STAR_COUNT_3));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_1, PROJECT_3, PROJECT_4));
 
-        projects = TestUtils.toList(repository.findByNameOrCreatorAndForkCountOrStarCount(FAKE_NAME, CREATOR_1,
-            FORK_COUNT_0, FAKE_COUNT));
+        projects = TestUtils.toList(
+            repository.findByNameOrCreatorAndForkCountOrStarCount(FAKE_NAME, CREATOR_1, FORK_COUNT_0, FAKE_COUNT));
 
         Assert.assertTrue(projects.isEmpty());
     }
@@ -240,8 +240,8 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testFindByGreaterThanWithAndOr() {
-        List<Project> projects = TestUtils.toList(repository.findByCreatorAndForkCountGreaterThan(CREATOR_2,
-            FORK_COUNT_1));
+        List<Project> projects
+            = TestUtils.toList(repository.findByCreatorAndForkCountGreaterThan(CREATOR_2, FORK_COUNT_1));
 
         assertProjectListEquals(projects, Collections.singletonList(PROJECT_2));
 
@@ -278,26 +278,26 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testFindByLessThanAndGreaterThan() {
-        List<Project> projects =
-            TestUtils.toList(repository.findByStarCountLessThanAndForkCountGreaterThan(STAR_COUNT_0, FORK_COUNT_3));
+        List<Project> projects
+            = TestUtils.toList(repository.findByStarCountLessThanAndForkCountGreaterThan(STAR_COUNT_0, FORK_COUNT_3));
 
         Assert.assertTrue(projects.isEmpty());
 
-        projects = TestUtils.toList(repository.findByStarCountLessThanAndForkCountGreaterThan(STAR_COUNT_3,
-            FORK_COUNT_0));
+        projects
+            = TestUtils.toList(repository.findByStarCountLessThanAndForkCountGreaterThan(STAR_COUNT_3, FORK_COUNT_0));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_1, PROJECT_2));
     }
 
     @Test
     public void testFindByLessThanEqualsAndGreaterThanEquals() {
-        List<Project> projects = TestUtils.toList(repository.findByForkCountLessThanEqualAndStarCountGreaterThan(
-            STAR_COUNT_MIN, FORK_COUNT_0));
+        List<Project> projects = TestUtils
+            .toList(repository.findByForkCountLessThanEqualAndStarCountGreaterThan(STAR_COUNT_MIN, FORK_COUNT_0));
 
         Assert.assertTrue(projects.isEmpty());
 
-        projects = TestUtils.toList(repository.findByForkCountLessThanEqualAndStarCountGreaterThan(STAR_COUNT_3,
-            FORK_COUNT_0));
+        projects = TestUtils
+            .toList(repository.findByForkCountLessThanEqualAndStarCountGreaterThan(STAR_COUNT_3, FORK_COUNT_0));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_1, PROJECT_2, PROJECT_3));
     }
@@ -315,8 +315,8 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testFindByGreaterThanEqualAnd() {
-        List<Project> projects = TestUtils.toList(repository
-            .findByForkCountGreaterThanEqualAndCreator(FORK_COUNT_MAX, CREATOR_2));
+        List<Project> projects
+            = TestUtils.toList(repository.findByForkCountGreaterThanEqualAndCreator(FORK_COUNT_MAX, CREATOR_2));
 
         Assert.assertTrue(projects.isEmpty());
 
@@ -359,8 +359,8 @@ public class ProjectRepositoryIT {
 
     @Test
     public void findByIdWithPartitionKey() {
-        final Optional<Project> project = repository.findById(PROJECT_0.getId(),
-            new PartitionKey(collectionManager.getEntityInformation(Project.class).getPartitionKeyFieldValue(PROJECT_0)));
+        final Optional<Project> project = repository.findById(PROJECT_0.getId(), new PartitionKey(
+            collectionManager.getEntityInformation(Project.class).getPartitionKeyFieldValue(PROJECT_0)));
 
         Assert.assertTrue(project.isPresent());
 
@@ -369,12 +369,10 @@ public class ProjectRepositoryIT {
 
     @Test
     public void findByIdWithPartitionKeyNotFound() {
-        final Optional<Project> project = repository.findById("unknown-id",
-            new PartitionKey("unknown-partition-key"));
+        final Optional<Project> project = repository.findById("unknown-id", new PartitionKey("unknown-partition-key"));
 
         Assert.assertFalse(project.isPresent());
     }
-
 
     @Test
     public void testFindByIn() {
@@ -397,9 +395,9 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testFindByInWithAnd() {
-        List<Project> projects = TestUtils.toList(repository.findByCreatorInAndStarCountIn(Arrays.asList(CREATOR_0,
-            CREATOR_1),
-            Arrays.asList(STAR_COUNT_2, STAR_COUNT_3)));
+        List<Project> projects
+            = TestUtils.toList(repository.findByCreatorInAndStarCountIn(Arrays.asList(CREATOR_0, CREATOR_1),
+                Arrays.asList(STAR_COUNT_2, STAR_COUNT_3)));
 
         Assert.assertTrue(projects.isEmpty());
 
@@ -408,35 +406,35 @@ public class ProjectRepositoryIT {
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4));
 
-        projects = TestUtils.toList(repository.findByCreatorInAndStarCountIn(Arrays.asList(CREATOR_0, CREATOR_1,
-            CREATOR_2),
-            Arrays.asList(STAR_COUNT_0, STAR_COUNT_1, STAR_COUNT_2)));
+        projects
+            = TestUtils.toList(repository.findByCreatorInAndStarCountIn(Arrays.asList(CREATOR_0, CREATOR_1, CREATOR_2),
+                Arrays.asList(STAR_COUNT_0, STAR_COUNT_1, STAR_COUNT_2)));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_1, PROJECT_2, PROJECT_4));
     }
 
     @Test
     public void testFindByInWithOr() {
-        List<Project> projects = TestUtils.toList(repository.findByCreatorInOrStarCount(Arrays.asList(CREATOR_0,
-            CREATOR_1), STAR_COUNT_2));
+        List<Project> projects = TestUtils
+            .toList(repository.findByCreatorInOrStarCount(Arrays.asList(CREATOR_0, CREATOR_1), STAR_COUNT_2));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4, PROJECT_1, PROJECT_2));
 
-        projects = TestUtils.toList(repository.findByCreatorInOrStarCount(Collections.singletonList(CREATOR_1),
-            STAR_COUNT_2));
+        projects = TestUtils
+            .toList(repository.findByCreatorInOrStarCount(Collections.singletonList(CREATOR_1), STAR_COUNT_2));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_1, PROJECT_2));
 
-        projects = TestUtils.toList(repository.findByCreatorInOrStarCount(Collections.singletonList(CREATOR_0),
-            STAR_COUNT_0));
+        projects = TestUtils
+            .toList(repository.findByCreatorInOrStarCount(Collections.singletonList(CREATOR_0), STAR_COUNT_0));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4));
     }
 
     @Test
     public void testFindByNotIn() {
-        List<Project> projects = TestUtils.toList(repository.findByCreatorNotIn(
-            Arrays.asList(CREATOR_0, CREATOR_1, CREATOR_2, CREATOR_3)));
+        List<Project> projects = TestUtils
+            .toList(repository.findByCreatorNotIn(Arrays.asList(CREATOR_0, CREATOR_1, CREATOR_2, CREATOR_3)));
 
         Assert.assertTrue(projects.isEmpty());
 
@@ -451,8 +449,8 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testFindByInWithNotIn() {
-        List<Project> projects =
-            TestUtils.toList(repository.findByCreatorInAndStarCountNotIn(Collections.singletonList(FAKE_CREATOR),
+        List<Project> projects
+            = TestUtils.toList(repository.findByCreatorInAndStarCountNotIn(Collections.singletonList(FAKE_CREATOR),
                 Arrays.asList(STAR_COUNT_2, STAR_COUNT_3)));
 
         Assert.assertTrue(projects.isEmpty());
@@ -462,9 +460,8 @@ public class ProjectRepositoryIT {
 
         assertProjectListEquals(projects, Collections.singletonList(PROJECT_1));
 
-        projects = TestUtils.toList(repository.findByCreatorInAndStarCountNotIn(Arrays.asList(CREATOR_0, CREATOR_1,
-            CREATOR_2),
-            Arrays.asList(STAR_COUNT_1, STAR_COUNT_2)));
+        projects = TestUtils.toList(repository.findByCreatorInAndStarCountNotIn(
+            Arrays.asList(CREATOR_0, CREATOR_1, CREATOR_2), Arrays.asList(STAR_COUNT_1, STAR_COUNT_2)));
 
         assertProjectListEquals(projects, Arrays.asList(PROJECT_0, PROJECT_4));
     }
@@ -475,8 +472,7 @@ public class ProjectRepositoryIT {
 
         Assert.assertTrue(projects.isEmpty());
 
-        final Project nullNameProject = new Project("id-999", null, CREATOR_0, true, STAR_COUNT_0,
-            FORK_COUNT_0);
+        final Project nullNameProject = new Project("id-999", null, CREATOR_0, true, STAR_COUNT_0, FORK_COUNT_0);
 
         this.repository.save(nullNameProject);
         projects = TestUtils.toList(repository.findByNameIsNull());
@@ -504,8 +500,7 @@ public class ProjectRepositoryIT {
 
         Assert.assertTrue(projects.isEmpty());
 
-        final Project nullNameProject = new Project("id-999", null, CREATOR_0, true, STAR_COUNT_0,
-            FORK_COUNT_0);
+        final Project nullNameProject = new Project("id-999", null, CREATOR_0, true, STAR_COUNT_0, FORK_COUNT_0);
 
         this.repository.save(nullNameProject);
         projects = TestUtils.toList(repository.findByNameIsNullAndForkCount(FORK_COUNT_0));
@@ -528,8 +523,7 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testFindAllByPartitionKey() {
-        List<Project> findAll =
-            TestUtils.toList(repository.findAll(new PartitionKey(CREATOR_0)));
+        List<Project> findAll = TestUtils.toList(repository.findAll(new PartitionKey(CREATOR_0)));
         //  Since there are two projects with creator_0
         assertThat(findAll.size()).isEqualTo(2);
         List<Project> projectList = new ArrayList<>();
@@ -541,7 +535,6 @@ public class ProjectRepositoryIT {
         //  Since there is one projects with creator_1
         assertThat(findAll.size()).isEqualTo(1);
         assertThat(findAll.contains(PROJECT_1)).isTrue();
-
 
         findAll = TestUtils.toList(repository.findAll(new PartitionKey(CREATOR_2)));
         //  Since there is one projects with creator_2
@@ -556,8 +549,8 @@ public class ProjectRepositoryIT {
 
     @Test
     public void testSqlInjection() {
-        List<Project> projects = TestUtils.toList(this.repository.findAllByNameIn(Collections.singleton("sql) or (r"
-            + ".name <> ''")));
+        List<Project> projects
+            = TestUtils.toList(this.repository.findAllByNameIn(Collections.singleton("sql) or (r" + ".name <> ''")));
         assertTrue(projects.isEmpty());
     }
 }

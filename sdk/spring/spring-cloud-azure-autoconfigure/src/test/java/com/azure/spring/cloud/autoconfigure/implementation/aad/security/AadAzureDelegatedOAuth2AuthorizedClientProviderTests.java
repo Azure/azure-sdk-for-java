@@ -29,66 +29,50 @@ import static org.springframework.security.oauth2.core.AuthorizationGrantType.CL
 
 class AadAzureDelegatedOAuth2AuthorizedClientProviderTests {
 
-    private static final ClientRegistration AZURE_CLIENT_REGISTRATION =
-        toClientRegistrationBuilder(AZURE_CLIENT_REGISTRATION_ID)
-            .authorizationGrantType(AUTHORIZATION_CODE)
-            .build();
+    private static final ClientRegistration AZURE_CLIENT_REGISTRATION
+        = toClientRegistrationBuilder(AZURE_CLIENT_REGISTRATION_ID).authorizationGrantType(AUTHORIZATION_CODE).build();
 
-    private static final ClientRegistration DELEGATED_CLIENT_REGISTRATION =
-        toClientRegistrationBuilder("delegated")
-            .authorizationGrantType(AZURE_DELEGATED)
-            .scope("testScope")
-            .build();
+    private static final ClientRegistration DELEGATED_CLIENT_REGISTRATION
+        = toClientRegistrationBuilder("delegated").authorizationGrantType(AZURE_DELEGATED).scope("testScope").build();
 
-    private static final ClientRegistration CLIENT_CREDENTIALS_CLIENT_REGISTRATION =
-        toClientRegistrationBuilder("clientCredentials")
-            .authorizationGrantType(CLIENT_CREDENTIALS)
-            .build();
+    private static final ClientRegistration CLIENT_CREDENTIALS_CLIENT_REGISTRATION
+        = toClientRegistrationBuilder("clientCredentials").authorizationGrantType(CLIENT_CREDENTIALS).build();
 
     private static ClientRegistration.Builder toClientRegistrationBuilder(String registrationId) {
         return ClientRegistration.withRegistrationId(registrationId)
-                                 .clientId("clientId")
-                                 .clientSecret("clientSecret")
-                                 .redirectUri("redirectUri")
-                                 .authorizationUri("authorizationUri")
-                                 .tokenUri("tokenUri");
+            .clientId("clientId")
+            .clientSecret("clientSecret")
+            .redirectUri("redirectUri")
+            .authorizationUri("authorizationUri")
+            .tokenUri("tokenUri");
     }
 
     @Test
     void testGrantTypeIsNotAzureDelegated() {
-        AadAzureDelegatedOAuth2AuthorizedClientProvider provider =
-            new AadAzureDelegatedOAuth2AuthorizedClientProvider(null, null);
+        AadAzureDelegatedOAuth2AuthorizedClientProvider provider
+            = new AadAzureDelegatedOAuth2AuthorizedClientProvider(null, null);
         Authentication principal = mock(Authentication.class);
-        OAuth2AuthorizationContext context =
-            OAuth2AuthorizationContext.withClientRegistration(AZURE_CLIENT_REGISTRATION)
-                                      .principal(principal)
-                                      .build();
+        OAuth2AuthorizationContext context
+            = OAuth2AuthorizationContext.withClientRegistration(AZURE_CLIENT_REGISTRATION).principal(principal).build();
         assertNull(provider.authorize(context));
         context = OAuth2AuthorizationContext.withClientRegistration(CLIENT_CREDENTIALS_CLIENT_REGISTRATION)
-                                            .principal(principal)
-                                            .build();
+            .principal(principal)
+            .build();
         assertNull(provider.authorize(context));
     }
 
     @Test
     void testDelegatedClientNotExpired() {
         OAuth2AuthorizedClientRepository authorizedClientRepository = mock(OAuth2AuthorizedClientRepository.class);
-        OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(
-            OAuth2AccessToken.TokenType.BEARER,
-            "tokenValue",
-            Instant.now(),
-            Instant.now().plusSeconds(60 * 60));
-        OAuth2AuthorizedClient delegatedAuthorizedClient = new OAuth2AuthorizedClient(
-            DELEGATED_CLIENT_REGISTRATION,
-            "principalName",
-            oAuth2AccessToken);
+        OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, "tokenValue",
+            Instant.now(), Instant.now().plusSeconds(60 * 60));
+        OAuth2AuthorizedClient delegatedAuthorizedClient
+            = new OAuth2AuthorizedClient(DELEGATED_CLIENT_REGISTRATION, "principalName", oAuth2AccessToken);
         Authentication principal = mock(Authentication.class);
-        OAuth2AuthorizationContext context =
-            OAuth2AuthorizationContext.withAuthorizedClient(delegatedAuthorizedClient)
-                                      .principal(principal)
-                                      .build();
-        AadAzureDelegatedOAuth2AuthorizedClientProvider provider =
-            new AadAzureDelegatedOAuth2AuthorizedClientProvider(null, authorizedClientRepository);
+        OAuth2AuthorizationContext context
+            = OAuth2AuthorizationContext.withAuthorizedClient(delegatedAuthorizedClient).principal(principal).build();
+        AadAzureDelegatedOAuth2AuthorizedClientProvider provider
+            = new AadAzureDelegatedOAuth2AuthorizedClientProvider(null, authorizedClientRepository);
         assertNull(provider.authorize(context));
     }
 
@@ -97,54 +81,39 @@ class AadAzureDelegatedOAuth2AuthorizedClientProviderTests {
         OAuth2AuthorizedClientRepository authorizedClientRepository = mock(OAuth2AuthorizedClientRepository.class);
         when(authorizedClientRepository.loadAuthorizedClient(any(), any(), any())).thenReturn(null);
         Authentication principal = mock(Authentication.class);
-        AadAzureDelegatedOAuth2AuthorizedClientProvider provider =
-            new AadAzureDelegatedOAuth2AuthorizedClientProvider(null, authorizedClientRepository);
-        OAuth2AuthorizationContext context =
-            OAuth2AuthorizationContext.withClientRegistration(DELEGATED_CLIENT_REGISTRATION)
-                                      .principal(principal)
-                                      .build();
+        AadAzureDelegatedOAuth2AuthorizedClientProvider provider
+            = new AadAzureDelegatedOAuth2AuthorizedClientProvider(null, authorizedClientRepository);
+        OAuth2AuthorizationContext context
+            = OAuth2AuthorizationContext.withClientRegistration(DELEGATED_CLIENT_REGISTRATION)
+                .principal(principal)
+                .build();
         assertThrows(ClientAuthorizationRequiredException.class, () -> provider.authorize(context));
     }
 
     @Test
     void testGetAccessTokenByRefreshToken() {
         OAuth2AuthorizedClientRepository authorizedClientRepository = mock(OAuth2AuthorizedClientRepository.class);
-        OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(
-            OAuth2AccessToken.TokenType.BEARER,
-            "tokenValue",
-            Instant.now().minusSeconds(60 * 60),
-            Instant.now());
-        OAuth2RefreshToken oAuth2RefreshToken = new OAuth2RefreshToken(
-            "fakeTokenValue",
-            Instant.now(),
-            Instant.now().plusSeconds(60 * 60));
-        OAuth2AuthorizedClient azureAuthorizedClient = new OAuth2AuthorizedClient(
-            AZURE_CLIENT_REGISTRATION,
-            "principalName",
-            oAuth2AccessToken,
-            oAuth2RefreshToken);
-        OAuth2AuthorizedClient delegatedAuthorizedClient = new OAuth2AuthorizedClient(
-            DELEGATED_CLIENT_REGISTRATION,
-            "principalName",
-            oAuth2AccessToken);
+        OAuth2AccessToken oAuth2AccessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, "tokenValue",
+            Instant.now().minusSeconds(60 * 60), Instant.now());
+        OAuth2RefreshToken oAuth2RefreshToken
+            = new OAuth2RefreshToken("fakeTokenValue", Instant.now(), Instant.now().plusSeconds(60 * 60));
+        OAuth2AuthorizedClient azureAuthorizedClient = new OAuth2AuthorizedClient(AZURE_CLIENT_REGISTRATION,
+            "principalName", oAuth2AccessToken, oAuth2RefreshToken);
+        OAuth2AuthorizedClient delegatedAuthorizedClient
+            = new OAuth2AuthorizedClient(DELEGATED_CLIENT_REGISTRATION, "principalName", oAuth2AccessToken);
         Authentication principal = mock(Authentication.class);
         when(principal.getName()).thenReturn("principalName");
-        OAuth2AuthorizationContext context =
-            OAuth2AuthorizationContext.withAuthorizedClient(delegatedAuthorizedClient)
-                                      .principal(principal)
-                                      .build();
+        OAuth2AuthorizationContext context
+            = OAuth2AuthorizationContext.withAuthorizedClient(delegatedAuthorizedClient).principal(principal).build();
         when(authorizedClientRepository.loadAuthorizedClient(any(), any(), any())).thenReturn(azureAuthorizedClient);
-        RefreshTokenOAuth2AuthorizedClientProvider refreshTokenProvider =
-            mock(RefreshTokenOAuth2AuthorizedClientProvider.class);
+        RefreshTokenOAuth2AuthorizedClientProvider refreshTokenProvider
+            = mock(RefreshTokenOAuth2AuthorizedClientProvider.class);
         OAuth2AuthorizedClient clientGetByRefreshToken = new OAuth2AuthorizedClient(
-            ClientRegistration.withClientRegistration(DELEGATED_CLIENT_REGISTRATION)
-                              .scope("testScope")
-                              .build(),
-            "principalName1",
-            oAuth2AccessToken);
+            ClientRegistration.withClientRegistration(DELEGATED_CLIENT_REGISTRATION).scope("testScope").build(),
+            "principalName1", oAuth2AccessToken);
         when(refreshTokenProvider.authorize(any())).thenReturn(clientGetByRefreshToken);
-        AadAzureDelegatedOAuth2AuthorizedClientProvider provider =
-            new AadAzureDelegatedOAuth2AuthorizedClientProvider(refreshTokenProvider, authorizedClientRepository);
+        AadAzureDelegatedOAuth2AuthorizedClientProvider provider
+            = new AadAzureDelegatedOAuth2AuthorizedClientProvider(refreshTokenProvider, authorizedClientRepository);
         assertEquals(clientGetByRefreshToken, provider.authorize(context));
     }
 }

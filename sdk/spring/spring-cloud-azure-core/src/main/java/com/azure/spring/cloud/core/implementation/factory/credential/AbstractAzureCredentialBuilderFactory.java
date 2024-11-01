@@ -26,7 +26,8 @@ import java.util.function.BiConsumer;
 /**
  *
  */
-public abstract class AbstractAzureCredentialBuilderFactory<T extends CredentialBuilderBase<T>> extends AbstractAzureHttpClientBuilderFactory<T> {
+public abstract class AbstractAzureCredentialBuilderFactory<T extends CredentialBuilderBase<T>>
+    extends AbstractAzureHttpClientBuilderFactory<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureCredentialBuilderFactory.class);
 
@@ -74,12 +75,14 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
 
     @Override
     protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {
-        return (a, b) -> { };
+        return (a, b) -> {
+        };
     }
 
     @Override
     protected BiConsumer<T, String> consumeConnectionString() {
-        return (a, b) -> { };
+        return (a, b) -> {
+        };
     }
 
     @Override

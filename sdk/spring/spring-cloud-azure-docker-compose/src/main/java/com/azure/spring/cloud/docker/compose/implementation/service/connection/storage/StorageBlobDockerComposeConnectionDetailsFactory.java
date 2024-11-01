@@ -18,7 +18,8 @@ class StorageBlobDockerComposeConnectionDetailsFactory
     }
 
     @Override
-    protected AzureStorageBlobConnectionDetails getDockerComposeConnectionDetails(DockerComposeConnectionSource source) {
+    protected AzureStorageBlobConnectionDetails
+        getDockerComposeConnectionDetails(DockerComposeConnectionSource source) {
         return new StorageBlobContainerConnectionDetails(source.getRunningService());
     }
 

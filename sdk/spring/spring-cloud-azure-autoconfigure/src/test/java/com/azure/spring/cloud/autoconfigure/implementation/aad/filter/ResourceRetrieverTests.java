@@ -20,37 +20,28 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ResourceRetrieverTests {
     private final WebApplicationContextRunner contextRunner = new WebApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(
-            TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-            AzureGlobalPropertiesAutoConfiguration.class,
-            AadAuthenticationFilterAutoConfiguration.class,
-            HttpMessageConvertersAutoConfiguration.class,
-            RestTemplateAutoConfiguration.class))
+        .withConfiguration(
+            AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+                AzureGlobalPropertiesAutoConfiguration.class, AadAuthenticationFilterAutoConfiguration.class,
+                HttpMessageConvertersAutoConfiguration.class, RestTemplateAutoConfiguration.class))
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
-        .withPropertyValues(
-            "spring.cloud.azure.active-directory.enabled=true",
+        .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
             "spring.cloud.azure.active-directory.credential.client-id=fake-client-id",
-            "spring.cloud.azure.active-directory.credential.client-secret=fake-client-secret"
-        );
+            "spring.cloud.azure.active-directory.credential.client-secret=fake-client-secret");
 
     @Test
     void resourceRetrieverDefaultConfig() {
-        this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.enabled=true"
-            )
-            .run(context -> {
-                assertThat(context).hasSingleBean(ResourceRetriever.class);
-                final ResourceRetriever retriever = context.getBean(ResourceRetriever.class);
-                assertThat(retriever).isInstanceOf(RestOperationsResourceRetriever.class);
-            });
+        this.contextRunner.withPropertyValues("spring.cloud.azure.active-directory.enabled=true").run(context -> {
+            assertThat(context).hasSingleBean(ResourceRetriever.class);
+            final ResourceRetriever retriever = context.getBean(ResourceRetriever.class);
+            assertThat(retriever).isInstanceOf(RestOperationsResourceRetriever.class);
+        });
     }
 
     @Test
     void resourceRetrieverIsConfigurable() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.enabled=true",
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
                 "spring.cloud.azure.active-directory.jwt-connect-timeout=1234",
                 "spring.cloud.azure.active-directory.jwt-read-timeout=1234",
                 "spring.cloud.azure.active-directory.jwt-size-limit=123400")

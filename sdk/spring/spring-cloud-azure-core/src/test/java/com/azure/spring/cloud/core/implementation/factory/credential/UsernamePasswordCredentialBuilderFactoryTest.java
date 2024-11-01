@@ -6,9 +6,8 @@ package com.azure.spring.cloud.core.implementation.factory.credential;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 
-class UsernamePasswordCredentialBuilderFactoryTest extends AzureAadCredentialBuilderFactoryTest<
-    UsernamePasswordCredentialBuilder,
-    UsernamePasswordCredentialBuilderFactory> {
+class UsernamePasswordCredentialBuilderFactoryTest extends
+    AzureAadCredentialBuilderFactoryTest<UsernamePasswordCredentialBuilder, UsernamePasswordCredentialBuilderFactory> {
 
     @Override
     Class<UsernamePasswordCredentialBuilderFactory> getType() {

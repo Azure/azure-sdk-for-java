@@ -18,9 +18,8 @@ import java.util.Objects;
  * Event Hubs extended binding properties.
  */
 @ConfigurationProperties(EventHubsExtendedBindingProperties.PREFIX)
-public class EventHubsExtendedBindingProperties
-    extends AbstractExtendedBindingProperties<EventHubsConsumerProperties, EventHubsProducerProperties,
-    EventHubsBindingProperties>
+public class EventHubsExtendedBindingProperties extends
+    AbstractExtendedBindingProperties<EventHubsConsumerProperties, EventHubsProducerProperties, EventHubsBindingProperties>
     implements InitializingBean {
 
     /**
@@ -35,6 +34,7 @@ public class EventHubsExtendedBindingProperties
     public static final String PREFIX = "spring.cloud.stream.eventhubs";
     private static final String DEFAULTS_PREFIX = PREFIX + ".default";
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsExtendedBindingProperties.class);
+
     @Override
     public String getDefaultsPrefix() {
         return DEFAULTS_PREFIX;
@@ -66,15 +66,15 @@ public class EventHubsExtendedBindingProperties
 
     private void validateNamespaceProperties() {
         getBindings().values()
-                     .stream()
-                     .map(bindings -> bindings.getConsumer().getNamespace())
-                     .filter(Objects::nonNull)
-                     .forEach(PropertiesValidator::validateNamespace);
+            .stream()
+            .map(bindings -> bindings.getConsumer().getNamespace())
+            .filter(Objects::nonNull)
+            .forEach(PropertiesValidator::validateNamespace);
 
         getBindings().values()
-                     .stream()
-                     .map(bindings -> bindings.getProducer().getNamespace())
-                     .filter(Objects::nonNull)
-                     .forEach(PropertiesValidator::validateNamespace);
+            .stream()
+            .map(bindings -> bindings.getProducer().getNamespace())
+            .filter(Objects::nonNull)
+            .forEach(PropertiesValidator::validateNamespace);
     }
 }

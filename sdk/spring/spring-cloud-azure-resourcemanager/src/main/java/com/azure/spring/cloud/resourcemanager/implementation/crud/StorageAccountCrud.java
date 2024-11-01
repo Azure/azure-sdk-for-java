@@ -19,8 +19,7 @@ public class StorageAccountCrud extends AbstractResourceCrud<StorageAccount, Str
      * @param azureResourceManager The Azure resource manager.
      * @param azureResourceMetadata The Azure resource metadata.
      */
-    public StorageAccountCrud(AzureResourceManager azureResourceManager,
-                              AzureResourceMetadata azureResourceMetadata) {
+    public StorageAccountCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
     }
 
@@ -37,8 +36,8 @@ public class StorageAccountCrud extends AbstractResourceCrud<StorageAccount, Str
     @Override
     public StorageAccount internalGet(String key) {
         try {
-            return this.resourceManager.storageAccounts().getByResourceGroup(this.resourceMetadata.getResourceGroup(),
-                                                                             key);
+            return this.resourceManager.storageAccounts()
+                .getByResourceGroup(this.resourceMetadata.getResourceGroup(), key);
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
@@ -51,9 +50,9 @@ public class StorageAccountCrud extends AbstractResourceCrud<StorageAccount, Str
     @Override
     public StorageAccount internalCreate(String key) {
         return this.resourceManager.storageAccounts()
-                                   .define(key)
-                                   .withRegion(this.resourceMetadata.getRegion())
-                                   .withExistingResourceGroup(this.resourceMetadata.getResourceGroup())
-                                   .create();
+            .define(key)
+            .withRegion(this.resourceMetadata.getRegion())
+            .withExistingResourceGroup(this.resourceMetadata.getResourceGroup())
+            .create();
     }
 }

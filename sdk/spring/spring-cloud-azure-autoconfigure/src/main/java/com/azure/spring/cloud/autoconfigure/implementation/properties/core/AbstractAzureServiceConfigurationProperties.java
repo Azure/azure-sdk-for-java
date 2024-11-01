@@ -26,7 +26,8 @@ public abstract class AbstractAzureServiceConfigurationProperties implements Azu
     protected final AzureProfileConfigurationProperties profile = new AzureProfileConfigurationProperties();
 
     @NestedConfigurationProperty
-    protected final AzureResourceMetadataConfigurationProperties resource = new AzureResourceMetadataConfigurationProperties();
+    protected final AzureResourceMetadataConfigurationProperties resource
+        = new AzureResourceMetadataConfigurationProperties();
 
     public boolean isEnabled() {
         return enabled;

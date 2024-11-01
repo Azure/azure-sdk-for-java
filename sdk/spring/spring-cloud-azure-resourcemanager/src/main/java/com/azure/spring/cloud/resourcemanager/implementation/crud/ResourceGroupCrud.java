@@ -48,9 +48,6 @@ public class ResourceGroupCrud extends AbstractResourceCrud<ResourceGroup, Strin
 
     @Override
     public ResourceGroup internalCreate(String key) {
-        return resourceManager.resourceGroups()
-                              .define(key)
-                              .withRegion(resourceMetadata.getResourceGroup())
-                              .create();
+        return resourceManager.resourceGroups().define(key).withRegion(resourceMetadata.getResourceGroup()).create();
     }
 }

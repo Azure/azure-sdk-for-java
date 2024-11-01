@@ -35,7 +35,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ReactiveAuditableIT {
 
     @ClassRule
-    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+    public static final ReactiveIntegrationTestCollectionManager collectionManager
+        = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
     private ReactiveCosmosTemplate template;
@@ -50,7 +51,8 @@ public class ReactiveAuditableIT {
 
     @Before
     public void setup() {
-        collectionManager.ensureContainersCreatedAndEmpty(template, AuditableEntity.class, AuditableIdGeneratedEntity.class);
+        collectionManager.ensureContainersCreatedAndEmpty(template, AuditableEntity.class,
+            AuditableIdGeneratedEntity.class);
     }
 
     @Test
@@ -62,13 +64,8 @@ public class ReactiveAuditableIT {
         stubDateTimeProvider.setNow(now);
         stubAuditorProvider.setCurrentAuditor("created-by");
         final Mono<AuditableEntity> savedEntity = auditableRepository.save(entity);
-        StepVerifier
-            .create(savedEntity)
-            .expectNextMatches(actual -> validateAuditableFields(actual,
-                "created-by",
-                now,
-                "created-by",
-                now))
+        StepVerifier.create(savedEntity)
+            .expectNextMatches(actual -> validateAuditableFields(actual, "created-by", now, "created-by", now))
             .verifyComplete();
     }
 
@@ -87,19 +84,14 @@ public class ReactiveAuditableIT {
         stubDateTimeProvider.setNow(modifiedOn);
         stubAuditorProvider.setCurrentAuditor("modified-by");
         final Mono<AuditableEntity> modified = auditableRepository.save(saved);
-        StepVerifier
-            .create(modified)
-            .expectNextMatches(actual -> validateAuditableFields(actual,
-                "created-by",
-                createdOn,
-                "modified-by",
-                modifiedOn))
+        StepVerifier.create(modified)
+            .expectNextMatches(
+                actual -> validateAuditableFields(actual, "created-by", createdOn, "modified-by", modifiedOn))
             .verifyComplete();
     }
 
-    private boolean validateAuditableFields(AuditableEntity entity,
-                                            String expectedCreatedBy, OffsetDateTime expectedCreatedDate,
-                                            String expectedModifiedBy, OffsetDateTime expectedModifiedTime) {
+    private boolean validateAuditableFields(AuditableEntity entity, String expectedCreatedBy,
+        OffsetDateTime expectedCreatedDate, String expectedModifiedBy, OffsetDateTime expectedModifiedTime) {
         assertThat(entity.getCreatedBy()).isEqualTo(expectedCreatedBy);
         assertThat(entity.getCreatedDate()).isEqualTo(expectedCreatedDate);
         assertThat(entity.getLastModifiedBy()).isEqualTo(expectedModifiedBy);
@@ -116,11 +108,8 @@ public class ReactiveAuditableIT {
         stubAuditorProvider.setCurrentAuditor("created-by");
         final Mono<AuditableIdGeneratedEntity> savedEntity = reactiveAuditableIdGeneratedRepository.save(entity);
 
-        StepVerifier
-            .create(savedEntity)
-            .expectNextMatches(actual -> validateAuditableFields(actual,
-                 "created-by", now,
-                 "created-by", now))
+        StepVerifier.create(savedEntity)
+            .expectNextMatches(actual -> validateAuditableFields(actual, "created-by", now, "created-by", now))
             .verifyComplete();
     }
 
@@ -132,23 +121,17 @@ public class ReactiveAuditableIT {
 
         stubDateTimeProvider.setNow(now);
         stubAuditorProvider.setCurrentAuditor("created-by");
-        final Flux<AuditableIdGeneratedEntity> savedEntities = reactiveAuditableIdGeneratedRepository
-            .saveAll(Lists.newArrayList(entity1, entity2));
+        final Flux<AuditableIdGeneratedEntity> savedEntities
+            = reactiveAuditableIdGeneratedRepository.saveAll(Lists.newArrayList(entity1, entity2));
 
-        StepVerifier
-            .create(savedEntities)
-            .expectNextMatches(actual -> validateAuditableFields(actual,
-                "created-by", now,
-                "created-by", now))
-            .expectNextMatches(actual -> validateAuditableFields(actual,
-                "created-by", now,
-                "created-by", now))
+        StepVerifier.create(savedEntities)
+            .expectNextMatches(actual -> validateAuditableFields(actual, "created-by", now, "created-by", now))
+            .expectNextMatches(actual -> validateAuditableFields(actual, "created-by", now, "created-by", now))
             .verifyComplete();
     }
 
-    private boolean validateAuditableFields(AuditableIdGeneratedEntity entity,
-                                            String expectedCreatedBy, OffsetDateTime expectedCreatedDate,
-                                            String expectedModifiedBy, OffsetDateTime expectedModifiedTime) {
+    private boolean validateAuditableFields(AuditableIdGeneratedEntity entity, String expectedCreatedBy,
+        OffsetDateTime expectedCreatedDate, String expectedModifiedBy, OffsetDateTime expectedModifiedTime) {
         assertThat(entity.getCreatedBy()).isEqualTo(expectedCreatedBy);
         assertThat(entity.getCreatedDate()).isEqualTo(expectedCreatedDate);
         assertThat(entity.getLastModifiedBy()).isEqualTo(expectedModifiedBy);

@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * Default self-diagnostics features for logging when Logback is not found.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnMissingClass({"ch.qos.logback.classic.LoggerContext"})
+@ConditionalOnMissingClass({ "ch.qos.logback.classic.LoggerContext" })
 public class DefaultLogConfig {
 
     /**
@@ -27,7 +27,9 @@ public class DefaultLogConfig {
         String selfDiagLevelDefinedByUser = System.getenv(SelfDiagAutoConfig.SELF_DIAGNOSTICS_LEVEL_ENV_VAR);
         if (selfDiagLevelDefinedByUser != null) {
             String loggerLevel = findLevel(logger);
-            logger.warn("You have defined a self-diagnostics level at " + selfDiagLevelDefinedByUser + ". The self-diagnostics level was not set to this value because Logback is not used. The self-diagnostics level is " + loggerLevel + ".");
+            logger.warn("You have defined a self-diagnostics level at " + selfDiagLevelDefinedByUser
+                + ". The self-diagnostics level was not set to this value because Logback is not used. The self-diagnostics level is "
+                + loggerLevel + ".");
         }
         return logger;
     }

@@ -22,8 +22,7 @@ public class ResponseDiagnostics {
      * @param cosmosDiagnostics cannot be null
      * @param cosmosResponseStatistics cannot be null
      */
-    public ResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics,
-                               CosmosResponseStatistics cosmosResponseStatistics) {
+    public ResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics, CosmosResponseStatistics cosmosResponseStatistics) {
         this.cosmosDiagnostics = cosmosDiagnostics;
         this.cosmosResponseStatistics = cosmosResponseStatistics;
     }
@@ -50,17 +49,13 @@ public class ResponseDiagnostics {
     public String toString() {
         final StringBuilder diagnostics = new StringBuilder();
         if (cosmosDiagnostics != null) {
-            diagnostics.append("cosmosResponseDiagnostics={")
-                       .append(cosmosDiagnostics)
-                       .append("}");
+            diagnostics.append("cosmosResponseDiagnostics={").append(cosmosDiagnostics).append("}");
         }
         if (cosmosResponseStatistics != null) {
             if (diagnostics.length() != 0) {
                 diagnostics.append(", ");
             }
-            diagnostics.append("cosmosResponseStatistics={")
-                       .append(cosmosResponseStatistics)
-                       .append("}");
+            diagnostics.append("cosmosResponseStatistics={").append(cosmosResponseStatistics).append("}");
         }
         return diagnostics.toString();
     }
@@ -106,10 +101,8 @@ public class ResponseDiagnostics {
 
         @Override
         public String toString() {
-            return "CosmosResponseStatistics{"
-                + "requestCharge=" + requestCharge + ","
-                + "activityId='" + activityId + '\''
-                + '}';
+            return "CosmosResponseStatistics{" + "requestCharge=" + requestCharge + "," + "activityId='" + activityId
+                + '\'' + '}';
         }
     }
 }

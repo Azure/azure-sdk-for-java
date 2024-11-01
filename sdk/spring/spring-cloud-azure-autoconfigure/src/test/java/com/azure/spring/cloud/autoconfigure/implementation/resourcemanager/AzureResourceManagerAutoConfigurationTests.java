@@ -27,31 +27,25 @@ class AzureResourceManagerAutoConfigurationTests {
 
     @Test
     void testAzureResourceManagerDisabled() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.resourcemanager.enabled=false")
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureResourceManager.class);
-                assertThat(context).doesNotHaveBean(AzureProfile.class);
-            });
+        this.contextRunner.withPropertyValues("spring.cloud.azure.resourcemanager.enabled=false").run(context -> {
+            assertThat(context).doesNotHaveBean(AzureResourceManager.class);
+            assertThat(context).doesNotHaveBean(AzureProfile.class);
+        });
     }
 
     @Test
     void configureWithoutTenantId() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.resourcemanager.enabled=true")
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureResourceManager.class);
-                assertThat(context).doesNotHaveBean(AzureProfile.class);
-            });
+        this.contextRunner.withPropertyValues("spring.cloud.azure.resourcemanager.enabled=true").run(context -> {
+            assertThat(context).doesNotHaveBean(AzureResourceManager.class);
+            assertThat(context).doesNotHaveBean(AzureProfile.class);
+        });
     }
 
     @Test
     void configureWithTenantIdAndSubId() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.profile.tenant-id=test-tenant",
-                "spring.cloud.azure.profile.subscription-id=test-subscription-id"
-            )
+            .withPropertyValues("spring.cloud.azure.profile.tenant-id=test-tenant",
+                "spring.cloud.azure.profile.subscription-id=test-subscription-id")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .run(context -> {
@@ -62,24 +56,22 @@ class AzureResourceManagerAutoConfigurationTests {
 
     @Test
     void configureWithTenantId() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.profile.tenant-id=test-tenant")
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureResourceManager.class);
-                assertThat(context).doesNotHaveBean(AzureProfile.class);
-            });
+        this.contextRunner.withPropertyValues("spring.cloud.azure.profile.tenant-id=test-tenant").run(context -> {
+            assertThat(context).doesNotHaveBean(AzureResourceManager.class);
+            assertThat(context).doesNotHaveBean(AzureProfile.class);
+        });
     }
 
     @Test
     void testWithoutAzureResourceManagerClass() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(AzureResourceManager.class))
-                          .run(context -> assertThat(context).doesNotHaveBean(AzureProfile.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureProfile.class));
     }
 
     @Test
     void testWithoutAzureResourceMetadataClass() {
         this.contextRunner.withClassLoader(new FilteredClassLoader(AzureResourceMetadata.class))
-                          .run(context -> assertThat(context).doesNotHaveBean(AzureProfile.class));
+            .run(context -> assertThat(context).doesNotHaveBean(AzureProfile.class));
     }
 
     @Test
@@ -88,17 +80,16 @@ class AzureResourceManagerAutoConfigurationTests {
             .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
-            .withPropertyValues(
-                "spring.cloud.azure.profile.tenant-id=test-tenant-id",
-                "spring.cloud.azure.profile.subscription-id=test-subscription-id"
-            )
+            .withPropertyValues("spring.cloud.azure.profile.tenant-id=test-tenant-id",
+                "spring.cloud.azure.profile.subscription-id=test-subscription-id")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureProfile.class);
 
                 AzureProfile azureProfile = context.getBean(AzureProfile.class);
                 assertEquals("test-subscription-id", azureProfile.getSubscriptionId());
                 assertEquals("test-tenant-id", azureProfile.getTenantId());
-                assertEquals(AZURE.getActiveDirectoryEndpoint(), azureProfile.getEnvironment().getActiveDirectoryEndpoint());
+                assertEquals(AZURE.getActiveDirectoryEndpoint(),
+                    azureProfile.getEnvironment().getActiveDirectoryEndpoint());
             });
     }
 
@@ -108,18 +99,17 @@ class AzureResourceManagerAutoConfigurationTests {
             .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
-            .withPropertyValues(
-                "spring.cloud.azure.profile.tenant-id=test-tenant-id",
+            .withPropertyValues("spring.cloud.azure.profile.tenant-id=test-tenant-id",
                 "spring.cloud.azure.profile.subscription-id=test-subscription-id",
-                "spring.cloud.azure.profile.cloud-type=azure_china"
-            )
+                "spring.cloud.azure.profile.cloud-type=azure_china")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureProfile.class);
 
                 AzureProfile azureProfile = context.getBean(AzureProfile.class);
                 assertEquals("test-subscription-id", azureProfile.getSubscriptionId());
                 assertEquals("test-tenant-id", azureProfile.getTenantId());
-                assertEquals(AZURE_CHINA.getActiveDirectoryEndpoint(), azureProfile.getEnvironment().getActiveDirectoryEndpoint());
+                assertEquals(AZURE_CHINA.getActiveDirectoryEndpoint(),
+                    azureProfile.getEnvironment().getActiveDirectoryEndpoint());
             });
     }
 }

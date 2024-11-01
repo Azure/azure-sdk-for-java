@@ -146,7 +146,8 @@ public interface CosmosOperations {
      * @param <T> type class of domain type
      * @return the patched item
      */
-    <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
+    <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations,
+        CosmosPatchItemRequestOptions options);
 
     /**
      * Inserts item

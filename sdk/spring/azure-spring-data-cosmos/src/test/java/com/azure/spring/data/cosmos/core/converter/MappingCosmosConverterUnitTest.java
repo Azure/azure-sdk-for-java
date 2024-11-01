@@ -77,7 +77,7 @@ public class MappingCosmosConverterUnitTest {
     @Test
     public void canWritePojoWithDateToDocument() throws ParseException {
         final Memo memo = new Memo(TestConstants.ID_1, TestConstants.MESSAGE, DATE.parse(TestConstants.DATE_STRING),
-                Importance.NORMAL);
+            Importance.NORMAL);
         final JsonNode jsonNode = mappingCosmosConverter.writeJsonNode(memo);
 
         assertThat(jsonNode.get(TestConstants.PROPERTY_ID).asText()).isEqualTo(memo.getId());
@@ -154,4 +154,3 @@ public class MappingCosmosConverterUnitTest {
         assertThat(jsonNode.get(TestConstants.PROPERTY_ETAG_DEFAULT).asText()).isEqualTo(etagValue);
     }
 }
-

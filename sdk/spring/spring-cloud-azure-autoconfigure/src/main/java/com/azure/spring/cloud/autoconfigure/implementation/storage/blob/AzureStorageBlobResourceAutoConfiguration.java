@@ -18,8 +18,7 @@ import org.springframework.context.annotation.Import;
 @Import({
     AzureStorageConfiguration.class,
     AzureStorageBlobPropertiesConfiguration.class,
-    AzureStorageBlobProtocolResolverConfiguration.class
-})
+    AzureStorageBlobProtocolResolverConfiguration.class })
 @ConditionalOnClass({ AzureStorageBlobProtocolResolver.class })
 public class AzureStorageBlobResourceAutoConfiguration {
 

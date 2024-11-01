@@ -11,15 +11,13 @@ import org.springframework.data.annotation.Id;
 
 @Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 @CosmosIndexingPolicy(
-    includePaths = {"/field/?"},
-    excludePaths = {"/*", "/\"_etag\"/?"},
+    includePaths = { "/field/?" },
+    excludePaths = { "/*", "/\"_etag\"/?" },
     compositeIndexes = {
-        @CompositeIndex(paths = {
-            @CompositeIndexPath(path = "/compositeField1"),
-            @CompositeIndexPath(path = "/compositeField2")
-        })
-    }
-)
+        @CompositeIndex(
+            paths = {
+                @CompositeIndexPath(path = "/compositeField1"),
+                @CompositeIndexPath(path = "/compositeField2") }) })
 public class ComplexIndexPolicyEntity {
 
     @Id

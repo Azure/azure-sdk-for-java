@@ -28,12 +28,11 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SimpleCosmosRepositoryUnitTest {
-    private static final Person TEST_PERSON =
-            new Person(TestConstants.ID_1, TestConstants.FIRST_NAME, TestConstants.LAST_NAME,
-                    TestConstants.HOBBIES, TestConstants.ADDRESSES);
+    private static final Person TEST_PERSON = new Person(TestConstants.ID_1, TestConstants.FIRST_NAME,
+        TestConstants.LAST_NAME, TestConstants.HOBBIES, TestConstants.ADDRESSES);
 
-    private static final String PARTITION_VALUE_REQUIRED_MSG =
-            "PartitionKey value must be supplied for this operation.";
+    private static final String PARTITION_VALUE_REQUIRED_MSG
+        = "PartitionKey value must be supplied for this operation.";
 
     private SimpleCosmosRepository<Person, String> repository;
     @Mock
@@ -81,19 +80,17 @@ public class SimpleCosmosRepositoryUnitTest {
         repository.save(TEST_PERSON);
 
         when(cosmosOperations.findById(anyString(), anyString(), any()))
-                .thenThrow(new UnsupportedOperationException(PARTITION_VALUE_REQUIRED_MSG));
+            .thenThrow(new UnsupportedOperationException(PARTITION_VALUE_REQUIRED_MSG));
 
         final Person result = repository.findById(TEST_PERSON.getId()).get();
     }
 
     @Test
     public void testUpdate() {
-        final List<Address> updatedAddress =
-                Arrays.asList(new Address(TestConstants.POSTAL_CODE, TestConstants.UPDATED_CITY,
-                        TestConstants.UPDATED_STREET));
-        final Person updatedPerson =
-                new Person(TEST_PERSON.getId(), TestConstants.UPDATED_FIRST_NAME, TestConstants.UPDATED_LAST_NAME,
-                        TestConstants.UPDATED_HOBBIES, updatedAddress);
+        final List<Address> updatedAddress = Arrays
+            .asList(new Address(TestConstants.POSTAL_CODE, TestConstants.UPDATED_CITY, TestConstants.UPDATED_STREET));
+        final Person updatedPerson = new Person(TEST_PERSON.getId(), TestConstants.UPDATED_FIRST_NAME,
+            TestConstants.UPDATED_LAST_NAME, TestConstants.UPDATED_HOBBIES, updatedAddress);
         repository.save(updatedPerson);
 
         when(cosmosOperations.findById(anyString(), anyString(), any())).thenReturn(updatedPerson);

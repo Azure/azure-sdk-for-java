@@ -62,7 +62,7 @@ public class AppConfigurationEndpointTest {
     public void validationParsing() throws JsonGenerationException, JsonMappingException, IOException {
         String requestBody = mapper.readValue(new File(GET_TEST_VALIDATION), JsonNode.class).toString();
         when(lines.collect(Mockito.any())).thenReturn(requestBody);
-        
+
         List<ConfigStore> configStores = new ArrayList<ConfigStore>();
         Map<String, String> allRequestParams = new HashMap<String, String>();
 
@@ -71,7 +71,7 @@ public class AppConfigurationEndpointTest {
 
         requestBody = mapper.readValue(new File(GET_TEST_REFRESH), JsonNode.class).toString();
         when(lines.collect(Mockito.any())).thenReturn(requestBody);
-        
+
         endpoint = new AppConfigurationEndpoint(request, configStores, allRequestParams);
         assertEquals("https://testconfig.azconfig.io", endpoint.getEndpoint());
     }
@@ -91,7 +91,7 @@ public class AppConfigurationEndpointTest {
     public void authenticate() throws JsonParseException, JsonMappingException, IOException {
         String requestBody = mapper.readValue(new File(GET_TEST_VALIDATION), JsonNode.class).toString();
         when(lines.collect(Mockito.any())).thenReturn(requestBody);
-        
+
         List<ConfigStore> configStores = new ArrayList<ConfigStore>();
         Map<String, String> allRequestParams = new HashMap<String, String>();
 

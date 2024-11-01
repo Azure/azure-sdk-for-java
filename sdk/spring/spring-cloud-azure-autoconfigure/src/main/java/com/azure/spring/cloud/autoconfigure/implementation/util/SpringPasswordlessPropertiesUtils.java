@@ -31,8 +31,7 @@ public final class SpringPasswordlessPropertiesUtils {
      * @param properties the {@link Properties} {@link Properties}.
      */
     public static void enhancePasswordlessProperties(String passwordlessPropertiesPrefix,
-                                                     PasswordlessProperties passwordlessProperties,
-                                                     Properties properties) {
+        PasswordlessProperties passwordlessProperties, Properties properties) {
         if (!passwordlessProperties.isPasswordlessEnabled()) {
             LOGGER.debug("Feature passwordless authentication is not enabled({}.passwordless-enabled=false), "
                 + "skip enhancing properties.", passwordlessPropertiesPrefix);
@@ -42,7 +41,8 @@ public final class SpringPasswordlessPropertiesUtils {
         String tokenCredentialBeanName = passwordlessProperties.getCredential().getTokenCredentialBeanName();
         if (StringUtils.hasText(tokenCredentialBeanName)) {
             AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.setProperty(properties, tokenCredentialBeanName);
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(properties, SpringTokenCredentialProvider.class.getName());
+            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.setProperty(properties,
+                SpringTokenCredentialProvider.class.getName());
         }
     }
 
@@ -53,8 +53,7 @@ public final class SpringPasswordlessPropertiesUtils {
      * @param result the Map.
      */
     public static void enhancePasswordlessProperties(String passwordlessPropertiesPrefix,
-                                                     PasswordlessProperties passwordlessProperties,
-                                                     Map<String, String> result) {
+        PasswordlessProperties passwordlessProperties, Map<String, String> result) {
         Properties properties = passwordlessProperties.toPasswordlessProperties();
         result.forEach(properties::setProperty);
         enhancePasswordlessProperties(passwordlessPropertiesPrefix, passwordlessProperties, properties);

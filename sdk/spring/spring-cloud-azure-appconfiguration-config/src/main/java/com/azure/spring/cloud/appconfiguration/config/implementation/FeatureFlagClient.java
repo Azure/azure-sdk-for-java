@@ -47,8 +47,8 @@ public class FeatureFlagClient {
 
     protected final Map<String, Feature> properties = new LinkedHashMap<>();
 
-    private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+    private static final ObjectMapper CASE_INSENSITIVE_MAPPER
+        = JsonMapper.builder().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     /**
      * <p>
@@ -116,8 +116,8 @@ public class FeatureFlagClient {
             }
             JsonNode telemetryNode = node.get(TELEMETRY);
             if (telemetryNode != null) {
-                ObjectMapper objectMapper = JsonMapper.builder()
-                    .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+                ObjectMapper objectMapper
+                    = JsonMapper.builder().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
                 featureTelemetry = objectMapper.convertValue(telemetryNode, FeatureTelemetry.class);
             }
         } catch (JsonProcessingException e) {
@@ -133,8 +133,8 @@ public class FeatureFlagClient {
                 originMetadata.put(FEATURE_FLAG_ID, calculateFeatureFlagId(item.getKey(), item.getLabel()));
                 originMetadata.put(E_TAG, item.getETag());
                 if (originEndpoint != null && !originEndpoint.isEmpty()) {
-                    final String labelPart = item.getLabel().isEmpty() ? ""
-                        : String.format("?label=%s", item.getLabel());
+                    final String labelPart
+                        = item.getLabel().isEmpty() ? "" : String.format("?label=%s", item.getLabel());
                     originMetadata.put(FEATURE_FLAG_REFERENCE,
                         String.format("%s/kv/%s%s", originEndpoint, item.getKey(), labelPart));
                 }
@@ -153,7 +153,9 @@ public class FeatureFlagClient {
         final String data = String.format("%s\n%s", key, label.isEmpty() ? null : label);
         final SHA256.Digest digest = new SHA256.Digest();
         final String beforeTrim = Base64URL.encode(digest.digest(data.getBytes(StandardCharsets.UTF_8)))
-            .toString().replace('+', '-').replace('/', '_');
+            .toString()
+            .replace('+', '-')
+            .replace('/', '_');
         final int index = beforeTrim.indexOf('=');
         return beforeTrim.substring(0, index > -1 ? index : beforeTrim.length());
     }

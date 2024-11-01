@@ -31,18 +31,15 @@ class SerializerUtilsTests {
         Map<String, OAuth2AuthorizedClient> authorizedClients = new HashMap<>();
         authorizedClients.put(AZURE_CLIENT_REGISTRATION_ID,
             createOAuth2AuthorizedClient(AZURE_CLIENT_REGISTRATION_ID, AUTHORIZATION_CODE.getValue()));
-        authorizedClients.put("graph",
-            createOAuth2AuthorizedClient("graph",
-                Constants.AZURE_DELEGATED.getValue()));
-        authorizedClients.put("arm",
-            createOAuth2AuthorizedClient("arm", CLIENT_CREDENTIALS.getValue()));
-        authorizedClients.put("office",
-            createOAuth2AuthorizedClient("office", JWT_BEARER.getValue()));
+        authorizedClients.put("graph", createOAuth2AuthorizedClient("graph", Constants.AZURE_DELEGATED.getValue()));
+        authorizedClients.put("arm", createOAuth2AuthorizedClient("arm", CLIENT_CREDENTIALS.getValue()));
+        authorizedClients.put("office", createOAuth2AuthorizedClient("office", JWT_BEARER.getValue()));
         String serializedOAuth2AuthorizedClients = serializeOAuth2AuthorizedClientMap(authorizedClients);
         LOGGER.info(serializedOAuth2AuthorizedClients);
-        Map<String, OAuth2AuthorizedClient> deserializedOAuth2AuthorizedClients =
-            deserializeOAuth2AuthorizedClientMap(serializedOAuth2AuthorizedClients);
-        String serializedOAuth2AuthorizedClients1 = serializeOAuth2AuthorizedClientMap(deserializedOAuth2AuthorizedClients);
+        Map<String, OAuth2AuthorizedClient> deserializedOAuth2AuthorizedClients
+            = deserializeOAuth2AuthorizedClientMap(serializedOAuth2AuthorizedClients);
+        String serializedOAuth2AuthorizedClients1
+            = serializeOAuth2AuthorizedClientMap(deserializedOAuth2AuthorizedClients);
         assertEquals(serializedOAuth2AuthorizedClients, serializedOAuth2AuthorizedClients1);
     }
 
@@ -55,17 +52,17 @@ class SerializerUtilsTests {
 
     private ClientRegistration createClientRegistration(String registrationId, String authorizationGrantType) {
         return ClientRegistration.withRegistrationId(registrationId)
-                                 .clientName(registrationId)
-                                 .authorizationGrantType(new AuthorizationGrantType(authorizationGrantType))
-                                 .scope("scope" + registrationId)
-                                 .redirectUri("redirectUri " + registrationId)
-                                 .userNameAttributeName("userNameAttributeName " + registrationId)
-                                 .clientId("clientId " + registrationId)
-                                 .clientSecret("clientSecret " + registrationId)
-                                 .authorizationUri("authorizationUri " + registrationId)
-                                 .tokenUri("tokenUri " + registrationId)
-                                 .jwkSetUri("jwkSetUri " + registrationId)
-                                 .providerConfigurationMetadata(new HashMap<>())
-                                 .build();
+            .clientName(registrationId)
+            .authorizationGrantType(new AuthorizationGrantType(authorizationGrantType))
+            .scope("scope" + registrationId)
+            .redirectUri("redirectUri " + registrationId)
+            .userNameAttributeName("userNameAttributeName " + registrationId)
+            .clientId("clientId " + registrationId)
+            .clientSecret("clientSecret " + registrationId)
+            .authorizationUri("authorizationUri " + registrationId)
+            .tokenUri("tokenUri " + registrationId)
+            .jwkSetUri("jwkSetUri " + registrationId)
+            .providerConfigurationMetadata(new HashMap<>())
+            .build();
     }
 }

@@ -50,8 +50,7 @@ public class CosmosPageImpl<T> extends PageImpl<T> {
 
     @Override
     public boolean hasNext() {
-        return this.offset
-                + getContent().size() < getTotalElements();
+        return this.offset + getContent().size() < getTotalElements();
     }
 
     @Override

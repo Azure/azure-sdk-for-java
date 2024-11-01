@@ -15,7 +15,8 @@ import java.util.Map;
 
 public final class SerializerUtils {
     private static final ObjectMapper OBJECT_MAPPER;
-    private static final TypeReference<Map<String, OAuth2AuthorizedClient>> TYPE_REFERENCE = new TypeReference<>() { };
+    private static final TypeReference<Map<String, OAuth2AuthorizedClient>> TYPE_REFERENCE = new TypeReference<>() {
+    };
 
     static {
         OBJECT_MAPPER = new ObjectMapper();
@@ -51,7 +52,8 @@ public final class SerializerUtils {
      * @param authorizedClientsString the String to be deserialized
      * @return The deserialized {@link Map}. Return {@link Collections#emptyMap()} if authorizedClientsString is null.
      */
-    public static Map<String, OAuth2AuthorizedClient> deserializeOAuth2AuthorizedClientMap(String authorizedClientsString) {
+    public static Map<String, OAuth2AuthorizedClient>
+        deserializeOAuth2AuthorizedClientMap(String authorizedClientsString) {
         if (authorizedClientsString == null) {
             return Collections.emptyMap();
         }

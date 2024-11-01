@@ -68,16 +68,7 @@ public class SpELPropertyStudent {
 
     @Override
     public String toString() {
-        return "SpELPropertyStudent{"
-            + "id='"
-            + id
-            + '\''
-            + ", firstName='"
-            + firstName
-            + '\''
-            + ", lastName='"
-            + lastName
-            + '\''
-            + '}';
+        return "SpELPropertyStudent{" + "id='" + id + '\'' + ", firstName='" + firstName + '\'' + ", lastName='"
+            + lastName + '\'' + '}';
     }
 }

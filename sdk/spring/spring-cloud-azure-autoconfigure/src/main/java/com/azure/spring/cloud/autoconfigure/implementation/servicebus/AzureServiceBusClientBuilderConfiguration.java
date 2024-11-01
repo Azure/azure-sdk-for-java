@@ -55,7 +55,7 @@ class AzureServiceBusClientBuilderConfiguration {
     StaticConnectionStringProvider<AzureServiceType.ServiceBus> staticServiceBusConnectionStringProvider() {
 
         return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
-                                                    this.serviceBusProperties.getConnectionString());
+            this.serviceBusProperties.getConnectionString());
     }
 
 }

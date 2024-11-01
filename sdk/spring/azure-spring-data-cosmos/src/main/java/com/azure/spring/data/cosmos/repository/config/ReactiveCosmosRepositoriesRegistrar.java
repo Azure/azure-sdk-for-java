@@ -29,5 +29,4 @@ public class ReactiveCosmosRepositoriesRegistrar extends RepositoryBeanDefinitio
         return new ReactiveCosmosRepositoryConfigurationExtension();
     }
 
-
 }

@@ -35,7 +35,8 @@ public class AadProfileEnvironmentProperties {
     }
 
     public void updatePropertiesByCloudType(AzureProfileOptionsProvider.CloudType cloudType) {
-        AzureEnvironment knownAzureEnvironment = AzureProfileOptionsAdapter.decideAzureManagementEnvironment(cloudType, AzureEnvironment.AZURE);
+        AzureEnvironment knownAzureEnvironment
+            = AzureProfileOptionsAdapter.decideAzureManagementEnvironment(cloudType, AzureEnvironment.AZURE);
         if (this.activeDirectoryEndpoint == null) {
             this.activeDirectoryEndpoint = knownAzureEnvironment.getActiveDirectoryEndpoint();
         }

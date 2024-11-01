@@ -18,7 +18,7 @@ public class CosmosQueryUnitTest {
     @Test
     public void testDocumentQueryCreate() {
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, CRITERIA_KEY,
-                Arrays.asList(CRITERIA_OBJECT), Part.IgnoreCaseType.NEVER);
+            Arrays.asList(CRITERIA_OBJECT), Part.IgnoreCaseType.NEVER);
 
         final CosmosQuery query = new CosmosQuery(criteria);
 

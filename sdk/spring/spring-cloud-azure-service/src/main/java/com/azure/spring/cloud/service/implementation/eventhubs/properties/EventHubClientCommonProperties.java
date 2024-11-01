@@ -10,7 +10,8 @@ import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringPro
 /**
  * Azure Event Hubs common related properties.
  */
-public interface EventHubClientCommonProperties extends AzureProperties, RetryOptionsProvider, ConnectionStringProvider {
+public interface EventHubClientCommonProperties
+    extends AzureProperties, RetryOptionsProvider, ConnectionStringProvider {
 
     /**
      * Get the fully qualified namespace.

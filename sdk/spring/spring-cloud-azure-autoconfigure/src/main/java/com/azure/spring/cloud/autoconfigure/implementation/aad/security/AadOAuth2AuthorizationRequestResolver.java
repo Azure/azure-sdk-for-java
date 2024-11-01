@@ -33,11 +33,9 @@ public class AadOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
      * @param properties the AAD authentication properties
      */
     public AadOAuth2AuthorizationRequestResolver(ClientRegistrationRepository clientRegistrationRepository,
-                                                 AadAuthenticationProperties properties) {
-        this(
-            OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI,
-            clientRegistrationRepository,
-            properties);
+        AadAuthenticationProperties properties) {
+        this(OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI,
+            clientRegistrationRepository, properties);
     }
 
     /**
@@ -47,12 +45,10 @@ public class AadOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
      * @param clientRegistrationRepository the client registration repository
      * @param properties the AAD authentication properties
      */
-    public AadOAuth2AuthorizationRequestResolver(
-            final String authorizationRequestBaseUri,
-            ClientRegistrationRepository clientRegistrationRepository,
-            AadAuthenticationProperties properties) {
-        this.defaultResolver = new DefaultOAuth2AuthorizationRequestResolver(
-                clientRegistrationRepository, authorizationRequestBaseUri);
+    public AadOAuth2AuthorizationRequestResolver(final String authorizationRequestBaseUri,
+        ClientRegistrationRepository clientRegistrationRepository, AadAuthenticationProperties properties) {
+        this.defaultResolver
+            = new DefaultOAuth2AuthorizationRequestResolver(clientRegistrationRepository, authorizationRequestBaseUri);
         this.properties = properties;
     }
 
@@ -85,7 +81,7 @@ public class AadOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
 
     // Add claims to authorization-url
     private OAuth2AuthorizationRequest addClaims(HttpServletRequest httpServletRequest,
-                                                 OAuth2AuthorizationRequest oAuth2AuthorizationRequest) {
+        OAuth2AuthorizationRequest oAuth2AuthorizationRequest) {
         if (oAuth2AuthorizationRequest == null || httpServletRequest == null) {
             return oAuth2AuthorizationRequest;
         }
@@ -94,8 +90,8 @@ public class AadOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
         final Map<String, Object> additionalParameters = new HashMap<>();
 
         if (httpSession != null) {
-            String conditionalAccessPolicyClaims = (String) httpSession.getAttribute(
-                Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
+            String conditionalAccessPolicyClaims
+                = (String) httpSession.getAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
             if (conditionalAccessPolicyClaims != null) {
                 httpSession.removeAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
                 additionalParameters.put(Constants.CLAIMS, conditionalAccessPolicyClaims);

@@ -28,7 +28,8 @@ class AzureCredentialResolversTests {
     private static final AzureTokenCredentialResolver TOKEN_CREDENTIAL_RESOLVER = new AzureTokenCredentialResolver();
     private static final AzureSasCredentialResolver SAS_CREDENTIAL_RESOLVER = new AzureSasCredentialResolver();
     private static final AzureKeyCredentialResolver KEY_CREDENTIAL_RESOLVER = new AzureKeyCredentialResolver();
-    private static final AzureNamedKeyCredentialResolver NAMED_KEY_CREDENTIAL_RESOLVER = new AzureNamedKeyCredentialResolver();
+    private static final AzureNamedKeyCredentialResolver NAMED_KEY_CREDENTIAL_RESOLVER
+        = new AzureNamedKeyCredentialResolver();
 
     static {
         PROPERTIES = new AzureTestProperties();
@@ -71,21 +72,24 @@ class AzureCredentialResolversTests {
 
     @Test
     void shouldResolveTokenCredentialWithTwoResolversProvided() {
-        azureCredentialResolvers = new AzureCredentialResolvers(Arrays.asList(TOKEN_CREDENTIAL_RESOLVER, KEY_CREDENTIAL_RESOLVER));
+        azureCredentialResolvers
+            = new AzureCredentialResolvers(Arrays.asList(TOKEN_CREDENTIAL_RESOLVER, KEY_CREDENTIAL_RESOLVER));
         Object resolve = azureCredentialResolvers.resolve(PROPERTIES);
         Assertions.assertTrue(TokenCredential.class.isAssignableFrom(resolve.getClass()));
     }
 
     @Test
     void shouldResolveKeyCredentialWithTwoResolversProvided() {
-        azureCredentialResolvers = new AzureCredentialResolvers(Arrays.asList(KEY_CREDENTIAL_RESOLVER, TOKEN_CREDENTIAL_RESOLVER));
+        azureCredentialResolvers
+            = new AzureCredentialResolvers(Arrays.asList(KEY_CREDENTIAL_RESOLVER, TOKEN_CREDENTIAL_RESOLVER));
         Object resolve = azureCredentialResolvers.resolve(PROPERTIES);
         Assertions.assertTrue(AzureKeyCredential.class.isAssignableFrom(resolve.getClass()));
     }
 
     @Test
     void shouldResolveTokenCredentialWithTwoResolversWithComparatorProvided() {
-        azureCredentialResolvers = new AzureCredentialResolvers(Arrays.asList(KEY_CREDENTIAL_RESOLVER, TOKEN_CREDENTIAL_RESOLVER), (o1, o2) -> -1);
+        azureCredentialResolvers = new AzureCredentialResolvers(
+            Arrays.asList(KEY_CREDENTIAL_RESOLVER, TOKEN_CREDENTIAL_RESOLVER), (o1, o2) -> -1);
         Object resolve = azureCredentialResolvers.resolve(PROPERTIES);
         Assertions.assertTrue(TokenCredential.class.isAssignableFrom(resolve.getClass()));
     }

@@ -20,17 +20,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class AzureServiceBusJmsPropertiesTests {
     private static final ClientLogger LOGGER = new ClientLogger(AzureServiceBusJmsPropertiesTests.class);
 
-    static final String CONNECTION_STRING = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;"
-        + "SharedAccessKey=sasKey";
+    static final String CONNECTION_STRING
+        = "Endpoint=sb://host/;SharedAccessKeyName=sasKeyName;" + "SharedAccessKey=sasKey";
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withUserConfiguration(AzureServiceBusJmsPropertiesTestConfig.class);
+    private final ApplicationContextRunner contextRunner
+        = new ApplicationContextRunner().withUserConfiguration(AzureServiceBusJmsPropertiesTestConfig.class);
 
     @Test
     void connectionStringNotValid() {
         AzureServiceBusJmsProperties prop = new AzureServiceBusJmsProperties();
-        Exception ex = assertThrows(IllegalArgumentException.class,
-            prop::afterPropertiesSet);
+        Exception ex = assertThrows(IllegalArgumentException.class, prop::afterPropertiesSet);
 
         String expectedMessage = "'spring.jms.servicebus.connection-string' should be provided, "
             + "otherwise you should provide a bean 'StaticConnectionStringProvider<AzureServiceType.ServiceBus>'.";
@@ -41,13 +40,12 @@ class AzureServiceBusJmsPropertiesTests {
 
     @ParameterizedTest
     @NullAndEmptySource
-    @ValueSource(strings = {"xx"})
+    @ValueSource(strings = { "xx" })
     void pricingTierNotValid(String pricingTier) {
         AzureServiceBusJmsProperties prop = new AzureServiceBusJmsProperties();
         prop.setConnectionString(CONNECTION_STRING);
         prop.setPricingTier(pricingTier);
-        Exception ex = assertThrows(IllegalArgumentException.class,
-            prop::afterPropertiesSet);
+        Exception ex = assertThrows(IllegalArgumentException.class, prop::afterPropertiesSet);
 
         String expectedMessage = "'spring.jms.servicebus.pricing-tier' is not valid";
         String actualMessage = ex.getMessage();
@@ -57,14 +55,14 @@ class AzureServiceBusJmsPropertiesTests {
 
     @Test
     void testPasswordlessEnabled() {
-        contextRunner
-            .withPropertyValues("spring.jms.servicebus.passwordless-enabled=true")
-            .run(context -> {
-                Exception ex = assertThrows(IllegalStateException.class, () -> context.getBean(AzureServiceBusJmsProperties.class));
-                String actualMessage = ex.getCause().getMessage();
-                String expectedMessage = "Passwordless connections enabled, 'spring.jms.servicebus.namespace' should be provided.";
-                assertTrue(actualMessage.contains(expectedMessage));
-            });
+        contextRunner.withPropertyValues("spring.jms.servicebus.passwordless-enabled=true").run(context -> {
+            Exception ex
+                = assertThrows(IllegalStateException.class, () -> context.getBean(AzureServiceBusJmsProperties.class));
+            String actualMessage = ex.getCause().getMessage();
+            String expectedMessage
+                = "Passwordless connections enabled, 'spring.jms.servicebus.namespace' should be provided.";
+            assertTrue(actualMessage.contains(expectedMessage));
+        });
     }
 
     @EnableConfigurationProperties

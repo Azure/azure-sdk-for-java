@@ -23,7 +23,8 @@ class ServiceBusProcessorInstrumentationTests extends AbstractProcessorInstrumen
     }
 
     @Override
-    public AbstractProcessorInstrumentation<ServiceBusErrorContext> getProcessorInstrumentation(Instrumentation.Type type, Duration window) {
+    public AbstractProcessorInstrumentation<ServiceBusErrorContext>
+        getProcessorInstrumentation(Instrumentation.Type type, Duration window) {
         return new ServiceBusProcessorInstrumentation("test", type, window);
     }
 }

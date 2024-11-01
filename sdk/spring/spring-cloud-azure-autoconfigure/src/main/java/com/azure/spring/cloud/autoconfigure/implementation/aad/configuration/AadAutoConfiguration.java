@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aad.configuration;
 
-
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +19,7 @@ import org.springframework.context.annotation.Import;
     AadPropertiesConfiguration.class,
     AadWebApplicationConfiguration.class,
     AadResourceServerConfiguration.class,
-    AadOAuth2ClientConfiguration.class
-})
+    AadOAuth2ClientConfiguration.class })
 public class AadAutoConfiguration {
 
 }

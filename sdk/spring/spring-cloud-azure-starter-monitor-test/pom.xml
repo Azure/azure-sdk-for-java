@@ -23,7 +23,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <spotbugs.skip>true</spotbugs.skip>
     <codesnippet.skip>true</codesnippet.skip>
-    <spotless.skip>true</spotless.skip>
   </properties>
 
   <dependencyManagement>

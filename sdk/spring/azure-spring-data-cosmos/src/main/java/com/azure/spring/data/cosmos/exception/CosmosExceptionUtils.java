@@ -31,7 +31,7 @@ public class CosmosExceptionUtils {
      * @throws CosmosAccessException for operations on cosmos db
      */
     public static <T> Mono<T> exceptionHandler(String message, Throwable throwable,
-                                               ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
+        ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
         if (ObjectUtils.isEmpty(message)) {
             message = "Failed to access cosmos db database";
         }
@@ -55,7 +55,7 @@ public class CosmosExceptionUtils {
      * @throws CosmosAccessException for operations on cosmos db
      */
     public static <T> Mono<T> findAPIExceptionHandler(String message, Throwable throwable,
-                                                      ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
+        ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
         if (ObjectUtils.isEmpty(message)) {
             message = "Failed to find item";
         }

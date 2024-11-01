@@ -49,16 +49,14 @@ class AadResourceServerConfigurationTests {
 
     @Test
     void testNotExistBearerTokenAuthenticationToken() {
-        resourceServerContextRunner()
-            .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
+        resourceServerContextRunner().withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .run(context -> assertThrows(IllegalStateException.class,
                 () -> context.getBean(JWTClaimsSetAwareJWSKeySelector.class)));
     }
 
     @Test
     void testCreateJwtDecoderByJwkKeySetUri() {
-        resourceServerContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+        resourceServerContextRunner().withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
                 final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
                 assertThat(jwtDecoder).isNotNull();
@@ -68,12 +66,10 @@ class AadResourceServerConfigurationTests {
 
     @Test
     void testNotAudienceDefaultValidator() {
-        resourceServerContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+        resourceServerContextRunner().withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
-                AadResourceServerConfiguration bean = context
-                    .getBean(AadResourceServerConfiguration.class);
+                AadResourceServerConfiguration bean = context.getBean(AadResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(3);
@@ -82,12 +78,10 @@ class AadResourceServerConfigurationTests {
 
     @Test
     void testExistAudienceDefaultValidator() {
-        resourceServerContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+        resourceServerContextRunner().withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
                 AadAuthenticationProperties properties = context.getBean(AadAuthenticationProperties.class);
-                AadResourceServerConfiguration bean = context
-                    .getBean(AadResourceServerConfiguration.class);
+                AadResourceServerConfiguration bean = context.getBean(AadResourceServerConfiguration.class);
                 List<OAuth2TokenValidator<Jwt>> defaultValidator = bean.createDefaultValidator(properties);
                 assertThat(defaultValidator).isNotNull();
                 assertThat(defaultValidator).hasSize(3);
@@ -96,54 +90,54 @@ class AadResourceServerConfigurationTests {
 
     @Test
     void testResourceServerHttpSecurityConfigured() {
-        resourceServerContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
+        resourceServerContextRunner().withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
                 SecurityFilterChain filterChain = context.getBean(SecurityFilterChain.class);
                 assertThat(filterChain).isNotNull();
                 assertEquals(1,
                     filterChain.getFilters()
-                               .stream()
-                               .filter(filter -> filter.getClass().equals(BearerTokenAuthenticationFilter.class))
-                               .count());
+                        .stream()
+                        .filter(filter -> filter.getClass().equals(BearerTokenAuthenticationFilter.class))
+                        .count());
             });
     }
 
     @Test
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     void useCustomJwtGrantedAuthoritiesConverter() {
         new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(
-                HttpMessageConvertersAutoConfiguration.class,
+            .withConfiguration(AutoConfigurations.of(HttpMessageConvertersAutoConfiguration.class,
                 RestTemplateAutoConfiguration.class))
-            .withUserConfiguration(
-                AzureGlobalPropertiesAutoConfiguration.class,
-                TestAadResourceServerConfiguration.class,
-                AadAutoConfiguration.class)
+            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class,
+                TestAadResourceServerConfiguration.class, AadAutoConfiguration.class)
             .withPropertyValues(withResourceServerPropertyValues())
             .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class, ClientRegistration.class))
             .run(context -> {
                 SecurityFilterChain filterChain = context.getBean(SecurityFilterChain.class);
                 assertThat(filterChain).isNotNull();
-                TestAadResourceServerConfiguration resourceServerConfiguration = context.getBean(TestAadResourceServerConfiguration.class);
+                TestAadResourceServerConfiguration resourceServerConfiguration
+                    = context.getBean(TestAadResourceServerConfiguration.class);
                 assertThat(resourceServerConfiguration).isNotNull();
 
-                TestJwtGrantedAuthoritiesConverter authoritiesConverter = context.getBean(TestJwtGrantedAuthoritiesConverter.class);
+                TestJwtGrantedAuthoritiesConverter authoritiesConverter
+                    = context.getBean(TestJwtGrantedAuthoritiesConverter.class);
                 assertThat(authoritiesConverter).isNotNull();
 
-                LinkedHashMap<Class, List> configurers = (LinkedHashMap<Class, List>) ReflectionTestUtils.getField(resourceServerConfiguration.getSavedResourceServerHttpSecurity(), "configurers");
-                AadResourceServerHttpSecurityConfigurer resourceServerConfigurer =
-                    (AadResourceServerHttpSecurityConfigurer) configurers.entrySet()
-                                                                         .stream()
-                                                                         .filter(entry -> entry.getKey().equals(AadResourceServerHttpSecurityConfigurer.class))
-                                                                         .map(Map.Entry::getValue)
-                                                                         .flatMap(list -> list.stream())
-                                                                         .findFirst()
-                                                                         .orElse(null);
+                LinkedHashMap<Class, List> configurers = (LinkedHashMap<Class, List>) ReflectionTestUtils
+                    .getField(resourceServerConfiguration.getSavedResourceServerHttpSecurity(), "configurers");
+                AadResourceServerHttpSecurityConfigurer resourceServerConfigurer
+                    = (AadResourceServerHttpSecurityConfigurer) configurers.entrySet()
+                        .stream()
+                        .filter(entry -> entry.getKey().equals(AadResourceServerHttpSecurityConfigurer.class))
+                        .map(Map.Entry::getValue)
+                        .flatMap(list -> list.stream())
+                        .findFirst()
+                        .orElse(null);
                 assertThat(resourceServerConfigurer).isNotNull();
 
-                Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter =
-                    (Converter<Jwt, Collection<GrantedAuthority>>) ReflectionTestUtils.getField(resourceServerConfigurer, "jwtGrantedAuthoritiesConverter");
+                Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthorityConverter
+                    = (Converter<Jwt, Collection<GrantedAuthority>>) ReflectionTestUtils
+                        .getField(resourceServerConfigurer, "jwtGrantedAuthoritiesConverter");
                 assertThat(jwtGrantedAuthorityConverter).isNotNull();
                 assertThat(jwtGrantedAuthorityConverter).isEqualTo(authoritiesConverter);
             });
@@ -153,8 +147,7 @@ class AadResourceServerConfigurationTests {
     void useDefaultWebSecurityConfigurerAdapter() {
         resourceServerRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
-            )
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id")
             .run(context -> {
                 assertThat(context).hasSingleBean(SecurityFilterChain.class);
                 assertThat(context).hasBean("defaultAadResourceServerFilterChain");
@@ -164,17 +157,14 @@ class AadResourceServerConfigurationTests {
     @Test
     void useCustomSecurityFilterChain() {
         new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(
-                HttpMessageConvertersAutoConfiguration.class,
+            .withConfiguration(AutoConfigurations.of(HttpMessageConvertersAutoConfiguration.class,
                 RestTemplateAutoConfiguration.class))
             .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class,
-                TestAadResourceServerConfiguration.class,
-                AadAutoConfiguration.class)
+                TestAadResourceServerConfiguration.class, AadAutoConfiguration.class)
             .withInitializer(ConditionEvaluationReportLoggingListener.forLogLevel(LogLevel.INFO))
             .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class, ClientRegistration.class))
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
-            )
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id")
             .run(context -> {
                 assertThat(context).hasSingleBean(SecurityFilterChain.class);
                 assertThat(context).hasBean("testAadResourceServerFilterChain");
@@ -187,12 +177,11 @@ class AadResourceServerConfigurationTests {
 
         private HttpSecurity savedResourceServerHttpSecurity;
 
-        @SuppressWarnings({"deprecation", "removal"})
+        @SuppressWarnings({ "deprecation", "removal" })
         @Bean
         SecurityFilterChain testAadResourceServerFilterChain(HttpSecurity http,
-                                                             TestJwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter) throws Exception {
-            http.apply(aadResourceServer()
-                    .jwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter));
+            TestJwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter) throws Exception {
+            http.apply(aadResourceServer().jwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter));
             savedResourceServerHttpSecurity = http;
             return http.build();
         }

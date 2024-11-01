@@ -310,20 +310,18 @@ public class RecurrenceValidatorTest {
         parameters.put("End", "2023-09-01T02:00:00+08:00");
         parameters.put("Recurrence", recurrence);
 
-        consumeValidationTestData(parameters, String.format(RecurrenceConstants.NOT_MATCHED, FilterParameters.TIME_WINDOW_FILTER_SETTING_START));
+        consumeValidationTestData(parameters,
+            String.format(RecurrenceConstants.NOT_MATCHED, FilterParameters.TIME_WINDOW_FILTER_SETTING_START));
     }
-
 
     private void consumeValidationTestData(Map<String, Object> parameters, String errorMessage) {
         final TimeWindowFilter filter = new TimeWindowFilter();
         final FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
 
-        final IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> {
-                context.setParameters(parameters);
-                filter.evaluate(context);
-            });
+        final IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            context.setParameters(parameters);
+            filter.evaluate(context);
+        });
         assertTrue(exception.getMessage().contains(errorMessage));
     }
 }

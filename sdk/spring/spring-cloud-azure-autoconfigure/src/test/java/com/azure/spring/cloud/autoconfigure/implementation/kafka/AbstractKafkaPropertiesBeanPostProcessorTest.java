@@ -115,9 +115,9 @@ abstract class AbstractKafkaPropertiesBeanPostProcessorTest<P extends AbstractKa
         getApiVersionsRequestData().ifPresent(method -> {
             AbstractKafkaPropertiesBeanPostProcessor.configureKafkaUserAgent();
             ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
-            ApiVersionsRequestData apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(method, apiVersionsRequest);
-            assertTrue(apiVersionsRequestData.clientSoftwareName()
-                .contains(AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH));
+            ApiVersionsRequestData apiVersionsRequestData
+                = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(method, apiVersionsRequest);
+            assertTrue(apiVersionsRequestData.clientSoftwareName().contains(AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH));
             assertEquals(VERSION, apiVersionsRequestData.clientSoftwareVersion());
             assertTrue(apiVersionsRequest.isValid());
         });
@@ -129,11 +129,11 @@ abstract class AbstractKafkaPropertiesBeanPostProcessorTest<P extends AbstractKa
             AbstractKafkaPropertiesBeanPostProcessor.configureKafkaUserAgent();
             AbstractKafkaPropertiesBeanPostProcessor.configureKafkaUserAgent();
             ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
-            ApiVersionsRequestData apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(method, apiVersionsRequest);
-            assertTrue(apiVersionsRequestData.clientSoftwareName()
-                .contains(AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH));
-            assertEquals(1, apiVersionsRequestData.clientSoftwareName()
-                .split(AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH, -1).length - 1);
+            ApiVersionsRequestData apiVersionsRequestData
+                = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(method, apiVersionsRequest);
+            assertTrue(apiVersionsRequestData.clientSoftwareName().contains(AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH));
+            assertEquals(1,
+                apiVersionsRequestData.clientSoftwareName().split(AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH, -1).length - 1);
             assertEquals(VERSION, apiVersionsRequestData.clientSoftwareVersion());
             assertTrue(apiVersionsRequest.isValid());
         });
@@ -142,6 +142,5 @@ abstract class AbstractKafkaPropertiesBeanPostProcessorTest<P extends AbstractKa
     private Optional<Method> getApiVersionsRequestData() {
         return Optional.ofNullable(ReflectionUtils.findMethod(ApiVersionsRequest.class, "data"));
     }
-
 
 }

@@ -25,10 +25,10 @@ import java.util.function.BiConsumer;
 /**
  * Azure App Configuration client builder factory, it builds the {@link ConfigurationClientBuilder}.
  */
-public class ConfigurationClientBuilderFactory extends AbstractAzureHttpClientBuilderFactory<ConfigurationClientBuilder> {
+public class ConfigurationClientBuilderFactory
+    extends AbstractAzureHttpClientBuilderFactory<ConfigurationClientBuilder> {
 
     private final ConfigurationClientProperties configurationClientProperties;
-
 
     /**
      * Create a {@link ConfigurationClientBuilderFactory} instance with a {@link ConfigurationClientProperties}.
@@ -75,9 +75,7 @@ public class ConfigurationClientBuilderFactory extends AbstractAzureHttpClientBu
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(ConfigurationClientBuilder builder) {
-        return Arrays.asList(
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
-        );
+        return Arrays.asList(new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential));
     }
 
     @Override

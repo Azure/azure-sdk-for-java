@@ -31,8 +31,8 @@ public class CosmosEntityInformationUnitTest {
     @Test
     public void testGetId() {
         final Person testPerson = new Person(ID, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES);
-        final CosmosEntityInformation<Person, String> entityInformation =
-                new CosmosEntityInformation<Person, String>(Person.class);
+        final CosmosEntityInformation<Person, String> entityInformation
+            = new CosmosEntityInformation<Person, String>(Person.class);
 
         final String idField = entityInformation.getId(testPerson);
 
@@ -41,8 +41,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testGetIdType() {
-        final CosmosEntityInformation<Person, String> entityInformation =
-                new CosmosEntityInformation<Person, String>(Person.class);
+        final CosmosEntityInformation<Person, String> entityInformation
+            = new CosmosEntityInformation<Person, String>(Person.class);
 
         final Class<?> idType = entityInformation.getIdType();
         assertThat(idType.getSimpleName()).isEqualTo(String.class.getSimpleName());
@@ -50,8 +50,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testGetContainerName() {
-        final CosmosEntityInformation<Person, String> entityInformation =
-                new CosmosEntityInformation<Person, String>(Person.class);
+        final CosmosEntityInformation<Person, String> entityInformation
+            = new CosmosEntityInformation<Person, String>(Person.class);
 
         final String containerName = entityInformation.getContainerName();
         assertThat(containerName).isEqualTo(Person.class.getSimpleName());
@@ -59,8 +59,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testCustomContainerName() {
-        final CosmosEntityInformation<VersionedVolunteer, String> entityInformation =
-                new CosmosEntityInformation<VersionedVolunteer, String>(VersionedVolunteer.class);
+        final CosmosEntityInformation<VersionedVolunteer, String> entityInformation
+            = new CosmosEntityInformation<VersionedVolunteer, String>(VersionedVolunteer.class);
 
         final String containerName = entityInformation.getContainerName();
         assertThat(containerName).isEqualTo("testContainer");
@@ -68,8 +68,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testGetPartitionKeyPath() {
-        final CosmosEntityInformation<VolunteerWithPartitionKey, String> entityInformation =
-                new CosmosEntityInformation<>(VolunteerWithPartitionKey.class);
+        final CosmosEntityInformation<VolunteerWithPartitionKey, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithPartitionKey.class);
 
         final String partitionKeyName = entityInformation.getPartitionKeyPath();
         assertThat(partitionKeyName).isEqualTo("/name");
@@ -77,8 +77,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testNullPartitionKeyPath() {
-        final CosmosEntityInformation<Volunteer, String> entityInformation =
-                new CosmosEntityInformation<>(Volunteer.class);
+        final CosmosEntityInformation<Volunteer, String> entityInformation
+            = new CosmosEntityInformation<>(Volunteer.class);
 
         final String partitionKeyName = entityInformation.getPartitionKeyPath();
         assertThat(partitionKeyName).isEqualTo("/null");
@@ -86,8 +86,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testCustomPartitionKeyPath() {
-        final CosmosEntityInformation<VolunteerWithCustomPartitionKey, String> entityInformation =
-                new CosmosEntityInformation<>(VolunteerWithCustomPartitionKey.class);
+        final CosmosEntityInformation<VolunteerWithCustomPartitionKey, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithCustomPartitionKey.class);
 
         final String partitionKeyName = entityInformation.getPartitionKeyPath();
         assertThat(partitionKeyName).isEqualTo("/vol_name");
@@ -95,8 +95,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testPartitionKeyPathAnnotation() {
-        final CosmosEntityInformation<VolunteerWithPartitionKeyPath, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPath.class);
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPath, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithPartitionKeyPath.class);
 
         final String partitionKeyPath = entityInformation.getPartitionKeyPath();
         assertThat(partitionKeyPath).isEqualTo("/volunteerWithPartitionKey/name");
@@ -104,8 +104,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testPartitionKeyPathAndPartitionKeyAnnotation() {
-        final CosmosEntityInformation<VolunteerWithPartitionKeyPathAndPartitionKey, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPathAndPartitionKey.class);
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPathAndPartitionKey, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithPartitionKeyPathAndPartitionKey.class);
 
         final String partitionKeyPath = entityInformation.getPartitionKeyPath();
         assertThat(partitionKeyPath).isEqualTo("/name");
@@ -113,8 +113,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testGetPartitionKeyName() {
-        final CosmosEntityInformation<VolunteerWithPartitionKey, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithPartitionKey.class);
+        final CosmosEntityInformation<VolunteerWithPartitionKey, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithPartitionKey.class);
 
         final String partitionKeyName = entityInformation.getPartitionKeyFieldName();
         assertThat(partitionKeyName).isEqualTo("name");
@@ -122,8 +122,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testNullPartitionKeyName() {
-        final CosmosEntityInformation<Volunteer, String> entityInformation =
-            new CosmosEntityInformation<>(Volunteer.class);
+        final CosmosEntityInformation<Volunteer, String> entityInformation
+            = new CosmosEntityInformation<>(Volunteer.class);
 
         final String partitionKeyName = entityInformation.getPartitionKeyFieldName();
         assertThat(partitionKeyName).isEqualTo(null);
@@ -131,8 +131,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testCustomPartitionKeyName() {
-        final CosmosEntityInformation<VolunteerWithCustomPartitionKey, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithCustomPartitionKey.class);
+        final CosmosEntityInformation<VolunteerWithCustomPartitionKey, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithCustomPartitionKey.class);
 
         final String partitionKeyName = entityInformation.getPartitionKeyFieldName();
         assertThat(partitionKeyName).isEqualTo("name");
@@ -140,8 +140,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testPartitionKeyPathAnnotationGetFieldName() {
-        final CosmosEntityInformation<VolunteerWithPartitionKeyPath, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPath.class);
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPath, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithPartitionKeyPath.class);
 
         final String partitionKeyPath = entityInformation.getPartitionKeyFieldName();
         assertThat(partitionKeyPath).isEqualTo("volunteerWithPartitionKey.name");
@@ -149,8 +149,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testPartitionKeyPathAndPartitionKeyAnnotationGetFieldName() {
-        final CosmosEntityInformation<VolunteerWithPartitionKeyPathAndPartitionKey, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPathAndPartitionKey.class);
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPathAndPartitionKey, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithPartitionKeyPathAndPartitionKey.class);
 
         final String partitionKeyPath = entityInformation.getPartitionKeyFieldName();
         assertThat(partitionKeyPath).isEqualTo("name");
@@ -158,8 +158,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testGetPartitionKeyValue() {
-        final CosmosEntityInformation<VolunteerWithPartitionKey, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithPartitionKey.class);
+        final CosmosEntityInformation<VolunteerWithPartitionKey, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithPartitionKey.class);
 
         VolunteerWithPartitionKey entity = new VolunteerWithPartitionKey();
         entity.setName("MyName");
@@ -170,8 +170,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testPartitionKeyPathAnnotationGetFieldValue() {
-        final CosmosEntityInformation<VolunteerWithPartitionKeyPath, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPath.class);
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPath, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithPartitionKeyPath.class);
 
         VolunteerWithPartitionKeyPath entity = new VolunteerWithPartitionKeyPath();
         VolunteerWithPartitionKey nestedEntity = new VolunteerWithPartitionKey();
@@ -184,8 +184,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testPartitionKeyPathAndPartitionKeyAnnotationGetFieldValue() {
-        final CosmosEntityInformation<VolunteerWithPartitionKeyPathAndPartitionKey, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithPartitionKeyPathAndPartitionKey.class);
+        final CosmosEntityInformation<VolunteerWithPartitionKeyPathAndPartitionKey, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithPartitionKeyPathAndPartitionKey.class);
 
         VolunteerWithPartitionKeyPathAndPartitionKey entity = new VolunteerWithPartitionKeyPathAndPartitionKey();
         entity.setName("ActualName");
@@ -199,8 +199,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testHierarchicalPartitionKeyPathsGetPartitionKeyPath() {
-        final CosmosEntityInformation<VolunteerWithHierarchicalPartitionKeyPaths, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithHierarchicalPartitionKeyPaths.class);
+        final CosmosEntityInformation<VolunteerWithHierarchicalPartitionKeyPaths, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithHierarchicalPartitionKeyPaths.class);
 
         final String partitionKeyPath = entityInformation.getPartitionKeyPath();
         assertThat(partitionKeyPath).isEqualTo("/id, /firstName, /lastName");
@@ -209,14 +209,14 @@ public class CosmosEntityInformationUnitTest {
     @Test
     @SuppressWarnings("unchecked")
     public void testHierarchicalPartitionKeyPathsGetPartitionKeyFieldValue() {
-        final CosmosEntityInformation<VolunteerWithHierarchicalPartitionKeyPaths, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithHierarchicalPartitionKeyPaths.class);
+        final CosmosEntityInformation<VolunteerWithHierarchicalPartitionKeyPaths, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithHierarchicalPartitionKeyPaths.class);
 
-        VolunteerWithHierarchicalPartitionKeyPaths entity = new VolunteerWithHierarchicalPartitionKeyPaths("id_1",
-            "John", "Smith", "12345");
+        VolunteerWithHierarchicalPartitionKeyPaths entity
+            = new VolunteerWithHierarchicalPartitionKeyPaths("id_1", "John", "Smith", "12345");
         final Object partitionKeyFieldValue = entityInformation.getPartitionKeyFieldValue(entity);
         assertThat(partitionKeyFieldValue).isInstanceOf(ArrayList.class);
-        ArrayList<Object> pkValues = (ArrayList<Object>)partitionKeyFieldValue;
+        ArrayList<Object> pkValues = (ArrayList<Object>) partitionKeyFieldValue;
         assertThat(pkValues.size()).isEqualTo(3);
         assertThat(pkValues.get(0)).isEqualTo("id_1");
         assertThat(pkValues.get(1)).isEqualTo("John");
@@ -225,8 +225,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testHierarchicalPartitionKeyPathsGetPartitionKeyFieldName() {
-        final CosmosEntityInformation<VolunteerWithHierarchicalPartitionKeyPaths, String> entityInformation =
-            new CosmosEntityInformation<>(VolunteerWithHierarchicalPartitionKeyPaths.class);
+        final CosmosEntityInformation<VolunteerWithHierarchicalPartitionKeyPaths, String> entityInformation
+            = new CosmosEntityInformation<>(VolunteerWithHierarchicalPartitionKeyPaths.class);
 
         final String partitionKeyPath = entityInformation.getPartitionKeyFieldName();
         assertThat(partitionKeyPath).isEqualTo("id, firstName, lastName");
@@ -234,8 +234,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testVersionedEntity() {
-        final CosmosEntityInformation<VersionedVolunteer, String> entityInformation =
-                new CosmosEntityInformation<VersionedVolunteer, String>(VersionedVolunteer.class);
+        final CosmosEntityInformation<VersionedVolunteer, String> entityInformation
+            = new CosmosEntityInformation<VersionedVolunteer, String>(VersionedVolunteer.class);
 
         final boolean isVersioned = entityInformation.isVersioned();
         assertThat(isVersioned).isTrue();
@@ -243,8 +243,8 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testEntityShouldNotBeVersionedWithWrongType() {
-        final CosmosEntityInformation<WrongVersionType, String> entityInformation =
-                new CosmosEntityInformation<WrongVersionType, String>(WrongVersionType.class);
+        final CosmosEntityInformation<WrongVersionType, String> entityInformation
+            = new CosmosEntityInformation<WrongVersionType, String>(WrongVersionType.class);
 
         final boolean isVersioned = entityInformation.isVersioned();
         assertThat(isVersioned).isFalse();
@@ -252,16 +252,16 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testEntityShouldBeVersionedIfUsingAnnotationOnAStringField() {
-        final CosmosEntityInformation<VersionFieldDifferentName, String> entityInformation =
-                new CosmosEntityInformation<VersionFieldDifferentName, String>(VersionFieldDifferentName.class);
+        final CosmosEntityInformation<VersionFieldDifferentName, String> entityInformation
+            = new CosmosEntityInformation<VersionFieldDifferentName, String>(VersionFieldDifferentName.class);
         final boolean isVersioned = entityInformation.isVersioned();
         assertThat(isVersioned).isTrue();
     }
 
     @Test
     public void testNonVersionedEntity() {
-        final CosmosEntityInformation<Student, String> entityInformation =
-                new CosmosEntityInformation<Student, String>(Student.class);
+        final CosmosEntityInformation<Student, String> entityInformation
+            = new CosmosEntityInformation<Student, String>(Student.class);
 
         final boolean isVersioned = entityInformation.isVersioned();
         assertThat(isVersioned).isFalse();
@@ -346,7 +346,7 @@ public class CosmosEntityInformationUnitTest {
         }
     }
 
-    @Container(hierarchicalPartitionKeyPaths = {"/id", "/firstName", "/lastName"})
+    @Container(hierarchicalPartitionKeyPaths = { "/id", "/firstName", "/lastName" })
     private static class VolunteerWithHierarchicalPartitionKeyPaths {
         private String id;
         private String firstName;
@@ -404,9 +404,7 @@ public class CosmosEntityInformationUnitTest {
                 return false;
             }
             VersionedVolunteer that = (VersionedVolunteer) o;
-            return Objects.equals(id, that.id)
-                && Objects.equals(name, that.name)
-                && Objects.equals(_etag, that._etag);
+            return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(_etag, that._etag);
         }
 
         @Override
@@ -416,16 +414,7 @@ public class CosmosEntityInformationUnitTest {
 
         @Override
         public String toString() {
-            return "VersionedVolunteer{"
-                + "id='"
-                + id
-                + '\''
-                + ", name='"
-                + name
-                + '\''
-                + ", _etag='"
-                + _etag
-                + '\''
+            return "VersionedVolunteer{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", _etag='" + _etag + '\''
                 + '}';
         }
     }
@@ -472,9 +461,7 @@ public class CosmosEntityInformationUnitTest {
                 return false;
             }
             WrongVersionType that = (WrongVersionType) o;
-            return _etag == that._etag
-                && Objects.equals(id, that.id)
-                && Objects.equals(name, that.name);
+            return _etag == that._etag && Objects.equals(id, that.id) && Objects.equals(name, that.name);
         }
 
         @Override
@@ -484,16 +471,7 @@ public class CosmosEntityInformationUnitTest {
 
         @Override
         public String toString() {
-            return "WrongVersionType{"
-                + "id='"
-                + id
-                + '\''
-                + ", name='"
-                + name
-                + '\''
-                + ", _etag="
-                + _etag
-                + '}';
+            return "WrongVersionType{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", _etag=" + _etag + '}';
         }
     }
 
@@ -552,24 +530,15 @@ public class CosmosEntityInformationUnitTest {
 
         @Override
         public String toString() {
-            return "VersionFieldDifferentName{"
-                + "id='"
-                + id
-                + '\''
-                + ", name='"
-                + name
-                + '\''
-                + ", version='"
-                + version
-                + '\''
-                + '}';
+            return "VersionFieldDifferentName{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", version='"
+                + version + '\'' + '}';
         }
     }
 
     @Test
     public void testGetIdFieldWithUUIDType() {
-        final CosmosEntityInformation<UUIDIdDomain, UUID> entityInformation =
-            new CosmosEntityInformation<>(UUIDIdDomain.class);
+        final CosmosEntityInformation<UUIDIdDomain, UUID> entityInformation
+            = new CosmosEntityInformation<>(UUIDIdDomain.class);
         assertThat(entityInformation.getIdField().getType().equals(UUID.class)).isTrue();
     }
 
@@ -587,15 +556,15 @@ public class CosmosEntityInformationUnitTest {
 
     @Test
     public void testGetIdFieldWithLongType() {
-        final CosmosEntityInformation<LongIdDomain, Long> entityInformation =
-            new CosmosEntityInformation<>(LongIdDomain.class);
+        final CosmosEntityInformation<LongIdDomain, Long> entityInformation
+            = new CosmosEntityInformation<>(LongIdDomain.class);
         assertThat(entityInformation.getIdField().getType().equals(Long.class)).isTrue();
     }
 
     @Test
     public void testGetIdFieldWithBasicType() {
-        final CosmosEntityInformation<BasicLongIdDomain, Long> entityInformation =
-            new CosmosEntityInformation<>(BasicLongIdDomain.class);
+        final CosmosEntityInformation<BasicLongIdDomain, Long> entityInformation
+            = new CosmosEntityInformation<>(BasicLongIdDomain.class);
         assertThat(entityInformation.getIdField().getType().equals(long.class)).isTrue();
     }
 
@@ -640,8 +609,7 @@ public class CosmosEntityInformationUnitTest {
                 return false;
             }
             BasicLongIdDomain that = (BasicLongIdDomain) o;
-            return Objects.equals(number, that.number)
-                && Objects.equals(name, that.name);
+            return Objects.equals(number, that.number) && Objects.equals(name, that.name);
         }
 
         @Override
@@ -651,13 +619,7 @@ public class CosmosEntityInformationUnitTest {
 
         @Override
         public String toString() {
-            return "BasicLongIdDomain{"
-                + "number="
-                + number
-                + ", name='"
-                + name
-                + '\''
-                + '}';
+            return "BasicLongIdDomain{" + "number=" + number + ", name='" + name + '\'' + '}';
         }
     }
 }

@@ -25,8 +25,7 @@ public class ServiceBusArmConnectionStringProvider extends ArmConnectionStringPr
      * @param namespace the namespace
      */
     public ServiceBusArmConnectionStringProvider(AzureResourceManager azureResourceManager,
-                                                 AzureResourceMetadata azureResourceMetadata,
-                                                 String namespace) {
+        AzureResourceMetadata azureResourceMetadata, String namespace) {
         super(azureResourceManager, azureResourceMetadata);
         this.namespace = namespace;
         this.serviceBusNamespaceCrud = new ServiceBusNamespaceCrud(azureResourceManager, azureResourceMetadata);
@@ -35,17 +34,15 @@ public class ServiceBusArmConnectionStringProvider extends ArmConnectionStringPr
     @SuppressWarnings("rawtypes")
     @Override
     public String getConnectionString() {
-        return this.serviceBusNamespaceCrud
-            .get(this.namespace)
+        return this.serviceBusNamespaceCrud.get(this.namespace)
             .authorizationRules()
             .list()
             .stream()
             .findFirst()
             .map(AuthorizationRule::getKeys)
             .map(AuthorizationKeys::primaryConnectionString)
-            .orElseThrow(
-                () -> new RuntimeException(String.format("Service bus namespace '%s' key is empty", this.namespace),
-                                           null));
+            .orElseThrow(() -> new RuntimeException(
+                String.format("Service bus namespace '%s' key is empty", this.namespace), null));
     }
 
     @Override

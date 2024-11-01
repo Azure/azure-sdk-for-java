@@ -28,7 +28,7 @@ public class EventHubsHealthIndicator extends AbstractHealthIndicator {
      * @param consumerAsyncClient the consumer client
      */
     public EventHubsHealthIndicator(EventHubProducerAsyncClient producerAsyncClient,
-                                    EventHubConsumerAsyncClient consumerAsyncClient) {
+        EventHubConsumerAsyncClient consumerAsyncClient) {
         this.producerAsyncClient = producerAsyncClient;
         this.consumerAsyncClient = consumerAsyncClient;
     }
@@ -41,13 +41,9 @@ public class EventHubsHealthIndicator extends AbstractHealthIndicator {
         }
 
         if (this.producerAsyncClient != null) {
-            producerAsyncClient.getEventHubProperties()
-                               .map(p -> builder.up())
-                               .block(timeout);
+            producerAsyncClient.getEventHubProperties().map(p -> builder.up()).block(timeout);
         } else {
-            consumerAsyncClient.getEventHubProperties()
-                               .map(p -> builder.up())
-                               .block(timeout);
+            consumerAsyncClient.getEventHubProperties().map(p -> builder.up()).block(timeout);
         }
     }
 

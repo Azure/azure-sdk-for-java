@@ -11,8 +11,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 class AzureServiceBusJmsPropertiesEnvironmentPostProcessorTests {
 
-    private final AzureServiceBusJmsPropertiesEnvironmentPostProcessor processor =
-        new AzureServiceBusJmsPropertiesEnvironmentPostProcessor();
+    private final AzureServiceBusJmsPropertiesEnvironmentPostProcessor processor
+        = new AzureServiceBusJmsPropertiesEnvironmentPostProcessor();
     private final MockEnvironment environment = new MockEnvironment();
 
     @Test

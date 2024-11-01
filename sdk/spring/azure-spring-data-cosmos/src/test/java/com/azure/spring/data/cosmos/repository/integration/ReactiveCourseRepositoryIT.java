@@ -67,7 +67,8 @@ public class ReactiveCourseRepositoryIT {
     private static final Course COURSE_5 = new Course(COURSE_ID_5, COURSE_NAME_5, DEPARTMENT_NAME_1);
 
     @ClassRule
-    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+    public static final ReactiveIntegrationTestCollectionManager collectionManager
+        = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
     private ReactiveCosmosTemplate template;
@@ -83,17 +84,11 @@ public class ReactiveCourseRepositoryIT {
 
     private CosmosEntityInformation<Course, ?> entityInformation;
 
-    CosmosPatchOperations patchSetOperation = CosmosPatchOperations
-        .create()
-        .set("/name", PATCH_COURSE_NAME_1);
+    CosmosPatchOperations patchSetOperation = CosmosPatchOperations.create().set("/name", PATCH_COURSE_NAME_1);
 
-    CosmosPatchOperations patchReplaceOperation = CosmosPatchOperations
-        .create()
-        .replace("/name", PATCH_COURSE_NAME_1);
+    CosmosPatchOperations patchReplaceOperation = CosmosPatchOperations.create().replace("/name", PATCH_COURSE_NAME_1);
 
-    CosmosPatchOperations patchRemoveOperation = CosmosPatchOperations
-        .create()
-        .remove("/name");
+    CosmosPatchOperations patchRemoveOperation = CosmosPatchOperations.create().remove("/name");
 
     private static final CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
 
@@ -101,8 +96,7 @@ public class ReactiveCourseRepositoryIT {
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Course.class);
         entityInformation = collectionManager.getEntityInformation(Course.class);
-        final Flux<Course> savedFlux = repository.saveAll(Arrays.asList(COURSE_1, COURSE_2,
-            COURSE_3, COURSE_4));
+        final Flux<Course> savedFlux = repository.saveAll(Arrays.asList(COURSE_1, COURSE_2, COURSE_3, COURSE_4));
         StepVerifier.create(savedFlux).thenConsumeWhile(course -> true).expectComplete().verify();
     }
 
@@ -114,8 +108,8 @@ public class ReactiveCourseRepositoryIT {
 
     @Test
     public void testFindByIdAndPartitionKey() {
-        final Mono<Course> idMono = repository.findById(COURSE_ID_4,
-            new PartitionKey(entityInformation.getPartitionKeyFieldValue(COURSE_4)));
+        final Mono<Course> idMono
+            = repository.findById(COURSE_ID_4, new PartitionKey(entityInformation.getPartitionKeyFieldValue(COURSE_4)));
         StepVerifier.create(idMono).expectNext(COURSE_4).expectComplete().verify();
     }
 
@@ -140,8 +134,8 @@ public class ReactiveCourseRepositoryIT {
 
     @Test
     public void testFindByIdAndPartitionKeyNotFound() {
-        final Mono<Course> idMono = repository.findById("10",
-            new PartitionKey(entityInformation.getPartitionKeyFieldValue(COURSE_1)));
+        final Mono<Course> idMono
+            = repository.findById("10", new PartitionKey(entityInformation.getPartitionKeyFieldValue(COURSE_1)));
         //  Expect an empty mono as return value
         StepVerifier.create(idMono).expectComplete().verify();
     }
@@ -201,8 +195,8 @@ public class ReactiveCourseRepositoryIT {
             new PartitionKey(entityInformation.getPartitionKeyFieldValue(COURSE_1)));
         StepVerifier.create(deleteMono).verifyComplete();
 
-        final Mono<Course> byId = repository.findById(COURSE_ID_1,
-            new PartitionKey(entityInformation.getPartitionKeyFieldValue(COURSE_1)));
+        final Mono<Course> byId
+            = repository.findById(COURSE_ID_1, new PartitionKey(entityInformation.getPartitionKeyFieldValue(COURSE_1)));
         //  Expect an empty mono as return value
         StepVerifier.create(byId).verifyComplete();
     }
@@ -237,8 +231,7 @@ public class ReactiveCourseRepositoryIT {
 
     @Test
     public void testFindByDepartmentIn() {
-        final Flux<Course> byDepartmentIn =
-            repository.findByDepartmentIn(Collections.singletonList(DEPARTMENT_NAME_2));
+        final Flux<Course> byDepartmentIn = repository.findByDepartmentIn(Collections.singletonList(DEPARTMENT_NAME_2));
         StepVerifier.create(byDepartmentIn).expectNextCount(2).verifyComplete();
     }
 
@@ -251,25 +244,22 @@ public class ReactiveCourseRepositoryIT {
         //  Since there are two courses with department_1
         final AtomicBoolean courseFound = new AtomicBoolean(false);
         StepVerifier.create(findAll).expectNextCount(2).verifyComplete();
-        StepVerifier.create(findAll)
-                    .expectNextMatches(course -> {
-                        if (course.equals(COURSE_4)) {
-                            courseFound.set(true);
-                        } else if (course.equals(COURSE_5)) {
-                            courseFound.set(false);
-                        } else {
-                            return false;
-                        }
-                        return true;
-                    })
-                    .expectNextMatches(course -> {
-                        if (courseFound.get()) {
-                            return course.equals(COURSE_5);
-                        } else {
-                            return course.equals(COURSE_4);
-                        }
-                    })
-                    .verifyComplete();
+        StepVerifier.create(findAll).expectNextMatches(course -> {
+            if (course.equals(COURSE_4)) {
+                courseFound.set(true);
+            } else if (course.equals(COURSE_5)) {
+                courseFound.set(false);
+            } else {
+                return false;
+            }
+            return true;
+        }).expectNextMatches(course -> {
+            if (courseFound.get()) {
+                return course.equals(COURSE_5);
+            } else {
+                return course.equals(COURSE_4);
+            }
+        }).verifyComplete();
 
         findAll = repository.findAll(new PartitionKey(DEPARTMENT_NAME_3));
         //  Since there are two courses with department_3
@@ -278,25 +268,22 @@ public class ReactiveCourseRepositoryIT {
         findAll = repository.findAll(new PartitionKey(DEPARTMENT_NAME_2));
         //  Since there are two courses with department_2
         StepVerifier.create(findAll).expectNextCount(2).verifyComplete();
-        StepVerifier.create(findAll)
-                    .expectNextMatches(course -> {
-                        if (course.equals(COURSE_2)) {
-                            courseFound.set(true);
-                        } else if (course.equals(COURSE_3)) {
-                            courseFound.set(false);
-                        } else {
-                            return false;
-                        }
-                        return true;
-                    })
-                    .expectNextMatches(course -> {
-                        if (courseFound.get()) {
-                            return course.equals(COURSE_3);
-                        } else {
-                            return course.equals(COURSE_2);
-                        }
-                    })
-                    .verifyComplete();
+        StepVerifier.create(findAll).expectNextMatches(course -> {
+            if (course.equals(COURSE_2)) {
+                courseFound.set(true);
+            } else if (course.equals(COURSE_3)) {
+                courseFound.set(false);
+            } else {
+                return false;
+            }
+            return true;
+        }).expectNextMatches(course -> {
+            if (courseFound.get()) {
+                return course.equals(COURSE_3);
+            } else {
+                return course.equals(COURSE_2);
+            }
+        }).verifyComplete();
     }
 
     @Test
@@ -307,15 +294,15 @@ public class ReactiveCourseRepositoryIT {
 
     @Test
     public void testFindByNameAndDepartmentAllIgnoreCase() {
-        final Flux<Course> findResult = repository.findByNameAndDepartmentAllIgnoreCase(
-            COURSE_NAME_1.toLowerCase(), DEPARTMENT_NAME_3.toLowerCase());
+        final Flux<Course> findResult = repository.findByNameAndDepartmentAllIgnoreCase(COURSE_NAME_1.toLowerCase(),
+            DEPARTMENT_NAME_3.toLowerCase());
         StepVerifier.create(findResult).expectNext(COURSE_1).verifyComplete();
     }
 
     @Test
     public void testFindByNameAndDepartmentOrNameAndDepartment() {
-        final Flux<Course> findResult = repository.findByNameAndDepartmentOrNameAndDepartment(
-            COURSE_NAME_1, DEPARTMENT_NAME_3, COURSE_NAME_2, DEPARTMENT_NAME_2);
+        final Flux<Course> findResult = repository.findByNameAndDepartmentOrNameAndDepartment(COURSE_NAME_1,
+            DEPARTMENT_NAME_3, COURSE_NAME_2, DEPARTMENT_NAME_2);
         final Set<Course> courseResultSet = new HashSet<>();
         courseResultSet.add(COURSE_1);
         courseResultSet.add(COURSE_2);
@@ -327,8 +314,8 @@ public class ReactiveCourseRepositoryIT {
 
     @Test
     public void testFindByNameOrDepartmentAllIgnoreCase() {
-        final Flux<Course> findResult = repository.findByNameOrDepartmentAllIgnoreCase(
-            COURSE_NAME_1.toLowerCase(), DEPARTMENT_NAME_3.toLowerCase());
+        final Flux<Course> findResult = repository.findByNameOrDepartmentAllIgnoreCase(COURSE_NAME_1.toLowerCase(),
+            DEPARTMENT_NAME_3.toLowerCase());
         StepVerifier.create(findResult).expectNext(COURSE_1).verifyComplete();
     }
 
@@ -354,40 +341,55 @@ public class ReactiveCourseRepositoryIT {
 
     @Test
     public void testPatchEntitySet() {
-        Mono<Course> patch = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation);
+        Mono<Course> patch
+            = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation);
         StepVerifier.create(patch).expectNextCount(1).verifyComplete();
         Mono<Course> patchedCourse = repository.findById(COURSE_ID_1);
-        StepVerifier.create(patchedCourse).expectNextMatches(course -> course.getName().equals(PATCH_COURSE_NAME_1)).verifyComplete();
+        StepVerifier.create(patchedCourse)
+            .expectNextMatches(course -> course.getName().equals(PATCH_COURSE_NAME_1))
+            .verifyComplete();
     }
 
     @Test
     public void testPatchEntityReplace() {
-        Mono<Course> patch = repository.save(COURSE_ID_2, new PartitionKey(DEPARTMENT_NAME_2), Course.class, patchReplaceOperation);
+        Mono<Course> patch
+            = repository.save(COURSE_ID_2, new PartitionKey(DEPARTMENT_NAME_2), Course.class, patchReplaceOperation);
         StepVerifier.create(patch).expectNextCount(1).verifyComplete();
         Mono<Course> patchedCourse = repository.findById(COURSE_ID_2);
-        StepVerifier.create(patchedCourse).expectNextMatches(course -> course.getName().equals(PATCH_COURSE_NAME_1)).verifyComplete();
+        StepVerifier.create(patchedCourse)
+            .expectNextMatches(course -> course.getName().equals(PATCH_COURSE_NAME_1))
+            .verifyComplete();
     }
 
     @Test
     public void testPatchEntityRemove() {
-        Mono<Course> patch = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchRemoveOperation);
+        Mono<Course> patch
+            = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchRemoveOperation);
         StepVerifier.create(patch).expectNextCount(1).verifyComplete();
         Mono<Course> patchedCourse = repository.findById(COURSE_ID_1);
         StepVerifier.create(patchedCourse).expectNextMatches(course -> course.getName() == null).verifyComplete();
     }
+
     @Test
     public void testPatchPreConditionSuccess() {
-        options.setFilterPredicate("FROM course a WHERE a.department = '"+DEPARTMENT_NAME_3+"'");
-        Mono<Course> patchedCourse = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation, options);
-        StepVerifier.create(patchedCourse).expectNextMatches(course -> course.getName().equals(PATCH_COURSE_NAME_1)).verifyComplete();
+        options.setFilterPredicate("FROM course a WHERE a.department = '" + DEPARTMENT_NAME_3 + "'");
+        Mono<Course> patchedCourse = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class,
+            patchSetOperation, options);
+        StepVerifier.create(patchedCourse)
+            .expectNextMatches(course -> course.getName().equals(PATCH_COURSE_NAME_1))
+            .verifyComplete();
     }
 
     @Test
     public void testPatchPreConditionFail() {
         options.setFilterPredicate("FROM course a WHERE a.department = 'dummy'");
-        Mono<Course> patchedCourse = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation, options);
-        StepVerifier.create(patchedCourse).expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
-            ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.PRECONDITION_FAILED_STATUS_CODE).verify();
+        Mono<Course> patchedCourse = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class,
+            patchSetOperation, options);
+        StepVerifier.create(patchedCourse)
+            .expectErrorMatches(ex -> ex instanceof CosmosAccessException
+                && ((CosmosAccessException) ex).getCosmosException().getStatusCode()
+                    == TestConstants.PRECONDITION_FAILED_STATUS_CODE)
+            .verify();
     }
 
     @Test
@@ -439,7 +441,8 @@ public class ReactiveCourseRepositoryIT {
             .expectNext(COURSE_1)
             .expectNext(COURSE_2)
             .expectNext(COURSE_3)
-            .expectNext(COURSE_4).verifyComplete();
+            .expectNext(COURSE_4)
+            .verifyComplete();
 
     }
 

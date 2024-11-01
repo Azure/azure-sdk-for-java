@@ -33,7 +33,8 @@ public class AppConfigurationRefreshUtil {
         RefreshEventData eventData = new RefreshEventData();
 
         try {
-            if (refreshInterval != null && StateHolder.getNextForcedRefresh() != null
+            if (refreshInterval != null
+                && StateHolder.getNextForcedRefresh() != null
                 && Instant.now().isAfter(StateHolder.getNextForcedRefresh())) {
                 String eventDataInfo = "Minimum refresh period reached. Refreshing configurations.";
 

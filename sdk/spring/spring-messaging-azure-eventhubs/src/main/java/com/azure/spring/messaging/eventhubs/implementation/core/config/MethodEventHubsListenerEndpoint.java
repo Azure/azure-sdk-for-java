@@ -52,15 +52,17 @@ public class MethodEventHubsListenerEndpoint extends AbstractEventHubsListenerEn
 
     @Override
     protected StringBuilder getEndpointDescription() {
-        return super.getEndpointDescription()
-                    .append(" | bean='").append(this.bean).append("'")
-                    .append(" | method='").append(this.method).append("'");
+        return super.getEndpointDescription().append(" | bean='")
+            .append(this.bean)
+            .append("'")
+            .append(" | method='")
+            .append(this.method)
+            .append("'");
     }
-
 
     @Override
     protected MessagingMessageListenerAdapter createMessageListener(MessageListenerContainer listenerContainer,
-                                                                    AzureMessageConverter<?, ?> messageConverter) {
+        AzureMessageConverter<?, ?> messageConverter) {
 
         Assert.state(this.messageHandlerMethodFactory != null,
             "Could not create message listener - MessageHandlerMethodFactory not set");
@@ -70,8 +72,8 @@ public class MethodEventHubsListenerEndpoint extends AbstractEventHubsListenerEn
         Method method = getMethod();
         Assert.state(bean != null && method != null, "No bean+method set on endpoint");
 
-        InvocableHandlerMethod invocableHandlerMethod = this.messageHandlerMethodFactory.createInvocableHandlerMethod(
-            bean, method);
+        InvocableHandlerMethod invocableHandlerMethod
+            = this.messageHandlerMethodFactory.createInvocableHandlerMethod(bean, method);
 
         messageListener.setHandlerMethod(invocableHandlerMethod);
 
@@ -84,8 +86,8 @@ public class MethodEventHubsListenerEndpoint extends AbstractEventHubsListenerEn
      * @param messageConverter the converter (may be null).
      * @return the {@link MessagingMessageListenerAdapter} instance.
      */
-    protected MessagingMessageListenerAdapter createMessageListenerInstance(
-        @Nullable AzureMessageConverter<?, ?> messageConverter) {
+    protected MessagingMessageListenerAdapter
+        createMessageListenerInstance(@Nullable AzureMessageConverter<?, ?> messageConverter) {
 
         MessagingMessageListenerAdapter listener;
         if (isBatchListener()) {

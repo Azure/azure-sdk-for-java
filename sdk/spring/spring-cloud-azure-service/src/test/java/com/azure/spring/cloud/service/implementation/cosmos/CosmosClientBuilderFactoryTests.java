@@ -25,10 +25,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 public class CosmosClientBuilderFactoryTests extends
-    AzureServiceClientBuilderFactoryBaseTests<
-        CosmosClientBuilder,
-        AzureCosmosTestProperties,
-        CosmosClientBuilderFactory> {
+    AzureServiceClientBuilderFactoryBaseTests<CosmosClientBuilder, AzureCosmosTestProperties, CosmosClientBuilderFactory> {
 
     private static final String ENDPOINT = "https://test.documents.azure.com:443/";
 
@@ -79,8 +76,8 @@ public class CosmosClientBuilderFactoryTests extends
     }
 
     @Override
-    protected CosmosClientBuilderFactory createClientBuilderFactoryWithMockBuilder(
-        AzureCosmosTestProperties properties) {
+    protected CosmosClientBuilderFactory
+        createClientBuilderFactoryWithMockBuilder(AzureCosmosTestProperties properties) {
         return new CosmosClientBuilderFactoryExt(properties);
     }
 
@@ -120,8 +117,7 @@ public class CosmosClientBuilderFactoryTests extends
 
     @Override
     protected void verifyCredentialCalled(CosmosClientBuilder builder,
-                                          Class<? extends TokenCredential> tokenCredentialClass,
-                                          VerificationMode mode) {
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         verify(builder, mode).credential(any(tokenCredentialClass));
     }
 

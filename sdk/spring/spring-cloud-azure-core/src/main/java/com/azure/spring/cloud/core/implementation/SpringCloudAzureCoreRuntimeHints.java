@@ -31,23 +31,12 @@ class SpringCloudAzureCoreRuntimeHints implements RuntimeHintsRegistrar {
     @Override
     public void registerHints(RuntimeHints hints, ClassLoader classLoader) {
         ReflectionHints reflectionHints = hints.reflection();
-        Stream.of(
-                TokenCredentialProperties.class,
-                NamedKeyProperties.class,
-                AmqpClientProperties.class,
-                ClientProperties.class,
-                HeaderProperties.class,
-                HttpClientProperties.class,
-                HttpLoggingProperties.class,
-                AzureEnvironmentProperties.class,
-                AzureProfileProperties.class,
-                AmqpProxyProperties.class,
-                HttpProxyProperties.class,
-                ProxyProperties.class,
-                AmqpRetryProperties.class,
-                ExponentialRetryProperties.class,
-                FixedRetryProperties.class,
-                RetryProperties.class)
+        Stream
+            .of(TokenCredentialProperties.class, NamedKeyProperties.class, AmqpClientProperties.class,
+                ClientProperties.class, HeaderProperties.class, HttpClientProperties.class, HttpLoggingProperties.class,
+                AzureEnvironmentProperties.class, AzureProfileProperties.class, AmqpProxyProperties.class,
+                HttpProxyProperties.class, ProxyProperties.class, AmqpRetryProperties.class,
+                ExponentialRetryProperties.class, FixedRetryProperties.class, RetryProperties.class)
             .forEach(type -> reflectionHints.registerType(type,
                 builder -> builder.withMembers(MemberCategory.INVOKE_DECLARED_METHODS)));
     }

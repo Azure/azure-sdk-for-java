@@ -43,24 +43,18 @@ public final class JdbcConnectionStringEnhancer {
 
         LOGGER.debug("Trying to construct enhanced jdbc url for {}", this.databaseType);
 
-        StringBuilder builder = new StringBuilder(this.connectionString.getBaseUrl())
-            .append(this.databaseType.getPathQueryDelimiter());
+        StringBuilder builder
+            = new StringBuilder(this.connectionString.getBaseUrl()).append(this.databaseType.getPathQueryDelimiter());
 
         Map<String, String> mergedProperties = new TreeMap<>(this.connectionString.getProperties());
         mergedProperties.putAll(this.enhancedProperties);
 
         this.connectionString.getOrderedPropertyKeys()
-            .forEach(k -> builder
-                .append(constructPropertyString(k, mergedProperties.remove(k)))
-                .append(this.databaseType.getQueryDelimiter())
-            );
+            .forEach(k -> builder.append(constructPropertyString(k, mergedProperties.remove(k)))
+                .append(this.databaseType.getQueryDelimiter()));
 
-        mergedProperties.forEach((k, v) -> builder
-            .append(k)
-            .append("=")
-            .append(v)
-            .append(this.databaseType.getQueryDelimiter())
-        );
+        mergedProperties
+            .forEach((k, v) -> builder.append(k).append("=").append(v).append(this.databaseType.getQueryDelimiter()));
 
         String enhancedUrl = builder.toString();
         return enhancedUrl.substring(0, enhancedUrl.length() - 1);
@@ -75,7 +69,7 @@ public final class JdbcConnectionStringEnhancer {
     }
 
     public void enhanceProperties(Map<String, String> connectionProperties,
-                                  boolean silentWhenInconsistentValuePresent) {
+        boolean silentWhenInconsistentValuePresent) {
         for (Map.Entry<String, String> entry : connectionProperties.entrySet()) {
             String key = entry.getKey(), value = entry.getValue();
             String valueProvidedInConnectionString = this.connectionString.getProperty(key);
@@ -87,7 +81,7 @@ public final class JdbcConnectionStringEnhancer {
                     && !isAzureAuthenticationParameterKey(this.connectionString, key)) {
                     LOGGER.debug("The property {} is set to another value than default {}.", key, value);
                 } else {
-                    throw new IllegalArgumentException("Inconsistent property value of key [" + key +  "] detected.");
+                    throw new IllegalArgumentException("Inconsistent property value of key [" + key + "] detected.");
                 }
             } else {
                 LOGGER.debug("The property {} is already set.", key);
@@ -105,7 +99,7 @@ public final class JdbcConnectionStringEnhancer {
     }
 
     public void enhancePropertyAttributes(String propertyKey, Map<String, String> enhancedAttributes,
-                                          String attributeDelimiter, String attributeKeyValueDelimiter) {
+        String attributeDelimiter, String attributeKeyValueDelimiter) {
         String propertyValue = this.connectionString.getProperties().get(propertyKey);
         if (propertyValue != null) {
             String[] attributes = propertyValue.split(attributeDelimiter);
@@ -139,12 +133,9 @@ public final class JdbcConnectionStringEnhancer {
         return databaseType;
     }
 
-    private static String buildPropertyValueFromAttributes(String baseAttributes,
-                                                           String attributeDelimiter,
-                                                           String attributeKeyValueDelimiter,
-                                                           TreeMap<String, String> enhancedAttributes) {
-        String enhancedString = enhancedAttributes
-            .entrySet()
+    private static String buildPropertyValueFromAttributes(String baseAttributes, String attributeDelimiter,
+        String attributeKeyValueDelimiter, TreeMap<String, String> enhancedAttributes) {
+        String enhancedString = enhancedAttributes.entrySet()
             .stream()
             .map(entry -> entry.getKey() + attributeKeyValueDelimiter + entry.getValue())
             .collect(Collectors.joining(attributeDelimiter));

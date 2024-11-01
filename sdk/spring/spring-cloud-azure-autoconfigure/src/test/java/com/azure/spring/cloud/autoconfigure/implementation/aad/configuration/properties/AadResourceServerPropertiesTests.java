@@ -13,10 +13,7 @@ class AadResourceServerPropertiesTests {
 
     @Test
     void testNoPropertiesConfigured() {
-        resourceServerContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.enabled=true"
-            )
+        resourceServerContextRunner().withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
                 AadResourceServerProperties properties = context.getBean(AadResourceServerProperties.class);
                 assertEquals(AadJwtClaimNames.SUB, properties.getPrincipalClaimName());
@@ -26,12 +23,10 @@ class AadResourceServerPropertiesTests {
 
     @Test
     void testPropertiesConfigured() {
-        resourceServerContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.resource-server.principal-claim-name=fake-claim-name",
-                "spring.cloud.azure.active-directory.resource-server.claim-to-authority-prefix-map.fake-key-1=fake-value-1",
-                "spring.cloud.azure.active-directory.resource-server.claim-to-authority-prefix-map.fake-key-2=fake-value-2")
+        resourceServerContextRunner().withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+            "spring.cloud.azure.active-directory.resource-server.principal-claim-name=fake-claim-name",
+            "spring.cloud.azure.active-directory.resource-server.claim-to-authority-prefix-map.fake-key-1=fake-value-1",
+            "spring.cloud.azure.active-directory.resource-server.claim-to-authority-prefix-map.fake-key-2=fake-value-2")
             .run(context -> {
                 AadResourceServerProperties properties = context.getBean(AadResourceServerProperties.class);
                 assertEquals(properties.getPrincipalClaimName(), "fake-claim-name");

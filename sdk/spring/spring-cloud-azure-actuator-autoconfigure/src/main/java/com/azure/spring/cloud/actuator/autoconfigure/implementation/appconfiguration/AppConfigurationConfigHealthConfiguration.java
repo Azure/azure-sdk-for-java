@@ -16,7 +16,6 @@ import com.azure.spring.cloud.actuator.implementation.appconfiguration.AppConfig
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationAutoConfiguration;
 
-
 /**
  * Configuration class of App Configuration Health
  */

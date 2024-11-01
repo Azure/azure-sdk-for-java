@@ -46,16 +46,16 @@ public class TracingInfoTest {
     public void disableTracingTest() {
         TracingInfo tracingInfo = new TracingInfo(false, false, 0, getConfiguration(null));
         assertNotEquals("", tracingInfo.getValue(false));
-        
+
         tracingInfo = new TracingInfo(false, false, 0, getConfiguration(""));
         assertNotEquals("", tracingInfo.getValue(false));
-        
+
         tracingInfo = new TracingInfo(false, false, 0, getConfiguration("true"));
         assertEquals("", tracingInfo.getValue(false));
-        
+
         tracingInfo = new TracingInfo(false, false, 0, getConfiguration("false"));
         assertNotEquals("", tracingInfo.getValue(false));
-        
+
         tracingInfo = new TracingInfo(false, false, 0, getConfiguration("random string"));
         assertNotEquals("", tracingInfo.getValue(false));
     }
@@ -68,9 +68,10 @@ public class TracingInfoTest {
     };
 
     private Configuration getConfiguration(String value) {
-        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource().put(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString(), value)).build();
+        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource()
+            .put(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString(), value)).build();
     }
-    
+
     private final class TestConfigurationSource implements ConfigurationSource {
         private final Map<String, String> testData;
 
@@ -101,7 +102,8 @@ public class TracingInfoTest {
             if (path == null) {
                 return testData;
             }
-            return testData.entrySet().stream()
+            return testData.entrySet()
+                .stream()
                 .filter(prop -> prop.getKey().startsWith(path + "."))
                 .collect(Collectors.toMap(Map.Entry<String, String>::getKey, Map.Entry<String, String>::getValue));
         }

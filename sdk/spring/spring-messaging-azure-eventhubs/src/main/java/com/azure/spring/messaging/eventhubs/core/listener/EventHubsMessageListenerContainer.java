@@ -38,9 +38,10 @@ public class EventHubsMessageListenerContainer extends AbstractMessageListenerCo
      * @param containerProperties the container properties
      */
     public EventHubsMessageListenerContainer(EventHubsProcessorFactory processorFactory,
-                                             EventHubsContainerProperties containerProperties) {
+        EventHubsContainerProperties containerProperties) {
         this.processorFactory = processorFactory;
-        this.containerProperties = containerProperties == null ? new EventHubsContainerProperties() : containerProperties;
+        this.containerProperties
+            = containerProperties == null ? new EventHubsContainerProperties() : containerProperties;
     }
 
     @Override

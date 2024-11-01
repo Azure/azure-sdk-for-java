@@ -50,10 +50,10 @@ class AadAccessTokenGroupRolesExtractionTests {
         groupIdsFromGraph.add(GROUP_ID_2);
         groupInformationFromGraph.setGroupsIds(groupIdsFromGraph);
         groupInformationFromGraph.setGroupsNames(groupNamesFromGraph);
-        Mockito.lenient().when(accessToken.getTokenValue())
-                         .thenReturn("fake-access-token");
-        Mockito.lenient().when(graphClient.getGroupInformation(accessToken.getTokenValue()))
-                         .thenReturn(groupInformationFromGraph);
+        Mockito.lenient().when(accessToken.getTokenValue()).thenReturn("fake-access-token");
+        Mockito.lenient()
+            .when(graphClient.getGroupInformation(accessToken.getTokenValue()))
+            .thenReturn(groupInformationFromGraph);
     }
 
     @AfterAll
@@ -98,7 +98,6 @@ class AadAccessTokenGroupRolesExtractionTests {
         List<String> allowedGroupNames = new ArrayList<>();
         allowedGroupNames.add("group1");
 
-
         AadAuthenticationProperties properties = new AadAuthenticationProperties();
         properties.getUserGroup().setAllowedGroupIds(allowedGroupIds);
         properties.getUserGroup().setAllowedGroupNames(allowedGroupNames);
@@ -114,12 +113,9 @@ class AadAccessTokenGroupRolesExtractionTests {
 
     @Test
     void testIllegalGroupIdParam() {
-        WebApplicationContextRunnerUtils
-            .webApplicationContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.user-group.allowed-group-ids = all," + GROUP_ID_1
-            )
-            .run(context ->
-                assertThrows(IllegalStateException.class, () -> context.getBean(AadAuthenticationProperties.class)));
+        WebApplicationContextRunnerUtils.webApplicationContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.user-group.allowed-group-ids = all," + GROUP_ID_1)
+            .run(context -> assertThrows(IllegalStateException.class,
+                () -> context.getBean(AadAuthenticationProperties.class)));
     }
 }

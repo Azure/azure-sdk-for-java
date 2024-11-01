@@ -32,7 +32,8 @@ public class PersonWithTransientId {
     @Version
     private String _etag;
 
-    public PersonWithTransientId(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
+    public PersonWithTransientId(String id, String firstName, String lastName, List<String> hobbies,
+        List<Address> shippingAddresses) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -40,8 +41,8 @@ public class PersonWithTransientId {
         this.shippingAddresses = shippingAddresses;
     }
 
-    public PersonWithTransientId(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses,
-                                 Integer age, Map<String, String> passportIDsByCountry) {
+    public PersonWithTransientId(String id, String firstName, String lastName, List<String> hobbies,
+        List<Address> shippingAddresses, Integer age, Map<String, String> passportIDsByCountry) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -51,8 +52,8 @@ public class PersonWithTransientId {
         this.passportIdsByCountry = passportIDsByCountry;
     }
 
-    public PersonWithTransientId(String id, String firstName, String lastName, String transientProperty, List<String> hobbies, List<Address> shippingAddresses,
-                                 Integer age, Map<String, String> passportIDsByCountry) {
+    public PersonWithTransientId(String id, String firstName, String lastName, String transientProperty,
+        List<String> hobbies, List<Address> shippingAddresses, Integer age, Map<String, String> passportIDsByCountry) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -150,7 +151,7 @@ public class PersonWithTransientId {
         return Objects.equals(id, person.id)
             && Objects.equals(firstName, person.firstName)
             && Objects.equals(lastName, person.lastName)
-            && Objects.equals(transientProperty,person.transientProperty)
+            && Objects.equals(transientProperty, person.transientProperty)
             && Objects.equals(hobbies, person.hobbies)
             && Objects.equals(shippingAddresses, person.shippingAddresses)
             && Objects.equals(age, person.age)
@@ -159,35 +160,15 @@ public class PersonWithTransientId {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, transientProperty, hobbies, shippingAddresses, age, passportIdsByCountry);
+        return Objects.hash(id, firstName, lastName, transientProperty, hobbies, shippingAddresses, age,
+            passportIdsByCountry);
     }
 
     @Override
     public String toString() {
-        return "PersonWithTransientId{"
-            + "id='"
-            + id
-            + '\''
-            + ", firstName='"
-            + firstName
-            + '\''
-            + ", lastName='"
-            + lastName
-            + '\''
-            + ", transientProperty='"
-            + transientProperty
-            + '\''
-            + ", age="
-            + age
-            + ", hobbies="
-            + hobbies
-            + ", shippingAddresses="
-            + shippingAddresses
-            + ", passportIdsByCountry="
-            + passportIdsByCountry
-            + ", _etag='"
-            + _etag
-            + '\''
-            + '}';
+        return "PersonWithTransientId{" + "id='" + id + '\'' + ", firstName='" + firstName + '\'' + ", lastName='"
+            + lastName + '\'' + ", transientProperty='" + transientProperty + '\'' + ", age=" + age + ", hobbies="
+            + hobbies + ", shippingAddresses=" + shippingAddresses + ", passportIdsByCountry=" + passportIdsByCountry
+            + ", _etag='" + _etag + '\'' + '}';
     }
 }

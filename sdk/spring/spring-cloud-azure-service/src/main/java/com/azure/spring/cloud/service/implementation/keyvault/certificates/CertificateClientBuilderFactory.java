@@ -78,9 +78,7 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(CertificateClientBuilder builder) {
-        return Arrays.asList(
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
-        );
+        return Arrays.asList(new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential));
     }
 
     @Override
@@ -89,7 +87,8 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
         map.from(certificateClientProperties.getEndpoint()).to(builder::vaultUrl);
         map.from(certificateClientProperties.getServiceVersion()).to(builder::serviceVersion);
         map.from(certificateClientProperties.isChallengeResourceVerificationEnabled())
-            .whenFalse().to(enabled -> builder.disableChallengeResourceVerification());
+            .whenFalse()
+            .to(enabled -> builder.disableChallengeResourceVerification());
     }
 
     @Override
@@ -105,7 +104,8 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
     @Override
     protected BiConsumer<CertificateClientBuilder, String> consumeConnectionString() {
         LOGGER.debug("Connection string is not supported to configure in CertificateClientBuilder");
-        return (a, b) -> { };
+        return (a, b) -> {
+        };
     }
 
     @Override

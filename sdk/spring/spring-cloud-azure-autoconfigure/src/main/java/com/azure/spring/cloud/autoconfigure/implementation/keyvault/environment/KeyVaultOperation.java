@@ -44,21 +44,18 @@ public class KeyVaultOperation {
         List<KeyVaultSecret> keyVaultSecrets;
         if (secretKeys == null || secretKeys.isEmpty()) {
             keyVaultSecrets = Optional.of(secretClient)
-                                 .map(SecretClient::listPropertiesOfSecrets)
-                                 .map(ContinuablePagedIterable::iterableByPage)
-                                 .map(i -> StreamSupport.stream(i.spliterator(), false))
-                                 .orElseGet(Stream::empty)
-                                 .map(PagedResponse::getElements)
-                                 .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
-                                 .filter(SecretProperties::isEnabled)
-                                 .map(p -> secretClient.getSecret(p.getName(), p.getVersion()))
-                                 .filter(Objects::nonNull)
-                                 .toList();
+                .map(SecretClient::listPropertiesOfSecrets)
+                .map(ContinuablePagedIterable::iterableByPage)
+                .map(i -> StreamSupport.stream(i.spliterator(), false))
+                .orElseGet(Stream::empty)
+                .map(PagedResponse::getElements)
+                .flatMap(i -> StreamSupport.stream(i.spliterator(), false))
+                .filter(SecretProperties::isEnabled)
+                .map(p -> secretClient.getSecret(p.getName(), p.getVersion()))
+                .filter(Objects::nonNull)
+                .toList();
         } else {
-            keyVaultSecrets = secretKeys.stream()
-                                   .map(secretClient::getSecret)
-                                   .filter(Objects::nonNull)
-                                   .toList();
+            keyVaultSecrets = secretKeys.stream().map(secretClient::getSecret).filter(Objects::nonNull).toList();
         }
         return keyVaultSecrets;
     }

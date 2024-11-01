@@ -28,7 +28,6 @@ import static com.azure.spring.cloud.autoconfigure.implementation.aad.security.c
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.AUTHORIZATION_CODE;
 import static org.springframework.security.oauth2.core.AuthorizationGrantType.JWT_BEARER;
 
-
 /**
  * Manage all AAD OAuth2 clients configured by property "spring.cloud.azure.active-directory.xxx".
  * Do extra works:
@@ -68,21 +67,15 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
             authorizationCodeScopes.add(newScope);
         }
         this.azureClientAccessTokenScopes = accessTokenScopes;
-        this.allClients =
-            properties.getAuthorizationClients()
-                      .entrySet()
-                      .stream()
-                      .collect(Collectors.toMap(
-                          Map.Entry::getKey,
-                          entry -> toClientRegistration(entry.getKey(),
-                              entry.getValue().getAuthorizationGrantType(),
-                              entry.getValue().getScopes(),
-                              entry.getValue().getClientAuthenticationMethod(),
-                              properties)));
+        this.allClients = properties.getAuthorizationClients()
+            .entrySet()
+            .stream()
+            .collect(Collectors.toMap(Map.Entry::getKey,
+                entry -> toClientRegistration(entry.getKey(), entry.getValue().getAuthorizationGrantType(),
+                    entry.getValue().getScopes(), entry.getValue().getClientAuthenticationMethod(), properties)));
         ClientAuthenticationMethod azureClientAuthMethod = getAzureDefaultClientAuthenticationMethod();
-        ClientRegistration azureClient =
-            toClientRegistration(AZURE_CLIENT_REGISTRATION_ID, AUTHORIZATION_CODE,
-                authorizationCodeScopes, azureClientAuthMethod, properties);
+        ClientRegistration azureClient = toClientRegistration(AZURE_CLIENT_REGISTRATION_ID, AUTHORIZATION_CODE,
+            authorizationCodeScopes, azureClientAuthMethod, properties);
         allClients.put(AZURE_CLIENT_REGISTRATION_ID, azureClient);
     }
 
@@ -111,18 +104,18 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
     @Override
     public Iterator<ClientRegistration> iterator() {
         return allClients.values()
-                         .stream()
-                         .filter(client -> AUTHORIZATION_CODE.equals(client.getAuthorizationGrantType()))
-                         .iterator();
+            .stream()
+            .filter(client -> AUTHORIZATION_CODE.equals(client.getAuthorizationGrantType()))
+            .iterator();
     }
 
     private Set<String> azureClientAccessTokenScopes(AadAuthenticationProperties properties) {
         Set<String> result = Optional.of(properties)
-                                     .map(AadAuthenticationProperties::getAuthorizationClients)
-                                     .map(clients -> clients.get(AZURE_CLIENT_REGISTRATION_ID))
-                                     .map(AuthorizationClientProperties::getScopes)
-                                     .map(HashSet::new)
-                                     .orElseGet(HashSet::new);
+            .map(AadAuthenticationProperties::getAuthorizationClients)
+            .map(clients -> clients.get(AZURE_CLIENT_REGISTRATION_ID))
+            .map(AuthorizationClientProperties::getScopes)
+            .map(HashSet::new)
+            .orElseGet(HashSet::new);
         result.add("openid"); // "openid" allows to request an ID token.
         result.add("profile"); // "profile" allows to return additional claims in the ID token.
         result.add("offline_access"); // "offline_access" allows to request a refresh token.
@@ -141,20 +134,18 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
 
     private Set<String> delegatedClientsAccessTokenScopes(AadAuthenticationProperties properties) {
         return properties.getAuthorizationClients()
-                         .values()
-                         .stream()
-                         .filter(p -> AZURE_DELEGATED.getValue().equals(p.getAuthorizationGrantType().getValue()))
-                         .flatMap(p -> p.getScopes().stream())
-                         .collect(Collectors.toSet());
+            .values()
+            .stream()
+            .filter(p -> AZURE_DELEGATED.getValue().equals(p.getAuthorizationGrantType().getValue()))
+            .flatMap(p -> p.getScopes().stream())
+            .collect(Collectors.toSet());
     }
 
     private ClientRegistration toClientRegistration(String registrationId,
-                                                    AuthorizationGrantType authorizationGrantType,
-                                                    Collection<String> scopes,
-                                                    ClientAuthenticationMethod clientAuthenticationMethod,
-                                                    AadAuthenticationProperties properties) {
-        AadAuthorizationServerEndpoints endpoints =
-            new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
+        AuthorizationGrantType authorizationGrantType, Collection<String> scopes,
+        ClientAuthenticationMethod clientAuthenticationMethod, AadAuthenticationProperties properties) {
+        AadAuthorizationServerEndpoints endpoints
+            = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
                 properties.getProfile().getTenantId());
 
         if (ON_BEHALF_OF.equals(authorizationGrantType)) {
@@ -163,19 +154,19 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
                 + "'urn:ietf:params:oauth:grant-type:jwt-bearer' for client {}.", registrationId);
         }
         return ClientRegistration.withRegistrationId(registrationId)
-                                 .clientName(registrationId)
-                                 .authorizationGrantType(authorizationGrantType)
-                                 .scope(scopes)
-                                 .redirectUri(properties.getRedirectUriTemplate())
-                                 .userNameAttributeName(properties.getUserNameAttribute())
-                                 .clientId(properties.getCredential().getClientId())
-                                 .clientSecret(properties.getCredential().getClientSecret())
-                                 .clientAuthenticationMethod(clientAuthenticationMethod)
-                                 .authorizationUri(endpoints.getAuthorizationEndpoint())
-                                 .tokenUri(endpoints.getTokenEndpoint())
-                                 .jwkSetUri(endpoints.getJwkSetEndpoint())
-                                 .providerConfigurationMetadata(providerConfigurationMetadata(endpoints))
-                                 .build();
+            .clientName(registrationId)
+            .authorizationGrantType(authorizationGrantType)
+            .scope(scopes)
+            .redirectUri(properties.getRedirectUriTemplate())
+            .userNameAttributeName(properties.getUserNameAttribute())
+            .clientId(properties.getCredential().getClientId())
+            .clientSecret(properties.getCredential().getClientSecret())
+            .clientAuthenticationMethod(clientAuthenticationMethod)
+            .authorizationUri(endpoints.getAuthorizationEndpoint())
+            .tokenUri(endpoints.getTokenEndpoint())
+            .jwkSetUri(endpoints.getJwkSetEndpoint())
+            .providerConfigurationMetadata(providerConfigurationMetadata(endpoints))
+            .build();
     }
 
     private Map<String, Object> providerConfigurationMetadata(AadAuthorizationServerEndpoints endpoints) {
@@ -193,9 +184,9 @@ public class AadClientRegistrationRepository implements ClientRegistrationReposi
      */
     public static int resourceServerCount(Set<String> scopes) {
         return (int) scopes.stream()
-                           .filter(scope -> scope.contains("/"))
-                           .map(scope -> scope.substring(0, scope.lastIndexOf('/')))
-                           .distinct()
-                           .count();
+            .filter(scope -> scope.contains("/"))
+            .map(scope -> scope.substring(0, scope.lastIndexOf('/')))
+            .distinct()
+            .count();
     }
 }

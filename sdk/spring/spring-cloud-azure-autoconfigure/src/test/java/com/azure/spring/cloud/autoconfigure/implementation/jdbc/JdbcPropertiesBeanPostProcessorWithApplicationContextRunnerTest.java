@@ -28,95 +28,77 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
 
     private static final String MYSQL_CONNECTION_STRING = "jdbc:mysql://host/database?enableSwitch1&property1=value1";
-    private static final String PUBLIC_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";
-    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
+    private static final String PUBLIC_AUTHORITY_HOST_STRING
+        = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";
+    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING
+        = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withBean("springTokenCredentialProviderContextProvider", SpringTokenCredentialProviderContextProvider.class,
             SpringTokenCredentialProviderContextProvider::new)
-        .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
-            DataSourceProperties.class,
-            AzureJdbcPasswordlessProperties.class,
-            AzureGlobalPropertiesAutoConfiguration.class,
+        .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class, DataSourceProperties.class,
+            AzureJdbcPasswordlessProperties.class, AzureGlobalPropertiesAutoConfiguration.class,
             AzureTokenCredentialAutoConfiguration.class));
 
     @Test
     void mySqlAuthPluginNotOnClassPath() {
-        contextRunner
-            .withClassLoader(new FilteredClassLoader(AzureMysqlAuthenticationPlugin.class))
-            .withPropertyValues(
-                "spring.datasource.azure.passwordless-enabled=true",
-                "spring.datasource.url=" + MYSQL_CONNECTION_STRING
-            )
-            .run(
-                context -> {
-                    assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
-                    assertThat(context).hasSingleBean(DataSourceProperties.class);
-                    DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                    assertEquals(MYSQL_CONNECTION_STRING, dataSourceProperties.getUrl());
-                }
-            );
+        contextRunner.withClassLoader(new FilteredClassLoader(AzureMysqlAuthenticationPlugin.class))
+            .withPropertyValues("spring.datasource.azure.passwordless-enabled=true",
+                "spring.datasource.url=" + MYSQL_CONNECTION_STRING)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
+                assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(DataSourceProperties.class);
+                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
+                assertEquals(MYSQL_CONNECTION_STRING, dataSourceProperties.getUrl());
+            });
     }
 
     @Test
     void mySqlAuthPluginOnClassPath() {
         contextRunner
-            .withPropertyValues(
-                "spring.datasource.azure.passwordless-enabled=true",
-                "spring.datasource.url=" + MYSQL_CONNECTION_STRING
-            )
-            .run(
-                context -> {
-                    assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
-                    assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
-                    assertThat(context).hasSingleBean(DataSourceProperties.class);
-                    DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
+            .withPropertyValues("spring.datasource.azure.passwordless-enabled=true",
+                "spring.datasource.url=" + MYSQL_CONNECTION_STRING)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
+                assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
+                assertThat(context).hasSingleBean(DataSourceProperties.class);
+                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
 
-                    String expectedJdbcUrl = enhanceJdbcUrl(
-                        DatabaseType.MYSQL,
-                        MYSQL_CONNECTION_STRING,
-                        PUBLIC_AUTHORITY_HOST_STRING,
-                        MANAGED_IDENTITY_ENABLED_DEFAULT,
-                        SCOPES_DEFAULT,
-                        MYSQL_USER_AGENT
-                    );
-                    assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
-                }
-            );
+                String expectedJdbcUrl = enhanceJdbcUrl(DatabaseType.MYSQL, MYSQL_CONNECTION_STRING,
+                    PUBLIC_AUTHORITY_HOST_STRING, MANAGED_IDENTITY_ENABLED_DEFAULT, SCOPES_DEFAULT, MYSQL_USER_AGENT);
+                assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
+            });
     }
 
     @Test
     void shouldNotConfigureWithoutDataSourceProperties() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(DataSourceProperties.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(DataSourceProperties.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureJdbcAutoConfiguration.class));
     }
 
     @Test
     void shouldConfigure() {
-        this.contextRunner
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
-                assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
-                assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
-            });
+        this.contextRunner.run(context -> {
+            assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
+            assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
+            assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
+        });
     }
 
     @Test
     void testBindSpringBootProperties() {
         this.contextRunner
-            .withPropertyValues(
-                 "spring.datasource.azure.credential.client-id=fake-jdbc-client-id",
-                "spring.cloud.azure.credential.client-id=azure-client-id"
-            )
+            .withPropertyValues("spring.datasource.azure.credential.client-id=fake-jdbc-client-id",
+                "spring.cloud.azure.credential.client-id=azure-client-id")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
                 assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
                 assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
 
                 ConfigurableEnvironment environment = context.getEnvironment();
-                AzureJdbcPasswordlessProperties properties = Binder.get(environment).bindOrCreate("spring.datasource.azure", AzureJdbcPasswordlessProperties.class);
+                AzureJdbcPasswordlessProperties properties = Binder.get(environment)
+                    .bindOrCreate("spring.datasource.azure", AzureJdbcPasswordlessProperties.class);
 
                 assertNotEquals("azure-client-id", properties.getCredential().getClientId());
                 assertEquals("fake-jdbc-client-id", properties.getCredential().getClientId());
@@ -125,10 +107,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
 
     @Test
     void testBindAzureGlobalProperties() {
-        this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.credential.client-id=azure-client-id"
-            )
+        this.contextRunner.withPropertyValues("spring.cloud.azure.credential.client-id=azure-client-id")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureJdbcAutoConfiguration.class);
                 assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);

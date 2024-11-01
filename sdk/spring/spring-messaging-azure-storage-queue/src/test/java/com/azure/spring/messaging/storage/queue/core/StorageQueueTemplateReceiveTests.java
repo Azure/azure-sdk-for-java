@@ -90,8 +90,7 @@ public class StorageQueueTemplateReceiveTests {
             }
         };
         when(this.mockClientFactory.createQueueClient(eq(destination))).thenReturn(this.mockClient);
-        when(this.mockClient.receiveMessages(eq(1), any()))
-            .thenReturn(new PagedFlux<>(() -> Mono.just(pagedResponse)));
+        when(this.mockClient.receiveMessages(eq(1), any())).thenReturn(new PagedFlux<>(() -> Mono.just(pagedResponse)));
         this.template = new StorageQueueTemplate(this.mockClientFactory);
     }
 

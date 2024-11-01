@@ -9,7 +9,9 @@ import org.springframework.data.annotation.Id;
 
 import java.util.Objects;
 
-@Container(containerName = "nested-partition-key", partitionKeyPath = "/nestedEntity/nestedPartitionKey",
+@Container(
+    containerName = "nested-partition-key",
+    partitionKeyPath = "/nestedEntity/nestedPartitionKey",
     ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class NestedPartitionKeyEntity {
 
@@ -63,9 +65,6 @@ public class NestedPartitionKeyEntity {
 
     @Override
     public String toString() {
-        return "NestedPartitionKeyEntity{"
-            + "id='" + id + '\''
-            + ", nestedEntity=" + nestedEntity
-            + '}';
+        return "NestedPartitionKeyEntity{" + "id='" + id + '\'' + ", nestedEntity=" + nestedEntity + '}';
     }
 }

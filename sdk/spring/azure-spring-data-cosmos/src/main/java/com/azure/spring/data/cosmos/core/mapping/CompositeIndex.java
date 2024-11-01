@@ -19,5 +19,5 @@ public @interface CompositeIndex {
      * Array of composite index paths
      * @return String
      */
-    CompositeIndexPath[] paths() default {};
+    CompositeIndexPath[] paths() default { };
 }

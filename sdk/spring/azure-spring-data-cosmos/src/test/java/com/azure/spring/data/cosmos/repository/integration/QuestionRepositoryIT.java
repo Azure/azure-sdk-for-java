@@ -88,4 +88,3 @@ public class QuestionRepositoryIT {
         Assert.assertFalse(optional.isPresent());
     }
 }
-

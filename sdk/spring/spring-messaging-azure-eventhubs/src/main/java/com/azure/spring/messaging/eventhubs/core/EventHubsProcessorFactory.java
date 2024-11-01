@@ -24,7 +24,8 @@ public interface EventHubsProcessorFactory {
      *
      * @return the processor client.
      */
-    EventProcessorClient createProcessor(String eventHub, String consumerGroup, MessageListener<?> listener, EventHubsErrorHandler errorHandler);
+    EventProcessorClient createProcessor(String eventHub, String consumerGroup, MessageListener<?> listener,
+        EventHubsErrorHandler errorHandler);
 
     /**
      * Create an {@link EventProcessorClient} to consume events from the specified event hub in the context of the given
@@ -36,7 +37,8 @@ public interface EventHubsProcessorFactory {
      *
      * @return the processor client.
      */
-    EventProcessorClient createProcessor(String eventHub, String consumerGroup, EventHubsContainerProperties containerProperties);
+    EventProcessorClient createProcessor(String eventHub, String consumerGroup,
+        EventHubsContainerProperties containerProperties);
 
     /**
      * Add a listener for this factory.

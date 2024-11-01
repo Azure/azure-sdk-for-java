@@ -44,15 +44,18 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     static final String SASL_MECHANISM_OAUTH = OAUTHBEARER_MECHANISM;
     static final String AZURE_CONFIGURED_JAAS_OPTIONS_KEY = "azure.configured";
     static final String AZURE_CONFIGURED_JAAS_OPTIONS_VALUE = "true";
-    static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH =
-        KafkaOAuth2AuthenticateCallbackHandler.class.getName();
+    static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH
+        = KafkaOAuth2AuthenticateCallbackHandler.class.getName();
     protected static final PropertyMapper PROPERTY_MAPPER = new PropertyMapper();
     private static final Map<String, String> KAFKA_OAUTH_CONFIGS;
-    private static final String LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE = "OAUTHBEARER authentication property {} will be configured as {} to support Azure Identity credentials.";
-    private static final String LOG_OAUTH_AUTOCONFIGURATION_CONFIGURE = "Spring Cloud Azure auto-configuration for Kafka OAUTHBEARER authentication will be loaded to configure your Kafka security and sasl properties to support Azure Identity credentials.";
-    private static final String LOG_OAUTH_AUTOCONFIGURATION_RECOMMENDATION = "Currently {} authentication mechanism is used, recommend to use Spring Cloud Azure auto-configuration for Kafka OAUTHBEARER authentication"
-        + " which supports various Azure Identity credentials. To leverage the auto-configuration for OAuth2, you can just remove all your security, sasl and credential configurations of Kafka and Event Hubs."
-        + " And configure Kafka bootstrap servers instead, which can be set as spring.kafka.boostrap-servers=EventHubsNamespacesFQDN:9093.";
+    private static final String LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE
+        = "OAUTHBEARER authentication property {} will be configured as {} to support Azure Identity credentials.";
+    private static final String LOG_OAUTH_AUTOCONFIGURATION_CONFIGURE
+        = "Spring Cloud Azure auto-configuration for Kafka OAUTHBEARER authentication will be loaded to configure your Kafka security and sasl properties to support Azure Identity credentials.";
+    private static final String LOG_OAUTH_AUTOCONFIGURATION_RECOMMENDATION
+        = "Currently {} authentication mechanism is used, recommend to use Spring Cloud Azure auto-configuration for Kafka OAUTHBEARER authentication"
+            + " which supports various Azure Identity credentials. To leverage the auto-configuration for OAuth2, you can just remove all your security, sasl and credential configurations of Kafka and Event Hubs."
+            + " And configure Kafka bootstrap servers instead, which can be set as spring.kafka.boostrap-servers=EventHubsNamespacesFQDN:9093.";
 
     static {
         Map<String, String> configs = new HashMap<>();
@@ -74,8 +77,10 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
         if (needsPostProcess(bean)) {
             T properties = (T) bean;
 
-            replaceAzurePropertiesWithJaas(getMergedProducerProperties(properties), getRawProducerProperties(properties));
-            replaceAzurePropertiesWithJaas(getMergedConsumerProperties(properties), getRawConsumerProperties(properties));
+            replaceAzurePropertiesWithJaas(getMergedProducerProperties(properties),
+                getRawProducerProperties(properties));
+            replaceAzurePropertiesWithJaas(getMergedConsumerProperties(properties),
+                getRawConsumerProperties(properties));
             replaceAzurePropertiesWithJaas(getMergedAdminProperties(properties), getRawAdminProperties(properties));
             customizeProcess(properties);
         }
@@ -135,10 +140,8 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     protected void customizeProcess(T properties) {
     }
 
-
     protected void clearAzureProperties(Map<String, String> properties) {
-        AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.getPropertyKeys()
-            .forEach(properties::remove);
+        AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.getPropertyKeys().forEach(properties::remove);
     }
 
     /**
@@ -153,13 +156,13 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
      * @param mergedProperties the merged Kafka properties which can contain Azure properties to resolve JAAS from
      * @param rawPropertiesMap the raw Kafka properties Map to configure JAAS to and remove Azure Properties from
      */
-    private void replaceAzurePropertiesWithJaas(Map<String, Object> mergedProperties, Map<String, String> rawPropertiesMap) {
-        resolveJaasForAzure(mergedProperties)
-            .ifPresent(jaas -> {
-                configJaasToKafkaRawProperties(jaas, rawPropertiesMap);
-                logConfigureOAuthProperties();
-                configureKafkaUserAgent();
-            });
+    private void replaceAzurePropertiesWithJaas(Map<String, Object> mergedProperties,
+        Map<String, String> rawPropertiesMap) {
+        resolveJaasForAzure(mergedProperties).ifPresent(jaas -> {
+            configJaasToKafkaRawProperties(jaas, rawPropertiesMap);
+            logConfigureOAuthProperties();
+            configureKafkaUserAgent();
+        });
         clearAzureProperties(rawPropertiesMap);
     }
 
@@ -187,13 +190,14 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
      */
     private void logConfigureOAuthProperties() {
         getLogger().info(LOG_OAUTH_AUTOCONFIGURATION_CONFIGURE);
-        getLogger().debug(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
+        getLogger().debug(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SECURITY_PROTOCOL_CONFIG,
+            SECURITY_PROTOCOL_CONFIG_SASL);
         getLogger().debug(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_MECHANISM, SASL_MECHANISM_OAUTH);
-        getLogger().debug(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_JAAS_CONFIG, "***the value involves credentials and will not be logged***");
+        getLogger().debug(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_JAAS_CONFIG,
+            "***the value involves credentials and will not be logged***");
         getLogger().debug(LOG_OAUTH_DETAILED_PROPERTY_CONFIGURE, SASL_LOGIN_CALLBACK_HANDLER_CLASS,
             SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
     }
-
 
     private void setKafkaPropertiesToJaasOptions(Map<String, ?> properties, Jaas jaas) {
         AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.getPropertyKeys()
@@ -201,13 +205,13 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     }
 
     private void setAzurePropertiesToJaasOptionsIfAbsent(AzureProperties azureProperties, Jaas jaas) {
-        convertAzurePropertiesToMap(azureProperties)
-            .forEach((k, v) -> jaas.getOptions().putIfAbsent(k, v));
+        convertAzurePropertiesToMap(azureProperties).forEach((k, v) -> jaas.getOptions().putIfAbsent(k, v));
     }
 
     private Map<String, String> convertAzurePropertiesToMap(AzureProperties properties) {
         Map<String, String> configs = new HashMap<>();
-        for (AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping m : AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.values()) {
+        for (AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping m : AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping
+            .values()) {
             PROPERTY_MAPPER.from(m.getter().apply(properties)).to(p -> configs.put(m.propertyKey(), p));
         }
         return configs;
@@ -220,12 +224,13 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
         Method dataMethod = ReflectionUtils.findMethod(ApiVersionsRequest.class, "data");
         if (dataMethod != null) {
             ApiVersionsRequest apiVersionsRequest = new ApiVersionsRequest.Builder().build();
-            ApiVersionsRequestData apiVersionsRequestData = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(dataMethod, apiVersionsRequest);
+            ApiVersionsRequestData apiVersionsRequestData
+                = (ApiVersionsRequestData) ReflectionUtils.invokeMethod(dataMethod, apiVersionsRequest);
             if (apiVersionsRequestData != null) {
                 String clientSoftwareName = apiVersionsRequestData.clientSoftwareName();
                 if (clientSoftwareName != null && !clientSoftwareName.contains(AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH)) {
-                    apiVersionsRequestData.setClientSoftwareName(apiVersionsRequestData.clientSoftwareName()
-                        + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
+                    apiVersionsRequestData.setClientSoftwareName(
+                        apiVersionsRequestData.clientSoftwareName() + AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH);
                     apiVersionsRequestData.setClientSoftwareVersion(VERSION);
                 }
             }
@@ -247,7 +252,8 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
         String securityProtocol = (String) sourceProperties.get(SECURITY_PROTOCOL_CONFIG);
         String saslMechanism = (String) sourceProperties.get(SASL_MECHANISM);
         String jaasConfig = (String) sourceProperties.get(SASL_JAAS_CONFIG);
-        if (meetSaslProtocolConditions(securityProtocol) && meetSaslOAuth2MechanismConditions(saslMechanism)
+        if (meetSaslProtocolConditions(securityProtocol)
+            && meetSaslOAuth2MechanismConditions(saslMechanism)
             && meetJaasConditions(jaasConfig)) {
             return true;
         }
@@ -262,15 +268,16 @@ abstract class AbstractKafkaPropertiesBeanPostProcessor<T> implements BeanPostPr
     private boolean meetSaslOAuth2MechanismConditions(String saslMechanism) {
         return saslMechanism == null || SASL_MECHANISM_OAUTH.equalsIgnoreCase(saslMechanism);
     }
+
     private boolean meetJaasConditions(String jaasConfig) {
         if (jaasConfig == null) {
             return true;
         }
         JaasResolver resolver = new JaasResolver();
         return resolver.resolve(jaasConfig)
-                .map(jaas -> AZURE_CONFIGURED_JAAS_OPTIONS_VALUE.equals(
-                        jaas.getOptions().get(AZURE_CONFIGURED_JAAS_OPTIONS_KEY)))
-                .orElse(false);
+            .map(jaas -> AZURE_CONFIGURED_JAAS_OPTIONS_VALUE
+                .equals(jaas.getOptions().get(AZURE_CONFIGURED_JAAS_OPTIONS_KEY)))
+            .orElse(false);
     }
 
     private boolean meetAzureBootstrapServerConditions(Map<String, Object> sourceProperties) {

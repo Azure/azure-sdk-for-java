@@ -57,6 +57,7 @@ public abstract class AbstractAzureStorageClientBuilderFactory<T> extends Abstra
      */
     @Override
     protected BiConsumer<T, RetryPolicy> consumeRetryPolicy() {
-        return (a, b) -> { };
+        return (a, b) -> {
+        };
     }
 }

@@ -24,10 +24,7 @@ import static org.mockito.Mockito.verify;
  *
  */
 class SecretClientBuilderFactoryTests extends
-    AzureHttpClientBuilderFactoryBaseTests<
-        SecretClientBuilder,
-        AzureKeyVaultSecretTestProperties,
-        SecretClientBuilderFactoryTests.SecretClientBuilderFactoryExt> {
+    AzureHttpClientBuilderFactoryBaseTests<SecretClientBuilder, AzureKeyVaultSecretTestProperties, SecretClientBuilderFactoryTests.SecretClientBuilderFactoryExt> {
 
     private static final String ENDPOINT = "https://abc.vault.azure.net/";
 
@@ -37,7 +34,8 @@ class SecretClientBuilderFactoryTests extends
     }
 
     @Override
-    protected SecretClientBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(AzureKeyVaultSecretTestProperties properties) {
+    protected SecretClientBuilderFactoryExt
+        createClientBuilderFactoryWithMockBuilder(AzureKeyVaultSecretTestProperties properties) {
         return new SecretClientBuilderFactoryExt(properties);
     }
 
@@ -48,8 +46,7 @@ class SecretClientBuilderFactoryTests extends
 
     @Override
     protected void verifyCredentialCalled(SecretClientBuilder builder,
-                                          Class<? extends TokenCredential> tokenCredentialClass,
-                                          VerificationMode mode) {
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         verify(builder, mode).credential(any(tokenCredentialClass));
     }
 
@@ -59,7 +56,8 @@ class SecretClientBuilderFactoryTests extends
     }
 
     @Override
-    protected void verifyRetryOptionsCalled(SecretClientBuilder builder, AzureKeyVaultSecretTestProperties properties, VerificationMode mode) {
+    protected void verifyRetryOptionsCalled(SecretClientBuilder builder, AzureKeyVaultSecretTestProperties properties,
+        VerificationMode mode) {
         verify(builder, mode).retryPolicy(any(RetryPolicy.class));
     }
 
@@ -110,4 +108,3 @@ class SecretClientBuilderFactoryTests extends
         }
     }
 }
-

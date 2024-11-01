@@ -26,8 +26,7 @@ class AadWebApplicationConfigurationTests {
     void useDefaultSecurityFilterChain() {
         webApplicationContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
-            )
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id")
             .run(context -> {
                 assertThat(context).hasSingleBean(SecurityFilterChain.class);
                 assertThat(context).hasBean("defaultAadWebApplicationFilterChain");
@@ -37,17 +36,13 @@ class AadWebApplicationConfigurationTests {
     @Test
     void useCustomSecurityFilterChain() {
         new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(
-                HttpMessageConvertersAutoConfiguration.class,
+            .withConfiguration(AutoConfigurations.of(HttpMessageConvertersAutoConfiguration.class,
                 RestTemplateAutoConfiguration.class))
             .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class,
-                TestSecurityFilterChain.class,
-                AadAutoConfiguration.class)
+                AzureGlobalPropertiesAutoConfiguration.class, TestSecurityFilterChain.class, AadAutoConfiguration.class)
             .withInitializer(ConditionEvaluationReportLoggingListener.forLogLevel(LogLevel.INFO))
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
-            )
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id")
             .run(context -> {
                 assertThat(context).hasSingleBean(SecurityFilterChain.class);
                 assertThat(context).hasBean("testSecurityFilterChain");
@@ -57,10 +52,12 @@ class AadWebApplicationConfigurationTests {
     @EnableWebSecurity
     static class TestSecurityFilterChain {
 
-        @SuppressWarnings({"deprecation", "removal"})
+        @SuppressWarnings({ "deprecation", "removal" })
         @Bean
         public SecurityFilterChain testSecurityFilterChain(HttpSecurity http) throws Exception {
-            return http.oauth2Login(Customizer.withDefaults()).authorizeRequests(request -> request.anyRequest().authenticated()).build();
+            return http.oauth2Login(Customizer.withDefaults())
+                .authorizeRequests(request -> request.anyRequest().authenticated())
+                .build();
         }
     }
 }

@@ -37,11 +37,13 @@ import java.util.stream.Collectors;
  *
  * @param <T> Type of the service client builder
  */
-public abstract class AbstractAzureServiceClientBuilderFactory<T> implements AzureServiceClientBuilderFactory<T>, ApplicationContextAware {
+public abstract class AbstractAzureServiceClientBuilderFactory<T>
+    implements AzureServiceClientBuilderFactory<T>, ApplicationContextAware {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureServiceClientBuilderFactory.class);
     private static final TokenCredential DEFAULT_DEFAULT_TOKEN_CREDENTIAL = new DefaultAzureCredentialBuilder().build();
-    private static final AzureTokenCredentialResolver DEFAULT_TOKEN_CREDENTIAL_RESOLVER = new AzureTokenCredentialResolver();
+    private static final AzureTokenCredentialResolver DEFAULT_TOKEN_CREDENTIAL_RESOLVER
+        = new AzureTokenCredentialResolver();
 
     private ApplicationContext applicationContext;
 
@@ -196,10 +198,12 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
                 .filter(auth -> TokenCredential.class == auth.getAzureCredentialType())
                 .findFirst();
             if (tokenCredentialDescriptor.isPresent()) {
-                LOGGER.debug("Will configure the custom token credential bean ({}) for {}.",
-                    tokenCredentialBeanName, builder.getClass().getSimpleName());
-                TokenCredential customTokenCredential = applicationContext.getBean(tokenCredentialBeanName, TokenCredential.class);
-                ((AuthenticationDescriptor<TokenCredential>) tokenCredentialDescriptor.get()).getConsumer().accept(customTokenCredential);
+                LOGGER.debug("Will configure the custom token credential bean ({}) for {}.", tokenCredentialBeanName,
+                    builder.getClass().getSimpleName());
+                TokenCredential customTokenCredential
+                    = applicationContext.getBean(tokenCredentialBeanName, TokenCredential.class);
+                ((AuthenticationDescriptor<TokenCredential>) tokenCredentialDescriptor.get()).getConsumer()
+                    .accept(customTokenCredential);
                 credentialConfigured = true;
                 return;
             }
@@ -212,13 +216,10 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         }
 
         final Consumer consumer = descriptors.stream()
-                                             .filter(d -> (d.getAzureCredentialType()
-                                                            .isAssignableFrom(azureCredential.getClass())))
-                                             .map(AuthenticationDescriptor::getConsumer)
-                                             .findFirst()
-                                             .orElseThrow(
-                                                 () -> new IllegalArgumentException("Consumer should not be null"));
-
+            .filter(d -> (d.getAzureCredentialType().isAssignableFrom(azureCredential.getClass())))
+            .map(AuthenticationDescriptor::getConsumer)
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Consumer should not be null"));
 
         LOGGER.debug("Will configure the credential of type {} for {}.", azureCredential.getClass().getSimpleName(),
             builder.getClass().getSimpleName());
@@ -255,7 +256,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         }
 
         if (this.connectionStringProvider != null
-                && StringUtils.hasText(this.connectionStringProvider.getConnectionString())) {
+            && StringUtils.hasText(this.connectionStringProvider.getConnectionString())) {
             consumeConnectionString().accept(builder, this.connectionStringProvider.getConnectionString());
             credentialConfigured = true;
             LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
@@ -307,19 +308,17 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     private Object resolveAzureCredential(AzureProperties azureProperties,
-                                          List<AuthenticationDescriptor<?>> descriptors) {
+        List<AuthenticationDescriptor<?>> descriptors) {
         List<AzureCredentialResolver<?>> resolvers = descriptors.stream()
-                                                                .map(AuthenticationDescriptor::getAzureCredentialResolver)
-                                                                .collect(Collectors.toList());
+            .map(AuthenticationDescriptor::getAzureCredentialResolver)
+            .collect(Collectors.toList());
         AzureCredentialResolvers credentialResolvers = new AzureCredentialResolvers(resolvers);
         return credentialResolvers.resolve(azureProperties);
     }
 
     private String getApplicationId() {
         final ClientOptionsProvider.ClientOptions client = getAzureProperties().getClient();
-        return Optional.ofNullable(client)
-                       .map(ClientOptionsProvider.ClientOptions::getApplicationId)
-                       .orElse("");
+        return Optional.ofNullable(client).map(ClientOptionsProvider.ClientOptions::getApplicationId).orElse("");
     }
 
     /**

@@ -37,18 +37,15 @@ class AppConfigurationUserAgentTests {
     void userAgentTest(CapturedOutput output) {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureAppConfigurationAutoConfiguration.class))
-            .withPropertyValues(
-                "spring.cloud.azure.profile.tenant-id=sample",
-                "spring.cloud.azure.credential.client-id=sample",
-                "spring.cloud.azure.credential.client-secret=sample",
+            .withPropertyValues("spring.cloud.azure.profile.tenant-id=sample",
+                "spring.cloud.azure.credential.client-id=sample", "spring.cloud.azure.credential.client-secret=sample",
                 "spring.cloud.azure.appconfiguration.enabled=true",
                 "spring.cloud.azure.appconfiguration.endpoint=https://sample.azconfig.io",
                 "spring.cloud.azure.appconfiguration.client.logging.level=headers",
                 "spring.cloud.azure.appconfiguration.client.logging.allowed-header-names=User-Agent",
                 "spring.cloud.azure.appconfiguration.retry.fixed.delay=1",
                 "spring.cloud.azure.appconfiguration.retry.fixed.max-retries=0",
-                "spring.cloud.azure.appconfiguration.retry.mode=fixed"
-            )
+                "spring.cloud.azure.appconfiguration.retry.mode=fixed")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureAppConfigurationAutoConfiguration.class);

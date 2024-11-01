@@ -15,7 +15,8 @@ import static com.azure.spring.messaging.implementation.converter.ObjectMapperHo
 /**
  * A converter to turn a {@link org.springframework.messaging.Message} to {@link QueueMessageItem} and vice versa.
  */
-public class StorageQueueMessageConverter extends AbstractJacksonAzureMessageConverter<QueueMessageItem, QueueMessageItem> {
+public class StorageQueueMessageConverter
+    extends AbstractJacksonAzureMessageConverter<QueueMessageItem, QueueMessageItem> {
 
     private final ObjectMapper objectMapper;
 

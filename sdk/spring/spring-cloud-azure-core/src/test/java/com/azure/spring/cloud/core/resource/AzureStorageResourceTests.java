@@ -26,7 +26,6 @@ public class AzureStorageResourceTests {
         storageResource = new MockAzureStorageResource(StorageType.BLOB);
     }
 
-
     @ParameterizedTest
     @MethodSource("validLocationsProvider")
     public void testGetContainerName(ArgumentsAccessor arguments) {
@@ -43,7 +42,6 @@ public class AzureStorageResourceTests {
         assertEquals(fileName, storageResource.getFilename(location));
     }
 
-
     @ParameterizedTest
     @MethodSource("contentTypeProvider")
     public void testGetContentType(ArgumentsAccessor arguments) {
@@ -58,12 +56,9 @@ public class AzureStorageResourceTests {
      * location -- container name -- blob name
      */
     static Stream<Arguments> contentTypeProvider() {
-        return Stream.of(
-            arguments("azure-blob://c/b/a.pdf", "application/pdf"),
-            arguments("azure-BLOB://c/b/a.txt", "text/plain"),
-            arguments("AZURE-BLOB://c/b/a.jpg", "image/jpeg"),
-            arguments("azure-blob://c/b.unknown", null)
-        );
+        return Stream.of(arguments("azure-blob://c/b/a.pdf", "application/pdf"),
+            arguments("azure-BLOB://c/b/a.txt", "text/plain"), arguments("AZURE-BLOB://c/b/a.jpg", "image/jpeg"),
+            arguments("azure-blob://c/b.unknown", null));
     }
 
     /**
@@ -72,11 +67,8 @@ public class AzureStorageResourceTests {
      * location -- container name -- blob name
      */
     static Stream<Arguments> validLocationsProvider() {
-        return Stream.of(
-            arguments("azure-blob://c/b/a", "c", "b/a"),
-            arguments("azure-BLOB://c/b/a", "c", "b/a"),
-            arguments("AZURE-BLOB://c/b/a/", "c", "b/a")
-        );
+        return Stream.of(arguments("azure-blob://c/b/a", "c", "b/a"), arguments("azure-BLOB://c/b/a", "c", "b/a"),
+            arguments("AZURE-BLOB://c/b/a/", "c", "b/a"));
     }
 
     /**
@@ -94,7 +86,6 @@ public class AzureStorageResourceTests {
         StorageType getStorageType() {
             return storageType;
         }
-
 
         @Override
         public OutputStream getOutputStream() throws IOException {

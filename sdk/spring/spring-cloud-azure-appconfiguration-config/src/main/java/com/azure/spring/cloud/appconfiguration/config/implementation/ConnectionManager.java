@@ -144,8 +144,8 @@ public class ConnectionManager {
     }
 
     List<String> getAllEndpoints() {
-        List<String> endpoints = clients.stream().map(AppConfigurationReplicaClient::getEndpoint)
-            .collect(Collectors.toList());
+        List<String> endpoints
+            = clients.stream().map(AppConfigurationReplicaClient::getEndpoint).collect(Collectors.toList());
         endpoints.addAll(replicaLookUp.getAutoFailoverEndpoints(configStore.getEndpoint()));
         return endpoints;
     }
@@ -175,9 +175,14 @@ public class ConnectionManager {
      * @param syncToken App Configuration sync token
      */
     void updateSyncToken(String endpoint, String syncToken) {
-        clients.stream().filter(client -> client.getEndpoint().equals(endpoint)).findFirst()
+        clients.stream()
+            .filter(client -> client.getEndpoint().equals(endpoint))
+            .findFirst()
             .ifPresent(client -> client.updateSyncToken(syncToken));
-        autoFailoverClients.values().stream().filter(client -> client.getEndpoint().equals(endpoint)).findFirst()
+        autoFailoverClients.values()
+            .stream()
+            .filter(client -> client.getEndpoint().equals(endpoint))
+            .findFirst()
             .ifPresent(client -> client.updateSyncToken(syncToken));
     }
 

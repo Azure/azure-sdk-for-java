@@ -66,7 +66,8 @@ class ConditionalOnAnyPropertyTests {
 
     @Test
     void relaxedNamePrefixes() {
-        load(RelaxedPropertiesConfigurationPrefixes.class, "spring.cloud.azure.property1.theRelaxedProperty=value1, spring.cloud.azure.property2.theRelaxedProperty=value1");
+        load(RelaxedPropertiesConfigurationPrefixes.class,
+            "spring.cloud.azure.property1.theRelaxedProperty=value1, spring.cloud.azure.property2.theRelaxedProperty=value1");
         assertThat(this.context.containsBean("foo")).isTrue();
     }
 
@@ -210,7 +211,8 @@ class ConditionalOnAnyPropertyTests {
 
     @Test
     void multiValuesAllSetPrefix() {
-        load(MultiValuesConfigPrefix.class, "spring.cloud.azure.my-property:bar", "spring.cloud.azure.my-another-property:bar");
+        load(MultiValuesConfigPrefix.class, "spring.cloud.azure.my-property:bar",
+            "spring.cloud.azure.my-another-property:bar");
         assertThat(this.context.containsBean("foo")).isTrue();
     }
 
@@ -240,16 +242,18 @@ class ConditionalOnAnyPropertyTests {
 
     @Test
     void nameOrValueMustBeSpecified() {
-        assertThatIllegalStateException().isThrownBy(() -> load(NoNameOrValueAttribute.class, "spring.cloud.azure.property"))
-            .satisfies(causeMessageContaining(
-                "The name or value attribute of @ConditionalOnAnyProperty must be specified"));
+        assertThatIllegalStateException()
+            .isThrownBy(() -> load(NoNameOrValueAttribute.class, "spring.cloud.azure.property"))
+            .satisfies(
+                causeMessageContaining("The name or value attribute of @ConditionalOnAnyProperty must be specified"));
     }
 
     @Test
     void nameAndValueMustNotBeSpecified() {
-        assertThatIllegalStateException().isThrownBy(() -> load(NameAndValueAttribute.class, "spring.cloud.azure.property"))
-            .satisfies(causeMessageContaining(
-                "The name and value attributes of @ConditionalOnAnyProperty are exclusive"));
+        assertThatIllegalStateException()
+            .isThrownBy(() -> load(NameAndValueAttribute.class, "spring.cloud.azure.property"))
+            .satisfies(
+                causeMessageContaining("The name and value attributes of @ConditionalOnAnyProperty are exclusive"));
     }
 
     private <T extends Exception> Consumer<T> causeMessageContaining(String message) {
@@ -288,7 +292,8 @@ class ConditionalOnAnyPropertyTests {
 
     @Test
     void metaAndDirectAnnotationConditionMatchesWhenBothPropertiesAreSet() {
-        load(MetaAnnotationAndDirectAnnotation.class, "spring.cloud.azure.feature.enabled=true", "spring.cloud.azure.other.feature.enabled=true");
+        load(MetaAnnotationAndDirectAnnotation.class, "spring.cloud.azure.feature.enabled=true",
+            "spring.cloud.azure.other.feature.enabled=true");
         assertThat(this.context.containsBean("foo")).isTrue();
     }
 
@@ -299,7 +304,7 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnAnyProperty(name = {"property1", "property2"})
+    @ConditionalOnAnyProperty(name = { "property1", "property2" })
     static class MultiplePropertiesConfiguration {
 
         @Bean
@@ -321,7 +326,9 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnAnyProperty(prefixes = {"spring.cloud.azure.property1", "spring.cloud.azure.property2"}, name = "the-relaxed-property")
+    @ConditionalOnAnyProperty(
+        prefixes = { "spring.cloud.azure.property1", "spring.cloud.azure.property2" },
+        name = "the-relaxed-property")
     static class RelaxedPropertiesConfigurationPrefixes {
 
         @Bean
@@ -343,7 +350,7 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnAnyProperty(prefixes = {"spring.cloud.azure"}, name = "property")
+    @ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure" }, name = "property")
     static class RelaxedPropertiesRequiredConfigurationWithShortPrefixes {
 
         @Bean
@@ -354,7 +361,11 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure", name = "my-property", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnAnyProperty(
+        prefix = "spring.cloud.azure",
+        name = "my-property",
+        havingValue = "true",
+        matchIfMissing = true)
     static class EnabledIfNotConfiguredOtherwiseConfigPrefix {
 
         @Bean
@@ -365,7 +376,11 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnAnyProperty(prefixes = {"spring.cloud.azure"}, name = "my-property", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnAnyProperty(
+        prefixes = { "spring.cloud.azure" },
+        name = "my-property",
+        havingValue = "true",
+        matchIfMissing = true)
     static class EnabledIfNotConfiguredOtherwiseConfigPrefixes {
 
         @Bean
@@ -387,7 +402,7 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnAnyProperty(prefixes = {"spring.cloud.azure"}, name = "property", havingValue = "true")
+    @ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure" }, name = "property", havingValue = "true")
     static class DisabledIfNotConfiguredOtherwiseConfigPrefixes {
 
         @Bean
@@ -409,7 +424,7 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnAnyProperty(prefixes = {"spring.cloud.azure"}, name = "my-property", havingValue = "bar")
+    @ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure" }, name = "my-property", havingValue = "bar")
     static class SimpleValueConfigPrefixes {
 
         @Bean
@@ -442,7 +457,7 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnAnyProperty(prefixes = {"spring.cloud.azure"}, name = "my-property", havingValue = "bar")
+    @ConditionalOnAnyProperty(prefixes = { "spring.cloud.azure" }, name = "my-property", havingValue = "bar")
     static class PrefixesValueConfig {
 
         @Bean
@@ -453,7 +468,10 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure", name = {"my-property", "my-another-property"}, havingValue = "bar")
+    @ConditionalOnAnyProperty(
+        prefix = "spring.cloud.azure",
+        name = { "my-property", "my-another-property" },
+        havingValue = "bar")
     static class MultiValuesConfigPrefix {
 
         @Bean
@@ -464,7 +482,10 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnAnyProperty(prefixes = {"spring.cloud.azure.first", "spring.cloud.azure.second"}, name = {"my-property", "my-another-property"}, havingValue = "bar")
+    @ConditionalOnAnyProperty(
+        prefixes = { "spring.cloud.azure.first", "spring.cloud.azure.second" },
+        name = { "my-property", "my-another-property" },
+        havingValue = "bar")
     static class MultiValuesConfigPrefixes {
 
         @Bean
@@ -531,11 +552,10 @@ class ConditionalOnAnyPropertyTests {
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    @Target({ElementType.TYPE, ElementType.METHOD})
+    @Target({ ElementType.TYPE, ElementType.METHOD })
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.feature", name = "enabled", havingValue = "true")
     @interface ConditionalOnMyFeature {
 
     }
 
 }
-

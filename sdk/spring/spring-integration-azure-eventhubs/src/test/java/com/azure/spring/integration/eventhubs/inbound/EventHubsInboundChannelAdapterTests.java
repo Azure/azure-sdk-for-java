@@ -62,7 +62,8 @@ class EventHubsInboundChannelAdapterTests {
     @BeforeEach
     void setUp() {
         this.processorFactory = mock(EventHubsProcessorFactory.class);
-        when(processorFactory.createProcessor(eq(EVENT_HUB), eq(CONSUMER_GROUP), isA(EventHubsContainerProperties.class))).thenReturn(mock(EventProcessorClient.class));
+        when(processorFactory.createProcessor(eq(EVENT_HUB), eq(CONSUMER_GROUP),
+            isA(EventHubsContainerProperties.class))).thenReturn(mock(EventProcessorClient.class));
 
         this.containerProperties = new EventHubsContainerProperties();
         containerProperties.setEventHubName(EVENT_HUB);
@@ -74,8 +75,9 @@ class EventHubsInboundChannelAdapterTests {
 
     @Test
     void defaultRecordListenerMode() {
-        EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(
-            new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), new EventHubsContainerProperties()));
+        EventHubsInboundChannelAdapter channelAdapter
+            = new EventHubsInboundChannelAdapter(new EventHubsMessageListenerContainer(
+                mock(EventHubsProcessorFactory.class), new EventHubsContainerProperties()));
         assertThat(channelAdapter).hasFieldOrPropertyWithValue("listenerMode", ListenerMode.RECORD);
     }
 
@@ -97,7 +99,8 @@ class EventHubsInboundChannelAdapterTests {
             new EventHubsMessageListenerContainer(mock(EventHubsProcessorFactory.class), containerProperties),
             ListenerMode.BATCH);
         channelAdapter.onInit();
-        assertThat(containerProperties).extracting("messageListener").isInstanceOf(BatchMessagingMessageListenerAdapter.class);
+        assertThat(containerProperties).extracting("messageListener")
+            .isInstanceOf(BatchMessagingMessageListenerAdapter.class);
     }
 
     @Test
@@ -141,8 +144,8 @@ class EventHubsInboundChannelAdapterTests {
 
     @Test
     void sendAndReceive() throws InterruptedException {
-        EventHubsMessageListenerContainer listenerContainer =
-            new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
+        EventHubsMessageListenerContainer listenerContainer
+            = new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
         EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer);
 
         DirectChannel channel = new DirectChannel();
@@ -166,16 +169,13 @@ class EventHubsInboundChannelAdapterTests {
         MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
         assertTrue(messageListener instanceof EventHubsRecordMessageListener);
         List<String> payloads = Arrays.asList("a", "b", "c");
-        payloads.stream()
-                .map(payload -> {
-                    EventContext mock = mock(EventContext.class);
-                    when(mock.getEventData()).thenReturn(new EventData(payload));
-                    when(mock.getPartitionContext()).thenReturn(mock(PartitionContext.class));
-                    when(mock.updateCheckpointAsync()).thenReturn(Mono.empty());
-                    return mock;
-                })
-                .forEach(eventContext -> ((EventHubsRecordMessageListener) messageListener).onMessage(eventContext));
-
+        payloads.stream().map(payload -> {
+            EventContext mock = mock(EventContext.class);
+            when(mock.getEventData()).thenReturn(new EventData(payload));
+            when(mock.getPartitionContext()).thenReturn(mock(PartitionContext.class));
+            when(mock.updateCheckpointAsync()).thenReturn(Mono.empty());
+            return mock;
+        }).forEach(eventContext -> ((EventHubsRecordMessageListener) messageListener).onMessage(eventContext));
 
         assertTrue(latch.await(5L, TimeUnit.SECONDS), "Failed to receive message");
 
@@ -188,10 +188,10 @@ class EventHubsInboundChannelAdapterTests {
     @SuppressWarnings("unchecked")
     void sendAndReceiveBatch() throws InterruptedException {
         this.containerProperties.setCheckpointConfig(new CheckpointConfig(CheckpointMode.BATCH));
-        EventHubsMessageListenerContainer listenerContainer =
-            new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
-        EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer,
-            ListenerMode.BATCH);
+        EventHubsMessageListenerContainer listenerContainer
+            = new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
+        EventHubsInboundChannelAdapter channelAdapter
+            = new EventHubsInboundChannelAdapter(listenerContainer, ListenerMode.BATCH);
 
         DirectChannel channel = new DirectChannel();
         channel.setBeanName("output");
@@ -216,35 +216,34 @@ class EventHubsInboundChannelAdapterTests {
         MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
         assertTrue(messageListener instanceof EventHubsBatchMessageListener);
         List<String> payloads = Arrays.asList("a", "b", "c", "d", "e", "f");
-        IntStream.range(0, 3)
-                 .mapToObj(i -> {
-                     EventBatchContext mock = mock(EventBatchContext.class);
-                     when(mock.getEvents()).thenReturn(Arrays.asList((new EventData(payloads.get(2 * i))), (new EventData(payloads.get(2 * i + 1)))));
-                     when(mock.getPartitionContext()).thenReturn(mock(PartitionContext.class));
-                     when(mock.updateCheckpointAsync()).thenReturn(Mono.empty());
-                     return mock;
-                 })
-                .forEach(eventContext -> ((EventHubsBatchMessageListener) messageListener).onMessage(eventContext));
-
+        IntStream.range(0, 3).mapToObj(i -> {
+            EventBatchContext mock = mock(EventBatchContext.class);
+            when(mock.getEvents()).thenReturn(
+                Arrays.asList((new EventData(payloads.get(2 * i))), (new EventData(payloads.get(2 * i + 1)))));
+            when(mock.getPartitionContext()).thenReturn(mock(PartitionContext.class));
+            when(mock.updateCheckpointAsync()).thenReturn(Mono.empty());
+            return mock;
+        }).forEach(eventContext -> ((EventHubsBatchMessageListener) messageListener).onMessage(eventContext));
 
         assertTrue(latch.await(5L, TimeUnit.SECONDS), "Failed to receive message");
 
         for (int i = 0; i < receivedMessages.size(); i++) {
-            Assertions.assertEquals(receivedMessages.get(i), Arrays.asList(payloads.get(2 * i), payloads.get(2 * i + 1)));
+            Assertions.assertEquals(receivedMessages.get(i),
+                Arrays.asList(payloads.get(2 * i), payloads.get(2 * i + 1)));
         }
     }
 
     @Test
     void instrumentationErrorHandler() {
         DefaultInstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
-        EventHubsMessageListenerContainer listenerContainer =
-            new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
+        EventHubsMessageListenerContainer listenerContainer
+            = new EventHubsMessageListenerContainer(this.processorFactory, this.containerProperties);
         EventHubsInboundChannelAdapter channelAdapter = new EventHubsInboundChannelAdapter(listenerContainer);
 
         String instrumentationId = CONSUMER + ":" + EVENT_HUB;
 
-        EventHubsProcessorInstrumentation processorInstrumentation = new EventHubsProcessorInstrumentation(
-            EVENT_HUB, CONSUMER, Duration.ofMinutes(1));
+        EventHubsProcessorInstrumentation processorInstrumentation
+            = new EventHubsProcessorInstrumentation(EVENT_HUB, CONSUMER, Duration.ofMinutes(1));
         instrumentationManager.addHealthInstrumentation(processorInstrumentation);
 
         processorInstrumentation.setStatus(Instrumentation.Status.UP);

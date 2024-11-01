@@ -17,39 +17,32 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CosmosDataDiagnosticsConfigurationTests {
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(TestAutoconfigurationClass.class));
+    private final ApplicationContextRunner contextRunner
+        = new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(TestAutoconfigurationClass.class));
 
     @Test
     void configureWithPopulateQueryMetricsEnabled() {
-        this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.cosmos.populate-query-metrics=true")
-            .run(context -> {
-                assertThat(context).hasSingleBean(CosmosDataDiagnosticsConfiguration.class);
-                assertThat(context).hasSingleBean(ResponseDiagnosticsProcessor.class);
-            });
+        this.contextRunner.withPropertyValues("spring.cloud.azure.cosmos.populate-query-metrics=true").run(context -> {
+            assertThat(context).hasSingleBean(CosmosDataDiagnosticsConfiguration.class);
+            assertThat(context).hasSingleBean(ResponseDiagnosticsProcessor.class);
+        });
     }
 
     @Test
     void configureWithPopulateQueryMetricsDisabled() {
-        this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.cosmos.populate-query-metrics=false")
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(CosmosDataDiagnosticsConfiguration.class);
-                assertThat(context).doesNotHaveBean(ResponseDiagnosticsProcessor.class);
-            });
+        this.contextRunner.withPropertyValues("spring.cloud.azure.cosmos.populate-query-metrics=false").run(context -> {
+            assertThat(context).doesNotHaveBean(CosmosDataDiagnosticsConfiguration.class);
+            assertThat(context).doesNotHaveBean(ResponseDiagnosticsProcessor.class);
+        });
     }
 
     @Test
     void configureWithUserProvideResponseDiagnosticsProcessor() {
-        this.contextRunner
-            .withUserConfiguration(ResponseDiagnosticsProcessorConfiguration.class)
-            .run(context -> {
-                ResponseDiagnosticsProcessor processor = (ResponseDiagnosticsProcessor) context.getBean("ResponseDiagnosticsProcessor");
-                assertTrue(processor instanceof ResponseDiagnosticsProcessorExtend);
-            });
+        this.contextRunner.withUserConfiguration(ResponseDiagnosticsProcessorConfiguration.class).run(context -> {
+            ResponseDiagnosticsProcessor processor
+                = (ResponseDiagnosticsProcessor) context.getBean("ResponseDiagnosticsProcessor");
+            assertTrue(processor instanceof ResponseDiagnosticsProcessorExtend);
+        });
     }
 
     @Configuration

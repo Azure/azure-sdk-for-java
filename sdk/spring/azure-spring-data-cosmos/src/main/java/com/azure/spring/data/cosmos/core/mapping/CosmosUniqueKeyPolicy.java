@@ -26,5 +26,5 @@ public @interface CosmosUniqueKeyPolicy {
      *
      * @return unique keys
      */
-    CosmosUniqueKey[] uniqueKeys() default {};
+    CosmosUniqueKey[] uniqueKeys() default { };
 }

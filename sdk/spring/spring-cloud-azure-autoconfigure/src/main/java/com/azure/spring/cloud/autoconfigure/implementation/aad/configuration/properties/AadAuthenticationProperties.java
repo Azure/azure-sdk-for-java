@@ -60,7 +60,6 @@ public class AadAuthenticationProperties implements InitializingBean {
     @NestedConfigurationProperty
     private final AadCredentialProperties credential = new AadCredentialProperties();
 
-
     /**
      * Default UserGroup configuration.
      */
@@ -149,11 +148,12 @@ public class AadAuthenticationProperties implements InitializingBean {
      */
     private AadApplicationType applicationType;
 
-    private static final Map<AadApplicationType, Set<AuthorizationGrantType>> NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES = initCompatibleApplicationTypeAndGrantTypes();
+    private static final Map<AadApplicationType, Set<AuthorizationGrantType>> NON_COMPATIBLE_APPLICATION_TYPE_AND_GRANT_TYPES
+        = initCompatibleApplicationTypeAndGrantTypes();
 
     private static Map<AadApplicationType, Set<AuthorizationGrantType>> initCompatibleApplicationTypeAndGrantTypes() {
-        Map<AadApplicationType, Set<AuthorizationGrantType>> nonCompatibleApplicationTypeAndGrantTypes =
-            new HashMap<>();
+        Map<AadApplicationType, Set<AuthorizationGrantType>> nonCompatibleApplicationTypeAndGrantTypes
+            = new HashMap<>();
         nonCompatibleApplicationTypeAndGrantTypes.put(WEB_APPLICATION,
             Stream.of(ON_BEHALF_OF, JWT_BEARER).collect(Collectors.toSet()));
         nonCompatibleApplicationTypeAndGrantTypes.put(RESOURCE_SERVER,
@@ -229,16 +229,16 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     public boolean isAllowedGroupNamesConfigured() {
         return Optional.of(this.getUserGroup())
-                       .map(UserGroupProperties::getAllowedGroupNames)
-                       .map(allowedGroupNames -> !allowedGroupNames.isEmpty())
-                       .orElse(false);
+            .map(UserGroupProperties::getAllowedGroupNames)
+            .map(allowedGroupNames -> !allowedGroupNames.isEmpty())
+            .orElse(false);
     }
 
     public boolean isAllowedGroupIdsConfigured() {
         return Optional.of(this.getUserGroup())
-                       .map(UserGroupProperties::getAllowedGroupIds)
-                       .map(allowedGroupIds -> !allowedGroupIds.isEmpty())
-                       .orElse(false);
+            .map(UserGroupProperties::getAllowedGroupIds)
+            .map(allowedGroupIds -> !allowedGroupIds.isEmpty())
+            .orElse(false);
     }
 
     public UserGroupProperties getUserGroup() {
@@ -331,9 +331,7 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     public String getGraphMembershipUri() {
         return getProfile().getEnvironment().getMicrosoftGraphEndpoint()
-            + (getUserGroup().isUseTransitiveMembers()
-            ? "v1.0/me/transitiveMemberOf"
-            : "v1.0/me/memberOf");
+            + (getUserGroup().isUseTransitiveMembers() ? "v1.0/me/transitiveMemberOf" : "v1.0/me/memberOf");
     }
 
     public Map<String, AuthorizationClientProperties> getAuthorizationClients() {
@@ -342,13 +340,13 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     public boolean isAllowedGroup(String group) {
         return Optional.ofNullable(getUserGroup())
-                       .map(UserGroupProperties::getAllowedGroupNames)
-                       .orElseGet(Collections::emptyList)
-                       .contains(group)
+            .map(UserGroupProperties::getAllowedGroupNames)
+            .orElseGet(Collections::emptyList)
+            .contains(group)
             || Optional.ofNullable(getUserGroup())
-                       .map(UserGroupProperties::getAllowedGroupIds)
-                       .orElseGet(Collections::emptySet)
-                       .contains(group);
+                .map(UserGroupProperties::getAllowedGroupIds)
+                .orElseGet(Collections::emptySet)
+                .contains(group);
     }
 
     @Override
@@ -365,8 +363,7 @@ public class AadAuthenticationProperties implements InitializingBean {
         if (allowedGroupIds.size() > 1 && allowedGroupIds.contains("all")) {
             throw new IllegalStateException("When spring.cloud.azure.active-directory.user-group.allowed-group-ids "
                 + "contains 'all', no other group ids can be configured. "
-                + "But actually spring.cloud.azure.active-directory.user-group.allowed-group-ids="
-                + allowedGroupIds);
+                + "But actually spring.cloud.azure.active-directory.user-group.allowed-group-ids=" + allowedGroupIds);
         }
 
         validateTenantId();
@@ -380,20 +377,21 @@ public class AadAuthenticationProperties implements InitializingBean {
 
     private void validateTenantId() {
         if (isMultiTenantsApplication(getProfile().getTenantId()) && !userGroup.getAllowedGroupNames().isEmpty()) {
-            throw new IllegalStateException("When spring.cloud.azure.active-directory.profile.tenant-id is "
-                + "'common/organizations/consumers', "
-                + "spring.cloud.azure.active-directory.user-group.allowed-group-names should be empty. "
-                + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getProfile().getTenantId()
-                + ", and spring.cloud.azure.active-directory.user-group.allowed-group-names="
-                + userGroup.getAllowedGroupNames());
+            throw new IllegalStateException(
+                "When spring.cloud.azure.active-directory.profile.tenant-id is " + "'common/organizations/consumers', "
+                    + "spring.cloud.azure.active-directory.user-group.allowed-group-names should be empty. "
+                    + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getProfile().getTenantId()
+                    + ", and spring.cloud.azure.active-directory.user-group.allowed-group-names="
+                    + userGroup.getAllowedGroupNames());
         }
 
         if (isMultiTenantsApplication(getProfile().getTenantId()) && !userGroup.getAllowedGroupIds().isEmpty()) {
-            throw new IllegalStateException("When spring.cloud.azure.active-directory.profile.tenant-id is "
-                + "'common/organizations/consumers', "
-                + "spring.cloud.azure.active-directory.user-group.allowed-group-ids should be empty. "
-                + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getProfile().getTenantId()
-                + ", and spring.cloud.azure.active-directory.user-group.allowed-group-ids=" + userGroup.getAllowedGroupIds());
+            throw new IllegalStateException(
+                "When spring.cloud.azure.active-directory.profile.tenant-id is " + "'common/organizations/consumers', "
+                    + "spring.cloud.azure.active-directory.user-group.allowed-group-ids should be empty. "
+                    + "But actually spring.cloud.azure.active-directory.profile.tenant-id=" + getProfile().getTenantId()
+                    + ", and spring.cloud.azure.active-directory.user-group.allowed-group-ids="
+                    + userGroup.getAllowedGroupIds());
         }
     }
 
@@ -403,8 +401,8 @@ public class AadAuthenticationProperties implements InitializingBean {
             if (!isValidApplicationType(applicationType, inferred)) {
                 throw new IllegalStateException(
                     "Invalid property 'spring.cloud.azure.active-directory.application-type', the configured value is '"
-                        + applicationType.getValue() + "', " + "but the inferred value is '"
-                        + inferred.getValue() + "'.");
+                        + applicationType.getValue() + "', " + "but the inferred value is '" + inferred.getValue()
+                        + "'.");
             }
         } else {
             applicationType = inferred;
@@ -416,10 +414,10 @@ public class AadAuthenticationProperties implements InitializingBean {
     }
 
     private void validateAuthorizationClientProperties(String registrationId,
-                                                       AuthorizationClientProperties properties) {
+        AuthorizationClientProperties properties) {
         if (CLIENT_SECRET_JWT.equals(properties.getClientAuthenticationMethod())) {
-            throw new IllegalStateException("The client authentication method of '"
-                + registrationId + "' is not supported.");
+            throw new IllegalStateException(
+                "The client authentication method of '" + registrationId + "' is not supported.");
         }
 
         AuthorizationGrantType grantType = properties.getAuthorizationGrantType();
@@ -452,8 +450,7 @@ public class AadAuthenticationProperties implements InitializingBean {
      * @param scopes scopes for authorization_code clients.
      */
     private void addNecessaryScopesForAuthorizationCodeClients(String registrationId,
-                                                               AuthorizationClientProperties properties,
-                                                               List<String> scopes) {
+        AuthorizationClientProperties properties, List<String> scopes) {
         if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId) && (scopes == null || scopes.isEmpty())) {
             return;
         }
@@ -471,9 +468,8 @@ public class AadAuthenticationProperties implements InitializingBean {
     private List<String> extractValidatedScopes(String registrationId, AuthorizationClientProperties properties) {
         List<String> scopes = properties.getScopes();
         if (!AZURE_CLIENT_REGISTRATION_ID.equals(registrationId) && (scopes == null || scopes.isEmpty())) {
-            throw new IllegalStateException(
-                "'spring.cloud.azure.active-directory.authorization-clients." + registrationId + ".scopes' must be "
-                    + "configured");
+            throw new IllegalStateException("'spring.cloud.azure.active-directory.authorization-clients."
+                + registrationId + ".scopes' must be " + "configured");
         }
         return scopes;
     }
@@ -489,9 +485,9 @@ public class AadAuthenticationProperties implements InitializingBean {
         }
 
         if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId) && !AUTHORIZATION_CODE.equals(grantType)) {
-            throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients."
-                + AZURE_CLIENT_REGISTRATION_ID
-                + ".authorization-grant-type must be configured to 'authorization_code'.");
+            throw new IllegalStateException(
+                "spring.cloud.azure.active-directory.authorization-clients." + AZURE_CLIENT_REGISTRATION_ID
+                    + ".authorization-grant-type must be configured to 'authorization_code'.");
         }
     }
 
@@ -502,7 +498,7 @@ public class AadAuthenticationProperties implements InitializingBean {
      * @return default grant type
      */
     private AuthorizationGrantType decideDefaultGrantTypeFromApplicationType(String registrationId,
-                                                                             AadApplicationType appType) {
+        AadApplicationType appType) {
         AuthorizationGrantType grantType;
         switch (appType) {
             case WEB_APPLICATION:
@@ -512,13 +508,16 @@ public class AadAuthenticationProperties implements InitializingBean {
                     grantType = AZURE_DELEGATED;
                 }
                 break;
+
             case RESOURCE_SERVER:
             case RESOURCE_SERVER_WITH_OBO:
                 grantType = JWT_BEARER;
                 break;
+
             case WEB_APPLICATION_AND_RESOURCE_SERVER:
-                throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients." + registrationId
-                    + ".authorization-grant-grantType must be configured. ");
+                throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients."
+                    + registrationId + ".authorization-grant-grantType must be configured. ");
+
             default:
                 throw new IllegalStateException("Unsupported authorization grantType " + appType.getValue());
         }

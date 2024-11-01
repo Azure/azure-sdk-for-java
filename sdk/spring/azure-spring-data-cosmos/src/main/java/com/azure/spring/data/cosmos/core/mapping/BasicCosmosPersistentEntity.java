@@ -18,7 +18,7 @@ import org.springframework.expression.spel.support.StandardEvaluationContext;
  * @param <T> the type that is persisted.
  */
 public class BasicCosmosPersistentEntity<T> extends BasicPersistentEntity<T, CosmosPersistentProperty>
-        implements CosmosPersistentEntity<T>, ApplicationContextAware {
+    implements CosmosPersistentEntity<T>, ApplicationContextAware {
 
     private final StandardEvaluationContext context;
 

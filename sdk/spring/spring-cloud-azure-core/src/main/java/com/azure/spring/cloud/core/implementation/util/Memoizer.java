@@ -20,6 +20,7 @@ public final class Memoizer {
     private Memoizer() {
 
     }
+
     /**
      * Memoizes a function.
      *

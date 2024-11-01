@@ -17,8 +17,7 @@ class PropertiesValidatorTest {
 
     @Test
     void testLengthFallShortOf() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> validateNamespace("a"));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> validateNamespace("a"));
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(LENGTH_ERROR));
     }
@@ -33,24 +32,24 @@ class PropertiesValidatorTest {
 
     @Test
     void testContainIllegalSymbols() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> validateNamespace("test+test"));
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> validateNamespace("test+test"));
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(ILLEGAL_SYMBOL_ERROR));
     }
 
     @Test
     void testStartWithIllegalSymbol() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> validateNamespace("1testtest"));
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> validateNamespace("1testtest"));
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(START_SYMBOL_ERROR));
     }
 
     @Test
     void testEndWithIllegalSymbol() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> validateNamespace("testtest-"));
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> validateNamespace("testtest-"));
         String actualMessage = exception.getMessage();
         assertTrue(actualMessage.contains(END_SYMBOL_ERROR));
     }

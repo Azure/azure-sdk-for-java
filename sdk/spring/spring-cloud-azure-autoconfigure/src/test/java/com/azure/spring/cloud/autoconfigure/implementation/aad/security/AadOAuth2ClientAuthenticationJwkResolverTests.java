@@ -36,11 +36,10 @@ class AadOAuth2ClientAuthenticationJwkResolverTests {
 
     @Test
     void resolveJwkFunction() {
-        AadOAuth2ClientAuthenticationJwkResolver jwkResolver =
-            new AadOAuth2ClientAuthenticationJwkResolver("D:\\test\\test.pfx", "test");
+        AadOAuth2ClientAuthenticationJwkResolver jwkResolver
+            = new AadOAuth2ClientAuthenticationJwkResolver("D:\\test\\test.pfx", "test");
 
-        ClientRegistration clientRegistration1 = ClientRegistration
-            .withRegistrationId("test")
+        ClientRegistration clientRegistration1 = ClientRegistration.withRegistrationId("test")
             .clientId("test")
             .clientSecret("test-secret")
             .clientAuthenticationMethod(CLIENT_SECRET_JWT)
@@ -50,8 +49,7 @@ class AadOAuth2ClientAuthenticationJwkResolverTests {
 
         assertNull(jwkResolver.resolve(clientRegistration1));
 
-        ClientRegistration clientRegistration2 = ClientRegistration
-            .withRegistrationId("test")
+        ClientRegistration clientRegistration2 = ClientRegistration.withRegistrationId("test")
             .clientId("test")
             .clientSecret("test-secret")
             .clientAuthenticationMethod(NONE)
@@ -67,9 +65,7 @@ class AadOAuth2ClientAuthenticationJwkResolverTests {
         RSAKey rsaJwk = Mockito.spy(TestJwks.DEFAULT_RSA_JWK);
         given(this.jwkFunction.apply(any())).willReturn(rsaJwk);
 
-
-        ClientRegistration clientRegistration = ClientRegistration
-            .withRegistrationId("test")
+        ClientRegistration clientRegistration = ClientRegistration.withRegistrationId("test")
             .clientId("test")
             .clientSecret("test-secret")
             .clientAuthenticationMethod(CLIENT_SECRET_JWT)

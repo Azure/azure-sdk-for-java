@@ -20,7 +20,8 @@ import static com.azure.spring.cloud.core.provider.RetryOptionsProvider.RetryMod
  */
 public final class AzureStorageRetryOptionsConverter implements Converter<StorageRetry, RequestRetryOptions> {
 
-    public static final AzureStorageRetryOptionsConverter STORAGE_RETRY_CONVERTER = new AzureStorageRetryOptionsConverter();
+    public static final AzureStorageRetryOptionsConverter STORAGE_RETRY_CONVERTER
+        = new AzureStorageRetryOptionsConverter();
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureStorageRetryOptionsConverter.class);
 
     private AzureStorageRetryOptionsConverter() {
@@ -34,11 +35,8 @@ public final class AzureStorageRetryOptionsConverter implements Converter<Storag
         if (EXPONENTIAL == retryMode) {
             RetryOptionsProvider.RetryOptions.ExponentialRetryOptions exponential = storageRetry.getExponential();
             if (exponential != null && exponential.getMaxRetries() != null) {
-                return new RequestRetryOptions(RetryPolicyType.EXPONENTIAL,
-                    exponential.getMaxRetries(),
-                    storageRetry.getTryTimeout(),
-                    exponential.getBaseDelay(),
-                    exponential.getMaxDelay(),
+                return new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, exponential.getMaxRetries(),
+                    storageRetry.getTryTimeout(), exponential.getBaseDelay(), exponential.getMaxDelay(),
                     storageRetry.getSecondaryHost());
             } else {
                 LOGGER.debug("The max-retries is not set, skip the convert.");
@@ -46,12 +44,8 @@ public final class AzureStorageRetryOptionsConverter implements Converter<Storag
         } else if (FIXED == retryMode) {
             RetryOptionsProvider.RetryOptions.FixedRetryOptions fixed = storageRetry.getFixed();
             if (fixed != null && fixed.getMaxRetries() != null) {
-                return new RequestRetryOptions(RetryPolicyType.FIXED,
-                    fixed.getMaxRetries(),
-                    storageRetry.getTryTimeout(),
-                    fixed.getDelay(),
-                    fixed.getDelay(),
-                    storageRetry.getSecondaryHost());
+                return new RequestRetryOptions(RetryPolicyType.FIXED, fixed.getMaxRetries(),
+                    storageRetry.getTryTimeout(), fixed.getDelay(), fixed.getDelay(), storageRetry.getSecondaryHost());
             } else {
                 LOGGER.debug("The max-retries is not set, skip the convert.");
             }

@@ -44,7 +44,7 @@ public class PercentageFilterTest {
         context.setParameters(parameters);
         assertFalse(filter.evaluate(context));
     }
-    
+
     @Test
     public void hundredPercentageInteger() {
         PercentageFilter filter = new PercentageFilter();

@@ -19,7 +19,9 @@ public abstract class AzureAmqpClientBuilderFactoryBaseTests<B, P extends AzureA
     extends AzureServiceClientBuilderFactoryBaseTests<B, P, F> {
 
     protected abstract void verifyRetryOptionsCalled(B builder, VerificationMode mode);
+
     protected abstract void verifyProxyOptionsCalled(B builder, VerificationMode mode);
+
     protected abstract void verifyTransportTypeCalled(B builder, VerificationMode mode);
 
     @Test

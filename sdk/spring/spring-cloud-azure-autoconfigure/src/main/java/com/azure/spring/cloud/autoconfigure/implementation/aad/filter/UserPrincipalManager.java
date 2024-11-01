@@ -48,7 +48,8 @@ public class UserPrincipalManager {
     private static final String STS_WINDOWS_ISSUER = "https://sts.windows.net/";
     private static final String STS_CHINA_CLOUD_API_ISSUER = "https://sts.chinacloudapi.cn/";
 
-    private static final String MSG_MALFORMED_AD_KEY_DISCOVERY_URI = "Failed to parse active directory key discovery uri.";
+    private static final String MSG_MALFORMED_AD_KEY_DISCOVERY_URI
+        = "Failed to parse active directory key discovery uri.";
 
     private final JWKSource<SecurityContext> keySource;
     private final AadAuthenticationProperties aadAuthenticationProperties;
@@ -80,9 +81,8 @@ public class UserPrincipalManager {
      */
     @SuppressWarnings("deprecation")
     public UserPrincipalManager(AadAuthorizationServerEndpoints endpoints,
-                                AadAuthenticationProperties aadAuthenticationProperties,
-                                ResourceRetriever resourceRetriever,
-                                boolean explicitAudienceCheck) {
+        AadAuthenticationProperties aadAuthenticationProperties, ResourceRetriever resourceRetriever,
+        boolean explicitAudienceCheck) {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.explicitAudienceCheck = explicitAudienceCheck;
         if (explicitAudienceCheck) {
@@ -92,8 +92,7 @@ public class UserPrincipalManager {
             this.validAudiences.add(this.aadAuthenticationProperties.getAppIdUri());
         }
         try {
-            String jwkSetEndpoint =
-                endpoints.getJwkSetEndpoint();
+            String jwkSetEndpoint = endpoints.getJwkSetEndpoint();
             keySource = new RemoteJWKSet<>(new URL(jwkSetEndpoint), resourceRetriever);
         } catch (MalformedURLException e) {
             throw new IllegalArgumentException(MSG_MALFORMED_AD_KEY_DISCOVERY_URI, e);
@@ -115,10 +114,8 @@ public class UserPrincipalManager {
      */
     @SuppressWarnings("deprecation")
     public UserPrincipalManager(AadAuthorizationServerEndpoints endpoints,
-                                AadAuthenticationProperties aadAuthenticationProperties,
-                                ResourceRetriever resourceRetriever,
-                                boolean explicitAudienceCheck,
-                                JWKSetCache jwkSetCache) {
+        AadAuthenticationProperties aadAuthenticationProperties, ResourceRetriever resourceRetriever,
+        boolean explicitAudienceCheck, JWKSetCache jwkSetCache) {
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.explicitAudienceCheck = explicitAudienceCheck;
         if (explicitAudienceCheck) {
@@ -144,8 +141,8 @@ public class UserPrincipalManager {
      * @throws JOSEException If an internal processing exception is encountered.
      * @throws BadJOSEException If the JWT is rejected.
      */
-    public UserPrincipal buildUserPrincipal(String aadIssuedBearerToken) throws ParseException, JOSEException,
-        BadJOSEException {
+    public UserPrincipal buildUserPrincipal(String aadIssuedBearerToken)
+        throws ParseException, JOSEException, BadJOSEException {
         final JWSObject jwsObject = JWSObject.parse(aadIssuedBearerToken);
         final ConfigurableJWTProcessor<SecurityContext> validator = getValidator(jwsObject.getHeader().getAlgorithm());
         final JWTClaimsSet jwtClaimsSet = validator.process(aadIssuedBearerToken, null);
@@ -165,12 +162,10 @@ public class UserPrincipalManager {
         }
         if (rolesClaim instanceof Iterable<?>) {
             return StreamSupport.stream(((Iterable<?>) rolesClaim).spliterator(), false)
-                    .map(Object::toString)
-                    .collect(Collectors.toSet());
-        }
-        return Stream.of(rolesClaim)
                 .map(Object::toString)
                 .collect(Collectors.toSet());
+        }
+        return Stream.of(rolesClaim).map(Object::toString).collect(Collectors.toSet());
     }
 
     /**
@@ -212,10 +207,8 @@ public class UserPrincipalManager {
                     throw new BadJWTException("Invalid token issuer");
                 }
                 if (explicitAudienceCheck) {
-                    Optional<String> matchedAudience = claimsSet.getAudience()
-                                                                .stream()
-                                                                .filter(validAudiences::contains)
-                                                                .findFirst();
+                    Optional<String> matchedAudience
+                        = claimsSet.getAudience().stream().filter(validAudiences::contains).findFirst();
                     if (matchedAudience.isPresent()) {
                         LOGGER.debug("Matched audience: [{}]", matchedAudience.get());
                     } else {

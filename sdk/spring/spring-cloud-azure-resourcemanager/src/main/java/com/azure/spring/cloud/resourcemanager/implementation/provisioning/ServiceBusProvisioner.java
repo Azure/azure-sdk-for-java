@@ -62,8 +62,6 @@ public interface ServiceBusProvisioner {
      * @param subscription the subscription of the topic.
      * @param topicProperties the topic properties of the Service Bus.
      */
-    void provisionSubscription(String namespace,
-                               String topic,
-                               String subscription,
-                               ServiceBusTopicProperties topicProperties);
+    void provisionSubscription(String namespace, String topic, String subscription,
+        ServiceBusTopicProperties topicProperties);
 }

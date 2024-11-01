@@ -61,8 +61,8 @@ public class BaseAppConfigurationPolicyTest {
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
-            new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        BaseAppConfigurationPolicy policy
+            = new BaseAppConfigurationPolicy(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
 
         when(contextMock.getHttpRequest()).thenReturn(request);
 
@@ -102,8 +102,8 @@ public class BaseAppConfigurationPolicyTest {
     @SuppressWarnings("deprecation")
     @Test
     public void devIsConfigured() throws MalformedURLException {
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
-            new TracingInfo(true, false, 0, Configuration.getGlobalConfiguration()));
+        BaseAppConfigurationPolicy policy
+            = new BaseAppConfigurationPolicy(new TracingInfo(true, false, 0, Configuration.getGlobalConfiguration()));
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
@@ -118,8 +118,8 @@ public class BaseAppConfigurationPolicyTest {
     @SuppressWarnings("deprecation")
     @Test
     public void keyVaultIsConfigured() throws MalformedURLException {
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
-            new TracingInfo(false, true, 0, Configuration.getGlobalConfiguration()));
+        BaseAppConfigurationPolicy policy
+            = new BaseAppConfigurationPolicy(new TracingInfo(false, true, 0, Configuration.getGlobalConfiguration()));
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
@@ -134,8 +134,8 @@ public class BaseAppConfigurationPolicyTest {
     @SuppressWarnings("deprecation")
     @Test
     public void devAndKeyVaultAreConfigured() throws MalformedURLException {
-        BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
-            new TracingInfo(true, true, 0, Configuration.getGlobalConfiguration()));
+        BaseAppConfigurationPolicy policy
+            = new BaseAppConfigurationPolicy(new TracingInfo(true, true, 0, Configuration.getGlobalConfiguration()));
 
         URL url = new URL("https://www.test.url/kv");
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);

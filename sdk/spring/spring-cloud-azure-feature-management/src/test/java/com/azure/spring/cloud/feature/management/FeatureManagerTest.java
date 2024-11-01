@@ -109,7 +109,8 @@ public class FeatureManagerTest {
         HashMap<String, Feature> features = new HashMap<>();
         Feature onFeature = new Feature();
         onFeature.setKey("On");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters
+            = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext alwaysOn = new FeatureFilterEvaluationContext();
         alwaysOn.setName("AlwaysOn");
         filters.put(0, alwaysOn);
@@ -127,7 +128,8 @@ public class FeatureManagerTest {
         HashMap<String, Feature> features = new HashMap<>();
         Feature onFeature = new Feature();
         onFeature.setKey("Off");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters
+            = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext alwaysOn = new FeatureFilterEvaluationContext();
         alwaysOn.setName("AlwaysOff");
         filters.put(0, alwaysOn);
@@ -137,8 +139,8 @@ public class FeatureManagerTest {
 
         when(context.getBean(Mockito.matches("AlwaysOff"))).thenThrow(new NoSuchBeanDefinitionException(""));
 
-        FilterNotFoundException e = assertThrows(FilterNotFoundException.class,
-            () -> featureManager.isEnabledAsync("Off").block());
+        FilterNotFoundException e
+            = assertThrows(FilterNotFoundException.class, () -> featureManager.isEnabledAsync("Off").block());
         assertThat(e).hasMessage("Fail fast is set and a Filter was unable to be found: AlwaysOff");
     }
 
@@ -147,7 +149,8 @@ public class FeatureManagerTest {
         HashMap<String, Feature> features = new HashMap<>();
         Feature onFeature = new Feature();
         onFeature.setKey("On");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters
+            = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext alwaysOn = new FeatureFilterEvaluationContext();
         alwaysOn.setName("AlwaysOn");
         filters.put(0, alwaysOn);
@@ -168,7 +171,8 @@ public class FeatureManagerTest {
         HashMap<String, Feature> features = new HashMap<>();
         Feature onFeature = new Feature();
         onFeature.setKey("On");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters
+            = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext alwaysOn = new FeatureFilterEvaluationContext();
         alwaysOn.setName("AlwaysOn");
         filters.put(0, alwaysOn);
@@ -189,7 +193,8 @@ public class FeatureManagerTest {
         HashMap<String, Feature> features = new HashMap<>();
         Feature onFeature = new Feature();
         onFeature.setKey("On");
-        HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
+        HashMap<Integer, FeatureFilterEvaluationContext> filters
+            = new HashMap<Integer, FeatureFilterEvaluationContext>();
         FeatureFilterEvaluationContext alwaysOn = new FeatureFilterEvaluationContext();
         alwaysOn.setName("AlwaysOn");
         filters.put(0, alwaysOn);
@@ -208,14 +213,16 @@ public class FeatureManagerTest {
     @Test
     public void timeWindowFilter() {
         final HashMap<String, Feature> features = new HashMap<>();
-        final HashMap<Integer, FeatureFilterEvaluationContext> filters = new HashMap<Integer, FeatureFilterEvaluationContext>();
+        final HashMap<Integer, FeatureFilterEvaluationContext> filters
+            = new HashMap<Integer, FeatureFilterEvaluationContext>();
 
         final HashMap<String, Object> parameters = new HashMap<>();
         parameters.put("Start", "Sun, 14 Jan 2024 00:00:00 GMT");
         parameters.put("End", "Mon, 15 Jan 2024 00:00:00 GMT");
         final HashMap<String, Object> pattern = new HashMap<>();
         pattern.put("Type", "Weekly");
-        pattern.put("DaysOfWeek", List.of("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
+        pattern.put("DaysOfWeek",
+            List.of("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
         final HashMap<String, Object> range = new HashMap<>();
         range.put("Type", "NoEnd");
         final HashMap<String, Object> recurrence = new HashMap<>();

@@ -35,19 +35,23 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
 @Configuration(proxyBeanMethods = false)
 @Import({
     AzureEventHubsConsumerClientConfiguration.DedicatedConsumerConnectionConfiguration.class,
-    AzureEventHubsConsumerClientConfiguration.SharedConsumerConnectionConfiguration.class
-})
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "event-hub-name", "consumer.event-hub-name" })
+    AzureEventHubsConsumerClientConfiguration.SharedConsumerConnectionConfiguration.class })
+@ConditionalOnAnyProperty(
+    prefix = "spring.cloud.azure.eventhubs",
+    name = { "event-hub-name", "consumer.event-hub-name" })
 @ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = "consumer-group")
 class AzureEventHubsConsumerClientConfiguration {
 
-    @ConditionalOnMissingProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = { "connection-string", "namespace" })
+    @ConditionalOnMissingProperty(
+        prefix = "spring.cloud.azure.eventhubs.consumer",
+        name = { "connection-string", "namespace" })
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
     @ConditionalOnBean(EventHubClientBuilder.class)
     @Configuration(proxyBeanMethods = false)
     static class SharedConsumerConnectionConfiguration {
 
         private final EventHubClientBuilder builder;
+
         SharedConsumerConnectionConfiguration(AzureEventHubsProperties properties, EventHubClientBuilder builder) {
             this.builder = builder;
 
@@ -69,7 +73,9 @@ class AzureEventHubsConsumerClientConfiguration {
         }
     }
 
-    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs.consumer", name = { "connection-string", "namespace" })
+    @ConditionalOnAnyProperty(
+        prefix = "spring.cloud.azure.eventhubs.consumer",
+        name = { "connection-string", "namespace" })
     @Configuration(proxyBeanMethods = false)
     static class DedicatedConsumerConnectionConfiguration {
 
@@ -97,22 +103,21 @@ class AzureEventHubsConsumerClientConfiguration {
         @ConditionalOnBean(name = EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
         @ConditionalOnMissingBean(name = EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
         EventHubClientBuilder eventHubClientBuilderForConsumer(
-            @Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-            EventHubClientBuilderFactory clientBuilderFactory) {
+            @Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME) EventHubClientBuilderFactory clientBuilderFactory) {
             return clientBuilderFactory.build();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        EventHubConsumerAsyncClient eventHubConsumerAsyncClient(@Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
-                                                                EventHubClientBuilder builder) {
+        EventHubConsumerAsyncClient eventHubConsumerAsyncClient(
+            @Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME) EventHubClientBuilder builder) {
             return builder.buildAsyncConsumerClient();
         }
 
         @Bean
         @ConditionalOnMissingBean
-        EventHubConsumerClient eventHubConsumerClient(@Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME)
-                                                      EventHubClientBuilder builder) {
+        EventHubConsumerClient eventHubConsumerClient(
+            @Qualifier(EVENT_HUB_CONSUMER_CLIENT_BUILDER_BEAN_NAME) EventHubClientBuilder builder) {
             return builder.buildConsumerClient();
         }
 

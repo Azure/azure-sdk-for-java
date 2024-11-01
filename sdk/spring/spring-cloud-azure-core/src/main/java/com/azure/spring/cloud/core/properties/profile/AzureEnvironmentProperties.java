@@ -14,23 +14,31 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
     /**
      * Provides the environment instance for the public Azure.
      */
-    public static final AzureEnvironmentProperties AZURE = new AzureEnvironmentProperties(AzureEnvironment.AZURE) {{
+    public static final AzureEnvironmentProperties AZURE = new AzureEnvironmentProperties(AzureEnvironment.AZURE) {
+        {
             setServiceBusDomainName("servicebus.windows.net");
-        }};
+        }
+    };
 
     /**
      * Provides the environment instance for Azure China.
      */
-    public static final AzureEnvironmentProperties AZURE_CHINA = new AzureEnvironmentProperties(AzureEnvironment.AZURE_CHINA) {{
-            setServiceBusDomainName("servicebus.chinacloudapi.cn");
-        }};
+    public static final AzureEnvironmentProperties AZURE_CHINA
+        = new AzureEnvironmentProperties(AzureEnvironment.AZURE_CHINA) {
+            {
+                setServiceBusDomainName("servicebus.chinacloudapi.cn");
+            }
+        };
 
     /**
      * Provides the environment instance for Azure US Government.
      */
-    public static final AzureEnvironmentProperties AZURE_US_GOVERNMENT = new AzureEnvironmentProperties(AzureEnvironment.AZURE_US_GOVERNMENT) {{
-            setServiceBusDomainName("servicebus.usgovcloudapi.net");
-        }};
+    public static final AzureEnvironmentProperties AZURE_US_GOVERNMENT
+        = new AzureEnvironmentProperties(AzureEnvironment.AZURE_US_GOVERNMENT) {
+            {
+                setServiceBusDomainName("servicebus.usgovcloudapi.net");
+            }
+        };
 
     /**
      * The management portal URL.
@@ -145,14 +153,16 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
         this.storageEndpointSuffix = management.getStorageEndpointSuffix();
         this.keyVaultDnsSuffix = management.getKeyVaultDnsSuffix();
         this.azureDataLakeStoreFileSystemEndpointSuffix = management.getAzureDataLakeStoreFileSystemEndpointSuffix();
-        this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = management.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
+        this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix
+            = management.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
         this.azureLogAnalyticsEndpoint = management.getLogAnalyticsEndpoint();
         this.azureApplicationInsightsEndpoint = management.getApplicationInsightsEndpoint();
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public AzureEnvironmentProperties fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment) {
+    public AzureEnvironmentProperties
+        fromAzureManagementEnvironment(com.azure.core.management.AzureEnvironment environment) {
         return new AzureEnvironmentProperties(environment);
     }
 
@@ -373,7 +383,8 @@ public class AzureEnvironmentProperties implements AzureProfileOptionsProvider.A
      * Set the data lake analytics job and catalog service dns suffix.
      * @param azureDataLakeAnalyticsCatalogAndJobEndpointSuffix the data lake analytics job and catalog service dns suffix.
      */
-    public void setAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(String azureDataLakeAnalyticsCatalogAndJobEndpointSuffix) {
+    public void
+        setAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(String azureDataLakeAnalyticsCatalogAndJobEndpointSuffix) {
         this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
     }
 

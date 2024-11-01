@@ -39,7 +39,6 @@ import java.util.HashMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
 
-
 public class EventHubsHealthIndicatorTests {
 
     @Mock
@@ -59,8 +58,8 @@ public class EventHubsHealthIndicatorTests {
     private ExtendedProducerProperties<EventHubsProducerProperties> producerProperties;
     private ExtendedConsumerProperties<EventHubsConsumerProperties> consumerProperties;
 
-    private final EventHubsExtendedBindingProperties extendedBindingProperties =
-        new EventHubsExtendedBindingProperties();
+    private final EventHubsExtendedBindingProperties extendedBindingProperties
+        = new EventHubsExtendedBindingProperties();
     private final EventHubsProducerProperties eventHubsProducerProperties = new EventHubsProducerProperties();
     private final EventHubsConsumerProperties eventHubsConsumerProperties = new EventHubsConsumerProperties();
 
@@ -93,12 +92,13 @@ public class EventHubsHealthIndicatorTests {
         prepareProducerProperties();
         when(producerDestination.getName()).thenReturn(PRODUCER_NAME);
         binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
-        EventHubsTemplate eventHubsTemplate =
-            (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
+        EventHubsTemplate eventHubsTemplate
+            = (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
         Assertions.assertNotNull(eventHubsTemplate);
 
-        DefaultEventHubsNamespaceProducerFactory producerFactory = (DefaultEventHubsNamespaceProducerFactory)
-            ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
+        DefaultEventHubsNamespaceProducerFactory producerFactory
+            = (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate,
+                "producerFactory");
         Assertions.assertNotNull(producerFactory);
         producerFactory.createProducer(PRODUCER_NAME);
         final Health health = healthIndicator.health();
@@ -110,12 +110,13 @@ public class EventHubsHealthIndicatorTests {
         prepareProducerProperties();
         when(producerDestination.getName()).thenReturn(PRODUCER_NAME);
         binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
-        EventHubsTemplate eventHubsTemplate =
-            (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
+        EventHubsTemplate eventHubsTemplate
+            = (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
         Assertions.assertNotNull(eventHubsTemplate);
 
-        DefaultEventHubsNamespaceProducerFactory producerFactory = (DefaultEventHubsNamespaceProducerFactory)
-            ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
+        DefaultEventHubsNamespaceProducerFactory producerFactory
+            = (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate,
+                "producerFactory");
         Assertions.assertNotNull(producerFactory);
 
         producerFactory.createProducer(PRODUCER_NAME);
@@ -131,8 +132,8 @@ public class EventHubsHealthIndicatorTests {
         checkpoint.setMode(CheckpointMode.MANUAL);
         when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
         binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
-        EventHubsInboundChannelAdapter consumerEndpoint = (EventHubsInboundChannelAdapter) binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME,
-            consumerProperties);
+        EventHubsInboundChannelAdapter consumerEndpoint = (EventHubsInboundChannelAdapter) binder
+            .createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
 
         consumerEndpoint.afterPropertiesSet();
         consumerEndpoint.doStart();
@@ -172,8 +173,8 @@ public class EventHubsHealthIndicatorTests {
         when(consumerDestination.getName()).thenReturn(CONSUMER_NAME);
 
         binder.setCheckpointStore(new BlobCheckpointStore(blobContainerAsyncClient));
-        EventHubsInboundChannelAdapter consumerEndpoint = (EventHubsInboundChannelAdapter) binder.createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME,
-            consumerProperties);
+        EventHubsInboundChannelAdapter consumerEndpoint = (EventHubsInboundChannelAdapter) binder
+            .createConsumerEndpoint(consumerDestination, CONSUMER_GROUP_NAME, consumerProperties);
 
         consumerEndpoint.afterPropertiesSet();
         consumerEndpoint.doStart();

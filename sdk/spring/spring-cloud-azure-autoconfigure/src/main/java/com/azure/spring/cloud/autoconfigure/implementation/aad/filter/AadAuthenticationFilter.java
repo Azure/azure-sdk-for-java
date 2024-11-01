@@ -59,20 +59,11 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      * @param restTemplateBuilder the restTemplateBuilder
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
-                                   AadAuthorizationServerEndpoints endpoints,
-                                   ResourceRetriever resourceRetriever,
-                                   RestTemplateBuilder restTemplateBuilder) {
-        this(
-            aadAuthenticationProperties,
-            endpoints,
-            new UserPrincipalManager(
-                endpoints,
-                aadAuthenticationProperties,
-                resourceRetriever,
-                false
-            ),
-            restTemplateBuilder
-        );
+        AadAuthorizationServerEndpoints endpoints, ResourceRetriever resourceRetriever,
+        RestTemplateBuilder restTemplateBuilder) {
+        this(aadAuthenticationProperties, endpoints,
+            new UserPrincipalManager(endpoints, aadAuthenticationProperties, resourceRetriever, false),
+            restTemplateBuilder);
     }
 
     /**
@@ -86,22 +77,11 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      */
     @SuppressWarnings("deprecation")
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
-                                   AadAuthorizationServerEndpoints endpoints,
-                                   ResourceRetriever resourceRetriever,
-                                   JWKSetCache jwkSetCache,
-                                   RestTemplateBuilder restTemplateBuilder) {
-        this(
-            aadAuthenticationProperties,
-            endpoints,
-            new UserPrincipalManager(
-                endpoints,
-                aadAuthenticationProperties,
-                resourceRetriever,
-                false,
-                jwkSetCache
-            ),
-            restTemplateBuilder
-        );
+        AadAuthorizationServerEndpoints endpoints, ResourceRetriever resourceRetriever, JWKSetCache jwkSetCache,
+        RestTemplateBuilder restTemplateBuilder) {
+        this(aadAuthenticationProperties, endpoints,
+            new UserPrincipalManager(endpoints, aadAuthenticationProperties, resourceRetriever, false, jwkSetCache),
+            restTemplateBuilder);
     }
 
     /**
@@ -113,17 +93,12 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      * @param restTemplateBuilder the restTemplateBuilder
      */
     public AadAuthenticationFilter(AadAuthenticationProperties aadAuthenticationProperties,
-                                   AadAuthorizationServerEndpoints endpoints,
-                                   UserPrincipalManager userPrincipalManager,
-                                   RestTemplateBuilder restTemplateBuilder) {
+        AadAuthorizationServerEndpoints endpoints, UserPrincipalManager userPrincipalManager,
+        RestTemplateBuilder restTemplateBuilder) {
         this.userPrincipalManager = userPrincipalManager;
-        this.aadGraphClient = new AadGraphClient(
-            aadAuthenticationProperties.getCredential().getClientId(),
-            aadAuthenticationProperties.getCredential().getClientSecret(),
-            aadAuthenticationProperties,
-            endpoints,
-            restTemplateBuilder
-        );
+        this.aadGraphClient = new AadGraphClient(aadAuthenticationProperties.getCredential().getClientId(),
+            aadAuthenticationProperties.getCredential().getClientSecret(), aadAuthenticationProperties, endpoints,
+            restTemplateBuilder);
     }
 
     /**
@@ -134,16 +109,15 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
      * @param filterChain the filter chain
      */
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest,
-                                    HttpServletResponse httpServletResponse,
-                                    FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
+        FilterChain filterChain) throws ServletException, IOException {
         String aadIssuedBearerToken = Optional.of(httpServletRequest)
-                                              .map(r -> r.getHeader(HttpHeaders.AUTHORIZATION))
-                                              .map(String::trim)
-                                              .filter(s -> s.startsWith(BEARER_PREFIX))
-                                              .map(s -> s.replace(BEARER_PREFIX, ""))
-                                              .filter(userPrincipalManager::isTokenIssuedByAad)
-                                              .orElse(null);
+            .map(r -> r.getHeader(HttpHeaders.AUTHORIZATION))
+            .map(String::trim)
+            .filter(s -> s.startsWith(BEARER_PREFIX))
+            .map(s -> s.replace(BEARER_PREFIX, ""))
+            .filter(userPrincipalManager::isTokenIssuedByAad)
+            .orElse(null);
         if (aadIssuedBearerToken == null || alreadyAuthenticated()) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
@@ -153,22 +127,17 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
             UserPrincipal userPrincipal = (UserPrincipal) httpSession.getAttribute(CURRENT_USER_PRINCIPAL);
             if (userPrincipal == null
                 || !userPrincipal.getAadIssuedBearerToken().equals(aadIssuedBearerToken)
-                || userPrincipal.getAccessTokenForGraphApi() == null
-            ) {
+                || userPrincipal.getAccessTokenForGraphApi() == null) {
                 userPrincipal = userPrincipalManager.buildUserPrincipal(aadIssuedBearerToken);
                 String tenantId = userPrincipal.getClaim(AadJwtClaimNames.TID).toString();
-                String accessTokenForGraphApi = aadGraphClient
-                    .acquireTokenForGraphApi(aadIssuedBearerToken, tenantId)
-                    .accessToken();
+                String accessTokenForGraphApi
+                    = aadGraphClient.acquireTokenForGraphApi(aadIssuedBearerToken, tenantId).accessToken();
                 userPrincipal.setAccessTokenForGraphApi(accessTokenForGraphApi);
                 userPrincipal.setGroups(aadGraphClient.getGroups(accessTokenForGraphApi));
                 httpSession.setAttribute(CURRENT_USER_PRINCIPAL, userPrincipal);
             }
-            final Authentication authentication = new PreAuthenticatedAuthenticationToken(
-                userPrincipal,
-                null,
-                aadGraphClient.toGrantedAuthoritySet(userPrincipal.getGroups())
-            );
+            final Authentication authentication = new PreAuthenticatedAuthenticationToken(userPrincipal, null,
+                aadGraphClient.toGrantedAuthoritySet(userPrincipal.getGroups()));
             LOGGER.info("Request token verification success. {}", authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (BadJWTException ex) {
@@ -194,8 +163,8 @@ public class AadAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean alreadyAuthenticated() {
         return Optional.of(SecurityContextHolder.getContext())
-                       .map(SecurityContext::getAuthentication)
-                       .map(Authentication::isAuthenticated)
-                       .orElse(false);
+            .map(SecurityContext::getAuthentication)
+            .map(Authentication::isAuthenticated)
+            .orElse(false);
     }
 }

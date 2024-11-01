@@ -74,8 +74,8 @@ public class StorageQueueMessageSourceTests {
 
     @Test
     public void testDoReceiveSuccessWithDefaultVisibilityTimeout() {
-        final StorageQueueMessageSource messageSourceWithDefaultTimeout =
-            new StorageQueueMessageSource(destination, mockTemplate);
+        final StorageQueueMessageSource messageSourceWithDefaultTimeout
+            = new StorageQueueMessageSource(destination, mockTemplate);
         when(this.mockTemplate.receiveAsync(eq(destination), isNull())).thenReturn(Mono.just(message));
         Message<?> receivedMessage = (Message<?>) messageSourceWithDefaultTimeout.doReceive();
         assertEquals(message, receivedMessage);

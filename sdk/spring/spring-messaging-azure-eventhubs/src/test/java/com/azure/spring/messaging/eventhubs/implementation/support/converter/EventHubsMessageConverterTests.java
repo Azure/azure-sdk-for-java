@@ -88,7 +88,8 @@ public class EventHubsMessageConverterTests extends UnaryAzureMessageConverterTe
     @Test
     public void testNativeHeadersFromEventData() {
         EventData eventData = new EventData(EVENT_DATA);
-        String nativeHeadersString = "{\"spanId\":[\"spanId-1\", \"spanId-2\"],\"spanTraceId\":[\"spanTraceId-1\", \"spanTraceId-2\"]}";
+        String nativeHeadersString
+            = "{\"spanId\":[\"spanId-1\", \"spanId-2\"],\"spanTraceId\":[\"spanTraceId-1\", \"spanTraceId-2\"]}";
         eventData.getProperties().put(NATIVE_HEADERS, nativeHeadersString);
 
         EventHubsMessageConverter converter = new EventHubsMessageConverter();

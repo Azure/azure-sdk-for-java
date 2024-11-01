@@ -66,7 +66,7 @@ public final class StorageFileResource extends AzureStorageResource {
      * @param contentType the content type
      */
     public StorageFileResource(ShareServiceClient shareServiceClient, String location, boolean autoCreateFiles,
-                               String contentType) {
+        String contentType) {
         assertIsAzureStorageLocation(location);
         this.autoCreateFiles = autoCreateFiles;
         this.location = location;
@@ -202,8 +202,7 @@ public final class StorageFileResource extends AzureStorageResource {
                 header.setContentType(contentType);
             }
             // TODO: create method must provide maximum size, but we don't know actual
-            this.shareFileClient.createWithResponse(1024, header, null, null, null, null, Context.NONE)
-                .getValue();
+            this.shareFileClient.createWithResponse(1024, header, null, null, null, null, Context.NONE).getValue();
         }
     }
 }

@@ -46,7 +46,8 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     private final Map<String, EventHubProducerAsyncClient> clients = new ConcurrentHashMap<>();
     private final ProducerPropertiesParentMerger parentMerger = new ProducerPropertiesParentMerger();
     private final List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> customizers = new ArrayList<>();
-    private final Map<String, List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>>> dedicatedCustomizers = new HashMap<>();
+    private final Map<String, List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>>> dedicatedCustomizers
+        = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
     private TokenCredential defaultCredential = null;
 
@@ -64,7 +65,7 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
      * @param supplier the {@link PropertiesSupplier} to supply {@link ProducerProperties} for each event hub.
      */
     public DefaultEventHubsNamespaceProducerFactory(NamespaceProperties namespaceProperties,
-                                                    PropertiesSupplier<String, ProducerProperties> supplier) {
+        PropertiesSupplier<String, ProducerProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
     }
@@ -147,20 +148,19 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
      * @param eventHub the event hub name of the client.
      * @param customizer the provided customizer.
      */
-    public void addBuilderCustomizer(String eventHub, AzureServiceClientBuilderCustomizer<EventHubClientBuilder> customizer) {
+    public void addBuilderCustomizer(String eventHub,
+        AzureServiceClientBuilderCustomizer<EventHubClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug("The provided customizer is null, will ignore it.");
             return;
         }
-        this.dedicatedCustomizers
-            .computeIfAbsent(eventHub, key -> new ArrayList<>())
-            .add(customizer);
+        this.dedicatedCustomizers.computeIfAbsent(eventHub, key -> new ArrayList<>()).add(customizer);
     }
 
     private void customizeBuilder(String eventHub, EventHubClientBuilder builder) {
         this.customizers.forEach(customizer -> customizer.customize(builder));
         this.dedicatedCustomizers.getOrDefault(eventHub, new ArrayList<>())
-                                 .forEach(customizer -> customizer.customize(builder));
+            .forEach(customizer -> customizer.customize(builder));
     }
 
 }

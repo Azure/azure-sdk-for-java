@@ -55,8 +55,7 @@ public class Question {
             return false;
         }
         Question question = (Question) o;
-        return Objects.equals(id, question.id)
-            && Objects.equals(url, question.url);
+        return Objects.equals(id, question.id) && Objects.equals(url, question.url);
     }
 
     @Override
@@ -66,13 +65,6 @@ public class Question {
 
     @Override
     public String toString() {
-        return "Question{"
-            + "id='"
-            + id
-            + '\''
-            + ", url='"
-            + url
-            + '\''
-            + '}';
+        return "Question{" + "id='" + id + '\'' + ", url='" + url + '\'' + '}';
     }
 }

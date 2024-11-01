@@ -20,7 +20,6 @@ import org.springframework.util.StringUtils;
 
 import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
-
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Resource Manager support.
  *
@@ -41,8 +40,8 @@ public class AzureResourceManagerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     AzureResourceManager azureResourceManager(ApplicationContext applicationContext,
-                                              @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
-                                              AzureProfile azureProfile) {
+        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
+        AzureProfile azureProfile) {
         // TODO (xiada) Do we need to pass our User-Agent to with the management sdk?
         // TODO (xiada) configure the http client of arm client
         TokenCredential tokenCredential = defaultTokenCredential;
@@ -57,8 +56,8 @@ public class AzureResourceManagerAutoConfiguration {
     @ConditionalOnMissingBean
     AzureProfile azureProfile() {
         return new AzureProfile(this.globalProperties.getProfile().getTenantId(),
-                                this.globalProperties.getProfile().getSubscriptionId(),
-                                this.globalProperties.getProfile().getEnvironment().toAzureManagementEnvironment());
+            this.globalProperties.getProfile().getSubscriptionId(),
+            this.globalProperties.getProfile().getEnvironment().toAzureManagementEnvironment());
     }
 
 }

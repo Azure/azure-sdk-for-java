@@ -210,10 +210,10 @@ public class RecurrenceEvaluatorTest {
         consumeEvaluationTestData(settings, now, false);
     }
 
-
     @Test
     public void dailyRFCFormatTrue() {
-        final ZonedDateTime now = ZonedDateTime.parse("Sat, 02 Sep 2023 00:00:00 +0800", DateTimeFormatter.RFC_1123_DATE_TIME);
+        final ZonedDateTime now
+            = ZonedDateTime.parse("Sat, 02 Sep 2023 00:00:00 +0800", DateTimeFormatter.RFC_1123_DATE_TIME);
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();
@@ -229,7 +229,8 @@ public class RecurrenceEvaluatorTest {
 
     @Test
     public void dailyRFCFormatFalse() {
-        final ZonedDateTime now = ZonedDateTime.parse("Sun, 03 Sep 2023 00:00:00 +0800", DateTimeFormatter.RFC_1123_DATE_TIME); // third occurrences
+        final ZonedDateTime now
+            = ZonedDateTime.parse("Sun, 03 Sep 2023 00:00:00 +0800", DateTimeFormatter.RFC_1123_DATE_TIME); // third occurrences
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();
@@ -756,7 +757,8 @@ public class RecurrenceEvaluatorTest {
 
     @Test
     public void weeklyRFCFormatTrue() {
-        final ZonedDateTime now = ZonedDateTime.parse("Mon, 04 Sep 2023 00:00:00 +0800", DateTimeFormatter.RFC_1123_DATE_TIME); // Monday in the 2nd week
+        final ZonedDateTime now
+            = ZonedDateTime.parse("Mon, 04 Sep 2023 00:00:00 +0800", DateTimeFormatter.RFC_1123_DATE_TIME); // Monday in the 2nd week
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();
@@ -773,7 +775,8 @@ public class RecurrenceEvaluatorTest {
 
     @Test
     public void weeklyRFCFormatFalse() {
-        final ZonedDateTime now = ZonedDateTime.parse("Tue, 19 Sep 2023 00:00:00 GMT", DateTimeFormatter.RFC_1123_DATE_TIME); // 3rd occurrence
+        final ZonedDateTime now
+            = ZonedDateTime.parse("Tue, 19 Sep 2023 00:00:00 GMT", DateTimeFormatter.RFC_1123_DATE_TIME); // 3rd occurrence
         final TimeWindowFilterSettings settings = new TimeWindowFilterSettings();
         final RecurrencePattern pattern = new RecurrencePattern();
         final RecurrenceRange range = new RecurrenceRange();

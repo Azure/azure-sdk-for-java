@@ -72,14 +72,12 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
      * @param graphClient the graph client
      * @param restTemplateBuilder the restTemplateBuilder
      */
-    public AadOAuth2UserService(AadAuthenticationProperties properties,
-                                GraphClient graphClient,
-                                RestTemplateBuilder restTemplateBuilder) {
+    public AadOAuth2UserService(AadAuthenticationProperties properties, GraphClient graphClient,
+        RestTemplateBuilder restTemplateBuilder) {
         this(properties, graphClient);
     }
 
-    private AadOAuth2UserService(AadAuthenticationProperties properties,
-                                 GraphClient graphClient) {
+    private AadOAuth2UserService(AadAuthenticationProperties properties, GraphClient graphClient) {
         allowedGroupNames = Optional.ofNullable(properties)
             .map(AadAuthenticationProperties::getUserGroup)
             .map(AadAuthenticationProperties.UserGroupProperties::getAllowedGroupNames)
@@ -116,7 +114,8 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null) {
-            LOGGER.debug("User {}'s authorities saved from session: {}.", authentication.getName(), authentication.getAuthorities());
+            LOGGER.debug("User {}'s authorities saved from session: {}.", authentication.getName(),
+                authentication.getAuthorities());
             return (DefaultOidcUser) session.getAttribute(DEFAULT_OIDC_USER);
         }
 
@@ -135,21 +134,20 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
 
     private String getNameAttributeKey(OidcUserRequest userRequest) {
         return Optional.of(userRequest)
-                       .map(u -> u.getClientRegistration())
-                       .map(u -> u.getProviderDetails())
-                       .map(u -> u.getUserInfoEndpoint())
-                       .map(u -> u.getUserNameAttributeName())
-                       .filter(StringUtils::hasText)
-                       .orElse(AadJwtClaimNames.NAME);
+            .map(u -> u.getClientRegistration())
+            .map(u -> u.getProviderDetails())
+            .map(u -> u.getUserInfoEndpoint())
+            .map(u -> u.getUserNameAttributeName())
+            .filter(StringUtils::hasText)
+            .orElse(AadJwtClaimNames.NAME);
     }
 
     private Set<SimpleGrantedAuthority> buildAuthorities(OidcUserRequest userRequest) {
         Set<String> authorityStrings = new HashSet<>();
         authorityStrings.addAll(extractRolesFromIdToken(userRequest.getIdToken()));
         authorityStrings.addAll(extractGroupRolesFromAccessToken(userRequest.getAccessToken()));
-        Set<SimpleGrantedAuthority> authorities = authorityStrings.stream()
-                                                                  .map(SimpleGrantedAuthority::new)
-                                                                  .collect(Collectors.toSet());
+        Set<SimpleGrantedAuthority> authorities
+            = authorityStrings.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
 
         if (authorities.isEmpty()) {
             authorities = DEFAULT_AUTHORITY_SET;
@@ -164,13 +162,13 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
      */
     Set<String> extractRolesFromIdToken(OidcIdToken idToken) {
         return Optional.ofNullable(idToken)
-                       .map(token -> (Collection<?>) token.getClaim(ROLES))
-                       .filter(obj -> obj instanceof List<?>)
-                       .map(Collection::stream)
-                       .orElseGet(Stream::empty)
-                       .filter(s -> StringUtils.hasText(s.toString()))
-                       .map(role -> AuthorityPrefix.APP_ROLE + role)
-                       .collect(Collectors.toSet());
+            .map(token -> (Collection<?>) token.getClaim(ROLES))
+            .filter(obj -> obj instanceof List<?>)
+            .map(Collection::stream)
+            .orElseGet(Stream::empty)
+            .filter(s -> StringUtils.hasText(s.toString()))
+            .map(role -> AuthorityPrefix.APP_ROLE + role)
+            .collect(Collectors.toSet());
     }
 
     /**
@@ -186,23 +184,21 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
         GroupInformation groupInformation = getGroupInformation(accessToken);
         if (!allowedGroupNames.isEmpty()) {
             Optional.of(groupInformation)
-                    .map(GroupInformation::getGroupsNames)
-                    .map(Collection::stream)
-                    .orElseGet(Stream::empty)
-                    .filter(allowedGroupNames::contains)
-                    .forEach(roles::add);
+                .map(GroupInformation::getGroupsNames)
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .filter(allowedGroupNames::contains)
+                .forEach(roles::add);
         }
         if (!allowedGroupIds.isEmpty()) {
             Optional.of(groupInformation)
-                    .map(GroupInformation::getGroupsIds)
-                    .map(Collection::stream)
-                    .orElseGet(Stream::empty)
-                    .filter(this::isAllowedGroupId)
-                    .forEach(roles::add);
+                .map(GroupInformation::getGroupsIds)
+                .map(Collection::stream)
+                .orElseGet(Stream::empty)
+                .filter(this::isAllowedGroupId)
+                .forEach(roles::add);
         }
-        return roles.stream()
-                    .map(roleStr -> AuthorityPrefix.ROLE + roleStr)
-                    .collect(Collectors.toSet());
+        return roles.stream().map(roleStr -> AuthorityPrefix.ROLE + roleStr).collect(Collectors.toSet());
     }
 
     private boolean isAllowedGroupId(String groupId) {
@@ -214,8 +210,8 @@ public class AadOAuth2UserService implements OAuth2UserService<OidcUserRequest, 
 
     private GroupInformation getGroupInformation(OAuth2AccessToken accessToken) {
         return Optional.of(accessToken)
-                       .map(AbstractOAuth2Token::getTokenValue)
-                       .map(graphClient::getGroupInformation)
-                       .orElseGet(GroupInformation::new);
+            .map(AbstractOAuth2Token::getTokenValue)
+            .map(graphClient::getGroupInformation)
+            .orElseGet(GroupInformation::new);
     }
 }

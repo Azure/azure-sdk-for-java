@@ -11,7 +11,8 @@ import org.springframework.util.StringUtils;
 /**
  * A credential builder factory for the {@link ClientCertificateCredentialBuilder}.
  */
-public class ClientCertificateCredentialBuilderFactory extends AzureAadCredentialBuilderFactory<ClientCertificateCredentialBuilder> {
+public class ClientCertificateCredentialBuilderFactory
+    extends AzureAadCredentialBuilderFactory<ClientCertificateCredentialBuilder> {
 
     /**
      * Create a {@link ClientCertificateCredentialBuilderFactory} instance with {@link AzureProperties}.
@@ -36,7 +37,7 @@ public class ClientCertificateCredentialBuilderFactory extends AzureAadCredentia
         if (StringUtils.hasText(clientCertificatePath)) {
             if (StringUtils.hasText(credential.getClientCertificatePassword())) {
                 builder.pfxCertificate(clientCertificatePath)
-                       .clientCertificatePassword(credential.getClientCertificatePassword());
+                    .clientCertificatePassword(credential.getClientCertificatePassword());
             } else {
                 builder.pemCertificate(clientCertificatePath);
             }

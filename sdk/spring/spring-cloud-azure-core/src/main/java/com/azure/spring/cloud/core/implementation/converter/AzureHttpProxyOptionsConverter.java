@@ -15,7 +15,8 @@ import java.net.InetSocketAddress;
 /**
  * Converts a {@link ProxyOptionsProvider.HttpProxyOptions} to a {@link ProxyOptions}.
  */
-public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOptionsProvider.HttpProxyOptions, ProxyOptions> {
+public final class AzureHttpProxyOptionsConverter
+    implements Converter<ProxyOptionsProvider.HttpProxyOptions, ProxyOptions> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpProxyOptionsConverter.class);
     public static final AzureHttpProxyOptionsConverter HTTP_PROXY_CONVERTER = new AzureHttpProxyOptionsConverter();
@@ -43,8 +44,8 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyOpti
             throw new IllegalArgumentException("Wrong proxy type provided!");
         }
 
-        ProxyOptions proxyOptions = new ProxyOptions(sdkProxyType, new InetSocketAddress(proxy.getHostname(),
-                                                                                         proxy.getPort()));
+        ProxyOptions proxyOptions
+            = new ProxyOptions(sdkProxyType, new InetSocketAddress(proxy.getHostname(), proxy.getPort()));
         if (StringUtils.hasText(proxy.getUsername()) && StringUtils.hasText(proxy.getPassword())) {
             proxyOptions.setCredentials(proxy.getUsername(), proxy.getPassword());
         }

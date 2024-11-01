@@ -41,10 +41,7 @@ public class DatabaseThroughputConfig {
 
     @Override
     public String toString() {
-        return "DatabaseThroughputConfig{"
-            + "autoScale=" + autoScale
-            + ", requestUnits=" + requestUnits
-            + '}';
+        return "DatabaseThroughputConfig{" + "autoScale=" + autoScale + ", requestUnits=" + requestUnits + '}';
     }
 
 }

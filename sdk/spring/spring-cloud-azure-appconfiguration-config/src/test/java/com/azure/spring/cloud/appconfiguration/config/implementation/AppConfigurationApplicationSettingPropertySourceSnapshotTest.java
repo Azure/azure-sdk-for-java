@@ -57,23 +57,23 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     private static final String SNAPSHOT_NAME = "snapshot_test";
 
-    private static final ConfigurationSetting ITEM_1 =
-        createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1, EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_1
+        = createItem(KEY_FILTER, TEST_KEY_1, TEST_VALUE_1, TEST_LABEL_1, EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_2 =
-        createItem(KEY_FILTER, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2, EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_2
+        = createItem(KEY_FILTER, TEST_KEY_2, TEST_VALUE_2, TEST_LABEL_2, EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_3 =
-        createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_3
+        = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, EMPTY_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_4 =
-        createItem("/bar/", "test_key_4", "test_value_4", "test_label_4", EMPTY_CONTENT_TYPE);
+    private static final ConfigurationSetting ITEM_4
+        = createItem("/bar/", "test_key_4", "test_value_4", "test_label_4", EMPTY_CONTENT_TYPE);
 
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
         "Alpha", FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
-    private static final ConfigurationSetting ITEM_NULL =
-        createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, null);
+    private static final ConfigurationSetting ITEM_NULL
+        = createItem(KEY_FILTER, TEST_KEY_3, TEST_VALUE_3, TEST_LABEL_3, null);
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -89,9 +89,9 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     @Mock
     private List<ConfigurationSetting> configurationListMock;
-    
+
     FeatureFlagClient featureFlagLoader = new FeatureFlagClient();
-    
+
     private MockitoSession session;
 
     @BeforeAll
@@ -150,8 +150,8 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
 
     @Test
     public void testPropertyNameSlashConvertedToDots() throws IOException {
-        ConfigurationSetting slashedProp =
-            createItem(KEY_FILTER, TEST_SLASH_KEY, TEST_SLASH_VALUE, null, EMPTY_CONTENT_TYPE);
+        ConfigurationSetting slashedProp
+            = createItem(KEY_FILTER, TEST_SLASH_KEY, TEST_SLASH_VALUE, null, EMPTY_CONTENT_TYPE);
         List<ConfigurationSetting> settings = new ArrayList<>();
         settings.add(slashedProp);
         when(configurationListMock.iterator()).thenReturn(settings.iterator()).thenReturn(Collections.emptyIterator());
@@ -179,8 +179,8 @@ public class AppConfigurationApplicationSettingPropertySourceSnapshotTest {
         propertySource.initProperties(TRIM);
 
         String[] keyNames = propertySource.getPropertyNames();
-        String[] expectedKeyNames =
-            items.stream().map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
+        String[] expectedKeyNames
+            = items.stream().map(t -> t.getKey().substring(KEY_FILTER.length())).toArray(String[]::new);
 
         assertThat(keyNames).containsExactlyInAnyOrder(expectedKeyNames);
     }

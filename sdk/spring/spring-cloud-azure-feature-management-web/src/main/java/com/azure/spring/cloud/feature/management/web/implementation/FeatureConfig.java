@@ -26,7 +26,6 @@ public class FeatureConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(featureHandler)
-            .addPathPatterns("/**");
+        registry.addInterceptor(featureHandler).addPathPatterns("/**");
     }
 }

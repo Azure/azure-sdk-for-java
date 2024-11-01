@@ -43,8 +43,7 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
 
     @Override
     protected Object getTargetRepository(RepositoryInformation information) {
-        final EntityInformation<?, Serializable> entityInformation =
-            getEntityInformation(information.getDomainType());
+        final EntityInformation<?, Serializable> entityInformation = getEntityInformation(information.getDomainType());
         return getTargetRepositoryViaReflection(information, entityInformation, this.cosmosOperations);
     }
 
@@ -54,26 +53,23 @@ public class ReactiveCosmosRepositoryFactory extends ReactiveRepositoryFactorySu
     }
 
     @Override
-    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(
-        QueryLookupStrategy.Key key,
+    protected Optional<QueryLookupStrategy> getQueryLookupStrategy(QueryLookupStrategy.Key key,
         QueryMethodEvaluationContextProvider evaluationContextProvider) {
-        return Optional.of(new ReactiveCosmosQueryLookupStrategy(cosmosOperations,
-            evaluationContextProvider));
+        return Optional.of(new ReactiveCosmosQueryLookupStrategy(cosmosOperations, evaluationContextProvider));
     }
 
     private static class ReactiveCosmosQueryLookupStrategy implements QueryLookupStrategy {
         private final ReactiveCosmosOperations cosmosOperations;
 
-        ReactiveCosmosQueryLookupStrategy(
-            ReactiveCosmosOperations operations, QueryMethodEvaluationContextProvider provider) {
+        ReactiveCosmosQueryLookupStrategy(ReactiveCosmosOperations operations,
+            QueryMethodEvaluationContextProvider provider) {
             this.cosmosOperations = operations;
         }
 
         @Override
-        public RepositoryQuery resolveQuery(Method method, RepositoryMetadata metadata,
-                                            ProjectionFactory factory, NamedQueries namedQueries) {
-            final ReactiveCosmosQueryMethod queryMethod = new ReactiveCosmosQueryMethod(method,
-                metadata, factory);
+        public RepositoryQuery resolveQuery(Method method, RepositoryMetadata metadata, ProjectionFactory factory,
+            NamedQueries namedQueries) {
+            final ReactiveCosmosQueryMethod queryMethod = new ReactiveCosmosQueryMethod(method, metadata, factory);
 
             Assert.notNull(queryMethod, "queryMethod must not be null!");
             Assert.notNull(cosmosOperations, "dbOperations must not be null!");

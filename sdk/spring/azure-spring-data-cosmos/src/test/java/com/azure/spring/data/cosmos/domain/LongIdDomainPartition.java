@@ -51,8 +51,7 @@ public class LongIdDomainPartition {
             return false;
         }
         LongIdDomainPartition that = (LongIdDomainPartition) o;
-        return Objects.equals(number, that.number)
-            && Objects.equals(name, that.name);
+        return Objects.equals(number, that.number) && Objects.equals(name, that.name);
     }
 
     @Override
@@ -62,12 +61,6 @@ public class LongIdDomainPartition {
 
     @Override
     public String toString() {
-        return "LongIdDomain{"
-            + "number="
-            + number
-            + ", name='"
-            + name
-            + '\''
-            + '}';
+        return "LongIdDomain{" + "number=" + number + ", name='" + name + '\'' + '}';
     }
 }

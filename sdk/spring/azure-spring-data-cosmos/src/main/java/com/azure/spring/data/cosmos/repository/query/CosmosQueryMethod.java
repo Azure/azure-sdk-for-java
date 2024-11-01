@@ -40,8 +40,8 @@ public class CosmosQueryMethod extends QueryMethod {
     @SuppressWarnings("unchecked")
     public EntityMetadata<?> getEntityInformation() {
         final Class<Object> domainType = (Class<Object>) getDomainClass();
-        final CosmosEntityInformation<Object, String> entityInformation =
-            new CosmosEntityInformation<Object, String>(domainType);
+        final CosmosEntityInformation<Object, String> entityInformation
+            = new CosmosEntityInformation<Object, String>(domainType);
 
         this.metadata = new SimpleCosmosEntityMetadata<Object>(domainType, entityInformation);
         return this.metadata;
@@ -70,8 +70,8 @@ public class CosmosQueryMethod extends QueryMethod {
 
     private Optional<String> findAnnotatedQuery(Method method) {
         return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(method, Query.class))
-                   .map(Query::value)
-                   .filter(StringUtils::hasText);
+            .map(Query::value)
+            .filter(StringUtils::hasText);
     }
 
 }

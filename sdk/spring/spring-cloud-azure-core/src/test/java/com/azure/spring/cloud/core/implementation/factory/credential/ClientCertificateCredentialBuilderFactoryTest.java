@@ -6,9 +6,8 @@ package com.azure.spring.cloud.core.implementation.factory.credential;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 
-class ClientCertificateCredentialBuilderFactoryTest extends AzureAadCredentialBuilderFactoryTest<
-    ClientCertificateCredentialBuilder,
-    ClientCertificateCredentialBuilderFactory> {
+class ClientCertificateCredentialBuilderFactoryTest extends
+    AzureAadCredentialBuilderFactoryTest<ClientCertificateCredentialBuilder, ClientCertificateCredentialBuilderFactory> {
 
     @Override
     Class<ClientCertificateCredentialBuilderFactory> getType() {

@@ -3,7 +3,6 @@
 
 package com.azure.spring.jms;
 
-
 import org.apache.qpid.jms.JmsConnectionFactory;
 
 /**

@@ -100,8 +100,8 @@ public abstract class CosmosConfigurationSupport {
         final Set<Class<?>> initialEntitySet = new HashSet<>();
 
         if (StringUtils.hasText(basePackage)) {
-            final ClassPathScanningCandidateComponentProvider componentProvider =
-                    new ClassPathScanningCandidateComponentProvider(false);
+            final ClassPathScanningCandidateComponentProvider componentProvider
+                = new ClassPathScanningCandidateComponentProvider(false);
 
             componentProvider.addIncludeFilter(new AnnotationTypeFilter(Persistent.class));
 
@@ -109,8 +109,7 @@ public abstract class CosmosConfigurationSupport {
                 final String className = candidate.getBeanClassName();
                 Assert.notNull(className, "Bean class name is null.");
 
-                initialEntitySet
-                        .add(ClassUtils.forName(className, CosmosConfigurationSupport.class.getClassLoader()));
+                initialEntitySet.add(ClassUtils.forName(className, CosmosConfigurationSupport.class.getClassLoader()));
             }
         }
 

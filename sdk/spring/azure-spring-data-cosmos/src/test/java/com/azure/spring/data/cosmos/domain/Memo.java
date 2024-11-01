@@ -82,18 +82,7 @@ public class Memo {
 
     @Override
     public String toString() {
-        return "Memo{"
-            + "id='"
-            + id
-            + '\''
-            + ", message='"
-            + message
-            + '\''
-            + ", date="
-            + date
-            + ", importance="
-            + importance
-            + '}';
+        return "Memo{" + "id='" + id + '\'' + ", message='" + message + '\'' + ", date=" + date + ", importance="
+            + importance + '}';
     }
 }
-

@@ -47,13 +47,15 @@ public class ServiceBusChannelResourceManagerProvisionerTests {
     void provisionProducerDestination(String entityType) {
         ServiceBusEntityType serviceBusEntityType = ServiceBusEntityType.valueOf(entityType);
         producerProperties.setEntityType(serviceBusEntityType);
-        ExtendedProducerProperties<ServiceBusProducerProperties> extendedProperties =
-            new ExtendedProducerProperties<>(producerProperties);
+        ExtendedProducerProperties<ServiceBusProducerProperties> extendedProperties
+            = new ExtendedProducerProperties<>(producerProperties);
         resourceManagerProvisioner.provisionProducerDestination(entityName, extendedProperties);
         if (ServiceBusEntityType.QUEUE == serviceBusEntityType) {
-            verify(provisioner, times(1)).provisionQueue(anyString(), anyString(), any(ServiceBusQueueProperties.class));
+            verify(provisioner, times(1)).provisionQueue(anyString(), anyString(),
+                any(ServiceBusQueueProperties.class));
         } else {
-            verify(provisioner, times(1)).provisionTopic(anyString(), anyString(), any(ServiceBusTopicProperties.class));
+            verify(provisioner, times(1)).provisionTopic(anyString(), anyString(),
+                any(ServiceBusTopicProperties.class));
         }
         verify(resourceManagerProvisioner, times(1)).provisionProducerDestination(entityName, extendedProperties);
     }
@@ -63,16 +65,19 @@ public class ServiceBusChannelResourceManagerProvisionerTests {
     void provisionConsumerDestination(String entityType) {
         ServiceBusEntityType serviceBusEntityType = ServiceBusEntityType.valueOf(entityType);
         consumerProperties.setEntityType(serviceBusEntityType);
-        ExtendedConsumerProperties<ServiceBusConsumerProperties> extendedProperties =
-            new ExtendedConsumerProperties<>(consumerProperties);
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> extendedProperties
+            = new ExtendedConsumerProperties<>(consumerProperties);
 
         String subscriptionName = "subscriptionName";
         resourceManagerProvisioner.provisionConsumerDestination(entityName, subscriptionName, extendedProperties);
         if (ServiceBusEntityType.QUEUE == serviceBusEntityType) {
-            verify(provisioner, times(1)).provisionQueue(anyString(), anyString(), any(ServiceBusQueueProperties.class));
+            verify(provisioner, times(1)).provisionQueue(anyString(), anyString(),
+                any(ServiceBusQueueProperties.class));
         } else {
-            verify(provisioner, times(1)).provisionSubscription(anyString(), anyString(), anyString(), any(ServiceBusTopicProperties.class));
+            verify(provisioner, times(1)).provisionSubscription(anyString(), anyString(), anyString(),
+                any(ServiceBusTopicProperties.class));
         }
-        verify(resourceManagerProvisioner, times(1)).provisionConsumerDestination(entityName, subscriptionName, extendedProperties);
+        verify(resourceManagerProvisioner, times(1)).provisionConsumerDestination(entityName, subscriptionName,
+            extendedProperties);
     }
 }

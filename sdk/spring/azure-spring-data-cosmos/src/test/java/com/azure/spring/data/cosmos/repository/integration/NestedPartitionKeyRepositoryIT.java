@@ -29,11 +29,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class NestedPartitionKeyRepositoryIT {
 
-    private static final NestedPartitionKeyEntityWithGeneratedValue NESTED_ENTITY_1 =
-        new NestedPartitionKeyEntityWithGeneratedValue(null, new NestedEntity("partitionKey1"));
+    private static final NestedPartitionKeyEntityWithGeneratedValue NESTED_ENTITY_1
+        = new NestedPartitionKeyEntityWithGeneratedValue(null, new NestedEntity("partitionKey1"));
 
-    private static final NestedPartitionKeyEntityWithGeneratedValue NESTED_ENTITY_2 =
-        new NestedPartitionKeyEntityWithGeneratedValue(null, new NestedEntity("partitionKey2"));
+    private static final NestedPartitionKeyEntityWithGeneratedValue NESTED_ENTITY_2
+        = new NestedPartitionKeyEntityWithGeneratedValue(null, new NestedEntity("partitionKey2"));
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
@@ -45,7 +45,8 @@ public class NestedPartitionKeyRepositoryIT {
     NestedPartitionKeyRepository repository;
 
     @BeforeClass
-    public static void init() { }
+    public static void init() {
+    }
 
     @Before
     public void setUp() {
@@ -64,8 +65,8 @@ public class NestedPartitionKeyRepositoryIT {
         repository.saveAll(Arrays.asList(NESTED_ENTITY_1, NESTED_ENTITY_2));
 
         Iterable<NestedPartitionKeyEntityWithGeneratedValue> iterable = repository.findAll();
-        List<NestedPartitionKeyEntityWithGeneratedValue> nestedPartitionKeyEntityWithGeneratedValues =
-            TestUtils.toList(iterable);
+        List<NestedPartitionKeyEntityWithGeneratedValue> nestedPartitionKeyEntityWithGeneratedValues
+            = TestUtils.toList(iterable);
         assertThat(nestedPartitionKeyEntityWithGeneratedValues.size()).isEqualTo(2);
     }
 
@@ -73,8 +74,8 @@ public class NestedPartitionKeyRepositoryIT {
     public void testFindAllByPartitionKey() {
         repository.saveAll(Arrays.asList(NESTED_ENTITY_1, NESTED_ENTITY_2));
 
-        Iterable<NestedPartitionKeyEntityWithGeneratedValue> partitionKey = repository.findAll(new PartitionKey(
-            "partitionKey2"));
+        Iterable<NestedPartitionKeyEntityWithGeneratedValue> partitionKey
+            = repository.findAll(new PartitionKey("partitionKey2"));
         assertThat(partitionKey.iterator().hasNext()).isTrue();
         assertThat(partitionKey.iterator().next()).isEqualTo(NESTED_ENTITY_2);
     }
@@ -93,10 +94,11 @@ public class NestedPartitionKeyRepositoryIT {
     public void testDeleteByIdAndPartitionKey() {
         repository.saveAll(Arrays.asList(NESTED_ENTITY_1, NESTED_ENTITY_2));
 
-        repository.deleteById(NESTED_ENTITY_1.getId(), new PartitionKey(NESTED_ENTITY_1.getNestedEntity().getNestedPartitionKey()));
+        repository.deleteById(NESTED_ENTITY_1.getId(),
+            new PartitionKey(NESTED_ENTITY_1.getNestedEntity().getNestedPartitionKey()));
         Iterable<NestedPartitionKeyEntityWithGeneratedValue> iterable = repository.findAll();
-        List<NestedPartitionKeyEntityWithGeneratedValue> nestedPartitionKeyEntityWithGeneratedValues =
-            TestUtils.toList(iterable);
+        List<NestedPartitionKeyEntityWithGeneratedValue> nestedPartitionKeyEntityWithGeneratedValues
+            = TestUtils.toList(iterable);
         assertThat(nestedPartitionKeyEntityWithGeneratedValues.size()).isEqualTo(1);
         assertThat(nestedPartitionKeyEntityWithGeneratedValues.get(0)).isEqualTo(NESTED_ENTITY_2);
     }
@@ -107,8 +109,8 @@ public class NestedPartitionKeyRepositoryIT {
 
         repository.delete(NESTED_ENTITY_1);
         Iterable<NestedPartitionKeyEntityWithGeneratedValue> iterable = repository.findAll();
-        List<NestedPartitionKeyEntityWithGeneratedValue> nestedPartitionKeyEntityWithGeneratedValues =
-            TestUtils.toList(iterable);
+        List<NestedPartitionKeyEntityWithGeneratedValue> nestedPartitionKeyEntityWithGeneratedValues
+            = TestUtils.toList(iterable);
         assertThat(nestedPartitionKeyEntityWithGeneratedValues.size()).isEqualTo(1);
         assertThat(nestedPartitionKeyEntityWithGeneratedValues.get(0)).isEqualTo(NESTED_ENTITY_2);
     }
@@ -118,8 +120,8 @@ public class NestedPartitionKeyRepositoryIT {
         repository.saveAll(Arrays.asList(NESTED_ENTITY_1, NESTED_ENTITY_2));
 
         Iterable<NestedPartitionKeyEntityWithGeneratedValue> iterable = repository.findAll();
-        List<NestedPartitionKeyEntityWithGeneratedValue> nestedPartitionKeyEntityWithGeneratedValues =
-            TestUtils.toList(iterable);
+        List<NestedPartitionKeyEntityWithGeneratedValue> nestedPartitionKeyEntityWithGeneratedValues
+            = TestUtils.toList(iterable);
 
         String pattern = "^[a-zA-Z0-9]{8}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{4}-[a-zA-Z0-9]{12}$";
         assertThat(nestedPartitionKeyEntityWithGeneratedValues.get(0).getId()).matches(pattern);

@@ -87,7 +87,8 @@ class AzureAmqpProxyOptionsConverterTests {
         assertEquals(Proxy.Type.HTTP, target.getProxyAddress().type());
 
         source.setType("abc");
-        assertThrows(IllegalArgumentException.class, () -> AzureAmqpProxyOptionsConverter.AMQP_PROXY_CONVERTER.convert(source), "Wrong proxy type provided!");
+        assertThrows(IllegalArgumentException.class,
+            () -> AzureAmqpProxyOptionsConverter.AMQP_PROXY_CONVERTER.convert(source), "Wrong proxy type provided!");
     }
 
     @Test
@@ -112,7 +113,6 @@ class AzureAmqpProxyOptionsConverterTests {
         target = AzureAmqpProxyOptionsConverter.AMQP_PROXY_CONVERTER.convert(source);
         assertNotNull(target);
         assertEquals(ProxyAuthenticationType.BASIC, target.getAuthentication());
-
 
         source.setAuthenticationType("DIGEST");
         target = AzureAmqpProxyOptionsConverter.AMQP_PROXY_CONVERTER.convert(source);

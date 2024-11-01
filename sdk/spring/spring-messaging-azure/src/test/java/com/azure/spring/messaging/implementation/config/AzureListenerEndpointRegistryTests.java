@@ -18,8 +18,7 @@ public class AzureListenerEndpointRegistryTests {
 
     @Test
     public void createWithNullEndpoint() {
-        assertThrows(IllegalArgumentException.class,
-            () -> registry.registerListenerContainer(null, containerFactory));
+        assertThrows(IllegalArgumentException.class, () -> registry.registerListenerContainer(null, containerFactory));
     }
 
     @Test

@@ -112,22 +112,7 @@ public class Project {
 
     @Override
     public String toString() {
-        return "Project{"
-            + "id='"
-            + id
-            + '\''
-            + ", name='"
-            + name
-            + '\''
-            + ", creator='"
-            + creator
-            + '\''
-            + ", hasReleased="
-            + hasReleased
-            + ", starCount="
-            + starCount
-            + ", forkCount="
-            + forkCount
-            + '}';
+        return "Project{" + "id='" + id + '\'' + ", name='" + name + '\'' + ", creator='" + creator + '\''
+            + ", hasReleased=" + hasReleased + ", starCount=" + starCount + ", forkCount=" + forkCount + '}';
     }
 }

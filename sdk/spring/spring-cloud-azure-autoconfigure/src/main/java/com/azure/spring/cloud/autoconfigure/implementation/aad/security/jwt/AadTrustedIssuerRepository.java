@@ -60,8 +60,8 @@ public class AadTrustedIssuerRepository {
 
     private List<String> buildAadIssuers(String delimiter) {
         return Stream.of(LOGIN_MICROSOFT_ONLINE_ISSUER, STS_WINDOWS_ISSUER, STS_CHINA_CLOUD_API_ISSUER)
-                     .map(s -> s + tenantId + delimiter)
-                     .collect(Collectors.toList());
+            .map(s -> s + tenantId + delimiter)
+            .collect(Collectors.toList());
     }
 
     /**

@@ -64,7 +64,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @see AzureListenerEndpointRegistry
  */
 public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
-        implements MergedBeanDefinitionPostProcessor, Ordered, BeanFactoryAware, SmartInitializingSingleton {
+    implements MergedBeanDefinitionPostProcessor, Ordered, BeanFactoryAware, SmartInitializingSingleton {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureListenerAnnotationBeanPostProcessorAdapter.class);
 
@@ -74,8 +74,8 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
      */
     protected String containerFactoryBeanName;
 
-    private final MessageHandlerMethodFactoryAdapter messageHandlerMethodFactory =
-        new MessageHandlerMethodFactoryAdapter();
+    private final MessageHandlerMethodFactoryAdapter messageHandlerMethodFactory
+        = new MessageHandlerMethodFactoryAdapter();
 
     protected final AtomicInteger counter = new AtomicInteger();
 
@@ -125,8 +125,8 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
 
         if (this.beanFactory instanceof ListableBeanFactory) {
             // Apply AzureListenerConfigurer beans from the BeanFactory, if any
-            Map<String, AzureListenerConfigurer> beans =
-                    ((ListableBeanFactory) this.beanFactory).getBeansOfType(AzureListenerConfigurer.class);
+            Map<String, AzureListenerConfigurer> beans
+                = ((ListableBeanFactory) this.beanFactory).getBeansOfType(AzureListenerConfigurer.class);
             List<AzureListenerConfigurer> configurers = new ArrayList<>(beans.values());
             AnnotationAwareOrderComparator.sort(configurers);
             for (AzureListenerConfigurer configurer : configurers) {
@@ -142,9 +142,9 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
             // Determine AzureListenerEndpointRegistry bean from the BeanFactory
             if (this.endpointRegistry == null) {
                 Assert.state(this.beanFactory != null,
-                        "BeanFactory must be set to find endpoint registry by bean name");
+                    "BeanFactory must be set to find endpoint registry by bean name");
                 this.endpointRegistry = this.beanFactory.getBean(DEFAULT_AZURE_LISTENER_ENDPOINT_REGISTRY_BEAN_NAME,
-                        AzureListenerEndpointRegistry.class);
+                    AzureListenerEndpointRegistry.class);
             }
             this.registrar.setEndpointRegistry(this.endpointRegistry);
         }
@@ -185,8 +185,8 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
 
         Class<?> targetClass = AopProxyUtils.ultimateTargetClass(bean);
         if (!this.nonAnnotatedClasses.contains(targetClass)) {
-            Map<Method, Set<T>> annotatedMethods = MethodIntrospector.selectMethods(targetClass,
-                (MethodIntrospector.MetadataLookup<Set<T>>) method -> {
+            Map<Method, Set<T>> annotatedMethods
+                = MethodIntrospector.selectMethods(targetClass, (MethodIntrospector.MetadataLookup<Set<T>>) method -> {
                     Set<T> listenerMethods = findListenerMethods(method);
                     return (!listenerMethods.isEmpty() ? listenerMethods : null);
                 });
@@ -196,8 +196,8 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
                 LOGGER.trace("No @AzureMessageListener annotations found on bean type: {}", targetClass);
             } else {
                 // Non-empty set of methods
-                annotatedMethods.forEach((method, listeners) -> listeners
-                    .forEach(listener -> processAzureListener(listener, method, bean)));
+                annotatedMethods.forEach(
+                    (method, listeners) -> listeners.forEach(listener -> processAzureListener(listener, method, bean)));
                 LOGGER.debug("{} @AzureMessageListener methods processed on bean '{}': {}", annotatedMethods.size(),
                     beanName, annotatedMethods);
             }
@@ -226,18 +226,17 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
         if (StringUtils.hasText(containerFactoryBeanNameResolved)) {
             Assert.state(this.beanFactory != null, "BeanFactory must be set to obtain container factory by bean name");
             try {
-                factory = this.beanFactory.getBean(containerFactoryBeanNameResolved, MessageListenerContainerFactory.class);
+                factory
+                    = this.beanFactory.getBean(containerFactoryBeanNameResolved, MessageListenerContainerFactory.class);
             } catch (NoSuchBeanDefinitionException ex) {
-                throw new BeanInitializationException(
-                    "Could not register Azure listener endpoint on [" + mostSpecificMethod + "], no "
-                        + MessageListenerContainerFactory.class.getSimpleName() + " with id '"
-                        + containerFactoryBeanNameResolved + "' was found in the application context", ex);
+                throw new BeanInitializationException("Could not register Azure listener endpoint on ["
+                    + mostSpecificMethod + "], no " + MessageListenerContainerFactory.class.getSimpleName()
+                    + " with id '" + containerFactoryBeanNameResolved + "' was found in the application context", ex);
             }
         }
 
         this.registrar.registerEndpoint(endpoint, factory);
     }
-
 
     protected abstract Set<T> findListenerMethods(Method method);
 
@@ -255,9 +254,8 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
      *
      * @return an {@link AzureListenerEndpoint} implementation.
      */
-    protected abstract AzureListenerEndpoint createAndConfigureMethodListenerEndpoint(
-        T listenerAnnotation, Object bean, Method method, BeanFactory beanFactory,
-        MessageHandlerMethodFactory messageHandlerMethodFactory);
+    protected abstract AzureListenerEndpoint createAndConfigureMethodListenerEndpoint(T listenerAnnotation, Object bean,
+        Method method, BeanFactory beanFactory, MessageHandlerMethodFactory messageHandlerMethodFactory);
 
     protected abstract String getEndpointId(T listenerAnnotation);
 
@@ -315,4 +313,3 @@ public abstract class AzureListenerAnnotationBeanPostProcessorAdapter<T>
     public abstract String getDefaultAzureListenerAnnotationBeanPostProcessorBeanName();
 
 }
-

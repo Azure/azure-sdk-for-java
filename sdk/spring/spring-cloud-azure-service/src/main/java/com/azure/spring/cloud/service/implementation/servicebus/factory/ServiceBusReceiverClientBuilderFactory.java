@@ -15,16 +15,15 @@ import java.util.List;
 /**
  * Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder.ServiceBusReceiverClientBuilder}.
  */
-public class ServiceBusReceiverClientBuilderFactory
-    extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder,
-        ServiceBusReceiverClientProperties> {
+public class ServiceBusReceiverClientBuilderFactory extends
+    AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder, ServiceBusReceiverClientProperties> {
 
     /**
      * Create a {@link ServiceBusReceiverClientBuilderFactory} instance with the {@link ServiceBusReceiverClientProperties}.
      * @param properties the properties of a Service Bus receiver client.
      */
     public ServiceBusReceiverClientBuilderFactory(ServiceBusReceiverClientProperties properties,
-                                                  List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers) {
+        List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers) {
         this(null, properties, serviceBusClientBuilderCustomizers);
     }
 
@@ -37,13 +36,13 @@ public class ServiceBusReceiverClientBuilderFactory
      * @param properties the properties of the Service Bus receiver client.
      */
     public ServiceBusReceiverClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                  ServiceBusReceiverClientProperties properties) {
+        ServiceBusReceiverClientProperties properties) {
         this(serviceBusClientBuilder, properties, null);
     }
 
     private ServiceBusReceiverClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                   ServiceBusReceiverClientProperties properties,
-                                                   List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceClientBuilderCustomizers) {
+        ServiceBusReceiverClientProperties properties,
+        List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceClientBuilderCustomizers) {
         super(serviceBusClientBuilder, properties, serviceClientBuilderCustomizers);
     }
 

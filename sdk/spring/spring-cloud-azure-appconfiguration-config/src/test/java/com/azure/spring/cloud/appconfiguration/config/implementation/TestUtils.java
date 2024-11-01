@@ -48,7 +48,7 @@ public final class TestUtils {
     }
 
     static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
-         String contentType) {
+        String contentType) {
         return createItemFeatureFlag(prefix, key, value, label, contentType, null);
     }
 
@@ -73,8 +73,8 @@ public final class TestUtils {
                 if (nodeParams != null) {
                     for (int j = 0; j < nodeParams.size(); j++) {
                         // JsonNode param = nodeParams.
-                        Map<String, Object> result = MAPPER.convertValue(nodeParams,
-                            new TypeReference<Map<String, Object>>() {
+                        Map<String, Object> result
+                            = MAPPER.convertValue(nodeParams, new TypeReference<Map<String, Object>>() {
                             });
                         Set<String> parameters = result.keySet();
                         for (String paramKey : parameters) {
@@ -106,14 +106,13 @@ public final class TestUtils {
     }
 
     static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,
-        String keyFilter,
-        String label) {
+        String keyFilter, String label) {
         List<ConfigStore> stores = properties.getStores();
         ConfigStore store = new ConfigStore();
         store.setConnectionString(connectionString);
         store.setEndpoint(storeEndpoint);
-        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector().setKeyFilter(keyFilter)
-            .setLabelFilter(label);
+        AppConfigurationKeyValueSelector selectedKeys
+            = new AppConfigurationKeyValueSelector().setKeyFilter(keyFilter).setLabelFilter(label);
         List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
         selects.add(selectedKeys);
         store.setSelects(selects);

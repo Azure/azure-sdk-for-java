@@ -151,30 +151,26 @@ public class PageableAddressRepositoryIT {
         final String query = "SELECT * from c OFFSET " + skipCount + " LIMIT " + takeCount;
 
         final CosmosAsyncClient cosmosAsyncClient = applicationContext.getBean(CosmosAsyncClient.class);
-        final Flux<FeedResponse<Address>> feedResponseFlux =
-            cosmosAsyncClient.getDatabase(cosmosFactory.getDatabaseName())
-                        .getContainer(collectionManager.getContainerName(Address.class))
-                        .queryItems(query, options, Address.class)
-                        .byPage();
+        final Flux<FeedResponse<Address>> feedResponseFlux
+            = cosmosAsyncClient.getDatabase(cosmosFactory.getDatabaseName())
+                .getContainer(collectionManager.getContainerName(Address.class))
+                .queryItems(query, options, Address.class)
+                .byPage();
 
         StepVerifier.create(feedResponseFlux)
-                    .consumeNextWith(cosmosItemPropertiesFeedResponse ->
-                        results.addAll(cosmosItemPropertiesFeedResponse.getResults()))
-                    .verifyComplete();
+            .consumeNextWith(
+                cosmosItemPropertiesFeedResponse -> results.addAll(cosmosItemPropertiesFeedResponse.getResults()))
+            .verifyComplete();
         assertThat(results.size()).isEqualTo(takeCount);
     }
 
     private void validateResultCityMatch(Page<Address> page, String city) {
-        assertThat((int) page.getContent()
-                            .stream()
-                            .filter(address -> address.getCity().equals(city))
-                            .count()).isEqualTo(page.getContent().size());
+        assertThat((int) page.getContent().stream().filter(address -> address.getCity().equals(city)).count())
+            .isEqualTo(page.getContent().size());
     }
 
     private void validateResultStreetMatch(Page<Address> page, String street) {
-        assertThat((int) page.getContent()
-                            .stream()
-                            .filter(address -> address.getStreet().equals(street))
-                            .count()).isEqualTo(page.getContent().size());
+        assertThat((int) page.getContent().stream().filter(address -> address.getStreet().equals(street)).count())
+            .isEqualTo(page.getContent().size());
     }
 }

@@ -66,7 +66,6 @@ public class MultiTenantTestRepositoryConfig extends AbstractCosmosConfiguration
     @Value("${cosmos.diagnosticsThresholds.payloadSizeThresholdInBytes}")
     private int payloadSizeThresholdInBytes;
 
-
     @Bean
     public ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils() {
         return new ResponseDiagnosticsTestUtils();
@@ -74,20 +73,16 @@ public class MultiTenantTestRepositoryConfig extends AbstractCosmosConfiguration
 
     @Bean
     public CosmosClientBuilder cosmosClientBuilder() {
-        return new CosmosClientBuilder()
-            .key(cosmosDbKey)
+        return new CosmosClientBuilder().key(cosmosDbKey)
             .endpoint(cosmosDbUri)
             .contentResponseOnWriteEnabled(true)
-            .clientTelemetryConfig(
-                new CosmosClientTelemetryConfig()
-                    .diagnosticsThresholds(
-                        new CosmosDiagnosticsThresholds()
-                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
-                            .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
-                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
-                            .setRequestChargeThreshold(requestChargeThresholdInRU)
-                    )
-                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
+            .clientTelemetryConfig(new CosmosClientTelemetryConfig()
+                .diagnosticsThresholds(new CosmosDiagnosticsThresholds()
+                    .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
+                    .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                    .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
+                    .setRequestChargeThreshold(requestChargeThresholdInRU))
+                .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
     }
 
     @Bean
@@ -99,13 +94,13 @@ public class MultiTenantTestRepositoryConfig extends AbstractCosmosConfiguration
     @Override
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                           .enableQueryMetrics(queryMetricsEnabled)
-                           .enableIndexMetrics(indexMetricsEnabled)
-                           .maxDegreeOfParallelism(maxDegreeOfParallelism)
-                           .maxBufferedItemCount(maxBufferedItemCount)
-                           .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
-                           .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
-                           .build();
+            .enableQueryMetrics(queryMetricsEnabled)
+            .enableIndexMetrics(indexMetricsEnabled)
+            .maxDegreeOfParallelism(maxDegreeOfParallelism)
+            .maxBufferedItemCount(maxBufferedItemCount)
+            .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
+            .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
+            .build();
     }
 
     @Override

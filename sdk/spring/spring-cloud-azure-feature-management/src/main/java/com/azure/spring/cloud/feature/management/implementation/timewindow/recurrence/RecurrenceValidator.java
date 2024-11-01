@@ -32,11 +32,13 @@ public class RecurrenceValidator {
         String paramName = "";
         String reason = "";
         if (recurrence.getPattern() == null) {
-            paramName = String.format("%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN);
+            paramName
+                = String.format("%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_PATTERN);
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
         }
         if (recurrence.getRange() == null) {
-            paramName = String.format("%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE);
+            paramName
+                = String.format("%s.%s", TIME_WINDOW_FILTER_SETTING_RECURRENCE, RecurrenceConstants.RECURRENCE_RANGE);
             reason = RecurrenceConstants.REQUIRED_PARAMETER;
         }
         if (!settings.getEnd().isAfter(settings.getStart())) {
@@ -81,9 +83,11 @@ public class RecurrenceValidator {
 
         // Check whether "Start" is a valid first occurrence
         final RecurrencePattern pattern = settings.getRecurrence().getPattern();
-        if (pattern.getDaysOfWeek().stream().noneMatch((dayOfWeekStr) ->
-            settings.getStart().getDayOfWeek() == dayOfWeekStr)) {
-            throw new IllegalArgumentException(String.format(RecurrenceConstants.NOT_MATCHED, TIME_WINDOW_FILTER_SETTING_START));
+        if (pattern.getDaysOfWeek()
+            .stream()
+            .noneMatch((dayOfWeekStr) -> settings.getStart().getDayOfWeek() == dayOfWeekStr)) {
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.NOT_MATCHED, TIME_WINDOW_FILTER_SETTING_START));
         }
 
         // Time window duration must be shorter than how frequently it occurs
@@ -91,7 +95,8 @@ public class RecurrenceValidator {
 
         // Check whether the time window duration is shorter than the minimum gap between days of week
         if (!isDurationCompliantWithDaysOfWeek(settings)) {
-            throw new IllegalArgumentException(String.format(RecurrenceConstants.TIME_WINDOW_DURATION_OUT_OF_RANGE, "Recurrence.Pattern.DaysOfWeek"));
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.TIME_WINDOW_DURATION_OUT_OF_RANGE, "Recurrence.Pattern.DaysOfWeek"));
         }
     }
 
@@ -105,14 +110,16 @@ public class RecurrenceValidator {
             : Duration.ofDays((long) pattern.getInterval() * RecurrenceConstants.DAYS_PER_WEEK);
         final Duration timeWindowDuration = Duration.between(settings.getStart(), settings.getEnd());
         if (timeWindowDuration.compareTo(intervalDuration) > 0) {
-            throw new IllegalArgumentException(String.format(RecurrenceConstants.TIME_WINDOW_DURATION_OUT_OF_RANGE, "Recurrence.Pattern.Interval"));
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.TIME_WINDOW_DURATION_OUT_OF_RANGE, "Recurrence.Pattern.Interval"));
         }
     }
 
     private static void validateDaysOfWeek(TimeWindowFilterSettings settings) {
         final List<DayOfWeek> daysOfWeek = settings.getRecurrence().getPattern().getDaysOfWeek();
         if (daysOfWeek == null || daysOfWeek.size() == 0) {
-            throw new IllegalArgumentException(String.format(RecurrenceConstants.REQUIRED_PARAMETER, "Recurrence.Pattern.DaysOfWeek"));
+            throw new IllegalArgumentException(
+                String.format(RecurrenceConstants.REQUIRED_PARAMETER, "Recurrence.Pattern.DaysOfWeek"));
         }
     }
 
@@ -146,7 +153,7 @@ public class RecurrenceValidator {
         ZonedDateTime prevOccurrence = null;
         Duration minGap = Duration.ofDays(RecurrenceConstants.DAYS_PER_WEEK);
 
-        for (DayOfWeek day: sortedDaysOfWeek) {
+        for (DayOfWeek day : sortedDaysOfWeek) {
             date = firstDateOfWeek.plusDays(TimeWindowUtils.getPassedWeekDays(day, firstDayOfWeek));
             if (prevOccurrence != null) {
                 final Duration currentGap = Duration.between(prevOccurrence, date);

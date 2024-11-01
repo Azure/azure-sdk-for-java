@@ -92,14 +92,12 @@ class AppConfigurationReplicaClient {
      * @param label String value of the watch key, use \0 for null.
      * @return The first returned configuration.
      */
-    ConfigurationSetting getWatchKey(String key, String label, Boolean isRefresh)
-        throws HttpResponseException {
+    ConfigurationSetting getWatchKey(String key, String label, Boolean isRefresh) throws HttpResponseException {
         try {
             Context context = new Context("refresh", isRefresh);
             ConfigurationSetting selector = new ConfigurationSetting().setKey(key).setLabel(label);
-            ConfigurationSetting watchKey = NormalizeNull
-                .normalizeNullLabel(
-                    client.getConfigurationSettingWithResponse(selector, null, false, context).getValue());
+            ConfigurationSetting watchKey = NormalizeNull.normalizeNullLabel(
+                client.getConfigurationSettingWithResponse(selector, null, false, context).getValue());
             this.failedAttempts = 0;
             return watchKey;
         } catch (HttpResponseException e) {
@@ -181,7 +179,9 @@ class AppConfigurationReplicaClient {
     Boolean checkWatchKeys(SettingSelector settingSelector, Boolean isRefresh) {
         Context context = new Context("refresh", isRefresh);
         List<PagedResponse<ConfigurationSetting>> results = client.listConfigurationSettings(settingSelector, context)
-            .streamByPage().filter(pagedResponse -> pagedResponse.getStatusCode() != 304).toList();
+            .streamByPage()
+            .filter(pagedResponse -> pagedResponse.getStatusCode() != 304)
+            .toList();
         return results.size() > 0;
     }
 

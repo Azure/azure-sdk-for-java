@@ -25,8 +25,8 @@ public class PageablePerson {
     @Version
     private String _etag;
 
-    public PageablePerson(String id, String firstName, String lastName,
-                          List<String> hobbies, List<Address> shippingAddresses) {
+    public PageablePerson(String id, String firstName, String lastName, List<String> hobbies,
+        List<Address> shippingAddresses) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -108,23 +108,8 @@ public class PageablePerson {
 
     @Override
     public String toString() {
-        return "PageablePerson{"
-            + "id='"
-            + id
-            + '\''
-            + ", firstName='"
-            + firstName
-            + '\''
-            + ", lastName='"
-            + lastName
-            + '\''
-            + ", hobbies="
-            + hobbies
-            + ", shippingAddresses="
-            + shippingAddresses
-            + ", _etag='"
-            + _etag
-            + '\''
+        return "PageablePerson{" + "id='" + id + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName
+            + '\'' + ", hobbies=" + hobbies + ", shippingAddresses=" + shippingAddresses + ", _etag='" + _etag + '\''
             + '}';
     }
 }

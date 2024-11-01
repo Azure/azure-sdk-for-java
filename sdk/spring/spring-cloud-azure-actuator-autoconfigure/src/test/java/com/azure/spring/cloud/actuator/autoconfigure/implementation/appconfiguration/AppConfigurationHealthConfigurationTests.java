@@ -17,7 +17,8 @@ class AppConfigurationHealthConfigurationTests {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=https://test-appconfig.azconfig.io")
         .withBean(AzureGlobalProperties.class)
-        .withConfiguration(AutoConfigurations.of(AzureAppConfigurationAutoConfiguration.class, AppConfigurationHealthConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureAppConfigurationAutoConfiguration.class,
+            AppConfigurationHealthConfiguration.class));
 
     @Test
     void runShouldCreateIndicator() {

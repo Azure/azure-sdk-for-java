@@ -36,13 +36,18 @@ public final class AzureGlobalPropertiesUtils {
         if (target.getClient() instanceof ClientOptionsProvider.HttpClientOptions) {
             BeanUtils.copyProperties(source.getClient().getHttp(), target.getClient());
 
-            ClientOptionsProvider.HttpClientOptions targetClient = (ClientOptionsProvider.HttpClientOptions) target.getClient();
+            ClientOptionsProvider.HttpClientOptions targetClient
+                = (ClientOptionsProvider.HttpClientOptions) target.getClient();
 
             targetClient.getHeaders().addAll(source.getClient().getHttp().getHeaders());
 
             BeanUtils.copyProperties(source.getClient().getHttp().getLogging(), targetClient.getLogging());
-            targetClient.getLogging().getAllowedHeaderNames().addAll(source.getClient().getHttp().getLogging().getAllowedHeaderNames());
-            targetClient.getLogging().getAllowedQueryParamNames().addAll(source.getClient().getHttp().getLogging().getAllowedQueryParamNames());
+            targetClient.getLogging()
+                .getAllowedHeaderNames()
+                .addAll(source.getClient().getHttp().getLogging().getAllowedHeaderNames());
+            targetClient.getLogging()
+                .getAllowedQueryParamNames()
+                .addAll(source.getClient().getHttp().getLogging().getAllowedQueryParamNames());
         } else if (target.getClient() instanceof ClientOptionsProvider.AmqpClientOptions) {
             BeanUtils.copyProperties(source.getClient().getAmqp(), target.getClient());
         }

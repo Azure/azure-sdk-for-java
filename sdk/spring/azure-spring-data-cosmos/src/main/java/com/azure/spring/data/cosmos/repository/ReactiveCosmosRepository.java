@@ -10,6 +10,7 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.data.repository.reactive.ReactiveSortingRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
 /**
  * Repository interface with search and delete operation
  *
@@ -48,7 +49,8 @@ public interface ReactiveCosmosRepository<T, K> extends ReactiveSortingRepositor
      * @return the patched entity
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
-    <S extends T> Mono<S> save(K id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations);
+    <S extends T> Mono<S> save(K id, PartitionKey partitionKey, Class<S> domainType,
+        CosmosPatchOperations patchOperations);
 
     /**
      * Patches an entity by its id and partition key with CosmosPatchItemRequestOptions
@@ -62,7 +64,8 @@ public interface ReactiveCosmosRepository<T, K> extends ReactiveSortingRepositor
      * @return the patched entity
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
-    <S extends T> Mono<S> save(K id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
+    <S extends T> Mono<S> save(K id, PartitionKey partitionKey, Class<S> domainType,
+        CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
 
     /**
      * Returns Flux of items in a specific partition

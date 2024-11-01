@@ -31,30 +31,24 @@ class AzureKeyVaultAutoConfigurationTests {
 
     private static final String ENDPOINT = "https:/%s.vault.azure.net/";
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
-        .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-        .withConfiguration(AutoConfigurations.of(AzureKeyVaultCertificateAutoConfiguration.class))
-        .withConfiguration(AutoConfigurations.of(AzureKeyVaultSecretAutoConfiguration.class));
+    private final ApplicationContextRunner contextRunner
+        = new ApplicationContextRunner().withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withConfiguration(AutoConfigurations.of(AzureKeyVaultCertificateAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(AzureKeyVaultSecretAutoConfiguration.class));
 
     @Test
     void configureWithKeyVaultGlobalDisabled() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.keyvault.enabled=false")
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureKeyVaultSecretAutoConfiguration.class);
-            });
+        this.contextRunner.withPropertyValues("spring.cloud.azure.keyvault.enabled=false").run(context -> {
+            assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class);
+            assertThat(context).doesNotHaveBean(AzureKeyVaultSecretAutoConfiguration.class);
+        });
     }
 
     @Test
     void configureWithKeyVaultGlobalEnabledAndServicesDisabled() {
-        this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.keyvault.enabled=true",
-                "spring.cloud.azure.keyvault.secret.enabled=false",
-                "spring.cloud.azure.keyvault.certificate.enabled=false"
-            )
+        this.contextRunner.withPropertyValues("spring.cloud.azure.keyvault.enabled=true",
+            "spring.cloud.azure.keyvault.secret.enabled=false", "spring.cloud.azure.keyvault.certificate.enabled=false")
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class);
                 assertThat(context).doesNotHaveBean(AzureKeyVaultSecretAutoConfiguration.class);
@@ -66,12 +60,9 @@ class AzureKeyVaultAutoConfigurationTests {
     void configureWithKeyVaultGlobalAndSecretsEnabled(String endpointProperty) {
         String endpoint = String.format(ENDPOINT, "test-kv");
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.keyvault.enabled=true",
+            .withPropertyValues("spring.cloud.azure.keyvault.enabled=true",
                 "spring.cloud.azure.keyvault.secret.enabled=true",
-                "spring.cloud.azure.keyvault.certificate.enabled=false",
-                endpointProperty + "=" + endpoint
-            )
+                "spring.cloud.azure.keyvault.certificate.enabled=false", endpointProperty + "=" + endpoint)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultSecretAutoConfiguration.class);
                 assertThat(context).doesNotHaveBean(AzureKeyVaultCertificateAutoConfiguration.class);
@@ -82,10 +73,8 @@ class AzureKeyVaultAutoConfigurationTests {
     void secretsConfigShouldWorkWithCertificatesConfig() {
         String endpoint = String.format(ENDPOINT, "test-kv");
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.keyvault.secret.endpoint=" + endpoint,
-                "spring.cloud.azure.keyvault.certificate.endpoint=" + endpoint
-            )
+            .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=" + endpoint,
+                "spring.cloud.azure.keyvault.certificate.endpoint=" + endpoint)
             .run(context -> {
                 assertThat(context).hasSingleBean(SecretClientBuilder.class);
                 assertThat(context).hasSingleBean(CertificateClientBuilder.class);
@@ -104,22 +93,18 @@ class AzureKeyVaultAutoConfigurationTests {
     @Test
     void secretsAndCertificatesShouldWorkWithGlobalConfig() {
         String endpoint = String.format(ENDPOINT, "test-kv");
-        this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.keyvault.endpoint=" + endpoint
-            )
-            .run(context -> {
-                assertThat(context).hasSingleBean(SecretClient.class);
-                assertThat(context).hasSingleBean(CertificateClient.class);
+        this.contextRunner.withPropertyValues("spring.cloud.azure.keyvault.endpoint=" + endpoint).run(context -> {
+            assertThat(context).hasSingleBean(SecretClient.class);
+            assertThat(context).hasSingleBean(CertificateClient.class);
 
-                assertThat(context).hasSingleBean(SecretAsyncClient.class);
-                assertThat(context).hasSingleBean(CertificateAsyncClient.class);
+            assertThat(context).hasSingleBean(SecretAsyncClient.class);
+            assertThat(context).hasSingleBean(CertificateAsyncClient.class);
 
-                assertThat(context).hasSingleBean(SecretClientBuilder.class);
-                assertThat(context).hasSingleBean(CertificateClientBuilder.class);
+            assertThat(context).hasSingleBean(SecretClientBuilder.class);
+            assertThat(context).hasSingleBean(CertificateClientBuilder.class);
 
-                assertThat(context).hasSingleBean(SecretClientBuilderFactory.class);
-                assertThat(context).hasSingleBean(CertificateClientBuilderFactory.class);
-            });
+            assertThat(context).hasSingleBean(SecretClientBuilderFactory.class);
+            assertThat(context).hasSingleBean(CertificateClientBuilderFactory.class);
+        });
     }
 }

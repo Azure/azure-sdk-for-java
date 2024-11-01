@@ -66,7 +66,7 @@ class AzureEventHubsPropertiesTest {
         AzureEventHubsProperties eventHubsProperties = new AzureEventHubsProperties();
         eventHubsProperties.getProfile().setCloudType(AZURE_CHINA);
         assertEquals(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName(),
-                eventHubsProperties.getDomainName());
+            eventHubsProperties.getDomainName());
     }
 
     @Test
@@ -75,7 +75,7 @@ class AzureEventHubsPropertiesTest {
         eventHubsProperties.setDomainName(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName());
         eventHubsProperties.getProfile().setCloudType(AZURE_CHINA);
         assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(),
-                eventHubsProperties.getDomainName());
+            eventHubsProperties.getDomainName());
     }
 
     @Test
@@ -259,7 +259,8 @@ class AzureEventHubsPropertiesTest {
         processorProperties.getProfile().setCloudType(AZURE_CHINA);
         processorProperties.setDomainName("child-domain");
 
-        AzureEventHubsProperties.Processor.BlobCheckpointStore checkpointStore = processorProperties.getCheckpointStore();
+        AzureEventHubsProperties.Processor.BlobCheckpointStore checkpointStore
+            = processorProperties.getCheckpointStore();
         checkpointStore.getProfile().setCloudType(AZURE);
 
         AzureEventHubsProperties.Processor processor = eventHubsProperties.buildProcessorProperties();

@@ -52,11 +52,9 @@ class OTelVersionTest {
     @Test
     void verifyCurrentOpenTelemetryVersion() {
         String currentOTelVersion = OtelVersion.VERSION;
-        assertThat(OpenTelemetryVersionCheckRunner.STARTER_OTEL_VERSION)
-            .as(
-                "Dear developer, You may have updated the OpenTelemetry dependencies of spring-cloud-azure-starter-monitor without updating the OTel starter version declared in "
-                    + OpenTelemetryVersionCheckRunner.class
-                    + ".")
+        assertThat(OpenTelemetryVersionCheckRunner.STARTER_OTEL_VERSION).as(
+            "Dear developer, You may have updated the OpenTelemetry dependencies of spring-cloud-azure-starter-monitor without updating the OTel starter version declared in "
+                + OpenTelemetryVersionCheckRunner.class + ".")
             .isEqualTo(currentOTelVersion);
     }
 

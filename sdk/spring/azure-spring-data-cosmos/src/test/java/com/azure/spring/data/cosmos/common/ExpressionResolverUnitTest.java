@@ -23,12 +23,12 @@ public class ExpressionResolverUnitTest {
 
     @Test
     public void testExpressionsShouldBeResolved() {
-        final AnnotationConfigApplicationContext applicationContext =
-                new AnnotationConfigApplicationContext(TestConfiguration.class);
+        final AnnotationConfigApplicationContext applicationContext
+            = new AnnotationConfigApplicationContext(TestConfiguration.class);
 
         assertNotNull(applicationContext.getBean(ExpressionResolver.class));
         assertEquals(TestConstants.DYNAMIC_PROPERTY_COLLECTION_NAME,
-                ExpressionResolver.resolveExpression(SPEL_EXPRESSION));
+            ExpressionResolver.resolveExpression(SPEL_EXPRESSION));
     }
 
     @Configuration

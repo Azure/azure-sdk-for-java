@@ -107,9 +107,13 @@ public class ContainerLock {
 
     private interface LockStore {
         LockEntry insertLock(LockEntry entry);
+
         LockEntry findActiveLock(String id);
+
         LockEntry refreshLock(LockEntry entry);
+
         void deleteLock(LockEntry entry);
+
         void createContainerIfNotExists(CosmosEntityInformation entityInfo);
     }
 

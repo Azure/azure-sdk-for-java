@@ -14,10 +14,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubClientBuilderFactoryTests<
-    ServiceBusClientBuilder.ServiceBusSenderClientBuilder,
-    ServiceBusSenderClientTestProperties,
-    ServiceBusSenderClientBuilderFactory> {
+class ServiceBusSenderClientBuilderFactoryTests extends
+    AbstractServiceBusSubClientBuilderFactoryTests<ServiceBusClientBuilder.ServiceBusSenderClientBuilder, ServiceBusSenderClientTestProperties, ServiceBusSenderClientBuilderFactory> {
 
     @Test
     void queueConfigured() {
@@ -44,8 +42,10 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
     }
 
     @Override
-    protected ServiceBusSenderClientBuilderFactory createClientBuilderFactoryWithMockBuilder(ServiceBusSenderClientTestProperties properties) {
-        return spy(new ServiceBusReceiverClientBuilderFactoryExt(getSharedServiceBusClientBuilder(properties), properties));
+    protected ServiceBusSenderClientBuilderFactory
+        createClientBuilderFactoryWithMockBuilder(ServiceBusSenderClientTestProperties properties) {
+        return spy(
+            new ServiceBusReceiverClientBuilderFactoryExt(getSharedServiceBusClientBuilder(properties), properties));
     }
 
     @Override
@@ -65,7 +65,8 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
         verify(factory.getServiceBusClientBuilder(), times(1)).customEndpointAddress(customEndpoint);
         verify(builder, times(1)).topicName("test-topic");
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(factory.getServiceBusClientBuilder(), times(1))
+            .fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
     @Override
@@ -76,8 +77,9 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
     static class ServiceBusReceiverClientBuilderFactoryExt extends ServiceBusSenderClientBuilderFactory {
         private ServiceBusClientBuilder serviceBusClientBuilder;
         private final ServiceBusSenderClientTestProperties properties;
+
         ServiceBusReceiverClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                  ServiceBusSenderClientTestProperties properties) {
+            ServiceBusSenderClientTestProperties properties) {
             super(serviceBusClientBuilder, properties);
             this.properties = properties;
             if (properties.isShareServiceBusClientBuilder() && serviceBusClientBuilder != null) {
@@ -93,7 +95,8 @@ class ServiceBusSenderClientBuilderFactoryTests extends AbstractServiceBusSubCli
         @Override
         protected ServiceBusClientBuilder getServiceBusClientBuilder() {
             if (!this.isShareServiceBusClientBuilder() && this.serviceBusClientBuilder == null) {
-                TestServiceBusClientBuilderFactory clientBuilderFactory = spy(new TestServiceBusClientBuilderFactory(properties));
+                TestServiceBusClientBuilderFactory clientBuilderFactory
+                    = spy(new TestServiceBusClientBuilderFactory(properties));
                 this.serviceBusClientBuilder = clientBuilderFactory.build();
             }
             return this.serviceBusClientBuilder;

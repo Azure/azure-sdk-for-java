@@ -24,11 +24,14 @@ public final class TestConstants {
 
     public static final String FAIL_FAST_PROP = "spring.cloud.azure.appconfiguration.failFast";
 
-    public static final String TEST_CONN_STRING = "Endpoint=https://fake.test.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
+    public static final String TEST_CONN_STRING
+        = "Endpoint=https://fake.test.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
 
-    public static final String TEST_CONN_STRING_2 = "Endpoint=https://fake2.test.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
+    public static final String TEST_CONN_STRING_2
+        = "Endpoint=https://fake2.test.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
 
-    public static final String TEST_CONN_STRING_GEO = "Endpoint=https://fake.test.geo.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
+    public static final String TEST_CONN_STRING_GEO
+        = "Endpoint=https://fake.test.geo.config.io;Id=fake-conn-id;Secret=ZmFrZS1jb25uLXNlY3JldA==";
 
     public static final String TEST_ENDPOINT = "https://fake.test.config.io";
 
@@ -57,7 +60,7 @@ public final class TestConstants {
     public static final String TEST_KEY_VAULT_1 = "test_key_vault_1";
 
     public static final String TEST_URI_VAULT_1 = "https://test.key.vault.com/my_secret_url";
-    
+
     public static final String TEST_URI_VAULT_2 = "not a valid uri";
 
     public static final String TEST_LABEL_VAULT_1 = "test_label_vault_1";
@@ -65,8 +68,8 @@ public final class TestConstants {
     public static final String FEATURE_VALUE = "{\"id\":\"Alpha\",\"description\":\"\",\"enabled\":true,"
         + "\"conditions\":{\"client_filters\":[{\"Name\":\"TestFilter\"}]}}";
 
-    public static final String FEATURE_BOOLEAN_VALUE = "{\"id\":\"Beta\",\"description\":\"\",\"enabled\":true,"
-        + "\"conditions\":{\"client_filters\":[]}}";
+    public static final String FEATURE_BOOLEAN_VALUE
+        = "{\"id\":\"Beta\",\"description\":\"\",\"enabled\":true," + "\"conditions\":{\"client_filters\":[]}}";
 
     public static final String FEATURE_VALUE_PARAMETERS = "{\"id\":\"Alpha\",\"description\":\"\",\"enabled\":true,"
         + "\"conditions\":{\"client_filters\":[{\"Name\":\"TestFilter\",\"Parameters\":{\"key\":\"value\"}}]}}";
@@ -80,7 +83,8 @@ public final class TestConstants {
         + "\"conditions\":{\"client_filters\":[{\"Name\":\"TestFilter\",\"Parameters\":{\"key\":\"value\"}}]},"
         + "\"telemetry\":{\"enabled\":true,\"metadata\":{\"key\":\"value\"}}}";
 
-    public static final String FEATURE_VALUE_ALL = "{ \"id\": \"AndTest\", \"description\": \"\",\"enabled\": true,\"conditions\": {\"requirement_type\": \"All\",\"client_filters\": [{\"Name\": \"percentageFilter\",\"Parameters\": {\"Value\": 50}},{\"Name\": \"percentageFilter\",\"Parameters\": {\"Value\": 50}}]}}";
+    public static final String FEATURE_VALUE_ALL
+        = "{ \"id\": \"AndTest\", \"description\": \"\",\"enabled\": true,\"conditions\": {\"requirement_type\": \"All\",\"client_filters\": [{\"Name\": \"percentageFilter\",\"Parameters\": {\"Value\": 50}},{\"Name\": \"percentageFilter\",\"Parameters\": {\"Value\": 50}}]}}";
 
     public static final String FEATURE_LABEL = "";
 

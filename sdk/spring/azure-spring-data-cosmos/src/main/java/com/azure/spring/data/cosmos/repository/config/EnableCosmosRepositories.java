@@ -32,31 +32,31 @@ public @interface EnableCosmosRepositories {
      * To set repo value
      * @return default as {}
      */
-    String[] value() default {};
+    String[] value() default { };
 
     /**
      * To set base packages
      * @return default as {}
      */
-    String[] basePackages() default {};
+    String[] basePackages() default { };
 
     /**
      * To set base package class
      * @return default as {}
      */
-    Class<?>[] basePackageClasses() default {};
+    Class<?>[] basePackageClasses() default { };
 
     /**
      * To include filters
      * @return default as {}
      */
-    Filter[] includeFilters() default {};
+    Filter[] includeFilters() default { };
 
     /**
      * To exclude filters
      * @return default as {}
      */
-    Filter[] excludeFilters() default {};
+    Filter[] excludeFilters() default { };
 
     /**
      * To set repo Implement postfix
@@ -101,4 +101,3 @@ public @interface EnableCosmosRepositories {
      */
     String cosmosTemplateRef() default "cosmosTemplate";
 }
-

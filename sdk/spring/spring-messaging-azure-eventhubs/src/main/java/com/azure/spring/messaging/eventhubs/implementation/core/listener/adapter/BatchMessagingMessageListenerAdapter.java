@@ -40,8 +40,8 @@ public class BatchMessagingMessageListenerAdapter extends MessagingMessageListen
         headers.put(EventHubsHeaders.LAST_ENQUEUED_EVENT_PROPERTIES,
             eventBatchContext.getLastEnqueuedEventProperties());
 
-        Message<?> message = getMessageConverter().toMessage(eventBatchContext, new MessageHeaders(headers),
-            payloadType);
+        Message<?> message
+            = getMessageConverter().toMessage(eventBatchContext, new MessageHeaders(headers), payloadType);
 
         invokeHandler(message);
     }

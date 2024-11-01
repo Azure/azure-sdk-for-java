@@ -25,26 +25,25 @@ public class ReactiveCosmosRepositoryConfigurationExtensionUnitTest {
     ResourceLoader loader = new PathMatchingResourcePatternResolver();
     Environment environment = new StandardEnvironment();
     RepositoryConfigurationSource configurationSource = new AnnotationRepositoryConfigurationSource(metadata,
-            EnableReactiveCosmosRepositories.class, loader, environment, new DefaultListableBeanFactory(), null);
+        EnableReactiveCosmosRepositories.class, loader, environment, new DefaultListableBeanFactory(), null);
 
     private static void assertHashRepo(Class<?> repositoryInterface,
-                                       Collection<RepositoryConfiguration<RepositoryConfigurationSource>> configs) {
+        Collection<RepositoryConfiguration<RepositoryConfigurationSource>> configs) {
         for (final RepositoryConfiguration<?> config : configs) {
             if (config.getRepositoryInterface().equals(repositoryInterface.getName())) {
                 return;
             }
         }
 
-        fail("expected to find config for repository interface "
-                + repositoryInterface.getName() + ", but got: " + configs.toString());
+        fail("expected to find config for repository interface " + repositoryInterface.getName() + ", but got: "
+            + configs.toString());
     }
 
     @Test
     public void isStrictMatchIfRepositoryExtendsStoreSpecificBase() {
-        final ReactiveCosmosRepositoryConfigurationExtension extension =
-            new ReactiveCosmosRepositoryConfigurationExtension();
-        assertHashRepo(TestRepository.class,
-            extension.getRepositoryConfigurations(configurationSource, loader, true));
+        final ReactiveCosmosRepositoryConfigurationExtension extension
+            = new ReactiveCosmosRepositoryConfigurationExtension();
+        assertHashRepo(TestRepository.class, extension.getRepositoryConfigurations(configurationSource, loader, true));
     }
 
     interface TestRepository extends ReactiveCosmosRepository<Object, String> {

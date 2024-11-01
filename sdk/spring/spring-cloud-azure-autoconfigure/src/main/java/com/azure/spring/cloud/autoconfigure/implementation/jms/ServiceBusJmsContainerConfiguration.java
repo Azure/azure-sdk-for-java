@@ -26,8 +26,8 @@ class ServiceBusJmsContainerConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    JmsListenerContainerFactory<?> jmsListenerContainerFactory(
-        DefaultJmsListenerContainerFactoryConfigurer configurer, ConnectionFactory connectionFactory) {
+    JmsListenerContainerFactory<?> jmsListenerContainerFactory(DefaultJmsListenerContainerFactoryConfigurer configurer,
+        ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory jmsListenerContainerFactory = new DefaultJmsListenerContainerFactory();
         configurer.configure(jmsListenerContainerFactory, connectionFactory);
         jmsListenerContainerFactory.setPubSubDomain(Boolean.FALSE);
@@ -47,7 +47,8 @@ class ServiceBusJmsContainerConfiguration {
         return jmsListenerContainerFactory;
     }
 
-    private void configureCommonListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
+    private void
+        configureCommonListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
         AzureServiceBusJmsProperties.Listener listener = azureServiceBusJMSProperties.getListener();
         if (listener.getReplyQosSettings() != null) {
             jmsListenerContainerFactory.setReplyQosSettings(listener.getReplyQosSettings());
@@ -57,7 +58,8 @@ class ServiceBusJmsContainerConfiguration {
         }
     }
 
-    private void configureTopicListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
+    private void
+        configureTopicListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
         AzureServiceBusJmsProperties.Listener listener = azureServiceBusJMSProperties.getListener();
         if (listener.isReplyPubSubDomain() != null) {
             jmsListenerContainerFactory.setReplyPubSubDomain(listener.isReplyPubSubDomain());

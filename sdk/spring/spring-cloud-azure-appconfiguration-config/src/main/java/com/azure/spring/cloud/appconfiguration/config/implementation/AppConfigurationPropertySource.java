@@ -55,5 +55,6 @@ abstract class AppConfigurationPropertySource extends EnumerablePropertySource<C
         return String.join(",", labelFilters);
     }
 
-    protected abstract void initProperties(List<String> trim, boolean isRefresh) throws InvalidConfigurationPropertyValueException;
+    protected abstract void initProperties(List<String> trim, boolean isRefresh)
+        throws InvalidConfigurationPropertyValueException;
 }

@@ -30,7 +30,8 @@ import static com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter.t
  * Cosmos query class to handle the annotated queries. This overrides the execution and runs the query directly
  */
 public class StringBasedCosmosQuery extends AbstractCosmosQuery {
-    private static final Pattern COUNT_QUERY_PATTERN = Pattern.compile("^\\s*select\\s+value\\s+count.*", Pattern.CASE_INSENSITIVE);
+    private static final Pattern COUNT_QUERY_PATTERN
+        = Pattern.compile("^\\s*select\\s+value\\s+count.*", Pattern.CASE_INSENSITIVE);
 
     private final String query;
 
@@ -71,20 +72,24 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
             if (!("").equals(paramName)) {
                 String inParamCheck = "array_contains(@" + paramName.toLowerCase(Locale.US);
                 if (parameters[paramIndex] instanceof Collection && !modifiedExpandedQuery.contains(inParamCheck)) {
-                    List<Object> expandParam = ((Collection<?>) parameters[paramIndex]).stream().collect(Collectors.toList());
+                    List<Object> expandParam
+                        = ((Collection<?>) parameters[paramIndex]).stream().collect(Collectors.toList());
                     List<String> expandedParamKeys = new ArrayList<>();
                     for (int arrayIndex = 0; arrayIndex < expandParam.size(); arrayIndex++) {
                         expandedParamKeys.add("@" + paramName + arrayIndex);
-                        sqlParameters.add(new SqlParameter("@" + paramName + arrayIndex, toCosmosDbValue(expandParam.get(arrayIndex))));
+                        sqlParameters.add(new SqlParameter("@" + paramName + arrayIndex,
+                            toCosmosDbValue(expandParam.get(arrayIndex))));
                     }
-                    expandedQuery = expandedQuery.replaceAll("@" + queryParam.getName().orElse(""), String.join(",", expandedParamKeys));
+                    expandedQuery = expandedQuery.replaceAll("@" + queryParam.getName().orElse(""),
+                        String.join(",", expandedParamKeys));
                 } else {
                     if (!Pageable.class.isAssignableFrom(queryParam.getType())
                         && !Sort.class.isAssignableFrom(queryParam.getType())) {
                         if (!(parameters[paramIndex] instanceof Optional<?>)
                             || (parameters[paramIndex] instanceof Optional<?>
-                            && ((Optional<?>) parameters[paramIndex]).isPresent())) {
-                            sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""), toCosmosDbValue(parameters[paramIndex])));
+                                && ((Optional<?>) parameters[paramIndex]).isPresent())) {
+                            sqlParameters.add(new SqlParameter("@" + queryParam.getName().orElse(""),
+                                toCosmosDbValue(parameters[paramIndex])));
                         }
                     }
                 }
@@ -93,20 +98,18 @@ public class StringBasedCosmosQuery extends AbstractCosmosQuery {
 
         SqlQuerySpec querySpec = new SqlQuerySpec(stripExtraWhitespaceFromString(expandedQuery), sqlParameters);
         if (isPageQuery()) {
-            return this.operations.runPaginationQuery(querySpec, accessor.getPageable(), processor.getReturnedType().getDomainType(),
-                                                      processor.getReturnedType().getReturnedType());
+            return this.operations.runPaginationQuery(querySpec, accessor.getPageable(),
+                processor.getReturnedType().getDomainType(), processor.getReturnedType().getReturnedType());
         } else if (isSliceQuery()) {
-            return this.operations.runSliceQuery(
-                querySpec,
-                accessor.getPageable(),
-                processor.getReturnedType().getDomainType(),
-                processor.getReturnedType().getReturnedType());
+            return this.operations.runSliceQuery(querySpec, accessor.getPageable(),
+                processor.getReturnedType().getDomainType(), processor.getReturnedType().getReturnedType());
         } else if (isCountQuery()) {
-            final String container = ((CosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
+            final String container
+                = ((CosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
             return this.operations.count(querySpec, container);
         } else {
             return this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
-                                            processor.getReturnedType().getReturnedType());
+                processor.getReturnedType().getReturnedType());
         }
     }
 

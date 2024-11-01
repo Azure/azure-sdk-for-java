@@ -16,10 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class StorageFileShareHealthConfigurationTests {
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withPropertyValues("spring.cloud.azure.storage.fileshare.account-name=test")
-        .withConfiguration(AutoConfigurations.of(StorageFileShareHealthConfiguration.class))
-        .withUserConfiguration(TestFileConfigurationConnection.class);
+    private final ApplicationContextRunner contextRunner
+        = new ApplicationContextRunner().withPropertyValues("spring.cloud.azure.storage.fileshare.account-name=test")
+            .withConfiguration(AutoConfigurations.of(StorageFileShareHealthConfiguration.class))
+            .withUserConfiguration(TestFileConfigurationConnection.class);
 
     @Test
     void runShouldCreateIndicator() {
@@ -28,8 +28,7 @@ class StorageFileShareHealthConfigurationTests {
 
     @Test
     void runWhenDisabledShouldNotCreateIndicator() {
-        this.contextRunner
-            .withPropertyValues("management.health.azure-storage-fileshare.enabled:false")
+        this.contextRunner.withPropertyValues("management.health.azure-storage-fileshare.enabled:false")
             .run((context) -> assertThat(context).doesNotHaveBean(StorageFileShareHealthIndicator.class));
     }
 

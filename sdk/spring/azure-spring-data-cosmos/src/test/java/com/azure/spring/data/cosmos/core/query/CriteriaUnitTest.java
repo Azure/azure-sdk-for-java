@@ -20,8 +20,8 @@ public class CriteriaUnitTest {
     @Test
     public void testUnaryCriteria() {
         final List<Object> values = Arrays.asList(CRITERIA_OBJECT);
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL,
-            CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
+        final Criteria criteria
+            = Criteria.getInstance(CriteriaType.IS_EQUAL, CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
 
         Assert.assertTrue(criteria.getSubCriteria().isEmpty());
         Assert.assertEquals(values, criteria.getSubjectValues());
@@ -34,10 +34,10 @@ public class CriteriaUnitTest {
     @Test
     public void testBinaryCriteria() {
         final List<Object> values = Arrays.asList(CRITERIA_OBJECT);
-        final Criteria leftCriteria = Criteria.getInstance(CriteriaType.IS_EQUAL,
-            CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
-        final Criteria rightCriteria = Criteria.getInstance(CriteriaType.IS_EQUAL,
-            CRITERIA_OBJECT, values, Part.IgnoreCaseType.NEVER);
+        final Criteria leftCriteria
+            = Criteria.getInstance(CriteriaType.IS_EQUAL, CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
+        final Criteria rightCriteria
+            = Criteria.getInstance(CriteriaType.IS_EQUAL, CRITERIA_OBJECT, values, Part.IgnoreCaseType.NEVER);
         final Criteria criteria = Criteria.getInstance(CriteriaType.AND, leftCriteria, rightCriteria);
 
         Assert.assertNotNull(criteria.getSubCriteria());
@@ -57,8 +57,8 @@ public class CriteriaUnitTest {
     @Test(expected = IllegalQueryException.class)
     public void testInvalidInKeywordParameter() {
         final List<Object> values = Collections.singletonList(CRITERIA_OBJECT);
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IN,
-            CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
+        final Criteria criteria
+            = Criteria.getInstance(CriteriaType.IN, CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
 
         new FindQuerySpecGenerator().generateCosmos(query);
@@ -67,8 +67,8 @@ public class CriteriaUnitTest {
     @Test(expected = IllegalQueryException.class)
     public void testInvalidInKeywordType() {
         final List<Object> values = Collections.singletonList(new IllegalQueryException(""));
-        final Criteria criteria = Criteria.getInstance(CriteriaType.IN,
-            CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
+        final Criteria criteria
+            = Criteria.getInstance(CriteriaType.IN, CRITERIA_KEY, values, Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
 
         new FindQuerySpecGenerator().generateCosmos(query);

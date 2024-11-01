@@ -25,7 +25,8 @@ public class PersonWithEtag {
     @Version
     private String etag;
 
-    public PersonWithEtag(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
+    public PersonWithEtag(String id, String firstName, String lastName, List<String> hobbies,
+        List<Address> shippingAddresses) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -107,23 +108,7 @@ public class PersonWithEtag {
 
     @Override
     public String toString() {
-        return "Person{"
-            + "id='"
-            + id
-            + '\''
-            + ", firstName='"
-            + firstName
-            + '\''
-            + ", lastName='"
-            + lastName
-            + '\''
-            + ", hobbies="
-            + hobbies
-            + ", shippingAddresses="
-            + shippingAddresses
-            + ", etag='"
-            + etag
-            + '\''
-            + '}';
+        return "Person{" + "id='" + id + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
+            + ", hobbies=" + hobbies + ", shippingAddresses=" + shippingAddresses + ", etag='" + etag + '\'' + '}';
     }
 }

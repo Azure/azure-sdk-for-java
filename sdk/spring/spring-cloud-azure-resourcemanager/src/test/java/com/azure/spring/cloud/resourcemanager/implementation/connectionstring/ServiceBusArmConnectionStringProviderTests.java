@@ -5,7 +5,8 @@ package com.azure.spring.cloud.resourcemanager.implementation.connectionstring;
 
 import com.azure.spring.cloud.core.service.AzureServiceType;
 
-public class ServiceBusArmConnectionStringProviderTests extends AbstractArmConnectionStringProviderTests<AzureServiceType.ServiceBus> {
+public class ServiceBusArmConnectionStringProviderTests
+    extends AbstractArmConnectionStringProviderTests<AzureServiceType.ServiceBus> {
 
     @Override
     ArmConnectionStringProvider<AzureServiceType.ServiceBus> getArmConnectionStringProvider() {

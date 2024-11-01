@@ -17,14 +17,14 @@ import java.io.IOException;
 
 class AadClientRegistrationDeserializer extends JsonDeserializer<ClientRegistration> {
 
-    private static final StdConverter<JsonNode, ClientAuthenticationMethod> CLIENT_AUTHENTICATION_METHOD_CONVERTER =
-        new StdConverters.ClientAuthenticationMethodConverter();
+    private static final StdConverter<JsonNode, ClientAuthenticationMethod> CLIENT_AUTHENTICATION_METHOD_CONVERTER
+        = new StdConverters.ClientAuthenticationMethodConverter();
 
-    private static final StdConverter<JsonNode, AuthorizationGrantType> AUTHORIZATION_GRANT_TYPE_CONVERTER =
-        new StdConverters.AuthorizationGrantTypeConverter();
+    private static final StdConverter<JsonNode, AuthorizationGrantType> AUTHORIZATION_GRANT_TYPE_CONVERTER
+        = new StdConverters.AuthorizationGrantTypeConverter();
 
-    private static final StdConverter<JsonNode, AuthenticationMethod> AUTHENTICATION_METHOD_CONVERTER =
-        new StdConverters.AuthenticationMethodConverter();
+    private static final StdConverter<JsonNode, AuthenticationMethod> AUTHENTICATION_METHOD_CONVERTER
+        = new StdConverters.AuthenticationMethodConverter();
 
     @Override
     public ClientRegistration deserialize(JsonParser parser, DeserializationContext context) throws IOException {

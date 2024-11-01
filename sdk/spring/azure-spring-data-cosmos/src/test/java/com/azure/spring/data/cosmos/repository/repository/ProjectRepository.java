@@ -17,7 +17,7 @@ public interface ProjectRepository extends CosmosRepository<Project, String> {
     Iterable<Project> findByNameOrForkCount(String name, Long forkCount);
 
     Iterable<Project> findByNameAndCreator(String name, String creator);
-    
+
     Iterable<Project> findByNameAndCreatorOrNameAndCreator(String name, String creator, String name2, String creator2);
 
     Iterable<Project> findByNameOrCreator(String name, String creator);
@@ -28,8 +28,8 @@ public interface ProjectRepository extends CosmosRepository<Project, String> {
 
     Iterable<Project> findByNameOrCreatorOrForkCount(String name, String creator, Long forkCount);
 
-    Iterable<Project> findByNameOrCreatorAndForkCountOrStarCount(String name, String creator,
-                                                                 Long forkCount, Long starCount);
+    Iterable<Project> findByNameOrCreatorAndForkCountOrStarCount(String name, String creator, Long forkCount,
+        Long starCount);
 
     Iterable<Project> findByForkCountGreaterThan(Long forkCount);
 

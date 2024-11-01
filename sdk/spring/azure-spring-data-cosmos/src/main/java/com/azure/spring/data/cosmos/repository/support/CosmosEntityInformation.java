@@ -51,8 +51,8 @@ import static com.azure.spring.data.cosmos.common.ExpressionResolver.resolveExpr
  */
 public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T, ID> {
 
-    private static final Function<Class<?>, CosmosEntityInformation<?, ?>> ENTITY_INFORMATION_CREATOR =
-        Memoizer.memoize(CosmosEntityInformation::getCosmosEntityInformation);
+    private static final Function<Class<?>, CosmosEntityInformation<?, ?>> ENTITY_INFORMATION_CREATOR
+        = Memoizer.memoize(CosmosEntityInformation::getCosmosEntityInformation);
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosEntityInformation.class);
 
@@ -103,7 +103,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
 
         this.containerName = CosmosEntityInformationHelper.getContainerName(domainType);
         this.partitionKeyPath = CosmosEntityInformationHelper.getPartitionKeyPathAnnotationValue(domainType);
-        this.hierarchicalPartitionKeyPaths = CosmosEntityInformationHelper.getHierarchicalPartitionKeyPathsAnnotationValue(domainType);
+        this.hierarchicalPartitionKeyPaths
+            = CosmosEntityInformationHelper.getHierarchicalPartitionKeyPathsAnnotationValue(domainType);
 
         this.partitionKeyField = CosmosEntityInformationHelper.getPartitionKeyField(domainType);
         this.transientFields = CosmosEntityInformationHelper.getTransientFields(domainType);
@@ -270,8 +271,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         } else if (hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
             String hierarchicalPartitionKeyPath = "";
             for (final String path : hierarchicalPartitionKeyPaths) {
-                hierarchicalPartitionKeyPath = hierarchicalPartitionKeyPath == "" ? path
-                    : hierarchicalPartitionKeyPath + ", " + path;
+                hierarchicalPartitionKeyPath
+                    = hierarchicalPartitionKeyPath == "" ? path : hierarchicalPartitionKeyPath + ", " + path;
             }
             return hierarchicalPartitionKeyPath;
         } else {
@@ -302,7 +303,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             return ReflectionUtils.getField(partitionKeyField, entity);
         } else if (partitionKeyPath != null) {
             List<String> parts = Arrays.stream(partitionKeyPath.split("/")).collect(Collectors.toList());
-            final Object[] currentObject = {entity};
+            final Object[] currentObject = { entity };
             parts.forEach(part -> {
                 if (!part.isEmpty()) {
                     Field f = null;
@@ -346,7 +347,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         } else if (hierarchicalPartitionKeyPaths != null && hierarchicalPartitionKeyPaths.length > 0) {
             String hierarchicalPartitionKeyFiledName = "";
             for (final String path : hierarchicalPartitionKeyPaths) {
-                hierarchicalPartitionKeyFiledName = hierarchicalPartitionKeyFiledName == "" ? path.substring(1)
+                hierarchicalPartitionKeyFiledName = hierarchicalPartitionKeyFiledName == ""
+                    ? path.substring(1)
                     : hierarchicalPartitionKeyFiledName + ", " + path.substring(1);
             }
             return hierarchicalPartitionKeyFiledName;
@@ -354,8 +356,6 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             return null;
         }
     }
-
-
 
     /**
      * Check if auto creating container is allowed
@@ -490,8 +490,8 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
                 if (idField.getType() == String.class) {
                     return true;
                 } else {
-                    throw new IllegalArgumentException("id field must be of type String if "
-                        + "GeneratedValue annotation is present");
+                    throw new IllegalArgumentException(
+                        "id field must be of type String if " + "GeneratedValue annotation is present");
                 }
             }
             return false;
@@ -573,7 +573,9 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             Iterator<Field> iterator = fields.iterator();
             while (iterator.hasNext()) {
                 Field field = iterator.next();
-                if (field.equals(partitionKeyField) || field.getName().equalsIgnoreCase("id") || field.getName().equalsIgnoreCase("_etag")) {
+                if (field.equals(partitionKeyField)
+                    || field.getName().equalsIgnoreCase("id")
+                    || field.getName().equalsIgnoreCase("_etag")) {
                     //throw exception if partition key or id field is declared transient
                     throw new IllegalArgumentException("Field cannot be declared transient: " + field.getName());
                 }
@@ -593,9 +595,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             Integer ru = null;
             final Container annotation = domainType.getAnnotation(Container.class);
 
-            if (annotation != null
-                && annotation.ru() != null
-                && !annotation.ru().isEmpty()) {
+            if (annotation != null && annotation.ru() != null && !annotation.ru().isEmpty()) {
                 ru = Integer.parseInt(annotation.ru());
             }
             return ru;
@@ -729,7 +729,7 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
             }
 
             final CompositeIndex[] compositeIndexes = annotation.compositeIndexes();
-            for (final CompositeIndex index: compositeIndexes) {
+            for (final CompositeIndex index : compositeIndexes) {
                 final List<CompositePath> paths = new ArrayList<>();
                 compositePathList.add(paths);
                 for (final CompositeIndexPath path : index.paths()) {
@@ -822,4 +822,3 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
         }
     }
 }
-

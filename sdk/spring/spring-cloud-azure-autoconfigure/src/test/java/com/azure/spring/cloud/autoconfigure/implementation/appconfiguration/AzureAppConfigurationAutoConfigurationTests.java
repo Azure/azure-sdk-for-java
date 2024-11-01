@@ -23,19 +23,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  *
  */
-class AzureAppConfigurationAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
-    ConfigurationClientBuilderFactory, AzureAppConfigurationProperties> {
+class AzureAppConfigurationAutoConfigurationTests
+    extends AbstractAzureServiceConfigurationTests<ConfigurationClientBuilderFactory, AzureAppConfigurationProperties> {
 
     private static final String ENDPOINT = "https://%s.azconfig.io";
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withConfiguration(
+        AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
             AzureAppConfigurationAutoConfiguration.class));
 
     @Override
     protected ApplicationContextRunner getMinimalContextRunner() {
-        return this.contextRunner
-            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"));
+        return this.contextRunner.withPropertyValues(
+            "spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"));
     }
 
     @Override
@@ -56,7 +56,8 @@ class AzureAppConfigurationAutoConfigurationTests extends AbstractAzureServiceCo
     @Test
     void withoutConfigurationClientBuilderShouldNotConfigure() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
+            .withPropertyValues(
+                "spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
             .withClassLoader(new FilteredClassLoader(ConfigurationClientBuilder.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureAppConfigurationAutoConfiguration.class));
     }
@@ -64,10 +65,8 @@ class AzureAppConfigurationAutoConfigurationTests extends AbstractAzureServiceCo
     @Test
     void disableAppConfigurationSecretShouldNotConfigure() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.appconfiguration.enabled=false",
-                "spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig")
-            )
+            .withPropertyValues("spring.cloud.azure.appconfiguration.enabled=false",
+                "spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
             .run(context -> assertThat(context).doesNotHaveBean(AzureAppConfigurationAutoConfiguration.class));
     }
 
@@ -80,7 +79,8 @@ class AzureAppConfigurationAutoConfigurationTests extends AbstractAzureServiceCo
     @Test
     void withEndpointShouldConfigure() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
+            .withPropertyValues(
+                "spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureAppConfigurationAutoConfiguration.class);
@@ -96,7 +96,8 @@ class AzureAppConfigurationAutoConfigurationTests extends AbstractAzureServiceCo
     void customizerShouldBeCalled() {
         AppConfigurationBuilderCustomizer customizer = new AppConfigurationBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
+            .withPropertyValues(
+                "spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", AppConfigurationBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", AppConfigurationBuilderCustomizer.class, () -> customizer)
@@ -108,7 +109,8 @@ class AzureAppConfigurationAutoConfigurationTests extends AbstractAzureServiceCo
         AppConfigurationBuilderCustomizer customizer = new AppConfigurationBuilderCustomizer();
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
+            .withPropertyValues(
+                "spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", AppConfigurationBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", AppConfigurationBuilderCustomizer.class, () -> customizer)

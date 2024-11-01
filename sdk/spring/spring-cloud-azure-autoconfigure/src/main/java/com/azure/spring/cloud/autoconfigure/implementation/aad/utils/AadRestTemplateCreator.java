@@ -29,8 +29,8 @@ public final class AadRestTemplateCreator {
     }
 
     public static RestTemplate createOAuth2AccessTokenResponseClientRestTemplate(RestTemplateBuilder builder) {
-        builder = builder.messageConverters(
-                new FormHttpMessageConverter(), new OAuth2AccessTokenResponseHttpMessageConverter());
+        builder = builder.messageConverters(new FormHttpMessageConverter(),
+            new OAuth2AccessTokenResponseHttpMessageConverter());
         return createOAuth2ErrorResponseHandledRestTemplate(builder);
     }
 

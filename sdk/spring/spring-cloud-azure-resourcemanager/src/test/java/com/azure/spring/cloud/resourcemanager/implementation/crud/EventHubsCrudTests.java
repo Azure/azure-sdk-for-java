@@ -36,8 +36,7 @@ public class EventHubsCrudTests extends AbstractResourceCrudTests<EventHub, Tupl
 
         EventHubs eventHubs = mock(EventHubs.class);
         when((resourceManager).eventHubs()).thenReturn(eventHubs);
-        when(eventHubs.getByName(resourceMetadata.getResourceGroup(),
-            NAMESPACE, EVENTHUB_NAME)).thenThrow(exception);
+        when(eventHubs.getByName(resourceMetadata.getResourceGroup(), NAMESPACE, EVENTHUB_NAME)).thenThrow(exception);
     }
 
     @Override
@@ -52,13 +51,14 @@ public class EventHubsCrudTests extends AbstractResourceCrudTests<EventHub, Tupl
         EventHubs eventHubs = mock(EventHubs.class);
         EventHub eventHub = mock(EventHub.class);
         when((resourceManager).eventHubs()).thenReturn(eventHubs);
-        when(eventHubs.getByName(resourceMetadata.getResourceGroup(),
-            NAMESPACE, EVENTHUB_NAME)).thenReturn(null, eventHub);
+        when(eventHubs.getByName(resourceMetadata.getResourceGroup(), NAMESPACE, EVENTHUB_NAME)).thenReturn(null,
+            eventHub);
 
         EventHub.DefinitionStages.Blank define = mock(EventHub.DefinitionStages.Blank.class);
         when(eventHubs.define(EVENTHUB_NAME)).thenReturn(define);
 
-        EventHub.DefinitionStages.WithCaptureProviderOrCreate create = mock(EventHub.DefinitionStages.WithCaptureProviderOrCreate.class);
+        EventHub.DefinitionStages.WithCaptureProviderOrCreate create
+            = mock(EventHub.DefinitionStages.WithCaptureProviderOrCreate.class);
         when(define.withExistingNamespace(eventHubNamespace)).thenReturn(create);
         when(create.create()).thenThrow(exception);
     }

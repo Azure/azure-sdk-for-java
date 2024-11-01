@@ -11,9 +11,11 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * Converts a {@link CosmosClientProperties.DirectConnectionProperties} to a {@link DirectConnectionConfig}.
  */
-public final class DirectConnectionConfigConverter implements Converter<CosmosClientProperties.DirectConnectionProperties, DirectConnectionConfig> {
+public final class DirectConnectionConfigConverter
+    implements Converter<CosmosClientProperties.DirectConnectionProperties, DirectConnectionConfig> {
 
-    public static final DirectConnectionConfigConverter DIRECT_CONNECTION_CONFIG_CONVERTER = new DirectConnectionConfigConverter();
+    public static final DirectConnectionConfigConverter DIRECT_CONNECTION_CONFIG_CONVERTER
+        = new DirectConnectionConfigConverter();
 
     private DirectConnectionConfigConverter() {
 

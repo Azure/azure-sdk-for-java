@@ -60,10 +60,8 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(CosmosClientBuilder builder) {
-        return Arrays.asList(
-            new KeyAuthenticationDescriptor(builder::credential),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
-        );
+        return Arrays.asList(new KeyAuthenticationDescriptor(builder::credential),
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential));
     }
 
     @Override
@@ -92,13 +90,18 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         map.from(this.cosmosClientProperties.getEndpoint()).to(builder::endpoint);
         map.from(this.cosmosClientProperties.getConsistencyLevel()).to(builder::consistencyLevel);
         map.from(this.cosmosClientProperties.getClientTelemetryEnabled()).to(builder::clientTelemetryEnabled);
-        map.from(this.cosmosClientProperties.getConnectionSharingAcrossClientsEnabled()).to(builder::connectionSharingAcrossClientsEnabled);
-        map.from(this.cosmosClientProperties.getContentResponseOnWriteEnabled()).to(builder::contentResponseOnWriteEnabled);
+        map.from(this.cosmosClientProperties.getConnectionSharingAcrossClientsEnabled())
+            .to(builder::connectionSharingAcrossClientsEnabled);
+        map.from(this.cosmosClientProperties.getContentResponseOnWriteEnabled())
+            .to(builder::contentResponseOnWriteEnabled);
         map.from(this.cosmosClientProperties.getEndpointDiscoveryEnabled()).to(builder::endpointDiscoveryEnabled);
         map.from(this.cosmosClientProperties.getMultipleWriteRegionsEnabled()).to(builder::multipleWriteRegionsEnabled);
         map.from(this.cosmosClientProperties.getReadRequestsFallbackEnabled()).to(builder::readRequestsFallbackEnabled);
-        map.from(this.cosmosClientProperties.getSessionCapturingOverrideEnabled()).to(builder::sessionCapturingOverrideEnabled);
-        map.from(this.cosmosClientProperties.getPreferredRegions()).whenNot(List::isEmpty).to(builder::preferredRegions);
+        map.from(this.cosmosClientProperties.getSessionCapturingOverrideEnabled())
+            .to(builder::sessionCapturingOverrideEnabled);
+        map.from(this.cosmosClientProperties.getPreferredRegions())
+            .whenNot(List::isEmpty)
+            .to(builder::preferredRegions);
         map.from(this.cosmosClientProperties.getThrottlingRetryOptions()).to(builder::throttlingRetryOptions);
         configureConnection(builder, map);
     }
@@ -113,16 +116,16 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         // TODO (xiada): should we count this as authentication
         map.from(this.cosmosClientProperties.getResourceToken()).to(builder::resourceToken);
 
-        GatewayConnectionConfig gatewayConnectionConfig = GATEWAY_CONNECTION_CONFIG_CONVERTER.convert(
-            this.cosmosClientProperties.getGatewayConnection());
+        GatewayConnectionConfig gatewayConnectionConfig
+            = GATEWAY_CONNECTION_CONFIG_CONVERTER.convert(this.cosmosClientProperties.getGatewayConnection());
         if (proxyOptions != null) {
             gatewayConnectionConfig.setProxy(proxyOptions);
         }
 
         ConnectionMode connectionMode = this.cosmosClientProperties.getConnectionMode();
         if (ConnectionMode.DIRECT == connectionMode) {
-            DirectConnectionConfig directConnectionConfig = DIRECT_CONNECTION_CONFIG_CONVERTER.convert(
-                this.cosmosClientProperties.getDirectConnection());
+            DirectConnectionConfig directConnectionConfig
+                = DIRECT_CONNECTION_CONFIG_CONVERTER.convert(this.cosmosClientProperties.getDirectConnection());
 
             builder.directMode(directConnectionConfig, gatewayConnectionConfig);
         } else if (ConnectionMode.GATEWAY == connectionMode) {
@@ -138,7 +141,8 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     @Override
     protected BiConsumer<CosmosClientBuilder, Configuration> consumeConfiguration() {
         LOGGER.warn("Configuration instance is not supported to configure in CosmosClientBuilder");
-        return (a, b) -> { };
+        return (a, b) -> {
+        };
     }
 
     @Override
@@ -149,6 +153,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     @Override
     protected BiConsumer<CosmosClientBuilder, String> consumeConnectionString() {
         LOGGER.debug("Connection string is not supported to configure in CosmosClientBuilder");
-        return (a, b) -> { };
+        return (a, b) -> {
+        };
     }
 }

@@ -48,29 +48,28 @@ import static org.mockito.Mockito.verify;
 
 class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigurations {
 
-    private static final String SERVLET_WEB_APPLICATION_CLASS = "org.springframework.web.context.support.GenericWebApplicationContext";
+    private static final String SERVLET_WEB_APPLICATION_CLASS
+        = "org.springframework.web.context.support.GenericWebApplicationContext";
 
     @Test
     void mapPropertiesSetting() {
-        getDefaultContextRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.b2c.enabled=true",
-                "spring.cloud.azure.active-directory.b2c.authorization-clients.test.authorizationGrantType = client_credentials",
-                "spring.cloud.azure.active-directory.b2c.authorization-clients.test.scopes = test1,test2"
-            )
-            .run(context -> {
+        getDefaultContextRunner().withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true",
+            "spring.cloud.azure.active-directory.b2c.authorization-clients.test.authorizationGrantType = client_credentials",
+            "spring.cloud.azure.active-directory.b2c.authorization-clients.test.scopes = test1,test2").run(context -> {
                 AadB2cProperties properties = context.getBean(AadB2cProperties.class);
 
                 Map<String, AuthorizationClientProperties> authorizationClients = properties.getAuthorizationClients();
                 assertTrue(authorizationClients.containsKey("test"));
                 assertTrue(authorizationClients.get("test").getScopes().containsAll(Arrays.asList("test1", "test2")));
-                assertEquals(authorizationClients.get("test").getAuthorizationGrantType(), AuthorizationGrantType.CLIENT_CREDENTIALS);
+                assertEquals(authorizationClients.get("test").getAuthorizationGrantType(),
+                    AuthorizationGrantType.CLIENT_CREDENTIALS);
 
                 Map<String, Object> authenticateAdditionalParameters = properties.getAuthenticateAdditionalParameters();
                 assertEquals(authenticateAdditionalParameters.size(), 2);
                 assertTrue(authenticateAdditionalParameters.containsKey("login-hint"));
                 assertTrue(authenticateAdditionalParameters.containsKey("prompt"));
-                Assertions.assertEquals(authenticateAdditionalParameters.get("login-hint"), AadB2cConstants.TEST_LOGIN_HINT);
+                Assertions.assertEquals(authenticateAdditionalParameters.get("login-hint"),
+                    AadB2cConstants.TEST_LOGIN_HINT);
                 assertEquals(authenticateAdditionalParameters.get("prompt"), AadB2cConstants.TEST_PROMPT);
             });
     }
@@ -78,34 +77,34 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     @Override
     WebApplicationContextRunner getDefaultContextRunner() {
         return new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(
-                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class,
-                WebOAuth2ClientTestApp.class,
-                AadB2cAutoConfiguration.class,
-                HttpMessageConvertersAutoConfiguration.class,
-                RestTemplateAutoConfiguration.class))
+            .withConfiguration(
+                AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+                    AzureGlobalPropertiesAutoConfiguration.class, WebOAuth2ClientTestApp.class,
+                    AadB2cAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+                    RestTemplateAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
             .withPropertyValues(getGlobalConfigurableItems());
     }
 
     private String[] getGlobalConfigurableItems() {
-        return new String[] { String.format("%s=%s", AadB2cConstants.TENANT_ID, AadB2cConstants.TEST_TENANT_ID),
+        return new String[] {
+            String.format("%s=%s", AadB2cConstants.TENANT_ID, AadB2cConstants.TEST_TENANT_ID),
             String.format("%s=%s", AadB2cConstants.CLIENT_ID, AadB2cConstants.TEST_CLIENT_ID),
             String.format("%s=%s", AadB2cConstants.CLIENT_SECRET, AadB2cConstants.TEST_CLIENT_SECRET) };
     }
 
     private String[] getWebappCommonPropertyValuesWithOutGlobalConfigurableItems() {
-        return new String[] { String.format("%s=%s", AadB2cConstants.BASE_URI, AadB2cConstants.TEST_BASE_URI),
+        return new String[] {
+            String.format("%s=%s", AadB2cConstants.BASE_URI, AadB2cConstants.TEST_BASE_URI),
             String.format("%s=%s", AadB2cConstants.LOGOUT_SUCCESS_URL, AadB2cConstants.TEST_LOGOUT_SUCCESS_URL),
             String.format("%s=%s", AadB2cConstants.LOGIN_FLOW, AadB2cConstants.TEST_KEY_SIGN_UP_OR_IN),
-            String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS,
-                AadB2cConstants.TEST_KEY_SIGN_UP_OR_IN, AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME),
-            String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS,
-                AadB2cConstants.TEST_KEY_SIGN_IN, AadB2cConstants.TEST_SIGN_IN_NAME),
-            String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS,
-                AadB2cConstants.TEST_KEY_SIGN_UP, AadB2cConstants.TEST_SIGN_UP_NAME),
+            String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS, AadB2cConstants.TEST_KEY_SIGN_UP_OR_IN,
+                AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME),
+            String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS, AadB2cConstants.TEST_KEY_SIGN_IN,
+                AadB2cConstants.TEST_SIGN_IN_NAME),
+            String.format("%s.%s=%s", AadB2cConstants.USER_FLOWS, AadB2cConstants.TEST_KEY_SIGN_UP,
+                AadB2cConstants.TEST_SIGN_UP_NAME),
             String.format("%s=%s", AadB2cConstants.CONFIG_PROMPT, AadB2cConstants.TEST_PROMPT),
             String.format("%s=%s", AadB2cConstants.CONFIG_LOGIN_HINT, AadB2cConstants.TEST_LOGIN_HINT),
             String.format("%s=%s", AadB2cConstants.USER_NAME_ATTRIBUTE_NAME, AadB2cConstants.TEST_ATTRIBUTE_NAME) };
@@ -113,77 +112,67 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
 
     @Test
     void servletApplication() {
-        getDefaultContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
+        getDefaultContextRunner().withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
             .run(context -> assertThat(context).hasSingleBean(AadB2cLogoutSuccessHandler.class));
     }
 
     @Test
     void nonServletApplication() {
-        getDefaultContextRunner()
-            .withClassLoader(new FilteredClassLoader(SERVLET_WEB_APPLICATION_CLASS))
+        getDefaultContextRunner().withClassLoader(new FilteredClassLoader(SERVLET_WEB_APPLICATION_CLASS))
             .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
             .run(context -> assertThat(context).doesNotHaveBean(AadB2cLogoutSuccessHandler.class));
     }
 
     @Test
     void testAutoConfigurationBean() {
-        getDefaultContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
-            .run(c -> {
-                final AadB2cAutoConfiguration autoConfig = c.getBean(AadB2cAutoConfiguration.class);
-                Assertions.assertNotNull(autoConfig);
-            });
+        getDefaultContextRunner().withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true").run(c -> {
+            final AadB2cAutoConfiguration autoConfig = c.getBean(AadB2cAutoConfiguration.class);
+            Assertions.assertNotNull(autoConfig);
+        });
     }
 
     @Test
     void testPropertiesBean() {
-        getDefaultContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
-            .run(c -> {
-                final AadB2cProperties properties = c.getBean(AadB2cProperties.class);
+        getDefaultContextRunner().withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true").run(c -> {
+            final AadB2cProperties properties = c.getBean(AadB2cProperties.class);
 
-                Assertions.assertNotNull(properties);
-                Assertions.assertEquals(properties.getCredential().getClientId(), AadB2cConstants.TEST_CLIENT_ID);
-                Assertions.assertEquals(properties.getCredential().getClientSecret(), AadB2cConstants.TEST_CLIENT_SECRET);
-                Assertions.assertEquals(properties.getUserNameAttributeName(), AadB2cConstants.TEST_ATTRIBUTE_NAME);
+            Assertions.assertNotNull(properties);
+            Assertions.assertEquals(properties.getCredential().getClientId(), AadB2cConstants.TEST_CLIENT_ID);
+            Assertions.assertEquals(properties.getCredential().getClientSecret(), AadB2cConstants.TEST_CLIENT_SECRET);
+            Assertions.assertEquals(properties.getUserNameAttributeName(), AadB2cConstants.TEST_ATTRIBUTE_NAME);
 
-                Map<String, String> userFlows = properties.getUserFlows();
-                Assertions.assertTrue(userFlows.size() > 0);
-                final Object prompt = properties.getAuthenticateAdditionalParameters().get(AadB2cConstants.PROMPT);
-                final String loginHint =
-                    String.valueOf(properties.getAuthenticateAdditionalParameters().get(AadB2cConstants.LOGIN_HINT));
-                Set<Object> clientNames = new HashSet<>(Arrays.asList(AadB2cConstants.TEST_SIGN_IN_NAME,
-                    AadB2cConstants.TEST_SIGN_UP_NAME, AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME));
-                for (String clientName : userFlows.keySet()) {
-                    Assertions.assertTrue(clientNames.contains(userFlows.get(clientName)));
-                }
-                Assertions.assertEquals(prompt, AadB2cConstants.TEST_PROMPT);
-                Assertions.assertEquals(loginHint, AadB2cConstants.TEST_LOGIN_HINT);
-            });
+            Map<String, String> userFlows = properties.getUserFlows();
+            Assertions.assertTrue(userFlows.size() > 0);
+            final Object prompt = properties.getAuthenticateAdditionalParameters().get(AadB2cConstants.PROMPT);
+            final String loginHint
+                = String.valueOf(properties.getAuthenticateAdditionalParameters().get(AadB2cConstants.LOGIN_HINT));
+            Set<Object> clientNames = new HashSet<>(Arrays.asList(AadB2cConstants.TEST_SIGN_IN_NAME,
+                AadB2cConstants.TEST_SIGN_UP_NAME, AadB2cConstants.TEST_SIGN_UP_OR_IN_NAME));
+            for (String clientName : userFlows.keySet()) {
+                Assertions.assertTrue(clientNames.contains(userFlows.get(clientName)));
+            }
+            Assertions.assertEquals(prompt, AadB2cConstants.TEST_PROMPT);
+            Assertions.assertEquals(loginHint, AadB2cConstants.TEST_LOGIN_HINT);
+        });
     }
 
     @Test
     void setDefaultValueFromAzureGlobalPropertiesTest() {
         new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(
-                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class,
-                WebOAuth2ClientTestApp.class,
-                AadB2cAutoConfiguration.class,
-                HttpMessageConvertersAutoConfiguration.class,
-                RestTemplateAutoConfiguration.class))
+            .withConfiguration(
+                AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+                    AzureGlobalPropertiesAutoConfiguration.class, WebOAuth2ClientTestApp.class,
+                    AadB2cAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+                    RestTemplateAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.b2c.enabled = true",
+            .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled = true",
                 "spring.cloud.azure.credential.client-id = global-client-id",
                 "spring.cloud.azure.credential.client-secret = global-client-secret",
                 "spring.cloud.azure.profile.tenant-id = global-tenant-id",
                 "spring.cloud.azure.active-directory.b2c.credential.client-id = aad-client-id",
                 "spring.cloud.azure.active-directory.b2c.credential.client-secret = aad-client-secret",
-                "spring.cloud.azure.active-directory.b2c.profile.tenant-id = aad-tenant-id"
-            )
+                "spring.cloud.azure.active-directory.b2c.profile.tenant-id = aad-tenant-id")
             .run(context -> {
                 AadB2cProperties properties = context.getBean(AadB2cProperties.class);
                 assertEquals("aad-client-id", properties.getCredential().getClientId());
@@ -191,21 +180,17 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
                 assertEquals("aad-tenant-id", properties.getProfile().getTenantId());
             });
         new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(
-                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class,
-                WebOAuth2ClientTestApp.class,
-                AadB2cAutoConfiguration.class,
-                HttpMessageConvertersAutoConfiguration.class,
-                RestTemplateAutoConfiguration.class))
+            .withConfiguration(
+                AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+                    AzureGlobalPropertiesAutoConfiguration.class, WebOAuth2ClientTestApp.class,
+                    AadB2cAutoConfiguration.class, HttpMessageConvertersAutoConfiguration.class,
+                    RestTemplateAutoConfiguration.class))
             .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
             .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.b2c.enabled = true",
+            .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled = true",
                 "spring.cloud.azure.credential.client-id = global-client-id",
                 "spring.cloud.azure.credential.client-secret = global-client-secret",
-                "spring.cloud.azure.profile.tenant-id = global-tenant-id"
-            )
+                "spring.cloud.azure.profile.tenant-id = global-tenant-id")
             .run(context -> {
                 AadB2cProperties properties = context.getBean(AadB2cProperties.class);
                 assertEquals("global-client-id", properties.getCredential().getClientId());
@@ -216,36 +201,31 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
 
     @Test
     void testAADB2CAuthorizationRequestResolverBean() {
-        getDefaultContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
-            .run(c -> {
-                final AadB2cAuthorizationRequestResolver resolver = c.getBean(AadB2cAuthorizationRequestResolver.class);
-                Assertions.assertNotNull(resolver);
-            });
+        getDefaultContextRunner().withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true").run(c -> {
+            final AadB2cAuthorizationRequestResolver resolver = c.getBean(AadB2cAuthorizationRequestResolver.class);
+            Assertions.assertNotNull(resolver);
+        });
     }
 
     @Test
     void testLogoutSuccessHandlerBean() {
-        getDefaultContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
-            .run(c -> {
-                final AadB2cLogoutSuccessHandler handler = c.getBean(AadB2cLogoutSuccessHandler.class);
-                Assertions.assertNotNull(handler);
-            });
+        getDefaultContextRunner().withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true").run(c -> {
+            final AadB2cLogoutSuccessHandler handler = c.getBean(AadB2cLogoutSuccessHandler.class);
+            Assertions.assertNotNull(handler);
+        });
     }
 
     @Test
     void testWebappConditionsIsInvokedWhenAADB2CEnabled() {
         try (MockedStatic<BeanUtils> beanUtils = mockStatic(BeanUtils.class, Mockito.CALLS_REAL_METHODS)) {
             AadB2cConditions.UserFlowCondition userFlowCondition = spy(AadB2cConditions.UserFlowCondition.class);
-            AadB2cConditions.ClientRegistrationCondition clientRegistrationCondition =
-                spy(AadB2cConditions.ClientRegistrationCondition.class);
+            AadB2cConditions.ClientRegistrationCondition clientRegistrationCondition
+                = spy(AadB2cConditions.ClientRegistrationCondition.class);
             beanUtils.when(() -> BeanUtils.instantiateClass(AadB2cConditions.UserFlowCondition.class))
-                     .thenReturn(userFlowCondition);
+                .thenReturn(userFlowCondition);
             beanUtils.when(() -> BeanUtils.instantiateClass(AadB2cConditions.ClientRegistrationCondition.class))
-                     .thenReturn(clientRegistrationCondition);
-            getDefaultContextRunner()
-                .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
+                .thenReturn(clientRegistrationCondition);
+            getDefaultContextRunner().withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
                 .run(c -> {
                     verify(userFlowCondition, atLeastOnce()).getMatchOutcome(any(), any());
                     verify(clientRegistrationCondition, atLeastOnce()).getMatchOutcome(any(), any());
@@ -257,18 +237,16 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     void testWebappConditionsIsNotInvokedWhenAADB2CDisabled() {
         try (MockedStatic<BeanUtils> beanUtils = mockStatic(BeanUtils.class, Mockito.CALLS_REAL_METHODS)) {
             AadB2cConditions.UserFlowCondition userFlowCondition = mock(AadB2cConditions.UserFlowCondition.class);
-            AadB2cConditions.ClientRegistrationCondition clientRegistrationCondition =
-                spy(AadB2cConditions.ClientRegistrationCondition.class);
+            AadB2cConditions.ClientRegistrationCondition clientRegistrationCondition
+                = spy(AadB2cConditions.ClientRegistrationCondition.class);
             beanUtils.when(() -> BeanUtils.instantiateClass(AadB2cConditions.UserFlowCondition.class))
                 .thenReturn(userFlowCondition);
             beanUtils.when(() -> BeanUtils.instantiateClass(AadB2cConditions.ClientRegistrationCondition.class))
                 .thenReturn(clientRegistrationCondition);
             new WebApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(
-                        WebResourceServerTestApp.class,
-                        AadB2cResourceServerAutoConfiguration.class,
-                        HttpMessageConvertersAutoConfiguration.class,
-                        RestTemplateAutoConfiguration.class))
+                .withConfiguration(
+                    AutoConfigurations.of(WebResourceServerTestApp.class, AadB2cResourceServerAutoConfiguration.class,
+                        HttpMessageConvertersAutoConfiguration.class, RestTemplateAutoConfiguration.class))
                 .withPropertyValues(getWebappCommonPropertyValuesWithOutGlobalConfigurableItems())
                 .withPropertyValues(getGlobalConfigurableItems())
                 .run(c -> {
@@ -281,7 +259,8 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     @Test
     void testRestTemplateWellConfigured() {
         getDefaultContextRunner()
-            .withUserConfiguration(RestTemplateProxyCustomizerTestConfiguration.class, AadB2cTestWebSecurityConfiguration.class)
+            .withUserConfiguration(RestTemplateProxyCustomizerTestConfiguration.class,
+                AadB2cTestWebSecurityConfiguration.class)
             .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
             .run(RestTemplateTestUtil::assertRestTemplateWellConfigured);
     }
@@ -289,9 +268,10 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     @EnableWebSecurity
     public static class AadB2cTestWebSecurityConfiguration {
 
-        @SuppressWarnings({"deprecation", "removal"})
+        @SuppressWarnings({ "deprecation", "removal" })
         @Bean
-        public SecurityFilterChain apiFilterChain(HttpSecurity http, AadB2cOidcLoginConfigurer configurer) throws Exception {
+        public SecurityFilterChain apiFilterChain(HttpSecurity http, AadB2cOidcLoginConfigurer configurer)
+            throws Exception {
             // @formatter:off
             http
                 .authorizeHttpRequests()

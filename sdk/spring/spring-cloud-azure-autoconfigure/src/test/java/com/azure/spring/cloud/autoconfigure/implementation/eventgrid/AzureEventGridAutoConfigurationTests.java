@@ -24,17 +24,15 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
-    EventGridPublisherClientBuilderFactory, AzureEventGridProperties> {
+class AzureEventGridAutoConfigurationTests
+    extends AbstractAzureServiceConfigurationTests<EventGridPublisherClientBuilderFactory, AzureEventGridProperties> {
 
-    private static final String ENDPOINT = "https://%s.somelocation.eventgrid.azure.net/api/eventseventgrid.azure.net/api/events";
+    private static final String ENDPOINT
+        = "https://%s.somelocation.eventgrid.azure.net/api/eventseventgrid.azure.net/api/events";
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(
-            TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-            AzureGlobalPropertiesAutoConfiguration.class,
-            AzureEventGridAutoConfiguration.class));
-
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withConfiguration(
+        AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+            AzureGlobalPropertiesAutoConfiguration.class, AzureEventGridAutoConfiguration.class));
 
     @Override
     protected ApplicationContextRunner getMinimalContextRunner() {
@@ -59,8 +57,7 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
 
     @Test
     void withoutClientBuilderShouldNotConfigure() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(EventGridPublisherClientBuilder.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(EventGridPublisherClientBuilder.class))
             .withPropertyValues("spring.cloud.azure.eventgrid.endpoint=" + String.format(ENDPOINT, "myeg"))
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventGridAutoConfiguration.class));
     }
@@ -68,17 +65,14 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
     @Test
     void disableEventGridShouldNotConfigure() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventgrid.enabled=false",
-                "spring.cloud.azure.eventgrid.endpoint=" + String.format(ENDPOINT, "myeg")
-            )
+            .withPropertyValues("spring.cloud.azure.eventgrid.enabled=false",
+                "spring.cloud.azure.eventgrid.endpoint=" + String.format(ENDPOINT, "myeg"))
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventGridAutoConfiguration.class));
     }
 
     @Test
     void withoutEndpointShouldNotConfigure() {
-        this.contextRunner
-            .run(context -> assertThat(context).doesNotHaveBean(AzureEventGridAutoConfiguration.class));
+        this.contextRunner.run(context -> assertThat(context).doesNotHaveBean(AzureEventGridAutoConfiguration.class));
     }
 
     @Test
@@ -101,7 +95,8 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
         properties.setEndpoint(String.format(ENDPOINT, "myeg"));
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventgrid.endpoint=" + String.format(ENDPOINT, "myeg"))
-            .withBean("myFactory", EventGridPublisherClientBuilderFactory.class, () -> new EventGridPublisherClientBuilderFactory(properties))
+            .withBean("myFactory", EventGridPublisherClientBuilderFactory.class,
+                () -> new EventGridPublisherClientBuilderFactory(properties))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventGridAutoConfiguration.class);
                 assertThat(context).hasSingleBean(AzureEventGridProperties.class);
@@ -116,9 +111,9 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
 
     @Test
     void builderCanOverride() {
-        EventGridPublisherClientBuilder myBuilder = new EventGridPublisherClientBuilder()
-            .endpoint(String.format(ENDPOINT, "myeg"))
-            .credential(new DefaultAzureCredentialBuilder().build());
+        EventGridPublisherClientBuilder myBuilder
+            = new EventGridPublisherClientBuilder().endpoint(String.format(ENDPOINT, "myeg"))
+                .credential(new DefaultAzureCredentialBuilder().build());
 
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventgrid.endpoint=" + String.format(ENDPOINT, "myeg"))
@@ -138,10 +133,10 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
     @Test
     @SuppressWarnings("unchecked")
     void clientCanOverride() {
-        EventGridPublisherClient<BinaryData> myCustomClient = new EventGridPublisherClientBuilder()
-            .endpoint(String.format(ENDPOINT, "myeg"))
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .buildCustomEventPublisherClient();
+        EventGridPublisherClient<BinaryData> myCustomClient
+            = new EventGridPublisherClientBuilder().endpoint(String.format(ENDPOINT, "myeg"))
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .buildCustomEventPublisherClient();
 
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventgrid.endpoint=" + String.format(ENDPOINT, "myeg"))
@@ -188,13 +183,10 @@ class AzureEventGridAutoConfigurationTests extends AbstractAzureServiceConfigura
     void configurationPropertiesShouldBind() {
         String endpoint = String.format(ENDPOINT, "mykv");
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventgrid.endpoint=" + endpoint,
-                "spring.cloud.azure.eventgrid.service-version=V2018_01_01",
-                "spring.cloud.azure.eventgrid.key=some-key",
+            .withPropertyValues("spring.cloud.azure.eventgrid.endpoint=" + endpoint,
+                "spring.cloud.azure.eventgrid.service-version=V2018_01_01", "spring.cloud.azure.eventgrid.key=some-key",
                 "spring.cloud.azure.eventgrid.sas-token=some-sas-token",
-                "spring.cloud.azure.eventgrid.event-schema=CLOUD_EVENT"
-            )
+                "spring.cloud.azure.eventgrid.event-schema=CLOUD_EVENT")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventGridProperties.class);
                 AzureEventGridProperties properties = context.getBean(AzureEventGridProperties.class);

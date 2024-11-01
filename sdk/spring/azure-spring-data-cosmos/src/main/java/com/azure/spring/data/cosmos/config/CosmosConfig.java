@@ -31,9 +31,8 @@ public class CosmosConfig {
      * @param responseDiagnosticsProcessor must not be {@literal null}
      * @param queryMetricsEnabled must not be {@literal null}
      */
-    @ConstructorProperties({"responseDiagnosticsProcessor", "queryMetricsEnabled"})
-    public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
-                        boolean queryMetricsEnabled) {
+    @ConstructorProperties({ "responseDiagnosticsProcessor", "queryMetricsEnabled" })
+    public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor, boolean queryMetricsEnabled) {
         this(responseDiagnosticsProcessor, null, queryMetricsEnabled);
     }
 
@@ -44,10 +43,9 @@ public class CosmosConfig {
      * @param databaseThroughputConfig may be {@literal null}
      * @param queryMetricsEnabled must not be {@literal null}
      */
-    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled"})
+    @ConstructorProperties({ "responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled" })
     public CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
-                        DatabaseThroughputConfig databaseThroughputConfig,
-                        boolean queryMetricsEnabled) {
+        DatabaseThroughputConfig databaseThroughputConfig, boolean queryMetricsEnabled) {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
@@ -65,11 +63,13 @@ public class CosmosConfig {
      * @param queryMetricsEnabled must not be {@literal null}
      * @param maxDegreeOfParallelism must not be {@literal null}
      */
-    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "maxDegreeOfParallelism"})
+    @ConstructorProperties({
+        "responseDiagnosticsProcessor",
+        "databaseThroughputConfig",
+        "queryMetricsEnabled",
+        "maxDegreeOfParallelism" })
     CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
-                        DatabaseThroughputConfig databaseThroughputConfig,
-                        boolean queryMetricsEnabled,
-                        int maxDegreeOfParallelism) {
+        DatabaseThroughputConfig databaseThroughputConfig, boolean queryMetricsEnabled, int maxDegreeOfParallelism) {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
@@ -88,12 +88,15 @@ public class CosmosConfig {
      * @param maxDegreeOfParallelism must not be {@literal null}
      * @param maxBufferedItemCount must not be {@literal null}
      */
-    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "maxDegreeOfParallelism", "maxBufferedItemCount"})
+    @ConstructorProperties({
+        "responseDiagnosticsProcessor",
+        "databaseThroughputConfig",
+        "queryMetricsEnabled",
+        "maxDegreeOfParallelism",
+        "maxBufferedItemCount" })
     CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
-                 DatabaseThroughputConfig databaseThroughputConfig,
-                 boolean queryMetricsEnabled,
-                 int maxDegreeOfParallelism,
-                 int maxBufferedItemCount) {
+        DatabaseThroughputConfig databaseThroughputConfig, boolean queryMetricsEnabled, int maxDegreeOfParallelism,
+        int maxBufferedItemCount) {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
@@ -113,13 +116,16 @@ public class CosmosConfig {
      * @param maxBufferedItemCount must not be {@literal null}
      * @param responseContinuationTokenLimitInKb must not be {@literal null}
      */
-    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "maxDegreeOfParallelism", "maxBufferedItemCount", "responseContinuationTokenLimitInKb"})
+    @ConstructorProperties({
+        "responseDiagnosticsProcessor",
+        "databaseThroughputConfig",
+        "queryMetricsEnabled",
+        "maxDegreeOfParallelism",
+        "maxBufferedItemCount",
+        "responseContinuationTokenLimitInKb" })
     CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
-                 DatabaseThroughputConfig databaseThroughputConfig,
-                 boolean queryMetricsEnabled,
-                 int maxDegreeOfParallelism,
-                 int maxBufferedItemCount,
-                 int responseContinuationTokenLimitInKb) {
+        DatabaseThroughputConfig databaseThroughputConfig, boolean queryMetricsEnabled, int maxDegreeOfParallelism,
+        int maxBufferedItemCount, int responseContinuationTokenLimitInKb) {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
@@ -140,14 +146,17 @@ public class CosmosConfig {
      * @param maxBufferedItemCount must not be {@literal null}
      * @param responseContinuationTokenLimitInKb must not be {@literal null}
      */
-    @ConstructorProperties({"responseDiagnosticsProcessor", "databaseThroughputConfig", "queryMetricsEnabled", "indexMetricsEnabled", "maxDegreeOfParallelism", "maxBufferedItemCount", "responseContinuationTokenLimitInKb"})
+    @ConstructorProperties({
+        "responseDiagnosticsProcessor",
+        "databaseThroughputConfig",
+        "queryMetricsEnabled",
+        "indexMetricsEnabled",
+        "maxDegreeOfParallelism",
+        "maxBufferedItemCount",
+        "responseContinuationTokenLimitInKb" })
     CosmosConfig(ResponseDiagnosticsProcessor responseDiagnosticsProcessor,
-                 DatabaseThroughputConfig databaseThroughputConfig,
-                 boolean queryMetricsEnabled,
-                 boolean indexMetricsEnabled,
-                 int maxDegreeOfParallelism,
-                 int maxBufferedItemCount,
-                 int responseContinuationTokenLimitInKb) {
+        DatabaseThroughputConfig databaseThroughputConfig, boolean queryMetricsEnabled, boolean indexMetricsEnabled,
+        int maxDegreeOfParallelism, int maxBufferedItemCount, int responseContinuationTokenLimitInKb) {
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
         this.databaseThroughputConfig = databaseThroughputConfig;
         this.queryMetricsEnabled = queryMetricsEnabled;
@@ -240,9 +249,9 @@ public class CosmosConfig {
         private int maxDegreeOfParallelism;
         private int maxBufferedItemCount;
         private int responseContinuationTokenLimitInKb;
+
         CosmosConfigBuilder() {
         }
-
 
         /**
          * Set responseDiagnosticsProcessor
@@ -250,8 +259,8 @@ public class CosmosConfig {
          * @param responseDiagnosticsProcessor value to initialize
          * @return CosmosConfigBuilder
          */
-        public CosmosConfigBuilder responseDiagnosticsProcessor(ResponseDiagnosticsProcessor
-                                                                    responseDiagnosticsProcessor) {
+        public CosmosConfigBuilder
+            responseDiagnosticsProcessor(ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
             this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
             return this;
         }
@@ -329,21 +338,18 @@ public class CosmosConfig {
          * @return CosmosConfig
          */
         public CosmosConfig build() {
-            return new CosmosConfig(this.responseDiagnosticsProcessor, this.databaseThroughputConfig, this.queryMetricsEnabled,
-                this.indexMetricsEnabled, this.maxDegreeOfParallelism, this.maxBufferedItemCount, this.responseContinuationTokenLimitInKb);
+            return new CosmosConfig(this.responseDiagnosticsProcessor, this.databaseThroughputConfig,
+                this.queryMetricsEnabled, this.indexMetricsEnabled, this.maxDegreeOfParallelism,
+                this.maxBufferedItemCount, this.responseContinuationTokenLimitInKb);
         }
 
         @Override
         public String toString() {
-            return "CosmosConfigBuilder{"
-                + "responseDiagnosticsProcessor=" + responseDiagnosticsProcessor
-                + ", databaseThroughputConfig=" + databaseThroughputConfig
-                + ", queryMetricsEnabled=" + queryMetricsEnabled
-                + ", indexMetricsEnabled=" + indexMetricsEnabled
-                + ", maxDegreeOfParallelism=" + maxDegreeOfParallelism
-                + ", maxBufferedItemCount=" + maxBufferedItemCount
-                + ", responseContinuationTokenLimitInKb=" + responseContinuationTokenLimitInKb
-                + '}';
+            return "CosmosConfigBuilder{" + "responseDiagnosticsProcessor=" + responseDiagnosticsProcessor
+                + ", databaseThroughputConfig=" + databaseThroughputConfig + ", queryMetricsEnabled="
+                + queryMetricsEnabled + ", indexMetricsEnabled=" + indexMetricsEnabled + ", maxDegreeOfParallelism="
+                + maxDegreeOfParallelism + ", maxBufferedItemCount=" + maxBufferedItemCount
+                + ", responseContinuationTokenLimitInKb=" + responseContinuationTokenLimitInKb + '}';
         }
     }
 }

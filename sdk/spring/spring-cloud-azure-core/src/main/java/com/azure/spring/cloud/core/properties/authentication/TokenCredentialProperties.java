@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.core.properties.authentication;
 
-
 import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 
 /**

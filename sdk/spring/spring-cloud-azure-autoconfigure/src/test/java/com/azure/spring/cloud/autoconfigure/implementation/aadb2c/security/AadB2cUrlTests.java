@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c.security;
 
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -38,20 +37,19 @@ class AadB2cUrlTests {
 
     @Test
     void testGetChinaTokenUrl() {
-        final String expect = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/oauth2/v2.0/token?p=fake-p";
+        final String expect
+            = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/oauth2/v2.0/token?p=fake-p";
         Assertions.assertEquals(AadB2cUrl.getTokenUrl(CHINA_BASE_URI, "fake-p"), expect);
     }
 
     @Test
     void testGetTokenUrlException() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> AadB2cUrl.getTokenUrl("", ""));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> AadB2cUrl.getTokenUrl("", ""));
     }
 
     @Test
     void testGetAADTokenUrlException() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> AadB2cUrl.getAADTokenUrl(""));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> AadB2cUrl.getAADTokenUrl(""));
     }
 
     @Test
@@ -71,20 +69,19 @@ class AadB2cUrlTests {
 
     @Test
     void testGetChinaJwkSetUrl() {
-        final String expect = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/discovery/v2.0/keys?p=new-p";
+        final String expect
+            = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/discovery/v2.0/keys?p=new-p";
         Assertions.assertEquals(AadB2cUrl.getJwkSetUrl(CHINA_BASE_URI, "new-p"), expect);
     }
 
     @Test
     void testGetJwkSetUrlException() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> AadB2cUrl.getJwkSetUrl(DEFAULT_BASE_URI, ""));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> AadB2cUrl.getJwkSetUrl(DEFAULT_BASE_URI, ""));
     }
 
     @Test
     void testGetAADJwkSetUrlException() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> AadB2cUrl.getAADJwkSetUrl(""));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> AadB2cUrl.getAADJwkSetUrl(""));
     }
 
     @Test
@@ -101,8 +98,8 @@ class AadB2cUrlTests {
         final String expect = "https://faketenant.b2clogin.com/faketenant.onmicrosoft.com/oauth2/v2.0/logout?"
             + "post_logout_redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fhome&p=my-p";
 
-        Assertions.assertEquals(AadB2cUrl.getEndSessionUrl(DEFAULT_BASE_URI,
-            "http://localhost:8080/home", "my-p"), expect);
+        Assertions.assertEquals(AadB2cUrl.getEndSessionUrl(DEFAULT_BASE_URI, "http://localhost:8080/home", "my-p"),
+            expect);
     }
 
     @Test
@@ -110,13 +107,12 @@ class AadB2cUrlTests {
         final String expect = "https://faketenant.b2clogin.cn/faketenant.partner.onmschina.cn/oauth2/v2.0/logout?"
             + "post_logout_redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fhome&p=my-p";
 
-        Assertions.assertEquals(AadB2cUrl.getEndSessionUrl(CHINA_BASE_URI,
-            "http://localhost:8080/home", "my-p"), expect);
+        Assertions.assertEquals(AadB2cUrl.getEndSessionUrl(CHINA_BASE_URI, "http://localhost:8080/home", "my-p"),
+            expect);
     }
 
     @Test
     void testGetEndSessionUrlException() {
-        Assertions.assertThrows(IllegalArgumentException.class,
-            () -> AadB2cUrl.getJwkSetUrl(DEFAULT_BASE_URI, ""));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> AadB2cUrl.getJwkSetUrl(DEFAULT_BASE_URI, ""));
     }
 }

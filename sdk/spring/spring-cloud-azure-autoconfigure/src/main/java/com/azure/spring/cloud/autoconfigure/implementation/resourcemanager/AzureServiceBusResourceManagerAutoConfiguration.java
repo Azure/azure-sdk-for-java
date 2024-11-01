@@ -24,7 +24,11 @@ import org.springframework.core.annotation.Order;
  *
  * @since 4.0.0
  */
-@ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(
+    prefix = AzureServiceBusProperties.PREFIX,
+    value = "enabled",
+    havingValue = "true",
+    matchIfMissing = true)
 @ConditionalOnBean(AzureResourceManager.class)
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 @ConditionalOnClass(ServiceBusProvisioner.class)
@@ -34,7 +38,7 @@ public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServic
     private final ServiceBusResourceMetadata resourceMetadata;
 
     AzureServiceBusResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
-                                                    ServiceBusResourceMetadata resourceMetadata) {
+        ServiceBusResourceMetadata resourceMetadata) {
         super(azureResourceManager);
         this.resourceMetadata = resourceMetadata;
     }
@@ -51,10 +55,8 @@ public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServic
     @ConditionalOnMissingProperty(prefix = AzureServiceBusProperties.PREFIX, value = "connection-string")
     @Order
     ServiceBusArmConnectionStringProvider serviceBusArmConnectionStringProvider() {
-        return new ServiceBusArmConnectionStringProvider(this.azureResourceManager,
-                                                         this.resourceMetadata,
-                                                         this.resourceMetadata.getName());
+        return new ServiceBusArmConnectionStringProvider(this.azureResourceManager, this.resourceMetadata,
+            this.resourceMetadata.getName());
     }
 
 }
-

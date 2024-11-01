@@ -29,10 +29,8 @@ import static org.mockito.Mockito.verify;
 /**
  *
  */
-class AzureBlobClientBuilderFactoryTests
-    extends AzureHttpClientBuilderFactoryBaseTests<BlobServiceClientBuilder,
-    AzureStorageBlobTestProperties,
-    AzureBlobClientBuilderFactoryTests.BlobServiceClientBuilderFactoryExt> {
+class AzureBlobClientBuilderFactoryTests extends
+    AzureHttpClientBuilderFactoryBaseTests<BlobServiceClientBuilder, AzureStorageBlobTestProperties, AzureBlobClientBuilderFactoryTests.BlobServiceClientBuilderFactoryExt> {
 
     private static final String ENDPOINT = "https://abc.blob.core.windows.net/";
     private static final String CONNECTION_STRING = "BlobEndpoint=https://test.blob.core.windows.net/;"
@@ -79,7 +77,8 @@ class AzureBlobClientBuilderFactoryTests
     }
 
     @Override
-    protected BlobServiceClientBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(AzureStorageBlobTestProperties properties) {
+    protected BlobServiceClientBuilderFactoryExt
+        createClientBuilderFactoryWithMockBuilder(AzureStorageBlobTestProperties properties) {
         return new BlobServiceClientBuilderFactoryExt(properties);
     }
 
@@ -107,13 +106,13 @@ class AzureBlobClientBuilderFactoryTests
 
     @Override
     protected void verifyCredentialCalled(BlobServiceClientBuilder builder,
-                                          Class<? extends TokenCredential> tokenCredentialClass,
-                                          VerificationMode mode) {
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         verify(builder, mode).credential(any(tokenCredentialClass));
     }
 
     @Override
-    protected void verifyRetryOptionsCalled(BlobServiceClientBuilder builder, AzureStorageBlobTestProperties properties, VerificationMode mode) {
+    protected void verifyRetryOptionsCalled(BlobServiceClientBuilder builder, AzureStorageBlobTestProperties properties,
+        VerificationMode mode) {
         verify(builder, mode).retryOptions(any(RequestRetryOptions.class));
     }
 
@@ -155,4 +154,3 @@ class AzureBlobClientBuilderFactoryTests
     }
 
 }
-

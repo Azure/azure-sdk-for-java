@@ -23,7 +23,7 @@ public class EventHubsChannelResourceManagerProvisioner extends EventHubsChannel
      * @param eventHubsProvisioner the event Hubs Provisioner
      */
     public EventHubsChannelResourceManagerProvisioner(@NonNull String namespace,
-                                                      @NonNull EventHubsProvisioner eventHubsProvisioner) {
+        @NonNull EventHubsProvisioner eventHubsProvisioner) {
         Assert.hasText(namespace, "The namespace can't be null or empty");
         this.namespace = namespace;
         this.eventHubsProvisioner = eventHubsProvisioner;

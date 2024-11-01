@@ -25,7 +25,7 @@ import java.time.Duration;
  * Secondary Database Account
  */
 @Configuration
-@PropertySource(value = {"classpath:application.properties"})
+@PropertySource(value = { "classpath:application.properties" })
 public class SecondaryTestRepositoryConfig {
     @Value("${cosmos.secondary.uri:}")
     private String cosmosDbUri;
@@ -65,20 +65,16 @@ public class SecondaryTestRepositoryConfig {
 
     @Bean
     public CosmosClientBuilder secondaryCosmosClientBuilder() {
-        return new CosmosClientBuilder()
-            .key(cosmosDbKey)
+        return new CosmosClientBuilder().key(cosmosDbKey)
             .endpoint(cosmosDbUri)
             .contentResponseOnWriteEnabled(true)
-            .clientTelemetryConfig(
-                new CosmosClientTelemetryConfig()
-                    .diagnosticsThresholds(
-                        new CosmosDiagnosticsThresholds()
-                            .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
-                            .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
-                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
-                            .setRequestChargeThreshold(requestChargeThresholdInRU)
-                    )
-                    .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
+            .clientTelemetryConfig(new CosmosClientTelemetryConfig()
+                .diagnosticsThresholds(new CosmosDiagnosticsThresholds()
+                    .setNonPointOperationLatencyThreshold(Duration.ofMillis(nonPointOperationLatencyThresholdInMS))
+                    .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                    .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
+                    .setRequestChargeThreshold(requestChargeThresholdInRU))
+                .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER));
     }
 
     @Bean("secondaryCosmosAsyncClient")
@@ -92,9 +88,11 @@ public class SecondaryTestRepositoryConfig {
     @EnableReactiveCosmosRepositories(reactiveCosmosTemplateRef = "secondaryReactiveCosmosTemplate")
     public class SecondaryDataSourceConfiguration {
         @Bean
-        public ReactiveCosmosTemplate secondaryReactiveCosmosTemplate(@Qualifier("secondaryCosmosAsyncClient") CosmosAsyncClient client, MappingCosmosConverter mappingCosmosConverter) {
+        public ReactiveCosmosTemplate secondaryReactiveCosmosTemplate(
+            @Qualifier("secondaryCosmosAsyncClient") CosmosAsyncClient client,
+            MappingCosmosConverter mappingCosmosConverter) {
 
-            CosmosConfig config =  CosmosConfig.builder()
+            CosmosConfig config = CosmosConfig.builder()
                 .enableQueryMetrics(queryMetricsEnabled)
                 .enableIndexMetrics(indexMetricsEnabled)
                 .maxDegreeOfParallelism(maxDegreeOfParallelism)
@@ -102,7 +100,8 @@ public class SecondaryTestRepositoryConfig {
                 .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                 .build();
 
-            return new ReactiveCosmosTemplate(new CosmosFactory(client, getFirstDatabase()), config, mappingCosmosConverter);
+            return new ReactiveCosmosTemplate(new CosmosFactory(client, getFirstDatabase()), config,
+                mappingCosmosConverter);
         }
     }
 
@@ -112,9 +111,11 @@ public class SecondaryTestRepositoryConfig {
     @EnableReactiveCosmosRepositories(reactiveCosmosTemplateRef = "secondaryReactiveCosmosTemplate1")
     public class SecondaryDataSourceConfiguration1 {
         @Bean
-        public ReactiveCosmosTemplate secondaryReactiveCosmosTemplate1(@Qualifier("secondaryCosmosAsyncClient") CosmosAsyncClient client, MappingCosmosConverter mappingCosmosConverter) {
+        public ReactiveCosmosTemplate secondaryReactiveCosmosTemplate1(
+            @Qualifier("secondaryCosmosAsyncClient") CosmosAsyncClient client,
+            MappingCosmosConverter mappingCosmosConverter) {
 
-            CosmosConfig config =  CosmosConfig.builder()
+            CosmosConfig config = CosmosConfig.builder()
                 .enableQueryMetrics(queryMetricsEnabled)
                 .enableIndexMetrics(indexMetricsEnabled)
                 .maxDegreeOfParallelism(maxDegreeOfParallelism)
@@ -122,7 +123,8 @@ public class SecondaryTestRepositoryConfig {
                 .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
                 .build();
 
-            return new ReactiveCosmosTemplate(new CosmosFactory(client, getSecondDatabase()), config, mappingCosmosConverter);
+            return new ReactiveCosmosTemplate(new CosmosFactory(client, getSecondDatabase()), config,
+                mappingCosmosConverter);
         }
     }
 

@@ -3,7 +3,6 @@
 
 package com.azure.spring.messaging.servicebus.core;
 
-
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.cloud.service.listener.MessageListener;
 import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler;
@@ -23,9 +22,8 @@ public interface ServiceBusProcessorFactory {
      *
      * @return ServiceBusProcessorClient queue processor client.
      */
-    ServiceBusProcessorClient createProcessor(String queue,
-                                              MessageListener<?> messageListener,
-                                              ServiceBusErrorHandler errorHandler);
+    ServiceBusProcessorClient createProcessor(String queue, MessageListener<?> messageListener,
+        ServiceBusErrorHandler errorHandler);
 
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified queue.
@@ -48,10 +46,8 @@ public interface ServiceBusProcessorFactory {
      *
      * @return the topic processor client.
      */
-    ServiceBusProcessorClient createProcessor(String topic,
-                                              String subscription,
-                                              MessageListener<?> messageListener,
-                                              ServiceBusErrorHandler errorHandler);
+    ServiceBusProcessorClient createProcessor(String topic, String subscription, MessageListener<?> messageListener,
+        ServiceBusErrorHandler errorHandler);
 
     /**
      * Create a {@link ServiceBusProcessorClient} to consume events from the specified topic in the context of the given
@@ -63,9 +59,8 @@ public interface ServiceBusProcessorFactory {
      *
      * @return the topic processor client.
      */
-    ServiceBusProcessorClient createProcessor(String topic,
-                                              String subscription,
-                                              ServiceBusContainerProperties containerProperties);
+    ServiceBusProcessorClient createProcessor(String topic, String subscription,
+        ServiceBusContainerProperties containerProperties);
 
     /**
      * Add a listener for this factory.

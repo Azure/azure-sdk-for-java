@@ -27,9 +27,7 @@ class ShareServiceUserAgentTests {
     void userAgentTest() {
         new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureStorageFileShareAutoConfiguration.class))
-            .withPropertyValues(
-                "spring.cloud.azure.storage.fileshare.account-name=sample"
-            )
+            .withPropertyValues("spring.cloud.azure.storage.fileshare.account-name=sample")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureStorageFileShareAutoConfiguration.class);

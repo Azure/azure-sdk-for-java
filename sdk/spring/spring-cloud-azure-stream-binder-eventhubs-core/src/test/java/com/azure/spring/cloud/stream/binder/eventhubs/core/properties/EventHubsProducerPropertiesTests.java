@@ -15,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class EventHubsProducerPropertiesTests {
 
-    static final String CONNECTION_STRING = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=accessKey;EntityPath=testeh";
+    static final String CONNECTION_STRING
+        = "Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=test;SharedAccessKey=accessKey;EntityPath=testeh";
 
     private EventHubsProducerProperties producerProperties;
 
@@ -55,15 +56,18 @@ class EventHubsProducerPropertiesTests {
     @Test
     void domainNameConfigureAsCloud() {
         producerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
-        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, producerProperties.getProfile().getCloudType());
-        assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(), producerProperties.getDomainName());
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT,
+            producerProperties.getProfile().getCloudType());
+        assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(),
+            producerProperties.getDomainName());
     }
 
     @Test
     void customDomainNameShouldSet() {
         producerProperties.setDomainName("new.servicebus.windows.net");
         producerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
-        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, producerProperties.getProfile().getCloudType());
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT,
+            producerProperties.getProfile().getCloudType());
         assertEquals("new.servicebus.windows.net", producerProperties.getDomainName());
     }
 

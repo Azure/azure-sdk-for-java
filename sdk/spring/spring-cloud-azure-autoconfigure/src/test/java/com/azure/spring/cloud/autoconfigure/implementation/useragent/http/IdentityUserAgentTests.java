@@ -38,23 +38,18 @@ class IdentityUserAgentTests {
     @Test
     void userAgentTest(CapturedOutput output) {
         new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(
-                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureTokenCredentialAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class
-            ))
+            .withConfiguration(
+                AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+                    AzureTokenCredentialAutoConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class))
             .withUserConfiguration(CredentialCustomizerConfiguration.class)
-            .withPropertyValues(
-                "spring.cloud.azure.profile.tenant-id=sample",
-                "spring.cloud.azure.credential.client-id=sample",
-                "spring.cloud.azure.credential.client-secret=sample",
-                "spring.cloud.azure.retry.fixed.delay=1",
-                "spring.cloud.azure.retry.fixed.max-retries=0",
-                "spring.cloud.azure.retry.mode=fixed"
-            )
+            .withPropertyValues("spring.cloud.azure.profile.tenant-id=sample",
+                "spring.cloud.azure.credential.client-id=sample", "spring.cloud.azure.credential.client-secret=sample",
+                "spring.cloud.azure.retry.fixed.delay=1", "spring.cloud.azure.retry.fixed.max-retries=0",
+                "spring.cloud.azure.retry.mode=fixed")
             .run(context -> {
                 // see https://github.com/Azure/azure-sdk-for-java/blob/c8aecbf72f6826de8e465bdf6ae1ddcf2d09fe4e/sdk/core/azure-core/src/main/java/com/azure/core/http/policy/HttpLoggingPolicy.java#L456
-                ch.qos.logback.classic.Logger httpLoggingPolicyLogger = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("");
+                ch.qos.logback.classic.Logger httpLoggingPolicyLogger
+                    = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger("");
                 httpLoggingPolicyLogger.setLevel(Level.DEBUG);
 
                 assertThat(context).hasSingleBean(TokenCredential.class);
@@ -90,6 +85,5 @@ class IdentityUserAgentTests {
             };
         }
     }
-
 
 }

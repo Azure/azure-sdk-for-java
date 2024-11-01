@@ -47,7 +47,8 @@ public class AppConfigurationAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
-            AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory, ReplicaLookUp replicaLookUp) {
+            AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
+            ReplicaLookUp replicaLookUp) {
             return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
                 appProperties.getDefaultMinBackoff(), replicaLookUp, new AppConfigurationRefreshUtil());
         }

@@ -21,8 +21,8 @@ import java.util.Optional;
  * @param <ID> id type.
  */
 @NoRepositoryBean
-public interface CosmosRepository<T, ID extends Serializable> extends PagingAndSortingRepository<T, ID>,
-    CrudRepository<T, ID> {
+public interface CosmosRepository<T, ID extends Serializable>
+    extends PagingAndSortingRepository<T, ID>, CrudRepository<T, ID> {
 
     /**
      * Retrieves an entity by its id.
@@ -68,7 +68,8 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
      * @return the patched entity
      * @throws IllegalArgumentException in case the given {@code id} is {@literal null}.
      */
-    <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
+    <S extends T> S save(ID id, PartitionKey partitionKey, Class<S> domainType, CosmosPatchOperations patchOperations,
+        CosmosPatchItemRequestOptions options);
 
     /**
      * Returns list of items in a specific partition
@@ -79,4 +80,3 @@ public interface CosmosRepository<T, ID extends Serializable> extends PagingAndS
     Iterable<T> findAll(PartitionKey partitionKey);
 
 }
-

@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 
 import static com.azure.spring.cloud.core.implementation.connectionstring.ConnectionStringSegments.ENDPOINT;
 
-
 class ConnectionString {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ConnectionString.class);
@@ -47,7 +46,7 @@ class ConnectionString {
             LOGGER.warn("'connectionString' doesn't have text.");
             return;
         }
-        
+
         final String[] tokenValuePairs = this.str.split(TOKEN_VALUE_PAIR_DELIMITER);
 
         validateTokenValuePresents(tokenValuePairs);
@@ -61,8 +60,8 @@ class ConnectionString {
                 try {
                     this.endpoint = new URI(value);
                 } catch (URISyntaxException e) {
-                    throw new IllegalArgumentException(
-                        String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair), e);
+                    throw new IllegalArgumentException(String.format(Locale.US, "Invalid endpoint: %s", tokenValuePair),
+                        e);
                 }
             }
             segments.put(token, value);
@@ -94,8 +93,8 @@ class ConnectionString {
         for (String tokenValuePair : tokenValuePairs) {
             final String[] pair = tokenValuePair.split(TOKEN_VALUE_SEPARATOR, 2);
             if (pair.length != 2 || !StringUtils.hasText(pair[1])) {
-                throw new IllegalArgumentException(String.format(Locale.US,
-                    "Connection string has invalid key value pair: %s", tokenValuePair));
+                throw new IllegalArgumentException(
+                    String.format(Locale.US, "Connection string has invalid key value pair: %s", tokenValuePair));
             }
         }
     }
@@ -123,11 +122,11 @@ class ConnectionString {
         String[] tokenValuePairs = str.split(TOKEN_VALUE_PAIR_DELIMITER);
         return collectTokens(tokenValuePairs);
     }
-    
+
     private static Set<String> collectTokens(String[] tokenValuePairs) {
         return Arrays.stream(tokenValuePairs)
-                     .map(a -> a.split(TOKEN_VALUE_SEPARATOR, 2)[0])
-                     .collect(Collectors.toSet());
+            .map(a -> a.split(TOKEN_VALUE_SEPARATOR, 2)[0])
+            .collect(Collectors.toSet());
     }
 
 }

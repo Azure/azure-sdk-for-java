@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.Assert;
 
-
 public class CosmosAnnotationUnitTest {
     private CosmosEntityInformation<NoDBAnnotationPerson, String> personInfo;
     private CosmosEntityInformation<Role, String> roleInfo;
@@ -36,8 +35,8 @@ public class CosmosAnnotationUnitTest {
     public void testDefaultIndexingPolicyAnnotation() {
         final IndexingPolicy policy = personInfo.getIndexingPolicy();
         final Container containerAnnotation = NoDBAnnotationPerson.class.getAnnotation(Container.class);
-        final CosmosIndexingPolicy policyAnnotation =
-                NoDBAnnotationPerson.class.getAnnotation(CosmosIndexingPolicy.class);
+        final CosmosIndexingPolicy policyAnnotation
+            = NoDBAnnotationPerson.class.getAnnotation(CosmosIndexingPolicy.class);
 
         Assert.isNull(containerAnnotation, "NoDBAnnotationPerson class should not have Container annotation");
         Assert.isNull(policyAnnotation, "NoDBAnnotationPerson class should not have CosmosIndexingPolicy annotation");
@@ -45,11 +44,11 @@ public class CosmosAnnotationUnitTest {
 
         // ContainerName, RequestUnit, Automatic and IndexingMode
         Assert.isTrue(personInfo.getContainerName().equals(NoDBAnnotationPerson.class.getSimpleName()),
-                "should be default collection name");
+            "should be default collection name");
         Assert.isTrue(policy.isAutomatic() == TestConstants.DEFAULT_INDEXING_POLICY_AUTOMATIC,
-                "should be default indexing policy automatic");
+            "should be default indexing policy automatic");
         Assert.isTrue(policy.getIndexingMode() == TestConstants.DEFAULT_INDEXING_POLICY_MODE,
-                "should be default indexing policy mode");
+            "should be default indexing policy mode");
 
         // IncludedPaths and ExcludedPaths
         // We do not use testIndexingPolicyPathsEquals generic here, for unit test do not create cosmosdb instance,
@@ -70,9 +69,9 @@ public class CosmosAnnotationUnitTest {
         Assert.notNull(policy, "Role class collection policy should not be null");
 
         Assert.isTrue(roleInfo.getContainerName().equals(TestConstants.ROLE_COLLECTION_NAME),
-                "should be Role(class) collection name");
+            "should be Role(class) collection name");
         Assert.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
-                "should be Role(class) indexing policy mode");
+            "should be Role(class) indexing policy mode");
     }
 
     @Test
@@ -94,12 +93,11 @@ public class CosmosAnnotationUnitTest {
 
     @Test
     public void testContainerAnnotationTimeToLive() {
-        final CosmosEntityInformation<TimeToLiveSample, String> info =
-                new CosmosEntityInformation<>(TimeToLiveSample.class);
+        final CosmosEntityInformation<TimeToLiveSample, String> info
+            = new CosmosEntityInformation<>(TimeToLiveSample.class);
         final Integer timeToLive = info.getTimeToLive();
 
         Assert.notNull(timeToLive, "timeToLive should not be null");
         Assert.isTrue(timeToLive == TestConstants.TIME_TO_LIVE, "should be the same time to live");
     }
 }
-

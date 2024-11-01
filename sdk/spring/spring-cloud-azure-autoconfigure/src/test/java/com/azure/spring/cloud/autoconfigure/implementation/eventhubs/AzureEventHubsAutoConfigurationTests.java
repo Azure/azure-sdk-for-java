@@ -28,20 +28,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigurationTests<
-    EventHubClientBuilderFactory, AzureEventHubsProperties> {
+class AzureEventHubsAutoConfigurationTests
+    extends AbstractAzureServiceConfigurationTests<EventHubClientBuilderFactory, AzureEventHubsProperties> {
     private static final String CONNECTION_STRING = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withConfiguration(
+        AutoConfigurations.of(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
             AzureEventHubsAutoConfiguration.class));
 
     @Override
     protected ApplicationContextRunner getMinimalContextRunner() {
-        return this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace",
-                "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub"
-                );
+        return this.contextRunner.withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace",
+            "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub");
     }
 
     @Override
@@ -61,37 +58,32 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
 
     @Test
     void configureWithoutEventHubClientBuilder() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(EventHubClientBuilder.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(EventHubClientBuilder.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsAutoConfiguration.class));
     }
 
     @Test
     void configureWithEventHubDisabled() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.eventhubs.enabled=false")
+        this.contextRunner.withPropertyValues("spring.cloud.azure.eventhubs.enabled=false")
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsAutoConfiguration.class));
     }
 
     @Test
     void configureWithoutConnectionStringAndNamespace() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.eventhubs.enabled=true")
+        this.contextRunner.withPropertyValues("spring.cloud.azure.eventhubs.enabled=true")
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsAutoConfiguration.class));
     }
 
     @Test
     void configureWithNamespace() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace")
+        this.contextRunner.withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-eventhub-namespace")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> assertThat(context).hasSingleBean(AzureEventHubsProperties.class));
     }
 
     @Test
     void configureWithConnectionString() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING)
+        this.contextRunner.withPropertyValues("spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> assertThat(context).hasSingleBean(AzureEventHubsProperties.class));
     }
@@ -104,13 +96,10 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
         azureProperties.getRetry().getExponential().setBaseDelay(Duration.ofSeconds(2));
         azureProperties.getRetry().getFixed().setDelay(Duration.ofSeconds(3));
 
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureProperties)
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
+        this.contextRunner.withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withPropertyValues("spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
                 "spring.cloud.azure.eventhubs.retry.exponential.base-delay=2m",
-                "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING
-            )
+                "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
                 final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
@@ -120,9 +109,12 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 assertThat(properties.getRetry().getFixed().getDelay()).isEqualTo(Duration.ofSeconds(3));
                 assertThat(properties.getClient().getTransportType()).isNull();
                 assertThat(properties.getConnectionString()).isEqualTo(CONNECTION_STRING);
-                assertThat(properties.getProfile().getCloudType()).isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE);
-                assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE.getServiceBusDomainName());
-                assertThat(properties.getDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE.getServiceBusDomainName());
+                assertThat(properties.getProfile().getCloudType())
+                    .isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE);
+                assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName())
+                    .isEqualTo(AzureEnvironmentProperties.AZURE.getServiceBusDomainName());
+                assertThat(properties.getDomainName())
+                    .isEqualTo(AzureEnvironmentProperties.AZURE.getServiceBusDomainName());
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
             });
@@ -133,19 +125,19 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
 
-        this.contextRunner
-                .withBean(AzureGlobalProperties.class, () -> azureProperties)
-                .withPropertyValues(
-                        "spring.cloud.azure.eventhubs.domain-name=servicebus.chinacloudapi.cn",
-                        "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING
-                )
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
-                    final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
-                    assertThat(properties.getProfile().getCloudType()).isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
-                    assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName());
-                    assertThat(properties.getDomainName()).isEqualTo(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName());
-                });
+        this.contextRunner.withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withPropertyValues("spring.cloud.azure.eventhubs.domain-name=servicebus.chinacloudapi.cn",
+                "spring.cloud.azure.eventhubs.connection-string=" + CONNECTION_STRING)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
+                assertThat(properties.getProfile().getCloudType())
+                    .isEqualTo(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+                assertThat(properties.getProfile().getEnvironment().getServiceBusDomainName())
+                    .isEqualTo(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName());
+                assertThat(properties.getDomainName())
+                    .isEqualTo(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName());
+            });
     }
 
     @Test
@@ -153,14 +145,15 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
     void connectionStringProvidedShouldConfigureConnectionProvider() {
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
-                "spring.cloud.azure.eventhubs.event-hub-name=test-event-hub"
-            )
+                "spring.cloud.azure.eventhubs.connection-string="
+                    + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
+                "spring.cloud.azure.eventhubs.event-hub-name=test-event-hub")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsAutoConfiguration.class);
                 assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
-                StaticConnectionStringProvider connectionStringProvider = context.getBean(StaticConnectionStringProvider.class);
+                StaticConnectionStringProvider connectionStringProvider
+                    = context.getBean(StaticConnectionStringProvider.class);
                 Assertions.assertEquals(AzureServiceType.EVENT_HUBS, connectionStringProvider.getServiceType());
             });
     }
@@ -171,50 +164,47 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
         String producerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-producer-namespace");
         String consumerConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-consumer-namespace");
         String processorConnectionString = String.format(CONNECTION_STRING_FORMAT, "fake-processor-namespace");
-        this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
+        this.contextRunner.withPropertyValues("spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
 
-                "spring.cloud.azure.eventhubs.shared-connection=true",
-                "spring.cloud.azure.eventhubs.domain-name=fake-domain",
-                "spring.cloud.azure.eventhubs.namespace=fake-namespace",
-                "spring.cloud.azure.eventhubs.event-hub-name=fake-event-hub",
-                "spring.cloud.azure.eventhubs.connection-string=" + connectionString,
-                "spring.cloud.azure.eventhubs.custom-endpoint-address=http://fake-custom-endpoint.com",
+            "spring.cloud.azure.eventhubs.shared-connection=true",
+            "spring.cloud.azure.eventhubs.domain-name=fake-domain",
+            "spring.cloud.azure.eventhubs.namespace=fake-namespace",
+            "spring.cloud.azure.eventhubs.event-hub-name=fake-event-hub",
+            "spring.cloud.azure.eventhubs.connection-string=" + connectionString,
+            "spring.cloud.azure.eventhubs.custom-endpoint-address=http://fake-custom-endpoint.com",
 
-                "spring.cloud.azure.eventhubs.producer.domain-name=fake-producer-domain",
-                "spring.cloud.azure.eventhubs.producer.namespace=fake-producer-namespace",
-                "spring.cloud.azure.eventhubs.producer.event-hub-name=fake-producer-event-hub",
-                "spring.cloud.azure.eventhubs.producer.connection-string=" + producerConnectionString,
-                "spring.cloud.azure.eventhubs.producer.custom-endpoint-address=http://fake-producer-custom-endpoint.com",
+            "spring.cloud.azure.eventhubs.producer.domain-name=fake-producer-domain",
+            "spring.cloud.azure.eventhubs.producer.namespace=fake-producer-namespace",
+            "spring.cloud.azure.eventhubs.producer.event-hub-name=fake-producer-event-hub",
+            "spring.cloud.azure.eventhubs.producer.connection-string=" + producerConnectionString,
+            "spring.cloud.azure.eventhubs.producer.custom-endpoint-address=http://fake-producer-custom-endpoint.com",
 
-                "spring.cloud.azure.eventhubs.consumer.domain-name=fake-consumer-domain",
-                "spring.cloud.azure.eventhubs.consumer.namespace=fake-consumer-namespace",
-                "spring.cloud.azure.eventhubs.consumer.event-hub-name=fake-consumer-event-hub",
-                "spring.cloud.azure.eventhubs.consumer.connection-string=" + consumerConnectionString,
-                "spring.cloud.azure.eventhubs.consumer.custom-endpoint-address=http://fake-consumer-custom-endpoint.com",
-                "spring.cloud.azure.eventhubs.consumer.consumer-group=fake-consumer-consumer-group",
-                "spring.cloud.azure.eventhubs.consumer.prefetch-count=1",
+            "spring.cloud.azure.eventhubs.consumer.domain-name=fake-consumer-domain",
+            "spring.cloud.azure.eventhubs.consumer.namespace=fake-consumer-namespace",
+            "spring.cloud.azure.eventhubs.consumer.event-hub-name=fake-consumer-event-hub",
+            "spring.cloud.azure.eventhubs.consumer.connection-string=" + consumerConnectionString,
+            "spring.cloud.azure.eventhubs.consumer.custom-endpoint-address=http://fake-consumer-custom-endpoint.com",
+            "spring.cloud.azure.eventhubs.consumer.consumer-group=fake-consumer-consumer-group",
+            "spring.cloud.azure.eventhubs.consumer.prefetch-count=1",
 
-                "spring.cloud.azure.eventhubs.processor.domain-name=fake-processor-domain",
-                "spring.cloud.azure.eventhubs.processor.namespace=fake-processor-namespace",
-                "spring.cloud.azure.eventhubs.processor.event-hub-name=fake-processor-event-hub",
-                "spring.cloud.azure.eventhubs.processor.connection-string=" + processorConnectionString,
-                "spring.cloud.azure.eventhubs.processor.custom-endpoint-address=http://fake-processor-custom-endpoint.com",
-                "spring.cloud.azure.eventhubs.processor.consumer-group=fake-processor-consumer-group",
-                "spring.cloud.azure.eventhubs.processor.prefetch-count=2",
-                "spring.cloud.azure.eventhubs.processor.track-last-enqueued-event-properties=true",
-                "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.0.offset=earliest",
-                "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.1.enqueued-date-time=2022-01-01T10:10:00Z",
-                "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.2.sequence-number=1000",
-                "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.2.inclusive=true",
-                "spring.cloud.azure.eventhubs.processor.batch.max-wait-time=5s",
-                "spring.cloud.azure.eventhubs.processor.batch.max-size=8",
-                "spring.cloud.azure.eventhubs.processor.load-balancing.update-interval=7m",
-                "spring.cloud.azure.eventhubs.processor.load-balancing.strategy=greedy",
-                "spring.cloud.azure.eventhubs.processor.load-balancing.partition-ownership-expiration-interval=2h",
-                "spring.cloud.azure.eventhubs.processor.checkpoint-store.create-container-if-not-exists=true"
-            )
+            "spring.cloud.azure.eventhubs.processor.domain-name=fake-processor-domain",
+            "spring.cloud.azure.eventhubs.processor.namespace=fake-processor-namespace",
+            "spring.cloud.azure.eventhubs.processor.event-hub-name=fake-processor-event-hub",
+            "spring.cloud.azure.eventhubs.processor.connection-string=" + processorConnectionString,
+            "spring.cloud.azure.eventhubs.processor.custom-endpoint-address=http://fake-processor-custom-endpoint.com",
+            "spring.cloud.azure.eventhubs.processor.consumer-group=fake-processor-consumer-group",
+            "spring.cloud.azure.eventhubs.processor.prefetch-count=2",
+            "spring.cloud.azure.eventhubs.processor.track-last-enqueued-event-properties=true",
+            "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.0.offset=earliest",
+            "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.1.enqueued-date-time=2022-01-01T10:10:00Z",
+            "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.2.sequence-number=1000",
+            "spring.cloud.azure.eventhubs.processor.initial-partition-event-position.2.inclusive=true",
+            "spring.cloud.azure.eventhubs.processor.batch.max-wait-time=5s",
+            "spring.cloud.azure.eventhubs.processor.batch.max-size=8",
+            "spring.cloud.azure.eventhubs.processor.load-balancing.update-interval=7m",
+            "spring.cloud.azure.eventhubs.processor.load-balancing.strategy=greedy",
+            "spring.cloud.azure.eventhubs.processor.load-balancing.partition-ownership-expiration-interval=2h",
+            "spring.cloud.azure.eventhubs.processor.checkpoint-store.create-container-if-not-exists=true")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
@@ -243,7 +233,7 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 assertEquals("fake-consumer-consumer-group", consumer.getConsumerGroup());
                 assertEquals(1, consumer.getPrefetchCount());
 
-                AzureEventHubsProperties.Processor processor  = properties.getProcessor();
+                AzureEventHubsProperties.Processor processor = properties.getProcessor();
                 assertEquals("fake-processor-domain", processor.getDomainName());
                 assertEquals("fake-processor-namespace", processor.getNamespace());
                 assertEquals("fake-processor-event-hub", processor.getEventHubName());
@@ -253,14 +243,16 @@ class AzureEventHubsAutoConfigurationTests extends AbstractAzureServiceConfigura
                 assertEquals(2, processor.getPrefetchCount());
                 assertTrue(processor.getTrackLastEnqueuedEventProperties());
                 assertEquals("earliest", processor.getInitialPartitionEventPosition().get("0").getOffset());
-                assertEquals(Instant.parse("2022-01-01T10:10:00Z"), processor.getInitialPartitionEventPosition().get("1").getEnqueuedDateTime());
+                assertEquals(Instant.parse("2022-01-01T10:10:00Z"),
+                    processor.getInitialPartitionEventPosition().get("1").getEnqueuedDateTime());
                 assertEquals(1000, processor.getInitialPartitionEventPosition().get("2").getSequenceNumber());
                 assertTrue(processor.getInitialPartitionEventPosition().get("2").isInclusive());
                 assertEquals(Duration.ofSeconds(5), processor.getBatch().getMaxWaitTime());
                 assertEquals(8, processor.getBatch().getMaxSize());
                 assertEquals(Duration.ofMinutes(7), processor.getLoadBalancing().getUpdateInterval());
                 assertEquals(GREEDY, processor.getLoadBalancing().getStrategy());
-                assertEquals(Duration.ofHours(2), processor.getLoadBalancing().getPartitionOwnershipExpirationInterval());
+                assertEquals(Duration.ofHours(2),
+                    processor.getLoadBalancing().getPartitionOwnershipExpirationInterval());
                 assertTrue(processor.getCheckpointStore().isCreateContainerIfNotExists());
 
             });

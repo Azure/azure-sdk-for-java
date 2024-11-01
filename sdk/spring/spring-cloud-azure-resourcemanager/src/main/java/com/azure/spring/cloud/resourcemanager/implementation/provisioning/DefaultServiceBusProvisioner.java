@@ -27,7 +27,7 @@ public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
      * @param azureResourceMetadata the azure resource metadata
      */
     public DefaultServiceBusProvisioner(AzureResourceManager azureResourceManager,
-                                        AzureResourceMetadata azureResourceMetadata) {
+        AzureResourceMetadata azureResourceMetadata) {
         this.queueCrud = new ServiceBusQueueCrud(azureResourceManager, azureResourceMetadata);
         this.topicCrud = new ServiceBusTopicCrud(azureResourceManager, azureResourceMetadata);
         this.subscriptionCrud = new ServiceBusTopicSubscriptionCrud(azureResourceManager, azureResourceMetadata);
@@ -63,7 +63,7 @@ public class DefaultServiceBusProvisioner implements ServiceBusProvisioner {
 
     @Override
     public void provisionSubscription(String namespace, String topic, String subscription,
-                                      ServiceBusTopicProperties topicProperties) {
+        ServiceBusTopicProperties topicProperties) {
         this.subscriptionCrud.getOrCreate(Tuples.of(namespace, topic, subscription), topicProperties);
     }
 }

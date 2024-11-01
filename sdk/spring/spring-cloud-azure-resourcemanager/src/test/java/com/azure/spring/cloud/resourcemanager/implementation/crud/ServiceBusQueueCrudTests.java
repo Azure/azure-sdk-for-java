@@ -25,7 +25,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class ServiceBusQueueCrudTests extends AbstractResourceCrudTests<Queue, Tuple2<String, String>, ServiceBusQueueProperties> {
+class ServiceBusQueueCrudTests
+    extends AbstractResourceCrudTests<Queue, Tuple2<String, String>, ServiceBusQueueProperties> {
 
     private AzureResourceManager resourceManager;
     private AzureResourceMetadata resourceMetadata;
@@ -36,7 +37,6 @@ class ServiceBusQueueCrudTests extends AbstractResourceCrudTests<Queue, Tuple2<S
     private static final String QUEUE_NAME = "queue";
 
     private final ServiceBusQueueProperties queueProperties = new ServiceBusQueueProperties();
-
 
     @BeforeEach
     void beforeEach() {

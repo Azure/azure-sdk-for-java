@@ -17,14 +17,14 @@ public class FeatureFlagTracing {
 
     private static final String FILTER_TYPE_DELIMITER = "+";
 
-    private static final List<String> PERCENTAGE_FILTER_NAMES = Arrays.asList("Percentage", "Microsoft.Percentage",
-        "PercentageFilter", "Microsoft.PercentageFilter");
+    private static final List<String> PERCENTAGE_FILTER_NAMES
+        = Arrays.asList("Percentage", "Microsoft.Percentage", "PercentageFilter", "Microsoft.PercentageFilter");
 
-    private static final List<String> TIME_WINDOW_FILTER_NAMES = Arrays.asList("TimeWindow", "Microsoft.TimeWindow",
-        "TimeWindowFilter", "Microsoft.TimeWindowFilter");
+    private static final List<String> TIME_WINDOW_FILTER_NAMES
+        = Arrays.asList("TimeWindow", "Microsoft.TimeWindow", "TimeWindowFilter", "Microsoft.TimeWindowFilter");
 
-    private static final List<String> TARGETING_FILTER_NAMES = Arrays.asList("Targeting", "Microsoft.Targeting",
-        "TargetingFilter", "Microsoft.TargetingFilter");
+    private static final List<String> TARGETING_FILTER_NAMES
+        = Arrays.asList("Targeting", "Microsoft.Targeting", "TargetingFilter", "Microsoft.TargetingFilter");
 
     private Boolean usesCustomFilter = false;
 

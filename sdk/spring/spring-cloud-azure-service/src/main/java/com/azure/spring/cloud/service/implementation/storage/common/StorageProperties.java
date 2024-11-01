@@ -11,7 +11,8 @@ import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringPro
 /**
  * Common properties for all Azure Storage services.
  */
-public interface StorageProperties extends AzureProperties, RetryOptionsProvider, SasTokenProvider, ConnectionStringProvider {
+public interface StorageProperties
+    extends AzureProperties, RetryOptionsProvider, SasTokenProvider, ConnectionStringProvider {
 
     /**
      * Get the storage endpoint.

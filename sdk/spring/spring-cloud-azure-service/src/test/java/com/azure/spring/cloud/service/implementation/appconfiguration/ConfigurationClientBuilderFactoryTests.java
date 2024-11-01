@@ -25,10 +25,7 @@ import static org.mockito.Mockito.verify;
  *
  */
 public class ConfigurationClientBuilderFactoryTests extends
-    AzureHttpClientBuilderFactoryBaseTests<
-        ConfigurationClientBuilder,
-        AzureAppConfigurationTestProperties,
-        ConfigurationClientBuilderFactoryTests.ConfigurationClientBuilderFactoryExt> {
+    AzureHttpClientBuilderFactoryBaseTests<ConfigurationClientBuilder, AzureAppConfigurationTestProperties, ConfigurationClientBuilderFactoryTests.ConfigurationClientBuilderFactoryExt> {
 
     private static final String ENDPOINT = "https://abc.azconfig.io";
 
@@ -49,8 +46,8 @@ public class ConfigurationClientBuilderFactoryTests extends
     }
 
     @Override
-    protected ConfigurationClientBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(
-        AzureAppConfigurationTestProperties properties) {
+    protected ConfigurationClientBuilderFactoryExt
+        createClientBuilderFactoryWithMockBuilder(AzureAppConfigurationTestProperties properties) {
         return new ConfigurationClientBuilderFactoryExt(properties);
     }
 
@@ -75,15 +72,13 @@ public class ConfigurationClientBuilderFactoryTests extends
 
     @Override
     protected void verifyCredentialCalled(ConfigurationClientBuilder builder,
-                                          Class<? extends TokenCredential> tokenCredentialClass,
-                                          VerificationMode mode) {
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         verify(builder, mode).credential(any(tokenCredentialClass));
     }
 
     @Override
     protected void verifyRetryOptionsCalled(ConfigurationClientBuilder builder,
-                                            AzureAppConfigurationTestProperties properties,
-                                            VerificationMode mode) {
+        AzureAppConfigurationTestProperties properties, VerificationMode mode) {
         // TODO (xiada): change this when we use the retryOptions instead of the retryPolicy function.
         verify(builder, mode).retryPolicy(any(RetryPolicy.class));
     }
@@ -125,4 +120,3 @@ public class ConfigurationClientBuilderFactoryTests extends
         }
     }
 }
-

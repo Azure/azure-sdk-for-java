@@ -33,7 +33,8 @@ class KeyVaultSecretPropertySourceUserAgentTests {
         properties.getRetry().getFixed().setDelay(Duration.ofSeconds(1));
         properties.getRetry().getFixed().setMaxRetries(0);
 
-        KeyVaultEnvironmentPostProcessor environmentPostProcessor = new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), null);
+        KeyVaultEnvironmentPostProcessor environmentPostProcessor
+            = new KeyVaultEnvironmentPostProcessor(new DeferredLogs(), null);
         SecretClient secretClient = environmentPostProcessor.buildSecretClient(properties);
         try {
             secretClient.getSecret("property-source-name1");

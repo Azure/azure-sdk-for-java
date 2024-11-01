@@ -92,8 +92,7 @@ public class AppConfigurationEndpoint {
                 PushNotification pushNotification = configStore.getMonitoring().getPushNotification();
 
                 // One of these need to be set
-                if (!(pushNotification.getPrimaryToken().isValid()
-                    || pushNotification.getSecondaryToken().isValid())) {
+                if (!(pushNotification.getPrimaryToken().isValid() || pushNotification.getSecondaryToken().isValid())) {
                     return false;
                 }
 
@@ -111,7 +110,8 @@ public class AppConfigurationEndpoint {
 
     private boolean isTokenMatch(AccessToken token) {
         // if token's secret is allowed to be null this will cause NPE as well.
-        return token != null && allRequestParams.containsKey(token.getName())
+        return token != null
+            && allRequestParams.containsKey(token.getName())
             && token.getSecret().equals(this.allRequestParams.get(token.getName()));
 
     }

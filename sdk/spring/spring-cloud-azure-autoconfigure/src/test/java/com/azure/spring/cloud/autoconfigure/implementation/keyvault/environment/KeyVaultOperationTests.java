@@ -54,7 +54,8 @@ public class KeyVaultOperationTests {
         String value2 = "value2";
         KeyVaultSecret keyVaultSecret1 = mockSecretClientGetSecretMethod(secretClient, key1, value1);
         KeyVaultSecret keyVaultSecret2 = mockSecretClientGetSecretMethod(secretClient, key2, value2);
-        mockSecretClientListPropertiesOfSecrets(secretClient, keyVaultSecret1.getProperties(), keyVaultSecret2.getProperties());
+        mockSecretClientListPropertiesOfSecrets(secretClient, keyVaultSecret1.getProperties(),
+            keyVaultSecret2.getProperties());
 
         List<KeyVaultSecret> keyVaultSecrets = keyVaultOperation.listSecrets(null);
 
@@ -107,7 +108,8 @@ public class KeyVaultOperationTests {
     public void getSecretsWithoutDisabled() {
         KeyVaultSecret enabledSecret = mockSecretClientGetSecretMethod(secretClient, "key1", "value1");
         KeyVaultSecret disabledSecret = mockSecretClientGetSecretMethod(secretClient, "key2", "value2", false);
-        mockSecretClientListPropertiesOfSecrets(secretClient, enabledSecret.getProperties(), disabledSecret.getProperties());
+        mockSecretClientListPropertiesOfSecrets(secretClient, enabledSecret.getProperties(),
+            disabledSecret.getProperties());
 
         List<KeyVaultSecret> keyVaultSecrets = keyVaultOperation.listSecrets(null);
 

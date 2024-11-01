@@ -62,7 +62,8 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals("profile-tenant-id-A", target.profile.getTenantId());
         assertEquals("profile-sub-id-A", target.profile.getSubscriptionId());
         assertEquals("aad-endpoint-A", target.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(), target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(),
+            target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("credential-client-id-A", target.credential.getClientId());
         assertEquals("credential-client-secret-A", target.credential.getClientSecret());
         assertEquals("credential-client-cert-path-A", target.credential.getClientCertificatePath());
@@ -94,7 +95,8 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals("profile-tenant-id-B", target.profile.getTenantId());
         assertEquals("profile-sub-id-B", target.profile.getSubscriptionId());
         assertEquals("aad-endpoint-B", target.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(), target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(),
+            target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("credential-client-id-B", target.credential.getClientId());
         assertEquals("credential-client-secret-B", target.credential.getClientSecret());
         assertEquals("credential-client-cert-path-B", target.credential.getClientCertificatePath());
@@ -119,11 +121,13 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals(AZURE_CHINA, target.profile.getCloudType());
         assertEquals("profile-tenant-id-A", target.profile.getTenantId());
         assertNull(target.profile.getSubscriptionId());
-        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(), target.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(), target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
+            target.profile.getEnvironment().getActiveDirectoryEndpoint());
+        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(),
+            target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("credential-client-id-A", target.credential.getClientId());
         assertEquals("my-token-credential", target.credential.getTokenCredentialBeanName());
-//        assertTrue(target.credential.isManagedIdentityEnabled());
+        //        assertTrue(target.credential.isManagedIdentityEnabled());
         assertNull(target.credential.getClientSecret());
         assertNull(target.credential.getClientCertificatePath());
         assertNull(target.credential.getClientCertificatePassword());
@@ -151,7 +155,8 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals("profile-tenant-id-B", target.profile.getTenantId());
         assertEquals("profile-sub-id-B", target.profile.getSubscriptionId());
         assertEquals("aad-endpoint-B", target.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(), target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(),
+            target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("credential-client-id-B", target.credential.getClientId());
         assertEquals("credential-client-secret-B", target.credential.getClientSecret());
         assertEquals("credential-client-cert-path-B", target.credential.getClientCertificatePath());
@@ -174,7 +179,8 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals("profile-tenant-id-A", target.profile.getTenantId());
         assertEquals("profile-sub-id-B", target.profile.getSubscriptionId());
         assertEquals("aad-endpoint-A", target.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(), target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(),
+            target.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("credential-client-id-A", target.credential.getClientId());
         assertEquals("credential-client-secret-B", target.credential.getClientSecret());
         assertEquals("credential-client-cert-path-B", target.credential.getClientCertificatePath());
@@ -219,7 +225,8 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals("profile-tenant-id-B", defaultProperties.profile.getTenantId());
         assertEquals("profile-sub-id-B", defaultProperties.profile.getSubscriptionId());
         assertEquals("aad-endpoint-B", defaultProperties.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(), defaultProperties.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE.getActiveDirectoryGraphApiVersion(),
+            defaultProperties.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("credential-client-id-B", defaultProperties.credential.getClientId());
         assertEquals("credential-client-secret-B", defaultProperties.credential.getClientSecret());
         assertEquals("credential-client-cert-path-B", defaultProperties.credential.getClientCertificatePath());
@@ -242,7 +249,8 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals("profile-tenant-id-A", result.profile.getTenantId());
         assertEquals("profile-sub-id-B", result.profile.getSubscriptionId());
         assertEquals("aad-endpoint-A", result.profile.getEnvironment().getActiveDirectoryEndpoint());
-        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(), result.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
+        assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryGraphApiVersion(),
+            result.profile.getEnvironment().getActiveDirectoryGraphApiVersion());
         assertEquals("credential-client-id-A", result.credential.getClientId());
         assertEquals("credential-client-secret-B", result.credential.getClientSecret());
         assertEquals("credential-client-cert-path-B", result.credential.getClientCertificatePath());
@@ -285,7 +293,6 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
             target.profile.getEnvironment().getActiveDirectoryEndpoint());
 
-
         // source properties should not be updated
         assertNull(source.credential.getClientSecret());
         assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
@@ -317,7 +324,6 @@ class AzurePasswordlessPropertiesUtilsTest {
         assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
             source.profile.getEnvironment().getActiveDirectoryEndpoint());
     }
-
 
     static class AzurePropertiesA implements AzureProperties, RetryOptionsProvider {
 

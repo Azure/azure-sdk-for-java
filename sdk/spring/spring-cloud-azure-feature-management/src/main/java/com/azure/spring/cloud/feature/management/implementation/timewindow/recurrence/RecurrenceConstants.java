@@ -3,10 +3,10 @@
 
 package com.azure.spring.cloud.feature.management.implementation.timewindow.recurrence;
 
-
 public final class RecurrenceConstants {
     private RecurrenceConstants() {
     }
+
     public static final int DAYS_PER_WEEK = 7;
     public static final int TEN_YEARS = 3650;
 
@@ -21,6 +21,7 @@ public final class RecurrenceConstants {
     public static final String REQUIRED_PARAMETER = "Value cannot be null for required parameter: %s";
     public static final String NOT_MATCHED = "%s date is not a valid first occurrence.";
     public static final String TIME_WINDOW_DURATION_TEN_YEARS = "Time window duration cannot be longer than 10 years.";
-    public static final String TIME_WINDOW_DURATION_OUT_OF_RANGE = "The time window between Start and End should be shorter than the minimum gap between %s";
+    public static final String TIME_WINDOW_DURATION_OUT_OF_RANGE
+        = "The time window between Start and End should be shorter than the minimum gap between %s";
 
 }

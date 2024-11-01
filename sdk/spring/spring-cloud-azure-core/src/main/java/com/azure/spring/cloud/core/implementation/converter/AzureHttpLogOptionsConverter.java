@@ -10,7 +10,8 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * Converts a {@link HttpLoggingOptionsProvider.HttpLoggingOptions} to a {@link HttpLogOptions}.
  */
-public final class AzureHttpLogOptionsConverter implements Converter<HttpLoggingOptionsProvider.HttpLoggingOptions, HttpLogOptions> {
+public final class AzureHttpLogOptionsConverter
+    implements Converter<HttpLoggingOptionsProvider.HttpLoggingOptions, HttpLogOptions> {
 
     public static final AzureHttpLogOptionsConverter HTTP_LOG_OPTIONS_CONVERTER = new AzureHttpLogOptionsConverter();
 
@@ -24,9 +25,9 @@ public final class AzureHttpLogOptionsConverter implements Converter<HttpLogging
         HttpLogOptions logOptions = new HttpLogOptions();
 
         logOptions.setLogLevel(logging.getLevel())
-                  .setPrettyPrintBody(Boolean.TRUE.equals(logging.getPrettyPrintBody()))
-                  .setAllowedQueryParamNames(logging.getAllowedQueryParamNames())
-                  .setAllowedHeaderNames(logging.getAllowedHeaderNames());
+            .setPrettyPrintBody(Boolean.TRUE.equals(logging.getPrettyPrintBody()))
+            .setAllowedQueryParamNames(logging.getAllowedQueryParamNames())
+            .setAllowedHeaderNames(logging.getAllowedHeaderNames());
 
         return logOptions;
     }

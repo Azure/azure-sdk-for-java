@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 
 class JdbcConnectionStringUtils {
 
-    private static String buildEnhancedPropertiesOrderedString(Map<String, String> enhancedProperties, String queryDelimiter) {
+    private static String buildEnhancedPropertiesOrderedString(Map<String, String> enhancedProperties,
+        String queryDelimiter) {
         String enhancedPropertyString = new TreeMap<>(enhancedProperties).entrySet()
             .stream()
             .map(entry -> entry.getKey() + "=" + entry.getValue())
@@ -22,7 +23,8 @@ class JdbcConnectionStringUtils {
         return enhanceJdbcUrl(databaseType, true, baseUrl, properties);
     }
 
-    static String enhanceJdbcUrl(DatabaseType databaseType, boolean hasOriginalProperties, String baseUrl, String... properties) {
+    static String enhanceJdbcUrl(DatabaseType databaseType, boolean hasOriginalProperties, String baseUrl,
+        String... properties) {
         Map<String, String> enhancedProperties = new HashMap<>(databaseType.getDefaultEnhancedProperties());
         for (String property : properties) {
             String[] split = property.split("=");

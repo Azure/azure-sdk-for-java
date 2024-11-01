@@ -40,7 +40,7 @@ class CosmosClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     CosmosClientBuilderFactory cosmosClientBuilderFactory(AzureCosmosProperties properties,
-                                                          ObjectProvider<AzureServiceClientBuilderCustomizer<CosmosClientBuilder>> customizers) {
+        ObjectProvider<AzureServiceClientBuilderCustomizer<CosmosClientBuilder>> customizers) {
         CosmosClientBuilderFactory factory = new CosmosClientBuilderFactory(properties);
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_COSMOS);
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);

@@ -14,8 +14,10 @@ class AzureServiceBusProcessorCondition extends SpringBootCondition {
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
 
-        String entityType = AzureServiceBusPropertiesUtils.getServiceBusProperties(context, "processor.entity-type", "entity-type");
-        String processorSubscriptionName = AzureServiceBusPropertiesUtils.getServiceBusProperties(context, "processor.subscription-name");
+        String entityType
+            = AzureServiceBusPropertiesUtils.getServiceBusProperties(context, "processor.entity-type", "entity-type");
+        String processorSubscriptionName
+            = AzureServiceBusPropertiesUtils.getServiceBusProperties(context, "processor.subscription-name");
 
         if ("queue".equalsIgnoreCase(entityType)) {
             return ConditionOutcome.match();
@@ -25,7 +27,8 @@ class AzureServiceBusProcessorCondition extends SpringBootCondition {
             if (processorSubscriptionName != null) {
                 return ConditionOutcome.match();
             } else {
-                return ConditionOutcome.noMatch("spring.cloud.azure.servicebus.processor.subscription-name is missing.");
+                return ConditionOutcome
+                    .noMatch("spring.cloud.azure.servicebus.processor.subscription-name is missing.");
             }
         }
 

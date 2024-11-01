@@ -14,9 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-abstract class AzureAadCredentialBuilderFactoryTest<
-    B extends AadCredentialBuilderBase<B>,
-    F extends AzureAadCredentialBuilderFactory<B>> {
+abstract class AzureAadCredentialBuilderFactoryTest<B extends AadCredentialBuilderBase<B>, F extends AzureAadCredentialBuilderFactory<B>> {
 
     abstract Class<F> getType();
 
@@ -34,8 +32,8 @@ abstract class AzureAadCredentialBuilderFactoryTest<
     }
 
     private IdentityClientOptions getIdentityClientOptions(AadCredentialBuilderBase<B> builder) {
-        return (IdentityClientOptions) ReflectionUtils.getField(AadCredentialBuilderBase.class,
-            "identityClientOptions", builder);
+        return (IdentityClientOptions) ReflectionUtils.getField(AadCredentialBuilderBase.class, "identityClientOptions",
+            builder);
     }
 
     static class AzureStorageQueueProperties extends AzureHttpSdkProperties {

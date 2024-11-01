@@ -27,26 +27,29 @@ class EventHubsUserAgentTests {
 
     @Test
     void userAgentTest() {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class))
+        new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .withBean(EventHubsRecordMessageListener.class, () -> message -> { })
-            .withBean(EventHubsErrorHandler.class, () -> errorContext -> { })
+            .withBean(EventHubsRecordMessageListener.class, () -> message -> {
+            })
+            .withBean(EventHubsErrorHandler.class, () -> errorContext -> {
+            })
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=sample",
+            .withPropertyValues("spring.cloud.azure.eventhubs.namespace=sample",
                 "spring.cloud.azure.eventhubs.event-hub-name=sample",
                 "spring.cloud.azure.eventhubs.processor.consumer-group=sample",
-                "spring.cloud.azure.eventhubs.consumer.consumer-group=sample"
-            )
+                "spring.cloud.azure.eventhubs.consumer.consumer-group=sample")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsAutoConfiguration.class);
                 assertThat(context).hasSingleBean(EventHubConsumerAsyncClient.class);
                 assertThat(context).hasSingleBean(EventHubConsumerClient.class);
 
-                EventProcessorClientBuilder eventProcessorClientBuilder = context.getBean(EventProcessorClientBuilder.class);
-                EventHubClientBuilder eventHubClientBuilder = (EventHubClientBuilder) getField(EventProcessorClientBuilder.class, "eventHubClientBuilder", eventProcessorClientBuilder);
-                ClientOptions options = (ClientOptions) getField(EventHubClientBuilder.class, "clientOptions", eventHubClientBuilder);
+                EventProcessorClientBuilder eventProcessorClientBuilder
+                    = context.getBean(EventProcessorClientBuilder.class);
+                EventHubClientBuilder eventHubClientBuilder
+                    = (EventHubClientBuilder) getField(EventProcessorClientBuilder.class, "eventHubClientBuilder",
+                        eventProcessorClientBuilder);
+                ClientOptions options
+                    = (ClientOptions) getField(EventHubClientBuilder.class, "clientOptions", eventHubClientBuilder);
                 Assertions.assertNotNull(options);
                 Assertions.assertEquals(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS, options.getApplicationId());
 

@@ -14,8 +14,10 @@ class AzureServiceBusConsumerCondition extends SpringBootCondition {
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
 
-        String entityType = AzureServiceBusPropertiesUtils.getServiceBusProperties(context, "consumer.entity-type", "entity-type");
-        String consumerSubscriptionName = AzureServiceBusPropertiesUtils.getServiceBusProperties(context, "consumer.subscription-name");
+        String entityType
+            = AzureServiceBusPropertiesUtils.getServiceBusProperties(context, "consumer.entity-type", "entity-type");
+        String consumerSubscriptionName
+            = AzureServiceBusPropertiesUtils.getServiceBusProperties(context, "consumer.subscription-name");
 
         if ("queue".equalsIgnoreCase(entityType)) {
             return ConditionOutcome.match();

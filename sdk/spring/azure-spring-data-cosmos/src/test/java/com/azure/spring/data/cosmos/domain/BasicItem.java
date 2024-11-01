@@ -50,10 +50,6 @@ public class BasicItem {
 
     @Override
     public String toString() {
-        return "BasicItem{"
-            + "id='"
-            + id
-            + '\''
-            + '}';
+        return "BasicItem{" + "id='" + id + '\'' + '}';
     }
 }

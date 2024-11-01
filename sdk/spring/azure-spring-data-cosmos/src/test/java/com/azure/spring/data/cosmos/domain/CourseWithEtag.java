@@ -71,9 +71,7 @@ public class CourseWithEtag {
             return false;
         }
         CourseWithEtag course = (CourseWithEtag) o;
-        return courseId.equals(course.courseId)
-            && name.equals(course.name)
-            && department.equals(course.department);
+        return courseId.equals(course.courseId) && name.equals(course.name) && department.equals(course.department);
     }
 
     @Override
@@ -83,19 +81,7 @@ public class CourseWithEtag {
 
     @Override
     public String toString() {
-        return "Course{"
-            + "courseId='"
-            + courseId
-            + '\''
-            + ", name='"
-            + name
-            + '\''
-            + ", department='"
-            + department
-            + '\''
-            + ", etag='"
-            + etag
-            + '\''
-            + '}';
+        return "Course{" + "courseId='" + courseId + '\'' + ", name='" + name + '\'' + ", department='" + department
+            + '\'' + ", etag='" + etag + '\'' + '}';
     }
 }

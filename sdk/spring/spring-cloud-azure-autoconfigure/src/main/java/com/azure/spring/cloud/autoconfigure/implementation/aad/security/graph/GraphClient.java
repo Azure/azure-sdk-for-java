@@ -63,9 +63,7 @@ public class GraphClient {
                         groupInformation.getGroupsNames().add(membership.getDisplayName());
                     }
                 }
-                aadMembershipRestUri = userMemberships
-                    .map(Memberships::getOdataNextLink)
-                    .orElse(null);
+                aadMembershipRestUri = userMemberships.map(Memberships::getOdataNextLink).orElse(null);
             } else {
                 break;
             }
@@ -80,11 +78,13 @@ public class GraphClient {
         headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
         HttpEntity<String> entity = new HttpEntity<>(headers);
         try {
-            ResponseEntity<Memberships> response = operations.exchange(urlString, HttpMethod.GET, entity, Memberships.class);
+            ResponseEntity<Memberships> response
+                = operations.exchange(urlString, HttpMethod.GET, entity, Memberships.class);
             if (response.getStatusCode() == HttpStatus.OK) {
                 return Optional.of(response.getBody());
             } else {
-                LOGGER.error("Response code [{}] is not 200, the response body is [{}].", response.getStatusCode(), response.getBody());
+                LOGGER.error("Response code [{}] is not 200, the response body is [{}].", response.getStatusCode(),
+                    response.getBody());
                 return Optional.empty();
             }
         } catch (RestClientException restClientException) {

@@ -58,7 +58,8 @@ public class AuditableIT {
 
     @Before
     public void setup() {
-        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, AuditableEntity.class, AuditableIdGeneratedEntity.class);
+        collectionManager.ensureContainersCreatedAndEmpty(cosmosTemplate, AuditableEntity.class,
+            AuditableIdGeneratedEntity.class);
     }
 
     @Test
@@ -89,8 +90,8 @@ public class AuditableIT {
 
         stubDateTimeProvider.setNow(now);
         stubAuditorProvider.setCurrentAuditor("created-by");
-        final List<AuditableEntity> savedEntities =
-            TestUtils.toList(auditableRepository.saveAll(Lists.newArrayList(entity1, entity2)));
+        final List<AuditableEntity> savedEntities
+            = TestUtils.toList(auditableRepository.saveAll(Lists.newArrayList(entity1, entity2)));
 
         assertThat(savedEntities.get(0).getId()).isEqualTo(UUID_1);
         assertThat(savedEntities.get(0).getCreatedBy()).isEqualTo("created-by");
@@ -147,9 +148,11 @@ public class AuditableIT {
 
         auditableRepository.save(entity);
 
-        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
+        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()),
+            Part.IgnoreCaseType.NEVER);
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
-        List<AuditableEntity> results = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class));
+        List<AuditableEntity> results
+            = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class));
         assertEquals(results.size(), 1);
         AuditableEntity foundEntity = results.get(0);
         assertEquals(entity.getId(), foundEntity.getId());

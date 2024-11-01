@@ -109,7 +109,9 @@ public class ReplicaLookUpTest {
         setupMock();
         when(namingReplicaMock.hasMore()).thenReturn(true).thenReturn(true).thenReturn(false);
         Mockito.doReturn("1 1 1 fake.endpoint.replica.azconfig.test.")
-            .doReturn("1 1 1 fake.endpoint.replica2.azconfig.test.").when(namingReplicaMock).next();
+            .doReturn("1 1 1 fake.endpoint.replica2.azconfig.test.")
+            .when(namingReplicaMock)
+            .next();
 
         assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
 
@@ -123,13 +125,13 @@ public class ReplicaLookUpTest {
         setupMock();
         when(namingReplicaMock.hasMore()).thenReturn(true).thenReturn(false);
         Mockito.doReturn("1 1 1 fake.endpoint.replica.azconfig.test.").when(namingReplicaMock).next();
-        
+
         assertEquals(0, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
 
         replicaLookUp.updateAutoFailoverEndpoints();
         assertEquals(1, replicaLookUp.getAutoFailoverEndpoints("https://fake.endpoint.azconfig.test").size());
     }
-    
+
     @Test
     public void updateAutoFailoverEndpointsInvalidReplicaTest() throws NamingException {
         setupMock();
@@ -144,7 +146,8 @@ public class ReplicaLookUpTest {
 
     private void setupMock() throws NamingException {
         when(contextMock.getAttributes(Mockito.anyString(), Mockito.any())).thenReturn(srvOriginMock)
-            .thenReturn(srvReplicaMock).thenThrow(new NameNotFoundException());
+            .thenReturn(srvReplicaMock)
+            .thenThrow(new NameNotFoundException());
         when(srvOriginMock.get(Mockito.anyString())).thenReturn(srvAttrOriginMock);
         Mockito.doReturn(namingOriginMock).when(srvAttrOriginMock).getAll();
         when(namingOriginMock.hasMore()).thenReturn(true).thenReturn(false);
@@ -152,10 +155,10 @@ public class ReplicaLookUpTest {
 
         when(srvReplicaMock.get(Mockito.anyString())).thenReturn(srvAttrReplicaMock);
         Mockito.doReturn(namingReplicaMock).when(srvAttrReplicaMock).getAll();
-        
+
         properties.setStores(List.of(configStore));
         replicaLookUp = new ReplicaLookUp(properties);
-        
+
         replicaLookUp.context = contextMock;
     }
 }

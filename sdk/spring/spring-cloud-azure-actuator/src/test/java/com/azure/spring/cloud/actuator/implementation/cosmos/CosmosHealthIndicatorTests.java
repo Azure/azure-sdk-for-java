@@ -28,7 +28,8 @@ class CosmosHealthIndicatorTests {
     @Test
     void cosmosIsUp() {
         CosmosAsyncClient mockAsyncClient = mock(CosmosAsyncClient.class);
-        @SuppressWarnings("unchecked") ResourceResponse<Database> response = mock(ResourceResponse.class);
+        @SuppressWarnings("unchecked")
+        ResourceResponse<Database> response = mock(ResourceResponse.class);
         CosmosAsyncDatabase databaseResponse = mock(CosmosAsyncDatabase.class);
         CosmosDatabaseResponse cosmosDatabaseResponse = mock(CosmosDatabaseResponse.class);
         when(response.getRequestCharge()).thenReturn(100.0);
@@ -43,7 +44,8 @@ class CosmosHealthIndicatorTests {
     @Test
     void cosmosIsDownWhenReadReturnNull() {
         CosmosAsyncClient mockAsyncClient = mock(CosmosAsyncClient.class);
-        @SuppressWarnings("unchecked") ResourceResponse<Database> response = mock(ResourceResponse.class);
+        @SuppressWarnings("unchecked")
+        ResourceResponse<Database> response = mock(ResourceResponse.class);
         CosmosAsyncDatabase databaseResponse = mock(CosmosAsyncDatabase.class);
         when(response.getRequestCharge()).thenReturn(100.0);
         given(mockAsyncClient.getDatabase(anyString())).willReturn(databaseResponse);
@@ -56,7 +58,8 @@ class CosmosHealthIndicatorTests {
     @Test
     void cosmosIsDownWhenReadException() {
         CosmosAsyncClient mockAsyncClient = mock(CosmosAsyncClient.class);
-        @SuppressWarnings("unchecked") ResourceResponse<Database> response = mock(ResourceResponse.class);
+        @SuppressWarnings("unchecked")
+        ResourceResponse<Database> response = mock(ResourceResponse.class);
         when(response.getRequestCharge()).thenReturn(100.0);
         given(mockAsyncClient.getDatabase(anyString()))
             .willThrow(new IllegalArgumentException("The gremlins have cut the cable."));

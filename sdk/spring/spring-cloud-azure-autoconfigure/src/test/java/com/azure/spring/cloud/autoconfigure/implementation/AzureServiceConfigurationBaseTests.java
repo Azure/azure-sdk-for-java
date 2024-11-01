@@ -40,11 +40,9 @@ class AzureServiceConfigurationBaseTests {
 
     static final String TEST_ENDPOINT_HTTPS = "https://test.https.documents.azure.com:443/";
 
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(
-            AzureCosmosAutoConfiguration.class,
-            AzureKeyVaultSecretAutoConfiguration.class,
-            AzureEventHubsAutoConfiguration.class));
+    private final ApplicationContextRunner contextRunner
+        = new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureCosmosAutoConfiguration.class,
+            AzureKeyVaultSecretAutoConfiguration.class, AzureEventHubsAutoConfiguration.class));
 
     @Test
     void configureGlobalShouldApplyToAzureCosmosProperties() {
@@ -72,13 +70,10 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(7));
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
 
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureProperties)
+        this.contextRunner.withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-            .withPropertyValues(
-                "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
-                "spring.cloud.azure.cosmos.key=cosmos-key"
-            )
+            .withPropertyValues("spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
+                "spring.cloud.azure.cosmos.key=cosmos-key")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureCosmosProperties.class);
                 final AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
@@ -131,15 +126,11 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
         azureProperties.getProfile().getEnvironment().setActiveDirectoryGraphApiVersion("v2");
 
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureProperties)
+        this.contextRunner.withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-            .withPropertyValues(
-                "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
-                "spring.cloud.azure.cosmos.key=cosmos-key",
-                "spring.cloud.azure.cosmos.profile.cloud-type=other",
-                "spring.cloud.azure.cosmos.profile.environment.activeDirectoryEndpoint=bcd"
-            )
+            .withPropertyValues("spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
+                "spring.cloud.azure.cosmos.key=cosmos-key", "spring.cloud.azure.cosmos.profile.cloud-type=other",
+                "spring.cloud.azure.cosmos.profile.environment.activeDirectoryEndpoint=bcd")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureCosmosProperties.class);
                 final AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
@@ -179,11 +170,8 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(7));
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
 
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureProperties)
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=test-namespace"
-            )
+        this.contextRunner.withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-namespace")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
                 final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
@@ -249,12 +237,9 @@ class AzureServiceConfigurationBaseTests {
         azureProperties.getRetry().getAmqp().setTryTimeout(Duration.ofSeconds(7));
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
 
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureProperties)
+        this.contextRunner.withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withBean(SecretClientBuilder.class, () -> mock(SecretClientBuilder.class))
-            .withPropertyValues(
-                "spring.cloud.azure.keyvault.secret.endpoint=test"
-            )
+            .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=test")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultSecretProperties.class);
                 final AzureKeyVaultSecretProperties properties = context.getBean(AzureKeyVaultSecretProperties.class);
@@ -298,17 +283,15 @@ class AzureServiceConfigurationBaseTests {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
 
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureProperties)
+        this.contextRunner.withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withBean(SecretClientBuilder.class, () -> mock(SecretClientBuilder.class))
-            .withPropertyValues(
-                "spring.cloud.azure.keyvault.secret.endpoint=test"
-            )
+            .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=test")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureKeyVaultSecretProperties.class);
                 final AzureKeyVaultSecretProperties properties = context.getBean(AzureKeyVaultSecretProperties.class);
                 assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE_US_GOVERNMENT);
-                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
+                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint")
+                    .isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
             });
     }
 
@@ -317,16 +300,14 @@ class AzureServiceConfigurationBaseTests {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
 
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureProperties)
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=test-namespace"
-            )
+        this.contextRunner.withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-namespace")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
                 final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
                 assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE_US_GOVERNMENT);
-                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
+                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint")
+                    .isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
             });
     }
 
@@ -334,17 +315,15 @@ class AzureServiceConfigurationBaseTests {
     void globalDefaultShouldNotApplyWhenServiceSpecifyCloudType() {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
 
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureProperties)
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=test-namespace",
-                "spring.cloud.azure.eventhubs.profile.cloud-type=AZURE_US_GOVERNMENT"
-            )
+        this.contextRunner.withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-namespace",
+                "spring.cloud.azure.eventhubs.profile.cloud-type=AZURE_US_GOVERNMENT")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
                 final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
                 assertThat(properties).extracting("profile.cloudType").isEqualTo(AZURE_US_GOVERNMENT);
-                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
+                assertThat(properties).extracting("profile.environment.activeDirectoryEndpoint")
+                    .isEqualTo(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint());
             });
     }
 

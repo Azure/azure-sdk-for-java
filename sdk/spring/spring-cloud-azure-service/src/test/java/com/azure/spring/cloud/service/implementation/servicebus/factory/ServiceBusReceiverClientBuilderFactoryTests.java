@@ -19,9 +19,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-class ServiceBusReceiverClientBuilderFactoryTests
-    extends AbstractServiceBusSubClientBuilderFactoryTests<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder,
-    ServiceBusReceiverClientTestProperties, ServiceBusReceiverClientBuilderFactory> {
+class ServiceBusReceiverClientBuilderFactoryTests extends
+    AbstractServiceBusSubClientBuilderFactoryTests<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder, ServiceBusReceiverClientTestProperties, ServiceBusReceiverClientBuilderFactory> {
 
     @Test
     void queueConfigured() {
@@ -48,13 +47,16 @@ class ServiceBusReceiverClientBuilderFactoryTests
     }
 
     @Override
-    protected ServiceBusReceiverClientBuilderFactory createClientBuilderFactoryWithMockBuilder(ServiceBusReceiverClientTestProperties properties) {
-        return spy(new ServiceBusReceiverClientBuilderFactoryExt(getSharedServiceBusClientBuilder(properties), properties));
+    protected ServiceBusReceiverClientBuilderFactory
+        createClientBuilderFactoryWithMockBuilder(ServiceBusReceiverClientTestProperties properties) {
+        return spy(
+            new ServiceBusReceiverClientBuilderFactoryExt(getSharedServiceBusClientBuilder(properties), properties));
     }
 
     @Override
     void verifyServicePropertiesConfigured(boolean isShareServiceClientBuilder) {
-        ServiceBusReceiverClientTestProperties properties = getServiceBusReceiverClientTestProperties(isShareServiceClientBuilder);
+        ServiceBusReceiverClientTestProperties properties
+            = getServiceBusReceiverClientTestProperties(isShareServiceClientBuilder);
 
         final ServiceBusReceiverClientBuilderFactory factory = createClientBuilderFactoryWithMockBuilder(properties);
         doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
@@ -71,10 +73,12 @@ class ServiceBusReceiverClientBuilderFactoryTests
         verify(builder, times(1)).maxAutoLockRenewDuration(Duration.ofSeconds(5));
         verify(builder, times(1)).disableAutoComplete();
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        verify(factory.getServiceBusClientBuilder(), times(1))
+            .fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
-    private ServiceBusReceiverClientTestProperties getServiceBusReceiverClientTestProperties(boolean isShareServiceClientBuilder) {
+    private ServiceBusReceiverClientTestProperties
+        getServiceBusReceiverClientTestProperties(boolean isShareServiceClientBuilder) {
         ServiceBusReceiverClientTestProperties properties = new ServiceBusReceiverClientTestProperties();
         properties.setNamespace("test-namespace");
         properties.setEntityName("test-topic");
@@ -98,8 +102,9 @@ class ServiceBusReceiverClientBuilderFactoryTests
     static class ServiceBusReceiverClientBuilderFactoryExt extends ServiceBusReceiverClientBuilderFactory {
         private ServiceBusClientBuilder serviceBusClientBuilder;
         private final ServiceBusReceiverClientTestProperties properties;
+
         ServiceBusReceiverClientBuilderFactoryExt(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                  ServiceBusReceiverClientTestProperties properties) {
+            ServiceBusReceiverClientTestProperties properties) {
             super(serviceBusClientBuilder, properties);
             this.properties = properties;
             if (properties.isShareServiceBusClientBuilder() && serviceBusClientBuilder != null) {
@@ -115,7 +120,8 @@ class ServiceBusReceiverClientBuilderFactoryTests
         @Override
         protected ServiceBusClientBuilder getServiceBusClientBuilder() {
             if (!this.isShareServiceBusClientBuilder() && this.serviceBusClientBuilder == null) {
-                TestServiceBusClientBuilderFactory clientBuilderFactory = spy(new TestServiceBusClientBuilderFactory(properties));
+                TestServiceBusClientBuilderFactory clientBuilderFactory
+                    = spy(new TestServiceBusClientBuilderFactory(properties));
                 this.serviceBusClientBuilder = clientBuilderFactory.build();
             }
             return this.serviceBusClientBuilder;

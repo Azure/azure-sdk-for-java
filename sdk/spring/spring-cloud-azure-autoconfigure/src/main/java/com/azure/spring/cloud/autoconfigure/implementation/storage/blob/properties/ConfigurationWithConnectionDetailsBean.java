@@ -21,22 +21,21 @@ class ConfigurationWithConnectionDetailsBean {
     private final Environment environment;
     private final AzureStorageBlobConnectionDetails connectionDetails;
 
-    ConfigurationWithConnectionDetailsBean(
-        Environment environment,
+    ConfigurationWithConnectionDetailsBean(Environment environment,
         AzureStorageBlobConnectionDetails connectionDetails) {
         this.environment = environment;
         this.connectionDetails = connectionDetails;
     }
 
     @Bean
-    AzureStorageBlobProperties azureStorageBlobProperties(
-        @Qualifier("azureStorageProperties") AzureStorageProperties azureStorageProperties) {
+    AzureStorageBlobProperties
+        azureStorageBlobProperties(@Qualifier("azureStorageProperties") AzureStorageProperties azureStorageProperties) {
         AzureStorageBlobProperties propertiesLoadFromServiceCommonProperties = AzureServicePropertiesUtils
             .loadServiceCommonProperties(azureStorageProperties, new AzureStorageBlobProperties());
         BindResult<AzureStorageBlobProperties> bindResult = Binder.get(environment)
             .bind(AzureStorageBlobProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromServiceCommonProperties));
-        AzureStorageBlobProperties properties = bindResult.isBound() ? bindResult.get()
-            : propertiesLoadFromServiceCommonProperties;
+        AzureStorageBlobProperties properties
+            = bindResult.isBound() ? bindResult.get() : propertiesLoadFromServiceCommonProperties;
         properties.setConnectionString(connectionDetails.getConnectionString());
         return properties;
 

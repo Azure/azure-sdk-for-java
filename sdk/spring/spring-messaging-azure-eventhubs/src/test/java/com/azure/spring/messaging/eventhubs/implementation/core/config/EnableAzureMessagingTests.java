@@ -37,22 +37,23 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  *
  */
-public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationDrivenTests<MethodEventHubsListenerEndpoint> {
+public class EnableAzureMessagingTests
+    extends AbstractAzureMessagingAnnotationDrivenTests<MethodEventHubsListenerEndpoint> {
     private static final String DEFAULT_CONTAINER_FACTORY_NAME = "azureEventHubsListenerContainerFactory";
 
     @Override
     @Test
     public void sampleConfiguration() {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(EnableAzureMessagingSampleConfig.class, SampleBean.class);
+        ConfigurableApplicationContext context
+            = new AnnotationConfigApplicationContext(EnableAzureMessagingSampleConfig.class, SampleBean.class);
         testSampleConfiguration(context);
     }
 
     @Override
     @Test
     public void fullConfiguration() {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(EnableAzureMessagingFullConfig.class, FullBean.class);
+        ConfigurableApplicationContext context
+            = new AnnotationConfigApplicationContext(EnableAzureMessagingFullConfig.class, FullBean.class);
         testFullConfiguration(context);
     }
 
@@ -65,34 +66,31 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
     @Test
     @Disabled("This test can work in Intellij, but maven build can work. For the spring.factories file in dependency's test-jar.")
     public void customConfiguration() {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(EnableAzureMessagingCustomConfig.class, CustomBean.class);
+        ConfigurableApplicationContext context
+            = new AnnotationConfigApplicationContext(EnableAzureMessagingCustomConfig.class, CustomBean.class);
         testCustomConfiguration(context);
     }
 
     @Override
     @Test
     public void explicitContainerFactory() {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(EnableAzureMessagingCustomContainerFactoryConfig.class,
-                DefaultBean.class);
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
+            EnableAzureMessagingCustomContainerFactoryConfig.class, DefaultBean.class);
         testExplicitContainerFactoryConfiguration(context);
     }
 
     @Override
     @Test
     public void defaultContainerFactory() {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(EnableAzureMessagingDefaultContainerFactoryConfig.class,
-                DefaultBean.class);
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
+            EnableAzureMessagingDefaultContainerFactoryConfig.class, DefaultBean.class);
         testDefaultContainerFactoryConfiguration(context);
     }
 
     @Test
     public void containerAreStartedByDefault() {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(EnableAzureMessagingDefaultContainerFactoryConfig.class,
-                DefaultBean.class);
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
+            EnableAzureMessagingDefaultContainerFactoryConfig.class, DefaultBean.class);
         AzureListenerContainerTestFactory factory = context.getBean(AzureListenerContainerTestFactory.class);
         MessageListenerTestContainer container = factory.getListenerContainers().get(0);
         assertTrue(container.isAutoStartup());
@@ -101,9 +99,8 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
 
     @Test
     public void containerCanBeStarterViaTheRegistry() {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(EnableAzureMessagingAutoStartupFalseConfig.class,
-                DefaultBean.class);
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
+            EnableAzureMessagingAutoStartupFalseConfig.class, DefaultBean.class);
         AzureListenerContainerTestFactory factory = context.getBean(AzureListenerContainerTestFactory.class);
         MessageListenerTestContainer container = factory.getListenerContainers().get(0);
         assertFalse(container.isAutoStartup());
@@ -116,18 +113,16 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
     @Override
     @Test
     public void azureMessageListenerIsRepeatable() {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(EnableAzureMessagingDefaultContainerFactoryConfig.class,
-                AzureListenerRepeatableBean.class);
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
+            EnableAzureMessagingDefaultContainerFactoryConfig.class, AzureListenerRepeatableBean.class);
         testAzureListenerRepeatable(context);
     }
 
     @Override
     @Test
     public void azureMessageListeners() {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(EnableAzureMessagingDefaultContainerFactoryConfig.class,
-                AzureListenersBean.class);
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
+            EnableAzureMessagingDefaultContainerFactoryConfig.class, AzureListenersBean.class);
         testAzureListenerRepeatable(context);
     }
 
@@ -140,18 +135,18 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
     public void composedAzureMessageListeners() {
         try (ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
             EnableAzureMessagingDefaultContainerFactoryConfig.class, ComposedAzureMessageListenersBean.class)) {
-            AzureListenerContainerTestFactory simpleFactory = context.getBean(getDefaultListenerContainerFactoryName(),
-                AzureListenerContainerTestFactory.class);
+            AzureListenerContainerTestFactory simpleFactory
+                = context.getBean(getDefaultListenerContainerFactoryName(), AzureListenerContainerTestFactory.class);
             assertEquals(2, simpleFactory.getListenerContainers().size());
 
-            MethodEventHubsListenerEndpoint first =
-                (MethodEventHubsListenerEndpoint) simpleFactory.getListenerContainer("first").getEndpoint();
+            MethodEventHubsListenerEndpoint first
+                = (MethodEventHubsListenerEndpoint) simpleFactory.getListenerContainer("first").getEndpoint();
             assertEquals("first", first.getId());
             assertEquals("orderQueue", first.getDestination());
             assertNull(first.getConcurrency());
 
-            MethodEventHubsListenerEndpoint second =
-                (MethodEventHubsListenerEndpoint) simpleFactory.getListenerContainer("second").getEndpoint();
+            MethodEventHubsListenerEndpoint second
+                = (MethodEventHubsListenerEndpoint) simpleFactory.getListenerContainer("second").getEndpoint();
             assertEquals("second", second.getId());
             assertEquals("billingQueue", second.getDestination());
             assertEquals("2-10", second.getConcurrency());
@@ -168,11 +163,10 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
 
     @Test
     public void lazyComponent() {
-        ConfigurableApplicationContext context =
-            new AnnotationConfigApplicationContext(EnableAzureMessagingDefaultContainerFactoryConfig.class,
-                LazyBean.class);
-        AzureListenerContainerTestFactory defaultFactory = context.getBean(getDefaultListenerContainerFactoryName(),
-            AzureListenerContainerTestFactory.class);
+        ConfigurableApplicationContext context = new AnnotationConfigApplicationContext(
+            EnableAzureMessagingDefaultContainerFactoryConfig.class, LazyBean.class);
+        AzureListenerContainerTestFactory defaultFactory
+            = context.getBean(getDefaultListenerContainerFactoryName(), AzureListenerContainerTestFactory.class);
         assertEquals(0, defaultFactory.getListenerContainers().size());
 
         context.getBean(LazyBean.class);  // trigger lazy resolution
@@ -187,18 +181,22 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
     @Retention(RetentionPolicy.RUNTIME)
     private @interface OrderQueueListener {
 
-        @AliasFor(annotation = EventHubsListener.class) String id() default "";
+        @AliasFor(annotation = EventHubsListener.class)
+        String id() default "";
 
-        @AliasFor(annotation = EventHubsListener.class) String concurrency() default "";
+        @AliasFor(annotation = EventHubsListener.class)
+        String concurrency() default "";
     }
 
     @EventHubsListener(destination = "billingQueue")
     @Retention(RetentionPolicy.RUNTIME)
     private @interface BillingQueueListener {
 
-        @AliasFor(annotation = EventHubsListener.class) String id() default "";
+        @AliasFor(annotation = EventHubsListener.class)
+        String id() default "";
 
-        @AliasFor(annotation = EventHubsListener.class) String concurrency() default "";
+        @AliasFor(annotation = EventHubsListener.class)
+        String concurrency() default "";
     }
 
     @EnableAzureMessaging
@@ -336,8 +334,12 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
     @Component
     static class FullBean {
 
-        @EventHubsListener(id = "listener1", containerFactory = "simpleFactory", destination = "queueIn",
-            group = "group1", concurrency = "1-10")
+        @EventHubsListener(
+            id = "listener1",
+            containerFactory = "simpleFactory",
+            destination = "queueIn",
+            group = "group1",
+            concurrency = "1-10")
         @SendTo("queueOut")
         public String fullHandle(String msg) {
             return "reply";
@@ -373,8 +375,7 @@ public class EnableAzureMessagingTests extends AbstractAzureMessagingAnnotationD
 
         @EventHubsListeners({
             @EventHubsListener(id = "first", destination = "myQueue"),
-            @EventHubsListener(id = "second", destination = "anotherQueue", concurrency = "2-10")
-        })
+            @EventHubsListener(id = "second", destination = "anotherQueue", concurrency = "2-10") })
         public void repeatableHandle(String msg) {
         }
     }

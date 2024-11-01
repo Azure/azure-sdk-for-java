@@ -69,8 +69,7 @@ public class KeyVaultClientTest {
 
         test.build();
 
-        when(clientMock.getSecret(Mockito.any(), Mockito.any()))
-            .thenReturn(monoSecret);
+        when(clientMock.getSecret(Mockito.any(), Mockito.any())).thenReturn(monoSecret);
         when(monoSecret.block(Mockito.any())).thenReturn(new KeyVaultSecret("", ""));
 
         assertNotNull(test.getSecret(new URI(keyVaultUri)));
@@ -92,8 +91,7 @@ public class KeyVaultClientTest {
 
         test.build();
 
-        when(clientMock.getSecret(Mockito.any(), Mockito.any()))
-            .thenReturn(monoSecret);
+        when(clientMock.getSecret(Mockito.any(), Mockito.any())).thenReturn(monoSecret);
         when(monoSecret.block(Mockito.any())).thenReturn(new KeyVaultSecret("", ""));
 
         assertNotNull(test.getSecret(new URI(keyVaultUri)));

@@ -52,8 +52,8 @@ public class RecurrencePattern {
         try {
             this.type = RecurrencePatternType.valueOf(type.toUpperCase());
         } catch (final IllegalArgumentException e) {
-            throw new IllegalArgumentException(
-                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.Type", Arrays.toString(RecurrencePatternType.values())));
+            throw new IllegalArgumentException(String.format(RecurrenceConstants.INVALID_VALUE,
+                "Recurrence.Pattern.Type", Arrays.toString(RecurrencePatternType.values())));
         }
     }
 
@@ -98,8 +98,8 @@ public class RecurrencePattern {
                 this.daysOfWeek.add(DayOfWeek.valueOf(dayOfWeek.toUpperCase()));
             }
         } catch (final IllegalArgumentException e) {
-            throw new IllegalArgumentException(
-                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.DaysOfWeek", Arrays.toString(DayOfWeek.values())));
+            throw new IllegalArgumentException(String.format(RecurrenceConstants.INVALID_VALUE,
+                "Recurrence.Pattern.DaysOfWeek", Arrays.toString(DayOfWeek.values())));
         }
     }
 
@@ -123,8 +123,8 @@ public class RecurrencePattern {
         try {
             this.firstDayOfWeek = DayOfWeek.valueOf(firstDayOfWeek.toUpperCase());
         } catch (final IllegalArgumentException e) {
-            throw new IllegalArgumentException(
-                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Pattern.FirstDayOfWeek", Arrays.toString(DayOfWeek.values())));
+            throw new IllegalArgumentException(String.format(RecurrenceConstants.INVALID_VALUE,
+                "Recurrence.Pattern.FirstDayOfWeek", Arrays.toString(DayOfWeek.values())));
         }
     }
 }

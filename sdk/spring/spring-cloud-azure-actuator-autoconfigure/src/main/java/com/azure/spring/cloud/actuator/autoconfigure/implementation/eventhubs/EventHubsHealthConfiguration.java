@@ -28,11 +28,10 @@ import org.springframework.context.annotation.Configuration;
 public class EventHubsHealthConfiguration {
 
     @Bean
-    EventHubsHealthIndicator eventHubsHealthIndicator(
-        ObjectProvider<EventHubProducerAsyncClient> producerAsyncClients,
+    EventHubsHealthIndicator eventHubsHealthIndicator(ObjectProvider<EventHubProducerAsyncClient> producerAsyncClients,
         ObjectProvider<EventHubConsumerAsyncClient> consumerAsyncClients) {
 
         return new EventHubsHealthIndicator(producerAsyncClients.getIfAvailable(),
-                                           consumerAsyncClients.getIfAvailable());
+            consumerAsyncClients.getIfAvailable());
     }
 }

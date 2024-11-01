@@ -27,8 +27,7 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
      * @param method ReactiveCosmosQueryMethod
      * @param operations ReactiveCosmosOperations
      */
-    public AbstractReactiveCosmosQuery(ReactiveCosmosQueryMethod method,
-                                       ReactiveCosmosOperations operations) {
+    public AbstractReactiveCosmosQuery(ReactiveCosmosQueryMethod method, ReactiveCosmosOperations operations) {
         this.method = method;
         this.operations = operations;
     }
@@ -41,14 +40,12 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
      */
     @Override
     public Object execute(Object[] parameters) {
-        final ReactiveCosmosParameterAccessor accessor =
-            new ReactiveCosmosParameterParameterAccessor(method, parameters);
+        final ReactiveCosmosParameterAccessor accessor
+            = new ReactiveCosmosParameterParameterAccessor(method, parameters);
         final CosmosQuery query = createQuery(accessor);
 
-        final ResultProcessor processor =
-            method.getResultProcessor().withDynamicProjection(accessor);
-        final String containerName =
-            ((ReactiveCosmosEntityMetadata) method.getEntityInformation()).getContainerName();
+        final ResultProcessor processor = method.getResultProcessor().withDynamicProjection(accessor);
+        final String containerName = ((ReactiveCosmosEntityMetadata) method.getEntityInformation()).getContainerName();
 
         final ReactiveCosmosQueryExecution execution = getExecution(processor.getReturnedType());
         return execution.execute(query, processor.getReturnedType().getDomainType(), containerName);
@@ -65,8 +62,7 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
         if (isDeleteQuery()) {
             return new ReactiveCosmosQueryExecution.DeleteExecution(operations);
         } else if (isPageQuery()) {
-            throw new IllegalArgumentException("Paged Query is not supported by reactive cosmos "
-                + "db");
+            throw new IllegalArgumentException("Paged Query is not supported by reactive cosmos " + "db");
         } else if (isExistsQuery()) {
             return new ReactiveCosmosQueryExecution.ExistsExecution(operations);
         } else if (isCountQuery()) {

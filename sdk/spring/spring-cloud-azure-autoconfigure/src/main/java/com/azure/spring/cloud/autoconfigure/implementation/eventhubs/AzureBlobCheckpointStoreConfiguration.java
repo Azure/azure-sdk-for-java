@@ -31,8 +31,10 @@ import static com.azure.spring.cloud.autoconfigure.implementation.context.AzureC
  * Configures a {@link BlobCheckpointStore}
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnClass({ BlobCheckpointStore.class, EventHubClientBuilder.class})
-@ConditionalOnProperty(prefix = "spring.cloud.azure.eventhubs.processor.checkpoint-store", name = { "container-name", "account-name" })
+@ConditionalOnClass({ BlobCheckpointStore.class, EventHubClientBuilder.class })
+@ConditionalOnProperty(
+    prefix = "spring.cloud.azure.eventhubs.processor.checkpoint-store",
+    name = { "container-name", "account-name" })
 class AzureBlobCheckpointStoreConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureBlobCheckpointStoreConfiguration.class);
@@ -43,8 +45,7 @@ class AzureBlobCheckpointStoreConfiguration {
         @Qualifier(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_BEAN_NAME) BlobServiceClientBuilder builder,
         AzureEventHubsProperties eventHubsProperties,
         ObjectProvider<BlobCheckpointStoreContainerInitializer> initializers) {
-        final BlobContainerAsyncClient blobContainerAsyncClient = builder
-            .buildAsyncClient()
+        final BlobContainerAsyncClient blobContainerAsyncClient = builder.buildAsyncClient()
             .getBlobContainerAsyncClient(eventHubsProperties.getProcessor().getCheckpointStore().getContainerName());
 
         initializers.orderedStream().forEach(i -> i.init(blobContainerAsyncClient));
@@ -53,7 +54,9 @@ class AzureBlobCheckpointStoreConfiguration {
     }
 
     @Bean
-    @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.processor.checkpoint-store.create-container-if-not-exists", havingValue = "true")
+    @ConditionalOnProperty(
+        value = "spring.cloud.azure.eventhubs.processor.checkpoint-store.create-container-if-not-exists",
+        havingValue = "true")
     BlobCheckpointStoreContainerInitializer blobCheckpointStoreContainerCreationInitializer() {
         return containerAsyncClient -> {
             if (Boolean.FALSE.equals(containerAsyncClient.exists().block(Duration.ofSeconds(3)))) {
@@ -67,8 +70,7 @@ class AzureBlobCheckpointStoreConfiguration {
     @Bean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_BEAN_NAME)
     @ConditionalOnMissingBean(name = EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_BEAN_NAME)
     BlobServiceClientBuilder eventHubProcessorBlobServiceClientBuilder(
-        @Qualifier(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-            BlobServiceClientBuilderFactory factory) {
+        @Qualifier(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME) BlobServiceClientBuilderFactory factory) {
         return factory.build();
     }
 
@@ -77,8 +79,8 @@ class AzureBlobCheckpointStoreConfiguration {
     BlobServiceClientBuilderFactory eventHubProcessorBlobServiceClientBuilderFactory(
         AzureEventHubsProperties eventHubsProperties,
         ObjectProvider<AzureServiceClientBuilderCustomizer<BlobServiceClientBuilder>> customizers) {
-        BlobServiceClientBuilderFactory factory =
-            new BlobServiceClientBuilderFactory(eventHubsProperties.buildProcessorProperties().getCheckpointStore());
+        BlobServiceClientBuilderFactory factory
+            = new BlobServiceClientBuilderFactory(eventHubsProperties.buildProcessorProperties().getCheckpointStore());
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
         customizers.orderedStream().forEach(factory::addBuilderCustomizer);

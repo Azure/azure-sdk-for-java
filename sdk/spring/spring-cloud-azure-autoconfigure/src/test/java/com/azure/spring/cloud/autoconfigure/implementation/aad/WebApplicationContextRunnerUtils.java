@@ -24,13 +24,10 @@ public class WebApplicationContextRunnerUtils {
 
     public static WebApplicationContextRunner oauthClientAndResourceServerRunner() {
         return new WebApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(
-                    HttpMessageConvertersAutoConfiguration.class,
-                    RestTemplateAutoConfiguration.class))
-            .withUserConfiguration(
-                TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class,
-                AadAutoConfiguration.class)
+            .withConfiguration(AutoConfigurations.of(HttpMessageConvertersAutoConfiguration.class,
+                RestTemplateAutoConfiguration.class))
+            .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
+                AzureGlobalPropertiesAutoConfiguration.class, AadAutoConfiguration.class)
             .withInitializer(new ConditionEvaluationReportLoggingListener());
     }
 
@@ -40,18 +37,15 @@ public class WebApplicationContextRunnerUtils {
     }
 
     public static WebApplicationContextRunner resourceServerRunner() {
-        return oauthClientAndResourceServerRunner()
-            .withClassLoader(new FilteredClassLoader(ClientRegistration.class));
+        return oauthClientAndResourceServerRunner().withClassLoader(new FilteredClassLoader(ClientRegistration.class));
     }
 
     public static WebApplicationContextRunner webApplicationContextRunner() {
-        return oauthClientRunner()
-            .withPropertyValues(withWebApplicationOrResourceServerWithOboPropertyValues());
+        return oauthClientRunner().withPropertyValues(withWebApplicationOrResourceServerWithOboPropertyValues());
     }
 
     public static WebApplicationContextRunner resourceServerContextRunner() {
-        return resourceServerRunner()
-            .withPropertyValues(withResourceServerPropertyValues());
+        return resourceServerRunner().withPropertyValues(withResourceServerPropertyValues());
     }
 
     public static WebApplicationContextRunner resourceServerWithOboContextRunner() {
@@ -69,9 +63,7 @@ public class WebApplicationContextRunnerUtils {
 
     @SuppressWarnings("unchecked")
     public static MultiValueMap<String, String> toMultiValueMap(RequestEntity<?> entity) {
-        return (MultiValueMap<String, String>) Optional.ofNullable(entity)
-                                                       .map(HttpEntity::getBody)
-                                                       .orElse(null);
+        return (MultiValueMap<String, String>) Optional.ofNullable(entity).map(HttpEntity::getBody).orElse(null);
     }
 
     public static String[] withWebApplicationOrResourceServerWithOboPropertyValues() {
@@ -79,19 +71,18 @@ public class WebApplicationContextRunnerUtils {
             "spring.cloud.azure.active-directory.enabled = true",
             "spring.cloud.azure.active-directory.credential.client-id = fake-client-id",
             "spring.cloud.azure.active-directory.credential.client-secret = fake-client-secret",
-            "spring.cloud.azure.active-directory.profile.tenant-id = fake-tenant-id"};
+            "spring.cloud.azure.active-directory.profile.tenant-id = fake-tenant-id" };
     }
 
     public static String[] withResourceServerPropertyValues() {
         return new String[] {
             "spring.cloud.azure.active-directory.enabled = true",
             "spring.cloud.azure.active-directory.profile.tenant-id=fake-tenant-id",
-            "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri"};
+            "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri" };
     }
 
     public static String[] withPropertyValueWebApplicationAndResourceServer() {
         return new String[] {
-            "spring.cloud.azure.active-directory.application-type = web_application_and_resource_server"
-        };
+            "spring.cloud.azure.active-directory.application-type = web_application_and_resource_server" };
     }
 }

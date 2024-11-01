@@ -12,9 +12,11 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * Converts a {@link CosmosClientProperties.DirectConnectionProperties} to a {@link DirectConnectionConfig}.
  */
-public final class GatewayConnectionConfigConverter implements Converter<CosmosClientProperties.GatewayConnectionProperties, GatewayConnectionConfig> {
+public final class GatewayConnectionConfigConverter
+    implements Converter<CosmosClientProperties.GatewayConnectionProperties, GatewayConnectionConfig> {
 
-    public static final GatewayConnectionConfigConverter GATEWAY_CONNECTION_CONFIG_CONVERTER = new GatewayConnectionConfigConverter();
+    public static final GatewayConnectionConfigConverter GATEWAY_CONNECTION_CONFIG_CONVERTER
+        = new GatewayConnectionConfigConverter();
 
     private GatewayConnectionConfigConverter() {
 

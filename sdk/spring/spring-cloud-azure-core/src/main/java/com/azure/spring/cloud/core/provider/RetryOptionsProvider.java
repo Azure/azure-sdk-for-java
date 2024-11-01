@@ -22,7 +22,6 @@ public interface RetryOptionsProvider {
      */
     interface RetryOptions {
 
-
         /**
          * Get the retry backoff mode.
          *

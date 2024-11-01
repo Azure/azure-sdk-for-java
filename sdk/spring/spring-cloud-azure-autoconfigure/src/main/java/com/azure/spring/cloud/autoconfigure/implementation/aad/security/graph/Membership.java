@@ -48,8 +48,7 @@ public class Membership implements Serializable {
      * @param displayName the display name
      */
     @JsonCreator
-    public Membership(
-        @JsonProperty("objectId") @JsonAlias("id") String objectID,
+    public Membership(@JsonProperty("objectId") @JsonAlias("id") String objectID,
         @JsonProperty("objectType") @JsonAlias("@odata.type") String objectType,
         @JsonProperty("displayName") String displayName) {
         this.objectID = objectID;

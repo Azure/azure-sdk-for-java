@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.core.provider.authentication;
 
-
 /**
  * Interface to be implemented by classes that wish to provide the token credential options.
  */

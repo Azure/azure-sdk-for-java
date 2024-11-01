@@ -73,9 +73,7 @@ public class FeatureHandler implements HandlerInterceptor {
                 }
                 boolean isEnabled = false;
                 try {
-                    isEnabled = Optional.ofNullable(enabled)
-                        .map(Mono::block)
-                        .orElse(false);
+                    isEnabled = Optional.ofNullable(enabled).map(Mono::block).orElse(false);
                     if (!isEnabled && !featureOn.fallback().isEmpty()) {
                         response.sendRedirect(featureOn.fallback());
                         return false;

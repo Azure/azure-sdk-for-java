@@ -71,11 +71,9 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(ServiceBusClientBuilder builder) {
-        return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(builder::credential),
+        return Arrays.asList(new NamedKeyAuthenticationDescriptor(builder::credential),
             new SasAuthenticationDescriptor(builder::credential),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential)
-        );
+            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, builder::credential));
     }
 
     @Override
@@ -86,8 +84,8 @@ public class ServiceBusClientBuilderFactory extends AbstractAzureAmqpClientBuild
         mapper.from(this.clientCommonProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
         if (this.clientCommonProperties instanceof ServiceBusNamespaceProperties) {
             mapper.from(((ServiceBusNamespaceProperties) this.clientCommonProperties).getCrossEntityTransactions())
-                  .whenTrue()
-                  .to(t -> builder.enableCrossEntityTransactions());
+                .whenTrue()
+                .to(t -> builder.enableCrossEntityTransactions());
         }
     }
 

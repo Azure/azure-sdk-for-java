@@ -21,7 +21,7 @@ final class StateHolder {
     private static StateHolder currentState;
 
     private final Map<String, State> state = new ConcurrentHashMap<>();
-    
+
     private final Map<String, FeatureFlagState> featureFlagState = new ConcurrentHashMap<>();
 
     private final Map<String, Boolean> loadState = new ConcurrentHashMap<>();
@@ -53,7 +53,7 @@ final class StateHolder {
     private Map<String, State> getFullState() {
         return state;
     }
-    
+
     private Map<String, FeatureFlagState> getFullFeatureFlagState() {
         return featureFlagState;
     }
@@ -84,9 +84,9 @@ final class StateHolder {
      * @param watchKeys list of configuration watch keys that can trigger a refresh event
      * @param duration refresh duration.
      */
-    void setStateFeatureFlag(String originEndpoint, List<FeatureFlags> watchKeys,
-        Duration duration) {
-        featureFlagState.put(originEndpoint, new FeatureFlagState(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
+    void setStateFeatureFlag(String originEndpoint, List<FeatureFlags> watchKeys, Duration duration) {
+        featureFlagState.put(originEndpoint,
+            new FeatureFlagState(watchKeys, Math.toIntExact(duration.getSeconds()), originEndpoint));
     }
 
     /**
@@ -102,7 +102,7 @@ final class StateHolder {
         this.state.put(state.getOriginEndpoint(),
             new State(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
     }
-    
+
     void updateFeatureFlagStateRefresh(FeatureFlagState state, Duration duration) {
         this.featureFlagState.put(state.getOriginEndpoint(),
             new FeatureFlagState(state, Instant.now().plusSeconds(Math.toIntExact(duration.getSeconds()))));
@@ -167,8 +167,8 @@ final class StateHolder {
      */
     void updateNextRefreshTime(Duration refreshInterval, Long defaultMinBackoff) {
         if (refreshInterval != null) {
-            Instant newForcedRefresh = getNextRefreshCheck(nextForcedRefresh,
-                clientRefreshAttempts, refreshInterval.getSeconds(), defaultMinBackoff);
+            Instant newForcedRefresh = getNextRefreshCheck(nextForcedRefresh, clientRefreshAttempts,
+                refreshInterval.getSeconds(), defaultMinBackoff);
 
             if (newForcedRefresh.compareTo(nextForcedRefresh) != 0) {
                 clientRefreshAttempts += 1;
@@ -178,8 +178,8 @@ final class StateHolder {
 
         for (Entry<String, State> entry : state.entrySet()) {
             State state = entry.getValue();
-            Instant newRefresh = getNextRefreshCheck(state.getNextRefreshCheck(),
-                state.getRefreshAttempt(), (long) state.getRefreshInterval(), defaultMinBackoff);
+            Instant newRefresh = getNextRefreshCheck(state.getNextRefreshCheck(), state.getRefreshAttempt(),
+                (long) state.getRefreshInterval(), defaultMinBackoff);
 
             if (newRefresh.compareTo(entry.getValue().getNextRefreshCheck()) != 0) {
                 state.incrementRefreshAttempt();
@@ -213,8 +213,7 @@ final class StateHolder {
             return now.plusSeconds(interval);
         }
 
-        return now.plusNanos(
-            BackoffTimeCalculator.calculateBackoff(attempt));
+        return now.plusNanos(BackoffTimeCalculator.calculateBackoff(attempt));
     }
 
 }

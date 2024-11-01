@@ -25,8 +25,8 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FeatureManagementProperties.class);
 
-    private static final ObjectMapper MAPPER = new ObjectMapper()
-        .setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+    private static final ObjectMapper MAPPER
+        = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
 
     private static final long serialVersionUID = -1642032123104805346L;
 
@@ -153,8 +153,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
                 ff = (LinkedHashMap<String, Object>) featureValue;
             }
             LinkedHashMap<String, Object> conditions = new LinkedHashMap<>();
-            if (ff.containsKey("conditions")
-                && ff.get("conditions").getClass().isAssignableFrom(LinkedHashMap.class)) {
+            if (ff.containsKey("conditions") && ff.get("conditions").getClass().isAssignableFrom(LinkedHashMap.class)) {
                 conditions = (LinkedHashMap<String, Object>) ff.get("conditions");
             }
 

@@ -47,15 +47,14 @@ public class AadJwtGrantedAuthoritiesConverter implements Converter<Jwt, Collect
     @Override
     public Collection<GrantedAuthority> convert(Jwt jwt) {
         Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        claimToAuthorityPrefixMap.forEach((authoritiesClaimName, authorityPrefix) ->
-            Optional.of(authoritiesClaimName)
-                    .map(jwt::getClaim)
-                    .map(this::getClaimValueAsCollection)
-                    .map(Collection::stream)
-                    .orElseGet(Stream::empty)
-                    .map(authority -> authorityPrefix + authority)
-                    .map(SimpleGrantedAuthority::new)
-                    .forEach(grantedAuthorities::add));
+        claimToAuthorityPrefixMap.forEach((authoritiesClaimName, authorityPrefix) -> Optional.of(authoritiesClaimName)
+            .map(jwt::getClaim)
+            .map(this::getClaimValueAsCollection)
+            .map(Collection::stream)
+            .orElseGet(Stream::empty)
+            .map(authority -> authorityPrefix + authority)
+            .map(SimpleGrantedAuthority::new)
+            .forEach(grantedAuthorities::add));
         LOGGER.debug("User {}'s authorities created from jwt token: {}.", jwt.getSubject(), grantedAuthorities);
         return grantedAuthorities;
     }

@@ -9,6 +9,7 @@ import com.azure.spring.cloud.core.implementation.properties.AzureSdkProperties;
 public abstract class AzureGenericServiceClientBuilderFactoryBaseTests<P extends AzureSdkProperties, F extends AzureServiceClientBuilderFactory<?>> {
 
     protected abstract P createMinimalServiceProperties();
+
     protected abstract F createClientBuilderFactoryWithMockBuilder(P properties);
 
     protected F factoryWithMinimalSettings() {

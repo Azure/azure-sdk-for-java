@@ -52,8 +52,7 @@ public class AadAzureDelegatedOAuth2AuthorizedClientProvider implements OAuth2Au
      * @param provider the OAuth2 token refresh provider
      * @param authorizedClientRepository the OAuth2 repository
      */
-    public AadAzureDelegatedOAuth2AuthorizedClientProvider(
-        RefreshTokenOAuth2AuthorizedClientProvider provider,
+    public AadAzureDelegatedOAuth2AuthorizedClientProvider(RefreshTokenOAuth2AuthorizedClientProvider provider,
         OAuth2AuthorizedClientRepository authorizedClientRepository) {
         this.clock = Clock.systemUTC();
         this.clockSkew = Duration.ofSeconds(60);
@@ -84,60 +83,51 @@ public class AadAzureDelegatedOAuth2AuthorizedClientProvider implements OAuth2Au
             return null;
         }
         Authentication principal = context.getPrincipal();
-        OAuth2AuthorizedClient azureClient = authorizedClientRepository.loadAuthorizedClient(
-            AZURE_CLIENT_REGISTRATION_ID,
-            principal,
-            getHttpServletRequestOrDefault(context));
+        OAuth2AuthorizedClient azureClient = authorizedClientRepository
+            .loadAuthorizedClient(AZURE_CLIENT_REGISTRATION_ID, principal, getHttpServletRequestOrDefault(context));
         if (azureClient == null) {
             throw new ClientAuthorizationRequiredException(AZURE_CLIENT_REGISTRATION_ID);
         }
-        OAuth2AuthorizedClient clientWithExpiredToken =
-            createClientWithExpiredToken(azureClient, clientRegistration, principal);
+        OAuth2AuthorizedClient clientWithExpiredToken
+            = createClientWithExpiredToken(azureClient, clientRegistration, principal);
         String[] scopes = clientRegistration.getScopes().toArray(new String[0]);
-        OAuth2AuthorizationContext refreshTokenAuthorizationContext =
-            OAuth2AuthorizationContext.withAuthorizedClient(clientWithExpiredToken)
-                                      .principal(principal)
-                                      .attributes(attributes -> attributes.put(OAuth2AuthorizationContext.REQUEST_SCOPE_ATTRIBUTE_NAME, scopes))
-                                      .build();
+        OAuth2AuthorizationContext refreshTokenAuthorizationContext
+            = OAuth2AuthorizationContext.withAuthorizedClient(clientWithExpiredToken)
+                .principal(principal)
+                .attributes(
+                    attributes -> attributes.put(OAuth2AuthorizationContext.REQUEST_SCOPE_ATTRIBUTE_NAME, scopes))
+                .build();
         return provider.authorize(refreshTokenAuthorizationContext);
     }
 
     private boolean tokenNotExpired(OAuth2Token token) {
         return Optional.ofNullable(token)
-                       .map(OAuth2Token::getExpiresAt)
-                       .map(expiredAt -> this.clock.instant().isBefore(expiredAt.minus(this.clockSkew)))
-                       .orElse(false);
+            .map(OAuth2Token::getExpiresAt)
+            .map(expiredAt -> this.clock.instant().isBefore(expiredAt.minus(this.clockSkew)))
+            .orElse(false);
     }
 
     private OAuth2AuthorizedClient createClientWithExpiredToken(OAuth2AuthorizedClient azureClient,
-                                                                ClientRegistration clientRegistration,
-                                                                Authentication principal) {
+        ClientRegistration clientRegistration, Authentication principal) {
         Assert.notNull(azureClient, "azureClient cannot be null");
         Assert.notNull(clientRegistration, "clientRegistration cannot be null");
-        OAuth2AccessToken accessToken = new OAuth2AccessToken(
-            OAuth2AccessToken.TokenType.BEARER,
-            "non-access-token",
-            Instant.MIN,
-            Instant.now().minus(100, ChronoUnit.DAYS));
-        return new OAuth2AuthorizedClient(
-            clientRegistration,
-            principal.getName(),
-            accessToken,
-            azureClient.getRefreshToken()
-        );
+        OAuth2AccessToken accessToken = new OAuth2AccessToken(OAuth2AccessToken.TokenType.BEARER, "non-access-token",
+            Instant.MIN, Instant.now().minus(100, ChronoUnit.DAYS));
+        return new OAuth2AuthorizedClient(clientRegistration, principal.getName(), accessToken,
+            azureClient.getRefreshToken());
     }
 
     private static HttpServletRequest getHttpServletRequestOrDefault(OAuth2AuthorizationContext context) {
         return Optional.ofNullable(context)
-                       .map(OAuth2AuthorizationContext::getAttributes)
-                       .map(attributes -> (HttpServletRequest) attributes.get(HttpServletRequest.class.getName()))
-                       .orElseGet(AadAzureDelegatedOAuth2AuthorizedClientProvider::getDefaultHttpServletRequest);
+            .map(OAuth2AuthorizationContext::getAttributes)
+            .map(attributes -> (HttpServletRequest) attributes.get(HttpServletRequest.class.getName()))
+            .orElseGet(AadAzureDelegatedOAuth2AuthorizedClientProvider::getDefaultHttpServletRequest);
     }
 
     private static HttpServletRequest getDefaultHttpServletRequest() {
         return Optional.ofNullable(RequestContextHolder.getRequestAttributes())
-                       .filter(attributes -> attributes instanceof ServletRequestAttributes)
-                       .map(attributes -> ((ServletRequestAttributes) attributes).getRequest())
-                       .orElse(null);
+            .filter(attributes -> attributes instanceof ServletRequestAttributes)
+            .map(attributes -> ((ServletRequestAttributes) attributes).getRequest())
+            .orElse(null);
     }
 }

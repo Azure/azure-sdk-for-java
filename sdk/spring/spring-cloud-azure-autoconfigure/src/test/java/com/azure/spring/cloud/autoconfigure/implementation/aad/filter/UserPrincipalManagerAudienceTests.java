@@ -54,10 +54,10 @@ class UserPrincipalManagerAudienceTests {
 
         signer = new RSASSASigner(privateKey);
 
-        final RSAKey rsaJWK = new RSAKey.Builder((RSAPublicKey) kp.getPublic())
-            .privateKey((RSAPrivateKey) kp.getPrivate())
-            .keyID("1")
-            .build();
+        final RSAKey rsaJWK
+            = new RSAKey.Builder((RSAPublicKey) kp.getPublic()).privateKey((RSAPrivateKey) kp.getPrivate())
+                .keyID("1")
+                .build();
         final JWKSet jwkSet = new JWKSet(rsaJWK);
         jwkString = jwkSet.toString();
 
@@ -72,8 +72,7 @@ class UserPrincipalManagerAudienceTests {
 
     @Test
     void allowApplicationUriAsAudience() throws JOSEException {
-        final JWTClaimsSet claimsSetOne = new JWTClaimsSet.Builder()
-            .subject("foo")
+        final JWTClaimsSet claimsSetOne = new JWTClaimsSet.Builder().subject("foo")
             .issueTime(Date.from(Instant.now().minusSeconds(60)))
             .issuer("https://sts.windows.net/")
             .audience(FAKE_CLIENT_ID)
@@ -82,16 +81,13 @@ class UserPrincipalManagerAudienceTests {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
-            resourceRetriever, true);
-        assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
-            .doesNotThrowAnyException();
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties, resourceRetriever, true);
+        assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo)).doesNotThrowAnyException();
     }
 
     @Test
     void allowClientIdAsAudience() throws JOSEException {
-        final JWTClaimsSet claimsSetOne = new JWTClaimsSet.Builder()
-            .subject("foo")
+        final JWTClaimsSet claimsSetOne = new JWTClaimsSet.Builder().subject("foo")
             .issueTime(Date.from(Instant.now().minusSeconds(60)))
             .issuer("https://sts.windows.net/")
             .audience(FAKE_APPLICATION_URI)
@@ -100,16 +96,13 @@ class UserPrincipalManagerAudienceTests {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
-            resourceRetriever, true);
-        assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
-            .doesNotThrowAnyException();
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties, resourceRetriever, true);
+        assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo)).doesNotThrowAnyException();
     }
 
     @Test
     void failWithUnkownAudience() throws JOSEException {
-        final JWTClaimsSet claimsSetOne = new JWTClaimsSet.Builder()
-            .subject("foo")
+        final JWTClaimsSet claimsSetOne = new JWTClaimsSet.Builder().subject("foo")
             .issueTime(Date.from(Instant.now().minusSeconds(60)))
             .issuer("https://sts.windows.net/")
             .audience("unknown audience")
@@ -118,16 +111,14 @@ class UserPrincipalManagerAudienceTests {
         signedJWT.sign(signer);
 
         final String orderTwo = signedJWT.serialize();
-        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
-            resourceRetriever, true);
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties, resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(orderTwo))
             .hasMessageContaining("Invalid token audience.");
     }
 
     @Test
     void failOnInvalidSiganture() throws JOSEException {
-        final JWTClaimsSet claimsSetOne = new JWTClaimsSet.Builder()
-            .subject("foo")
+        final JWTClaimsSet claimsSetOne = new JWTClaimsSet.Builder().subject("foo")
             .issueTime(Date.from(Instant.now().minusSeconds(60)))
             .issuer("https://sts.windows.net/")
             .audience(FAKE_APPLICATION_URI)
@@ -138,8 +129,7 @@ class UserPrincipalManagerAudienceTests {
         final String orderTwo = signedJWT.serialize();
         final String invalidToken = orderTwo.substring(0, orderTwo.length() - 5);
 
-        userPrincipalManager = new UserPrincipalManager(endpoints, properties,
-            resourceRetriever, true);
+        userPrincipalManager = new UserPrincipalManager(endpoints, properties, resourceRetriever, true);
         assertThatCode(() -> userPrincipalManager.buildUserPrincipal(invalidToken))
             .hasMessageContaining("JWT rejected: Invalid signature");
     }

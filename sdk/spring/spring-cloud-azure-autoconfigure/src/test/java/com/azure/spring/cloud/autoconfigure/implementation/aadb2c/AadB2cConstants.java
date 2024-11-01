@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aadb2c;
 
-
 import static com.azure.spring.cloud.autoconfigure.implementation.aadb2c.configuration.properties.AadB2cProperties.PREFIX;
 
 public class AadB2cConstants {
-    public static final String AUTHENTICATE_ADDITIONAL_PARAMETERS_LOGIN_HINT = ".authenticate-additional-parameters"
-        + ".login-hint";
+    public static final String AUTHENTICATE_ADDITIONAL_PARAMETERS_LOGIN_HINT
+        = ".authenticate-additional-parameters" + ".login-hint";
 
     public static final String AUTHENTICATE_ADDITIONAL_PARAMETERS_PROMPT = ".authenticate-additional-parameters.prompt";
 
@@ -66,11 +65,11 @@ public class AadB2cConstants {
 
     public static final String USER_FLOWS = String.format("%s.%s", PREFIX, "user-flows");
 
-    public static final Object CONFIG_PROMPT = String.format("%s.%s", PREFIX,
-        AUTHENTICATE_ADDITIONAL_PARAMETERS_PROMPT);
+    public static final Object CONFIG_PROMPT
+        = String.format("%s.%s", PREFIX, AUTHENTICATE_ADDITIONAL_PARAMETERS_PROMPT);
 
-    public static final String CONFIG_LOGIN_HINT = String.format("%s.%s", PREFIX,
-        AUTHENTICATE_ADDITIONAL_PARAMETERS_LOGIN_HINT);
+    public static final String CONFIG_LOGIN_HINT
+        = String.format("%s.%s", PREFIX, AUTHENTICATE_ADDITIONAL_PARAMETERS_LOGIN_HINT);
 
     public static final String AUTHORIZATION_CLIENTS = String.format("%s.%s", PREFIX, "authorization-clients");
 }

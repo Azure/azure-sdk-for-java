@@ -12,25 +12,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class AadAutoConfigurationServletConditionTests {
 
-    private static final String SERVLET_WEB_APPLICATION_CLASS = "org.springframework.web.context.support.GenericWebApplicationContext";
+    private static final String SERVLET_WEB_APPLICATION_CLASS
+        = "org.springframework.web.context.support.GenericWebApplicationContext";
 
     @Test
     void servletApplication() {
         oauthClientAndResourceServerRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
-            )
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id")
             .run(context -> assertThat(context).hasSingleBean(AadAuthenticationProperties.class));
     }
 
     @Test
     void nonServletApplication() {
         oauthClientAndResourceServerRunner()
-            .withPropertyValues(
-                "spring.cloud.azure.active-directory.enabled=true",
-                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id"
-            )
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.credential.client-id=fake-client-id")
             .withClassLoader(new FilteredClassLoader(SERVLET_WEB_APPLICATION_CLASS))
             .run(context -> assertThat(context).doesNotHaveBean(AadAuthenticationProperties.class));
     }

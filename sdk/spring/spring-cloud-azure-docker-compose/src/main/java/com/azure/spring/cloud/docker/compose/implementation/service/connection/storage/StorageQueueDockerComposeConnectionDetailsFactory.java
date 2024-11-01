@@ -19,7 +19,8 @@ class StorageQueueDockerComposeConnectionDetailsFactory
     }
 
     @Override
-    protected AzureStorageQueueConnectionDetails getDockerComposeConnectionDetails(DockerComposeConnectionSource source) {
+    protected AzureStorageQueueConnectionDetails
+        getDockerComposeConnectionDetails(DockerComposeConnectionSource source) {
         return new StorageQueueContainerConnectionDetails(source.getRunningService());
     }
 

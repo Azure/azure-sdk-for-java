@@ -34,10 +34,7 @@ public abstract class Shape {
 
     @Override
     public String toString() {
-        return "Shape{"
-            + "area="
-            + area
-            + '}';
+        return "Shape{" + "area=" + area + '}';
     }
 
     public Shape(int area) {

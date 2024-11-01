@@ -48,11 +48,13 @@ public class MultiTenantContainerCosmosFactoryIT {
 
     private final String testDB1 = "Database1";
 
-    private final String testContainer1= "Container1";
+    private final String testContainer1 = "Container1";
     private final String testContainer2 = "Container2";
 
-    private final Person TEST_PERSON_1 = new Person(ID_1, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
-    private final Person TEST_PERSON_2 = new Person(ID_2, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+    private final Person TEST_PERSON_1
+        = new Person(ID_1, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
+    private final Person TEST_PERSON_2
+        = new Person(ID_2, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();

@@ -33,16 +33,19 @@ public class ServiceBusProcessorClientLifecycleManager implements SmartLifecycle
         this.processorClient = processorClient;
     }
 
-
     @Override
     public void start() {
-        logger.debug("Starting Azure Service Bus processor client with queue name: {}, topic name: {} and subscription: {}", processorClient.getQueueName(), processorClient.getTopicName(), processorClient.getSubscriptionName());
+        logger.debug(
+            "Starting Azure Service Bus processor client with queue name: {}, topic name: {} and subscription: {}",
+            processorClient.getQueueName(), processorClient.getTopicName(), processorClient.getSubscriptionName());
         processorClient.start();
     }
 
     @Override
     public void stop() {
-        logger.debug("Stopping Azure Service Bus processor client with queue name: {}, topic name: {} and subscription: {}", processorClient.getQueueName(), processorClient.getTopicName(), processorClient.getSubscriptionName());
+        logger.debug(
+            "Stopping Azure Service Bus processor client with queue name: {}, topic name: {} and subscription: {}",
+            processorClient.getQueueName(), processorClient.getTopicName(), processorClient.getSubscriptionName());
         processorClient.stop();
     }
 

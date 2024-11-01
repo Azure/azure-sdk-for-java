@@ -24,7 +24,8 @@ public abstract class AbstractCosmosEventListener<E> implements ApplicationListe
      * Creates a new {@link AbstractCosmosEventListener}.
      */
     public AbstractCosmosEventListener() {
-        Class<?> typeArgument = GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractCosmosEventListener.class);
+        Class<?> typeArgument
+            = GenericTypeResolver.resolveTypeArgument(this.getClass(), AbstractCosmosEventListener.class);
         this.domainClass = typeArgument == null ? Object.class : typeArgument;
     }
 

@@ -41,12 +41,10 @@ import static org.mockito.Mockito.when;
 
 class AadAuthenticationFilterTests {
     private static final String TOKEN = "dummy-token";
-    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(
-                    AzureGlobalPropertiesAutoConfiguration.class,
-                    AadAuthenticationFilterAutoConfiguration.class,
-                    HttpMessageConvertersAutoConfiguration.class,
-                    RestTemplateAutoConfiguration.class));
+    private final ApplicationContextRunner contextRunner
+        = new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(
+            AzureGlobalPropertiesAutoConfiguration.class, AadAuthenticationFilterAutoConfiguration.class,
+            HttpMessageConvertersAutoConfiguration.class, RestTemplateAutoConfiguration.class));
     private final UserPrincipalManager userPrincipalManager;
     private final HttpServletRequest request;
     private final HttpServletResponse response;
@@ -59,23 +57,20 @@ class AadAuthenticationFilterTests {
         AadAuthenticationProperties properties = mock(AadAuthenticationProperties.class);
         when(properties.getCredential()).thenReturn(new AadCredentialProperties());
         when(properties.getProfile()).thenReturn(new AadProfileProperties());
-        filter = new AadAuthenticationFilter(
-            properties,
-            mock(AadAuthorizationServerEndpoints.class),
-            userPrincipalManager,
-            new RestTemplateBuilder()
-        );
+        filter = new AadAuthenticationFilter(properties, mock(AadAuthorizationServerEndpoints.class),
+            userPrincipalManager, new RestTemplateBuilder());
     }
 
     //TODO (Zhou Liu): current test case is out of date, a new test case need to cover here, do it later.
     @Test
     @Disabled
     void doFilterInternal() {
-        this.contextRunner.withPropertyValues("spring.cloud.azure.active-directory.credential.client-id", TestConstants.CLIENT_ID)
-                .withPropertyValues("spring.cloud.azure.active-directory.credential.client-secret", TestConstants.CLIENT_SECRET)
-                .withPropertyValues("spring.cloud.azure.active-directory.credential.client-secret",
-                        TestConstants.TARGETED_GROUPS.toString()
-                                                     .replace("[", "").replace("]", ""));
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.active-directory.credential.client-id", TestConstants.CLIENT_ID)
+            .withPropertyValues("spring.cloud.azure.active-directory.credential.client-secret",
+                TestConstants.CLIENT_SECRET)
+            .withPropertyValues("spring.cloud.azure.active-directory.credential.client-secret",
+                TestConstants.TARGETED_GROUPS.toString().replace("[", "").replace("]", ""));
 
         this.contextRunner.run(context -> {
             final HttpServletRequest request = mock(HttpServletRequest.class);
@@ -83,7 +78,6 @@ class AadAuthenticationFilterTests {
 
             final HttpServletResponse response = mock(HttpServletResponse.class);
             final FilterChain filterChain = mock(FilterChain.class);
-
 
             final AadAuthenticationFilter azureADJwtTokenFilter = context.getBean(AadAuthenticationFilter.class);
             assertThat(azureADJwtTokenFilter).isNotNull();
@@ -97,8 +91,7 @@ class AadAuthenticationFilterTests {
             assertThat(authentication.getAuthorities()).isNotNull();
             assertThat(authentication.getAuthorities().size()).isEqualTo(2);
             assertThat(authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_group1"))
-                    && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_group2"))
-            ).isTrue();
+                && authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_group2"))).isTrue();
 
             final UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
             assertThat(principal.getIssuer()).isNotNull().isNotEmpty();
@@ -127,8 +120,8 @@ class AadAuthenticationFilterTests {
     }
 
     @Test
-    void testAlreadyAuthenticated() throws ServletException, IOException, ParseException, JOSEException,
-        BadJOSEException {
+    void testAlreadyAuthenticated()
+        throws ServletException, IOException, ParseException, JOSEException, BadJOSEException {
         final Authentication authentication = mock(Authentication.class);
         when(authentication.isAuthenticated()).thenReturn(true);
         when(userPrincipalManager.isTokenIssuedByAad(TOKEN)).thenReturn(true);

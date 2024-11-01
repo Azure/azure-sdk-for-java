@@ -39,10 +39,8 @@ import static com.azure.spring.data.cosmos.Constants.ISO_8601_COMPATIBLE_DATE_PA
 /**
  * A converter class between common types and cosmosItemProperties
  */
-public class MappingCosmosConverter
-    implements EntityConverter<CosmosPersistentEntity<?>, CosmosPersistentProperty, Object,
-    JsonNode>,
-    ApplicationContextAware {
+public class MappingCosmosConverter implements
+    EntityConverter<CosmosPersistentEntity<?>, CosmosPersistentProperty, Object, JsonNode>, ApplicationContextAware {
 
     /**
      * Mapping context
@@ -69,8 +67,7 @@ public class MappingCosmosConverter
         @Qualifier(Constants.OBJECT_MAPPER_BEAN_NAME) ObjectMapper objectMapper) {
         this.mappingContext = mappingContext;
         this.conversionService = new GenericConversionService();
-        this.objectMapper = objectMapper == null ? ObjectMapperFactory.getObjectMapper()
-            : objectMapper;
+        this.objectMapper = objectMapper == null ? ObjectMapperFactory.getObjectMapper() : objectMapper;
     }
 
     @Override
@@ -84,8 +81,7 @@ public class MappingCosmosConverter
         throw new UnsupportedOperationException("The feature is not implemented yet");
     }
 
-    private <R> R readInternal(final CosmosPersistentEntity<?> entity, Class<R> type,
-                               final JsonNode jsonNode) {
+    private <R> R readInternal(final CosmosPersistentEntity<?> entity, Class<R> type, final JsonNode jsonNode) {
         try {
             if (jsonNode.isValueNode()) {
                 return objectMapper.treeToValue(jsonNode, type);
@@ -106,10 +102,8 @@ public class MappingCosmosConverter
             }
             return objectMapper.treeToValue(objectNode, type);
         } catch (JsonProcessingException e) {
-            throw new IllegalStateException("Failed to read the source document "
-                + jsonNode.toPrettyString()
-                + "  to target type "
-                + type, e);
+            throw new IllegalStateException(
+                "Failed to read the source document " + jsonNode.toPrettyString() + "  to target type " + type, e);
         }
     }
 
@@ -142,12 +136,10 @@ public class MappingCosmosConverter
             return null;
         }
 
-        final CosmosPersistentEntity<?> persistentEntity =
-            mappingContext.getPersistentEntity(sourceEntity.getClass());
+        final CosmosPersistentEntity<?> persistentEntity = mappingContext.getPersistentEntity(sourceEntity.getClass());
 
         if (persistentEntity == null) {
-            throw new MappingException("no mapping metadata for entity type: "
-                + sourceEntity.getClass().getName());
+            throw new MappingException("no mapping metadata for entity type: " + sourceEntity.getClass().getName());
         }
 
         final ConvertingPropertyAccessor<?> accessor = getPropertyAccessor(sourceEntity);
@@ -231,7 +223,8 @@ public class MappingCosmosConverter
         Class<T> domainType = (Class<T>) objectToSave.getClass();
         if (entityInfo == null) {
             @SuppressWarnings("unchecked")
-            CosmosEntityInformation<T, ?> entityInformation = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
+            CosmosEntityInformation<T, ?> entityInformation
+                = (CosmosEntityInformation<T, Object>) CosmosEntityInformation.getInstance(domainType);
             entityInfo = entityInformation;
         }
         return entityInfo.getTransientFields();
@@ -294,14 +287,11 @@ public class MappingCosmosConverter
         return mappingContext;
     }
 
-
     private ConvertingPropertyAccessor<?> getPropertyAccessor(Object entity) {
-        final CosmosPersistentEntity<?> entityInformation =
-            mappingContext.getPersistentEntity(entity.getClass());
+        final CosmosPersistentEntity<?> entityInformation = mappingContext.getPersistentEntity(entity.getClass());
 
         Assert.notNull(entityInformation, "EntityInformation should not be null.");
-        final PersistentPropertyAccessor<?> accessor =
-            entityInformation.getPropertyAccessor(entity);
+        final PersistentPropertyAccessor<?> accessor = entityInformation.getPropertyAccessor(entity);
         return new ConvertingPropertyAccessor<>(accessor, conversionService);
     }
 

@@ -36,11 +36,11 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_VALUE_ASSUME_MIN_SERVER_VERSION;
 import static com.azure.spring.cloud.autoconfigure.implementation.util.SpringPasswordlessPropertiesUtils.enhancePasswordlessProperties;
 
-
 /**
  * {@link BeanPostProcessor} to enhance jdbc connection string.
  */
-class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentAware, ApplicationContextAware, PriorityOrdered {
+class JdbcPropertiesBeanPostProcessor
+    implements BeanPostProcessor, EnvironmentAware, ApplicationContextAware, PriorityOrdered {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JdbcPropertiesBeanPostProcessor.class);
     private GenericApplicationContext applicationContext;
@@ -58,8 +58,9 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             DataSourceProperties dataSourceProperties = (DataSourceProperties) bean;
             BeanDefinition bd = applicationContext.getBeanDefinition(beanName);
             String datasourcePropertiesPrefix = "spring.datasource";
-            if (bd != null && bd.getSource() instanceof AnnotatedTypeMetadata metadata) {
-                Map<String, Object> annotationAttributes = metadata.getAnnotationAttributes(ConfigurationProperties.class.getName());
+            if (bd != null && bd.getSource()instanceof AnnotatedTypeMetadata metadata) {
+                Map<String, Object> annotationAttributes
+                    = metadata.getAnnotationAttributes(ConfigurationProperties.class.getName());
                 if (annotationAttributes != null) {
                     datasourcePropertiesPrefix = (String) annotationAttributes.get("prefix");
                 }
@@ -67,8 +68,10 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             String passwordlessPropertiesPrefix = datasourcePropertiesPrefix + ".azure";
             AzureJdbcPasswordlessProperties properties = buildAzureProperties(passwordlessPropertiesPrefix);
             if (!properties.isPasswordlessEnabled()) {
-                LOGGER.debug("Feature passwordless authentication is not enabled(bean name is {} and {}.passwordless-enabled=false), "
-                    + "skip enhancing jdbc url.", beanName, passwordlessPropertiesPrefix);
+                LOGGER.debug(
+                    "Feature passwordless authentication is not enabled(bean name is {} and {}.passwordless-enabled=false), "
+                        + "skip enhancing jdbc url.",
+                    beanName, passwordlessPropertiesPrefix);
                 return bean;
             }
 
@@ -86,8 +89,7 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
             boolean isPasswordProvided = StringUtils.hasText(dataSourceProperties.getPassword());
             if (isPasswordProvided) {
-                LOGGER.debug(
-                    "If you are using Azure hosted services,"
+                LOGGER.debug("If you are using Azure hosted services,"
                     + "it is encouraged to use the passwordless feature ({}). "
                     + "Please refer to https://aka.ms/passwordless-connections.", datasourcePropertiesPrefix);
                 return bean;
@@ -102,11 +104,13 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
             try {
                 JdbcConnectionStringEnhancer enhancer = new JdbcConnectionStringEnhancer(connectionString);
-                enhancer.enhanceProperties(buildEnhancedProperties(passwordlessPropertiesPrefix, databaseType, properties), true);
+                enhancer.enhanceProperties(
+                    buildEnhancedProperties(passwordlessPropertiesPrefix, databaseType, properties), true);
                 enhanceUserAgent(databaseType, enhancer);
                 ((DataSourceProperties) bean).setUrl(enhancer.getJdbcUrl());
             } catch (IllegalArgumentException e) {
-                LOGGER.error("Inconsistent properties detected, skip enhancing jdbc url ({}).", datasourcePropertiesPrefix, e);
+                LOGGER.error("Inconsistent properties detected, skip enhancing jdbc url ({}).",
+                    datasourcePropertiesPrefix, e);
             }
         }
         return bean;
@@ -117,12 +121,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
             Map<String, String> enhancedAttributes = new HashMap<>();
             enhancedAttributes.put(MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_ATTRIBUTE_EXTENSION_VERSION,
                 AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH);
-            enhancer.enhancePropertyAttributes(
-                MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES,
-                enhancedAttributes,
-                MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_DELIMITER,
-                MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER
-            );
+            enhancer.enhancePropertyAttributes(MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES, enhancedAttributes,
+                MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_DELIMITER, MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER);
         } else if (DatabaseType.POSTGRESQL == databaseType) {
             Map<String, String> enhancedProperties = new HashMap<>();
             enhancedProperties.put(POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME,
@@ -139,9 +139,8 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
         }
     }
 
-    private Map<String, String> buildEnhancedProperties(String passwordlessPropertiesPrefix,
-                                                        DatabaseType databaseType,
-                                                        AzureJdbcPasswordlessProperties properties) {
+    private Map<String, String> buildEnhancedProperties(String passwordlessPropertiesPrefix, DatabaseType databaseType,
+        AzureJdbcPasswordlessProperties properties) {
         Map<String, String> result = new HashMap<>();
         enhancePasswordlessProperties(passwordlessPropertiesPrefix, properties, result);
         databaseType.setDefaultEnhancedProperties(result);
@@ -160,11 +159,12 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
     private AzureJdbcPasswordlessProperties buildAzureProperties(String azureDatasourcePrefix) {
         AzureGlobalProperties azureGlobalProperties = applicationContext.getBean(AzureGlobalProperties.class);
-        AzureJdbcPasswordlessProperties azurePasswordlessProperties = Binder.get(environment)
-                .bindOrCreate(azureDatasourcePrefix, AzureJdbcPasswordlessProperties.class);
+        AzureJdbcPasswordlessProperties azurePasswordlessProperties
+            = Binder.get(environment).bindOrCreate(azureDatasourcePrefix, AzureJdbcPasswordlessProperties.class);
 
         AzureJdbcPasswordlessProperties mergedProperties = new AzureJdbcPasswordlessProperties();
-        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties, mergedProperties);
+        AzurePasswordlessPropertiesUtils.mergeAzureCommonProperties(azureGlobalProperties, azurePasswordlessProperties,
+            mergedProperties);
         return mergedProperties;
     }
 }

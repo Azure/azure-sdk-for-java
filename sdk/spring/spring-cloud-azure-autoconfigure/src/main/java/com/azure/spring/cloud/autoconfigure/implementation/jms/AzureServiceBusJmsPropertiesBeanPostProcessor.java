@@ -15,7 +15,8 @@ class AzureServiceBusJmsPropertiesBeanPostProcessor implements BeanPostProcessor
 
     private final ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders;
 
-    AzureServiceBusJmsPropertiesBeanPostProcessor(ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
+    AzureServiceBusJmsPropertiesBeanPostProcessor(
+        ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
         this.connectionStringProviders = connectionStringProviders;
     }
 
@@ -24,7 +25,8 @@ class AzureServiceBusJmsPropertiesBeanPostProcessor implements BeanPostProcessor
         if (bean instanceof AzureServiceBusJmsProperties) {
             AzureServiceBusJmsProperties jmsProperties = (AzureServiceBusJmsProperties) bean;
             if (!StringUtils.hasText(jmsProperties.getConnectionString())) {
-                connectionStringProviders.ifAvailable(provider -> jmsProperties.setConnectionString(provider.getConnectionString()));
+                connectionStringProviders
+                    .ifAvailable(provider -> jmsProperties.setConnectionString(provider.getConnectionString()));
             }
         }
         return bean;

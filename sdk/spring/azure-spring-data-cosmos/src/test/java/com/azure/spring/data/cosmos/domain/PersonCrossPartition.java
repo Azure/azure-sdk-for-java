@@ -28,8 +28,8 @@ public class PersonCrossPartition {
     @Version
     private String _etag;
 
-    public PersonCrossPartition(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses,
-                                Integer age, Map<String, String> passportIDsByCountry) {
+    public PersonCrossPartition(String id, String firstName, String lastName, List<String> hobbies,
+        List<Address> shippingAddresses, Integer age, Map<String, String> passportIDsByCountry) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -131,27 +131,8 @@ public class PersonCrossPartition {
 
     @Override
     public String toString() {
-        return "Person{"
-            + "id='"
-            + id
-            + '\''
-            + ", firstName='"
-            + firstName
-            + '\''
-            + ", lastName='"
-            + lastName
-            + '\''
-            + ", age="
-            + age
-            + ", hobbies="
-            + hobbies
-            + ", shippingAddresses="
-            + shippingAddresses
-            + ", passportIdsByCountry="
-            + passportIdsByCountry
-            + ", _etag='"
-            + _etag
-            + '\''
-            + '}';
+        return "Person{" + "id='" + id + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName + '\''
+            + ", age=" + age + ", hobbies=" + hobbies + ", shippingAddresses=" + shippingAddresses
+            + ", passportIdsByCountry=" + passportIdsByCountry + ", _etag='" + _etag + '\'' + '}';
     }
 }

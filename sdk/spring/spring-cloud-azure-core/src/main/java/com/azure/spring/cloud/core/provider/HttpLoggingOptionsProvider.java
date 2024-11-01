@@ -55,5 +55,4 @@ public interface HttpLoggingOptionsProvider {
 
     }
 
-
 }

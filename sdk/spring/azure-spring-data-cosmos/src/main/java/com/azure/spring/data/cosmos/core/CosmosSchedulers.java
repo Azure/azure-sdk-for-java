@@ -13,15 +13,13 @@ class CosmosSchedulers {
     /**
      * Spring custom parallel scheduler name
      */
-    private static final String SPRING_DATA_COSMOS_PARALLEL_THREAD_NAME =  "spring-data-cosmos-parallel";
+    private static final String SPRING_DATA_COSMOS_PARALLEL_THREAD_NAME = "spring-data-cosmos-parallel";
 
     /**
      * Using a custom parallel scheduler to be able to schedule retries etc.
      *     without being vulnerable to scenarios where applications abuse the
      *     Parallel scheduler and cause thread starvation on Reactor Core parallel scheduler
      */
-    public static final Scheduler SPRING_DATA_COSMOS_PARALLEL = Schedulers.newParallel(
-        SPRING_DATA_COSMOS_PARALLEL_THREAD_NAME,
-        Schedulers.DEFAULT_POOL_SIZE,
-        true);
+    public static final Scheduler SPRING_DATA_COSMOS_PARALLEL
+        = Schedulers.newParallel(SPRING_DATA_COSMOS_PARALLEL_THREAD_NAME, Schedulers.DEFAULT_POOL_SIZE, true);
 }

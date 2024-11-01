@@ -60,15 +60,12 @@ public class PageablePersonRepositoryIT {
         //  Create larger documents with size more than 10 kb
         for (int i = 0; i < TOTAL_CONTENT_SIZE; i++) {
             final List<String> hobbies = new ArrayList<>();
-            hobbies.add(StringUtils.repeat("hobbies-" + UUID.randomUUID().toString(),
-                ONE_KB * 10));
+            hobbies.add(StringUtils.repeat("hobbies-" + UUID.randomUUID().toString(), ONE_KB * 10));
             final List<Address> address = new ArrayList<>();
             address.add(new Address("postalCode-" + UUID.randomUUID().toString(),
-                "street-" + UUID.randomUUID().toString(),
-                "city-" + UUID.randomUUID().toString()));
-            final PageablePerson person = new PageablePerson(UUID.randomUUID().toString(),
-                UUID.randomUUID().toString(), UUID.randomUUID().toString(),
-                hobbies, address);
+                "street-" + UUID.randomUUID().toString(), "city-" + UUID.randomUUID().toString()));
+            final PageablePerson person = new PageablePerson(UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+                UUID.randomUUID().toString(), hobbies, address);
             repository.save(person);
             personSet.add(person);
         }

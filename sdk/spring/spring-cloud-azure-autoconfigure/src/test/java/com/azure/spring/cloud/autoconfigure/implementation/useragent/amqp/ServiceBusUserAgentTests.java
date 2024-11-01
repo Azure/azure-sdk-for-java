@@ -22,12 +22,10 @@ class ServiceBusUserAgentTests {
 
     @Test
     void userAgentTest() {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
+        new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.connection-string=Endpoint=sb://sample.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key"
-            )
+                "spring.cloud.azure.servicebus.connection-string=Endpoint=sb://sample.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key")
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusAutoConfiguration.class);
                 assertThat(context).hasSingleBean(ServiceBusClientBuilderFactory.class);
@@ -35,7 +33,8 @@ class ServiceBusUserAgentTests {
                 assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
 
                 ServiceBusClientBuilder builder = context.getBean(ServiceBusClientBuilder.class);
-                ClientOptions options = (ClientOptions) getField(ServiceBusClientBuilder.class, "clientOptions", builder);
+                ClientOptions options
+                    = (ClientOptions) getField(ServiceBusClientBuilder.class, "clientOptions", builder);
                 Assertions.assertNotNull(options);
                 Assertions.assertEquals(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS, options.getApplicationId());
 

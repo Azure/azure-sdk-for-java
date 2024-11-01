@@ -44,6 +44,6 @@ public interface AzureListenerEndpoint {
      * @param messageConverter the message converter to configure
      */
     void setupListenerContainer(MessageListenerContainer listenerContainer,
-                                AzureMessageConverter<?, ?> messageConverter);
+        AzureMessageConverter<?, ?> messageConverter);
 
 }

@@ -12,7 +12,8 @@ import static org.mockito.Mockito.verify;
 class ServiceBusProcessorClientLifecycleManagerTest {
 
     private final ServiceBusProcessorClient processor = mock(ServiceBusProcessorClient.class);
-    private final ServiceBusProcessorClientLifecycleManager manager = new ServiceBusProcessorClientLifecycleManager(processor);
+    private final ServiceBusProcessorClientLifecycleManager manager
+        = new ServiceBusProcessorClientLifecycleManager(processor);
 
     @Test
     void testStarting() {

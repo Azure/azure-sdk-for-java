@@ -18,13 +18,13 @@ class KeyVaultCertificateHealthConfigurationTests {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withPropertyValues("spring.cloud.azure.keyvault.certificate.endpoint=" + ENDPOINT)
         .withBean(AzureGlobalProperties.class)
-        .withConfiguration(
-            AutoConfigurations.of(AzureKeyVaultCertificateAutoConfiguration.class,
-                KeyVaultCertificateHealthConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureKeyVaultCertificateAutoConfiguration.class,
+            KeyVaultCertificateHealthConfiguration.class));
 
     @Test
     void runShouldCreateIndicator() {
-        this.contextRunner.run((context) -> assertThat(context).hasSingleBean(KeyVaultCertificateHealthIndicator.class));
+        this.contextRunner
+            .run((context) -> assertThat(context).hasSingleBean(KeyVaultCertificateHealthIndicator.class));
     }
 
     @Test

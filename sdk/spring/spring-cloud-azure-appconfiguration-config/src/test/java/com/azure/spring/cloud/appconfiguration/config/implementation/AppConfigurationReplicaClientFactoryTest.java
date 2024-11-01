@@ -27,7 +27,7 @@ public class AppConfigurationReplicaClientFactoryTest {
 
     @Mock
     private AppConfigurationReplicaClientsBuilder clientBuilderMock;
-    
+
     @Mock
     private ReplicaLookUp replicaLookUpMock;
 
@@ -38,7 +38,7 @@ public class AppConfigurationReplicaClientFactoryTest {
     private final String noReplicaEndpoint = "noReplica.azconfig.io";
 
     private final String invalidReplica = "invalidReplica.azconfig.io";
-    
+
     private MockitoSession session;
 
     @BeforeEach
@@ -69,6 +69,7 @@ public class AppConfigurationReplicaClientFactoryTest {
         MockitoAnnotations.openMocks(this).close();
         session.finishMocking();
     }
+
     @Test
     public void findOriginTest() {
         assertEquals(originEndpoint, clientFactory.findOriginForEndpoint(originEndpoint));

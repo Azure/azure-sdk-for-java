@@ -21,15 +21,15 @@ class AzureEventHubsClientBuilderConfigurationTests {
 
     @Test
     void noConnectionInfoProvidedShouldNotConfigure() {
-        contextRunner.run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsClientBuilderConfiguration.class));
+        contextRunner
+            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsClientBuilderConfiguration.class));
     }
 
     @Test
     void connectionStringProvidedShouldConfigure() {
         contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
-            )
+            .withPropertyValues("spring.cloud.azure.eventhubs.connection-string="
+                + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsClientBuilderConfiguration.class);
@@ -40,10 +40,7 @@ class AzureEventHubsClientBuilderConfigurationTests {
 
     @Test
     void namespaceProvidedShouldConfigure() {
-        contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=test-namespace"
-            )
+        contextRunner.withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-namespace")
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsClientBuilderConfiguration.class);
@@ -56,9 +53,8 @@ class AzureEventHubsClientBuilderConfigurationTests {
     void customizerShouldBeCalled() {
         EventHubBuilderCustomizer customizer = new EventHubBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
-            )
+            .withPropertyValues("spring.cloud.azure.eventhubs.connection-string="
+                + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean("customizer1", EventHubBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", EventHubBuilderCustomizer.class, () -> customizer)
@@ -70,9 +66,8 @@ class AzureEventHubsClientBuilderConfigurationTests {
         EventHubBuilderCustomizer customizer = new EventHubBuilderCustomizer();
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
-            )
+            .withPropertyValues("spring.cloud.azure.eventhubs.connection-string="
+                + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean("customizer1", EventHubBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", EventHubBuilderCustomizer.class, () -> customizer)
@@ -86,9 +81,8 @@ class AzureEventHubsClientBuilderConfigurationTests {
     @Test
     void userDefinedEventHubsClientBuilderProvidedShouldNotAutoconfigure() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
-            )
+            .withPropertyValues("spring.cloud.azure.eventhubs.connection-string="
+                + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean("user-defined-builder", EventHubClientBuilder.class, EventHubClientBuilder::new)
             .run(context -> {

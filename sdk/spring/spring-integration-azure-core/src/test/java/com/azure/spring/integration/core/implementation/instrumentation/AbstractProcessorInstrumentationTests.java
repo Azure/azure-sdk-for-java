@@ -22,7 +22,7 @@ public abstract class AbstractProcessorInstrumentationTests<T> {
     public abstract T getErrorContext(RuntimeException exception);
 
     public abstract AbstractProcessorInstrumentation<T> getProcessorInstrumentation(Instrumentation.Type type,
-                                                                                    Duration window);
+        Duration window);
 
     @BeforeEach
     void setUp() {

@@ -83,33 +83,30 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
 
     @Bean
     public CosmosClientBuilder cosmosClientBuilder() {
-        return new CosmosClientBuilder()
-            .key(cosmosDbKey)
+        return new CosmosClientBuilder().key(cosmosDbKey)
             .endpoint(cosmosDbUri)
             .contentResponseOnWriteEnabled(true)
             .clientTelemetryConfig(
                 new CosmosClientTelemetryConfig()
-                .diagnosticsThresholds(
-                    new CosmosDiagnosticsThresholds()
-                        .setNonPointOperationLatencyThreshold(Duration.ofMillis(10))
-                        .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
-                        .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
-                        .setRequestChargeThreshold(requestChargeThresholdInRU)
-                )
-                .diagnosticsHandler(capturingLogger));
+                    .diagnosticsThresholds(
+                        new CosmosDiagnosticsThresholds().setNonPointOperationLatencyThreshold(Duration.ofMillis(10))
+                            .setPointOperationLatencyThreshold(Duration.ofMillis(pointOperationLatencyThresholdInMS))
+                            .setPayloadSizeThreshold(payloadSizeThresholdInBytes)
+                            .setRequestChargeThreshold(requestChargeThresholdInRU))
+                    .diagnosticsHandler(capturingLogger));
     }
 
     @Bean
     @Override
     public CosmosConfig cosmosConfig() {
         return CosmosConfig.builder()
-                           .enableQueryMetrics(queryMetricsEnabled)
-                           .enableIndexMetrics(indexMetricsEnabled)
-                           .maxDegreeOfParallelism(maxDegreeOfParallelism)
-                           .maxBufferedItemCount(maxBufferedItemCount)
-                           .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
-                           .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
-                           .build();
+            .enableQueryMetrics(queryMetricsEnabled)
+            .enableIndexMetrics(indexMetricsEnabled)
+            .maxDegreeOfParallelism(maxDegreeOfParallelism)
+            .maxBufferedItemCount(maxBufferedItemCount)
+            .responseContinuationTokenLimitInKb(responseContinuationTokenLimitInKb)
+            .responseDiagnosticsProcessor(responseDiagnosticsTestUtils().getResponseDiagnosticsProcessor())
+            .build();
     }
 
     @Override
@@ -141,6 +138,7 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
 
     public static class CapturingLogger implements CosmosDiagnosticsHandler {
         public List<String> loggedMessages = new ArrayList<>();
+
         public CapturingLogger() {
             super();
         }
@@ -148,14 +146,9 @@ public class TestRepositoryConfig extends AbstractCosmosConfiguration {
         @Override
         public void handleDiagnostics(CosmosDiagnosticsContext ctx, Context traceContext) {
             logger.info("--> log - ctx: {}", ctx);
-            String msg = String.format(
-                "Account: %s -> DB: %s, Col:%s, StatusCode: %d:%d Diagnostics: %s",
-                ctx.getAccountName(),
-                ctx.getDatabaseName(),
-                ctx.getContainerName(),
-                ctx.getStatusCode(),
-                ctx.getSubStatusCode(),
-                ctx);
+            String msg = String.format("Account: %s -> DB: %s, Col:%s, StatusCode: %d:%d Diagnostics: %s",
+                ctx.getAccountName(), ctx.getDatabaseName(), ctx.getContainerName(), ctx.getStatusCode(),
+                ctx.getSubStatusCode(), ctx);
 
             this.loggedMessages.add(msg);
 

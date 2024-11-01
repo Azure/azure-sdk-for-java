@@ -51,14 +51,15 @@ public class ApplicationContextEventIT {
     @Before
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Address.class);
-        repository.saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2,
-            TEST_ADDRESS2_PARTITION1));
+        repository
+            .saveAll(Lists.newArrayList(TEST_ADDRESS1_PARTITION1, TEST_ADDRESS1_PARTITION2, TEST_ADDRESS2_PARTITION1));
         simpleCosmosMappingEventListener.onAfterLoadEvents = new ArrayList<>();
     }
 
     @Test
     public void shouldPublishAfterLoadEventOnFindById() {
-        repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(), new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity()));
+        repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode(),
+            new PartitionKey(TEST_ADDRESS1_PARTITION1.getCity()));
         assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents).hasSize(1);
         assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.get(0).getContainerName()).isEqualTo("Address");
     }
@@ -114,7 +115,8 @@ public class ApplicationContextEventIT {
 
     @Test
     public void shouldNotPublishAfterLoadEventForUpdates() {
-        repository.save(new Address(TEST_ADDRESS1_PARTITION1.getPostalCode(), TestConstants.STREET_0, TEST_ADDRESS1_PARTITION1.getCity()));
+        repository.save(new Address(TEST_ADDRESS1_PARTITION1.getPostalCode(), TestConstants.STREET_0,
+            TEST_ADDRESS1_PARTITION1.getCity()));
         assertThat(simpleCosmosMappingEventListener.onAfterLoadEvents.isEmpty()).isTrue();
     }
 

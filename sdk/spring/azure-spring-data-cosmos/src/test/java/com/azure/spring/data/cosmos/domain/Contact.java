@@ -95,8 +95,7 @@ public class Contact {
             return false;
         }
         Contact contact = (Contact) o;
-        return Objects.equals(logicId, contact.logicId)
-            && Objects.equals(title, contact.title);
+        return Objects.equals(logicId, contact.logicId) && Objects.equals(title, contact.title);
     }
 
     @Override
@@ -106,19 +105,7 @@ public class Contact {
 
     @Override
     public String toString() {
-        return "Contact{"
-                   + "logicId='"
-                   + logicId
-                   + '\''
-                   + ", title='"
-                   + title
-                   + '\''
-                   + ", value='"
-                   + intValue
-                   + '\''
-                   + ", status='"
-                   + isActive
-                   + '\''
-                   + '}';
+        return "Contact{" + "logicId='" + logicId + '\'' + ", title='" + title + '\'' + ", value='" + intValue + '\''
+            + ", status='" + isActive + '\'' + '}';
     }
 }

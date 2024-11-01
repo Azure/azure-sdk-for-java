@@ -28,8 +28,7 @@ public class CosmosFactory {
      */
     protected String databaseName;
 
-    private static final String USER_AGENT_SUFFIX =
-        Constants.USER_AGENT_SUFFIX + PropertyLoader.getProjectVersion();
+    private static final String USER_AGENT_SUFFIX = Constants.USER_AGENT_SUFFIX + PropertyLoader.getProjectVersion();
 
     private static String getUserAgentSuffix() {
         return USER_AGENT_SUFFIX;
@@ -104,8 +103,7 @@ public class CosmosFactory {
             userAgentSuffixField.setAccessible(true);
             return (String) userAgentSuffixField.get(cosmosClientBuilder);
         } catch (IllegalAccessException | NoSuchFieldException e) {
-            LOGGER.error("Error occurred while getting userAgentSuffix from CosmosClientBuilder",
-                e);
+            LOGGER.error("Error occurred while getting userAgentSuffix from CosmosClientBuilder", e);
         }
         return "";
     }

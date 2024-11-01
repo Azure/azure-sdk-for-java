@@ -68,16 +68,7 @@ public class SpELBeanStudent {
 
     @Override
     public String toString() {
-        return "SpELBeanStudent{"
-            + "id='"
-            + id
-            + '\''
-            + ", firstName='"
-            + firstName
-            + '\''
-            + ", lastName='"
-            + lastName
-            + '\''
-            + '}';
+        return "SpELBeanStudent{" + "id='" + id + '\'' + ", firstName='" + firstName + '\'' + ", lastName='" + lastName
+            + '\'' + '}';
     }
 }

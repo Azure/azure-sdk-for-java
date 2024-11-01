@@ -25,16 +25,17 @@ class ServiceBusMessageChannelTestBinder extends ServiceBusMessageChannelBinder 
      * @param headersToEmbed the headers to embed
      * @param provisioningProvider the provisioning provider
      */
-    ServiceBusMessageChannelTestBinder(String[] headersToEmbed,
-                                              ServiceBusChannelProvisioner provisioningProvider) {
+    ServiceBusMessageChannelTestBinder(String[] headersToEmbed, ServiceBusChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
     }
 
-    public MessageHandler createProducerMessageHandler(ProducerDestination destination, ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties, MessageChannel errorChannel) {
+    public MessageHandler createProducerMessageHandler(ProducerDestination destination,
+        ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties, MessageChannel errorChannel) {
         return super.createProducerMessageHandler(destination, producerProperties, errorChannel);
     }
 
-    public MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group, ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+    public MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
         return super.createConsumerEndpoint(destination, group, properties);
     }
 

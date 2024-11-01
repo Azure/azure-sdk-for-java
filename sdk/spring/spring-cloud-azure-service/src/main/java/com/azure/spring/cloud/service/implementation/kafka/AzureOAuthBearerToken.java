@@ -50,10 +50,8 @@ public class AzureOAuthBearerToken implements OAuthBearerToken {
         // Referring to https://docs.microsoft.com/azure/active-directory/develop/access-tokens#payload-claims, the scp
         // claim is a String which is presented as a space separated list.
         return Optional.ofNullable(claims.getClaim("scp"))
-                .map(s -> Arrays.stream(((String) s)
-                .split(" "))
-                .collect(Collectors.toSet()))
-                .orElse(null);
+            .map(s -> Arrays.stream(((String) s).split(" ")).collect(Collectors.toSet()))
+            .orElse(null);
     }
 
     @Override

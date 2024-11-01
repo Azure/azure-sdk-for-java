@@ -32,10 +32,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EnableAzureMessaging.class)
 @Conditional(AzureMessagingListenerAutoConfiguration.MessagingListenerCondition.class)
-@AutoConfigureAfter({
-    AzureEventHubsMessagingAutoConfiguration.class,
-    AzureServiceBusMessagingAutoConfiguration.class
-})
+@AutoConfigureAfter({ AzureEventHubsMessagingAutoConfiguration.class, AzureServiceBusMessagingAutoConfiguration.class })
 public class AzureMessagingListenerAutoConfiguration {
 
     @Configuration
@@ -43,8 +40,8 @@ public class AzureMessagingListenerAutoConfiguration {
     static class EventHubsConfiguration {
         @Bean(name = "azureEventHubsListenerContainerFactory")
         @ConditionalOnMissingBean(name = "azureEventHubsListenerContainerFactory")
-        public MessageListenerContainerFactory<? extends MessageListenerContainer> azureEventHubsListenerContainerFactory(
-            EventHubsProcessorFactory eventHubsProcessorFactory) {
+        public MessageListenerContainerFactory<? extends MessageListenerContainer>
+            azureEventHubsListenerContainerFactory(EventHubsProcessorFactory eventHubsProcessorFactory) {
             return new EventHubsMessageListenerContainerFactory(eventHubsProcessorFactory);
         }
 
@@ -55,8 +52,8 @@ public class AzureMessagingListenerAutoConfiguration {
     static class ServiceBusConfiguration {
         @Bean(name = "azureServiceBusListenerContainerFactory")
         @ConditionalOnMissingBean(name = "azureServiceBusListenerContainerFactory")
-        public MessageListenerContainerFactory<? extends MessageListenerContainer> azureServiceBusListenerContainerFactory(
-            ServiceBusProcessorFactory serviceBusProcessorFactory) {
+        public MessageListenerContainerFactory<? extends MessageListenerContainer>
+            azureServiceBusListenerContainerFactory(ServiceBusProcessorFactory serviceBusProcessorFactory) {
             return new ServiceBusMessageListenerContainerFactory(serviceBusProcessorFactory);
         }
     }

@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.implementation.aad.security.jwt;
 
-
 import com.azure.spring.cloud.autoconfigure.implementation.aad.security.constants.AadJwtClaimNames;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.KeySourceException;
@@ -37,14 +36,14 @@ public class AadIssuerJwsKeySelector implements JWTClaimsSetAwareJWSKeySelector<
     private final RestOperations restOperations;
 
     private final ResourceRetriever resourceRetriever;
+
     /**
      * Creates a new instance of {@link AadIssuerJwsKeySelector}.
      *
      * @param trustedIssuerRepo the AAD trusted issuer repository
      */
     public AadIssuerJwsKeySelector(RestTemplateBuilder restTemplateBuilder,
-                                   AadTrustedIssuerRepository trustedIssuerRepo,
-                                   ResourceRetriever resourceRetriever) {
+        AadTrustedIssuerRepository trustedIssuerRepo, ResourceRetriever resourceRetriever) {
         this.restOperations = createRestTemplate(restTemplateBuilder);
         this.trustedIssuerRepo = trustedIssuerRepo;
         this.resourceRetriever = resourceRetriever;

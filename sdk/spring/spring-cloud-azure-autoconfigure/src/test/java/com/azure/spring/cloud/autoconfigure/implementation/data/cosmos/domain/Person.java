@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.domain;
 
-
 public class Person {
     private String firstName;
     private String lastName;

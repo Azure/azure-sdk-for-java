@@ -45,7 +45,8 @@ public final class AzurePasswordlessPropertiesUtils {
      * @param target The target object.
      * @param <T> The type of the target that extends PasswordlessProperties.
      */
-    public static <T extends PasswordlessProperties> void copyAzureCommonPropertiesIgnoreNull(PasswordlessProperties source, T target) {
+    public static <T extends PasswordlessProperties> void
+        copyAzureCommonPropertiesIgnoreNull(PasswordlessProperties source, T target) {
 
         copyPropertiesIgnoreNull(source.getProfile(), target.getProfile());
         copyPropertiesIgnoreNull(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
@@ -65,8 +66,7 @@ public final class AzurePasswordlessPropertiesUtils {
      * @param <T> The type of the merge result.
      */
     public static <T extends PasswordlessProperties> void mergeAzureCommonProperties(AzureProperties defaultProperties,
-                                                                                     PasswordlessProperties properties,
-                                                                                     T target) {
+        PasswordlessProperties properties, T target) {
         copyAzureCommonProperties(defaultProperties, target);
         copyAzureCommonPropertiesIgnoreNull(properties, target);
     }

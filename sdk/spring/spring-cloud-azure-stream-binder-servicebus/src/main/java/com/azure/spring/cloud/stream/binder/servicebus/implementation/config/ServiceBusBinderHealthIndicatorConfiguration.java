@@ -28,5 +28,4 @@ public class ServiceBusBinderHealthIndicatorConfiguration {
         return new ServiceBusHealthIndicator(binder);
     }
 
-
 }

@@ -68,8 +68,8 @@ public class TargetingFilter implements FeatureFilter {
     /**
      * Object Mapper for converting configurations to features
      */
-    protected static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+    protected static final ObjectMapper OBJECT_MAPPER
+        = JsonMapper.builder().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     /**
      * Accessor for identifying the current user/group when evaluating
@@ -133,8 +133,10 @@ public class TargetingFilter implements FeatureFilter {
 
         Audience audience;
         String exclusionValue = FeatureFilterUtils.getKeyCase(parameters, EXCLUSION_CAMEL);
-        String exclusionUserValue = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Users");
-        String exclusionGroupsValue = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Groups");
+        String exclusionUserValue
+            = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Users");
+        String exclusionGroupsValue
+            = FeatureFilterUtils.getKeyCase((Map<String, Object>) parameters.get(exclusionValue), "Groups");
 
         if (((Map<String, Object>) parameters.getOrDefault(exclusionValue, new HashMap<>()))
             .get(exclusionUserValue) instanceof List) {
@@ -170,8 +172,8 @@ public class TargetingFilter implements FeatureFilter {
 
         if (targetingContext.getGroups() != null && audience.getExclusion().getGroups() != null) {
             for (String group : targetingContext.getGroups()) {
-                Optional<String> groupRollout = audience.getExclusion().getGroups().stream()
-                    .filter(g -> equals(g, group)).findFirst();
+                Optional<String> groupRollout
+                    = audience.getExclusion().getGroups().stream().filter(g -> equals(g, group)).findFirst();
                 if (groupRollout.isPresent()) {
                     return false;
                 }
@@ -202,8 +204,8 @@ public class TargetingFilter implements FeatureFilter {
 
     private boolean targetGroup(Audience audience, TargetingFilterContext targetingContext,
         FeatureFilterEvaluationContext context, String group) {
-        Optional<GroupRollout> groupRollout = audience.getGroups().stream()
-            .filter(g -> equals(g.getName(), group)).findFirst();
+        Optional<GroupRollout> groupRollout
+            = audience.getGroups().stream().filter(g -> equals(g.getName(), group)).findFirst();
 
         if (groupRollout.isPresent()) {
             String audienceContextId = targetingContext.getUserId() + "\n" + context.getName() + "\n" + group;

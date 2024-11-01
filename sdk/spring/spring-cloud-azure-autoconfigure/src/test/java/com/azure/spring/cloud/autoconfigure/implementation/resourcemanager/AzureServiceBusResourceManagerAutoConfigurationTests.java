@@ -30,17 +30,14 @@ class AzureServiceBusResourceManagerAutoConfigurationTests {
 
     @Test
     void testServiceBusResourceManagerDisabled() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.servicebus.enabled=false")
-            .run(context -> {
-                assertThat(context).doesNotHaveBean(ServiceBusProvisioner.class);
-            });
+        this.contextRunner.withPropertyValues("spring.cloud.azure.servicebus.enabled=false").run(context -> {
+            assertThat(context).doesNotHaveBean(ServiceBusProvisioner.class);
+        });
     }
 
     @Test
     void testServiceBusResourceManagerWithoutServiceBusClientBuilderClass() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ServiceBusClientBuilder.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusClientBuilder.class))
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureServiceBusResourceManagerAutoConfiguration.class);
@@ -51,23 +48,20 @@ class AzureServiceBusResourceManagerAutoConfigurationTests {
 
     @Test
     void testServiceBusResourceManagerWithoutServiceBusProvisionerClass() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ServiceBusProvisioner.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusProvisioner.class))
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusResourceManagerAutoConfiguration.class));
     }
 
     @Test
     void testServiceBusArmConnectionStringProviderBeanDisabled() {
-        this.contextRunner
-            .withPropertyValues(AzureServiceBusProperties.PREFIX + "." + connectionString)
+        this.contextRunner.withPropertyValues(AzureServiceBusProperties.PREFIX + "." + connectionString)
             .run(context -> assertThat(context).doesNotHaveBean(ServiceBusArmConnectionStringProvider.class));
     }
 
     @Test
     void testAzureServiceBusResourceManagerAutoConfigurationBeans() {
-        this.contextRunner
-            .withUserConfiguration(AzureResourceManagerAutoConfiguration.class)
+        this.contextRunner.withUserConfiguration(AzureResourceManagerAutoConfiguration.class)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .withBean(AzureServiceBusProperties.class, AzureServiceBusProperties::new)
@@ -77,21 +71,18 @@ class AzureServiceBusResourceManagerAutoConfigurationTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {
-        "spring.cloud.azure.eventhubs.connection-string=Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key",
-        "spring.cloud.azure.credential.token-credential-bean-name=my-token-credential",
-        "spring.cloud.azure.servicebus.credential.token-credential-bean-name=my-token-credential"
-    })
+    @ValueSource(
+        strings = {
+            "spring.cloud.azure.eventhubs.connection-string=Endpoint=sb://test.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key",
+            "spring.cloud.azure.credential.token-credential-bean-name=my-token-credential",
+            "spring.cloud.azure.servicebus.credential.token-credential-bean-name=my-token-credential" })
     void testNotCreateProviderBeanWhenMissingPropertiesConfigured(String missingProperty) {
         this.contextRunner
             .withUserConfiguration(TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
                 AzureGlobalPropertiesAutoConfiguration.class)
             .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
-            .withPropertyValues(
-                "spring.cloud.azure.profile.tenant-id=test-tenant",
-                "spring.cloud.azure.profile.subscription-id=test-subscription-id",
-                missingProperty
-            )
+            .withPropertyValues("spring.cloud.azure.profile.tenant-id=test-tenant",
+                "spring.cloud.azure.profile.subscription-id=test-subscription-id", missingProperty)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureResourceManager.class);
                 assertThat(context).doesNotHaveBean(ServiceBusArmConnectionStringProvider.class);

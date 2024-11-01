@@ -23,8 +23,10 @@ import org.springframework.context.annotation.Configuration;
 public class AzureCompatibilityVerifierAutoConfiguration {
 
     @Bean
-    AzureSpringBootVersionVerifier springCloudAzureSpringBootVersionVerifier(AzureCompatibilityVerifierProperties properties) {
-        AzureSpringBootVersionVerifier verifier = new AzureSpringBootVersionVerifier(properties.getCompatibleBootVersions(), new ClassNameResolverPredicate());
+    AzureSpringBootVersionVerifier
+        springCloudAzureSpringBootVersionVerifier(AzureCompatibilityVerifierProperties properties) {
+        AzureSpringBootVersionVerifier verifier = new AzureSpringBootVersionVerifier(
+            properties.getCompatibleBootVersions(), new ClassNameResolverPredicate());
         verifier.verify();
         return verifier;
     }

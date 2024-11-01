@@ -33,13 +33,14 @@ import org.springframework.util.StringUtils;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-name", "consumer.entity-name" })
 @Import({
     AzureServiceBusConsumerClientConfiguration.SessionConsumerClientConfiguration.class,
-    AzureServiceBusConsumerClientConfiguration.NoneSessionConsumerClientConfiguration.class
-})
+    AzureServiceBusConsumerClientConfiguration.NoneSessionConsumerClientConfiguration.class })
 @Conditional(AzureServiceBusConsumerCondition.class)
 class AzureServiceBusConsumerClientConfiguration {
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-enabled", havingValue = "false",
+    @ConditionalOnProperty(
+        value = "spring.cloud.azure.servicebus.consumer.session-enabled",
+        havingValue = "false",
         matchIfMissing = true)
     static class NoneSessionConsumerClientConfiguration {
 
@@ -54,10 +55,11 @@ class AzureServiceBusConsumerClientConfiguration {
 
             ServiceBusReceiverClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getConsumer())) {
-                factory = new ServiceBusReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties(), customizers.orderedStream().toList());
+                factory = new ServiceBusReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties(),
+                    customizers.orderedStream().toList());
             } else {
-                factory = new ServiceBusReceiverClientBuilderFactory(
-                    serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());
+                factory = new ServiceBusReceiverClientBuilderFactory(serviceBusClientBuilders.getIfAvailable(),
+                    serviceBusProperties.buildConsumerProperties());
             }
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
@@ -67,8 +69,8 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder serviceBusReceiverClientBuilder(
-            ServiceBusReceiverClientBuilderFactory builderFactory) {
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder
+            serviceBusReceiverClientBuilder(ServiceBusReceiverClientBuilderFactory builderFactory) {
             return builderFactory.build();
         }
 
@@ -81,8 +83,8 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusReceiverClient serviceBusReceiverClient(
-            ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder) {
+        ServiceBusReceiverClient
+            serviceBusReceiverClient(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder) {
             return receiverClientBuilder.buildClient();
         }
 
@@ -102,10 +104,11 @@ class AzureServiceBusConsumerClientConfiguration {
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder>> sessionReceiverCustomizers) {
             ServiceBusSessionReceiverClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getConsumer())) {
-                factory = new ServiceBusSessionReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties(), customizers.orderedStream().toList());
-            } else {
                 factory = new ServiceBusSessionReceiverClientBuilderFactory(
-                    serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());
+                    serviceBusProperties.buildConsumerProperties(), customizers.orderedStream().toList());
+            } else {
+                factory = new ServiceBusSessionReceiverClientBuilderFactory(serviceBusClientBuilders.getIfAvailable(),
+                    serviceBusProperties.buildConsumerProperties());
             }
 
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
@@ -116,8 +119,8 @@ class AzureServiceBusConsumerClientConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder serviceBusSessionReceiverClientBuilder(
-            ServiceBusSessionReceiverClientBuilderFactory builderFactory) {
+        ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder
+            serviceBusSessionReceiverClientBuilder(ServiceBusSessionReceiverClientBuilderFactory builderFactory) {
             return builderFactory.build();
         }
 

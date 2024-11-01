@@ -54,10 +54,9 @@ public class EventHubsTemplate implements SendOperation {
      * @return Mono Void
      */
     public <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages,
-                                    PartitionSupplier partitionSupplier) {
-        List<EventData> eventData = messages.stream()
-                                            .map(m -> messageConverter.fromMessage(m, EventData.class))
-                                            .collect(Collectors.toList());
+        PartitionSupplier partitionSupplier) {
+        List<EventData> eventData
+            = messages.stream().map(m -> messageConverter.fromMessage(m, EventData.class)).collect(Collectors.toList());
         return doSend(destination, eventData, partitionSupplier);
     }
 
@@ -125,26 +124,22 @@ public class EventHubsTemplate implements SendOperation {
                 return Mono.empty();
             }
 
-            return Mono.when(
-                producer.send(batch),
-                producer.createBatch(options).map(newBatch -> {
-                    currentBatch.set(newBatch);
-                    // Add the event that did not fit in the previous batch.
-                    try {
-                        if (!newBatch.tryAdd(event)) {
-                            LOGGER.error("Event was too large to fit in an empty batch. Max size:{} ",
-                                newBatch.getMaxSizeInBytes());
-                        }
-                    } catch (AmqpException e) {
-                        LOGGER.error("Event was too large to fit in an empty batch. Max size:{}",
-                            newBatch.getMaxSizeInBytes(), e);
+            return Mono.when(producer.send(batch), producer.createBatch(options).map(newBatch -> {
+                currentBatch.set(newBatch);
+                // Add the event that did not fit in the previous batch.
+                try {
+                    if (!newBatch.tryAdd(event)) {
+                        LOGGER.error("Event was too large to fit in an empty batch. Max size:{} ",
+                            newBatch.getMaxSizeInBytes());
                     }
+                } catch (AmqpException e) {
+                    LOGGER.error("Event was too large to fit in an empty batch. Max size:{}",
+                        newBatch.getMaxSizeInBytes(), e);
+                }
 
-                    return newBatch;
-                }));
-        })
-        .then()
-        .block();
+                return newBatch;
+            }));
+        }).then().block();
 
         final EventDataBatch batch = currentBatch.getAndSet(null);
         return producer.send(batch);
@@ -158,8 +153,10 @@ public class EventHubsTemplate implements SendOperation {
 
     <T> PartitionSupplier buildPartitionSupplier(Message<T> message) {
         PartitionSupplier partitionSupplier = new PartitionSupplier();
-        Optional.ofNullable(message.getHeaders().get(PARTITION_KEY)).ifPresent(s -> partitionSupplier.setPartitionKey(String.valueOf(s)));
-        Optional.ofNullable(message.getHeaders().get(PARTITION_ID)).ifPresent(s -> partitionSupplier.setPartitionId(String.valueOf(s)));
+        Optional.ofNullable(message.getHeaders().get(PARTITION_KEY))
+            .ifPresent(s -> partitionSupplier.setPartitionKey(String.valueOf(s)));
+        Optional.ofNullable(message.getHeaders().get(PARTITION_ID))
+            .ifPresent(s -> partitionSupplier.setPartitionId(String.valueOf(s)));
         return partitionSupplier;
     }
 

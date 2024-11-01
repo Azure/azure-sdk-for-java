@@ -30,10 +30,7 @@ import static org.mockito.Mockito.verify;
  *
  */
 class AzureStorageQueueClientBuilderFactoryTests extends
-    AzureHttpClientBuilderFactoryBaseTests<
-        QueueServiceClientBuilder,
-        AzureStorageQueueTestProperties,
-        AzureStorageQueueClientBuilderFactoryTests.QueueServiceClientBuilderFactoryExt> {
+    AzureHttpClientBuilderFactoryBaseTests<QueueServiceClientBuilder, AzureStorageQueueTestProperties, AzureStorageQueueClientBuilderFactoryTests.QueueServiceClientBuilderFactoryExt> {
 
     private static final String ENDPOINT = "https://abc.queue.core.windows.net/";
     private static final String CONNECTION_STRING = "BlobEndpoint=https://test.blob.core.windows.net/;"
@@ -70,7 +67,6 @@ class AzureStorageQueueClientBuilderFactoryTests extends
         verify(builder, times(1)).credential(any(AzureSasCredential.class));
     }
 
-
     @Override
     protected AzureStorageQueueTestProperties createMinimalServiceProperties() {
         AzureStorageQueueTestProperties properties = new AzureStorageQueueTestProperties();
@@ -79,8 +75,8 @@ class AzureStorageQueueClientBuilderFactoryTests extends
     }
 
     @Override
-    protected QueueServiceClientBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(
-        AzureStorageQueueTestProperties properties) {
+    protected QueueServiceClientBuilderFactoryExt
+        createClientBuilderFactoryWithMockBuilder(AzureStorageQueueTestProperties properties) {
         return new QueueServiceClientBuilderFactoryExt(properties);
     }
 
@@ -106,15 +102,13 @@ class AzureStorageQueueClientBuilderFactoryTests extends
 
     @Override
     protected void verifyRetryOptionsCalled(QueueServiceClientBuilder builder,
-                                            AzureStorageQueueTestProperties properties,
-                                            VerificationMode mode) {
+        AzureStorageQueueTestProperties properties, VerificationMode mode) {
         verify(builder, mode).retryOptions(any(RequestRetryOptions.class));
     }
 
     @Override
     protected void verifyCredentialCalled(QueueServiceClientBuilder builder,
-                                          Class<? extends TokenCredential> tokenCredentialClass,
-                                          VerificationMode mode) {
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         verify(builder, mode).credential(any(tokenCredentialClass));
     }
 
@@ -156,4 +150,3 @@ class AzureStorageQueueClientBuilderFactoryTests extends
     }
 
 }
-

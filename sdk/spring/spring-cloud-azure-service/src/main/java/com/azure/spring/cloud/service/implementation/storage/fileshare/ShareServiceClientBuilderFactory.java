@@ -29,7 +29,8 @@ import java.util.function.BiConsumer;
  * Storage File Share Service client builder factory, it builds the storage blob client according the configuration
  * context and blob properties.
  */
-public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClientBuilderFactory<ShareServiceClientBuilder> {
+public class ShareServiceClientBuilderFactory
+    extends AbstractAzureStorageClientBuilderFactory<ShareServiceClientBuilder> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShareServiceClientBuilderFactory.class);
 
@@ -80,10 +81,8 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(ShareServiceClientBuilder builder) {
-        return Arrays.asList(
-            new StorageSharedKeyAuthenticationDescriptor(builder::credential),
-            new SasAuthenticationDescriptor(builder::credential)
-        );
+        return Arrays.asList(new StorageSharedKeyAuthenticationDescriptor(builder::credential),
+            new SasAuthenticationDescriptor(builder::credential));
     }
 
     @Override
@@ -101,7 +100,8 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected BiConsumer<ShareServiceClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
         LOGGER.warn("TokenCredential is not supported to configure in ShareServiceClientBuilder.");
-        return (a, b) -> { };
+        return (a, b) -> {
+        };
     }
 
     @Override

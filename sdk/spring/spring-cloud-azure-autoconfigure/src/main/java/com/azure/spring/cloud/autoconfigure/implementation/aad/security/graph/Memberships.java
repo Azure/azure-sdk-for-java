@@ -29,9 +29,7 @@ public class Memberships {
      * @param value the list of memberships
      */
     @JsonCreator
-    public Memberships(
-        @JsonAlias("odata.nextLink")
-        @JsonProperty("@odata.nextLink") String odataNextLink,
+    public Memberships(@JsonAlias("odata.nextLink") @JsonProperty("@odata.nextLink") String odataNextLink,
         @JsonProperty("value") List<Membership> value) {
         this.odataNextLink = odataNextLink;
         this.value = value;
@@ -70,8 +68,7 @@ public class Memberships {
             return false;
         }
         final Memberships groups = (Memberships) o;
-        return this.getOdataNextLink().equals(groups.getOdataNextLink())
-            && this.getValue().equals(groups.getValue());
+        return this.getOdataNextLink().equals(groups.getOdataNextLink()) && this.getValue().equals(groups.getValue());
     }
 
     /**

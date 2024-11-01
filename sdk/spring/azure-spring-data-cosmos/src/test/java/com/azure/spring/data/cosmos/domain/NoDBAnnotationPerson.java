@@ -3,7 +3,6 @@
 
 package com.azure.spring.data.cosmos.domain;
 
-
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +16,8 @@ public class NoDBAnnotationPerson {
     public NoDBAnnotationPerson() {
     }
 
-    public NoDBAnnotationPerson(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses) {
+    public NoDBAnnotationPerson(String id, String firstName, String lastName, List<String> hobbies,
+        List<Address> shippingAddresses) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -88,20 +88,7 @@ public class NoDBAnnotationPerson {
 
     @Override
     public String toString() {
-        return "NoDBAnnotationPerson{"
-            + "id='"
-            + id
-            + '\''
-            + ", firstName='"
-            + firstName
-            + '\''
-            + ", lastName='"
-            + lastName
-            + '\''
-            + ", hobbies="
-            + hobbies
-            + ", shippingAddresses="
-            + shippingAddresses
-            + '}';
+        return "NoDBAnnotationPerson{" + "id='" + id + '\'' + ", firstName='" + firstName + '\'' + ", lastName='"
+            + lastName + '\'' + ", hobbies=" + hobbies + ", shippingAddresses=" + shippingAddresses + '}';
     }
 }

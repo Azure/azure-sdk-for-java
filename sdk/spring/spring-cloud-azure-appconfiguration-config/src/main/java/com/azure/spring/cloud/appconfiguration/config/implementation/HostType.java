@@ -11,27 +11,27 @@ public enum HostType {
      * Unidentified Host
      */
     UNIDENTIFIED(""),
-    
+
     /**
      * Host is Azure Web App
      */
     AZURE_WEB_APP("AzureWebApp"),
-    
+
     /**
      * Host is Azure Function
      */
     AZURE_FUNCTION("AzureFunction"),
-    
+
     /**
      * Host is Kubernetes
      */
     KUBERNETES("Kubernetes"),
-    
+
     /**
      * Host is Container App
      */
     CONTAINER_APP("ContainerApp"),
-    
+
     /**
      * Host is Service Fabric
      */

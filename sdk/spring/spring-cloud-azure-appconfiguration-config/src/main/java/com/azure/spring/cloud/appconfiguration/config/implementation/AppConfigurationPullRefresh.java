@@ -36,9 +36,9 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
     private final AppConfigurationReplicaClientFactory clientFactory;
 
     private final Duration refreshInterval;
-    
+
     private final ReplicaLookUp replicaLookUp;
-    
+
     private final AppConfigurationRefreshUtil refreshUtils;
 
     /**
@@ -99,8 +99,8 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh {
     private boolean refreshStores() {
         if (running.compareAndSet(false, true)) {
             try {
-                RefreshEventData eventData = refreshUtils.refreshStoresCheck(clientFactory,
-                    refreshInterval, defaultMinBackoff, replicaLookUp);
+                RefreshEventData eventData
+                    = refreshUtils.refreshStoresCheck(clientFactory, refreshInterval, defaultMinBackoff, replicaLookUp);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
                     return true;

@@ -22,12 +22,10 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 class EventGridPublisherClientBuilderFactoryTests extends
-    AzureHttpClientBuilderFactoryBaseTests<
-        EventGridPublisherClientBuilder,
-        AzureEventGridTestProperties,
-        EventGridPublisherClientBuilderFactoryTests.EventGridPublisherClientBuilderFactoryExt> {
+    AzureHttpClientBuilderFactoryBaseTests<EventGridPublisherClientBuilder, AzureEventGridTestProperties, EventGridPublisherClientBuilderFactoryTests.EventGridPublisherClientBuilderFactoryExt> {
 
-    private static final String ENDPOINT = "https://abc.somelocation.eventgrid.azure.net/api/eventseventgrid.azure.net/api/events";
+    private static final String ENDPOINT
+        = "https://abc.somelocation.eventgrid.azure.net/api/eventseventgrid.azure.net/api/events";
 
     @Override
     protected AzureEventGridTestProperties createMinimalServiceProperties() {
@@ -35,7 +33,8 @@ class EventGridPublisherClientBuilderFactoryTests extends
     }
 
     @Override
-    protected EventGridPublisherClientBuilderFactoryExt createClientBuilderFactoryWithMockBuilder(AzureEventGridTestProperties properties) {
+    protected EventGridPublisherClientBuilderFactoryExt
+        createClientBuilderFactoryWithMockBuilder(AzureEventGridTestProperties properties) {
         return new EventGridPublisherClientBuilderFactoryExt(properties);
     }
 
@@ -45,7 +44,8 @@ class EventGridPublisherClientBuilderFactoryTests extends
     }
 
     @Override
-    protected void verifyCredentialCalled(EventGridPublisherClientBuilder builder, Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
+    protected void verifyCredentialCalled(EventGridPublisherClientBuilder builder,
+        Class<? extends TokenCredential> tokenCredentialClass, VerificationMode mode) {
         verify(builder, mode).credential(any(tokenCredentialClass));
     }
 
@@ -55,7 +55,8 @@ class EventGridPublisherClientBuilderFactoryTests extends
     }
 
     @Override
-    protected void verifyRetryOptionsCalled(EventGridPublisherClientBuilder builder, AzureEventGridTestProperties properties, VerificationMode mode) {
+    protected void verifyRetryOptionsCalled(EventGridPublisherClientBuilder builder,
+        AzureEventGridTestProperties properties, VerificationMode mode) {
         verify(builder, mode).retryPolicy(any(RetryPolicy.class));
     }
 
@@ -65,7 +66,8 @@ class EventGridPublisherClientBuilderFactoryTests extends
         properties.setServiceVersion(EventGridServiceVersion.V2018_01_01);
         properties.setEndpoint(ENDPOINT);
 
-        final EventGridPublisherClientBuilderFactoryExt factoryExt = new EventGridPublisherClientBuilderFactoryExt(properties);
+        final EventGridPublisherClientBuilderFactoryExt factoryExt
+            = new EventGridPublisherClientBuilderFactoryExt(properties);
         final EventGridPublisherClientBuilder builder = factoryExt.build();
 
         verify(builder, times(1)).endpoint(ENDPOINT);
@@ -78,7 +80,8 @@ class EventGridPublisherClientBuilderFactoryTests extends
     }
 
     @Override
-    protected List<HttpPipelinePolicy> getHttpPipelinePolicies(EventGridPublisherClientBuilderFactoryExt builderFactory) {
+    protected List<HttpPipelinePolicy>
+        getHttpPipelinePolicies(EventGridPublisherClientBuilderFactoryExt builderFactory) {
         return builderFactory.getHttpPipelinePolicies();
     }
 

@@ -11,7 +11,8 @@ import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOption
 /**
  * A credential builder factory for the {@link ManagedIdentityCredentialBuilder}.
  */
-public class ManagedIdentityCredentialBuilderFactory extends AbstractAzureCredentialBuilderFactory<ManagedIdentityCredentialBuilder> {
+public class ManagedIdentityCredentialBuilderFactory
+    extends AbstractAzureCredentialBuilderFactory<ManagedIdentityCredentialBuilder> {
 
     /**
      * Create a {@link ManagedIdentityCredentialBuilderFactory} instance with {@link AzureProperties}.

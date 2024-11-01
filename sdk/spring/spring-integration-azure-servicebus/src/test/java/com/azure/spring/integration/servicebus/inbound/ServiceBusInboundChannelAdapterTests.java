@@ -54,14 +54,14 @@ class ServiceBusInboundChannelAdapterTests {
     protected String subscription = "group";
     protected String destination = "dest";
     private String[] payloads = { "payload1", "payload2" };
-    private List<Message<?>> messages = Arrays.stream(payloads)
-                                              .map(p -> MessageBuilder.withPayload(p).build())
-                                              .collect(Collectors.toList());
+    private List<Message<?>> messages
+        = Arrays.stream(payloads).map(p -> MessageBuilder.withPayload(p).build()).collect(Collectors.toList());
 
     @BeforeEach
     public void setUp() {
         this.processorFactory = mock(ServiceBusProcessorFactory.class);
-        when(processorFactory.createProcessor(eq(destination), eq(subscription), isA(ServiceBusContainerProperties.class))).thenReturn(mock(ServiceBusProcessorClient.class));
+        when(processorFactory.createProcessor(eq(destination), eq(subscription),
+            isA(ServiceBusContainerProperties.class))).thenReturn(mock(ServiceBusProcessorClient.class));
 
         this.containerProperties = new ServiceBusContainerProperties();
         containerProperties.setEntityName(destination);
@@ -103,7 +103,8 @@ class ServiceBusInboundChannelAdapterTests {
 
     @Test
     void setMessageConverter() {
-        AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> converter = mock(ServiceBusMessageConverter.class);
+        AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> converter
+            = mock(ServiceBusMessageConverter.class);
         this.adapter.setMessageConverter(converter);
         assertThat(this.adapter).extracting("recordListener").extracting("messageConverter").isEqualTo(converter);
     }
@@ -119,8 +120,8 @@ class ServiceBusInboundChannelAdapterTests {
 
     @Test
     void sendAndReceive() throws InterruptedException {
-        ServiceBusMessageListenerContainer listenerContainer =
-            new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
+        ServiceBusMessageListenerContainer listenerContainer
+            = new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
         ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
 
         DirectChannel channel = new DirectChannel();
@@ -144,16 +145,13 @@ class ServiceBusInboundChannelAdapterTests {
         MessageListener<?> messageListener = listenerContainer.getContainerProperties().getMessageListener();
         assertTrue(messageListener instanceof ServiceBusRecordMessageListener);
         List<String> payloads = Arrays.asList("a", "b", "c");
-        payloads.stream()
-                .map(payload -> {
-                    ServiceBusReceivedMessageContext mock = mock(ServiceBusReceivedMessageContext.class);
-                    ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
-                    when(message.getBody()).thenReturn(BinaryData.fromString(payload));
-                    when(mock.getMessage()).thenReturn(message);
-                    return mock;
-                })
-                .forEach(context -> ((ServiceBusRecordMessageListener) messageListener).onMessage(context));
-
+        payloads.stream().map(payload -> {
+            ServiceBusReceivedMessageContext mock = mock(ServiceBusReceivedMessageContext.class);
+            ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
+            when(message.getBody()).thenReturn(BinaryData.fromString(payload));
+            when(mock.getMessage()).thenReturn(message);
+            return mock;
+        }).forEach(context -> ((ServiceBusRecordMessageListener) messageListener).onMessage(context));
 
         assertTrue(latch.await(5L, TimeUnit.SECONDS), "Failed to receive message");
 
@@ -165,14 +163,14 @@ class ServiceBusInboundChannelAdapterTests {
     @Test
     void instrumentationErrorHandler() {
         DefaultInstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
-        ServiceBusMessageListenerContainer listenerContainer =
-            new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
+        ServiceBusMessageListenerContainer listenerContainer
+            = new ServiceBusMessageListenerContainer(this.processorFactory, this.containerProperties);
         ServiceBusInboundChannelAdapter channelAdapter = new ServiceBusInboundChannelAdapter(listenerContainer);
 
         String instrumentationId = CONSUMER + ":" + destination;
 
-        ServiceBusProcessorInstrumentation processorInstrumentation = new ServiceBusProcessorInstrumentation(
-            destination, CONSUMER, Duration.ofMinutes(1));
+        ServiceBusProcessorInstrumentation processorInstrumentation
+            = new ServiceBusProcessorInstrumentation(destination, CONSUMER, Duration.ofMinutes(1));
         instrumentationManager.addHealthInstrumentation(processorInstrumentation);
 
         processorInstrumentation.setStatus(Instrumentation.Status.UP);

@@ -32,8 +32,8 @@ public class AzureGlobalPropertiesAutoConfiguration {
     static class Registrar implements EnvironmentAware, ImportBeanDefinitionRegistrar {
         private Environment environment;
 
-        private static final String AZURE_AUTHENTICATION_TEMPLATE_CLASS_NAME =
-            "com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate";
+        private static final String AZURE_AUTHENTICATION_TEMPLATE_CLASS_NAME
+            = "com.azure.identity.extensions.implementation.template.AzureAuthenticationTemplate";
 
         @Override
         public void setEnvironment(Environment environment) {
@@ -42,12 +42,11 @@ public class AzureGlobalPropertiesAutoConfiguration {
 
         @Override
         public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata,
-                                            BeanDefinitionRegistry registry) {
+            BeanDefinitionRegistry registry) {
             if (!registry.containsBeanDefinition(AZURE_GLOBAL_PROPERTY_BEAN_NAME)) {
-                BeanDefinitionBuilder definitionBuilder = genericBeanDefinition(AzureGlobalProperties.class,
-                    () -> Binder.get(this.environment)
-                                .bindOrCreate(AzureGlobalProperties.PREFIX,
-                                    AzureGlobalProperties.class));
+                BeanDefinitionBuilder definitionBuilder
+                    = genericBeanDefinition(AzureGlobalProperties.class, () -> Binder.get(this.environment)
+                        .bindOrCreate(AzureGlobalProperties.PREFIX, AzureGlobalProperties.class));
                 if (ClassUtils.isPresent(AZURE_AUTHENTICATION_TEMPLATE_CLASS_NAME, null)) {
                     definitionBuilder.addDependsOn(SPRING_TOKEN_CREDENTIAL_PROVIDER_CONTEXT_BEAN_NAME);
                 }

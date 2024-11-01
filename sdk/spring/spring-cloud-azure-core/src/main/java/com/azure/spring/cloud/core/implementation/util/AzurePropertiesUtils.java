@@ -64,7 +64,8 @@ public final class AzurePropertiesUtils {
      * @param target The target object.
      * @param <T> The type of the target that extends AzureProperties.
      */
-    public static <T extends AzureProperties> void copyAzureCommonPropertiesIgnoreNull(AzureProperties source, T target) {
+    public static <T extends AzureProperties> void copyAzureCommonPropertiesIgnoreNull(AzureProperties source,
+        T target) {
         copyPropertiesIgnoreNull(source.getClient(), target.getClient());
         copyHttpClientProperties(source, target, true);
 
@@ -92,8 +93,7 @@ public final class AzurePropertiesUtils {
      * @param <T> The type of the merge result.
      */
     public static <T extends AzureProperties> void mergeAzureCommonProperties(AzureProperties defaultProperties,
-                                                                              AzureProperties properties,
-                                                                              T target) {
+        AzureProperties properties, T target) {
         copyAzureCommonProperties(defaultProperties, target);
         copyAzureCommonPropertiesIgnoreNull(properties, target);
     }
@@ -124,21 +124,24 @@ public final class AzurePropertiesUtils {
         BeanUtils.copyProperties(source, target, findNonNullPropertyNames(target));
     }
 
-    private static <T extends AzureProperties> void copyHttpClientProperties(AzureProperties source,
-                                                                             T target,
-                                                                             boolean ignoreNull) {
+    private static <T extends AzureProperties> void copyHttpClientProperties(AzureProperties source, T target,
+        boolean ignoreNull) {
         if (source.getClient() instanceof ClientOptionsProvider.HttpClientOptions
             && target.getClient() instanceof ClientOptionsProvider.HttpClientOptions) {
 
-            ClientOptionsProvider.HttpClientOptions sourceClient = (ClientOptionsProvider.HttpClientOptions) source.getClient();
-            ClientOptionsProvider.HttpClientOptions targetClient = (ClientOptionsProvider.HttpClientOptions) target.getClient();
+            ClientOptionsProvider.HttpClientOptions sourceClient
+                = (ClientOptionsProvider.HttpClientOptions) source.getClient();
+            ClientOptionsProvider.HttpClientOptions targetClient
+                = (ClientOptionsProvider.HttpClientOptions) target.getClient();
             if (ignoreNull) {
                 copyPropertiesIgnoreNull(sourceClient.getLogging(), targetClient.getLogging());
             } else {
                 BeanUtils.copyProperties(sourceClient.getLogging(), targetClient.getLogging());
             }
             targetClient.getLogging().getAllowedHeaderNames().addAll(sourceClient.getLogging().getAllowedHeaderNames());
-            targetClient.getLogging().getAllowedQueryParamNames().addAll(sourceClient.getLogging().getAllowedQueryParamNames());
+            targetClient.getLogging()
+                .getAllowedQueryParamNames()
+                .addAll(sourceClient.getLogging().getAllowedQueryParamNames());
             targetClient.getHeaders().addAll(sourceClient.getHeaders());
         }
     }
@@ -159,12 +162,12 @@ public final class AzurePropertiesUtils {
     }
 
     static String[] findNullPropertyNames(Object source) {
-        return findPropertyNames(source, (propertyType, srcValue) ->
-            Objects.isNull(srcValue) || isPrimitiveDefaultValue(propertyType, srcValue));
+        return findPropertyNames(source,
+            (propertyType, srcValue) -> Objects.isNull(srcValue) || isPrimitiveDefaultValue(propertyType, srcValue));
     }
 
     static String[] findNonNullPropertyNames(Object source) {
-        return findPropertyNames(source, (propertyType, srcValue) ->
-            Objects.nonNull(srcValue) && isPrimitiveNonDefaultValue(propertyType, srcValue));
+        return findPropertyNames(source, (propertyType, srcValue) -> Objects.nonNull(srcValue)
+            && isPrimitiveNonDefaultValue(propertyType, srcValue));
     }
 }

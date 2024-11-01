@@ -20,16 +20,13 @@ public class ClientCertificatePropertiesCondition extends SpringBootCondition {
 
     @Override
     public ConditionOutcome getMatchOutcome(ConditionContext context, AnnotatedTypeMetadata metadata) {
-        ConditionMessage.Builder message = ConditionMessage
-            .forCondition("Azure AD OAuth2 client JWK resolver Condition");
-        AzureGlobalProperties globalProperties =
-            Binder.get(context.getEnvironment())
-                  .bind("spring.cloud.azure", AzureGlobalProperties.class)
-                  .orElse(null);
-        AadAuthenticationProperties properties =
-            Binder.get(context.getEnvironment())
-                  .bind("spring.cloud.azure.active-directory", AadAuthenticationProperties.class)
-                  .orElse(null);
+        ConditionMessage.Builder message
+            = ConditionMessage.forCondition("Azure AD OAuth2 client JWK resolver Condition");
+        AzureGlobalProperties globalProperties
+            = Binder.get(context.getEnvironment()).bind("spring.cloud.azure", AzureGlobalProperties.class).orElse(null);
+        AadAuthenticationProperties properties = Binder.get(context.getEnvironment())
+            .bind("spring.cloud.azure.active-directory", AadAuthenticationProperties.class)
+            .orElse(null);
         if (globalProperties == null && properties == null) {
             return ConditionOutcome.noMatch(message.notAvailable("Azure AD authentication properties"));
         }
@@ -37,21 +34,20 @@ public class ClientCertificatePropertiesCondition extends SpringBootCondition {
         if (globalProperties != null
             && StringUtils.hasText(globalProperties.getCredential().getClientCertificatePath())
             && StringUtils.hasText(globalProperties.getCredential().getClientCertificatePassword())) {
-            return ConditionOutcome.match(
-                message.foundExactly("'client-certificate-path' and 'client-certificate-password' "
+            return ConditionOutcome
+                .match(message.foundExactly("'client-certificate-path' and 'client-certificate-password' "
                     + "under the prefix 'spring.cloud.azure.credential'."));
 
         }
 
         if (StringUtils.hasText(properties.getCredential().getClientCertificatePath())
             && StringUtils.hasText(properties.getCredential().getClientCertificatePassword())) {
-            return ConditionOutcome.match(
-                message.foundExactly("'client-certificate-path' and 'client-certificate-password' "
+            return ConditionOutcome
+                .match(message.foundExactly("'client-certificate-path' and 'client-certificate-password' "
                     + "under the prefix 'spring.cloud.azure.active-directory.credential'."));
 
         }
-        return ConditionOutcome.noMatch(
-            message.because("No attribute configuration found "
-                + "for 'client-certificate-path' and 'client-certificate-password'."));
+        return ConditionOutcome.noMatch(message.because(
+            "No attribute configuration found " + "for 'client-certificate-path' and 'client-certificate-password'."));
     }
 }

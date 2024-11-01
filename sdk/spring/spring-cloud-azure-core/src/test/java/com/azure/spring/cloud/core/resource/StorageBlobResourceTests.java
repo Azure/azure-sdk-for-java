@@ -40,13 +40,15 @@ class StorageBlobResourceTests {
         when(containerClient.getBlobClient("some-blob.txt")).thenReturn(blobClient);
         when(blobClient.getBlockBlobClient()).thenReturn(blockBlobClient);
 
-        StorageBlobResource storageBlobResource = new StorageBlobResource(this.blobServiceClient, "azure-blob://some-container/some-blob.txt");
+        StorageBlobResource storageBlobResource
+            = new StorageBlobResource(this.blobServiceClient, "azure-blob://some-container/some-blob.txt");
 
         BlobStorageException blobStorageException = mock(BlobStorageException.class);
         when(blobStorageException.getErrorCode()).thenReturn(BlobErrorCode.CONTAINER_NOT_FOUND);
         when(blockBlobClient.openInputStream()).thenThrow(blobStorageException);
 
-        Assertions.assertThrows(FileNotFoundException.class, () -> storageBlobResource.getInputStream(), "Blob or container not existed.");
+        Assertions.assertThrows(FileNotFoundException.class, () -> storageBlobResource.getInputStream(),
+            "Blob or container not existed.");
     }
 
     @Test
@@ -58,13 +60,15 @@ class StorageBlobResourceTests {
         when(containerClient.getBlobClient("some-blob.txt")).thenReturn(blobClient);
         when(blobClient.getBlockBlobClient()).thenReturn(blockBlobClient);
 
-        StorageBlobResource storageBlobResource = new StorageBlobResource(this.blobServiceClient, "azure-blob://some-container/some-blob.txt");
+        StorageBlobResource storageBlobResource
+            = new StorageBlobResource(this.blobServiceClient, "azure-blob://some-container/some-blob.txt");
 
         BlobStorageException blobStorageException = mock(BlobStorageException.class);
         when(blobStorageException.getErrorCode()).thenReturn(BlobErrorCode.CONTAINER_NOT_FOUND);
         when(blockBlobClient.openInputStream()).thenThrow(blobStorageException);
 
-        Assertions.assertThrows(FileNotFoundException.class, () -> storageBlobResource.getInputStream(), "Blob or container not existed.");
+        Assertions.assertThrows(FileNotFoundException.class, () -> storageBlobResource.getInputStream(),
+            "Blob or container not existed.");
     }
 
     @Test
@@ -76,7 +80,8 @@ class StorageBlobResourceTests {
         when(containerClient.getBlobClient("some-blob.txt")).thenReturn(blobClient);
         when(blobClient.getBlockBlobClient()).thenReturn(blockBlobClient);
 
-        StorageBlobResource storageBlobResource = new StorageBlobResource(this.blobServiceClient, "azure-blob://some-container/some-blob.txt");
+        StorageBlobResource storageBlobResource
+            = new StorageBlobResource(this.blobServiceClient, "azure-blob://some-container/some-blob.txt");
 
         BlobStorageException blobStorageException = mock(BlobStorageException.class);
         when(blobStorageException.getErrorCode()).thenReturn(BlobErrorCode.INVALID_INPUT);
@@ -94,7 +99,8 @@ class StorageBlobResourceTests {
         when(containerClient.getBlobClient("some-blob.txt")).thenReturn(blobClient);
         when(blobClient.getBlockBlobClient()).thenReturn(blockBlobClient);
 
-        StorageBlobResource storageBlobResource = new StorageBlobResource(this.blobServiceClient, "azure-blob://some-container/some-blob.txt", false);
+        StorageBlobResource storageBlobResource
+            = new StorageBlobResource(this.blobServiceClient, "azure-blob://some-container/some-blob.txt", false);
 
         BlobOutputStream blobOutputStream = mock(BlobOutputStream.class);
         when(blockBlobClient.getBlobOutputStream(any(BlockBlobOutputStreamOptions.class))).thenReturn(blobOutputStream);
@@ -103,7 +109,8 @@ class StorageBlobResourceTests {
         when(blobStorageException.getErrorCode()).thenReturn(BlobErrorCode.CONTAINER_NOT_FOUND);
         doThrow(blobStorageException).when(blobOutputStream).write(any());
 
-        Assertions.assertThrows(BlobStorageException.class, () -> storageBlobResource.getOutputStream().write("some-text".getBytes()));
+        Assertions.assertThrows(BlobStorageException.class,
+            () -> storageBlobResource.getOutputStream().write("some-text".getBytes()));
     }
 
 }

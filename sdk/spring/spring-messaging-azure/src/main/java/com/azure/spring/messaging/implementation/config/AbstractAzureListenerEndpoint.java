@@ -27,7 +27,8 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
     protected String concurrency;
 
     @Override
-    public void setupListenerContainer(MessageListenerContainer listenerContainer, AzureMessageConverter<?, ?> converter) {
+    public void setupListenerContainer(MessageListenerContainer listenerContainer,
+        AzureMessageConverter<?, ?> converter) {
         setupMessageListener(listenerContainer, converter);
     }
 
@@ -40,7 +41,7 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
      * @return AzureMessageHandler
      */
     protected abstract MessagingMessageListenerAdapter createMessageListener(MessageListenerContainer listenerContainer,
-                                                                             @Nullable AzureMessageConverter<?, ?> messageConverter);
+        @Nullable AzureMessageConverter<?, ?> messageConverter);
 
     /**
      * Return a description for this endpoint.
@@ -50,9 +51,15 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
     protected StringBuilder getEndpointDescription() {
         StringBuilder result = new StringBuilder();
         return result.append(getClass().getSimpleName())
-                     .append("[").append(this.id).append("] destination=").append(this.destination)
-                     .append("' | group='").append(this.group).append("'");
+            .append("[")
+            .append(this.id)
+            .append("] destination=")
+            .append(this.destination)
+            .append("' | group='")
+            .append(this.group)
+            .append("'");
     }
+
     @Override
     public String toString() {
         return getEndpointDescription().toString();
@@ -113,7 +120,8 @@ public abstract class AbstractAzureListenerEndpoint implements AzureListenerEndp
         return concurrency;
     }
 
-    private void setupMessageListener(MessageListenerContainer listenerContainer, AzureMessageConverter<?, ?> converter) {
+    private void setupMessageListener(MessageListenerContainer listenerContainer,
+        AzureMessageConverter<?, ?> converter) {
         MessagingMessageListenerAdapter messageListenerAdapter = createMessageListener(listenerContainer, converter);
         listenerContainer.setupMessageListener((MessageListener<?>) messageListenerAdapter);
     }

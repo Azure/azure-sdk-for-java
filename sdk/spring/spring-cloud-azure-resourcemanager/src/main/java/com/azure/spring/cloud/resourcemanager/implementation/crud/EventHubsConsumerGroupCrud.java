@@ -10,7 +10,6 @@ import com.azure.spring.cloud.core.properties.resource.AzureResourceMetadata;
 import reactor.util.function.Tuple3;
 import reactor.util.function.Tuples;
 
-
 /**
  * Resource manager for Azure Event Hubs consumer group.
  */
@@ -18,7 +17,7 @@ public class EventHubsConsumerGroupCrud
     extends AbstractResourceCrud<EventHubConsumerGroup, Tuple3<String, String, String>, Object> {
 
     public EventHubsConsumerGroupCrud(AzureResourceManager azureResourceManager,
-                                      AzureResourceMetadata resourceMetadata) {
+        AzureResourceMetadata resourceMetadata) {
         super(azureResourceManager, resourceMetadata);
     }
 
@@ -35,11 +34,10 @@ public class EventHubsConsumerGroupCrud
     @Override
     public EventHubConsumerGroup internalGet(Tuple3<String, String, String> consumerGroupCoordinate) {
         try {
-            return this.resourceManager
-                .eventHubs()
+            return this.resourceManager.eventHubs()
                 .consumerGroups()
                 .getByName(this.resourceMetadata.getResourceGroup(), consumerGroupCoordinate.getT1(),
-                           consumerGroupCoordinate.getT2(), consumerGroupCoordinate.getT3());
+                    consumerGroupCoordinate.getT2(), consumerGroupCoordinate.getT3());
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
@@ -51,13 +49,11 @@ public class EventHubsConsumerGroupCrud
 
     @Override
     public EventHubConsumerGroup internalCreate(Tuple3<String, String, String> consumerGroupCoordinate) {
-        return this.resourceManager
-            .eventHubs()
+        return this.resourceManager.eventHubs()
             .consumerGroups()
             .define(consumerGroupCoordinate.getT3())
             .withExistingEventHub(new EventHubsCrud(this.resourceManager, this.resourceMetadata)
-                                      .getOrCreate(Tuples.of(consumerGroupCoordinate.getT1(),
-                                                            consumerGroupCoordinate.getT2())))
+                .getOrCreate(Tuples.of(consumerGroupCoordinate.getT1(), consumerGroupCoordinate.getT2())))
             .create();
     }
 }

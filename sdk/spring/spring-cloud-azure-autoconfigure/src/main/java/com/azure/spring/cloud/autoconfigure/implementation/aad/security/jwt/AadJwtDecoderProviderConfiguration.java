@@ -23,8 +23,9 @@ import java.util.Map;
 final class AadJwtDecoderProviderConfiguration {
 
     private static final String OIDC_METADATA_PATH = "/.well-known/openid-configuration";
-    private static final ParameterizedTypeReference<Map<String, Object>> TYPE_REFERENCE =
-        new ParameterizedTypeReference<>() {};
+    private static final ParameterizedTypeReference<Map<String, Object>> TYPE_REFERENCE
+        = new ParameterizedTypeReference<>() {
+        };
 
     /**
      * Gets the configuration for OIDC issue location.
@@ -32,16 +33,16 @@ final class AadJwtDecoderProviderConfiguration {
      * @param oidcIssuerLocation the OIDC issuer location
      * @return the configuraton for OIDC issue location
      */
-    static Map<String, Object> getConfigurationForOidcIssuerLocation(RestOperations restOperations, String oidcIssuerLocation) {
+    static Map<String, Object> getConfigurationForOidcIssuerLocation(RestOperations restOperations,
+        String oidcIssuerLocation) {
         URI issuer = URI.create(oidcIssuerLocation);
         String errorMessage = "Unable to resolve the Configuration with the provided Issuer of " + oidcIssuerLocation;
         URI uri = UriComponentsBuilder.fromUriString(oidcIssuerLocation)
-                                      .replacePath(issuer.getPath() + OIDC_METADATA_PATH)
-                                      .build(Collections.emptyMap());
+            .replacePath(issuer.getPath() + OIDC_METADATA_PATH)
+            .build(Collections.emptyMap());
         try {
             RequestEntity<Void> request = RequestEntity.get(uri).build();
-            ResponseEntity<Map<String, Object>> response = restOperations.exchange(request,
-                TYPE_REFERENCE);
+            ResponseEntity<Map<String, Object>> response = restOperations.exchange(request, TYPE_REFERENCE);
             Map<String, Object> configuration = response.getBody();
             if (configuration == null) {
                 throw new IllegalArgumentException("The configuration must not be null");
@@ -62,6 +63,4 @@ final class AadJwtDecoderProviderConfiguration {
         throw new IllegalArgumentException(errorMessage);
     }
 
-
 }
-

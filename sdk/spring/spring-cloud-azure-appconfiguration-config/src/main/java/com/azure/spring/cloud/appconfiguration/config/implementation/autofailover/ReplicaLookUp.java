@@ -151,8 +151,7 @@ public class ReplicaLookUp {
         List<SRVRecord> replicas = new ArrayList<>();
         int i = 0;
         while (true) {
-            Attribute attribute = requestRecord(
-                REPLICA_PREFIX_ALT + i + REPLICA_PREFIX_TCP + origin.getTarget());
+            Attribute attribute = requestRecord(REPLICA_PREFIX_ALT + i + REPLICA_PREFIX_TCP + origin.getTarget());
 
             if (attribute == null) {
                 break;

@@ -29,8 +29,8 @@ public class EventHubsChannelProvisionerTests {
 
     @Test
     void provisionProducerDestination() {
-        ExtendedProducerProperties<EventHubsProducerProperties> extendedProperties =
-            new ExtendedProducerProperties<>(producerProperties);
+        ExtendedProducerProperties<EventHubsProducerProperties> extendedProperties
+            = new ExtendedProducerProperties<>(producerProperties);
 
         provisioner.provisionProducerDestination("test", extendedProperties);
         verify(provisioner, times(1)).validateOrCreateForProducer("test");
@@ -38,8 +38,8 @@ public class EventHubsChannelProvisionerTests {
 
     @Test
     void provisionConsumerDestination() {
-        ExtendedConsumerProperties<EventHubsConsumerProperties> extendedProperties =
-            new ExtendedConsumerProperties<>(consumerProperties);
+        ExtendedConsumerProperties<EventHubsConsumerProperties> extendedProperties
+            = new ExtendedConsumerProperties<>(consumerProperties);
 
         provisioner.provisionConsumerDestination("test", "group", extendedProperties);
         verify(provisioner, times(1)).validateOrCreateForConsumer("test", "group");

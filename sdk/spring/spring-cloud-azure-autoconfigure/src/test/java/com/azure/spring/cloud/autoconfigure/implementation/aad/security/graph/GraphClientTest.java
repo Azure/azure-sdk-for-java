@@ -35,9 +35,11 @@ class GraphClientTest {
         RestTemplate restTemplate = new RestTemplate();
         GraphClient graphClient = new GraphClient(new AadAuthenticationProperties(), restTemplate);
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
-        mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI)).andRespond(withSuccess(new ObjectMapper().writeValueAsString(memberships), MediaType.APPLICATION_JSON));
+        mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI))
+            .andRespond(withSuccess(new ObjectMapper().writeValueAsString(memberships), MediaType.APPLICATION_JSON));
 
-        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
+        Optional<Memberships> userMemberships
+            = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 
         assertTrue(userMemberships.isPresent());
     }
@@ -49,7 +51,8 @@ class GraphClientTest {
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
         mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI)).andRespond(withNoContent());
 
-        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
+        Optional<Memberships> userMemberships
+            = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 
         assertFalse(userMemberships.isPresent());
     }
@@ -59,9 +62,11 @@ class GraphClientTest {
         RestTemplate restTemplate = new RestTemplate();
         GraphClient graphClient = new GraphClient(new AadAuthenticationProperties(), restTemplate);
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
-        mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI)).andRespond(withStatus(HttpStatus.NOT_FOUND));
+        mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI))
+            .andRespond(withStatus(HttpStatus.NOT_FOUND));
 
-        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
+        Optional<Memberships> userMemberships
+            = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 
         assertFalse(userMemberships.isPresent());
     }
@@ -73,7 +78,8 @@ class GraphClientTest {
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(restTemplate);
         mockServer.expect(ExpectedCount.once(), requestTo(FAKE_GRAPH_MEMBERSHIP_URI)).andRespond(withServerError());
 
-        Optional<Memberships> userMemberships = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
+        Optional<Memberships> userMemberships
+            = graphClient.getUserMemberships(FAKE_ACCESS_TOKEN, FAKE_GRAPH_MEMBERSHIP_URI);
 
         assertFalse(userMemberships.isPresent());
     }

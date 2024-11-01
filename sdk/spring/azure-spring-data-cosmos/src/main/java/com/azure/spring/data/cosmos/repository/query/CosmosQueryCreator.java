@@ -19,6 +19,7 @@ import org.springframework.util.Assert;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 /**
  * TODO: String based query, based on how cosmosDB provides.
  *  StringCosmosQuery class,
@@ -38,7 +39,7 @@ public class CosmosQueryCreator extends AbstractQueryCreator<CosmosQuery, Criter
      * @param mappingContext must not be {@literal null}.
      */
     public CosmosQueryCreator(PartTree tree, CosmosParameterAccessor accessor,
-                              MappingContext<?, CosmosPersistentProperty> mappingContext) {
+        MappingContext<?, CosmosPersistentProperty> mappingContext) {
         super(tree, accessor);
 
         this.mappingContext = mappingContext;
@@ -48,8 +49,8 @@ public class CosmosQueryCreator extends AbstractQueryCreator<CosmosQuery, Criter
         String subject = mappingContext.getPersistentPropertyPath(part.getProperty()).toDotPath();
         final Class<?> domainType = part.getProperty().getOwningType().getType();
 
-        @SuppressWarnings("unchecked") final CosmosEntityInformation<?, ?> information =
-                new CosmosEntityInformation<>(domainType);
+        @SuppressWarnings("unchecked")
+        final CosmosEntityInformation<?, ?> information = new CosmosEntityInformation<>(domainType);
 
         if (information.getIdField().getName().equals(subject)) {
             subject = Constants.ID_PROPERTY_NAME;
@@ -65,8 +66,7 @@ public class CosmosQueryCreator extends AbstractQueryCreator<CosmosQuery, Criter
         final List<Object> values = new ArrayList<>();
 
         if (CriteriaType.isPartTypeUnSupported(type)) {
-            throw new UnsupportedOperationException("Unsupported keyword: "
-                + type);
+            throw new UnsupportedOperationException("Unsupported keyword: " + type);
         }
 
         for (int i = 0; i < part.getNumberOfArguments(); i++) {

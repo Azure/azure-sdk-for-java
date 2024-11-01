@@ -23,7 +23,8 @@ public class StringBasedCosmosQueryUnitTest {
     CosmosOperations cosmosOperations;
 
     @Test
-    public void testStripExtraWhitespaceFromString() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    public void testStripExtraWhitespaceFromString()
+        throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         String expectedResult = "select * from a where a.city = @city";
 
         StringBasedCosmosQuery sbcq = new StringBasedCosmosQuery(cosmosQueryMethod, cosmosOperations);

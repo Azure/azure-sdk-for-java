@@ -38,34 +38,30 @@ public class IndexPolicyCompareService {
 
     // Returns true if the lists are the same or the only difference is that the existing paths contain "/*"
     private static boolean hasSameIncludedPaths(List<IncludedPath> existingPaths, List<IncludedPath> newPaths) {
-        List<IncludedPath> existingListDiff = existingPaths.stream()
-            .filter(element -> !newPaths.contains(element))
-            .collect(Collectors.toList());
+        List<IncludedPath> existingListDiff
+            = existingPaths.stream().filter(element -> !newPaths.contains(element)).collect(Collectors.toList());
 
-        List<IncludedPath> newListDiff = newPaths.stream()
-            .filter(element -> !existingPaths.contains(element))
-            .collect(Collectors.toList());
+        List<IncludedPath> newListDiff
+            = newPaths.stream().filter(element -> !existingPaths.contains(element)).collect(Collectors.toList());
 
         return (existingListDiff.size() == 0 && newListDiff.size() == 0)
             || (newListDiff.size() == 0
-            && existingListDiff.size() == 1
-            && existingListDiff.get(0).getPath().equals("/*"));
+                && existingListDiff.size() == 1
+                && existingListDiff.get(0).getPath().equals("/*"));
     }
 
     // Returns true if the lists are the same or the only difference is that the existing paths contain the etag field
     private static boolean hasSameExcludedPaths(List<ExcludedPath> existingPaths, List<ExcludedPath> newPaths) {
-        List<ExcludedPath> existingListDiff = existingPaths.stream()
-            .filter(element -> !newPaths.contains(element))
-            .collect(Collectors.toList());
+        List<ExcludedPath> existingListDiff
+            = existingPaths.stream().filter(element -> !newPaths.contains(element)).collect(Collectors.toList());
 
-        List<ExcludedPath> newListDiff = newPaths.stream()
-            .filter(element -> !existingPaths.contains(element))
-            .collect(Collectors.toList());
+        List<ExcludedPath> newListDiff
+            = newPaths.stream().filter(element -> !existingPaths.contains(element)).collect(Collectors.toList());
 
         return (existingListDiff.size() == 0 && newListDiff.size() == 0)
             || (newListDiff.size() == 0
-            && existingListDiff.size() == 1
-            && existingListDiff.get(0).getPath().equals("/\"_etag\"/?"));
+                && existingListDiff.size() == 1
+                && existingListDiff.get(0).getPath().equals("/\"_etag\"/?"));
     }
 
 }

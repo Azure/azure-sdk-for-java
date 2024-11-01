@@ -47,16 +47,20 @@ class ServiceBusMessageConverterTests {
     private static final String SERVICE_BUS_REPLY_TO_SESSION_ID = "reply-to-session-id";
     private static final String SERVICE_BUS_PARTITION_KEY = "partition-key"; // partitionKey should same to sessionId
     private static final Duration SERVICE_BUS_TTL = Duration.ofSeconds(1234);
-    private static final OffsetDateTime SERVICE_BUS_SCHEDULED_ENQUEUE_TIME = OffsetDateTime.MIN.plusYears(2).toInstant().atOffset(ZoneOffset.UTC);
+    private static final OffsetDateTime SERVICE_BUS_SCHEDULED_ENQUEUE_TIME
+        = OffsetDateTime.MIN.plusYears(2).toInstant().atOffset(ZoneOffset.UTC);
     private static final String SERVICE_BUS_DEAD_LETTER_ERROR_DESCRIPTION = "description";
     private static final String SERVICE_BUS_DEAD_LETTER_REASON = "reason";
     private static final String SERVICE_BUS_DEAD_LETTER_SOURCE = "source";
     private static final long SERVICE_BUS_DELIVERY_COUNT = 1;
     private static final long SERVICE_BUS_ENQUEUED_SEQUENCE_NUMBER = 1;
-    private static final OffsetDateTime SERVICE_BUS_ENQUEUED_TIME = OffsetDateTime.MIN.plusYears(2).toInstant().atOffset(ZoneOffset.UTC);
-    private static final OffsetDateTime SERVICE_BUS_EXPIRES_AT = OffsetDateTime.MIN.plusYears(2).toInstant().atOffset(ZoneOffset.UTC);
+    private static final OffsetDateTime SERVICE_BUS_ENQUEUED_TIME
+        = OffsetDateTime.MIN.plusYears(2).toInstant().atOffset(ZoneOffset.UTC);
+    private static final OffsetDateTime SERVICE_BUS_EXPIRES_AT
+        = OffsetDateTime.MIN.plusYears(2).toInstant().atOffset(ZoneOffset.UTC);
     private static final String SERVICE_BUS_LOCK_TOKEN = "token";
-    private static final OffsetDateTime SERVICE_BUS_LOCKED_UNTIL = OffsetDateTime.MIN.plusYears(2).toInstant().atOffset(ZoneOffset.UTC);
+    private static final OffsetDateTime SERVICE_BUS_LOCKED_UNTIL
+        = OffsetDateTime.MIN.plusYears(2).toInstant().atOffset(ZoneOffset.UTC);
     private static final long SERVICE_BUS_SEQUENCE_NUMBER = 1;
     private static final ServiceBusMessageState SERVICE_BUS_STATE = ServiceBusMessageState.DEFERRED;
     private static final String SERVICE_BUS_SUBJECT = "subject";
@@ -77,6 +81,7 @@ class ServiceBusMessageConverterTests {
     public void close() throws Exception {
         closeable.close();
     }
+
     @Test
     void fromPayloadAsByte() {
         final Message<byte[]> message = MessageBuilder.withPayload(PAYLOAD.getBytes(StandardCharsets.UTF_8)).build();
@@ -134,15 +139,13 @@ class ServiceBusMessageConverterTests {
 
     @Test
     void testScheduledEnqueueTimeHeader() {
-        Message<String> springMessage = MessageBuilder.withPayload(PAYLOAD)
-            .build();
+        Message<String> springMessage = MessageBuilder.withPayload(PAYLOAD).build();
         ServiceBusMessage servicebusMessage = this.messageConverter.fromMessage(springMessage, ServiceBusMessage.class);
         assertNotNull(servicebusMessage);
         assertNull(servicebusMessage.getScheduledEnqueueTime());
 
-        springMessage = MessageBuilder.withPayload(PAYLOAD)
-            .setHeader(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, 5000)
-            .build();
+        springMessage
+            = MessageBuilder.withPayload(PAYLOAD).setHeader(AzureHeaders.SCHEDULED_ENQUEUE_MESSAGE, 5000).build();
         servicebusMessage = this.messageConverter.fromMessage(springMessage, ServiceBusMessage.class);
         assertNotNull(servicebusMessage);
         assertNotNull(servicebusMessage.getScheduledEnqueueTime());
@@ -180,16 +183,13 @@ class ServiceBusMessageConverterTests {
 
     private MessageBuilder<String> springMessageBuilder() {
         return MessageBuilder.withPayload(PAYLOAD)
-                             .setHeader(ServiceBusMessageHeaders.MESSAGE_ID, SERVICE_BUS_MESSAGE_ID)
-                             .setHeader(ServiceBusMessageHeaders.TIME_TO_LIVE, SERVICE_BUS_TTL)
-                             .setHeader(ServiceBusMessageHeaders.SESSION_ID, SERVICE_BUS_SESSION_ID)
-                             .setHeader(ServiceBusMessageHeaders.CORRELATION_ID,
-                                 SERVICE_BUS_CORRELATION_ID)
-                             .setHeader(ServiceBusMessageHeaders.TO, SERVICE_BUS_TO)
-                             .setHeader(ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME,
-                                 SERVICE_BUS_SCHEDULED_ENQUEUE_TIME)
-                             .setHeader(ServiceBusMessageHeaders.REPLY_TO_SESSION_ID,
-                                 SERVICE_BUS_REPLY_TO_SESSION_ID);
+            .setHeader(ServiceBusMessageHeaders.MESSAGE_ID, SERVICE_BUS_MESSAGE_ID)
+            .setHeader(ServiceBusMessageHeaders.TIME_TO_LIVE, SERVICE_BUS_TTL)
+            .setHeader(ServiceBusMessageHeaders.SESSION_ID, SERVICE_BUS_SESSION_ID)
+            .setHeader(ServiceBusMessageHeaders.CORRELATION_ID, SERVICE_BUS_CORRELATION_ID)
+            .setHeader(ServiceBusMessageHeaders.TO, SERVICE_BUS_TO)
+            .setHeader(ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME, SERVICE_BUS_SCHEDULED_ENQUEUE_TIME)
+            .setHeader(ServiceBusMessageHeaders.REPLY_TO_SESSION_ID, SERVICE_BUS_REPLY_TO_SESSION_ID);
     }
 
     private void assertServiceBusMessageHeaders(ServiceBusMessage serviceBusMessage) {
@@ -224,7 +224,8 @@ class ServiceBusMessageConverterTests {
     void testServiceBusHeaderAndSessionIdPriority() {
         // When session id set, the partition key equals to session id.
         // If they are different, the original partition key will be overwritten with session id.
-        Message<String> springMessage = springMessageBuilder().setHeader(ServiceBusMessageHeaders.SESSION_ID, SERVICE_BUS_SESSION_ID).build();
+        Message<String> springMessage
+            = springMessageBuilder().setHeader(ServiceBusMessageHeaders.SESSION_ID, SERVICE_BUS_SESSION_ID).build();
 
         ServiceBusMessage serviceBusMessage = this.messageConverter.fromMessage(springMessage, ServiceBusMessage.class);
         assertEquals(SERVICE_BUS_SESSION_ID, serviceBusMessage.getPartitionKey());
@@ -233,10 +234,8 @@ class ServiceBusMessageConverterTests {
     @Test
     void testAzureHeaderAndServiceBusHeaderAndSessionIdSetSameTime() {
         Message<String> springMessage = MessageBuilder.withPayload(PAYLOAD)
-            .setHeader(ServiceBusMessageHeaders.PARTITION_KEY,
-                SERVICE_BUS_PARTITION_KEY)
-            .setHeader(AzureHeaders.PARTITION_KEY,
-                AZURE_HEADER_PARTITION_KEY)
+            .setHeader(ServiceBusMessageHeaders.PARTITION_KEY, SERVICE_BUS_PARTITION_KEY)
+            .setHeader(AzureHeaders.PARTITION_KEY, AZURE_HEADER_PARTITION_KEY)
             .setHeader(ServiceBusMessageHeaders.SESSION_ID, SERVICE_BUS_SESSION_ID)
             .build();
 
@@ -247,10 +246,8 @@ class ServiceBusMessageConverterTests {
     @Test
     void testAzureHeaderAndServiceBusHeaderPriority() {
         Message<String> springMessage = MessageBuilder.withPayload(PAYLOAD)
-            .setHeader(ServiceBusMessageHeaders.PARTITION_KEY,
-                SERVICE_BUS_PARTITION_KEY)
-            .setHeader(AzureHeaders.PARTITION_KEY,
-                AZURE_HEADER_PARTITION_KEY)
+            .setHeader(ServiceBusMessageHeaders.PARTITION_KEY, SERVICE_BUS_PARTITION_KEY)
+            .setHeader(AzureHeaders.PARTITION_KEY, AZURE_HEADER_PARTITION_KEY)
             .build();
 
         ServiceBusMessage serviceBusMessage = this.messageConverter.fromMessage(springMessage, ServiceBusMessage.class);
@@ -278,7 +275,8 @@ class ServiceBusMessageConverterTests {
         when(this.receivedMessage.getTo()).thenReturn(SERVICE_BUS_TO);
         when(this.receivedMessage.getReplyToSessionId()).thenReturn(SERVICE_BUS_REPLY_TO_SESSION_ID);
         when(this.receivedMessage.getPartitionKey()).thenReturn(SERVICE_BUS_PARTITION_KEY);
-        when(this.receivedMessage.getDeadLetterErrorDescription()).thenReturn(SERVICE_BUS_DEAD_LETTER_ERROR_DESCRIPTION);
+        when(this.receivedMessage.getDeadLetterErrorDescription())
+            .thenReturn(SERVICE_BUS_DEAD_LETTER_ERROR_DESCRIPTION);
         when(this.receivedMessage.getDeadLetterReason()).thenReturn(SERVICE_BUS_DEAD_LETTER_REASON);
         when(this.receivedMessage.getDeadLetterSource()).thenReturn(SERVICE_BUS_DEAD_LETTER_SOURCE);
         when(this.receivedMessage.getDeliveryCount()).thenReturn(SERVICE_BUS_DELIVERY_COUNT);
@@ -301,22 +299,31 @@ class ServiceBusMessageConverterTests {
         assertNotNull(springMessage);
         assertEquals(SERVICE_BUS_MESSAGE_ID, springMessage.getHeaders().get(ServiceBusMessageHeaders.MESSAGE_ID));
         assertEquals(SERVICE_BUS_TTL, springMessage.getHeaders().get(ServiceBusMessageHeaders.TIME_TO_LIVE));
-        assertEquals(SERVICE_BUS_SCHEDULED_ENQUEUE_TIME, springMessage.getHeaders().get(ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME));
+        assertEquals(SERVICE_BUS_SCHEDULED_ENQUEUE_TIME,
+            springMessage.getHeaders().get(ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME));
         assertEquals(SERVICE_BUS_SESSION_ID, springMessage.getHeaders().get(ServiceBusMessageHeaders.SESSION_ID));
-        assertEquals(SERVICE_BUS_CORRELATION_ID, springMessage.getHeaders().get(ServiceBusMessageHeaders.CORRELATION_ID));
+        assertEquals(SERVICE_BUS_CORRELATION_ID,
+            springMessage.getHeaders().get(ServiceBusMessageHeaders.CORRELATION_ID));
         assertEquals(SERVICE_BUS_TO, springMessage.getHeaders().get(ServiceBusMessageHeaders.TO));
-        assertEquals(SERVICE_BUS_REPLY_TO_SESSION_ID, springMessage.getHeaders().get(ServiceBusMessageHeaders.REPLY_TO_SESSION_ID));
+        assertEquals(SERVICE_BUS_REPLY_TO_SESSION_ID,
+            springMessage.getHeaders().get(ServiceBusMessageHeaders.REPLY_TO_SESSION_ID));
         assertEquals(SERVICE_BUS_PARTITION_KEY, springMessage.getHeaders().get(ServiceBusMessageHeaders.PARTITION_KEY));
-        assertEquals(SERVICE_BUS_DEAD_LETTER_ERROR_DESCRIPTION, springMessage.getHeaders().get(ServiceBusMessageHeaders.DEAD_LETTER_ERROR_DESCRIPTION));
-        assertEquals(SERVICE_BUS_DEAD_LETTER_REASON, springMessage.getHeaders().get(ServiceBusMessageHeaders.DEAD_LETTER_REASON));
-        assertEquals(SERVICE_BUS_DEAD_LETTER_SOURCE, springMessage.getHeaders().get(ServiceBusMessageHeaders.DEAD_LETTER_SOURCE));
-        assertEquals(SERVICE_BUS_DELIVERY_COUNT, springMessage.getHeaders().get(ServiceBusMessageHeaders.DELIVERY_COUNT));
-        assertEquals(SERVICE_BUS_ENQUEUED_SEQUENCE_NUMBER, springMessage.getHeaders().get(ServiceBusMessageHeaders.ENQUEUED_SEQUENCE_NUMBER));
+        assertEquals(SERVICE_BUS_DEAD_LETTER_ERROR_DESCRIPTION,
+            springMessage.getHeaders().get(ServiceBusMessageHeaders.DEAD_LETTER_ERROR_DESCRIPTION));
+        assertEquals(SERVICE_BUS_DEAD_LETTER_REASON,
+            springMessage.getHeaders().get(ServiceBusMessageHeaders.DEAD_LETTER_REASON));
+        assertEquals(SERVICE_BUS_DEAD_LETTER_SOURCE,
+            springMessage.getHeaders().get(ServiceBusMessageHeaders.DEAD_LETTER_SOURCE));
+        assertEquals(SERVICE_BUS_DELIVERY_COUNT,
+            springMessage.getHeaders().get(ServiceBusMessageHeaders.DELIVERY_COUNT));
+        assertEquals(SERVICE_BUS_ENQUEUED_SEQUENCE_NUMBER,
+            springMessage.getHeaders().get(ServiceBusMessageHeaders.ENQUEUED_SEQUENCE_NUMBER));
         assertEquals(SERVICE_BUS_ENQUEUED_TIME, springMessage.getHeaders().get(ServiceBusMessageHeaders.ENQUEUED_TIME));
         assertEquals(SERVICE_BUS_EXPIRES_AT, springMessage.getHeaders().get(ServiceBusMessageHeaders.EXPIRES_AT));
         assertEquals(SERVICE_BUS_LOCK_TOKEN, springMessage.getHeaders().get(ServiceBusMessageHeaders.LOCK_TOKEN));
         assertEquals(SERVICE_BUS_LOCKED_UNTIL, springMessage.getHeaders().get(ServiceBusMessageHeaders.LOCKED_UNTIL));
-        assertEquals(SERVICE_BUS_SEQUENCE_NUMBER, springMessage.getHeaders().get(ServiceBusMessageHeaders.SEQUENCE_NUMBER));
+        assertEquals(SERVICE_BUS_SEQUENCE_NUMBER,
+            springMessage.getHeaders().get(ServiceBusMessageHeaders.SEQUENCE_NUMBER));
         assertEquals(SERVICE_BUS_STATE, springMessage.getHeaders().get(ServiceBusMessageHeaders.STATE));
         assertEquals(SERVICE_BUS_SUBJECT, springMessage.getHeaders().get(ServiceBusMessageHeaders.SUBJECT));
 

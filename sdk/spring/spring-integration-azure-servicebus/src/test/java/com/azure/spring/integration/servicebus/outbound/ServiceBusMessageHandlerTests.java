@@ -27,9 +27,7 @@ class ServiceBusMessageHandlerTests extends DefaultMessageHandlerTests<ServiceBu
         this.closeable = MockitoAnnotations.openMocks(this);
         this.sendOperation = mock(ServiceBusTemplate.class);
         when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class))).thenReturn(mono);
-        when(
-            this.sendOperation.sendAsync(eq(this.dynamicDestination), isA(Message.class)))
-            .thenReturn(mono);
+        when(this.sendOperation.sendAsync(eq(this.dynamicDestination), isA(Message.class))).thenReturn(mono);
         this.handler = new DefaultMessageHandler(this.destination, this.sendOperation);
     }
 

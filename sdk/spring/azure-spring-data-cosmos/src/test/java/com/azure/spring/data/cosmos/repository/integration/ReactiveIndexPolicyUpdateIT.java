@@ -35,7 +35,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ReactiveIndexPolicyUpdateIT {
 
     @ClassRule
-    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+    public static final ReactiveIntegrationTestCollectionManager collectionManager
+        = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
     ReactiveCosmosTemplate template;
@@ -43,17 +44,21 @@ public class ReactiveIndexPolicyUpdateIT {
     @Autowired
     ApplicationContext context;
 
-    CosmosEntityInformation<IndexPolicyEntity, String> defaultIndexPolicyEntityInformation = new CosmosEntityInformation<>(IndexPolicyEntity.class);
+    CosmosEntityInformation<IndexPolicyEntity, String> defaultIndexPolicyEntityInformation
+        = new CosmosEntityInformation<>(IndexPolicyEntity.class);
 
-    CosmosEntityInformation<ComplexIndexPolicyEntity, String> complexIndexPolicyEntityInformation = new CosmosEntityInformation<>(ComplexIndexPolicyEntity.class);
+    CosmosEntityInformation<ComplexIndexPolicyEntity, String> complexIndexPolicyEntityInformation
+        = new CosmosEntityInformation<>(ComplexIndexPolicyEntity.class);
 
-    CosmosEntityInformation<IndexPolicyOverwriteEntity, String> indexPolicyOverwriteEntityInformation = new CosmosEntityInformation<>(IndexPolicyOverwriteEntity.class);
+    CosmosEntityInformation<IndexPolicyOverwriteEntity, String> indexPolicyOverwriteEntityInformation
+        = new CosmosEntityInformation<>(IndexPolicyOverwriteEntity.class);
 
     CosmosEntityInformation<Address, String> addressEntityInformation = new CosmosEntityInformation<>(Address.class);
 
     @Before
     public void setup() {
-        collectionManager.ensureContainersCreatedAndEmpty(template, IndexPolicyEntity.class, ComplexIndexPolicyEntity.class, IndexPolicyOverwriteEntity.class);
+        collectionManager.ensureContainersCreatedAndEmpty(template, IndexPolicyEntity.class,
+            ComplexIndexPolicyEntity.class, IndexPolicyOverwriteEntity.class);
     }
 
     @Test
@@ -63,7 +68,8 @@ public class ReactiveIndexPolicyUpdateIT {
         new SimpleReactiveCosmosRepository<>(defaultIndexPolicyEntityInformation, template);
 
         // get original index policy
-       CosmosContainerProperties properties = template.getContainerProperties(defaultIndexPolicyEntityInformation.getContainerName()).block();
+        CosmosContainerProperties properties
+            = template.getContainerProperties(defaultIndexPolicyEntityInformation.getContainerName()).block();
 
         // assert
         assertThat(properties.getIndexingPolicy().getIncludedPaths().size()).isEqualTo(1);
@@ -79,7 +85,8 @@ public class ReactiveIndexPolicyUpdateIT {
         newIndexPolicy.setExcludedPaths(Collections.singletonList(new ExcludedPath("/*")));
 
         // apply new index policy
-        CosmosEntityInformation<IndexPolicyEntity, String> spyEntityInformation = Mockito.spy(defaultIndexPolicyEntityInformation);
+        CosmosEntityInformation<IndexPolicyEntity, String> spyEntityInformation
+            = Mockito.spy(defaultIndexPolicyEntityInformation);
         Mockito.doReturn(newIndexPolicy).when(spyEntityInformation).getIndexingPolicy();
         Mockito.doReturn(false).when(spyEntityInformation).isOverwriteIndexingPolicy();
         new SimpleReactiveCosmosRepository<>(spyEntityInformation, template);
@@ -103,7 +110,8 @@ public class ReactiveIndexPolicyUpdateIT {
         new SimpleReactiveCosmosRepository<>(indexPolicyOverwriteEntityInformation, template);
 
         // get original index policy
-        CosmosContainerProperties properties = template.getContainerProperties(indexPolicyOverwriteEntityInformation.getContainerName()).block();
+        CosmosContainerProperties properties
+            = template.getContainerProperties(indexPolicyOverwriteEntityInformation.getContainerName()).block();
 
         // assert
         assertThat(properties.getIndexingPolicy().getIncludedPaths().size()).isEqualTo(1);
@@ -117,7 +125,8 @@ public class ReactiveIndexPolicyUpdateIT {
         newIndexPolicy.setExcludedPaths(Collections.singletonList(new ExcludedPath("/\"_etag\"/?")));
 
         // apply new index policy
-        CosmosEntityInformation<IndexPolicyOverwriteEntity, String> spyEntityInformation = Mockito.spy(indexPolicyOverwriteEntityInformation);
+        CosmosEntityInformation<IndexPolicyOverwriteEntity, String> spyEntityInformation
+            = Mockito.spy(indexPolicyOverwriteEntityInformation);
         Mockito.doReturn(newIndexPolicy).when(spyEntityInformation).getIndexingPolicy();
         Mockito.doReturn(true).when(spyEntityInformation).isOverwriteIndexingPolicy();
         new SimpleReactiveCosmosRepository<>(spyEntityInformation, template);

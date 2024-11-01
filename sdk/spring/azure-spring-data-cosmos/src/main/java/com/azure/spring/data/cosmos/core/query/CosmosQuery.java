@@ -203,10 +203,11 @@ public class CosmosQuery {
             return true;
         }
 
-        return partitionKeys.stream().filter(this::isCrossPartitionQuery)
-                            .findFirst()
-                            .map(p -> true)
-                            .orElse(hasKeywordOr());
+        return partitionKeys.stream()
+            .filter(this::isCrossPartitionQuery)
+            .findFirst()
+            .map(p -> true)
+            .orElse(hasKeywordOr());
     }
 
     /**

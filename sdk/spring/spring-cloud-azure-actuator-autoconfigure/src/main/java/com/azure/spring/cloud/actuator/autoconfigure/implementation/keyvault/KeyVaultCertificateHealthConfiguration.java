@@ -25,7 +25,8 @@ import org.springframework.context.annotation.Configuration;
 public class KeyVaultCertificateHealthConfiguration {
 
     @Bean
-    KeyVaultCertificateHealthIndicator keyVaultCertificateHealthIndicator(CertificateAsyncClient certificateAsyncClient) {
+    KeyVaultCertificateHealthIndicator
+        keyVaultCertificateHealthIndicator(CertificateAsyncClient certificateAsyncClient) {
         return new KeyVaultCertificateHealthIndicator(certificateAsyncClient);
     }
 }

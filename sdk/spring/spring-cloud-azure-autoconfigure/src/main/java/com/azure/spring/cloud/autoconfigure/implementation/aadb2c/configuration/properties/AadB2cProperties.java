@@ -140,20 +140,20 @@ public class AadB2cProperties implements InitializingBean {
                 throw new AadB2cConfigurationException("'baseUri' must be configured.");
             }
             if (!userFlows.containsKey(loginFlow)) {
-                throw new AadB2cConfigurationException("Sign in user flow key '"
-                    + loginFlow + "' is not in 'user-flows' map.");
+                throw new AadB2cConfigurationException(
+                    "Sign in user flow key '" + loginFlow + "' is not in 'user-flows' map.");
             }
         }
     }
 
     private void validateCommonProperties() {
         boolean usingClientCredentialFlow = authorizationClients.values()
-                                                                .stream()
-                                                                .map(AuthorizationClientProperties::getAuthorizationGrantType)
-                                                                .anyMatch(CLIENT_CREDENTIALS::equals);
+            .stream()
+            .map(AuthorizationClientProperties::getAuthorizationGrantType)
+            .anyMatch(CLIENT_CREDENTIALS::equals);
         if (usingClientCredentialFlow && !StringUtils.hasText(profile.getTenantId())) {
-            throw new AadB2cConfigurationException("'tenant-id' must be configured "
-                + "when using client credential flow.");
+            throw new AadB2cConfigurationException(
+                "'tenant-id' must be configured " + "when using client credential flow.");
         }
     }
 
@@ -179,9 +179,9 @@ public class AadB2cProperties implements InitializingBean {
         return true;
     }
 
-
     public String getPasswordReset() {
-        return userFlows.entrySet().stream()
+        return userFlows.entrySet()
+            .stream()
             .filter(entry -> entry.getKey().equalsIgnoreCase(DEFAULT_KEY_PASSWORD_RESET))
             .findFirst()
             .map(Map.Entry::getValue)

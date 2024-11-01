@@ -80,10 +80,9 @@ public final class AadJwtClientAuthenticationParametersConverter<T extends Abstr
 
         JWK jwk = this.jwkResolver.apply(clientRegistration);
         if (jwk == null) {
-            OAuth2Error oauth2Error = new OAuth2Error(INVALID_KEY_ERROR_CODE,
-                "Failed to resolve JWK signing key for client registration '"
-                    + clientRegistration.getRegistrationId() + "'.",
-                null);
+            OAuth2Error oauth2Error
+                = new OAuth2Error(INVALID_KEY_ERROR_CODE, "Failed to resolve JWK signing key for client registration '"
+                    + clientRegistration.getRegistrationId() + "'.", null);
             throw new OAuth2AuthorizationException(oauth2Error);
         }
 

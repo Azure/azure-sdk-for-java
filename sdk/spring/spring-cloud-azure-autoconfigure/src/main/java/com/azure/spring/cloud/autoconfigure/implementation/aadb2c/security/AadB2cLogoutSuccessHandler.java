@@ -45,8 +45,8 @@ public class AadB2cLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
      * @param authentication the authentication
      */
     @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-                                Authentication authentication) throws IOException, ServletException {
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
+        throws IOException, ServletException {
         super.onLogoutSuccess(request, response, authentication);
     }
 }

@@ -45,15 +45,19 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         this(null, null);
     }
 
-    public KafkaOAuth2AuthenticateCallbackHandler(AzurePasswordlessProperties properties, AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver) {
+    public KafkaOAuth2AuthenticateCallbackHandler(AzurePasswordlessProperties properties,
+        AzureCredentialResolver<TokenCredential> externalTokenCredentialResolver) {
         this.properties = properties == null ? new AzurePasswordlessProperties() : properties;
-        this.externalTokenCredentialResolver = externalTokenCredentialResolver == null ? new AzureTokenCredentialResolver() : externalTokenCredentialResolver;
+        this.externalTokenCredentialResolver = externalTokenCredentialResolver == null
+            ? new AzureTokenCredentialResolver()
+            : externalTokenCredentialResolver;
     }
 
     @Override
     public void configure(Map<String, ?> configs, String mechanism, List<AppConfigurationEntry> jaasConfigEntries) {
         if (configs.get(SASL_JAAS_CONFIG) instanceof Password) {
-            AzureKafkaPropertiesUtils.copyJaasPropertyToAzureProperties(((Password) configs.get(SASL_JAAS_CONFIG)).value(), properties);
+            AzureKafkaPropertiesUtils
+                .copyJaasPropertyToAzureProperties(((Password) configs.get(SASL_JAAS_CONFIG)).value(), properties);
         }
         TokenRequestContext request = buildTokenRequestContext(configs);
         this.resolveToken = tokenCredential -> tokenCredential.getToken(request).map(AzureOAuthBearerToken::new);
@@ -74,12 +78,14 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     private URI buildEventHubsServerUri(Map<String, ?> configs) {
         List<String> bootstrapServers = (List<String>) configs.get(BOOTSTRAP_SERVERS_CONFIG);
         if (bootstrapServers == null || bootstrapServers.size() != 1) {
-            throw new IllegalArgumentException("Invalid bootstrap servers configured for Azure Event Hubs for Kafka! Must supply exactly 1 non-null bootstrap server configuration,"
-                + " with the format as {YOUR.EVENTHUBS.FQDN}:9093.");
+            throw new IllegalArgumentException(
+                "Invalid bootstrap servers configured for Azure Event Hubs for Kafka! Must supply exactly 1 non-null bootstrap server configuration,"
+                    + " with the format as {YOUR.EVENTHUBS.FQDN}:9093.");
         }
         String bootstrapServer = bootstrapServers.get(0);
         if (bootstrapServer == null || !bootstrapServer.endsWith(":9093")) {
-            throw new IllegalArgumentException("Invalid bootstrap server configured for Azure Event Hubs for Kafka! The format should be {YOUR.EVENTHUBS.FQDN}:9093.");
+            throw new IllegalArgumentException(
+                "Invalid bootstrap server configured for Azure Event Hubs for Kafka! The format should be {YOUR.EVENTHUBS.FQDN}:9093.");
         }
         URI uri = URI.create("https://" + bootstrapServer);
         return uri;
@@ -94,8 +100,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
         for (Callback callback : callbacks) {
             if (callback instanceof OAuthBearerTokenCallback) {
                 OAuthBearerTokenCallback oauthCallback = (OAuthBearerTokenCallback) callback;
-                this.resolveToken
-                    .apply(tokenCredentialResolver.resolve(properties))
+                this.resolveToken.apply(tokenCredentialResolver.resolve(properties))
                     .doOnNext(oauthCallback::token)
                     .doOnError(throwable -> oauthCallback.error("invalid_grant", throwable.getMessage(), null))
                     .block(ACCESS_TOKEN_REQUEST_BLOCK_TIME);

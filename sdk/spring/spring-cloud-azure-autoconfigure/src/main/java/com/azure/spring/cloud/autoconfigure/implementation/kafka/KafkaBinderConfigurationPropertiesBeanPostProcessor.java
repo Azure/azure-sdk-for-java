@@ -18,9 +18,11 @@ import static org.springframework.cloud.stream.binder.kafka.provisioning.KafkaTo
  * {@link BeanPostProcessor} to apply {@link AzureGlobalProperties} and Kafka OAuth properties
  * to {@link KafkaBinderConfigurationProperties}.
  */
-class KafkaBinderConfigurationPropertiesBeanPostProcessor extends AbstractKafkaPropertiesBeanPostProcessor<KafkaBinderConfigurationProperties> {
+class KafkaBinderConfigurationPropertiesBeanPostProcessor
+    extends AbstractKafkaPropertiesBeanPostProcessor<KafkaBinderConfigurationProperties> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
+    private static final Logger LOGGER
+        = LoggerFactory.getLogger(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
 
     KafkaBinderConfigurationPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
         super(azureGlobalProperties);
@@ -66,7 +68,8 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor extends AbstractKafkaP
         return LOGGER;
     }
 
-    private Map<String, Object> mergeNonAdminProperties(Map<String, Object> mergedPropertiesWithoutDefault, Map<String, String> defaultProperties) {
+    private Map<String, Object> mergeNonAdminProperties(Map<String, Object> mergedPropertiesWithoutDefault,
+        Map<String, String> defaultProperties) {
         Map<String, Object> merged = new HashMap<>(defaultProperties);
         merged.putAll(mergedPropertiesWithoutDefault);
         return merged;
@@ -77,7 +80,8 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor extends AbstractKafkaP
         Map<String, Object> adminProperties = properties.getKafkaProperties().buildAdminProperties();
         normalalizeBootPropsWithBinder(adminProperties, properties.getKafkaProperties(), properties);
         AzureKafkaPropertiesUtils.AzureKafkaPasswordlessPropertiesMapping.getPropertyKeys()
-            .forEach(k -> PROPERTY_MAPPER.from(properties.getConfiguration().get(k)).to(v -> adminProperties.put(k, v)));
+            .forEach(
+                k -> PROPERTY_MAPPER.from(properties.getConfiguration().get(k)).to(v -> adminProperties.put(k, v)));
         return adminProperties;
     }
 

@@ -23,34 +23,30 @@ class AzureServiceBusTemplateConfigurationTests {
 
     @Test
     void testAzureServiceBusDisabled() {
-        this.contextRunner
-            .withPropertyValues(AzureServiceBusProperties.PREFIX + ".enabled=false")
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration.class));
+        this.contextRunner.withPropertyValues(AzureServiceBusProperties.PREFIX + ".enabled=false")
+            .run(context -> assertThat(context)
+                .doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration.class));
     }
 
     @Test
     void withoutServiceBusTemplateShouldNotConfigure() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ServiceBusTemplate.class))
-            .withPropertyValues(
-                "spring.cloud.azure.servicebus.namespace=test-namespace"
-            )
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration.class));
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ServiceBusTemplate.class))
+            .withPropertyValues("spring.cloud.azure.servicebus.namespace=test-namespace")
+            .run(context -> assertThat(context)
+                .doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration.class));
     }
 
     @Test
     void withoutServiceBusConnectionShouldNotConfigure() {
-        this.contextRunner
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration.class));
+        this.contextRunner.run(context -> assertThat(context)
+            .doesNotHaveBean(AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration.class));
     }
 
     @Test
     void testMessageConverterProvided() {
-        this.contextRunner
-            .withBean(ServiceBusMessageConverter.class, () -> mock(ServiceBusMessageConverter.class))
-            .withPropertyValues(
-                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
-            )
+        this.contextRunner.withBean(ServiceBusMessageConverter.class, () -> mock(ServiceBusMessageConverter.class))
+            .withPropertyValues("spring.cloud.azure.servicebus.connection-string="
+                + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusMessageConverter.class);

@@ -42,7 +42,8 @@ public final class TestUtils {
         ConfigStore store = new ConfigStore();
         store.setConnectionString(connectionString);
         store.setEndpoint(storeEndpoint);
-        AppConfigurationKeyValueSelector selectedKeys = new AppConfigurationKeyValueSelector().setKeyFilter("/application/").setLabelFilter(label);
+        AppConfigurationKeyValueSelector selectedKeys
+            = new AppConfigurationKeyValueSelector().setKeyFilter("/application/").setLabelFilter(label);
         List<AppConfigurationKeyValueSelector> selects = new ArrayList<>();
         selects.add(selectedKeys);
         store.setSelects(selects);

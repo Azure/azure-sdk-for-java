@@ -7,7 +7,8 @@ import com.azure.messaging.eventgrid.EventGridServiceVersion;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
 import com.azure.spring.cloud.service.implementation.eventgrid.properties.EventGridPublisherClientProperties;
 
-public class AzureEventGridProperties extends AbstractAzureHttpConfigurationProperties implements EventGridPublisherClientProperties {
+public class AzureEventGridProperties extends AbstractAzureHttpConfigurationProperties
+    implements EventGridPublisherClientProperties {
 
     public static final String PREFIX = "spring.cloud.azure.eventgrid";
 
@@ -33,11 +34,8 @@ public class AzureEventGridProperties extends AbstractAzureHttpConfigurationProp
      */
     private EventSchema eventSchema = EventSchema.EVENT_GRID_EVENT;
 
-
     public enum EventSchema {
-        EVENT_GRID_EVENT,
-        CLOUD_EVENT,
-        CUSTOM_EVENT;
+        EVENT_GRID_EVENT, CLOUD_EVENT, CUSTOM_EVENT;
 
     }
 

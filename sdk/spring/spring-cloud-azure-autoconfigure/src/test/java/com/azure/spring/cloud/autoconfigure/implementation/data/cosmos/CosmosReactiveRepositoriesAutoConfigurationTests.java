@@ -49,16 +49,14 @@ public class CosmosReactiveRepositoriesAutoConfigurationTests {
 
     @Test
     void enabledDefaultRepositoryConfiguration() {
-        this.contextRunner
-            .withBean(ReactiveCosmosTemplate.class, () -> reactiveCosmosTemplate)
+        this.contextRunner.withBean(ReactiveCosmosTemplate.class, () -> reactiveCosmosTemplate)
             .withUserConfiguration(CosmosReactiveRepositoriesAutoConfigurationTests.TestConfiguration.class)
             .run((context) -> assertThat(context).hasSingleBean(ReactivePersonRepository.class));
     }
 
     @Test
     void disabledWhenReactiveCosmosRepositoryMissing() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(ReactiveCosmosRepository.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(ReactiveCosmosRepository.class))
             .withBean(ReactiveCosmosTemplate.class, () -> reactiveCosmosTemplate)
             .withUserConfiguration(CosmosReactiveRepositoriesAutoConfigurationTests.TestConfiguration.class)
             .run(context -> assertThat(context).doesNotHaveBean(ReactivePersonRepository.class));
@@ -73,7 +71,8 @@ public class CosmosReactiveRepositoriesAutoConfigurationTests {
             .run(context -> assertThat(context).doesNotHaveBean(ReactivePersonRepository.class));
 
         this.contextRunner
-            .withBean(ReactiveCosmosRepositoryConfigurationExtension.class, () -> mock(ReactiveCosmosRepositoryConfigurationExtension.class))
+            .withBean(ReactiveCosmosRepositoryConfigurationExtension.class,
+                () -> mock(ReactiveCosmosRepositoryConfigurationExtension.class))
             .withBean(ReactiveCosmosTemplate.class, () -> reactiveCosmosTemplate)
             .withUserConfiguration(CosmosReactiveRepositoriesAutoConfigurationTests.TestConfiguration.class)
             .run(context -> assertThat(context).doesNotHaveBean(ReactivePersonRepository.class));
@@ -88,8 +87,7 @@ public class CosmosReactiveRepositoriesAutoConfigurationTests {
 
     @Test
     void disabledWhenPropertiesDisabled() {
-        this.contextRunner
-            .withBean(ReactiveCosmosTemplate.class, () -> reactiveCosmosTemplate)
+        this.contextRunner.withBean(ReactiveCosmosTemplate.class, () -> reactiveCosmosTemplate)
             .withPropertyValues("spring.cloud.azure.cosmos.repositories.enabled=false")
             .withUserConfiguration(CosmosReactiveRepositoriesAutoConfigurationTests.TestConfiguration.class)
             .run(context -> assertThat(context).doesNotHaveBean(ReactivePersonRepository.class));
@@ -97,8 +95,7 @@ public class CosmosReactiveRepositoriesAutoConfigurationTests {
 
     @Test
     void autoConfigNotKickInIfManualConfigDidNotCreateRepositories() {
-        this.contextRunner
-            .withBean(ReactiveCosmosTemplate.class, () -> reactiveCosmosTemplate)
+        this.contextRunner.withBean(ReactiveCosmosTemplate.class, () -> reactiveCosmosTemplate)
             .withUserConfiguration(CosmosReactiveRepositoriesAutoConfigurationTests.InvalidCustomConfiguration.class)
             .run(context -> assertThat(context).doesNotHaveBean(ReactivePersonRepository.class));
     }

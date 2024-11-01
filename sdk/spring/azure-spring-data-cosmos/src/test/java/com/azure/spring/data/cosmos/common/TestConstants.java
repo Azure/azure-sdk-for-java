@@ -38,19 +38,11 @@ public final class TestConstants {
     public static final String INCLUDED_PATH_0 = "/*";
     public static final String INCLUDED_PATH_1 = "/cache/*";
     public static final String INCLUDED_PATH_2 = "/entities/*";
-    public static final String[] INCLUDED_PATHS = {
-        INCLUDED_PATH_0,
-        INCLUDED_PATH_1,
-        INCLUDED_PATH_2,
-    };
+    public static final String[] INCLUDED_PATHS = { INCLUDED_PATH_0, INCLUDED_PATH_1, INCLUDED_PATH_2, };
     public static final String EXCLUDED_PATH_0 = "/excluded/*";
     public static final String EXCLUDED_PATH_1 = "/props/*";
     public static final String EXCLUDED_PATH_2 = "/_etag/?";
-    public static final String[] EXCLUDED_PATHS = {
-        EXCLUDED_PATH_0,
-        EXCLUDED_PATH_1,
-        EXCLUDED_PATH_2,
-    };
+    public static final String[] EXCLUDED_PATHS = { EXCLUDED_PATH_0, EXCLUDED_PATH_1, EXCLUDED_PATH_2, };
 
     public static final String DEFAULT_UNIQUE_KEY_NAME = "/name";
     public static final String DEFAULT_UNIQUE_KEY_LEVEL = "/level";
@@ -154,17 +146,20 @@ public final class TestConstants {
     public static final LocalDate REGISTRATION_TIME_1W_AGO = LocalDate.now().minusDays(7);
     public static final LocalDate REGISTRATION_TIME_1M_AGO = LocalDate.now().minusMonths(1);
 
-    public static final Map<String, String> PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {{
-        put("United States of America", "123456789");
-        put("Côte d'Ivoire", "IC1234567");
-    }};
+    public static final Map<String, String> PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {
+        {
+            put("United States of America", "123456789");
+            put("Côte d'Ivoire", "IC1234567");
+        }
+    };
 
-    public static final Map<String, String> NEW_PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {{
-        put("United Kingdom", "123456789");
-        put("Germany", "IC1234567");
-    }};
+    public static final Map<String, String> NEW_PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {
+        {
+            put("United Kingdom", "123456789");
+            put("Germany", "IC1234567");
+        }
+    };
 
     private TestConstants() {
     }
 }
-

@@ -48,7 +48,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class AadJwtEncoder {
 
-    private static final String ENCODING_ERROR_MESSAGE_TEMPLATE = "An error occurred while attempting to encode the Jwt: %s";
+    private static final String ENCODING_ERROR_MESSAGE_TEMPLATE
+        = "An error occurred while attempting to encode the Jwt: %s";
 
     private static final JWSSignerFactory JWS_SIGNER_FACTORY = new DefaultJWSSignerFactory();
 
@@ -71,10 +72,8 @@ public final class AadJwtEncoder {
         Assert.notNull(jwtClaimsSet, "jwtClaimsSet cannot be null");
         JWK jwk = selectJwk(jwsHeader);
         String jws = serialize(jwsHeader, jwtClaimsSet, jwk);
-        return new Jwt(jws,
-            (Instant) jwtClaimsSet.get(JwtClaimNames.IAT),
-            (Instant) jwtClaimsSet.get(JwtClaimNames.EXP),
-            jwsHeader, jwtClaimsSet);
+        return new Jwt(jws, (Instant) jwtClaimsSet.get(JwtClaimNames.IAT),
+            (Instant) jwtClaimsSet.get(JwtClaimNames.EXP), jwsHeader, jwtClaimsSet);
     }
 
     private JWK selectJwk(Map<String, Object> jwsHeader) {
@@ -84,17 +83,17 @@ public final class AadJwtEncoder {
             jwks = this.jwkSource.get(jwkSelector, null);
         } catch (Exception ex) {
             throw new JwtException(String.format(ENCODING_ERROR_MESSAGE_TEMPLATE,
-                    "Failed to select a JWK signing key -> " + ex.getMessage()), ex);
+                "Failed to select a JWK signing key -> " + ex.getMessage()), ex);
         }
 
         if (jwks.size() > 1) {
             throw new JwtException(String.format(ENCODING_ERROR_MESSAGE_TEMPLATE,
-                    "Found multiple JWK signing keys for algorithm '" + jwsHeader.get("alg") + "'"));
+                "Found multiple JWK signing keys for algorithm '" + jwsHeader.get("alg") + "'"));
         }
 
         if (jwks.isEmpty()) {
             throw new JwtException(
-                    String.format(ENCODING_ERROR_MESSAGE_TEMPLATE, "Failed to select a JWK signing key"));
+                String.format(ENCODING_ERROR_MESSAGE_TEMPLATE, "Failed to select a JWK signing key"));
         }
 
         return jwks.get(0);
@@ -111,7 +110,7 @@ public final class AadJwtEncoder {
             signedJwt.sign(jwsSigner);
         } catch (JOSEException ex) {
             throw new JwtException(
-                    String.format(ENCODING_ERROR_MESSAGE_TEMPLATE, "Failed to sign the JWT -> " + ex.getMessage()), ex);
+                String.format(ENCODING_ERROR_MESSAGE_TEMPLATE, "Failed to sign the JWT -> " + ex.getMessage()), ex);
         }
         return signedJwt.serialize();
     }
@@ -136,12 +135,13 @@ public final class AadJwtEncoder {
         try {
             return JWS_SIGNER_FACTORY.createJWSSigner(jwk);
         } catch (JOSEException ex) {
-            throw new JwtException(String.format(ENCODING_ERROR_MESSAGE_TEMPLATE,
-                    "Failed to create a JWS Signer -> " + ex.getMessage()), ex);
+            throw new JwtException(
+                String.format(ENCODING_ERROR_MESSAGE_TEMPLATE, "Failed to create a JWS Signer -> " + ex.getMessage()),
+                ex);
         }
     }
 
-    @SuppressWarnings({"unchecked", "deprecation"})
+    @SuppressWarnings({ "unchecked", "deprecation" })
     private static JWSHeader convertHeader(Map<String, Object> headers) {
         JWSHeader.Builder builder = new JWSHeader.Builder(JWSAlgorithm.parse((String) headers.get("alg")));
         Map<String, Object> jwk = (Map<String, Object>) headers.get("jwk");
@@ -149,8 +149,8 @@ public final class AadJwtEncoder {
             try {
                 builder.jwk(JWK.parse(jwk));
             } catch (Exception ex) {
-                throw new JwtException(String.format(ENCODING_ERROR_MESSAGE_TEMPLATE,
-                        "Unable to convert 'jku' JOSE header"), ex);
+                throw new JwtException(
+                    String.format(ENCODING_ERROR_MESSAGE_TEMPLATE, "Unable to convert 'jku' JOSE header"), ex);
             }
         }
         String keyId = (String) headers.get("kid");

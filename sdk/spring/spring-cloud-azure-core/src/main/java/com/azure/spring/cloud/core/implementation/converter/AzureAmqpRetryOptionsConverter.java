@@ -14,11 +14,11 @@ import org.springframework.core.convert.converter.Converter;
 /**
  * Converts a {@link RetryOptionsProvider.AmqpRetryOptions} to a {@link AmqpRetryOptions}.
  */
-public final class AzureAmqpRetryOptionsConverter implements Converter<RetryOptionsProvider.AmqpRetryOptions, AmqpRetryOptions> {
+public final class AzureAmqpRetryOptionsConverter
+    implements Converter<RetryOptionsProvider.AmqpRetryOptions, AmqpRetryOptions> {
 
     public static final AzureAmqpRetryOptionsConverter AMQP_RETRY_CONVERTER = new AzureAmqpRetryOptionsConverter();
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureAmqpRetryOptionsConverter.class);
-
 
     private AzureAmqpRetryOptionsConverter() {
 

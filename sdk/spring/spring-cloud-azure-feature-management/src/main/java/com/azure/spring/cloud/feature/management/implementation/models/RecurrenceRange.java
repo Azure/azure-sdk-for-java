@@ -45,8 +45,8 @@ public class RecurrenceRange {
         try {
             this.type = RecurrenceRangeType.valueOf(type.toUpperCase());
         } catch (final IllegalArgumentException e) {
-            throw new IllegalArgumentException(
-                String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Range.Type", Arrays.toString(RecurrenceRangeType.values())));
+            throw new IllegalArgumentException(String.format(RecurrenceConstants.INVALID_VALUE, "Recurrence.Range.Type",
+                Arrays.toString(RecurrenceRangeType.values())));
         }
     }
 

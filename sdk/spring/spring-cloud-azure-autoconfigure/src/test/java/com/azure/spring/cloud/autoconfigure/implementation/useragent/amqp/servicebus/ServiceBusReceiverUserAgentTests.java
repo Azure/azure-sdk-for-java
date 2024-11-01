@@ -24,8 +24,7 @@ class ServiceBusReceiverUserAgentTests {
         userAgentTest(
             "spring.cloud.azure.servicebus.connection-string=Endpoint=sb://sample.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key",
             "spring.cloud.azure.servicebus.consumer.entity-name=sample",
-            "spring.cloud.azure.servicebus.consumer.entity-type=QUEUE"
-        );
+            "spring.cloud.azure.servicebus.consumer.entity-type=QUEUE");
     }
 
     @Test
@@ -34,22 +33,24 @@ class ServiceBusReceiverUserAgentTests {
             "spring.cloud.azure.servicebus.connection-string=Endpoint=sb://sample.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=key",
             "spring.cloud.azure.servicebus.consumer.entity-name=sample",
             "spring.cloud.azure.servicebus.consumer.entity-type=QUEUE",
-            "spring.cloud.azure.servicebus.consumer.namespace=sample"
-        );
+            "spring.cloud.azure.servicebus.consumer.namespace=sample");
     }
 
     void userAgentTest(String... propertyValues) {
-        new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
+        new ApplicationContextRunner().withConfiguration(AutoConfigurations.of(AzureServiceBusAutoConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withPropertyValues(propertyValues)
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusReceiverClientBuilderFactory.class);
                 assertThat(context).hasSingleBean(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
 
-                ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder = context.getBean(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
-                ServiceBusClientBuilder builder = (ServiceBusClientBuilder) getField(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class, "this$0", receiverClientBuilder);
-                ClientOptions options = (ClientOptions) getField(ServiceBusClientBuilder.class, "clientOptions", builder);
+                ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverClientBuilder
+                    = context.getBean(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class);
+                ServiceBusClientBuilder builder
+                    = (ServiceBusClientBuilder) getField(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder.class,
+                        "this$0", receiverClientBuilder);
+                ClientOptions options
+                    = (ClientOptions) getField(ServiceBusClientBuilder.class, "clientOptions", builder);
                 Assertions.assertNotNull(options);
                 Assertions.assertEquals(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS, options.getApplicationId());
 

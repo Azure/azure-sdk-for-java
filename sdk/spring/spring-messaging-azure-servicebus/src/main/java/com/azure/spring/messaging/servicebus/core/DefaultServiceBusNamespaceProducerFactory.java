@@ -45,9 +45,12 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
     private final SenderPropertiesParentMerger parentMerger = new SenderPropertiesParentMerger();
 
-    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers = new ArrayList<>();
-    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> customizers = new ArrayList<>();
-    private final Map<String, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>>> dedicatedCustomizers = new HashMap<>();
+    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers
+        = new ArrayList<>();
+    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> customizers
+        = new ArrayList<>();
+    private final Map<String, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>>> dedicatedCustomizers
+        = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
     private TokenCredential defaultCredential = null;
 
@@ -65,7 +68,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      * @param supplier the {@link PropertiesSupplier} to supply {@link ProducerProperties} for each queue/topic entity.
      */
     public DefaultServiceBusNamespaceProducerFactory(NamespaceProperties namespaceProperties,
-                                                     PropertiesSupplier<String, ProducerProperties> supplier) {
+        PropertiesSupplier<String, ProducerProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
     }
@@ -78,7 +81,8 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     @Override
     public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType) {
         ProducerProperties producerProperties = this.propertiesSupplier.getProperties(name) != null
-            ? this.propertiesSupplier.getProperties(name) : new ProducerProperties();
+            ? this.propertiesSupplier.getProperties(name)
+            : new ProducerProperties();
         if (entityType != null) {
             producerProperties.setEntityType(entityType);
         }
@@ -110,7 +114,8 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
             ProducerProperties producerProperties = parentMerger.merge(properties, this.namespaceProperties);
             producerProperties.setEntityName(entityName);
 
-            ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties, this.serviceBusClientBuilderCustomizers);
+            ServiceBusSenderClientBuilderFactory factory
+                = new ServiceBusSenderClientBuilderFactory(producerProperties, this.serviceBusClientBuilderCustomizers);
 
             factory.setDefaultTokenCredential(this.defaultCredential);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
@@ -149,7 +154,8 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      *
      * @param customizer the provided builder customizer.
      */
-    public void addServiceBusClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
+    public void
+        addServiceBusClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.class.getName());
         } else {
@@ -162,9 +168,11 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      *
      * @param customizer the provided customizer.
      */
-    public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
+    public void addBuilderCustomizer(
+        AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class.getName());
+            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER,
+                ServiceBusClientBuilder.ServiceBusSenderClientBuilder.class.getName());
             return;
         }
         this.customizers.add(customizer);
@@ -178,20 +186,18 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      * @param customizer the provided customizer.
      */
     public void addBuilderCustomizer(String entityName,
-                                     AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
+        AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug("The provided customizer is null, will ignore it.");
             return;
         }
-        this.dedicatedCustomizers
-            .computeIfAbsent(entityName, key -> new ArrayList<>())
-            .add(customizer);
+        this.dedicatedCustomizers.computeIfAbsent(entityName, key -> new ArrayList<>()).add(customizer);
     }
 
     private void customizeBuilder(String entityName, ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder) {
         this.customizers.forEach(customizer -> customizer.customize(builder));
         this.dedicatedCustomizers.getOrDefault(entityName, new ArrayList<>())
-                                 .forEach(customizer -> customizer.customize(builder));
+            .forEach(customizer -> customizer.customize(builder));
     }
 
 }

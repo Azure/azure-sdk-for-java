@@ -39,10 +39,13 @@ import java.util.Set;
  * @see AzureListenerEndpointRegistrar
  * @see AzureListenerEndpointRegistry
  */
-public class EventHubsListenerAnnotationBeanPostProcessor extends AzureListenerAnnotationBeanPostProcessorAdapter<EventHubsListener> {
+public class EventHubsListenerAnnotationBeanPostProcessor
+    extends AzureListenerAnnotationBeanPostProcessorAdapter<EventHubsListener> {
 
-    private static final String DEFAULT_EVENT_HUBS_LISTENER_ANNOTATION_BPP_BEAN_NAME = "eventHubsListenerAnnotationBeanPostProcessor";
-    private static final String DEFAULT_EVENT_HUBS_LISTENER_CONTAINER_FACTORY_BEAN_NAME = "azureEventHubsListenerContainerFactory";
+    private static final String DEFAULT_EVENT_HUBS_LISTENER_ANNOTATION_BPP_BEAN_NAME
+        = "eventHubsListenerAnnotationBeanPostProcessor";
+    private static final String DEFAULT_EVENT_HUBS_LISTENER_CONTAINER_FACTORY_BEAN_NAME
+        = "azureEventHubsListenerContainerFactory";
 
     /**
      * Construct an {@link EventHubsListenerAnnotationBeanPostProcessor} instance with default configuration.
@@ -59,9 +62,7 @@ public class EventHubsListenerAnnotationBeanPostProcessor extends AzureListenerA
 
     @Override
     protected AzureListenerEndpoint createAndConfigureMethodListenerEndpoint(EventHubsListener listenerAnnotation,
-                                                                             Object bean, Method method,
-                                                                             BeanFactory beanFactory,
-                                                                             MessageHandlerMethodFactory messageHandlerMethodFactory) {
+        Object bean, Method method, BeanFactory beanFactory, MessageHandlerMethodFactory messageHandlerMethodFactory) {
         MethodEventHubsListenerEndpoint endpoint = new MethodEventHubsListenerEndpoint();
 
         endpoint.setBean(bean);

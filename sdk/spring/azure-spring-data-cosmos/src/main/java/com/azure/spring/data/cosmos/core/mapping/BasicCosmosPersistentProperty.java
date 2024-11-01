@@ -13,7 +13,7 @@ import org.springframework.data.mapping.model.SimpleTypeHolder;
  * Special {@link CosmosPersistentProperty} that takes annotations at a property into account.
  */
 public class BasicCosmosPersistentProperty extends AnnotationBasedPersistentProperty<CosmosPersistentProperty>
-        implements CosmosPersistentProperty {
+    implements CosmosPersistentProperty {
 
     /**
      * Creates a new {@link BasicCosmosPersistentProperty}.
@@ -23,7 +23,7 @@ public class BasicCosmosPersistentProperty extends AnnotationBasedPersistentProp
      * @param simpleTypeHolder must not be {@literal null}.
      */
     public BasicCosmosPersistentProperty(Property property, CosmosPersistentEntity<?> owner,
-                                         SimpleTypeHolder simpleTypeHolder) {
+        SimpleTypeHolder simpleTypeHolder) {
         super(property, owner, simpleTypeHolder);
     }
 

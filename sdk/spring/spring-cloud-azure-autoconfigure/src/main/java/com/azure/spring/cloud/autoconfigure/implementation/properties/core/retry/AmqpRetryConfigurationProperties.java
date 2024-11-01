@@ -10,7 +10,8 @@ import java.time.Duration;
 /**
  * Amqp based client related retry properties.
  */
-public class AmqpRetryConfigurationProperties extends RetryConfigurationProperties implements RetryOptionsProvider.AmqpRetryOptions {
+public class AmqpRetryConfigurationProperties extends RetryConfigurationProperties
+    implements RetryOptionsProvider.AmqpRetryOptions {
 
     /**
      * Amount of time(Duration) to wait until a timeout.

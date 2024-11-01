@@ -64,8 +64,9 @@ class UserPrincipalMicrosoftGraphTests {
     static {
         try {
             final ObjectMapper objectMapper = new ObjectMapper();
-            final Map<String, Object> json = objectMapper.readValue(UserPrincipalMicrosoftGraphTests.class
-                    .getClassLoader().getResourceAsStream("aad/microsoft-graph-user-groups.json"),
+            final Map<String, Object> json = objectMapper.readValue(
+                UserPrincipalMicrosoftGraphTests.class.getClassLoader()
+                    .getResourceAsStream("aad/microsoft-graph-user-groups.json"),
                 new TypeReference<HashMap<String, Object>>() {
                 });
             userGroupsJson = objectMapper.writeValueAsString(json);
@@ -81,7 +82,9 @@ class UserPrincipalMicrosoftGraphTests {
         accessToken = TestConstants.BEARER_TOKEN;
         properties = new AadAuthenticationProperties();
         properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint(MOCK_MICROSOFT_GRAPH_ENDPOINT);
-        endpoints = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
+        endpoints
+            = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
+                properties.getProfile().getTenantId());
         clientId = "client";
         clientSecret = "fakeCredentialPlaceholder";
     }
@@ -91,21 +94,19 @@ class UserPrincipalMicrosoftGraphTests {
         properties.getUserGroup().setAllowedGroupNames(Arrays.asList("group1", "group2", "group3"));
 
         RestTemplate template = new RestTemplate();
-        AadGraphClient client = new AadGraphClient(clientId, clientSecret, properties, endpoints, new RestTemplateBuilder());
+        AadGraphClient client
+            = new AadGraphClient(clientId, clientSecret, properties, endpoints, new RestTemplateBuilder());
         client.setRestOperations(template);
 
         MockRestServiceServer mockServer = MockRestServiceServer.createServer(template);
-        mockServer
-                .expect(ExpectedCount.once(), requestTo(new URI(MOCK_MICROSOFT_GRAPH_ENDPOINT + "v1.0/me/memberOf")))
-                .andExpect(method(HttpMethod.GET))
-                .andExpect(header(ACCEPT, APPLICATION_JSON_VALUE))
-                .andExpect(header(AUTHORIZATION, String.format("Bearer %s", accessToken)))
-                .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(userGroupsJson));
+        mockServer.expect(ExpectedCount.once(), requestTo(new URI(MOCK_MICROSOFT_GRAPH_ENDPOINT + "v1.0/me/memberOf")))
+            .andExpect(method(HttpMethod.GET))
+            .andExpect(header(ACCEPT, APPLICATION_JSON_VALUE))
+            .andExpect(header(AUTHORIZATION, String.format("Bearer %s", accessToken)))
+            .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(userGroupsJson));
 
         Set<String> groups = client.getGroups(TestConstants.BEARER_TOKEN);
-        assertThat(groups)
-            .isNotEmpty()
-            .containsExactlyInAnyOrder("group1", "group2", "group3");
+        assertThat(groups).isNotEmpty().containsExactlyInAnyOrder("group1", "group2", "group3");
 
         mockServer.verify();
     }
@@ -115,9 +116,9 @@ class UserPrincipalMicrosoftGraphTests {
         final File tmpOutputFile = File.createTempFile("test-user-principal", "txt");
 
         try (FileOutputStream fileOutputStream = new FileOutputStream(tmpOutputFile);
-             ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-             FileInputStream fileInputStream = new FileInputStream(tmpOutputFile);
-             ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
+            ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+            FileInputStream fileInputStream = new FileInputStream(tmpOutputFile);
+            ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream)) {
 
             final JWSObject jwsObject = JWSObject.parse(TestConstants.JWT_TOKEN);
             final JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder().subject("fake-subject").build();

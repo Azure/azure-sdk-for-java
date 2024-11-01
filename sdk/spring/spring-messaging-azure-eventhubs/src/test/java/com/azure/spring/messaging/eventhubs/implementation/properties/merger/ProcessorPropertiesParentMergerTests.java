@@ -50,7 +50,6 @@ class ProcessorPropertiesParentMergerTests {
         child.getProfile().setCloudType(AZURE_CHINA);
         child.setDomainName("child-domain");
 
-
         NamespaceProperties parent = new NamespaceProperties();
         parent.setEventHubName("parent");
         parent.setConnectionString("parent-connection-str");

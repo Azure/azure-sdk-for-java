@@ -75,7 +75,8 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
     void customizerShouldBeCalledOnEachCreatedClient() {
         AtomicInteger clientBuilderCalledTimes = new AtomicInteger();
         AtomicInteger senderClientBuilderCalledTimes = new AtomicInteger();
-        DefaultServiceBusNamespaceProducerFactory factory = (DefaultServiceBusNamespaceProducerFactory) this.producerFactory;
+        DefaultServiceBusNamespaceProducerFactory factory
+            = (DefaultServiceBusNamespaceProducerFactory) this.producerFactory;
 
         factory.addServiceBusClientBuilderCustomizer(builder -> clientBuilderCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer(builder -> senderClientBuilderCalledTimes.getAndIncrement());
@@ -94,7 +95,8 @@ public class DefaultServiceBusNamespaceProducerFactoryTests {
         AtomicInteger clientBuilderCalledTimes = new AtomicInteger();
         AtomicInteger customizer1CalledTimes = new AtomicInteger();
         AtomicInteger customizer2CalledTimes = new AtomicInteger();
-        DefaultServiceBusNamespaceProducerFactory factory = (DefaultServiceBusNamespaceProducerFactory) this.producerFactory;
+        DefaultServiceBusNamespaceProducerFactory factory
+            = (DefaultServiceBusNamespaceProducerFactory) this.producerFactory;
 
         factory.addServiceBusClientBuilderCustomizer(builder -> clientBuilderCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer("queue-1", builder -> customizer1CalledTimes.getAndIncrement());

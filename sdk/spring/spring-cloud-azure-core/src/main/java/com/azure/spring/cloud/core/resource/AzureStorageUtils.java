@@ -20,12 +20,10 @@ final class AzureStorageUtils {
      */
     public static final String PATH_DELIMITER = "/";
 
-
     /**
      * Prefix stands for storage protocol.
      */
     private static final String STORAGE_PROTOCOL_PREFIX = "azure-%s://";
-
 
     /**
      * Whether the given combination of location and storageType represents a valid Azure storage resource.
@@ -73,8 +71,7 @@ final class AzureStorageUtils {
     static String getContainerName(String location, StorageType storageType) {
         assertIsAzureStorageLocation(location, storageType);
         int containerEndIndex = assertContainerValid(location, storageType);
-        return location.substring(getStorageProtocolPrefix(storageType).length(),
-            containerEndIndex);
+        return location.substring(getStorageProtocolPrefix(storageType).length(), containerEndIndex);
     }
 
     /**
@@ -93,7 +90,6 @@ final class AzureStorageUtils {
         return location.substring(++containerEndIndex);
     }
 
-
     /**
      * Assert the given combination of location and storageType represents a valid Azure storage resource.
      *
@@ -102,9 +98,8 @@ final class AzureStorageUtils {
      */
     static void assertIsAzureStorageLocation(String location, StorageType storageType) {
         if (!AzureStorageUtils.isAzureStorageResource(location, storageType)) {
-            throw new IllegalArgumentException(
-                String.format("The location '%s' is not a valid Azure storage %s location", location,
-                    storageType.getType()));
+            throw new IllegalArgumentException(String
+                .format("The location '%s' is not a valid Azure storage %s location", location, storageType.getType()));
         }
     }
 

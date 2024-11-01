@@ -52,9 +52,7 @@ public final class MacAddress {
         final String os = System.getProperty("os.name");
         final StringBuilder macBuilder = new StringBuilder();
 
-        if (os != null
-                && !os.isEmpty()
-                && os.toLowerCase(Locale.US).startsWith("win")) {
+        if (os != null && !os.isEmpty() && os.toLowerCase(Locale.US).startsWith("win")) {
             commands = Collections.singletonList("getmac");
         } else {
             commands = Arrays.asList("ifconfig", "-a");
@@ -64,8 +62,8 @@ public final class MacAddress {
             String tmp;
             final ProcessBuilder builder = new ProcessBuilder(commands);
             final Process process = builder.start();
-            final InputStreamReader streamReader = new InputStreamReader(process.getInputStream(),
-                StandardCharsets.UTF_8);
+            final InputStreamReader streamReader
+                = new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8);
 
             try {
                 final BufferedReader reader = new BufferedReader(streamReader);
@@ -153,4 +151,3 @@ public final class MacAddress {
         return UNKNOWN_MAC_ADDRESS;
     }
 }
-

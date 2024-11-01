@@ -43,9 +43,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
  */
 public enum DatabaseType {
 
-    MYSQL("jdbc:mysql", "?", "&"),
-    POSTGRESQL("jdbc:postgresql", "?", "&"),
-    SQLSERVER("jdbc:sqlserver", ";", ";");
+    MYSQL("jdbc:mysql", "?", "&"), POSTGRESQL("jdbc:postgresql", "?", "&"), SQLSERVER("jdbc:sqlserver", ";", ";");
 
     private final String schema;
     private final String pathQueryDelimiter;

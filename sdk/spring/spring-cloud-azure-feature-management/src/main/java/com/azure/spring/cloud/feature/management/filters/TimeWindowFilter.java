@@ -32,8 +32,8 @@ public final class TimeWindowFilter implements FeatureFilter {
     }
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TimeWindowFilter.class);
-    private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+    private static final ObjectMapper OBJECT_MAPPER
+        = JsonMapper.builder().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     /**
      * Evaluates whether a feature is enabled based on a configurable time window.
@@ -45,16 +45,20 @@ public final class TimeWindowFilter implements FeatureFilter {
     @Override
     public boolean evaluate(FeatureFilterEvaluationContext context) {
         final Map<String, Object> parameters = context.getParameters();
-        final Object recurrenceObject = parameters.get(FeatureFilterUtils.getKeyCase(parameters, TIME_WINDOW_FILTER_SETTING_RECURRENCE));
+        final Object recurrenceObject
+            = parameters.get(FeatureFilterUtils.getKeyCase(parameters, TIME_WINDOW_FILTER_SETTING_RECURRENCE));
         if (recurrenceObject != null) {
             final Map<String, Object> recurrenceParameters = (Map<String, Object>) recurrenceObject;
-            final Object patternObj = recurrenceParameters.get(FeatureFilterUtils.getKeyCase(recurrenceParameters, RecurrenceConstants.RECURRENCE_PATTERN));
+            final Object patternObj = recurrenceParameters
+                .get(FeatureFilterUtils.getKeyCase(recurrenceParameters, RecurrenceConstants.RECURRENCE_PATTERN));
             if (patternObj != null) {
-                FeatureFilterUtils.updateValueFromMapToList((Map<String, Object>) patternObj, FeatureFilterUtils.getKeyCase((Map<String, Object>) patternObj, RecurrenceConstants.RECURRENCE_PATTERN_DAYS_OF_WEEK));
+                FeatureFilterUtils.updateValueFromMapToList((Map<String, Object>) patternObj, FeatureFilterUtils
+                    .getKeyCase((Map<String, Object>) patternObj, RecurrenceConstants.RECURRENCE_PATTERN_DAYS_OF_WEEK));
             }
         }
 
-        final TimeWindowFilterSettings settings = OBJECT_MAPPER.convertValue(context.getParameters(), TimeWindowFilterSettings.class);
+        final TimeWindowFilterSettings settings
+            = OBJECT_MAPPER.convertValue(context.getParameters(), TimeWindowFilterSettings.class);
         final ZonedDateTime now = ZonedDateTime.now();
 
         if (settings.getStart() == null && settings.getEnd() == null) {
@@ -73,7 +77,8 @@ public final class TimeWindowFilter implements FeatureFilter {
                     throw e;
                 }
             }
-            LOGGER.warn("The {} feature filter is not valid for feature {}. It must specify both {} and {} when Recurrence is not null.",
+            LOGGER.warn(
+                "The {} feature filter is not valid for feature {}. It must specify both {} and {} when Recurrence is not null.",
                 this.getClass().getSimpleName(), context.getName(), TIME_WINDOW_FILTER_SETTING_START,
                 TIME_WINDOW_FILTER_SETTING_END);
             return false;

@@ -7,7 +7,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 
-
 public class ResponseDiagnosticsTestUtils {
 
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;

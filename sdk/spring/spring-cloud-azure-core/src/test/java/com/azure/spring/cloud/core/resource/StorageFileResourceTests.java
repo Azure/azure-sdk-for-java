@@ -36,7 +36,8 @@ class StorageFileResourceTests {
         when(this.shareServiceClient.getShareClient("some-share")).thenReturn(shareClient);
         when(shareClient.getFileClient("some-file.txt")).thenReturn(shareFileClient);
 
-        StorageFileResource storageFileResource = new StorageFileResource(this.shareServiceClient, "azure-file://some-share/some-file.txt");
+        StorageFileResource storageFileResource
+            = new StorageFileResource(this.shareServiceClient, "azure-file://some-share/some-file.txt");
 
         ShareStorageException shareStorageException = mock(ShareStorageException.class);
         when(shareStorageException.getErrorCode()).thenReturn(ShareErrorCode.SHARE_NOT_FOUND);
@@ -52,7 +53,8 @@ class StorageFileResourceTests {
         when(this.shareServiceClient.getShareClient("some-share")).thenReturn(shareClient);
         when(shareClient.getFileClient("some-file.txt")).thenReturn(shareFileClient);
 
-        StorageFileResource storageFileResource = new StorageFileResource(this.shareServiceClient, "azure-file://some-share/some-file.txt");
+        StorageFileResource storageFileResource
+            = new StorageFileResource(this.shareServiceClient, "azure-file://some-share/some-file.txt");
 
         ShareStorageException shareStorageException = mock(ShareStorageException.class);
         when(shareStorageException.getErrorCode()).thenReturn(ShareErrorCode.RESOURCE_NOT_FOUND);
@@ -68,7 +70,8 @@ class StorageFileResourceTests {
         when(this.shareServiceClient.getShareClient("some-share")).thenReturn(shareClient);
         when(shareClient.getFileClient("some-file.txt")).thenReturn(shareFileClient);
 
-        StorageFileResource storageFileResource = new StorageFileResource(this.shareServiceClient, "azure-file://some-share/some-file.txt");
+        StorageFileResource storageFileResource
+            = new StorageFileResource(this.shareServiceClient, "azure-file://some-share/some-file.txt");
 
         ShareStorageException shareStorageException = mock(ShareStorageException.class);
         when(shareStorageException.getErrorCode()).thenReturn(ShareErrorCode.INVALID_INPUT);
@@ -84,7 +87,8 @@ class StorageFileResourceTests {
         when(this.shareServiceClient.getShareClient("some-share")).thenReturn(shareClient);
         when(shareClient.getFileClient("some-file.txt")).thenReturn(shareFileClient);
 
-        StorageFileResource storageFileResource = new StorageFileResource(this.shareServiceClient, "azure-file://some-share/some-file.txt", false);
+        StorageFileResource storageFileResource
+            = new StorageFileResource(this.shareServiceClient, "azure-file://some-share/some-file.txt", false);
 
         StorageFileOutputStream storageFileOutputStream = mock(StorageFileOutputStream.class);
         when(shareFileClient.getFileOutputStream()).thenReturn(storageFileOutputStream);
@@ -93,7 +97,8 @@ class StorageFileResourceTests {
         when(shareStorageException.getErrorCode()).thenReturn(ShareErrorCode.SHARE_NOT_FOUND);
         doThrow(shareStorageException).when(storageFileOutputStream).write(any());
 
-        Assertions.assertThrows(ShareStorageException.class, () -> storageFileResource.getOutputStream().write("some-text".getBytes()));
+        Assertions.assertThrows(ShareStorageException.class,
+            () -> storageFileResource.getOutputStream().write("some-text".getBytes()));
     }
 
 }

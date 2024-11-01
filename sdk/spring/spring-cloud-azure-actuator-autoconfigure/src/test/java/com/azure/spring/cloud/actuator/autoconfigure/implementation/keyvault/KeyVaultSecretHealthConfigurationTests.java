@@ -19,8 +19,7 @@ class KeyVaultSecretHealthConfigurationTests {
         .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=" + ENDPOINT)
         .withBean(AzureGlobalProperties.class)
         .withConfiguration(
-            AutoConfigurations.of(AzureKeyVaultSecretAutoConfiguration.class,
-                KeyVaultSecretHealthConfiguration.class));
+            AutoConfigurations.of(AzureKeyVaultSecretAutoConfiguration.class, KeyVaultSecretHealthConfiguration.class));
 
     @Test
     void runShouldCreateIndicator() {

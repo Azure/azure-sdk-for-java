@@ -28,7 +28,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSetting;
 public class StateHolderTest {
 
     private final List<ConfigurationSetting> watchKeys = new ArrayList<>();
-    
+
     private MockitoSession session;
 
     @BeforeEach
@@ -39,7 +39,7 @@ public class StateHolderTest {
 
         watchKeys.add(watchKey);
     }
-    
+
     @AfterEach
     public void cleanup() throws Exception {
         MockitoAnnotations.openMocks(this).close();
@@ -146,8 +146,8 @@ public class StateHolderTest {
         State originalState = StateHolder.getState(endpoint);
 
         // Duration is less than the minBackOff
-        try (MockedStatic<BackoffTimeCalculator> backoffTimeCalculatorMock = Mockito
-            .mockStatic(BackoffTimeCalculator.class)) {
+        try (MockedStatic<BackoffTimeCalculator> backoffTimeCalculatorMock
+            = Mockito.mockStatic(BackoffTimeCalculator.class)) {
             Long ns = Long.valueOf("300000000000");
             backoffTimeCalculatorMock.when(() -> BackoffTimeCalculator.calculateBackoff(Mockito.anyInt()))
                 .thenReturn(ns);

@@ -114,8 +114,8 @@ public class AppConfigurationStoreSelectsTest {
         assertEquals("v1*", results[0]);
         assertThrows(IllegalArgumentException.class, selects::validateAndInit);
 
-        AppConfigurationKeyValueSelector selects2 = new AppConfigurationKeyValueSelector().setLabelFilter("v1")
-            .setKeyFilter("/application/*");
+        AppConfigurationKeyValueSelector selects2
+            = new AppConfigurationKeyValueSelector().setLabelFilter("v1").setKeyFilter("/application/*");
 
         results = selects2.getLabelFilter(new ArrayList<>());
         assertEquals(1, results.length);

@@ -44,9 +44,9 @@ public final class AzureStorageFileProtocolResolver extends AbstractAzureStorage
         options.setIncludeMetadata(false);
         options.setIncludeSnapshots(false);
         return getShareServiceClient().listShares(options, null, null)
-                                 .stream()
-                                 .map(ShareItem::getName)
-                                 .map(StorageContainerItem::new);
+            .stream()
+            .map(ShareItem::getName)
+            .map(StorageContainerItem::new);
     }
 
     @Override
@@ -71,10 +71,11 @@ public final class AzureStorageFileProtocolResolver extends AbstractAzureStorage
         public Stream<StorageItem> listItems(String itemPrefix) {
             ShareClient shareClient = getShareServiceClient().getShareClient(name);
             if (shareClient.exists()) {
-                return shareClient.getRootDirectoryClient().listFilesAndDirectories(itemPrefix, null, null, null)
-                                  .stream()
-                                  .filter(file -> !file.isDirectory())
-                                  .map(file -> new StorageItem(name, file.getName(), getStorageType()));
+                return shareClient.getRootDirectoryClient()
+                    .listFilesAndDirectories(itemPrefix, null, null, null)
+                    .stream()
+                    .filter(file -> !file.isDirectory())
+                    .map(file -> new StorageItem(name, file.getName(), getStorageType()));
             } else {
                 return Stream.empty();
             }

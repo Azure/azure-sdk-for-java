@@ -64,14 +64,14 @@ import static org.springframework.data.domain.Sort.Direction.ASC;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class CosmosTemplatePartitionIT {
-    private static final PartitionPerson TEST_PERSON = new PartitionPerson(ID_1, FIRST_NAME, ZIP_CODE,
-        HOBBIES, ADDRESSES);
+    private static final PartitionPerson TEST_PERSON
+        = new PartitionPerson(ID_1, FIRST_NAME, ZIP_CODE, HOBBIES, ADDRESSES);
 
-    private static final PartitionPerson TEST_PERSON_2 = new PartitionPerson(ID_2, NEW_FIRST_NAME,
-        NEW_ZIP_CODE, HOBBIES, ADDRESSES);
+    private static final PartitionPerson TEST_PERSON_2
+        = new PartitionPerson(ID_2, NEW_FIRST_NAME, NEW_ZIP_CODE, HOBBIES, ADDRESSES);
 
-    private static final PartitionPerson TEST_PERSON_3 = new PartitionPerson(ID_3, FIRST_NAME, NEW_ZIP_CODE,
-        HOBBIES, ADDRESSES);
+    private static final PartitionPerson TEST_PERSON_3
+        = new PartitionPerson(ID_3, FIRST_NAME, NEW_ZIP_CODE, HOBBIES, ADDRESSES);
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
@@ -117,17 +117,17 @@ public class CosmosTemplatePartitionIT {
         Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ZIP_CODE,
             Collections.singletonList(ZIP_CODE), Part.IgnoreCaseType.NEVER);
         CosmosQuery query = new CosmosQuery(criteria);
-        List<PartitionPerson> result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
-            PartitionPerson.class.getSimpleName()));
+        List<PartitionPerson> result = TestUtils
+            .toList(cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName()));
 
         assertThat(result.size()).isEqualTo(1);
         assertEquals(TEST_PERSON, result.get(0));
 
-        criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ID,
-            Collections.singletonList(ID_1), Part.IgnoreCaseType.NEVER);
+        criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ID, Collections.singletonList(ID_1),
+            Part.IgnoreCaseType.NEVER);
         query = new CosmosQuery(criteria);
-        result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
-            PartitionPerson.class.getSimpleName()));
+        result = TestUtils
+            .toList(cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName()));
 
         assertThat(result.size()).isEqualTo(1);
         assertEquals(TEST_PERSON, result.get(0));
@@ -139,18 +139,18 @@ public class CosmosTemplatePartitionIT {
         Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ZIP_CODE,
             Collections.singletonList(ZIP_CODE), Part.IgnoreCaseType.NEVER);
         CosmosQuery query = new CosmosQuery(criteria);
-//        SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
-        List<PartitionPerson> result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
-            PartitionPerson.class.getSimpleName()));
+        //        SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        List<PartitionPerson> result = TestUtils
+            .toList(cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName()));
 
         assertThat(result.size()).isEqualTo(1);
         assertEquals(TEST_PERSON, result.get(0));
 
-//        CosmosAsyncClient cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
-//        AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
-//        Map<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
-//        assertThat(initialCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
-//        int initialSize = initialCache.size();
+        //        CosmosAsyncClient cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
+        //        AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
+        //        Map<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
+        //        assertThat(initialCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
+        //        int initialSize = initialCache.size();
 
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getZipCode()));
 
@@ -158,13 +158,13 @@ public class CosmosTemplatePartitionIT {
             Collections.singletonList(NEW_ZIP_CODE), Part.IgnoreCaseType.NEVER);
         query = new CosmosQuery(criteria);
         //  Fire the same query but with different partition key value to make sure query plan caching is enabled
-//        sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
-        result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
-            PartitionPerson.class.getSimpleName()));
+        //        sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
+        result = TestUtils
+            .toList(cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName()));
 
-//        Map<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
-//        assertThat(postQueryCallCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
-//        assertThat(postQueryCallCache.size()).isEqualTo(initialSize);
+        //        Map<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
+        //        assertThat(postQueryCallCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
+        //        assertThat(postQueryCallCache.size()).isEqualTo(initialSize);
         assertThat(result.size()).isEqualTo(1);
         assertEquals(TEST_PERSON_2, result.get(0));
     }
@@ -174,8 +174,8 @@ public class CosmosTemplatePartitionIT {
         Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ZIP_CODE,
             Collections.singletonList(ZIP_CODE), Part.IgnoreCaseType.NEVER);
         CosmosQuery query = new CosmosQuery(criteria);
-        List<PartitionPerson> result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
-            PartitionPerson.class.getSimpleName()));
+        List<PartitionPerson> result = TestUtils
+            .toList(cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName()));
 
         assertThat(result.size()).isEqualTo(1);
         assertEquals(TEST_PERSON, result.get(0));
@@ -183,18 +183,16 @@ public class CosmosTemplatePartitionIT {
         criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ID,
             Collections.singletonList(ID_1.toUpperCase()), Part.IgnoreCaseType.ALWAYS);
         query = new CosmosQuery(criteria);
-        result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
-            PartitionPerson.class.getSimpleName()));
+        result = TestUtils
+            .toList(cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName()));
 
         assertThat(result.size()).isEqualTo(1);
         assertEquals(TEST_PERSON, result.get(0));
     }
 
-
     @Test
     public void testFindByIdWithPartition() {
-        final PartitionPerson partitionPersonById = cosmosTemplate.findById(TEST_PERSON.getId(),
-            PartitionPerson.class,
+        final PartitionPerson partitionPersonById = cosmosTemplate.findById(TEST_PERSON.getId(), PartitionPerson.class,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
 
         assertEquals(TEST_PERSON, partitionPersonById);
@@ -202,8 +200,7 @@ public class CosmosTemplatePartitionIT {
 
     @Test
     public void testFindByIdWithPartitionNotExists() {
-        final PartitionPerson partitionPersonById = cosmosTemplate.findById(NOT_EXIST_ID,
-            PartitionPerson.class,
+        final PartitionPerson partitionPersonById = cosmosTemplate.findById(NOT_EXIST_ID, PartitionPerson.class,
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
 
         assertNull(partitionPersonById);
@@ -216,20 +213,17 @@ public class CosmosTemplatePartitionIT {
             Collections.singletonList(NOT_EXIST_ID), Part.IgnoreCaseType.NEVER);
         final CosmosQuery query = new CosmosQuery(criteria);
 
-        final List<PartitionPerson> result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
-            PartitionPerson.class.getSimpleName()));
+        final List<PartitionPerson> result = TestUtils
+            .toList(cosmosTemplate.find(query, PartitionPerson.class, PartitionPerson.class.getSimpleName()));
         assertThat(result.size()).isEqualTo(0);
     }
 
     @Test
     public void testUpsertNewDocumentPartition() {
-        final String firstName = NEW_FIRST_NAME
-            + "_" + UUID.randomUUID().toString();
-        final PartitionPerson newPerson = new PartitionPerson(TEST_PERSON.getId(),
-            firstName, NEW_ZIP_CODE,
-            null, null);
-        final PartitionPerson partitionPerson =
-            cosmosTemplate.upsertAndReturnEntity(PartitionPerson.class.getSimpleName(), newPerson);
+        final String firstName = NEW_FIRST_NAME + "_" + UUID.randomUUID().toString();
+        final PartitionPerson newPerson = new PartitionPerson(TEST_PERSON.getId(), firstName, NEW_ZIP_CODE, null, null);
+        final PartitionPerson partitionPerson
+            = cosmosTemplate.upsertAndReturnEntity(PartitionPerson.class.getSimpleName(), newPerson);
 
         final List<PartitionPerson> result = TestUtils.toList(cosmosTemplate.findAll(PartitionPerson.class));
 
@@ -241,8 +235,8 @@ public class CosmosTemplatePartitionIT {
     public void testUpdatePartition() {
         final PartitionPerson updated = new PartitionPerson(TEST_PERSON.getId(), UPDATED_FIRST_NAME,
             TEST_PERSON.getZipCode(), TEST_PERSON.getHobbies(), TEST_PERSON.getShippingAddresses());
-        final PartitionPerson partitionPerson =
-            cosmosTemplate.upsertAndReturnEntity(PartitionPerson.class.getSimpleName(), updated);
+        final PartitionPerson partitionPerson
+            = cosmosTemplate.upsertAndReturnEntity(PartitionPerson.class.getSimpleName(), updated);
 
         assertEquals(partitionPerson, updated);
     }
@@ -255,8 +249,8 @@ public class CosmosTemplatePartitionIT {
         final List<PartitionPerson> inserted = TestUtils.toList(cosmosTemplate.findAll(PartitionPerson.class));
         assertThat(inserted.size()).isEqualTo(2);
 
-        cosmosTemplate.deleteById(PartitionPerson.class.getSimpleName(),
-            TEST_PERSON.getId(), new PartitionKey(TEST_PERSON.getZipCode()));
+        cosmosTemplate.deleteById(PartitionPerson.class.getSimpleName(), TEST_PERSON.getId(),
+            new PartitionKey(TEST_PERSON.getZipCode()));
 
         final List<PartitionPerson> result = TestUtils.toList(cosmosTemplate.findAll(PartitionPerson.class));
         assertThat(result.size()).isEqualTo(1);
@@ -317,8 +311,8 @@ public class CosmosTemplatePartitionIT {
         assertThat(page1.getContent().size()).isEqualTo(PAGE_SIZE_1);
         PageTestUtils.validateNonLastPage(page1, PAGE_SIZE_1);
 
-        final Page<PartitionPerson> page2 = cosmosTemplate.findAll(page1.nextPageable(),
-            PartitionPerson.class, containerName);
+        final Page<PartitionPerson> page2
+            = cosmosTemplate.findAll(page1.nextPageable(), PartitionPerson.class, containerName);
         assertThat(page2.getContent().size()).isEqualTo(1);
         PageTestUtils.validateLastPage(page2, PAGE_SIZE_1);
     }
@@ -343,8 +337,7 @@ public class CosmosTemplatePartitionIT {
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
-        final PageRequest pageRequest = CosmosPageRequest.of(1, 0, PAGE_SIZE_2,
-            null, Sort.by(ASC, "id"));
+        final PageRequest pageRequest = CosmosPageRequest.of(1, 0, PAGE_SIZE_2, null, Sort.by(ASC, "id"));
         final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest).with(pageRequest.getSort());
 
         final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
@@ -356,20 +349,16 @@ public class CosmosTemplatePartitionIT {
     @Test
     public void testPartionedPaginationQueryWithOneOffsetAndMultiplePages() {
         cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(TEST_PERSON_3.getZipCode()));
-        PartitionPerson TEST_PERSON_4 = new PartitionPerson("id-4", FIRST_NAME, NEW_ZIP_CODE,
-            HOBBIES, ADDRESSES);
+        PartitionPerson TEST_PERSON_4 = new PartitionPerson("id-4", FIRST_NAME, NEW_ZIP_CODE, HOBBIES, ADDRESSES);
         cosmosTemplate.insert(TEST_PERSON_4, new PartitionKey(TEST_PERSON_4.getZipCode()));
-        PartitionPerson TEST_PERSON_5 = new PartitionPerson("id-5", FIRST_NAME, NEW_ZIP_CODE,
-            HOBBIES, ADDRESSES);
+        PartitionPerson TEST_PERSON_5 = new PartitionPerson("id-5", FIRST_NAME, NEW_ZIP_CODE, HOBBIES, ADDRESSES);
         cosmosTemplate.insert(TEST_PERSON_5, new PartitionKey(TEST_PERSON_5.getZipCode()));
-        PartitionPerson TEST_PERSON_6 = new PartitionPerson("id-6", FIRST_NAME, NEW_ZIP_CODE,
-            HOBBIES, ADDRESSES);
+        PartitionPerson TEST_PERSON_6 = new PartitionPerson("id-6", FIRST_NAME, NEW_ZIP_CODE, HOBBIES, ADDRESSES);
         cosmosTemplate.insert(TEST_PERSON_6, new PartitionKey(TEST_PERSON_6.getZipCode()));
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
-        final PageRequest pageRequest = CosmosPageRequest.of(1, 0, PAGE_SIZE_2,
-            null, Sort.by(ASC, "id"));
+        final PageRequest pageRequest = CosmosPageRequest.of(1, 0, PAGE_SIZE_2, null, Sort.by(ASC, "id"));
         final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest).with(pageRequest.getSort());
 
         final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
@@ -378,10 +367,11 @@ public class CosmosTemplatePartitionIT {
         assertThat(page.getContent().get(1).getId()).isEqualTo("id-4");
         PageTestUtils.validateNonLastPage(page, page.getContent().size());
 
-        final CosmosQuery queryPage2 = new CosmosQuery(criteria).with(page.nextPageable())
-            .with(page.nextPageable().getSort());
+        final CosmosQuery queryPage2
+            = new CosmosQuery(criteria).with(page.nextPageable()).with(page.nextPageable().getSort());
 
-        final Page<PartitionPerson> page2 = cosmosTemplate.paginationQuery(queryPage2, PartitionPerson.class, containerName);
+        final Page<PartitionPerson> page2
+            = cosmosTemplate.paginationQuery(queryPage2, PartitionPerson.class, containerName);
         assertThat(page2.getContent().size()).isEqualTo(PAGE_SIZE_2);
         assertThat(page2.getContent().get(0).getId()).isEqualTo("id-5");
         assertThat(page2.getContent().get(1).getId()).isEqualTo("id-6");
@@ -395,8 +385,7 @@ public class CosmosTemplatePartitionIT {
 
         final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
             Collections.singletonList(FIRST_NAME), Part.IgnoreCaseType.NEVER);
-        final PageRequest pageRequest = CosmosPageRequest.of(0, 0, PAGE_SIZE_2,
-            null, Sort.by(ASC, "id"));
+        final PageRequest pageRequest = CosmosPageRequest.of(0, 0, PAGE_SIZE_2, null, Sort.by(ASC, "id"));
         final CosmosQuery query = new CosmosQuery(criteria).with(pageRequest).with(pageRequest.getSort());
 
         final Page<PartitionPerson> page = cosmosTemplate.paginationQuery(query, PartitionPerson.class, containerName);
@@ -414,8 +403,8 @@ public class CosmosTemplatePartitionIT {
         final PageRequest pageRequest = new CosmosPageRequest(0, PAGE_SIZE_2, null);
         final CosmosQuery queryIgnoreCase = new CosmosQuery(criteriaIgnoreCase).with(pageRequest);
 
-        final Page<PartitionPerson> pageIgnoreCase = cosmosTemplate
-            .paginationQuery(queryIgnoreCase, PartitionPerson.class, containerName);
+        final Page<PartitionPerson> pageIgnoreCase
+            = cosmosTemplate.paginationQuery(queryIgnoreCase, PartitionPerson.class, containerName);
         assertThat(pageIgnoreCase.getContent().size()).isEqualTo(1);
         PageTestUtils.validateLastPage(pageIgnoreCase, PAGE_SIZE_2);
     }

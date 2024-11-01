@@ -88,8 +88,10 @@ public class AppConfigurationProperties {
 
         this.stores.forEach(store -> {
             Assert.isTrue(
-                StringUtils.hasText(store.getEndpoint()) || StringUtils.hasText(store.getConnectionString())
-                    || store.getEndpoints().size() > 0 || store.getConnectionStrings().size() > 0,
+                StringUtils.hasText(store.getEndpoint())
+                    || StringUtils.hasText(store.getConnectionString())
+                    || store.getEndpoints().size() > 0
+                    || store.getConnectionStrings().size() > 0,
                 "Either configuration store name or connection string should be configured.");
             store.validateAndInit();
         });

@@ -35,7 +35,6 @@
   <properties>
     <java.version>17</java.version>
     <skipSpringITs>true</skipSpringITs>
-    <spotless.skip>true</spotless.skip>
   </properties>
 
   <dependencies>

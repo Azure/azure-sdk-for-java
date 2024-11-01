@@ -65,7 +65,8 @@ public class FeatureManagerSnapshot {
             return featureValue;
         }
 
-        return featureManager.isEnabledAsync(feature).doOnSuccess((enabled) -> requestMap.put(feature, enabled))
+        return featureManager.isEnabledAsync(feature)
+            .doOnSuccess((enabled) -> requestMap.put(feature, enabled))
             .block();
     }
 }

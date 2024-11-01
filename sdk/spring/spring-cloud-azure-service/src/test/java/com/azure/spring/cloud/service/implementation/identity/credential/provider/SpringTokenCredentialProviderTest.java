@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-
 class SpringTokenCredentialProviderTest {
     public static final String DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME = "springCloudAzureDefaultCredential";
     public static final String CUSTOMIZED_TOKEN_CREDENTIAL_BEAN_NAME = "springCloudAzureCustomizedCredential";
@@ -76,8 +75,10 @@ class SpringTokenCredentialProviderTest {
         TokenCredential globalCredential = mock(TokenCredential.class);
         TokenCredential localCredential = mock(TokenCredential.class);
 
-        when(globalContext.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class)).thenReturn(globalCredential);
-        when(localContext.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class)).thenReturn(localCredential);
+        when(globalContext.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class))
+            .thenReturn(globalCredential);
+        when(localContext.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME, TokenCredential.class))
+            .thenReturn(localCredential);
 
         SpringTokenCredentialProvider.setGlobalApplicationContext(globalContext);
 
@@ -88,7 +89,5 @@ class SpringTokenCredentialProviderTest {
         assertEquals(localCredential, provider.get());
 
     }
-
-
 
 }

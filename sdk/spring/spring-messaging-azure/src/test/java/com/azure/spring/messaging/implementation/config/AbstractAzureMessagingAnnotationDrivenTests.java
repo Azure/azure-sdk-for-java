@@ -38,15 +38,16 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests<T extends Meth
     public abstract void azureMessageListeners();
 
     protected abstract String getDefaultListenerContainerFactoryName();
+
     /**
      * Test for {@code SampleBean} discovery. If a factory with the default name is set, an endpoint will use it
      * automatically
      */
     public void testSampleConfiguration(ApplicationContext context) {
-        AzureListenerContainerTestFactory defaultFactory =
-            context.getBean(getDefaultListenerContainerFactoryName(), AzureListenerContainerTestFactory.class);
-        AzureListenerContainerTestFactory simpleFactory =
-            context.getBean("simpleFactory", AzureListenerContainerTestFactory.class);
+        AzureListenerContainerTestFactory defaultFactory
+            = context.getBean(getDefaultListenerContainerFactoryName(), AzureListenerContainerTestFactory.class);
+        AzureListenerContainerTestFactory simpleFactory
+            = context.getBean("simpleFactory", AzureListenerContainerTestFactory.class);
         assertEquals(1, defaultFactory.getListenerContainers().size());
         assertEquals(1, simpleFactory.getListenerContainers().size());
     }
@@ -57,8 +58,8 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests<T extends Meth
      */
     @SuppressWarnings("unchecked")
     public void testFullConfiguration(ApplicationContext context) {
-        AzureListenerContainerTestFactory simpleFactory =
-            context.getBean("simpleFactory", AzureListenerContainerTestFactory.class);
+        AzureListenerContainerTestFactory simpleFactory
+            = context.getBean("simpleFactory", AzureListenerContainerTestFactory.class);
         assertEquals(1, simpleFactory.getListenerContainers().size());
         T endpoint = (T) simpleFactory.getListenerContainers().get(0).getEndpoint();
         assertEquals("listener1", endpoint.getId());
@@ -74,21 +75,23 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests<T extends Meth
      * does not provide any factory so it's registered with the default one
      */
     public void testCustomConfiguration(ApplicationContext context) {
-        AzureListenerContainerTestFactory defaultFactory = context.getBean(getDefaultListenerContainerFactoryName(),
-            AzureListenerContainerTestFactory.class);
-        AzureListenerContainerTestFactory customFactory =
-            context.getBean("customFactory", AzureListenerContainerTestFactory.class);
+        AzureListenerContainerTestFactory defaultFactory
+            = context.getBean(getDefaultListenerContainerFactoryName(), AzureListenerContainerTestFactory.class);
+        AzureListenerContainerTestFactory customFactory
+            = context.getBean("customFactory", AzureListenerContainerTestFactory.class);
         assertEquals(1, defaultFactory.getListenerContainers().size());
         assertEquals(1, customFactory.getListenerContainers().size());
         AzureListenerEndpoint endpoint = defaultFactory.getListenerContainers().get(0).getEndpoint();
         assertEquals(SimpleAzureListenerTestEndpoint.class, endpoint.getClass(), "Wrong endpoint type");
 
-        AzureListenerEndpointRegistry customRegistry =
-            context.getBean("customRegistry", AzureListenerEndpointRegistry.class);
+        AzureListenerEndpointRegistry customRegistry
+            = context.getBean("customRegistry", AzureListenerEndpointRegistry.class);
         assertEquals(2, customRegistry.getListenerContainerIds().size(), "Wrong number of containers in the registry");
         assertEquals(2, customRegistry.getListenerContainersMap().size(), "Wrong number of containers in the registry");
-        assertNotNull(customRegistry.getListenerContainer("listenerId"), "Container with custom id on the annotation should be found");
-        assertNotNull(customRegistry.getListenerContainer("myCustomEndpointId"), "Container created with custom id should be found");
+        assertNotNull(customRegistry.getListenerContainer("listenerId"),
+            "Container with custom id on the annotation should be found");
+        assertNotNull(customRegistry.getListenerContainer("myCustomEndpointId"),
+            "Container created with custom id should be found");
     }
 
     /**
@@ -96,8 +99,8 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests<T extends Meth
      * explicit default.
      */
     public void testExplicitContainerFactoryConfiguration(ApplicationContext context) {
-        AzureListenerContainerTestFactory defaultFactory =
-            context.getBean("simpleFactory", AzureListenerContainerTestFactory.class);
+        AzureListenerContainerTestFactory defaultFactory
+            = context.getBean("simpleFactory", AzureListenerContainerTestFactory.class);
         assertEquals(1, defaultFactory.getListenerContainers().size());
     }
 
@@ -106,8 +109,8 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests<T extends Meth
      * the default name.
      */
     public void testDefaultContainerFactoryConfiguration(ApplicationContext context) {
-        AzureListenerContainerTestFactory defaultFactory = context.getBean(getDefaultListenerContainerFactoryName(),
-            AzureListenerContainerTestFactory.class);
+        AzureListenerContainerTestFactory defaultFactory
+            = context.getBean(getDefaultListenerContainerFactoryName(), AzureListenerContainerTestFactory.class);
         assertEquals(1, defaultFactory.getListenerContainers().size());
     }
 
@@ -118,8 +121,8 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests<T extends Meth
      */
     @SuppressWarnings("unchecked")
     public void testAzureListenerRepeatable(ApplicationContext context) {
-        AzureListenerContainerTestFactory simpleFactory = context.getBean(getDefaultListenerContainerFactoryName(),
-            AzureListenerContainerTestFactory.class);
+        AzureListenerContainerTestFactory simpleFactory
+            = context.getBean(getDefaultListenerContainerFactoryName(), AzureListenerContainerTestFactory.class);
         assertEquals(2, simpleFactory.getListenerContainers().size());
 
         T first = (T) simpleFactory.getListenerContainer("first").getEndpoint();
@@ -128,7 +131,6 @@ public abstract class AbstractAzureMessagingAnnotationDrivenTests<T extends Meth
         if (first instanceof AbstractAzureListenerEndpoint) {
             assertNull(((AbstractAzureListenerEndpoint) first).getConcurrency());
         }
-
 
         T second = (T) simpleFactory.getListenerContainer("second").getEndpoint();
         assertEquals("second", second.getId());

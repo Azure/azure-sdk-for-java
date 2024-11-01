@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass(ch.qos.logback.classic.LoggerContext.class)
 public class LogbackSelfDiagConfig {
 
-
     /**
      * To define a logger for self-diagnostics.
      *

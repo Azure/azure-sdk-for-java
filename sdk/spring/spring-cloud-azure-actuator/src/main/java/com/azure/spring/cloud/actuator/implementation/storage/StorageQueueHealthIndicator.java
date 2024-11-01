@@ -33,8 +33,7 @@ public class StorageQueueHealthIndicator extends AbstractHealthIndicator {
     @Override
     protected void doHealthCheck(Health.Builder builder) {
         builder.withDetail(URL_FIELD, internalClient.getQueueServiceUrl());
-        Response<QueueServiceProperties> infoResponse = internalClient.getPropertiesWithResponse()
-                                                                      .block(timeout);
+        Response<QueueServiceProperties> infoResponse = internalClient.getPropertiesWithResponse().block(timeout);
         if (infoResponse != null) {
             builder.up();
         }

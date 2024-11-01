@@ -30,7 +30,8 @@ public final class AzureCredentialResolvers {
      * @param resolvers The list of resolvers used to resolve credential.
      * @param comparator The comparator to determine the execution order of the resolvers.
      */
-    public AzureCredentialResolvers(List<AzureCredentialResolver<?>> resolvers, Comparator<AzureCredentialResolver<?>> comparator) {
+    public AzureCredentialResolvers(List<AzureCredentialResolver<?>> resolvers,
+        Comparator<AzureCredentialResolver<?>> comparator) {
         this(resolvers);
         this.resolvers.sort(comparator);
     }

@@ -28,7 +28,8 @@ import java.util.function.BiConsumer;
 /**
  * Abstract Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder} sub client.
  */
-abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBusClientCommonProperties> extends AbstractAzureAmqpClientBuilderFactory<T> {
+abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBusClientCommonProperties>
+    extends AbstractAzureAmqpClientBuilderFactory<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractServiceBusSubClientBuilderFactory.class);
 
@@ -45,29 +46,29 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
      * @param serviceClientBuilderCustomizers the collection of customizers for the service bus client builder.
      */
     AbstractServiceBusSubClientBuilderFactory(P properties,
-                                              List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceClientBuilderCustomizers) {
+        List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceClientBuilderCustomizers) {
         this(null, properties, serviceClientBuilderCustomizers);
     }
 
-
-    AbstractServiceBusSubClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                              P properties) {
+    AbstractServiceBusSubClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder, P properties) {
         this(serviceBusClientBuilder, properties, null);
         if (serviceBusClientBuilder == null) {
-            LOGGER.debug("The shared ServiceBusClientBuilder instance is null, the {} instance has used a non-shared ServiceBusClientBuilder "
-                + "and ignored the customizers.", this.getClass().getSimpleName());
+            LOGGER.debug(
+                "The shared ServiceBusClientBuilder instance is null, the {} instance has used a non-shared ServiceBusClientBuilder "
+                    + "and ignored the customizers.",
+                this.getClass().getSimpleName());
         }
     }
 
-    protected AbstractServiceBusSubClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                              P properties,
-                                              List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers) {
+    protected AbstractServiceBusSubClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder, P properties,
+        List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers) {
         this.properties = properties;
         if (serviceBusClientBuilder != null) {
             this.serviceBusClientBuilder = serviceBusClientBuilder;
             this.shareServiceBusClientBuilder = true;
         } else {
-            ServiceBusClientBuilderFactory serviceBusClientBuilderFactory = new ServiceBusClientBuilderFactory(properties);
+            ServiceBusClientBuilderFactory serviceBusClientBuilderFactory
+                = new ServiceBusClientBuilderFactory(properties);
             if (serviceBusClientBuilderCustomizers != null) {
                 serviceBusClientBuilderCustomizers.forEach(serviceBusClientBuilderFactory::addBuilderCustomizer);
             }
@@ -138,23 +139,19 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
-        return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(credential -> {
-                if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(credential);
-                }
-            }),
-            new SasAuthenticationDescriptor(credential -> {
-                if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(credential);
-                }
-            }),
-            new TokenAuthenticationDescriptor(this.tokenCredentialResolver, credential -> {
-                if (!isShareServiceBusClientBuilder()) {
-                    this.serviceBusClientBuilder.credential(credential);
-                }
-            })
-        );
+        return Arrays.asList(new NamedKeyAuthenticationDescriptor(credential -> {
+            if (!isShareServiceBusClientBuilder()) {
+                this.serviceBusClientBuilder.credential(credential);
+            }
+        }), new SasAuthenticationDescriptor(credential -> {
+            if (!isShareServiceBusClientBuilder()) {
+                this.serviceBusClientBuilder.credential(credential);
+            }
+        }), new TokenAuthenticationDescriptor(this.tokenCredentialResolver, credential -> {
+            if (!isShareServiceBusClientBuilder()) {
+                this.serviceBusClientBuilder.credential(credential);
+            }
+        }));
     }
 
     @Override

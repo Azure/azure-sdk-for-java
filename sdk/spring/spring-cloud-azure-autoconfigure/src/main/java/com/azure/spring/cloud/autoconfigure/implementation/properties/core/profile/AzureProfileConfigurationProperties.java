@@ -25,7 +25,8 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
      */
     private AzureProfileOptionsProvider.CloudType cloudType;
 
-    private final AzureEnvironmentConfigurationProperties environment = new AzureEnvironmentConfigurationProperties(null);
+    private final AzureEnvironmentConfigurationProperties environment
+        = new AzureEnvironmentConfigurationProperties(null);
 
     @Override
     public AzureProfileOptionsProvider.CloudType getCloudType() {
@@ -62,7 +63,8 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
         return this.environment;
     }
 
-    public static final class AzureEnvironmentConfigurationProperties implements AzureProfileOptionsProvider.AzureEnvironmentOptions {
+    public static final class AzureEnvironmentConfigurationProperties
+        implements AzureProfileOptionsProvider.AzureEnvironmentOptions {
         /**
          * The management portal URL.
          */
@@ -294,7 +296,8 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             return azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
         }
 
-        public void setAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(String azureDataLakeAnalyticsCatalogAndJobEndpointSuffix) {
+        public void setAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(
+            String azureDataLakeAnalyticsCatalogAndJobEndpointSuffix) {
             this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = azureDataLakeAnalyticsCatalogAndJobEndpointSuffix;
         }
 
@@ -348,15 +351,18 @@ public class AzureProfileConfigurationProperties extends AzureProfileOptionsAdap
             this.dataLakeEndpointResourceId = azureEnvironment.getDataLakeEndpointResourceId();
             this.storageEndpointSuffix = azureEnvironment.getStorageEndpointSuffix();
             this.keyVaultDnsSuffix = azureEnvironment.getKeyVaultDnsSuffix();
-            this.azureDataLakeStoreFileSystemEndpointSuffix = azureEnvironment.getAzureDataLakeStoreFileSystemEndpointSuffix();
-            this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix = azureEnvironment.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
+            this.azureDataLakeStoreFileSystemEndpointSuffix
+                = azureEnvironment.getAzureDataLakeStoreFileSystemEndpointSuffix();
+            this.azureDataLakeAnalyticsCatalogAndJobEndpointSuffix
+                = azureEnvironment.getAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix();
             this.azureLogAnalyticsEndpoint = azureEnvironment.getLogAnalyticsEndpoint();
             this.azureApplicationInsightsEndpoint = azureEnvironment.getApplicationInsightsEndpoint();
         }
 
         @SuppressWarnings("deprecation")
         @Override
-        public AzureProfileOptionsProvider.AzureEnvironmentOptions fromAzureManagementEnvironment(AzureEnvironment environment) {
+        public AzureProfileOptionsProvider.AzureEnvironmentOptions
+            fromAzureManagementEnvironment(AzureEnvironment environment) {
             return new AzureEnvironmentConfigurationProperties(environment);
         }
 

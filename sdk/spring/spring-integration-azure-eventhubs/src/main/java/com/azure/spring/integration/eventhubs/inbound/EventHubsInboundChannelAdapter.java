@@ -88,7 +88,6 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     private InstrumentationManager instrumentationManager;
     private String instrumentationId;
 
-
     /**
      * Construct a {@link EventHubsInboundChannelAdapter} with the specified {@link EventHubsMessageListenerContainer},
      * event Hub Name, consumer Group and {@link CheckpointConfig}.
@@ -107,7 +106,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
      * @param listenerMode the listener mode
      */
     public EventHubsInboundChannelAdapter(EventHubsMessageListenerContainer listenerContainer,
-                                          ListenerMode listenerMode) {
+        ListenerMode listenerMode) {
         this.listenerContainer = listenerContainer;
         this.listenerMode = listenerMode;
         CheckpointConfig containerCheckpointConfig = listenerContainer.getContainerProperties().getCheckpointConfig();
@@ -189,12 +188,12 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
     }
 
     private void enhanceListenerContainer() {
-        this.listenerContainer.getContainerProperties().setCloseContextConsumer(closeContext ->
-            LOGGER.info("Stopped receiving on partition: {}. Reason: {}",
+        this.listenerContainer.getContainerProperties()
+            .setCloseContextConsumer(closeContext -> LOGGER.info("Stopped receiving on partition: {}. Reason: {}",
                 closeContext.getPartitionContext().getPartitionId(), closeContext.getCloseReason()));
 
-        this.listenerContainer.getContainerProperties().setInitializationContextConsumer(initializationContext ->
-            LOGGER.info("Started receiving on partition: {}",
+        this.listenerContainer.getContainerProperties()
+            .setInitializationContextConsumer(initializationContext -> LOGGER.info("Started receiving on partition: {}",
                 initializationContext.getPartitionContext().getPartitionId()));
     }
 
@@ -203,8 +202,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         @Override
         public void accept(ErrorContext errorContext) {
             LOGGER.error("Error occurred on partition: {}. Error: {}",
-                errorContext.getPartitionContext().getPartitionId(),
-                errorContext.getThrowable());
+                errorContext.getPartitionContext().getPartitionId(), errorContext.getThrowable());
             updateInstrumentation(errorContext);
         }
 
@@ -259,14 +257,16 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
             Map<String, Object> headers = new HashMap<>();
             headers.put(AzureHeaders.RAW_PARTITION_ID, partition.getPartitionId());
-            headers.put(EventHubsHeaders.LAST_ENQUEUED_EVENT_PROPERTIES, eventBatchContext.getLastEnqueuedEventProperties());
+            headers.put(EventHubsHeaders.LAST_ENQUEUED_EVENT_PROPERTIES,
+                eventBatchContext.getLastEnqueuedEventProperties());
 
             if (CheckpointMode.MANUAL == checkpointConfig.getMode()) {
                 Checkpointer checkpointer = new AzureCheckpointer(eventBatchContext::updateCheckpointAsync);
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 
-            Message<?> message = this.getMessageConverter().toMessage(eventBatchContext, new MessageHeaders(headers), payloadType);
+            Message<?> message
+                = this.getMessageConverter().toMessage(eventBatchContext, new MessageHeaders(headers), payloadType);
 
             sendMessage(message);
             if (checkpointConfig.getMode() == CheckpointMode.BATCH) {

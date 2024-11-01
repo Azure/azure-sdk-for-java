@@ -22,7 +22,6 @@ public class StorageRetryConfigurationProperties extends RetryConfigurationPrope
      */
     private Duration tryTimeout;
 
-
     @Override
     public String getSecondaryHost() {
         return secondaryHost;

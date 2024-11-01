@@ -31,7 +31,8 @@ import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadR
  * HTTP security configurer class for Azure Active Directory Web application scenario, used to
  * make Azure client registration repository and OAuth2 request entity converter take effect.
  */
-public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigurer<AadWebApplicationHttpSecurityConfigurer, HttpSecurity> {
+public class AadWebApplicationHttpSecurityConfigurer
+    extends AbstractHttpConfigurer<AadWebApplicationHttpSecurityConfigurer, HttpSecurity> {
 
     /**
      * A repository for OAuth 2.0 / OpenID Connect 1.0 ClientRegistration(s).
@@ -63,9 +64,9 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
      */
     private Filter conditionalAccessFilter;
 
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings({ "deprecation", "removal" })
     @Override
-    public void init(HttpSecurity builder)throws Exception {
+    public void init(HttpSecurity builder) throws Exception {
         super.init(builder);
         ApplicationContext context = builder.getSharedObject(ApplicationContext.class);
 

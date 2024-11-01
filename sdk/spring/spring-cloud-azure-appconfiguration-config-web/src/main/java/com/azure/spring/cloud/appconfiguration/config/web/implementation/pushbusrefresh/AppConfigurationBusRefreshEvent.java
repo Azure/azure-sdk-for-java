@@ -16,7 +16,7 @@ public final class AppConfigurationBusRefreshEvent extends RemoteApplicationEven
      * Endpoint being refreshed.
      */
     private String endpoint;
-    
+
     /**
      * Sync Token
      */
@@ -29,7 +29,7 @@ public final class AppConfigurationBusRefreshEvent extends RemoteApplicationEven
      * @param syncToken App Configuration sync token
      */
     AppConfigurationBusRefreshEvent(String endpoint, String syncToken, AppConfigurationBusRefreshEndpoint source,
-            String origin, Destination destination) {
+        String origin, Destination destination) {
         super("App Configuration Refresh Event", origin, destination);
         this.endpoint = endpoint;
         this.syncToken = syncToken;

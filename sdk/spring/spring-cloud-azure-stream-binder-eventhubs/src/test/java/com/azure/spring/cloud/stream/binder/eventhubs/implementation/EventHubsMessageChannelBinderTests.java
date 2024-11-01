@@ -32,11 +32,10 @@ class EventHubsMessageChannelBinderTests {
     private static final String PARTITION_ID_EXPRESSION = "partitionIdExpression";
     private static final String PARTITION_KEY_EXPRESSION = "partitionKeyExpression";
     private final EventHubsProducerProperties eventHubsProducerProperties = new EventHubsProducerProperties();
-    private ExtendedProducerProperties<EventHubsProducerProperties> producerProperties =
-        new ExtendedProducerProperties<>(eventHubsProducerProperties);
-    private EventHubsMessageChannelTestBinder binder =
-        new EventHubsMessageChannelTestBinder(BinderHeaders.STANDARD_HEADERS, new EventHubsChannelProvisioner(),
-            null, null);
+    private ExtendedProducerProperties<EventHubsProducerProperties> producerProperties
+        = new ExtendedProducerProperties<>(eventHubsProducerProperties);
+    private EventHubsMessageChannelTestBinder binder = new EventHubsMessageChannelTestBinder(
+        BinderHeaders.STANDARD_HEADERS, new EventHubsChannelProvisioner(), null, null);
 
     @BeforeEach
     void init() {
@@ -47,8 +46,8 @@ class EventHubsMessageChannelBinderTests {
 
     @Test
     void withoutPartitionConfig() {
-        MessageHandler handler = binder.createProducerMessageHandler(producerDestination,
-            producerProperties, errorChannel);
+        MessageHandler handler
+            = binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
 
         Assertions.assertNull(ReflectionTestUtils.getField(handler, PARTITION_ID_EXPRESSION));
         Assertions.assertNull(ReflectionTestUtils.getField(handler, PARTITION_KEY_EXPRESSION));
@@ -57,8 +56,8 @@ class EventHubsMessageChannelBinderTests {
     @Test
     void withPartitionConfig() {
         producerProperties.setPartitionKeyExpression(new SpelExpressionParser().parseExpression("payload"));
-        MessageHandler handler = binder.createProducerMessageHandler(producerDestination,
-            producerProperties, errorChannel);
+        MessageHandler handler
+            = binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
 
         Assertions.assertNotNull(ReflectionTestUtils.getField(handler, PARTITION_ID_EXPRESSION));
         Assertions.assertNull(ReflectionTestUtils.getField(handler, PARTITION_KEY_EXPRESSION));

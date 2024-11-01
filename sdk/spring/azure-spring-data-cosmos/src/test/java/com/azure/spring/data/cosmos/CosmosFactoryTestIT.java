@@ -29,9 +29,7 @@ public class CosmosFactoryTestIT {
     public void testNullKey() {
         CosmosAsyncClient ignored = null;
         try {
-            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
-                .endpoint(cosmosDbUri)
-                .key(null));
+            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder().endpoint(cosmosDbUri).key(null));
         } catch (Exception e) {
             assertThat(e instanceof NullPointerException).isTrue();
         } finally {
@@ -42,9 +40,7 @@ public class CosmosFactoryTestIT {
 
         ignored = null;
         try {
-            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
-                .endpoint(cosmosDbUri)
-                .key(""));
+            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder().endpoint(cosmosDbUri).key(""));
         } catch (Exception e) {
             assertThat(e instanceof IllegalArgumentException).isTrue();
         } finally {
@@ -58,9 +54,7 @@ public class CosmosFactoryTestIT {
     public void testNullEndpoint() {
         CosmosAsyncClient ignored = null;
         try {
-            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
-                .endpoint(null)
-                .key(cosmosDbKey));
+            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder().endpoint(null).key(cosmosDbKey));
         } catch (Exception e) {
             assertThat(e instanceof NullPointerException).isTrue();
         } finally {
@@ -71,9 +65,7 @@ public class CosmosFactoryTestIT {
 
         ignored = null;
         try {
-            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
-                .endpoint("")
-                .key(cosmosDbKey));
+            ignored = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder().endpoint("").key(cosmosDbKey));
         } catch (Exception e) {
             assertThat(e instanceof IllegalArgumentException).isTrue();
         } finally {
@@ -87,9 +79,8 @@ public class CosmosFactoryTestIT {
     public void testConnectionPolicyUserAgentKept() throws IllegalAccessException, NoSuchFieldException {
         CosmosAsyncClient ignored = null;
         try {
-            final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-                .endpoint(cosmosDbUri)
-                .key(cosmosDbKey);
+            final CosmosClientBuilder cosmosClientBuilder
+                = new CosmosClientBuilder().endpoint(cosmosDbUri).key(cosmosDbKey);
             ignored = CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder);
 
             final String uaSuffix = getUserAgentSuffixValue(cosmosClientBuilder);
@@ -101,8 +92,8 @@ public class CosmosFactoryTestIT {
         }
     }
 
-    private String getUserAgentSuffixValue(CosmosClientBuilder cosmosClientBuilder) throws IllegalAccessException,
-        NoSuchFieldException {
+    private String getUserAgentSuffixValue(CosmosClientBuilder cosmosClientBuilder)
+        throws IllegalAccessException, NoSuchFieldException {
         Field userAgentSuffix = CosmosClientBuilder.class.getDeclaredField("userAgentSuffix");
         userAgentSuffix.setAccessible(true);
         return (String) userAgentSuffix.get(cosmosClientBuilder);

@@ -20,19 +20,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 abstract class AbstractAzureJdbcAutoConfigurationTest {
 
-    public static final String PUBLIC_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";
-    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
+    public static final String PUBLIC_AUTHORITY_HOST_STRING
+        = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";
+    public static final String PUBLIC_TOKEN_CREDENTIAL_BEAN_NAME_STRING
+        = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
+
     abstract void pluginNotOnClassPath();
+
     abstract void wrongJdbcUrl();
+
     abstract void enhanceUrlWithDefaultCredential();
+
     abstract void enhanceUrlWithCustomCredential();
 
-    protected final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
-            AzureTokenCredentialAutoConfiguration.class,
+    protected final ApplicationContextRunner contextRunner = new ApplicationContextRunner().withConfiguration(
+        AutoConfigurations.of(AzureJdbcAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class,
             TestSpringTokenCredentialProviderContextProviderAutoConfiguration.class,
-            AzureGlobalPropertiesAutoConfiguration.class,
-            DataSourceAutoConfiguration.class));
+            AzureGlobalPropertiesAutoConfiguration.class, DataSourceAutoConfiguration.class));
 
     @Test
     void testEnhanceUrlDefaultCredential() {
@@ -56,17 +60,15 @@ abstract class AbstractAzureJdbcAutoConfigurationTest {
 
     @Test
     void testHasSingleBean() {
-        this.contextRunner
-            .run((context) -> {
-                assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
-                assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
-            });
+        this.contextRunner.run((context) -> {
+            assertThat(context).hasSingleBean(JdbcPropertiesBeanPostProcessor.class);
+            assertThat(context).hasSingleBean(SpringTokenCredentialProviderContextProvider.class);
+        });
     }
 
     @Test
     void testNoAzureAuthenticationTemplate() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
             .run((context) -> {
                 assertThat(context).doesNotHaveBean(JdbcPropertiesBeanPostProcessor.class);
                 assertThat(context).doesNotHaveBean(SpringTokenCredentialProviderContextProvider.class);
@@ -75,8 +77,7 @@ abstract class AbstractAzureJdbcAutoConfigurationTest {
 
     @Test
     void testNoDataSourcePropertiesBean() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
+        this.contextRunner.withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
             .run((context) -> {
                 assertThat(context).doesNotHaveBean(JdbcPropertiesBeanPostProcessor.class);
                 assertThat(context).doesNotHaveBean(SpringTokenCredentialProviderContextProvider.class);
@@ -85,12 +86,10 @@ abstract class AbstractAzureJdbcAutoConfigurationTest {
 
     @Test
     void testUnSupportDatabaseType() {
-        this.contextRunner
-            .withPropertyValues("spring.datasource.url = jdbc:h2:~/test,sa,password")
-            .run((context) -> {
-                DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
-                assertEquals("jdbc:h2:~/test,sa,password", dataSourceProperties.getUrl());
-            });
+        this.contextRunner.withPropertyValues("spring.datasource.url = jdbc:h2:~/test,sa,password").run((context) -> {
+            DataSourceProperties dataSourceProperties = context.getBean(DataSourceProperties.class);
+            assertEquals("jdbc:h2:~/test,sa,password", dataSourceProperties.getUrl());
+        });
     }
 
 }

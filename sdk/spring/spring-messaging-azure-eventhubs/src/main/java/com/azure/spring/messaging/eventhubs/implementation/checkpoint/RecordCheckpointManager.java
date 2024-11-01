@@ -29,7 +29,6 @@ class RecordCheckpointManager extends EventCheckpointManager {
         return LOGGER;
     }
 
-
     @Override
     public void checkpoint(EventContext context) {
         context.updateCheckpointAsync()

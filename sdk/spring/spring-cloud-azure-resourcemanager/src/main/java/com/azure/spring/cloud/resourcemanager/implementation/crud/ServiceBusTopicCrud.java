@@ -16,7 +16,8 @@ import reactor.util.function.Tuple2;
 /**
  * Resource manager for Service Bus topic.
  */
-public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<String, String>, ServiceBusTopicProperties> {
+public class ServiceBusTopicCrud
+    extends AbstractResourceCrud<Topic, Tuple2<String, String>, ServiceBusTopicProperties> {
 
     public ServiceBusTopicCrud(AzureResourceManager azureResourceManager, AzureResourceMetadata azureResourceMetadata) {
         super(azureResourceManager, azureResourceMetadata);
@@ -35,13 +36,11 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<Stri
     @Override
     public Topic internalGet(Tuple2<String, String> namespaceAndName) {
         try {
-            ServiceBusNamespace serviceBusNamespace = new ServiceBusNamespaceCrud(this.resourceManager,
-                this.resourceMetadata)
-                .get(namespaceAndName.getT1());
+            ServiceBusNamespace serviceBusNamespace
+                = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
+                    .get(namespaceAndName.getT1());
             Assert.notNull(serviceBusNamespace, "The Service Bus namespace should exist first.");
-            return serviceBusNamespace
-                .topics()
-                .getByName(namespaceAndName.getT2());
+            return serviceBusNamespace.topics().getByName(namespaceAndName.getT2());
         } catch (ManagementException e) {
             if (e.getResponse().getStatusCode() == RESOURCE_NOT_FOUND) {
                 return null;
@@ -61,7 +60,8 @@ public class ServiceBusTopicCrud extends AbstractResourceCrud<Topic, Tuple2<Stri
     }
 
     @Override
-    public Topic internalCreate(Tuple2<String, String> namespaceAndName, @Nullable ServiceBusTopicProperties topicProperties) {
+    public Topic internalCreate(Tuple2<String, String> namespaceAndName,
+        @Nullable ServiceBusTopicProperties topicProperties) {
         Topic.DefinitionStages.Blank blank = new ServiceBusNamespaceCrud(this.resourceManager, this.resourceMetadata)
             .getOrCreate(namespaceAndName.getT1())
             .topics()

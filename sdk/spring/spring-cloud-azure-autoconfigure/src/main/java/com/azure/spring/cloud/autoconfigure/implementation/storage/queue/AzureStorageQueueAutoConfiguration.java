@@ -18,8 +18,7 @@ import org.springframework.context.annotation.Import;
 @Import({
     AzureStorageConfiguration.class,
     AzureStorageQueuePropertiesConfiguration.class,
-    QueueClientConfiguration.class
-})
+    QueueClientConfiguration.class })
 @ConditionalOnClass(QueueServiceClientBuilder.class)
 public class AzureStorageQueueAutoConfiguration {
 

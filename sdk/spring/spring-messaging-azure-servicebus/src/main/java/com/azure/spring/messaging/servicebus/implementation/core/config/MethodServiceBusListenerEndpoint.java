@@ -42,7 +42,6 @@ public class MethodServiceBusListenerEndpoint extends AbstractAzureListenerEndpo
     @Nullable
     private StringValueResolver embeddedValueResolver;
 
-
     @Override
     public void setBeanFactory(@Nullable BeanFactory beanFactory) {
         if (this.embeddedValueResolver == null && beanFactory instanceof ConfigurableBeanFactory) {
@@ -52,14 +51,17 @@ public class MethodServiceBusListenerEndpoint extends AbstractAzureListenerEndpo
 
     @Override
     protected StringBuilder getEndpointDescription() {
-        return super.getEndpointDescription()
-                    .append(" | bean='").append(this.bean).append("'")
-                    .append(" | method='").append(this.method).append("'");
+        return super.getEndpointDescription().append(" | bean='")
+            .append(this.bean)
+            .append("'")
+            .append(" | method='")
+            .append(this.method)
+            .append("'");
     }
 
     @Override
     protected MessagingMessageListenerAdapter createMessageListener(MessageListenerContainer listenerContainer,
-                                                                    AzureMessageConverter<?, ?> messageConverter) {
+        AzureMessageConverter<?, ?> messageConverter) {
 
         Assert.state(this.messageHandlerMethodFactory != null,
             "Could not create message listener - MessageHandlerMethodFactory not set");
@@ -69,8 +71,8 @@ public class MethodServiceBusListenerEndpoint extends AbstractAzureListenerEndpo
         Method method = getMethod();
         Assert.state(bean != null && method != null, "No bean+method set on endpoint");
 
-        InvocableHandlerMethod invocableHandlerMethod = this.messageHandlerMethodFactory.createInvocableHandlerMethod(
-            bean, method);
+        InvocableHandlerMethod invocableHandlerMethod
+            = this.messageHandlerMethodFactory.createInvocableHandlerMethod(bean, method);
 
         messageListener.setHandlerMethod(invocableHandlerMethod);
 
@@ -83,8 +85,8 @@ public class MethodServiceBusListenerEndpoint extends AbstractAzureListenerEndpo
      * @param messageConverter the converter (may be null).
      * @return the {@link MessagingMessageListenerAdapter} instance.
      */
-    protected MessagingMessageListenerAdapter createMessageListenerInstance(
-        @Nullable AzureMessageConverter<?, ?> messageConverter) {
+    protected MessagingMessageListenerAdapter
+        createMessageListenerInstance(@Nullable AzureMessageConverter<?, ?> messageConverter) {
 
         MessagingMessageListenerAdapter listener = new RecordMessagingMessageListenerAdapter();
         if (messageConverter instanceof ServiceBusMessageConverter) {

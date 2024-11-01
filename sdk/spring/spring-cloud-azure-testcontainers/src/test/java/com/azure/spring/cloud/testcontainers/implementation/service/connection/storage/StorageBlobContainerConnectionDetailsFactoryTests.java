@@ -33,10 +33,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class StorageBlobContainerConnectionDetailsFactoryTests {
     @Container
     @ServiceConnection
-    private static final GenericContainer<?> AZURITE_CONTAINER = new GenericContainer<>(
-        "mcr.microsoft.com/azure-storage/azurite:latest")
-        .withExposedPorts(10000)
-        .withCommand("azurite --skipApiVersionCheck && azurite -l /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0");
+    private static final GenericContainer<?> AZURITE_CONTAINER
+        = new GenericContainer<>("mcr.microsoft.com/azure-storage/azurite:latest").withExposedPorts(10000)
+            .withCommand(
+                "azurite --skipApiVersionCheck && azurite -l /data --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0");
 
     @Value("azure-blob://testcontainers/message.txt")
     private Resource blobFile;
@@ -52,7 +52,11 @@ class StorageBlobContainerConnectionDetailsFactoryTests {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ImportAutoConfiguration(classes = {AzureGlobalPropertiesAutoConfiguration.class, AzureStorageBlobAutoConfiguration.class, AzureStorageBlobResourceAutoConfiguration.class})
+    @ImportAutoConfiguration(
+        classes = {
+            AzureGlobalPropertiesAutoConfiguration.class,
+            AzureStorageBlobAutoConfiguration.class,
+            AzureStorageBlobResourceAutoConfiguration.class })
     static class Config {
     }
 }

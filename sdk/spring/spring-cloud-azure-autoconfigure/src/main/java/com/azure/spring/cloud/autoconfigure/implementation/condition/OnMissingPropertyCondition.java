@@ -28,8 +28,7 @@ class OnMissingPropertyCondition extends PropertyCondition {
         spec.collectProperties(resolver, foundProperties);
 
         if (!foundProperties.isEmpty()) {
-            return ConditionOutcome.noMatch(ConditionMessage
-                .forCondition(ConditionalOnMissingProperty.class, spec)
+            return ConditionOutcome.noMatch(ConditionMessage.forCondition(ConditionalOnMissingProperty.class, spec)
                 .found("property", "properties")
                 .items(ConditionMessage.Style.QUOTE, foundProperties));
         }

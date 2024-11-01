@@ -23,8 +23,10 @@ public class NamespacePropertiesTests {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         namespaceProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
 
-        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, namespaceProperties.getProfile().getCloudType());
-        assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(), namespaceProperties.getDomainName());
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT,
+            namespaceProperties.getProfile().getCloudType());
+        assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(),
+            namespaceProperties.getDomainName());
     }
 
     @Test
@@ -33,7 +35,9 @@ public class NamespacePropertiesTests {
         namespaceProperties.setDomainName("servicebus.chinacloudapi.cn");
         namespaceProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
 
-        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, namespaceProperties.getProfile().getCloudType());
-        assertEquals(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName(), namespaceProperties.getDomainName());
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT,
+            namespaceProperties.getProfile().getCloudType());
+        assertEquals(AzureEnvironmentProperties.AZURE_CHINA.getServiceBusDomainName(),
+            namespaceProperties.getDomainName());
     }
 }

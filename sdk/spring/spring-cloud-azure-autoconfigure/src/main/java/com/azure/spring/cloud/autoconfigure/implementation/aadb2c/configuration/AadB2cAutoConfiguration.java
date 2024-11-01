@@ -30,7 +30,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.aad.utils.AadR
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @Conditional(AadB2cConditions.UserFlowCondition.class)
-@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class})
+@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class })
 public class AadB2cAutoConfiguration {
 
     private final RestTemplateBuilder restTemplateBuilder;
@@ -42,7 +42,7 @@ public class AadB2cAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     AadB2cAuthorizationRequestResolver b2cOAuth2AuthorizationRequestResolver(ClientRegistrationRepository repository,
-                                                                             AadB2cProperties properties) {
+        AadB2cProperties properties) {
         return new AadB2cAuthorizationRequestResolver(repository, properties);
     }
 
@@ -55,7 +55,7 @@ public class AadB2cAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     AadB2cOidcLoginConfigurer b2cLoginConfigurer(AadB2cLogoutSuccessHandler handler,
-                                                 AadB2cAuthorizationRequestResolver resolver) {
+        AadB2cAuthorizationRequestResolver resolver) {
         return new AadB2cOidcLoginConfigurer(handler, resolver, null, restTemplateBuilder);
     }
 

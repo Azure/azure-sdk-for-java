@@ -32,14 +32,15 @@ import static org.junit.Assert.assertEquals;
 @ContextConfiguration(classes = TestRepositoryConfig.class)
 public class ReactiveHierarchicalPartitionKeyRepositoryIT {
 
-    private static final HierarchicalPartitionKeyEntity HIERARCHICAL_ENTITY_1 =
-        new HierarchicalPartitionKeyEntity("id_1", "John", "Doe", "12345");
+    private static final HierarchicalPartitionKeyEntity HIERARCHICAL_ENTITY_1
+        = new HierarchicalPartitionKeyEntity("id_1", "John", "Doe", "12345");
 
-    private static final HierarchicalPartitionKeyEntity HIERARCHICAL_ENTITY_2 =
-        new HierarchicalPartitionKeyEntity("id_2", "Michael", "Smith", "23456");
+    private static final HierarchicalPartitionKeyEntity HIERARCHICAL_ENTITY_2
+        = new HierarchicalPartitionKeyEntity("id_2", "Michael", "Smith", "23456");
 
     @ClassRule
-    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+    public static final ReactiveIntegrationTestCollectionManager collectionManager
+        = new ReactiveIntegrationTestCollectionManager();
 
     private static CosmosEntityInformation<HierarchicalPartitionKeyEntity, String> hierarchicalPartitionKeyEntityInformation
         = new CosmosEntityInformation<>(HierarchicalPartitionKeyEntity.class);
@@ -51,7 +52,8 @@ public class ReactiveHierarchicalPartitionKeyRepositoryIT {
     ReactiveHierarchicalPartitionKeyRepository repository;
 
     @BeforeClass
-    public static void init() { }
+    public static void init() {
+    }
 
     @Before
     public void setUp() {
@@ -72,7 +74,8 @@ public class ReactiveHierarchicalPartitionKeyRepositoryIT {
 
     @Test
     public void testFindAll() {
-        Flux<HierarchicalPartitionKeyEntity> saveEntities = repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
+        Flux<HierarchicalPartitionKeyEntity> saveEntities
+            = repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
         StepVerifier.create(saveEntities).expectNextCount(2).verifyComplete();
 
         Flux<HierarchicalPartitionKeyEntity> resultFlux = repository.findAll();
@@ -84,11 +87,11 @@ public class ReactiveHierarchicalPartitionKeyRepositoryIT {
 
     @Test
     public void testFindAllByPartitionKey() {
-        Flux<HierarchicalPartitionKeyEntity> saveEntities = repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
+        Flux<HierarchicalPartitionKeyEntity> saveEntities
+            = repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
         StepVerifier.create(saveEntities).expectNextCount(2).verifyComplete();
 
-        PartitionKey pk = new PartitionKeyBuilder()
-            .add(HIERARCHICAL_ENTITY_1.getId())
+        PartitionKey pk = new PartitionKeyBuilder().add(HIERARCHICAL_ENTITY_1.getId())
             .add(HIERARCHICAL_ENTITY_1.getFirstName())
             .add(HIERARCHICAL_ENTITY_1.getLastName())
             .build();
@@ -100,11 +103,11 @@ public class ReactiveHierarchicalPartitionKeyRepositoryIT {
 
     @Test
     public void testFindByIdAndPartitionKey() {
-        Flux<HierarchicalPartitionKeyEntity> saveEntities = repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
+        Flux<HierarchicalPartitionKeyEntity> saveEntities
+            = repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
         StepVerifier.create(saveEntities).expectNextCount(2).verifyComplete();
 
-        PartitionKey pk = new PartitionKeyBuilder()
-            .add(HIERARCHICAL_ENTITY_2.getId())
+        PartitionKey pk = new PartitionKeyBuilder().add(HIERARCHICAL_ENTITY_2.getId())
             .add(HIERARCHICAL_ENTITY_2.getFirstName())
             .add(HIERARCHICAL_ENTITY_2.getLastName())
             .build();
@@ -116,11 +119,11 @@ public class ReactiveHierarchicalPartitionKeyRepositoryIT {
 
     @Test
     public void testDeleteByIdAndPartitionKey() {
-        Flux<HierarchicalPartitionKeyEntity> saveEntities = repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
+        Flux<HierarchicalPartitionKeyEntity> saveEntities
+            = repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
         StepVerifier.create(saveEntities).expectNextCount(2).verifyComplete();
 
-        PartitionKey pk = new PartitionKeyBuilder()
-            .add(HIERARCHICAL_ENTITY_1.getId())
+        PartitionKey pk = new PartitionKeyBuilder().add(HIERARCHICAL_ENTITY_1.getId())
             .add(HIERARCHICAL_ENTITY_1.getFirstName())
             .add(HIERARCHICAL_ENTITY_1.getLastName())
             .build();
@@ -135,7 +138,8 @@ public class ReactiveHierarchicalPartitionKeyRepositoryIT {
 
     @Test
     public void testDeleteByEntity() {
-        Flux<HierarchicalPartitionKeyEntity> saveEntities = repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
+        Flux<HierarchicalPartitionKeyEntity> saveEntities
+            = repository.saveAll(Arrays.asList(HIERARCHICAL_ENTITY_1, HIERARCHICAL_ENTITY_2));
         StepVerifier.create(saveEntities).expectNextCount(2).verifyComplete();
 
         Mono<Void> deleteMono = repository.delete(HIERARCHICAL_ENTITY_2);

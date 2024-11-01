@@ -50,8 +50,7 @@ public class UUIDIdDomain {
             return false;
         }
         UUIDIdDomain that = (UUIDIdDomain) o;
-        return Objects.equals(number, that.number)
-            && Objects.equals(name, that.name);
+        return Objects.equals(number, that.number) && Objects.equals(name, that.name);
     }
 
     @Override
@@ -61,12 +60,6 @@ public class UUIDIdDomain {
 
     @Override
     public String toString() {
-        return "UUIDIdDomain{"
-            + "number="
-            + number
-            + ", name='"
-            + name
-            + '\''
-            + '}';
+        return "UUIDIdDomain{" + "number=" + number + ", name='" + name + '\'' + '}';
     }
 }

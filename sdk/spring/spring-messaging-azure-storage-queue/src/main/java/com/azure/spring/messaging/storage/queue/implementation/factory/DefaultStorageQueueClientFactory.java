@@ -32,9 +32,10 @@ public final class DefaultStorageQueueClientFactory implements StorageQueueClien
      * @param storageQueueProperties the storage queue properties
      */
     public DefaultStorageQueueClientFactory(@NonNull StorageQueueProperties storageQueueProperties) {
-        QueueServiceClientBuilderFactory queueServiceClientBuilderFactory =
-            new QueueServiceClientBuilderFactory(storageQueueProperties);
-        queueServiceClientBuilderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_STORAGE_QUEUE);
+        QueueServiceClientBuilderFactory queueServiceClientBuilderFactory
+            = new QueueServiceClientBuilderFactory(storageQueueProperties);
+        queueServiceClientBuilderFactory
+            .setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_STORAGE_QUEUE);
         this.queueServiceAsyncClient = queueServiceClientBuilderFactory.build().buildAsyncClient();
     }
 

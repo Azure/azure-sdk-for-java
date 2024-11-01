@@ -5,7 +5,6 @@ package com.azure.spring.cloud.core.implementation.connectionstring;
 
 import java.net.URI;
 
-
 public class EventHubsConnectionString {
 
     private final URI endpointUri;

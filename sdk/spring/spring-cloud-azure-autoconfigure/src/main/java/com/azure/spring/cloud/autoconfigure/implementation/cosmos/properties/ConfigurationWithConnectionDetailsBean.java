@@ -21,9 +21,7 @@ class ConfigurationWithConnectionDetailsBean {
     private final AzureGlobalProperties globalProperties;
     private final AzureCosmosConnectionDetails connectionDetails;
 
-    ConfigurationWithConnectionDetailsBean(
-        Environment environment,
-        AzureGlobalProperties globalProperties,
+    ConfigurationWithConnectionDetailsBean(Environment environment, AzureGlobalProperties globalProperties,
         AzureCosmosConnectionDetails connectionDetails) {
         this.environment = environment;
         this.globalProperties = globalProperties;
@@ -32,8 +30,8 @@ class ConfigurationWithConnectionDetailsBean {
 
     @Bean
     AzureCosmosProperties azureCosmosProperties() {
-        AzureCosmosProperties propertiesLoadFromGlobalProperties =
-            AzureGlobalPropertiesUtils.loadProperties(globalProperties, new AzureCosmosProperties());
+        AzureCosmosProperties propertiesLoadFromGlobalProperties
+            = AzureGlobalPropertiesUtils.loadProperties(globalProperties, new AzureCosmosProperties());
         BindResult<AzureCosmosProperties> bindResult = Binder.get(environment)
             .bind(AzureCosmosProperties.PREFIX, Bindable.ofInstance(propertiesLoadFromGlobalProperties));
         AzureCosmosProperties properties = bindResult.isBound() ? bindResult.get() : propertiesLoadFromGlobalProperties;

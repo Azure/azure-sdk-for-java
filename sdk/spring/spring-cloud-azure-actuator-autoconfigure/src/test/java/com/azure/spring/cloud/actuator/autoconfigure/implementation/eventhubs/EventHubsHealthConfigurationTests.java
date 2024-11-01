@@ -16,17 +16,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 class EventHubsHealthConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withPropertyValues(
-            "spring.cloud.azure.eventhubs.namespace=test-namespace",
+        .withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-namespace",
             "spring.cloud.azure.eventhubs.event-hub-name=test-eventhus-name",
             "spring.cloud.azure.eventhubs.consumer.consumer-group=test-consumer-group",
             "spring.cloud.azure.eventhubs.consumer.namespace=test-namespace",
-            "spring.cloud.azure.eventhubs.producer.namespace=test-namespace"
-        )
+            "spring.cloud.azure.eventhubs.producer.namespace=test-namespace")
         .withBean(AzureGlobalProperties.class)
         .withBean(EventHubClientBuilder.class)
-        .withConfiguration(AutoConfigurations.of(AzureEventHubsAutoConfiguration.class,
-            EventHubsHealthConfiguration.class));
+        .withConfiguration(
+            AutoConfigurations.of(AzureEventHubsAutoConfiguration.class, EventHubsHealthConfiguration.class));
 
     @Test
     void runShouldCreateIndicator() {

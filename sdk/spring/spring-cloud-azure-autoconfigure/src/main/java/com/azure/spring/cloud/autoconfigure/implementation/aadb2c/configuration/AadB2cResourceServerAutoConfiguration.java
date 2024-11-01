@@ -44,7 +44,7 @@ import java.util.List;
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
-@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class})
+@Import({ AadB2cPropertiesConfiguration.class, AadB2cOAuth2ClientConfiguration.class })
 public class AadB2cResourceServerAutoConfiguration {
 
     private final AadB2cProperties properties;
@@ -70,12 +70,8 @@ public class AadB2cResourceServerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     JWTClaimsSetAwareJWSKeySelector<SecurityContext> aadIssuerJwsKeySelector(
-        AadTrustedIssuerRepository aadTrustedIssuerRepository,
-        ResourceRetriever resourceRetriever) {
-        return new AadIssuerJwsKeySelector(
-            restTemplateBuilder,
-            aadTrustedIssuerRepository,
-            resourceRetriever);
+        AadTrustedIssuerRepository aadTrustedIssuerRepository, ResourceRetriever resourceRetriever) {
+        return new AadIssuerJwsKeySelector(restTemplateBuilder, aadTrustedIssuerRepository, resourceRetriever);
     }
 
     @Bean
@@ -89,7 +85,7 @@ public class AadB2cResourceServerAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     JwtDecoder jwtDecoder(JWTProcessor<SecurityContext> jwtProcessor,
-                          AadTrustedIssuerRepository trustedIssuerRepository) {
+        AadTrustedIssuerRepository trustedIssuerRepository) {
         NimbusJwtDecoder decoder = new NimbusJwtDecoder(jwtProcessor);
         List<OAuth2TokenValidator<Jwt>> validators = new ArrayList<>();
         List<String> validAudiences = new ArrayList<>();
@@ -108,4 +104,3 @@ public class AadB2cResourceServerAutoConfiguration {
         return decoder;
     }
 }
-

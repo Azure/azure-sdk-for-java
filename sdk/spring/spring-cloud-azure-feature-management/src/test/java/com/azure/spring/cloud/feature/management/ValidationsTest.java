@@ -54,8 +54,8 @@ public class ValidationsTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ValidationsTest.class);
 
-    private static final ObjectMapper OBJECT_MAPPER = JsonMapper.builder()
-        .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+    private static final ObjectMapper OBJECT_MAPPER
+        = JsonMapper.builder().configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     private static final String TEST_CASE_FOLDER_PATH = "validations-tests";
 
@@ -94,8 +94,8 @@ public class ValidationsTest {
         assert folderUrl != null;
 
         final File folderFile = new File(folderUrl.getFile());
-        final File[] filteredFiles = folderFile
-            .listFiles(pathname -> pathname.getName().toLowerCase().contains(fileNameFilter));
+        final File[] filteredFiles
+            = folderFile.listFiles(pathname -> pathname.getName().toLowerCase().contains(fileNameFilter));
         assert filteredFiles != null;
 
         Arrays.sort(filteredFiles, Comparator.comparing(File::getName));
@@ -104,8 +104,8 @@ public class ValidationsTest {
 
     private List<ValidationTestCase> readTestcasesFromFile(File testFile) throws IOException {
         final String jsonString = Files.readString(testFile.toPath());
-        final CollectionType typeReference = TypeFactory.defaultInstance().constructCollectionType(List.class,
-            ValidationTestCase.class);
+        final CollectionType typeReference
+            = TypeFactory.defaultInstance().constructCollectionType(List.class, ValidationTestCase.class);
         return OBJECT_MAPPER.readValue(jsonString, typeReference);
     }
 
@@ -153,7 +153,7 @@ public class ValidationsTest {
         for (ValidationTestCase testCase : testCases) {
             LOGGER.debug("Test case : " + testCase.getDescription());
             if (hasException(testCase)) { // TODO(mametcal). Currently we didn't throw the exception when parameter is
-                                          // invalid
+                                         // invalid
                 assertNull(managementProperties.getOnOff().get(testCase.getFeatureFlagName()));
                 continue;
             }

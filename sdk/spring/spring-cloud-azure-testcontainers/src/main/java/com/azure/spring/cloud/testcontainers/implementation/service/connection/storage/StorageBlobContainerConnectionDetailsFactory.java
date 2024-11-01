@@ -18,7 +18,8 @@ class StorageBlobContainerConnectionDetailsFactory
     }
 
     @Override
-    protected AzureStorageBlobConnectionDetails getContainerConnectionDetails(ContainerConnectionSource<Container<?>> source) {
+    protected AzureStorageBlobConnectionDetails
+        getContainerConnectionDetails(ContainerConnectionSource<Container<?>> source) {
         return new StorageBlobContainerConnectionDetails(source);
     }
 

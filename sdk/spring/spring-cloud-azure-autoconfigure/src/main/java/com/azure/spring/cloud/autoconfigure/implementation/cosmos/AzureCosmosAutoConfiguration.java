@@ -16,10 +16,7 @@ import org.springframework.context.annotation.Import;
  *
  * @since 4.0.0
  */
-@Import({
-    AzureCosmosPropertiesConfiguration.class,
-    CosmosClientConfiguration.class
-})
+@Import({ AzureCosmosPropertiesConfiguration.class, CosmosClientConfiguration.class })
 @ConditionalOnClass(CosmosClientBuilder.class)
 public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase {
 

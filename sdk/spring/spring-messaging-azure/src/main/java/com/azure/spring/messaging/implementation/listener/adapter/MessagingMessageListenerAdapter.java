@@ -48,10 +48,9 @@ public abstract class MessagingMessageListenerAdapter {
 
     protected final String createMessagingErrorMessage(String description) {
         InvocableHandlerMethod validHandlerMethod = getHandlerMethod();
-        return description + "\n"
-            + "Endpoint handler details:\n"
-            + "Method [" + validHandlerMethod.getMethod().toGenericString() + "]\n"
-            + "Bean [" + validHandlerMethod.getBean() + "]\n";
+        return description + "\n" + "Endpoint handler details:\n" + "Method ["
+            + validHandlerMethod.getMethod().toGenericString() + "]\n" + "Bean [" + validHandlerMethod.getBean()
+            + "]\n";
     }
 
     private Class<?> resolveMessagePayloadType(InvocableHandlerMethod method) {
@@ -115,7 +114,5 @@ public abstract class MessagingMessageListenerAdapter {
     public Class<?> getPayloadType() {
         return this.payloadType;
     }
-
-
 
 }

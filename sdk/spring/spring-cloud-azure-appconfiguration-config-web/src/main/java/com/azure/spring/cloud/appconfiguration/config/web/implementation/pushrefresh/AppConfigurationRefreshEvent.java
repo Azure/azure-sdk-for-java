@@ -42,7 +42,7 @@ public final class AppConfigurationRefreshEvent extends ApplicationEvent {
     public String getEndpoint() {
         return endpoint;
     }
-    
+
     /**
      * Sync Token for getting latest configurations.
      * 

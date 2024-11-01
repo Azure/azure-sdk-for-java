@@ -22,8 +22,11 @@ abstract class AbstractResourceCrudTests<T, K, P> {
     protected AbstractResourceCrud<T, K, P> crud;
 
     abstract AbstractResourceCrud<T, K, P> getResourceCrud();
+
     abstract void getStubManagementException(int statusCode, String exception);
+
     abstract void createStubManagementException();
+
     abstract K getKey();
 
     P getCreationProperties() {

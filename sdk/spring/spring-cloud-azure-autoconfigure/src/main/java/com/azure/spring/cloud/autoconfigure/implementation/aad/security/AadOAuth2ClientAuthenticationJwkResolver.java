@@ -45,8 +45,7 @@ public class AadOAuth2ClientAuthenticationJwkResolver implements OAuth2ClientAut
      * @param clientCertificatePath the client certificate path
      * @param clientCertificatePassword the client certificate password
      */
-    public AadOAuth2ClientAuthenticationJwkResolver(String clientCertificatePath,
-                                                    String clientCertificatePassword) {
+    public AadOAuth2ClientAuthenticationJwkResolver(String clientCertificatePath, String clientCertificatePassword) {
         Assert.notNull(clientCertificatePath, "clientCertificatePath cannot be null");
         Assert.notNull(clientCertificatePassword, "clientCertificatePassword cannot be null");
 
@@ -70,21 +69,19 @@ public class AadOAuth2ClientAuthenticationJwkResolver implements OAuth2ClientAut
                 PrivateKey privateKey = (PrivateKey) keyStore.getKey(alias, password);
                 X509Certificate x509Certificate = (X509Certificate) keyStore.getCertificate(alias);
                 PublicKey publicKey = x509Certificate.getPublicKey();
-                return new RSAKey.Builder((RSAPublicKey) publicKey)
-                    .privateKey(privateKey)
+                return new RSAKey.Builder((RSAPublicKey) publicKey).privateKey(privateKey)
                     .x509CertThumbprint(Base64URL.encode(getX5t(x509Certificate)))
                     .keyID(UUID.randomUUID().toString())
                     .build();
-            } catch (KeyStoreException | IOException | NoSuchAlgorithmException
-                     | CertificateException | UnrecoverableKeyException e) {
+            } catch (KeyStoreException | IOException | NoSuchAlgorithmException | CertificateException
+                | UnrecoverableKeyException e) {
                 LOGGER.error("Resolve RSAKey exception.", e);
             }
         }
         return null;
     }
 
-    private byte[] getX5t(X509Certificate cert)
-        throws NoSuchAlgorithmException, CertificateEncodingException {
+    private byte[] getX5t(X509Certificate cert) throws NoSuchAlgorithmException, CertificateEncodingException {
         return getSHA1Byte(cert.getEncoded());
     }
 

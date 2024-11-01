@@ -30,7 +30,8 @@ public class ServiceBusMessageListenerContainerTests {
     @Mock
     private ServiceBusProcessorClient anotherProcessorClient;
 
-    private final ServiceBusRecordMessageListener listener = messageContext -> { };
+    private final ServiceBusRecordMessageListener listener = messageContext -> {
+    };
     private AutoCloseable closeable;
     private final String subscription = "subscription";
     private final String anotherSubscription = "subscription2";
@@ -39,12 +40,12 @@ public class ServiceBusMessageListenerContainerTests {
     @BeforeEach
     void setUp() {
         this.closeable = MockitoAnnotations.openMocks(this);
-        when(this.mockProcessorFactory.createProcessor(eq(destination), eq(subscription), isA(ServiceBusContainerProperties.class)))
-            .thenReturn(this.oneProcessorClient);
+        when(this.mockProcessorFactory.createProcessor(eq(destination), eq(subscription),
+            isA(ServiceBusContainerProperties.class))).thenReturn(this.oneProcessorClient);
         when(this.mockProcessorFactory.createProcessor(eq(destination), isA(ServiceBusContainerProperties.class)))
             .thenReturn(this.oneProcessorClient);
-        when(this.mockProcessorFactory.createProcessor(eq(destination), eq(anotherSubscription), isA(ServiceBusContainerProperties.class)))
-            .thenReturn(this.anotherProcessorClient);
+        when(this.mockProcessorFactory.createProcessor(eq(destination), eq(anotherSubscription),
+            isA(ServiceBusContainerProperties.class))).thenReturn(this.anotherProcessorClient);
 
         doNothing().when(this.oneProcessorClient).stop();
         doNothing().when(this.oneProcessorClient).start();
@@ -65,8 +66,9 @@ public class ServiceBusMessageListenerContainerTests {
         containerProperties.setEntityName(destination);
         containerProperties.setMessageListener(listener);
 
-        ServiceBusMessageListenerContainer messageListenerContainer = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
-        
+        ServiceBusMessageListenerContainer messageListenerContainer
+            = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
+
         messageListenerContainer.start();
 
         verifySubscriberQueueCreatorCalled();
@@ -79,13 +81,15 @@ public class ServiceBusMessageListenerContainerTests {
         containerProperties.setEntityName(destination);
         containerProperties.setMessageListener(listener);
 
-        ServiceBusMessageListenerContainer messageListenerContainer = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
+        ServiceBusMessageListenerContainer messageListenerContainer
+            = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
 
         messageListenerContainer.start();
         verifySubscriberQueueCreatorCalled();
         verify(this.oneProcessorClient, times(1)).start();
 
-        ServiceBusMessageListenerContainer anotherMessageListenerContainer = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
+        ServiceBusMessageListenerContainer anotherMessageListenerContainer
+            = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
         anotherMessageListenerContainer.start();
         verifySubscriberQueueCreatorCalled();
         verify(this.oneProcessorClient, times(2)).start();
@@ -98,7 +102,8 @@ public class ServiceBusMessageListenerContainerTests {
         containerProperties.setSubscriptionName(subscription);
         containerProperties.setMessageListener(listener);
 
-        ServiceBusMessageListenerContainer messageListenerContainer = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
+        ServiceBusMessageListenerContainer messageListenerContainer
+            = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
         messageListenerContainer.start();
 
         verifySubscriberTopicCreatorCalled();
@@ -112,14 +117,16 @@ public class ServiceBusMessageListenerContainerTests {
         containerProperties.setSubscriptionName(subscription);
         containerProperties.setMessageListener(listener);
 
-        ServiceBusMessageListenerContainer messageListenerContainer = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
+        ServiceBusMessageListenerContainer messageListenerContainer
+            = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
 
         messageListenerContainer.start();
 
         verifySubscriberTopicCreatorCalled();
         verify(this.oneProcessorClient, times(1)).start();
 
-        ServiceBusMessageListenerContainer anotherMessageListenerContainer = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
+        ServiceBusMessageListenerContainer anotherMessageListenerContainer
+            = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
         anotherMessageListenerContainer.start();
 
         verifySubscriberTopicCreatorCalled();
@@ -133,7 +140,8 @@ public class ServiceBusMessageListenerContainerTests {
         containerProperties.setSubscriptionName(subscription);
         containerProperties.setMessageListener(listener);
 
-        ServiceBusMessageListenerContainer messageListenerContainer = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
+        ServiceBusMessageListenerContainer messageListenerContainer
+            = new ServiceBusMessageListenerContainer(mockProcessorFactory, containerProperties);
 
         messageListenerContainer.start();
 
@@ -145,7 +153,8 @@ public class ServiceBusMessageListenerContainerTests {
         anotherContainerProperties.setSubscriptionName(anotherSubscription);
         anotherContainerProperties.setMessageListener(listener);
 
-        ServiceBusMessageListenerContainer anotherMessageListenerContainer = new ServiceBusMessageListenerContainer(mockProcessorFactory, anotherContainerProperties);
+        ServiceBusMessageListenerContainer anotherMessageListenerContainer
+            = new ServiceBusMessageListenerContainer(mockProcessorFactory, anotherContainerProperties);
         anotherMessageListenerContainer.start();
 
         verifySubscriberTopicCreatorCalled();
@@ -155,11 +164,13 @@ public class ServiceBusMessageListenerContainerTests {
     }
 
     private void verifySubscriberTopicCreatorCalled() {
-        verify(this.mockProcessorFactory, atLeastOnce()).createProcessor(anyString(), anyString(), isA(ServiceBusContainerProperties.class));
+        verify(this.mockProcessorFactory, atLeastOnce()).createProcessor(anyString(), anyString(),
+            isA(ServiceBusContainerProperties.class));
     }
 
     private void verifySubscriberQueueCreatorCalled() {
-        verify(this.mockProcessorFactory, atLeastOnce()).createProcessor(anyString(), isA(ServiceBusContainerProperties.class));
+        verify(this.mockProcessorFactory, atLeastOnce()).createProcessor(anyString(),
+            isA(ServiceBusContainerProperties.class));
     }
 
 }

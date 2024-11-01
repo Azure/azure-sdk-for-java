@@ -33,9 +33,11 @@ public class NativeQueryGeneratorTest {
         sqlParameters.add(new SqlParameter("@firstName", "TREVOR"));
 
         SqlQuerySpec querySpec = new SqlQuerySpec("select * from a where a.firstName = @firstName", sqlParameters);
-        final SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, Sort.by(ASC, "id"));
+        final SqlQuerySpec sortedQuerySpec
+            = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, Sort.by(ASC, "id"));
 
-        Assert.assertEquals(sortedQuerySpec.getQueryText(), "select * from a where a.firstName = @firstName ORDER BY a.id ASC");
+        Assert.assertEquals(sortedQuerySpec.getQueryText(),
+            "select * from a where a.firstName = @firstName ORDER BY a.id ASC");
     }
 
     private static class EmptyQueryGenerator extends NativeQueryGenerator implements QuerySpecGenerator {

@@ -45,18 +45,17 @@ public @interface CosmosIndexingPolicy {
      * To include paths
      * @return String[]
      */
-    String[] includePaths() default {};
+    String[] includePaths() default { };
 
     /**
      * To exclude paths
      * @return String[]
      */
-    String[] excludePaths() default {};
-
+    String[] excludePaths() default { };
 
     /**
      * Composite Indexes
      * @return CompositeIndexDefinition[]
      */
-    CompositeIndex[] compositeIndexes() default {};
+    CompositeIndex[] compositeIndexes() default { };
 }

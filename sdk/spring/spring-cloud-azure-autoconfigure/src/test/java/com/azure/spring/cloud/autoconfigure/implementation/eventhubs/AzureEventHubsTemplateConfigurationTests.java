@@ -21,40 +21,37 @@ class AzureEventHubsTemplateConfigurationTests {
     @Test
     void disableEventHubsShouldNotConfigure() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.enabled=false",
-                "spring.cloud.azure.eventhubs.namespace=test-namespace"
-            )
-            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class));
+            .withPropertyValues("spring.cloud.azure.eventhubs.enabled=false",
+                "spring.cloud.azure.eventhubs.namespace=test-namespace")
+            .run(context -> assertThat(context)
+                .doesNotHaveBean(AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class));
     }
 
     @Test
     void withoutEventHubsTemplateShouldNotConfigure() {
-        this.contextRunner
-            .withClassLoader(new FilteredClassLoader(EventHubsTemplate.class))
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.namespace=test-namespace"
-            )
-            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class));
+        this.contextRunner.withClassLoader(new FilteredClassLoader(EventHubsTemplate.class))
+            .withPropertyValues("spring.cloud.azure.eventhubs.namespace=test-namespace")
+            .run(context -> assertThat(context)
+                .doesNotHaveBean(AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class));
     }
 
     @Test
     void withoutEventHubConnectionShouldNotConfigure() {
-        this.contextRunner
-            .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class));
+        this.contextRunner.run(context -> assertThat(context)
+            .doesNotHaveBean(AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class));
     }
 
     @Test
     void connectionInfoProvidedShouldConfigure() {
         this.contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
-            )
+            .withPropertyValues("spring.cloud.azure.eventhubs.connection-string="
+                + String.format(CONNECTION_STRING_FORMAT, "test-namespace"))
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubsTemplate.class);
                 assertThat(context).hasSingleBean(EventHubsProducerFactory.class);
-                assertThat(context).hasSingleBean(AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class);
+                assertThat(context)
+                    .hasSingleBean(AzureEventHubsMessagingAutoConfiguration.EventHubsTemplateConfiguration.class);
             });
     }
 

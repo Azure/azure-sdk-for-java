@@ -34,8 +34,8 @@ public class StorageFileShareHealthIndicator extends AbstractHealthIndicator {
     @Override
     protected void doHealthCheck(Health.Builder builder) {
         builder.withDetail(URL_FIELD, shareServiceAsyncClient.getFileServiceUrl());
-        Response<ShareServiceProperties> infoResponse = shareServiceAsyncClient.getPropertiesWithResponse()
-                                                                               .block(timeout);
+        Response<ShareServiceProperties> infoResponse
+            = shareServiceAsyncClient.getPropertiesWithResponse().block(timeout);
         if (infoResponse != null) {
             builder.up();
         }

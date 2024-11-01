@@ -48,23 +48,21 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
     @Override
     protected void doHealthCheck(Builder builder) {
         if (database == null) {
-            builder.status(Status.UNKNOWN).withDetail("Database not configured",
-                "The option of `spring.cloud.azure.cosmos.database` is not configured!");
+            builder.status(Status.UNKNOWN)
+                .withDetail("Database not configured",
+                    "The option of `spring.cloud.azure.cosmos.database` is not configured!");
             return;
         }
 
-        CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(database)
-                                                                .read()
-                                                                .block(timeout);
+        CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(database).read().block(timeout);
 
         if (response == null) {
             throw new RuntimeException("Error occurred checking the database!");
         }
 
-        LOGGER.info("The health indicator cost {} RUs, endpoint: {}, database: {}",
-            response.getRequestCharge(), endpoint, database);
-        builder.up()
-               .withDetail(DATA_BASE_FIELD, database);
+        LOGGER.info("The health indicator cost {} RUs, endpoint: {}, database: {}", response.getRequestCharge(),
+            endpoint, database);
+        builder.up().withDetail(DATA_BASE_FIELD, database);
     }
 
     /**

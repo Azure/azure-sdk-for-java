@@ -42,14 +42,18 @@ public class ReactiveTeacherRepositoryIT {
 
     private static final String DEPARTMENT_LAST_NAME_2 = "LastName2";
 
-    private static final ReactiveTeacher TEACHER_1 = new ReactiveTeacher(TEACHER_ID_1, TEACHER_FIRST_NAME_1, DEPARTMENT_LAST_NAME_1);
+    private static final ReactiveTeacher TEACHER_1
+        = new ReactiveTeacher(TEACHER_ID_1, TEACHER_FIRST_NAME_1, DEPARTMENT_LAST_NAME_1);
 
-    private static final ReactiveTeacher TEACHER_2 = new ReactiveTeacher(TEACHER_ID_2, TEACHER_FIRST_NAME_1, DEPARTMENT_LAST_NAME_2);
+    private static final ReactiveTeacher TEACHER_2
+        = new ReactiveTeacher(TEACHER_ID_2, TEACHER_FIRST_NAME_1, DEPARTMENT_LAST_NAME_2);
 
-    private static final ReactiveTeacher TEACHER_3 = new ReactiveTeacher(TEACHER_ID_3, TEACHER_FIRST_NAME_2, DEPARTMENT_LAST_NAME_1);
+    private static final ReactiveTeacher TEACHER_3
+        = new ReactiveTeacher(TEACHER_ID_3, TEACHER_FIRST_NAME_2, DEPARTMENT_LAST_NAME_1);
 
     @ClassRule
-    public static final ReactiveIntegrationTestCollectionManager collectionManager = new ReactiveIntegrationTestCollectionManager();
+    public static final ReactiveIntegrationTestCollectionManager collectionManager
+        = new ReactiveIntegrationTestCollectionManager();
 
     @Autowired
     private ReactiveCosmosTemplate template;
@@ -119,7 +123,8 @@ public class ReactiveTeacherRepositoryIT {
 
         List<String> firstNames = new ArrayList<>();
         firstNames.add(TEACHER_FIRST_NAME_1);
-        final Flux<ReactiveTeacher> resultsAsc = repository.annotatedFindByFirstNamesWithSort(firstNames, Sort.by(Sort.Direction.DESC, "id"));
+        final Flux<ReactiveTeacher> resultsAsc
+            = repository.annotatedFindByFirstNamesWithSort(firstNames, Sort.by(Sort.Direction.DESC, "id"));
         StepVerifier.create(resultsAsc)
             .expectNextMatches(teacher -> teacher.getId().equals(TEACHER_ID_2))
             .expectNextMatches(teacher -> teacher.getId().equals(TEACHER_ID_1))
@@ -128,7 +133,8 @@ public class ReactiveTeacherRepositoryIT {
         List<String> firstNames2 = new ArrayList<>();
         firstNames2.add(TEACHER_FIRST_NAME_1);
         firstNames2.add(TEACHER_FIRST_NAME_2);
-        final Flux<ReactiveTeacher> resultsAsc2 = repository.annotatedFindByFirstNamesWithSort(firstNames2, Sort.by(Sort.Direction.DESC, "id"));
+        final Flux<ReactiveTeacher> resultsAsc2
+            = repository.annotatedFindByFirstNamesWithSort(firstNames2, Sort.by(Sort.Direction.DESC, "id"));
         StepVerifier.create(resultsAsc2)
             .expectNextMatches(teacher -> teacher.getId().equals(TEACHER_ID_3))
             .expectNextMatches(teacher -> teacher.getId().equals(TEACHER_ID_2))

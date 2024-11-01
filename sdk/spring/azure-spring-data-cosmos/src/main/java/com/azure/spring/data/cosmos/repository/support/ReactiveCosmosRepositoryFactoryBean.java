@@ -20,8 +20,7 @@ import java.io.Serializable;
  * @param <S> the domain type the repository manages.
  * @param <K> the type of the id of the entity the repository manages.
  */
-public class ReactiveCosmosRepositoryFactoryBean<T extends Repository<S, K>, S,
-    K extends Serializable>
+public class ReactiveCosmosRepositoryFactoryBean<T extends Repository<S, K>, S, K extends Serializable>
     extends RepositoryFactoryBeanSupport<T, S, K> {
 
     private ReactiveCosmosOperations cosmosOperations;

@@ -33,7 +33,6 @@ public abstract class SendOperationTests<O extends SendOperation> {
 
     protected abstract void setupError(String errorMessage);
 
-
     @Test
     public void testSend() {
         final Mono<Void> mono = this.sendOperation.sendAsync(destination, message);

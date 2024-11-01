@@ -53,9 +53,10 @@ public final class JdbcConnectionString {
         }
 
         Optional<DatabaseType> optionalDatabaseType = Arrays.stream(DatabaseType.values())
-                                                            .filter(databaseType -> this.jdbcUrl.startsWith(databaseType.getSchema() + ":"))
-                                                            .findAny();
-        this.databaseType = optionalDatabaseType.orElseThrow(() -> new AzureUnsupportedDatabaseTypeException(String.format(UNSUPPORTED_DATABASE_TYPE_STRING_FORMAT, this.jdbcUrl)));
+            .filter(databaseType -> this.jdbcUrl.startsWith(databaseType.getSchema() + ":"))
+            .findAny();
+        this.databaseType = optionalDatabaseType.orElseThrow(() -> new AzureUnsupportedDatabaseTypeException(
+            String.format(UNSUPPORTED_DATABASE_TYPE_STRING_FORMAT, this.jdbcUrl)));
 
         int pathQueryDelimiterIndex = this.jdbcUrl.indexOf(this.databaseType.getPathQueryDelimiter());
 

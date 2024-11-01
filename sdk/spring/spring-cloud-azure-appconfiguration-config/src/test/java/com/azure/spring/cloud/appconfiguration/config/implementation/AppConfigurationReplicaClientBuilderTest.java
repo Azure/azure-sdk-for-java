@@ -184,7 +184,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         clientBuilder.setEnvironment(envMock);
 
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
-        
+
         when(builderMock.addPolicy(Mockito.any())).thenReturn(builderMock);
         when(clientFactoryMock.build()).thenReturn(builderMock);
         when(builderMock.connectionString(Mockito.anyString())).thenReturn(builderMock);
@@ -208,8 +208,9 @@ public class AppConfigurationReplicaClientBuilderTest {
         clientBuilder = new AppConfigurationReplicaClientsBuilder(0, clientFactoryMock, false);
         clientBuilder.setEnvironment(envMock);
 
-        String message = assertThrows(IllegalArgumentException.class,
-            () -> clientBuilder.buildClients(configStore).get(0)).getMessage();
+        String message
+            = assertThrows(IllegalArgumentException.class, () -> clientBuilder.buildClients(configStore).get(0))
+                .getMessage();
 
         assertEquals("More than 1 connection method was set for connecting to App Configuration.", message);
     }
@@ -278,8 +279,8 @@ public class AppConfigurationReplicaClientBuilderTest {
         clientBuilder.setEnvironment(envMock);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> spy.buildClient("fake.test.config.io", configStore));
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> spy.buildClient("fake.test.config.io", configStore));
 
         assertEquals("java.net.MalformedURLException: no protocol: fake.test.config.io", exception.getMessage());
     }
@@ -291,8 +292,8 @@ public class AppConfigurationReplicaClientBuilderTest {
         clientBuilder.setEnvironment(envMock);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> spy.buildClient("fake.test.config.io", configStore));
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> spy.buildClient("fake.test.config.io", configStore));
 
         assertEquals("invalid connection string segment count", exception.getMessage());
     }
@@ -304,8 +305,8 @@ public class AppConfigurationReplicaClientBuilderTest {
         clientBuilder.setEnvironment(envMock);
         AppConfigurationReplicaClientsBuilder spy = Mockito.spy(clientBuilder);
 
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
-            () -> spy.buildClient("fake.test.config.io", configStore));
+        IllegalArgumentException exception
+            = assertThrows(IllegalArgumentException.class, () -> spy.buildClient("fake.test.config.io", configStore));
 
         assertEquals(
             "Could not parse 'connectionString'. Expected format: 'endpoint={endpoint};id={id};secret={secret}'. Actual:Not;A;Connection String",

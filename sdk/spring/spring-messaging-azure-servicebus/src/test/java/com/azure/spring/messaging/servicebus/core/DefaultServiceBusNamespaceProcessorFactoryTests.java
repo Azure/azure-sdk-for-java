@@ -21,8 +21,10 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
     private final String entityName = "test";
     private final String subscription = "subscription";
     private final String anotherSubscription = "subscription2";
-    private final ServiceBusRecordMessageListener listener = messageContext -> { };
-    private final ServiceBusErrorHandler errorHandler = errorContext -> { };
+    private final ServiceBusRecordMessageListener listener = messageContext -> {
+    };
+    private final ServiceBusErrorHandler errorHandler = errorContext -> {
+    };
     private int queueProcessorAddedTimes = 0;
     private int topicProcessorAddedTimes = 0;
 
@@ -44,7 +46,8 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
 
     @Test
     void testGetServiceBusProcessorClientForQueue() {
-        ServiceBusProcessorClient processorClient = processorFactory.createProcessor(entityName, listener, errorHandler);
+        ServiceBusProcessorClient processorClient
+            = processorFactory.createProcessor(entityName, listener, errorHandler);
         assertNotNull(processorClient);
         assertEquals(0, topicProcessorAddedTimes);
         assertEquals(1, queueProcessorAddedTimes);
@@ -52,7 +55,8 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
 
     @Test
     void testGetServiceBusProcessorClientForTopic() {
-        ServiceBusProcessorClient processorClient = processorFactory.createProcessor(entityName, subscription, listener, errorHandler);
+        ServiceBusProcessorClient processorClient
+            = processorFactory.createProcessor(entityName, subscription, listener, errorHandler);
 
         assertNotNull(processorClient);
         assertEquals(1, topicProcessorAddedTimes);
@@ -70,7 +74,8 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
 
     @Test
     void testCreateServiceBusProcessorClientTopicTwice() {
-        ServiceBusProcessorClient client = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
+        ServiceBusProcessorClient client
+            = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
         assertNotNull(client);
 
         processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
@@ -79,10 +84,12 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
 
     @Test
     void testRecreateServiceBusProcessorClient() {
-        final ServiceBusProcessorClient client = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
+        final ServiceBusProcessorClient client
+            = processorFactory.createProcessor(entityName, subscription, this.listener, errorHandler);
         assertNotNull(client);
 
-        ServiceBusProcessorClient anotherClient = processorFactory.createProcessor(entityName, anotherSubscription, this.listener, errorHandler);
+        ServiceBusProcessorClient anotherClient
+            = processorFactory.createProcessor(entityName, anotherSubscription, this.listener, errorHandler);
         assertNotNull(anotherClient);
         assertEquals(2, topicProcessorAddedTimes);
     }
@@ -92,7 +99,8 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         AtomicInteger shareClientCalledTimes = new AtomicInteger();
         AtomicInteger noneSessionClientCalledTimes = new AtomicInteger();
         AtomicInteger sessionClientCalledTimes = new AtomicInteger();
-        DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
+        DefaultServiceBusNamespaceProcessorFactory factory
+            = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
 
         factory.addServiceBusClientBuilderCustomizer(builder -> shareClientCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer(builder -> noneSessionClientCalledTimes.getAndIncrement());
@@ -132,7 +140,8 @@ public class DefaultServiceBusNamespaceProcessorFactoryTests {
         AtomicInteger shareClientCalledTimes = new AtomicInteger();
         AtomicInteger noneSessionClientCalledTimes = new AtomicInteger();
         AtomicInteger sessionClientCalledTimes = new AtomicInteger();
-        DefaultServiceBusNamespaceProcessorFactory factory = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
+        DefaultServiceBusNamespaceProcessorFactory factory
+            = (DefaultServiceBusNamespaceProcessorFactory) this.processorFactory;
 
         factory.addServiceBusClientBuilderCustomizer(builder -> shareClientCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer("queue-1", null, builder -> noneSessionClientCalledTimes.getAndIncrement());

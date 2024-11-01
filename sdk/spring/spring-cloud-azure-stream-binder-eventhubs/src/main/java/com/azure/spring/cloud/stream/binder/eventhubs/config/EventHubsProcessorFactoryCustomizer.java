@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
-
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 
 /**

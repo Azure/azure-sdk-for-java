@@ -21,7 +21,7 @@ public class CosmosDataConfiguration extends AbstractCosmosConfiguration {
     private final ResponseDiagnosticsProcessor responseDiagnosticsProcessor;
 
     CosmosDataConfiguration(AzureCosmosProperties cosmosProperties,
-                            @Autowired(required = false) ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
+        @Autowired(required = false) ResponseDiagnosticsProcessor responseDiagnosticsProcessor) {
         this.cosmosProperties = cosmosProperties;
         this.responseDiagnosticsProcessor = responseDiagnosticsProcessor;
     }

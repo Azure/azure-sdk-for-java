@@ -97,16 +97,16 @@ public class IntegerIdDomainRepositoryIT {
         final Set<IntegerIdDomain> entitiesToSave = Collections.singleton(DOMAIN);
         this.repository.saveAll(entitiesToSave);
 
-        final Set<IntegerIdDomain> savedEntities = StreamSupport.stream(this.repository.findAll().spliterator(), false)
-                                                                .collect(Collectors.toSet());
+        final Set<IntegerIdDomain> savedEntities
+            = StreamSupport.stream(this.repository.findAll().spliterator(), false).collect(Collectors.toSet());
 
         Assert.assertTrue(entitiesToSave.containsAll(savedEntities));
     }
 
     @Test
     public void testFindAllById() {
-        final Iterable<IntegerIdDomain> allById =
-            this.repository.findAllById(Collections.singleton(DOMAIN.getNumber()));
+        final Iterable<IntegerIdDomain> allById
+            = this.repository.findAllById(Collections.singleton(DOMAIN.getNumber()));
         Assert.assertTrue(allById.iterator().hasNext());
     }
 
@@ -161,17 +161,15 @@ public class IntegerIdDomainRepositoryIT {
         this.repository.save(DOMAIN);
 
         final Sort ascSort = Sort.by(Sort.Direction.ASC, "number");
-        final List<IntegerIdDomain> ascending = StreamSupport
-            .stream(this.repository.findAll(ascSort).spliterator(), false)
-            .collect(Collectors.toList());
+        final List<IntegerIdDomain> ascending
+            = StreamSupport.stream(this.repository.findAll(ascSort).spliterator(), false).collect(Collectors.toList());
         Assert.assertEquals(2, ascending.size());
         Assert.assertEquals(DOMAIN, ascending.get(0));
         Assert.assertEquals(other, ascending.get(1));
 
         final Sort descSort = Sort.by(Sort.Direction.DESC, "number");
-        final List<IntegerIdDomain> descending = StreamSupport
-            .stream(this.repository.findAll(descSort).spliterator(), false)
-            .collect(Collectors.toList());
+        final List<IntegerIdDomain> descending
+            = StreamSupport.stream(this.repository.findAll(descSort).spliterator(), false).collect(Collectors.toList());
         Assert.assertEquals(2, descending.size());
         Assert.assertEquals(other, descending.get(0));
         Assert.assertEquals(DOMAIN, descending.get(1));
@@ -234,8 +232,7 @@ public class IntegerIdDomainRepositoryIT {
                 return false;
             }
             InvalidDomain that = (InvalidDomain) o;
-            return count == that.count
-                && Objects.equals(location, that.location);
+            return count == that.count && Objects.equals(location, that.location);
         }
 
         @Override
@@ -245,13 +242,7 @@ public class IntegerIdDomainRepositoryIT {
 
         @Override
         public String toString() {
-            return "InvalidDomain{"
-                + "count="
-                + count
-                + ", location='"
-                + location
-                + '\''
-                + '}';
+            return "InvalidDomain{" + "count=" + count + ", location='" + location + '\'' + '}';
         }
     }
 }

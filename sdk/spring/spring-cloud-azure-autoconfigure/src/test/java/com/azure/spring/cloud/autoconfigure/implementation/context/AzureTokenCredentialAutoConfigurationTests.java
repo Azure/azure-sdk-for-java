@@ -52,23 +52,20 @@ class AzureTokenCredentialAutoConfigurationTests {
 
     @Test
     void byDefaultShouldConfigure() {
-        contextRunner
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
-            .run(context -> {
-                assertThat(context).hasSingleBean(DefaultAzureCredentialBuilderFactory.class);
-                assertThat(context).hasSingleBean(TokenCredential.class);
+        contextRunner.withBean(AzureGlobalProperties.class, AzureGlobalProperties::new).run(context -> {
+            assertThat(context).hasSingleBean(DefaultAzureCredentialBuilderFactory.class);
+            assertThat(context).hasSingleBean(TokenCredential.class);
 
-                final TokenCredential credential = context.getBean(TokenCredential.class);
-                assertTrue(credential instanceof DefaultAzureCredential);
+            final TokenCredential credential = context.getBean(TokenCredential.class);
+            assertTrue(credential instanceof DefaultAzureCredential);
 
-            });
+        });
     }
 
     @Test
     void customizerShouldBeCalled() {
         DefaultTokenCredentialBuilderCustomizer customizer = new DefaultTokenCredentialBuilderCustomizer();
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+        this.contextRunner.withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", DefaultTokenCredentialBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", DefaultTokenCredentialBuilderCustomizer.class, () -> customizer)
             .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
@@ -78,8 +75,7 @@ class AzureTokenCredentialAutoConfigurationTests {
     void otherCustomizerShouldNotBeCalled() {
         DefaultTokenCredentialBuilderCustomizer customizer = new DefaultTokenCredentialBuilderCustomizer();
         OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
-        this.contextRunner
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+        this.contextRunner.withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean("customizer1", DefaultTokenCredentialBuilderCustomizer.class, () -> customizer)
             .withBean("customizer2", DefaultTokenCredentialBuilderCustomizer.class, () -> customizer)
             .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
@@ -93,32 +89,34 @@ class AzureTokenCredentialAutoConfigurationTests {
     void httpClientOptionsShouldConfigure() {
         AzureGlobalProperties azureGlobalProperties = new AzureGlobalProperties();
         azureGlobalProperties.getClient().getHttp().setConnectTimeout(Duration.ofSeconds(2));
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureGlobalProperties)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.class);
+        contextRunner.withBean(AzureGlobalProperties.class, () -> azureGlobalProperties).run(context -> {
+            assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.class);
 
-                AzureTokenCredentialAutoConfiguration configuration = context.getBean(AzureTokenCredentialAutoConfiguration.class);
-                AzureTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties = (AzureTokenCredentialAutoConfiguration.IdentityClientProperties) ReflectionTestUtils.getField(configuration, "identityClientProperties");
-                assertThat(identityClientProperties).isNotNull();
-                assertThat(identityClientProperties.getClient().getConnectTimeout()).isEqualTo(Duration.ofSeconds(2));
-            });
+            AzureTokenCredentialAutoConfiguration configuration
+                = context.getBean(AzureTokenCredentialAutoConfiguration.class);
+            AzureTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties
+                = (AzureTokenCredentialAutoConfiguration.IdentityClientProperties) ReflectionTestUtils
+                    .getField(configuration, "identityClientProperties");
+            assertThat(identityClientProperties).isNotNull();
+            assertThat(identityClientProperties.getClient().getConnectTimeout()).isEqualTo(Duration.ofSeconds(2));
+        });
     }
 
     @Test
     void httpRetryOptionsShouldConfigure() {
         AzureGlobalProperties azureGlobalProperties = new AzureGlobalProperties();
         azureGlobalProperties.getRetry().getExponential().setMaxRetries(2);
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureGlobalProperties)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.class);
+        contextRunner.withBean(AzureGlobalProperties.class, () -> azureGlobalProperties).run(context -> {
+            assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.class);
 
-                AzureTokenCredentialAutoConfiguration configuration = context.getBean(AzureTokenCredentialAutoConfiguration.class);
-                AzureTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties = (AzureTokenCredentialAutoConfiguration.IdentityClientProperties) ReflectionTestUtils.getField(configuration, "identityClientProperties");
-                assertThat(identityClientProperties).isNotNull();
-                assertThat(identityClientProperties.getRetry().getExponential().getMaxRetries()).isEqualTo(2);
-            });
+            AzureTokenCredentialAutoConfiguration configuration
+                = context.getBean(AzureTokenCredentialAutoConfiguration.class);
+            AzureTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties
+                = (AzureTokenCredentialAutoConfiguration.IdentityClientProperties) ReflectionTestUtils
+                    .getField(configuration, "identityClientProperties");
+            assertThat(identityClientProperties).isNotNull();
+            assertThat(identityClientProperties.getRetry().getExponential().getMaxRetries()).isEqualTo(2);
+        });
     }
 
     @Test
@@ -127,31 +125,29 @@ class AzureTokenCredentialAutoConfigurationTests {
 
         azureGlobalProperties.getProxy().setHostname("test-host");
         azureGlobalProperties.getProxy().getHttp().setNonProxyHosts("test-non-proxy-host");
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> azureGlobalProperties)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.class);
+        contextRunner.withBean(AzureGlobalProperties.class, () -> azureGlobalProperties).run(context -> {
+            assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.class);
 
-                AzureTokenCredentialAutoConfiguration configuration = context.getBean(AzureTokenCredentialAutoConfiguration.class);
-                AzureTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties = (AzureTokenCredentialAutoConfiguration.IdentityClientProperties) ReflectionTestUtils.getField(configuration, "identityClientProperties");
-                assertThat(identityClientProperties).isNotNull();
-                assertThat(identityClientProperties.getProxy().getHostname()).isEqualTo("test-host");
-                assertThat(identityClientProperties.getProxy().getNonProxyHosts()).isEqualTo("test-non-proxy-host");
-            });
+            AzureTokenCredentialAutoConfiguration configuration
+                = context.getBean(AzureTokenCredentialAutoConfiguration.class);
+            AzureTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties
+                = (AzureTokenCredentialAutoConfiguration.IdentityClientProperties) ReflectionTestUtils
+                    .getField(configuration, "identityClientProperties");
+            assertThat(identityClientProperties).isNotNull();
+            assertThat(identityClientProperties.getProxy().getHostname()).isEqualTo("test-host");
+            assertThat(identityClientProperties.getProxy().getNonProxyHosts()).isEqualTo("test-non-proxy-host");
+        });
     }
-
 
     @Test
     void emptyPropertiesShouldNotResolve() {
         AzureGlobalProperties properties = new AzureGlobalProperties();
 
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> properties)
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
-                    AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                    Assertions.assertNull(resolver.resolve(properties));
-                });
+        contextRunner.withBean(AzureGlobalProperties.class, () -> properties).run(context -> {
+            assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+            AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+            Assertions.assertNull(resolver.resolve(properties));
+        });
     }
 
     @Test
@@ -160,13 +156,11 @@ class AzureTokenCredentialAutoConfigurationTests {
         properties.getCredential().setClientId("test-client-id");
         properties.getCredential().setClientSecret("test-client-secret");
         properties.getProfile().setTenantId("test-tenant-id");
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> properties)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
-                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                assertEquals(ClientSecretCredential.class, resolver.resolve(properties).getClass());
-            });
+        contextRunner.withBean(AzureGlobalProperties.class, () -> properties).run(context -> {
+            assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+            AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+            assertEquals(ClientSecretCredential.class, resolver.resolve(properties).getClass());
+        });
     }
 
     @Test
@@ -175,13 +169,11 @@ class AzureTokenCredentialAutoConfigurationTests {
         properties.getCredential().setClientId("test-client-id");
         properties.getCredential().setClientCertificatePath("test-client-cert-path");
         properties.getProfile().setTenantId("test-tenant-id");
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> properties)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
-                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                assertEquals(ClientCertificateCredential.class, resolver.resolve(properties).getClass());
-            });
+        contextRunner.withBean(AzureGlobalProperties.class, () -> properties).run(context -> {
+            assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+            AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+            assertEquals(ClientCertificateCredential.class, resolver.resolve(properties).getClass());
+        });
     }
 
     @Test
@@ -189,26 +181,22 @@ class AzureTokenCredentialAutoConfigurationTests {
         AzureGlobalProperties properties = new AzureGlobalProperties();
         properties.getCredential().setClientId("test-mi-client-id");
         properties.getCredential().setManagedIdentityEnabled(true);
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> properties)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
-                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
-            });
+        contextRunner.withBean(AzureGlobalProperties.class, () -> properties).run(context -> {
+            assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+            AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+            assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
+        });
     }
 
     @Test
     void shouldResolveSystemAssignedMITokenCredential() {
         AzureGlobalProperties properties = new AzureGlobalProperties();
         properties.getCredential().setManagedIdentityEnabled(true);
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> properties)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
-                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
-            });
+        contextRunner.withBean(AzureGlobalProperties.class, () -> properties).run(context -> {
+            assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+            AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+            assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());
+        });
     }
 
     @Test
@@ -217,33 +205,28 @@ class AzureTokenCredentialAutoConfigurationTests {
         properties.getCredential().setUsername("test-username");
         properties.getCredential().setPassword("test-password");
         properties.getCredential().setClientId("test-client-id");
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> properties)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
-                AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                assertEquals(UsernamePasswordCredential.class, resolver.resolve(properties).getClass());
-            });
+        contextRunner.withBean(AzureGlobalProperties.class, () -> properties).run(context -> {
+            assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+            AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
+            assertEquals(UsernamePasswordCredential.class, resolver.resolve(properties).getClass());
+        });
     }
 
     @Test
     void credentialBuilderFactoriesConfigured() {
         AzureGlobalProperties properties = new AzureGlobalProperties();
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> properties)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
-                assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
-                assertThat(context).hasSingleBean(ClientCertificateCredentialBuilderFactory.class);
-                assertThat(context).hasSingleBean(UsernamePasswordCredentialBuilderFactory.class);
-                assertThat(context).hasSingleBean(ManagedIdentityCredentialBuilderFactory.class);
-            });
+        contextRunner.withBean(AzureGlobalProperties.class, () -> properties).run(context -> {
+            assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
+            assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
+            assertThat(context).hasSingleBean(ClientCertificateCredentialBuilderFactory.class);
+            assertThat(context).hasSingleBean(UsernamePasswordCredentialBuilderFactory.class);
+            assertThat(context).hasSingleBean(ManagedIdentityCredentialBuilderFactory.class);
+        });
     }
 
     @Test
     void defaultCredentialThreadPoolShouldConfigureWhenMultiExecutorBeans() {
-        contextRunner
-            .withConfiguration(AutoConfigurations.of(MultiExecutorConfiguration.class))
+        contextRunner.withConfiguration(AutoConfigurations.of(MultiExecutorConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
                 assertThat(context).hasBean(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME);
@@ -255,11 +238,11 @@ class AzureTokenCredentialAutoConfigurationTests {
 
     @Test
     void defaultCredentialThreadPoolShouldNotConfigureWhenOverride() {
-        contextRunner
-            .withConfiguration(AutoConfigurations.of(CredentialThreadPoolConfiguration.class))
+        contextRunner.withConfiguration(AutoConfigurations.of(CredentialThreadPoolConfiguration.class))
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
-                ThreadPoolTaskExecutor credentialTaskExecutor = (ThreadPoolTaskExecutor) context.getBean(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME);
+                ThreadPoolTaskExecutor credentialTaskExecutor
+                    = (ThreadPoolTaskExecutor) context.getBean(DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME);
                 assertTrue(credentialTaskExecutor instanceof ThreadPoolTaskExecutorExtend);
                 assertThat(context).hasSingleBean(DefaultAzureCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(ClientSecretCredentialBuilderFactory.class);
@@ -270,11 +253,11 @@ class AzureTokenCredentialAutoConfigurationTests {
     @Test
     void defaultAzureCredentialSetToBuilderFactories() {
         CosmosClientBuilderFactoryExt builderFactory = new CosmosClientBuilderFactoryExt(new AzureCosmosProperties());
-        contextRunner
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+        contextRunner.withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(CosmosClientBuilderFactoryExt.class, () -> builderFactory)
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor.class);
+                assertThat(context).hasSingleBean(
+                    AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor.class);
                 assertThat(context).hasSingleBean(TokenCredential.class);
 
                 TokenCredential tokenCredential = context.getBean(TokenCredential.class);
@@ -286,14 +269,15 @@ class AzureTokenCredentialAutoConfigurationTests {
     @Test
     void defaultAzureCredentialResolverSetToBuilderFactories() {
         CosmosClientBuilderFactoryExt builderFactory = new CosmosClientBuilderFactoryExt(new AzureCosmosProperties());
-        contextRunner
-            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+        contextRunner.withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(CosmosClientBuilderFactoryExt.class, () -> builderFactory)
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor.class);
+                assertThat(context).hasSingleBean(
+                    AzureTokenCredentialAutoConfiguration.AzureServiceClientBuilderFactoryPostProcessor.class);
                 assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
 
-                AzureTokenCredentialResolver tokenCredentialResolver = context.getBean(AzureTokenCredentialResolver.class);
+                AzureTokenCredentialResolver tokenCredentialResolver
+                    = context.getBean(AzureTokenCredentialResolver.class);
                 assertEquals(builderFactory.getAzureTokenCredentialResolver(), tokenCredentialResolver);
             });
     }
@@ -302,17 +286,17 @@ class AzureTokenCredentialAutoConfigurationTests {
     void globalPropertiesShouldBeHonored() {
         AzureGlobalProperties properties = new AzureGlobalProperties();
         properties.getProfile().setCloudType(AZURE_US_GOVERNMENT);
-        contextRunner
-            .withBean(AzureGlobalProperties.class, () -> properties)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.class);
-                AzureTokenCredentialAutoConfiguration autoConfiguration = context.getBean(AzureTokenCredentialAutoConfiguration.class);
-                AzureTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties = autoConfiguration.getIdentityClientProperties();
+        contextRunner.withBean(AzureGlobalProperties.class, () -> properties).run(context -> {
+            assertThat(context).hasSingleBean(AzureTokenCredentialAutoConfiguration.class);
+            AzureTokenCredentialAutoConfiguration autoConfiguration
+                = context.getBean(AzureTokenCredentialAutoConfiguration.class);
+            AzureTokenCredentialAutoConfiguration.IdentityClientProperties identityClientProperties
+                = autoConfiguration.getIdentityClientProperties();
 
-                assertEquals(AZURE_US_GOVERNMENT, identityClientProperties.getProfile().getCloudType());
-                assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
-                    identityClientProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
-            });
+            assertEquals(AZURE_US_GOVERNMENT, identityClientProperties.getProfile().getCloudType());
+            assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
+                identityClientProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
+        });
 
     }
 
@@ -359,7 +343,8 @@ class AzureTokenCredentialAutoConfigurationTests {
 
     }
 
-    private static class DefaultTokenCredentialBuilderCustomizer extends TestBuilderCustomizer<DefaultAzureCredentialBuilder> {
+    private static class DefaultTokenCredentialBuilderCustomizer
+        extends TestBuilderCustomizer<DefaultAzureCredentialBuilder> {
 
     }
 

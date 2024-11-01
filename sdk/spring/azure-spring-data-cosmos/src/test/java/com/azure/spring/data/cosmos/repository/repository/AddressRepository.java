@@ -75,7 +75,8 @@ public interface AddressRepository extends CosmosRepository<Address, String> {
     List<Address> annotatedFindByInHomeNumberParameters(@Param("homeNumbers") List<Integer> longsList, Sort sort);
 
     @Query(value = "select * from a where a.registrationDate IN (@registrationDates)")
-    List<Address> annotatedFindByInRegistrationDateParameters(@Param("registrationDates") List<LocalDate> registrationDates, Sort sort);
+    List<Address> annotatedFindByInRegistrationDateParameters(
+        @Param("registrationDates") List<LocalDate> registrationDates, Sort sort);
 
     @Query(value = "select * from a where a.isOffice IN (@isOffices)")
     List<Address> annotatedFindByInIsOfficeParameters(@Param("isOffices") List<Boolean> isOffices, Sort sort);

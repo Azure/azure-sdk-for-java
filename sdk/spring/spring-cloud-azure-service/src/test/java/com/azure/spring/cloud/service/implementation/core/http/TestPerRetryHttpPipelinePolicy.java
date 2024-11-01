@@ -13,7 +13,6 @@ public class TestPerRetryHttpPipelinePolicy implements HttpPipelinePolicy {
 
     private int callTimes;
 
-
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return Mono.defer(() -> {

@@ -12,11 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PostgreSqlDatabaseTypeTest extends DatabaseTypeTest {
 
-
     private static final String POSTGRESQL_SCHEMA = "jdbc:postgresql";
     private static final String POSTGRESQL_PATH_QUERY_DELIMITER = "?";
     private static final String POSTGRESQL_QUERY_DELIMITER = "&";
-
 
     @Override
     void databaseTypeConstructor() {

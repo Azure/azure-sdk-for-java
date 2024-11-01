@@ -57,9 +57,7 @@ public class CosmosAccessException extends DataAccessException {
      */
     public CosmosAccessException(@Nullable String msg, @Nullable Exception cause) {
         super(msg, cause);
-        this.cosmosException = cause instanceof CosmosException
-            ? (CosmosException) cause
-            : null;
+        this.cosmosException = cause instanceof CosmosException ? (CosmosException) cause : null;
     }
 
     /**

@@ -42,8 +42,6 @@ public class NestedEntity {
 
     @Override
     public String toString() {
-        return "NestedEntity{"
-            + "nestedPartitionKey='" + nestedPartitionKey + '\''
-            + '}';
+        return "NestedEntity{" + "nestedPartitionKey='" + nestedPartitionKey + '\'' + '}';
     }
 }

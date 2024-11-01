@@ -16,9 +16,8 @@ public class CosmosTemplateUnitTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void rejectNullDbFactory() {
-        CosmosAsyncClient client = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder()
-            .endpoint("")
-            .key(""));
+        CosmosAsyncClient client
+            = CosmosFactory.createCosmosAsyncClient(new CosmosClientBuilder().endpoint("").key(""));
         new CosmosFactory(client, TestConstants.DB_NAME);
     }
 }

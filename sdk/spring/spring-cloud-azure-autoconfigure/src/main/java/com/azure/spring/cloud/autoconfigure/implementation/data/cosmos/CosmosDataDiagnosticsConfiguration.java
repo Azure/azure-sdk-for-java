@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 package com.azure.spring.cloud.autoconfigure.implementation.data.cosmos;
+
 import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

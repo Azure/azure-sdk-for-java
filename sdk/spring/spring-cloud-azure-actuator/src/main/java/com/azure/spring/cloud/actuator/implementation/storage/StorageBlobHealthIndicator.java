@@ -39,15 +39,14 @@ public class StorageBlobHealthIndicator extends AbstractHealthIndicator {
             return;
         }
 
-        BlobContainerAsyncClient containerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(
-            NOT_EXISTING_CONTAINER);
+        BlobContainerAsyncClient containerAsyncClient
+            = blobServiceAsyncClient.getBlobContainerAsyncClient(NOT_EXISTING_CONTAINER);
         Response<Boolean> exists = containerAsyncClient.existsWithResponse().block(timeout);
         if (exists == null) {
             throw new RuntimeException("Error occurred checking the container existence!");
         }
 
-        builder.up()
-               .withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
+        builder.up().withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
     }
 
     /**

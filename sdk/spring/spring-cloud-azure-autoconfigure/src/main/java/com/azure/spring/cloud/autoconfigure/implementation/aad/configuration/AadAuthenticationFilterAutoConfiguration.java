@@ -37,7 +37,8 @@ import java.util.concurrent.TimeUnit;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
-@ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken" })
+@ConditionalOnMissingClass({
+    "org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken" })
 @Import(AadPropertiesConfiguration.class)
 public class AadAuthenticationFilterAutoConfiguration {
 
@@ -48,11 +49,11 @@ public class AadAuthenticationFilterAutoConfiguration {
     private final RestTemplateBuilder restTemplateBuilder;
 
     AadAuthenticationFilterAutoConfiguration(AadAuthenticationProperties properties,
-                                             RestTemplateBuilder restTemplateBuilder) {
+        RestTemplateBuilder restTemplateBuilder) {
         this.properties = properties;
         this.restTemplateBuilder = restTemplateBuilder;
-        this.endpoints = new AadAuthorizationServerEndpoints(
-                properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
+        this.endpoints
+            = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
                 properties.getProfile().getTenantId());
     }
 
@@ -62,13 +63,7 @@ public class AadAuthenticationFilterAutoConfiguration {
     @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == false")
     AadAuthenticationFilter aadAuthenticationFilter(ResourceRetriever resourceRetriever, JWKSetCache jwkSetCache) {
         LOGGER.info("AadAuthenticationFilter Constructor.");
-        return new AadAuthenticationFilter(
-            properties,
-            endpoints,
-            resourceRetriever,
-            jwkSetCache,
-            restTemplateBuilder
-        );
+        return new AadAuthenticationFilter(properties, endpoints, resourceRetriever, jwkSetCache, restTemplateBuilder);
     }
 
     @Bean
@@ -77,13 +72,7 @@ public class AadAuthenticationFilterAutoConfiguration {
     AadAppRoleStatelessAuthenticationFilter aadStatelessAuthFilter(ResourceRetriever resourceRetriever) {
         LOGGER.info("Creating AadStatelessAuthFilter bean.");
         return new AadAppRoleStatelessAuthenticationFilter(
-            new UserPrincipalManager(
-                endpoints,
-                properties,
-                resourceRetriever,
-                true
-            )
-        );
+            new UserPrincipalManager(endpoints, properties, resourceRetriever, true));
     }
 
     @Bean

@@ -21,7 +21,7 @@ import java.io.Serializable;
  * @param <ID> the type of the id of the entity the repository manages.
  */
 public class CosmosRepositoryFactoryBean<T extends Repository<S, ID>, S, ID extends Serializable>
-        extends RepositoryFactoryBeanSupport<T, S, ID> {
+    extends RepositoryFactoryBeanSupport<T, S, ID> {
 
     private CosmosOperations operations;
     private boolean mappingContextConfigured = false;

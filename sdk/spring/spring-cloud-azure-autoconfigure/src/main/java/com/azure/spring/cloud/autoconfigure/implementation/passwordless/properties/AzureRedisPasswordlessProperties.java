@@ -18,7 +18,8 @@ public class AzureRedisPasswordlessProperties implements PasswordlessProperties 
 
     private static final String REDIS_SCOPE_AZURE = "https://redis.azure.com/.default";
     private static final String REDIS_SCOPE_AZURE_CHINA = "https://*.cacheinfra.windows.net.china:10225/appid/.default";
-    private static final String REDIS_SCOPE_AZURE_US_GOVERNMENT = "https://*.cacheinfra.windows.us.government.net:10225/appid/.default";
+    private static final String REDIS_SCOPE_AZURE_US_GOVERNMENT
+        = "https://*.cacheinfra.windows.us.government.net:10225/appid/.default";
 
     private static final Map<CloudType, String> REDIS_SCOPE_MAP = new HashMap<CloudType, String>() {
         {

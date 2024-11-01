@@ -25,8 +25,7 @@ public class EventHubsArmConnectionStringProvider extends ArmConnectionStringPro
      * @param namespace the namespace
      */
     public EventHubsArmConnectionStringProvider(AzureResourceManager resourceManager,
-                                                AzureResourceMetadata resourceMetadata,
-                                                String namespace) {
+        AzureResourceMetadata resourceMetadata, String namespace) {
         super(resourceManager, resourceMetadata);
         this.namespace = namespace;
         this.eventHubNamespaceCrud = new EventHubNamespaceCrud(resourceManager, resourceMetadata);
@@ -35,8 +34,7 @@ public class EventHubsArmConnectionStringProvider extends ArmConnectionStringPro
     @SuppressWarnings("rawtypes")
     @Override
     public String getConnectionString() {
-        return this.eventHubNamespaceCrud
-            .get(this.namespace)
+        return this.eventHubNamespaceCrud.get(this.namespace)
             .listAuthorizationRules()
             .stream()
             .findFirst()

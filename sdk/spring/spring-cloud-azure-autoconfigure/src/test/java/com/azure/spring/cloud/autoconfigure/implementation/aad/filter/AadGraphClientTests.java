@@ -33,17 +33,17 @@ class AadGraphClientTests {
         activeDirectoryGroups.add("Test_Group");
         AadAuthenticationProperties aadAuthenticationProperties = new AadAuthenticationProperties();
         aadAuthenticationProperties.getUserGroup().setAllowedGroupNames(activeDirectoryGroups);
-        client = new AadGraphClient("client", "pass", aadAuthenticationProperties, endpoints, new RestTemplateBuilder());
+        client
+            = new AadGraphClient("client", "pass", aadAuthenticationProperties, endpoints, new RestTemplateBuilder());
     }
 
     @Test
     void testConvertGroupToGrantedAuthorities() {
         final Set<String> groups = new HashSet<>(1);
         groups.add("Test_Group");
-        final Set<SimpleGrantedAuthority> authorities = client.toGrantedAuthoritySet(
-            Collections.unmodifiableSet(groups));
-        assertThat(authorities)
-            .hasSize(1)
+        final Set<SimpleGrantedAuthority> authorities
+            = client.toGrantedAuthoritySet(Collections.unmodifiableSet(groups));
+        assertThat(authorities).hasSize(1)
             .extracting(GrantedAuthority::getAuthority)
             .containsExactly("ROLE_Test_Group");
     }
@@ -53,10 +53,9 @@ class AadGraphClientTests {
         final Set<String> groups = new HashSet<>(2);
         groups.add("Test_Group");
         groups.add("Another_Group");
-        final Set<SimpleGrantedAuthority> authorities = client.toGrantedAuthoritySet(
-            Collections.unmodifiableSet(groups));
-        assertThat(authorities)
-            .hasSize(1)
+        final Set<SimpleGrantedAuthority> authorities
+            = client.toGrantedAuthoritySet(Collections.unmodifiableSet(groups));
+        assertThat(authorities).hasSize(1)
             .extracting(GrantedAuthority::getAuthority)
             .containsExactly("ROLE_Test_Group");
     }

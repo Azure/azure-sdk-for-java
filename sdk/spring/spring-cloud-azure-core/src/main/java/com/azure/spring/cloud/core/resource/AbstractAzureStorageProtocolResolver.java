@@ -23,8 +23,8 @@ import java.util.stream.Stream;
 /**
  * Abstract protocolResolver for Storage
  */
-public abstract class AbstractAzureStorageProtocolResolver implements ProtocolResolver, ResourcePatternResolver,
-    ResourceLoaderAware, BeanFactoryPostProcessor {
+public abstract class AbstractAzureStorageProtocolResolver
+    implements ProtocolResolver, ResourcePatternResolver, ResourceLoaderAware, BeanFactoryPostProcessor {
 
     /**
      * Creates an instance of {@link AbstractAzureStorageProtocolResolver}.
@@ -271,8 +271,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
      * @return All resources matching the provided patterns.
      */
     protected Resource[] resolveResources(String containerPattern, String itemPattern) {
-        return getMatchedContainers(containerPattern)
-            .flatMap(c -> getMatchedItems(c, itemPattern))
+        return getMatchedContainers(containerPattern).flatMap(c -> getMatchedItems(c, itemPattern))
             .map(s -> getStorageResource(s.toResourceLocation(), false))
             .toArray(Resource[]::new);
     }
@@ -307,8 +306,8 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
         if (matcher.isPattern(itemPattern)) {
             //trying to extract prefix from the pattern, so we can leverage server side filtering first.
             return containerClient.listItems(getValidPrefix(itemPattern))
-                                  //client side filtering to find the containers
-                                  .filter(item -> matcher.match(itemPattern, item.getName()));
+                //client side filtering to find the containers
+                .filter(item -> matcher.match(itemPattern, item.getName()));
         } else {
             return Stream.of(new StorageItem(containerClient.getName(), itemPattern, getStorageType()));
         }

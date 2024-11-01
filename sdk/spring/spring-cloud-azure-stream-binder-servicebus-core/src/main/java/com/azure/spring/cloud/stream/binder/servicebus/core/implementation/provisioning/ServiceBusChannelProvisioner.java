@@ -17,19 +17,18 @@ import org.springframework.cloud.stream.provisioning.ProvisioningProvider;
  *
  */
 public class ServiceBusChannelProvisioner implements
-        ProvisioningProvider<ExtendedConsumerProperties<ServiceBusConsumerProperties>,
-                ExtendedProducerProperties<ServiceBusProducerProperties>> {
+    ProvisioningProvider<ExtendedConsumerProperties<ServiceBusConsumerProperties>, ExtendedProducerProperties<ServiceBusProducerProperties>> {
 
     @Override
     public ProducerDestination provisionProducerDestination(String name,
-            ExtendedProducerProperties<ServiceBusProducerProperties> properties) throws ProvisioningException {
+        ExtendedProducerProperties<ServiceBusProducerProperties> properties) throws ProvisioningException {
         validateOrCreateForProducer(name, properties.getExtension().getEntityType());
         return new ServiceBusProducerDestination(name);
     }
 
     @Override
     public ConsumerDestination provisionConsumerDestination(String name, String group,
-            ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) throws ProvisioningException {
+        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) throws ProvisioningException {
         validateOrCreateForConsumer(name, group, properties.getExtension().getEntityType());
         return new ServiceBusConsumerDestination(name);
     }
@@ -46,7 +45,6 @@ public class ServiceBusChannelProvisioner implements
     protected void validateOrCreateForConsumer(String name, String group, ServiceBusEntityType type) {
         // no-op
     }
-
 
     /**
      * Validate or create for producer.

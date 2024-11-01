@@ -24,8 +24,7 @@ class AadApplicationTypeTests {
 
     @Test
     void noneApplicationType() {
-        try (MockedStatic<ClassUtils> classUtils =
-                 mockStatic(ClassUtils.class, Mockito.CALLS_REAL_METHODS)) {
+        try (MockedStatic<ClassUtils> classUtils = mockStatic(ClassUtils.class, Mockito.CALLS_REAL_METHODS)) {
             filterClassLoader(classUtils, false, false);
             assertNull(inferApplicationTypeByDependencies());
         }
@@ -33,8 +32,7 @@ class AadApplicationTypeTests {
 
     @Test
     void webApplication() {
-        try (MockedStatic<ClassUtils> classUtils =
-                 mockStatic(ClassUtils.class, Mockito.CALLS_REAL_METHODS)) {
+        try (MockedStatic<ClassUtils> classUtils = mockStatic(ClassUtils.class, Mockito.CALLS_REAL_METHODS)) {
             filterClassLoader(classUtils, false, true);
             assertSame(WEB_APPLICATION, inferApplicationTypeByDependencies());
         }
@@ -42,8 +40,7 @@ class AadApplicationTypeTests {
 
     @Test
     void resourceServer() {
-        try (MockedStatic<ClassUtils> classUtils =
-                 mockStatic(ClassUtils.class, Mockito.CALLS_REAL_METHODS)) {
+        try (MockedStatic<ClassUtils> classUtils = mockStatic(ClassUtils.class, Mockito.CALLS_REAL_METHODS)) {
             filterClassLoader(classUtils, true, false);
             assertSame(RESOURCE_SERVER, inferApplicationTypeByDependencies());
         }
@@ -51,21 +48,19 @@ class AadApplicationTypeTests {
 
     @Test
     void resourceServerWithObo() {
-        try (MockedStatic<ClassUtils> classUtils =
-                 mockStatic(ClassUtils.class, Mockito.CALLS_REAL_METHODS)) {
+        try (MockedStatic<ClassUtils> classUtils = mockStatic(ClassUtils.class, Mockito.CALLS_REAL_METHODS)) {
             filterClassLoader(classUtils, true, true);
             assertSame(RESOURCE_SERVER_WITH_OBO, inferApplicationTypeByDependencies());
         }
     }
 
-    private void filterClassLoader(MockedStatic<ClassUtils> classUtils,
-                                   boolean expectedTokenClassPresent,
-                                   boolean expectedRegistrationClassPresent) {
+    private void filterClassLoader(MockedStatic<ClassUtils> classUtils, boolean expectedTokenClassPresent,
+        boolean expectedRegistrationClassPresent) {
         ClassLoader classLoader = this.getClass().getClassLoader();
         classUtils.when(ClassUtils::getDefaultClassLoader).thenReturn(classLoader);
         classUtils.when(() -> ClassUtils.isPresent(SPRING_SECURITY_OAUTH2_RESOURCE_SERVER_CLASS_NAME, classLoader))
-                  .thenReturn(expectedTokenClassPresent);
+            .thenReturn(expectedTokenClassPresent);
         classUtils.when(() -> ClassUtils.isPresent(SPRING_SECURITY_OAUTH2_CLIENT_CLASS_NAME, classLoader))
-                  .thenReturn(expectedRegistrationClassPresent);
+            .thenReturn(expectedRegistrationClassPresent);
     }
 }

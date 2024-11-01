@@ -23,8 +23,8 @@ class StorageFileShareHealthIndicatorTests {
     @Test
     void storageFileIsUp() {
         ShareServiceAsyncClient mockAsyncClient = getMockShareServiceAsyncClient();
-        @SuppressWarnings("unchecked") Response<ShareServiceProperties> mockResponse =
-            (Response<ShareServiceProperties>) Mockito.mock(Response.class);
+        @SuppressWarnings("unchecked")
+        Response<ShareServiceProperties> mockResponse = (Response<ShareServiceProperties>) Mockito.mock(Response.class);
         when(mockAsyncClient.getPropertiesWithResponse()).thenReturn(Mono.just(mockResponse));
         StorageFileShareHealthIndicator indicator = new StorageFileShareHealthIndicator(mockAsyncClient);
         Health health = indicator.health();

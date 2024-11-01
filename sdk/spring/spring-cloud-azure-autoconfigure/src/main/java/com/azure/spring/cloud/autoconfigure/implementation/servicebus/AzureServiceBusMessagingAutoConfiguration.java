@@ -40,7 +40,6 @@ import org.springframework.context.annotation.Import;
 
 import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyAzureCommonProperties;
 
-
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Spring Messaging Azure Service Bus support.
  *
@@ -54,24 +53,25 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 @AutoConfigureAfter(AzureServiceBusAutoConfiguration.class)
 @Import({
     AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration.class,
-    AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class
-})
+    AzureServiceBusMessagingAutoConfiguration.ProcessorContainerConfiguration.class })
 public class AzureServiceBusMessagingAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusMessagingAutoConfiguration.class);
+
     @Bean
     @ConditionalOnMissingBean
     NamespaceProperties serviceBusNamespaceProperties(AzureServiceBusProperties properties,
-                                                      ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
+        ObjectProvider<ServiceConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         BeanUtils.copyProperties(properties, namespaceProperties);
         copyAzureCommonProperties(properties, namespaceProperties);
         if (namespaceProperties.getConnectionString() == null) {
-            ServiceConnectionStringProvider<AzureServiceType.ServiceBus> connectionStringProvider =
-                connectionStringProviders.getIfAvailable();
+            ServiceConnectionStringProvider<AzureServiceType.ServiceBus> connectionStringProvider
+                = connectionStringProviders.getIfAvailable();
             if (connectionStringProvider != null) {
                 namespaceProperties.setConnectionString(connectionStringProvider.getConnectionString());
-                LOGGER.info("Service Bus connection string is set from {} now.", connectionStringProvider.getClass().getName());
+                LOGGER.info("Service Bus connection string is set from {} now.",
+                    connectionStringProvider.getClass().getName());
             }
         }
         return namespaceProperties;
@@ -82,15 +82,15 @@ public class AzureServiceBusMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusProcessorFactory defaultServiceBusNamespaceProcessorFactory(
-            NamespaceProperties properties,
+        ServiceBusProcessorFactory defaultServiceBusNamespaceProcessorFactory(NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers,
             ObjectProvider<AzureTokenCredentialResolver> tokenCredentialResolvers,
             ObjectProvider<TokenCredential> defaultTokenCredentials,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> processorClientBuilderCustomizers,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionProcessorClientBuilderCustomizers) {
-            DefaultServiceBusNamespaceProcessorFactory factory = new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable());
+            DefaultServiceBusNamespaceProcessorFactory factory
+                = new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable());
             factory.setDefaultCredential(defaultTokenCredentials.getIfAvailable());
             factory.setTokenCredentialResolver(tokenCredentialResolvers.getIfAvailable());
             clientBuilderCustomizers.orderedStream().forEach(factory::addServiceBusClientBuilderCustomizer);
@@ -105,14 +105,14 @@ public class AzureServiceBusMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        ServiceBusProducerFactory defaultServiceBusNamespaceProducerFactory(
-            NamespaceProperties properties,
+        ServiceBusProducerFactory defaultServiceBusNamespaceProducerFactory(NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers,
             ObjectProvider<AzureTokenCredentialResolver> tokenCredentialResolvers,
             ObjectProvider<TokenCredential> defaultTokenCredentials,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> clientBuilderCustomizers,
             ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> senderClientBuilderCustomizers) {
-            DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(properties, suppliers.getIfAvailable());
+            DefaultServiceBusNamespaceProducerFactory factory
+                = new DefaultServiceBusNamespaceProducerFactory(properties, suppliers.getIfAvailable());
             factory.setDefaultCredential(defaultTokenCredentials.getIfAvailable());
             factory.setTokenCredentialResolver(tokenCredentialResolvers.getIfAvailable());
             clientBuilderCustomizers.orderedStream().forEach(factory::addServiceBusClientBuilderCustomizer);
@@ -122,14 +122,19 @@ public class AzureServiceBusMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "true", matchIfMissing = true)
+        @ConditionalOnProperty(
+            value = "spring.cloud.azure.message-converter.isolated-object-mapper",
+            havingValue = "true",
+            matchIfMissing = true)
         ServiceBusMessageConverter defaultServiceBusMessageConverter() {
             return new ServiceBusMessageConverter(ObjectMapperHolder.OBJECT_MAPPER);
         }
 
         @Bean
         @ConditionalOnMissingBean
-        @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "false")
+        @ConditionalOnProperty(
+            value = "spring.cloud.azure.message-converter.isolated-object-mapper",
+            havingValue = "false")
         ServiceBusMessageConverter serviceBusMessageConverter(ObjectMapper objectMapper) {
             return new ServiceBusMessageConverter(objectMapper);
         }
@@ -138,7 +143,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @ConditionalOnMissingBean
         @ConditionalOnBean(ServiceBusProducerFactory.class)
         ServiceBusTemplate serviceBusTemplate(ServiceBusProducerFactory senderClientfactory,
-                                                     ServiceBusMessageConverter messageConverter) {
+            ServiceBusMessageConverter messageConverter) {
             ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(senderClientfactory);
             serviceBusTemplate.setMessageConverter(messageConverter);
             return serviceBusTemplate;

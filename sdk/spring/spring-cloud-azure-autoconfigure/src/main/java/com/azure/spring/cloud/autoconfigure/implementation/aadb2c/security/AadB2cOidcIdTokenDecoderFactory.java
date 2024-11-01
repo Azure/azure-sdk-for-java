@@ -35,16 +35,14 @@ public class AadB2cOidcIdTokenDecoderFactory implements JwtDecoderFactory<Client
         String jwkSetUri = clientRegistration.getProviderDetails().getJwkSetUri();
         if (!StringUtils.hasText(jwkSetUri)) {
             OAuth2Error oauth2Error = new OAuth2Error("missing_signature_verifier",
-                    "Failed to find a Signature Verifier for Client Registration: '"
-                            + clientRegistration.getRegistrationId()
-                            + "'. Check to ensure you have configured the JwkSet URI.",
-                    null);
+                "Failed to find a Signature Verifier for Client Registration: '"
+                    + clientRegistration.getRegistrationId() + "'. Check to ensure you have configured the JwkSet URI.",
+                null);
             throw new OAuth2AuthenticationException(oauth2Error, oauth2Error.toString());
         }
-        return NimbusJwtDecoder
-                .withJwkSetUri(jwkSetUri)
-                .jwsAlgorithm(SignatureAlgorithm.RS256)
-                .restOperations(restOperations)
-                .build();
+        return NimbusJwtDecoder.withJwkSetUri(jwkSetUri)
+            .jwsAlgorithm(SignatureAlgorithm.RS256)
+            .restOperations(restOperations)
+            .build();
     }
 }

@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 /**
  * A key vault implementation of {@link EnumerablePropertySource} to enumerate all property pairs in Key Vault.
  *
@@ -58,11 +57,8 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
      * @param secretKeys the secret keys to look for.
      * @param caseSensitive the case-sensitive flag.
      */
-    public KeyVaultPropertySource(String name,
-                                  final Duration refreshDuration,
-                                  KeyVaultOperation keyVaultOperation,
-                                  List<String> secretKeys,
-                                  boolean caseSensitive) {
+    public KeyVaultPropertySource(String name, final Duration refreshDuration, KeyVaultOperation keyVaultOperation,
+        List<String> secretKeys, boolean caseSensitive) {
         super(name, keyVaultOperation);
         this.caseSensitive = caseSensitive;
         this.secretKeys = secretKeys;
@@ -76,10 +72,7 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
         logger.debug("Loading the secrets in property source '" + name + "'.");
         properties = keyVaultOperation.listSecrets(this.keyVaultSecretKeys)
             .stream()
-            .collect(Collectors.toMap(
-                s -> toKeyVaultSecretName(caseSensitive, s.getName()),
-                KeyVaultSecret::getValue)
-            );
+            .collect(Collectors.toMap(s -> toKeyVaultSecretName(caseSensitive, s.getName()), KeyVaultSecret::getValue));
         logger.debug("The secrets loading in property source '" + name + "' has finished.");
     }
 
@@ -113,7 +106,7 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
 
     @Override
     public String getProperty(String property) {
-        return properties.get(toKeyVaultSecretName(caseSensitive,  property));
+        return properties.get(toKeyVaultSecretName(caseSensitive, property));
     }
 
     @Override
@@ -124,16 +117,13 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
     @Override
     public String[] getPropertyNames() {
         if (!caseSensitive) {
-            return properties
-                .keySet()
+            return properties.keySet()
                 .stream()
                 .flatMap(p -> Stream.of(p, p.replace("-", ".")))
                 .distinct()
                 .toArray(String[]::new);
         } else {
-            return properties
-                .keySet()
-                .toArray(new String[0]);
+            return properties.keySet().toArray(new String[0]);
         }
     }
 
@@ -141,9 +131,7 @@ public class KeyVaultPropertySource extends EnumerablePropertySource<KeyVaultOpe
         if (secretKeys == null) {
             return null;
         }
-        return secretKeys.stream()
-            .map(key -> toKeyVaultSecretName(caseSensitive, key))
-            .toList();
+        return secretKeys.stream().map(key -> toKeyVaultSecretName(caseSensitive, key)).toList();
     }
 
     /**
