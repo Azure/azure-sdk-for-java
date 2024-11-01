@@ -71,6 +71,7 @@ jobs:
           jdkVersionOption: $(JavaTestVersion)
           jdkArchitectureOption: 'x64'
           goals: 'clean install -Pdev '
+          publishJUnitResults: false
       - task: PublishTestResults@2
         condition: always()
         inputs:
