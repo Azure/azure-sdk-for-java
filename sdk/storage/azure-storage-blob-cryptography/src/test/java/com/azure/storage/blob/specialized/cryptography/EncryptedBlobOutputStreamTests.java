@@ -32,17 +32,14 @@ public class EncryptedBlobOutputStreamTests extends BlobCryptographyTestBase {
         super.beforeTest();
         FakeKey fakeKey = new FakeKey(KEY_ID, getRandomByteArray(256));
 
-        cc = getServiceClientBuilder(ENV.getPrimaryAccount())
-            .buildClient()
+        cc = getServiceClientBuilder(ENV.getPrimaryAccount()).buildClient()
             .getBlobContainerClient(generateContainerName());
         cc.create();
 
         String blobName = generateBlobName();
 
         bec = getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
-            cc.getBlobContainerUrl())
-            .blobName(blobName)
-            .buildEncryptedBlobClient();
+            cc.getBlobContainerUrl()).blobName(blobName).buildEncryptedBlobClient();
     }
 
     @LiveOnly

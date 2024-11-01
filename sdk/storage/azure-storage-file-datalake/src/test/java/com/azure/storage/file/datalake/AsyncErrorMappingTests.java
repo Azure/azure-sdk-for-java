@@ -63,8 +63,9 @@ public class AsyncErrorMappingTests extends DataLakeTestBase {
 
     @Test
     public void createFileSystem() {
-        StepVerifier.create(getServiceAsyncClient(ENVIRONMENT.getDataLakeAccount())
-            .getFileSystemAsyncClient(fileSystemName).createWithResponse(null, null))
+        StepVerifier
+            .create(getServiceAsyncClient(ENVIRONMENT.getDataLakeAccount()).getFileSystemAsyncClient(fileSystemName)
+                .createWithResponse(null, null))
             .verifyError(DataLakeStorageException.class);
     }
 

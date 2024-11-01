@@ -13,17 +13,20 @@ import com.azure.core.util.CoreUtils;
 @Fluent
 public final class PathHttpHeaders {
     /*
-     * Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Sets the blob's cache control. If specified, this property is stored with the blob and returned with a
+     * read request.
      */
     private String cacheControl;
 
     /*
-     * Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Sets the blob's content encoding. If specified, this property is stored with the blob and returned with
+     * a read request.
      */
     private String contentEncoding;
 
     /*
-     * Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Set the blob's content language. If specified, this property is stored with the blob and returned with
+     * a read request.
      */
     private String contentLanguage;
 
@@ -33,7 +36,8 @@ public final class PathHttpHeaders {
     private String contentDisposition;
 
     /*
-     * Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a read request.
+     * Optional. Sets the blob's content type. If specified, this property is stored with the blob and returned with a
+     * read request.
      */
     private String contentType;
 

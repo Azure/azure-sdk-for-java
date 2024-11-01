@@ -18,7 +18,6 @@ public class ListPageRangesDiffOptions {
     private BlobRequestConditions requestConditions;
     private Integer pageSize;
 
-
     /**
      * @param range The range to diff.
      * @param previousSnapshot The previous snapshot that will serve as the base of the diff.

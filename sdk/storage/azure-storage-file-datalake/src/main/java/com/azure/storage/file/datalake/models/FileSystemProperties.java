@@ -24,13 +24,13 @@ public final class FileSystemProperties {
     private String encryptionScope;
     private Boolean encryptionScopeOverridePrevented;
 
-
     static {
-        AccessorUtility.setFileSystemPropertiesAccessor((properties, encryptionScope, encryptionScopeOverridePrevented) -> {
-            properties.encryptionScope = encryptionScope;
-            properties.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
-            return properties;
-        });
+        AccessorUtility
+            .setFileSystemPropertiesAccessor((properties, encryptionScope, encryptionScopeOverridePrevented) -> {
+                properties.encryptionScope = encryptionScope;
+                properties.encryptionScopeOverridePrevented = encryptionScopeOverridePrevented;
+                return properties;
+            });
     }
 
     /**

@@ -89,7 +89,8 @@ public final class PageBlobUploadPagesFromUrlOptions {
      * @param destinationRequestConditions {@link PageBlobRequestConditions} for writing to destination.
      * @return The updated options.
      */
-    public PageBlobUploadPagesFromUrlOptions setDestinationRequestConditions(PageBlobRequestConditions destinationRequestConditions) {
+    public PageBlobUploadPagesFromUrlOptions
+        setDestinationRequestConditions(PageBlobRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
         return this;
     }
