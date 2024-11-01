@@ -87,9 +87,8 @@ public final class CallAutomationAsyncClient {
     private final CallAutomationEventProcessor eventProcessor;
 
     CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient,
-                              CommunicationUserIdentifier sourceIdentity,
-                              MicrosoftTeamsAppIdentifier oPSSourceIdentity,
-                              CallAutomationEventProcessor eventProcessor) {
+        CommunicationUserIdentifier sourceIdentity, MicrosoftTeamsAppIdentifier oPSSourceIdentity,
+        CallAutomationEventProcessor eventProcessor) {
         this.callConnectionsInternal = callServiceClient.getCallConnections();
         this.azureCommunicationCallAutomationServiceInternal = callServiceClient;
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
@@ -101,10 +100,10 @@ public final class CallAutomationAsyncClient {
             = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
         this.resourceUrl = callServiceClient.getEndpoint();
-        this.sourceIdentity =
-            sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
-        this.oPSSourceIdentity =
-            oPSSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(oPSSourceIdentity);
+        this.sourceIdentity
+            = sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
+        this.oPSSourceIdentity
+            = oPSSourceIdentity == null ? null : MicrosoftTeamsAppIdentifierConverter.convert(oPSSourceIdentity);
     }
 
     /**
@@ -158,7 +157,7 @@ public final class CallAutomationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CreateCallResult> createGroupCall(List<CommunicationIdentifier> targetParticipants,
-                                                  String callbackUrl) {
+        String callbackUrl) {
         CreateGroupCallOptions createGroupCallOptions = new CreateGroupCallOptions(targetParticipants, callbackUrl);
         return createGroupCallWithResponse(createGroupCallOptions).flatMap(FluxUtil::toMono);
     }
@@ -190,17 +189,17 @@ public final class CallAutomationAsyncClient {
     }
 
     Mono<Response<CreateCallResult>> createCallWithResponseInternal(CreateCallOptions createCallOptions,
-                                                                    Context context) {
+        Context context) {
         return getCreateCallResponseMono(context, getCreateCallRequestInternal(createCallOptions));
     }
 
     Mono<Response<CreateCallResult>> createGroupCallWithResponseInternal(CreateGroupCallOptions createGroupCallOptions,
-                                                                         Context context) {
+        Context context) {
         return getCreateCallResponseMono(context, getCreateCallRequestInternal(createGroupCallOptions));
     }
 
     private Mono<Response<CreateCallResult>> getCreateCallResponseMono(Context context,
-                                                                       CreateCallRequestInternal createCallRequestInternal) {
+        CreateCallRequestInternal createCallRequestInternal) {
         try {
             context = context == null ? Context.NONE : context;
             return azureCommunicationCallAutomationServiceInternal

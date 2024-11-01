@@ -91,27 +91,21 @@ public class CallAutomationUnitTestBase {
         return serializeObject(result);
     }
 
-    public static String generateOPSCallProperties(String callConnectionId, String serverCallId,
-                                                String targetId, String connectionState,
-                                                String callbackUri, String opsSourceId) {
+    public static String generateOPSCallProperties(String callConnectionId, String serverCallId, String targetId,
+        String connectionState, String callbackUri, String opsSourceId) {
         CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
             .setCallConnectionId(callConnectionId)
             .setServerCallId(serverCallId)
             .setCallbackUri(callbackUri)
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
-            .setSource(new CommunicationIdentifierModel()
-                .setRawId(opsSourceId)
+            .setSource(new CommunicationIdentifierModel().setRawId(opsSourceId)
                 .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_APP)
-                .setMicrosoftTeamsApp(new MicrosoftTeamsAppIdentifierModel()
-                    .setAppId(opsSourceId)
-                    .setCloud(CommunicationCloudEnvironmentModel.PUBLIC)
-                ))
-            .setTargets(new ArrayList<>(Collections.singletonList(new CommunicationIdentifierModel()
-                .setRawId("+4:" + targetId)
-                .setKind(CommunicationIdentifierModelKind.PHONE_NUMBER)
-                .setPhoneNumber(new PhoneNumberIdentifierModel()
-                    .setValue(targetId)
-                ))));
+                .setMicrosoftTeamsApp(new MicrosoftTeamsAppIdentifierModel().setAppId(opsSourceId)
+                    .setCloud(CommunicationCloudEnvironmentModel.PUBLIC)))
+            .setTargets(
+                new ArrayList<>(Collections.singletonList(new CommunicationIdentifierModel().setRawId("+4:" + targetId)
+                    .setKind(CommunicationIdentifierModelKind.PHONE_NUMBER)
+                    .setPhoneNumber(new PhoneNumberIdentifierModel().setValue(targetId)))));
 
         return serializeObject(result);
     }

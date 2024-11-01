@@ -16,25 +16,29 @@ public final class MicrosoftTeamsAppIdentifierConverter {
      */
     public static MicrosoftTeamsAppIdentifierModel convert(MicrosoftTeamsAppIdentifier microsoftTeamsAppIdentifier) {
 
-        MicrosoftTeamsAppIdentifierModel microsoftTeamsAppIdentifierModel =
-            (microsoftTeamsAppIdentifier == null || microsoftTeamsAppIdentifier.getAppId().isEmpty()) ? null
+        MicrosoftTeamsAppIdentifierModel microsoftTeamsAppIdentifierModel
+            = (microsoftTeamsAppIdentifier == null || microsoftTeamsAppIdentifier.getAppId().isEmpty())
+                ? null
                 : CommunicationIdentifierConverter
-                .convert(new MicrosoftTeamsAppIdentifier(microsoftTeamsAppIdentifier.getAppId()))
-                .getMicrosoftTeamsApp();
+                    .convert(new MicrosoftTeamsAppIdentifier(microsoftTeamsAppIdentifier.getAppId()))
+                    .getMicrosoftTeamsApp();
         return microsoftTeamsAppIdentifierModel;
     }
 
     /**
      * Converts to {@link MicrosoftTeamsAppIdentifier}.
      */
-    public static MicrosoftTeamsAppIdentifier convert(MicrosoftTeamsAppIdentifierModel microsoftTeamsAppIdentifierModel) {
+    public static MicrosoftTeamsAppIdentifier
+        convert(MicrosoftTeamsAppIdentifierModel microsoftTeamsAppIdentifierModel) {
 
-        MicrosoftTeamsAppIdentifier microsoftTeamsAppIdentifier =
-            (microsoftTeamsAppIdentifierModel == null || microsoftTeamsAppIdentifierModel.getAppId().isEmpty()) ? null
+        MicrosoftTeamsAppIdentifier microsoftTeamsAppIdentifier
+            = (microsoftTeamsAppIdentifierModel == null || microsoftTeamsAppIdentifierModel.getAppId().isEmpty())
+                ? null
                 : new MicrosoftTeamsAppIdentifier(microsoftTeamsAppIdentifierModel.getAppId());
 
         return microsoftTeamsAppIdentifier;
     }
+
     private MicrosoftTeamsAppIdentifierConverter() {
     }
 }

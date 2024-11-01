@@ -331,7 +331,8 @@ public final class CallAutomationClientBuilder
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CallAutomationAsyncClient buildAsyncClient() {
-        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, oPSSourceIdentity, new CallAutomationEventProcessor());
+        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity, oPSSourceIdentity,
+            new CallAutomationEventProcessor());
     }
 
     /**
