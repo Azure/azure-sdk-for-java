@@ -35,7 +35,7 @@ import com.azure.storage.file.share.perf.UploadFromFileShareTest;
  */
 public class App {
     public static void main(String[] args) {
-        PerfStressProgram.run(new Class<?>[]{
+        PerfStressProgram.run(new Class<?>[] {
             DownloadBlobTest.class,
             DownloadBlobToFileTest.class,
             ListBlobsTest.class,
@@ -53,7 +53,6 @@ public class App {
             UploadFileDatalakeTest.class,
             UploadFromFileDatalakeTest.class,
             DownloadBlobNonSharedClientTest.class,
-            GetPropertiesTest.class
-        }, args);
+            GetPropertiesTest.class }, args);
     }
 }

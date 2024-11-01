@@ -28,8 +28,7 @@ public class StorageFileInputStream extends StorageInputStream {
      * associated with.
      * @throws ShareStorageException An exception representing any error which occurred during the operation.
      */
-    StorageFileInputStream(final ShareFileAsyncClient shareFileAsyncClient)
-        throws ShareStorageException {
+    StorageFileInputStream(final ShareFileAsyncClient shareFileAsyncClient) throws ShareStorageException {
         this(shareFileAsyncClient, 0, null);
     }
 
@@ -58,8 +57,8 @@ public class StorageFileInputStream extends StorageInputStream {
     @Override
     protected synchronized ByteBuffer dispatchRead(final int readLength, final long offset) {
         try {
-            ByteBuffer currentBuffer = this.shareFileAsyncClient.downloadWithResponse(
-                new ShareFileRange(offset, offset + readLength - 1), false)
+            ByteBuffer currentBuffer = this.shareFileAsyncClient
+                .downloadWithResponse(new ShareFileRange(offset, offset + readLength - 1), false)
                 .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue()).map(ByteBuffer::wrap))
                 .block();
 

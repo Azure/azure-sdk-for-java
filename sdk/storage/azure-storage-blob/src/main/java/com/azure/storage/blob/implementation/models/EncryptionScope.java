@@ -12,7 +12,9 @@ import com.azure.core.annotation.Fluent;
 @Fluent
 public final class EncryptionScope {
     /*
-     * Optional. Version 2019-07-07 and later.  Specifies the name of the encryption scope to use to encrypt the data provided in the request. If not specified, encryption is performed with the default account encryption scope.  For more information, see Encryption at Rest for Azure Storage Services.
+     * Optional. Version 2019-07-07 and later. Specifies the name of the encryption scope to use to encrypt the data
+     * provided in the request. If not specified, encryption is performed with the default account encryption scope. For
+     * more information, see Encryption at Rest for Azure Storage Services.
      */
     private String encryptionScope;
 

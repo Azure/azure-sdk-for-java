@@ -166,8 +166,7 @@ public class FluxInputStream extends InputStream {
      * Subscribes to the data with a special subscriber.
      */
     private void subscribeToData() {
-        this.data
-            .filter(Buffer::hasRemaining) /* Filter to make sure only non empty byte buffers are emitted. */
+        this.data.filter(Buffer::hasRemaining) /* Filter to make sure only non empty byte buffers are emitted. */
             .onBackpressureBuffer()
             .subscribe(
                 // ByteBuffer consumer
@@ -200,8 +199,7 @@ public class FluxInputStream extends InputStream {
                     this.subscription = subscription;
                     this.subscribed = true;
                     this.subscription.request(1);
-                }
-            );
+                });
     }
 
     /**
@@ -236,7 +234,8 @@ public class FluxInputStream extends InputStream {
             throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("'len' cannot be less than 0"));
         }
         if (len > (b.length - off)) {
-            throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("'len' cannot be greater than 'b'.length - 'off'"));
+            throw LOGGER
+                .logExceptionAsError(new IndexOutOfBoundsException("'len' cannot be greater than 'b'.length - 'off'"));
         }
     }
 }

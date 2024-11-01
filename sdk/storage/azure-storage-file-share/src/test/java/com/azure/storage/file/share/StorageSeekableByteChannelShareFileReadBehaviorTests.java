@@ -63,10 +63,7 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
     }
 
     private static Stream<Arguments> readCallsToClientCorrectlySupplier() {
-        return Stream.of(
-            Arguments.of(0, null),
-            Arguments.of(50, null),
-            Arguments.of(0, new ShareRequestConditions()));
+        return Stream.of(Arguments.of(0, null), Arguments.of(50, null), Arguments.of(0, new ShareRequestConditions()));
     }
 
     @ParameterizedTest
@@ -74,25 +71,27 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
     public void readCallsToClientCorrectly(int offset, ShareRequestConditions conditions) throws IOException {
         ByteBuffer buffer = ByteBuffer.allocate(Constants.KB);
         AtomicInteger downloadCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false,
-            false), "testshare", "testpath", null, null, null, null) {
-            @Override
-            public ShareFileDownloadResponse downloadWithResponse(OutputStream stream, ShareFileDownloadOptions options,
-                Duration timeout, Context context) {
-                assertNull(timeout);
-                assertNull(context);
-                downloadCallCount.incrementAndGet();
-                assertEquals(offset, options.getRange().getStart());
-                assertEquals(offset + buffer.remaining() - 1, options.getRange().getEnd());
-                if (conditions != null) {
-                    assertEquals(conditions, options.getRequestConditions());
+        ShareFileClient client
+            = new ShareFileClient(null, new AzureFileStorageImpl(null, null, "fakeurl", false, false), "testshare",
+                "testpath", null, null, null, null) {
+                @Override
+                public ShareFileDownloadResponse downloadWithResponse(OutputStream stream,
+                    ShareFileDownloadOptions options, Duration timeout, Context context) {
+                    assertNull(timeout);
+                    assertNull(context);
+                    downloadCallCount.incrementAndGet();
+                    assertEquals(offset, options.getRange().getStart());
+                    assertEquals(offset + buffer.remaining() - 1, options.getRange().getEnd());
+                    if (conditions != null) {
+                        assertEquals(conditions, options.getRequestConditions());
+                    }
+                    return createMockDownloadResponse(
+                        "bytes " + offset + "-" + (offset + buffer.limit() - 1) + "/4096");
                 }
-                return createMockDownloadResponse("bytes " + offset + "-" + (offset + buffer.limit() - 1) + "/4096");
-            }
-        };
+            };
 
-        StorageSeekableByteChannelShareFileReadBehavior behavior =
-            new StorageSeekableByteChannelShareFileReadBehavior(client, conditions);
+        StorageSeekableByteChannelShareFileReadBehavior behavior
+            = new StorageSeekableByteChannelShareFileReadBehavior(client, conditions);
 
         behavior.read(buffer, offset);
 
@@ -107,8 +106,8 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
         primaryFileClient.create(fileSize);
         primaryFileClient.upload(new ByteArrayInputStream(data), fileSize, null);
 
-        StorageSeekableByteChannelShareFileReadBehavior behavior =
-            new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null);
+        StorageSeekableByteChannelShareFileReadBehavior behavior
+            = new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null);
         ByteBuffer buffer = ByteBuffer.allocate(readSize);
 
         //when: "ReadBehavior.read() called"
@@ -133,8 +132,7 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
     }
 
     private static Stream<Arguments> readGracefulPastEndOfFileSupplier() {
-        return Stream.of(
-            Arguments.of(Constants.KB, 0, 2 * Constants.KB, Constants.KB), // read larger than file
+        return Stream.of(Arguments.of(Constants.KB, 0, 2 * Constants.KB, Constants.KB), // read larger than file
             Arguments.of(Constants.KB, 500, Constants.KB, Constants.KB - 500), // overlap on end of file
             Arguments.of(Constants.KB, Constants.KB, Constants.KB, -1), // starts at end of file
             Arguments.of(Constants.KB, Constants.KB + 20, Constants.KB, -1) // completely past file
@@ -153,8 +151,8 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
         primaryFileClient.upload(new ByteArrayInputStream(Arrays.copyOfRange(data, 0, length)), length, null);
 
         //and: "behavior to read file"
-        StorageSeekableByteChannelShareFileReadBehavior behavior =
-            new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null);
+        StorageSeekableByteChannelShareFileReadBehavior behavior
+            = new StorageSeekableByteChannelShareFileReadBehavior(primaryFileClient, null);
         ByteBuffer buffer = ByteBuffer.allocate(length);
 
         //when: "entire file initially read"
@@ -181,9 +179,10 @@ public class StorageSeekableByteChannelShareFileReadBehaviorTests extends FileSh
 
         //when: "file augmented to full size"
         primaryFileClient.setProperties(2 * length, null, null, null);
-        primaryFileClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(
-            new ByteArrayInputStream(Arrays.copyOfRange(data, 0, length)), length).setOffset((long) length), null,
-            null);
+        primaryFileClient.uploadRangeWithResponse(
+            new ShareFileUploadRangeOptions(new ByteArrayInputStream(Arrays.copyOfRange(data, 0, length)), length)
+                .setOffset((long) length),
+            null, null);
 
         //and: "behavior reads at previous EOF"
         buffer.clear();

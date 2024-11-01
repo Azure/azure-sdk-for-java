@@ -27,14 +27,11 @@ public class HelperTests {
     private static Stream<Arguments> fileRangeSupplier() {
         return Stream.of(
             // offset | count | result
-            Arguments.of(0, null, null),
-            Arguments.of(0, 5L, "bytes=0-4"),
-            Arguments.of(5, 10L, "bytes=5-14")
-        );
+            Arguments.of(0, null, null), Arguments.of(0, 5L, "bytes=0-4"), Arguments.of(5, 10L, "bytes=5-14"));
     }
 
     @ParameterizedTest
-    @CsvSource({"-1,5", "0,-1"})
+    @CsvSource({ "-1,5", "0,-1" })
     public void fileRangeIA(int offset, long count) {
         assertThrows(IllegalArgumentException.class, () -> new FileRange(offset, count));
     }
@@ -42,8 +39,6 @@ public class HelperTests {
     private static Stream<Arguments> fileRangeIASupplier() {
         return Stream.of(
             // offset | count
-            Arguments.of(-1, 5L),
-            Arguments.of(0, -1L)
-        );
+            Arguments.of(-1, 5L), Arguments.of(0, -1L));
     }
 }

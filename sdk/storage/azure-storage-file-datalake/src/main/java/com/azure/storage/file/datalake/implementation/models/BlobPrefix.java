@@ -68,7 +68,6 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
      * @param xmlReader The XmlReader being read.
      * @return An instance of BlobPrefix if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobPrefix.
      */
     public static BlobPrefix fromXml(XmlReader xmlReader) throws XMLStreamException {
@@ -83,7 +82,6 @@ public final class BlobPrefix implements XmlSerializable<BlobPrefix> {
      * cases where the model can deserialize from different root element names.
      * @return An instance of BlobPrefix if the XmlReader was pointing to an instance of it, or null if it was pointing
      * to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      * @throws XMLStreamException If an error occurs while reading the BlobPrefix.
      */
     public static BlobPrefix fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {

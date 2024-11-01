@@ -68,8 +68,8 @@ public abstract class BaseSasQueryParameters {
      */
     @Deprecated
     public BaseSasQueryParameters(Map<String, String[]> queryParamsMap, boolean removeSASParametersFromMap) {
-        this.version = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICE_VERSION,
-            removeSASParametersFromMap);
+        this.version
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SERVICE_VERSION, removeSASParametersFromMap);
         this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL,
             removeSASParametersFromMap, SasProtocol::parse);
         this.startTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_START_TIME,
@@ -80,8 +80,8 @@ public abstract class BaseSasQueryParameters {
             removeSASParametersFromMap, SasIpRange::parse);
         this.permissions = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,
             removeSASParametersFromMap);
-        this.signature = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNATURE,
-            removeSASParametersFromMap);
+        this.signature
+            = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNATURE, removeSASParametersFromMap);
     }
 
     /**
@@ -110,8 +110,8 @@ public abstract class BaseSasQueryParameters {
      * @deprecated Please use SasSignatureValues
      */
     @Deprecated
-    protected <T> T getQueryParameter(Map<String, String[]> parameters, String name, boolean remove, Function<String,
-        T> converter) {
+    protected <T> T getQueryParameter(Map<String, String[]> parameters, String name, boolean remove,
+        Function<String, T> converter) {
         String[] parameterValue = parameters.get(name);
         if (parameterValue == null) {
             return null;

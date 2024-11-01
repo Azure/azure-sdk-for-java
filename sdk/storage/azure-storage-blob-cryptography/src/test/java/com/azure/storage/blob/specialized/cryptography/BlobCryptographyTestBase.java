@@ -80,10 +80,10 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
     protected static final String GARBAGE_ETAG = "garbage";
     protected static final String RECEIVED_LEASE_ID = "received";
     protected static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
-    protected static final byte[] MOCK_RANDOM_DATA = String.join("", Collections.nCopies(32, "password"))
-        .getBytes(StandardCharsets.UTF_8);
-    private static final byte[] MOCK_KEY = String.join("", Collections.nCopies(4, "password"))
-        .getBytes(StandardCharsets.UTF_8);
+    protected static final byte[] MOCK_RANDOM_DATA
+        = String.join("", Collections.nCopies(32, "password")).getBytes(StandardCharsets.UTF_8);
+    private static final byte[] MOCK_KEY
+        = String.join("", Collections.nCopies(4, "password")).getBytes(StandardCharsets.UTF_8);
 
     private int entityNo = 0; // Used to generate stable container names for recording tests requiring multiple containers.
     protected String prefix;
@@ -96,13 +96,11 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(Arrays.asList(
                 new TestProxySanitizer("x-ms-encryption-key", ".*", "REDACTED", TestProxySanitizerType.HEADER),
-                new TestProxySanitizer("x-ms-encryption-key-sha256", ".*", "REDACTED", TestProxySanitizerType.HEADER)
-            ));
+                new TestProxySanitizer("x-ms-encryption-key-sha256", ".*", "REDACTED", TestProxySanitizerType.HEADER)));
         }
 
         // Ignore some portions of the request as they contain random data for cryptography.
-        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-            .setComparingBodies(false)
+        interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher().setComparingBodies(false)
             .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-meta-encryptiondata", "x-ms-encryption-key-sha256",
                 "x-ms-lease-id", "x-ms-proposed-lease-id", "If-Modified-Since", "If-Unmodified-Since", "Accept"))
             .setExcludedHeaders(Arrays.asList("Accept-Language", "Content-Type"))
@@ -128,8 +126,7 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
     }
 
     protected BlobServiceClient getNonRecordingServiceClient() {
-        return new BlobServiceClientBuilder()
-            .httpClient(getHttpClient())
+        return new BlobServiceClientBuilder().httpClient(getHttpClient())
             .credential(ENV.getPrimaryAccount().getCredential())
             .endpoint(ENV.getPrimaryAccount().getBlobEndpoint())
             .buildClient();
@@ -148,8 +145,7 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
     }
 
     protected EncryptedBlobClientBuilder getEncryptedClientBuilder(AsyncKeyEncryptionKey key,
-        AsyncKeyEncryptionKeyResolver keyResolver,
-        StorageSharedKeyCredential credential, String endpoint,
+        AsyncKeyEncryptionKeyResolver keyResolver, StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
         return getEncryptedClientBuilder(key, keyResolver, credential, endpoint, EncryptionVersion.V1, policies);
     }
@@ -158,9 +154,9 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
         AsyncKeyEncryptionKeyResolver keyResolver, StorageSharedKeyCredential credential, String endpoint,
         EncryptionVersion version, HttpPipelinePolicy... policies) {
         KeyWrapAlgorithm algorithm = key != null && "local".equals(key.getKeyId().block())
-            ? KeyWrapAlgorithm.A256KW : KeyWrapAlgorithm.RSA_OAEP_256;
-        EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(version)
-            .key(key, algorithm.toString())
+            ? KeyWrapAlgorithm.A256KW
+            : KeyWrapAlgorithm.RSA_OAEP_256;
+        EncryptedBlobClientBuilder builder = new EncryptedBlobClientBuilder(version).key(key, algorithm.toString())
             .keyResolver(keyResolver)
             .endpoint(endpoint);
 
@@ -179,8 +175,7 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
 
     protected BlobClientBuilder getBlobClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        BlobClientBuilder builder = new BlobClientBuilder()
-            .endpoint(endpoint);
+        BlobClientBuilder builder = new BlobClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -195,15 +190,13 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
         return builder;
     }
 
-    protected BlobServiceClientBuilder getServiceClientBuilder(TestAccount account,
-        HttpPipelinePolicy... policies) {
+    protected BlobServiceClientBuilder getServiceClientBuilder(TestAccount account, HttpPipelinePolicy... policies) {
         return getServiceClientBuilder(account.getCredential(), account.getBlobEndpoint(), policies);
     }
 
     protected BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
         HttpPipelinePolicy... policies) {
-        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
-            .endpoint(endpoint);
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder().endpoint(endpoint);
 
         for (HttpPipelinePolicy policy : policies) {
             builder.addPolicy(policy);
@@ -295,10 +288,7 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
     protected Mono<String> setupBlobLeaseCondition(BlobAsyncClient bac, String leaseID) {
         Mono<String> responseLeaseId = null;
         if (RECEIVED_LEASE_ID.equals(leaseID) || GARBAGE_LEASE_ID.equals(leaseID)) {
-            responseLeaseId = new BlobLeaseClientBuilder()
-                .blobAsyncClient(bac)
-                .buildAsyncClient()
-                .acquireLease(-1);
+            responseLeaseId = new BlobLeaseClientBuilder().blobAsyncClient(bac).buildAsyncClient().acquireLease(-1);
         }
 
         if (responseLeaseId == null) {
@@ -306,7 +296,8 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
         }
 
         return responseLeaseId.map(returnedLeaseId -> RECEIVED_LEASE_ID.equals(leaseID)
-            ? returnedLeaseId : (leaseID == null ? "null" : leaseID));
+            ? returnedLeaseId
+            : (leaseID == null ? "null" : leaseID));
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobClient blobClient) {
@@ -314,10 +305,7 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
     }
 
     protected static BlobLeaseClient createLeaseClient(BlobClient blobClient, String leaseId) {
-        return new BlobLeaseClientBuilder()
-            .blobClient(blobClient)
-            .leaseId(leaseId)
-            .buildClient();
+        return new BlobLeaseClientBuilder().blobClient(blobClient).leaseId(leaseId).buildClient();
     }
 
     protected static void compareDataToFile(Flux<ByteBuffer> data, File file) throws IOException {
@@ -415,7 +403,7 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
      * RECORD testing modes only.
      */
     protected static EncryptedBlobAsyncClient mockAesKey(EncryptedBlobAsyncClient encryptedClient) {
-        return  (ENV.getTestMode() == TestMode.PLAYBACK)
+        return (ENV.getTestMode() == TestMode.PLAYBACK)
             ? new EncryptedBlobAsyncClientSpy(encryptedClient)
             : encryptedClient;
     }
@@ -465,8 +453,7 @@ public class BlobCryptographyTestBase extends TestProxyTestBase {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(getHttpClient())
             .build();
     }

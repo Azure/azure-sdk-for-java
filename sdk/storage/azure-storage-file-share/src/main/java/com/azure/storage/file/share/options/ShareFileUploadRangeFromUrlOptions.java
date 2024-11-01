@@ -26,8 +26,7 @@ public final class ShareFileUploadRangeFromUrlOptions {
      * @param length data length to upload for this operation.
      * @param sourceUrl source URL for this operation.
      */
-    public ShareFileUploadRangeFromUrlOptions(
-        long length, String sourceUrl) {
+    public ShareFileUploadRangeFromUrlOptions(long length, String sourceUrl) {
         StorageImplUtils.assertNotNull("sourceUrl", sourceUrl);
         this.length = length;
         this.sourceUrl = sourceUrl;
@@ -109,8 +108,8 @@ public final class ShareFileUploadRangeFromUrlOptions {
      * @param destinationRequestConditions {@link ShareRequestConditions} for this operation.
      * @return modified options.
      */
-    public ShareFileUploadRangeFromUrlOptions setDestinationRequestConditions(
-        ShareRequestConditions destinationRequestConditions) {
+    public ShareFileUploadRangeFromUrlOptions
+        setDestinationRequestConditions(ShareRequestConditions destinationRequestConditions) {
         this.destinationRequestConditions = destinationRequestConditions;
         return this;
     }

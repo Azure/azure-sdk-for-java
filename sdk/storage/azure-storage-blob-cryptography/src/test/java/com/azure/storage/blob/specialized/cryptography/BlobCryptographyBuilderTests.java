@@ -54,8 +54,7 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
         cc = sc.getBlobContainerClient(generateContainerName());
         bc = cc.getBlobClient(generateBlobName());
 
-        beac = mockAesKey(new EncryptedBlobClientBuilder()
-            .blobName(bc.getBlobName())
+        beac = mockAesKey(new EncryptedBlobClientBuilder().blobName(bc.getBlobName())
             .key(fakeKey, "keyWrapAlgorithm")
             .keyResolver(fakeKeyResolver)
             .blobClient(bc)
@@ -99,11 +98,11 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
     @Test
     public void httpPipeline() {
         BlobClient regularClient = cc.getBlobClient(generateBlobName());
-        EncryptedBlobClient encryptedClient = new EncryptedBlobClient(mockAesKey(getEncryptedClientBuilder(fakeKey,
-            null, ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl())
-            .pipeline(regularClient.getHttpPipeline())
-            .blobName(regularClient.getBlobName())
-            .buildEncryptedBlobAsyncClient()));
+        EncryptedBlobClient encryptedClient = new EncryptedBlobClient(mockAesKey(
+            getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl())
+                .pipeline(regularClient.getHttpPipeline())
+                .blobName(regularClient.getBlobName())
+                .buildEncryptedBlobAsyncClient()));
 
         // Checks that there is one less policy in a regular client and that the extra policy is a decryption policy
         // and a blob user agent modification policy
@@ -117,21 +116,20 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
     public void customerProvidedKey() {
         cc.create();
         CustomerProvidedKey key = new CustomerProvidedKey(getRandomKey(null));
-        EncryptedBlobClientBuilder builder = getEncryptedClientBuilder(fakeKey, null,
-            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl())
-            .customerProvidedKey(key)
-            .blobName(generateBlobName());
+        EncryptedBlobClientBuilder builder
+            = getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
+                cc.getBlobContainerUrl()).customerProvidedKey(key).blobName(generateBlobName());
         if (getTestMode() == TestMode.PLAYBACK) {
             // Needed to solve echo header validation.
             builder.addPolicy(new PlaybackKeySha256Policy());
         }
 
         EncryptedBlobAsyncClient encryptedAsyncClient = mockAesKey(builder.buildEncryptedBlobAsyncClient());
-        EncryptedBlobClient encryptedClient = new EncryptedBlobClient(mockAesKey(
-            builder.buildEncryptedBlobAsyncClient()));
+        EncryptedBlobClient encryptedClient
+            = new EncryptedBlobClient(mockAesKey(builder.buildEncryptedBlobAsyncClient()));
 
-        Response<BlockBlobItem> uploadResponse = encryptedAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), null,
-            null, null, null, null).block();
+        Response<BlockBlobItem> uploadResponse
+            = encryptedAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), null, null, null, null, null).block();
         ByteArrayOutputStream downloadResult = new ByteArrayOutputStream();
         encryptedClient.download(downloadResult);
 
@@ -146,18 +144,17 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
     public void customerProvidedKeyNotANoop() {
         cc.create();
         CustomerProvidedKey key = new CustomerProvidedKey(getRandomKey(null));
-        EncryptedBlobClientBuilder builder = getEncryptedClientBuilder(fakeKey, null,
-            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl())
-            .customerProvidedKey(key)
-            .blobName(generateBlobName());
+        EncryptedBlobClientBuilder builder
+            = getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
+                cc.getBlobContainerUrl()).customerProvidedKey(key).blobName(generateBlobName());
         if (getTestMode() == TestMode.PLAYBACK) {
             // Needed to solve echo header validation.
             builder.addPolicy(new PlaybackKeySha256Policy());
         }
 
         EncryptedBlobAsyncClient encryptedAsyncClientWithCpk = mockAesKey(builder.buildEncryptedBlobAsyncClient());
-        EncryptedBlobClient encryptedClientNoCpk = new EncryptedBlobClient(mockAesKey(
-            builder.customerProvidedKey(null).buildEncryptedBlobAsyncClient()));
+        EncryptedBlobClient encryptedClientNoCpk
+            = new EncryptedBlobClient(mockAesKey(builder.customerProvidedKey(null).buildEncryptedBlobAsyncClient()));
 
         encryptedAsyncClientWithCpk.uploadWithResponse(DATA.getDefaultFlux(), null, null, null, null, null).block();
         ByteArrayOutputStream datastream = new ByteArrayOutputStream();
@@ -171,16 +168,15 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
     public void encryptionScope() {
         String scope = "testscope1";
         cc.create();
-        EncryptedBlobClientBuilder builder = getEncryptedClientBuilder(fakeKey, null,
-            ENV.getPrimaryAccount().getCredential(), cc.getBlobContainerUrl())
-            .encryptionScope(scope)
-            .blobName(generateBlobName());
+        EncryptedBlobClientBuilder builder
+            = getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
+                cc.getBlobContainerUrl()).encryptionScope(scope).blobName(generateBlobName());
         EncryptedBlobAsyncClient encryptedAsyncClient = mockAesKey(builder.buildEncryptedBlobAsyncClient());
-        EncryptedBlobClient encryptedClient = new EncryptedBlobClient(mockAesKey(
-            builder.buildEncryptedBlobAsyncClient()));
+        EncryptedBlobClient encryptedClient
+            = new EncryptedBlobClient(mockAesKey(builder.buildEncryptedBlobAsyncClient()));
 
-        Response<BlockBlobItem> uploadResponse = encryptedAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), null,
-            null, null, null, null).block();
+        Response<BlockBlobItem> uploadResponse
+            = encryptedAsyncClient.uploadWithResponse(DATA.getDefaultFlux(), null, null, null, null, null).block();
         ByteArrayOutputStream downloadResult = new ByteArrayOutputStream();
         encryptedClient.download(downloadResult);
 
@@ -191,15 +187,17 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
 
     @Test
     public void conflictingEncryptionInfo() {
-        assertThrows(IllegalArgumentException.class, () -> new EncryptedBlobClientBuilder()
-            .blobAsyncClient(beac)
-            .blobName("blob")
-            .key(fakeKey, "keywrapalgorithm").buildEncryptedBlobAsyncClient());
+        assertThrows(IllegalArgumentException.class,
+            () -> new EncryptedBlobClientBuilder().blobAsyncClient(beac)
+                .blobName("blob")
+                .key(fakeKey, "keywrapalgorithm")
+                .buildEncryptedBlobAsyncClient());
     }
 
     @Test
     public void keyAfterPipeline() {
-        assertDoesNotThrow(() -> new EncryptedBlobClientBuilder().blobClient(bc).key(fakeKey, "keywrapalgorithm")
+        assertDoesNotThrow(() -> new EncryptedBlobClientBuilder().blobClient(bc)
+            .key(fakeKey, "keywrapalgorithm")
             .buildEncryptedBlobClient());
     }
 
@@ -207,10 +205,9 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
     public void getCustomerProvidedKeyClient() {
         CustomerProvidedKey originalKey = new CustomerProvidedKey(getRandomKey(null));
         EncryptedBlobClient client = getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
-            cc.getBlobContainerUrl())
-            .customerProvidedKey(originalKey)
-            .blobName(generateBlobName())
-            .buildEncryptedBlobClient();
+            cc.getBlobContainerUrl()).customerProvidedKey(originalKey)
+                .blobName(generateBlobName())
+                .buildEncryptedBlobClient();
         CustomerProvidedKey newCpk = new CustomerProvidedKey(getRandomKey(null));
         EncryptedBlobClient newClient = client.getCustomerProvidedKeyClient(newCpk);
 
@@ -221,10 +218,9 @@ public class BlobCryptographyBuilderTests extends BlobCryptographyTestBase {
     public void getEncryptionScopeClient() {
         String originalScope = "testscope1";
         EncryptedBlobClient client = getEncryptedClientBuilder(fakeKey, null, ENV.getPrimaryAccount().getCredential(),
-            cc.getBlobContainerUrl())
-            .encryptionScope(originalScope)
-            .blobName(generateBlobName())
-            .buildEncryptedBlobClient();
+            cc.getBlobContainerUrl()).encryptionScope(originalScope)
+                .blobName(generateBlobName())
+                .buildEncryptedBlobClient();
         String newEncryptionScope = "newtestscope";
 
         EncryptedBlobClient newClient = client.getEncryptionScopeClient(newEncryptionScope);

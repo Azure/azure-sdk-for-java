@@ -1,14 +1,24 @@
 # Release History
 
-## 1.54.0-beta.1 (Unreleased)
+## 1.54.0 (2024-11-01)
 
 ### Features Added
 
-### Breaking Changes
+- Added `HttpLogOptions.getAllowHttpHeaderNames()`, `HttpLogOptions.setAllowedHeaderNames(Set<HttpHeaderNames>)`, and
+  `HttpLogOptions.addAllowedHeaderName(HttpHeaderName)`.
 
 ### Bugs Fixed
 
+- Fixed a bug where `Duration.between` could result in an exception if `OffsetDateTime.MAX` was used.
+
 ### Other Changes
+
+- Deprecated `String`-based equivalent APIs in `HttpLogOptions` for allowed header names.
+- Deprecated `HttpLogOptions.prettyPrintBody`.
+
+#### Dependency Updates
+
+- Updated Reactor from `3.4.38` to `3.4.41`.
 
 ## 1.53.0 (2024-10-01)
 
