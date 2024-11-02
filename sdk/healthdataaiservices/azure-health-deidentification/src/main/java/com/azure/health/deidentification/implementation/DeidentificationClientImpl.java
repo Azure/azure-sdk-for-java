@@ -44,7 +44,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.health.deidentification.DeidServicesServiceVersion;
+import com.azure.health.deidentification.DeidentificationServiceVersion;
 import com.azure.health.deidentification.models.DeidentificationJob;
 import java.time.Duration;
 import java.util.List;
@@ -78,14 +78,14 @@ public final class DeidentificationClientImpl {
     /**
      * Service version.
      */
-    private final DeidServicesServiceVersion serviceVersion;
+    private final DeidentificationServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public DeidServicesServiceVersion getServiceVersion() {
+    public DeidentificationServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -123,7 +123,7 @@ public final class DeidentificationClientImpl {
      * @param endpoint Url of your De-identification Service.
      * @param serviceVersion Service version.
      */
-    public DeidentificationClientImpl(String endpoint, DeidServicesServiceVersion serviceVersion) {
+    public DeidentificationClientImpl(String endpoint, DeidentificationServiceVersion serviceVersion) {
         this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
             JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
@@ -136,7 +136,7 @@ public final class DeidentificationClientImpl {
      * @param serviceVersion Service version.
      */
     public DeidentificationClientImpl(HttpPipeline httpPipeline, String endpoint,
-        DeidServicesServiceVersion serviceVersion) {
+        DeidentificationServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -149,7 +149,7 @@ public final class DeidentificationClientImpl {
      * @param serviceVersion Service version.
      */
     public DeidentificationClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint,
-        DeidServicesServiceVersion serviceVersion) {
+        DeidentificationServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

@@ -217,7 +217,7 @@ public final class DeidentificationClientBuilder
      * Service version
      */
     @Generated
-    private DeidServicesServiceVersion serviceVersion;
+    private DeidentificationServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -226,7 +226,7 @@ public final class DeidentificationClientBuilder
      * @return the DeidentificationClientBuilder.
      */
     @Generated
-    public DeidentificationClientBuilder serviceVersion(DeidServicesServiceVersion serviceVersion) {
+    public DeidentificationClientBuilder serviceVersion(DeidentificationServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -258,8 +258,8 @@ public final class DeidentificationClientBuilder
     private DeidentificationClientImpl buildInnerClient() {
         this.validateClient();
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        DeidServicesServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : DeidServicesServiceVersion.getLatest();
+        DeidentificationServiceVersion localServiceVersion
+            = (serviceVersion != null) ? serviceVersion : DeidentificationServiceVersion.getLatest();
         DeidentificationClientImpl client = new DeidentificationClientImpl(localPipeline,
             JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
