@@ -24,18 +24,6 @@ public final class PhiTaggerResult implements JsonSerializable<PhiTaggerResult> 
     @Generated
     private final List<PhiEntity> entities;
 
-    /*
-     * Path to the document in storage.
-     */
-    @Generated
-    private String path;
-
-    /*
-     * The entity tag for this resource.
-     */
-    @Generated
-    private String etag;
-
     /**
      * Creates an instance of PhiTaggerResult class.
      * 
@@ -57,26 +45,6 @@ public final class PhiTaggerResult implements JsonSerializable<PhiTaggerResult> 
     }
 
     /**
-     * Get the path property: Path to the document in storage.
-     * 
-     * @return the path value.
-     */
-    @Generated
-    public String getPath() {
-        return this.path;
-    }
-
-    /**
-     * Get the etag property: The entity tag for this resource.
-     * 
-     * @return the etag value.
-     */
-    @Generated
-    public String getEtag() {
-        return this.etag;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated
@@ -84,8 +52,6 @@ public final class PhiTaggerResult implements JsonSerializable<PhiTaggerResult> 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("entities", this.entities, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("path", this.path);
-        jsonWriter.writeStringField("etag", this.etag);
         return jsonWriter.writeEndObject();
     }
 
@@ -102,27 +68,17 @@ public final class PhiTaggerResult implements JsonSerializable<PhiTaggerResult> 
     public static PhiTaggerResult fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             List<PhiEntity> entities = null;
-            String path = null;
-            String etag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("entities".equals(fieldName)) {
                     entities = reader.readArray(reader1 -> PhiEntity.fromJson(reader1));
-                } else if ("path".equals(fieldName)) {
-                    path = reader.getString();
-                } else if ("etag".equals(fieldName)) {
-                    etag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            PhiTaggerResult deserializedPhiTaggerResult = new PhiTaggerResult(entities);
-            deserializedPhiTaggerResult.path = path;
-            deserializedPhiTaggerResult.etag = etag;
-
-            return deserializedPhiTaggerResult;
+            return new PhiTaggerResult(entities);
         });
     }
 }

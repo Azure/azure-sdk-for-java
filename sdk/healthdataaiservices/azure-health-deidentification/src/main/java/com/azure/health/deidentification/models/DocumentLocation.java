@@ -18,10 +18,10 @@ import java.io.IOException;
 @Immutable
 public final class DocumentLocation implements JsonSerializable<DocumentLocation> {
     /*
-     * Path of document in storage.
+     * Location of document in storage.
      */
     @Generated
-    private final String path;
+    private final String location;
 
     /*
      * The entity tag for this resource.
@@ -32,21 +32,21 @@ public final class DocumentLocation implements JsonSerializable<DocumentLocation
     /**
      * Creates an instance of DocumentLocation class.
      * 
-     * @param path the path value to set.
+     * @param location the location value to set.
      */
     @Generated
-    private DocumentLocation(String path) {
-        this.path = path;
+    private DocumentLocation(String location) {
+        this.location = location;
     }
 
     /**
-     * Get the path property: Path of document in storage.
+     * Get the location property: Location of document in storage.
      * 
-     * @return the path value.
+     * @return the location value.
      */
     @Generated
-    public String getPath() {
-        return this.path;
+    public String getLocation() {
+        return this.location;
     }
 
     /**
@@ -66,7 +66,7 @@ public final class DocumentLocation implements JsonSerializable<DocumentLocation
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("path", this.path);
+        jsonWriter.writeStringField("location", this.location);
         return jsonWriter.writeEndObject();
     }
 
@@ -82,21 +82,21 @@ public final class DocumentLocation implements JsonSerializable<DocumentLocation
     @Generated
     public static DocumentLocation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String path = null;
+            String location = null;
             String etag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("path".equals(fieldName)) {
-                    path = reader.getString();
+                if ("location".equals(fieldName)) {
+                    location = reader.getString();
                 } else if ("etag".equals(fieldName)) {
                     etag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            DocumentLocation deserializedDocumentLocation = new DocumentLocation(path);
+            DocumentLocation deserializedDocumentLocation = new DocumentLocation(location);
             deserializedDocumentLocation.etag = etag;
 
             return deserializedDocumentLocation;

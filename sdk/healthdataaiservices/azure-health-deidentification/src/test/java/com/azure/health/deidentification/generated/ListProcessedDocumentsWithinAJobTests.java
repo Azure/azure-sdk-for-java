@@ -30,12 +30,11 @@ public final class ListProcessedDocumentsWithinAJobTests extends Deidentificatio
         // verify property "input"
         DocumentLocation firstItemInput = firstItem.getInput();
         Assertions.assertNotNull(firstItemInput);
-        Assertions.assertEquals("/documents/patient_doc_1", firstItemInput.getPath());
+        Assertions.assertEquals("https://blobtest.blob.core.windows.net/container", firstItemInput.getLocation());
         Assertions.assertEquals("0x8DB638EEA0CC717", firstItemInput.getEtag());
         // verify property "output"
         DocumentLocation firstItemOutput = firstItem.getOutput();
         Assertions.assertNotNull(firstItemOutput);
-        Assertions.assertEquals("_output/documents/patient_doc_1", firstItemOutput.getPath());
         Assertions.assertEquals("0xAB298APO23099ZL", firstItemOutput.getEtag());
         // verify property "status"
         Assertions.assertEquals(OperationState.FAILED, firstItem.getStatus());

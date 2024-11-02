@@ -24,22 +24,10 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     private final String inputText;
 
     /*
-     * Operation to perform on the input.
+     * Customization parameters to override default service behaviors.
      */
     @Generated
-    private OperationType operation;
-
-    /*
-     * Data type of the input.
-     */
-    @Generated
-    private DocumentDataType dataType;
-
-    /*
-     * Format of the redacted output. Only valid when OperationType is "Redact".
-     */
-    @Generated
-    private String redactionFormat;
+    private CustomizationOptions customizations;
 
     /**
      * Creates an instance of DeidentificationContent class.
@@ -62,68 +50,24 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     }
 
     /**
-     * Get the operation property: Operation to perform on the input.
+     * Get the customizations property: Customization parameters to override default service behaviors.
      * 
-     * @return the operation value.
+     * @return the customizations value.
      */
     @Generated
-    public OperationType getOperation() {
-        return this.operation;
+    public CustomizationOptions getCustomizations() {
+        return this.customizations;
     }
 
     /**
-     * Set the operation property: Operation to perform on the input.
+     * Set the customizations property: Customization parameters to override default service behaviors.
      * 
-     * @param operation the operation value to set.
+     * @param customizations the customizations value to set.
      * @return the DeidentificationContent object itself.
      */
     @Generated
-    public DeidentificationContent setOperation(OperationType operation) {
-        this.operation = operation;
-        return this;
-    }
-
-    /**
-     * Get the dataType property: Data type of the input.
-     * 
-     * @return the dataType value.
-     */
-    @Generated
-    public DocumentDataType getDataType() {
-        return this.dataType;
-    }
-
-    /**
-     * Set the dataType property: Data type of the input.
-     * 
-     * @param dataType the dataType value to set.
-     * @return the DeidentificationContent object itself.
-     */
-    @Generated
-    public DeidentificationContent setDataType(DocumentDataType dataType) {
-        this.dataType = dataType;
-        return this;
-    }
-
-    /**
-     * Get the redactionFormat property: Format of the redacted output. Only valid when OperationType is "Redact".
-     * 
-     * @return the redactionFormat value.
-     */
-    @Generated
-    public String getRedactionFormat() {
-        return this.redactionFormat;
-    }
-
-    /**
-     * Set the redactionFormat property: Format of the redacted output. Only valid when OperationType is "Redact".
-     * 
-     * @param redactionFormat the redactionFormat value to set.
-     * @return the DeidentificationContent object itself.
-     */
-    @Generated
-    public DeidentificationContent setRedactionFormat(String redactionFormat) {
-        this.redactionFormat = redactionFormat;
+    public DeidentificationContent setCustomizations(CustomizationOptions customizations) {
+        this.customizations = customizations;
         return this;
     }
 
@@ -135,9 +79,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("inputText", this.inputText);
-        jsonWriter.writeStringField("operation", this.operation == null ? null : this.operation.toString());
-        jsonWriter.writeStringField("dataType", this.dataType == null ? null : this.dataType.toString());
-        jsonWriter.writeStringField("redactionFormat", this.redactionFormat);
+        jsonWriter.writeJsonField("customizations", this.customizations);
         return jsonWriter.writeEndObject();
     }
 
@@ -154,29 +96,21 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     public static DeidentificationContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String inputText = null;
-            OperationType operation = null;
-            DocumentDataType dataType = null;
-            String redactionFormat = null;
+            CustomizationOptions customizations = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("inputText".equals(fieldName)) {
                     inputText = reader.getString();
-                } else if ("operation".equals(fieldName)) {
-                    operation = OperationType.fromString(reader.getString());
-                } else if ("dataType".equals(fieldName)) {
-                    dataType = DocumentDataType.fromString(reader.getString());
-                } else if ("redactionFormat".equals(fieldName)) {
-                    redactionFormat = reader.getString();
+                } else if ("customizations".equals(fieldName)) {
+                    customizations = CustomizationOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             DeidentificationContent deserializedDeidentificationContent = new DeidentificationContent(inputText);
-            deserializedDeidentificationContent.operation = operation;
-            deserializedDeidentificationContent.dataType = dataType;
-            deserializedDeidentificationContent.redactionFormat = redactionFormat;
+            deserializedDeidentificationContent.customizations = customizations;
 
             return deserializedDeidentificationContent;
         });

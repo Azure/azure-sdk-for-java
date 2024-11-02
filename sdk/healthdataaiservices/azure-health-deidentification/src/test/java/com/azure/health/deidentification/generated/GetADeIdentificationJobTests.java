@@ -5,7 +5,7 @@
 package com.azure.health.deidentification.generated;
 
 import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DocumentDataType;
+import com.azure.health.deidentification.models.JobCustomizationOptions;
 import com.azure.health.deidentification.models.JobStatus;
 import com.azure.health.deidentification.models.JobSummary;
 import com.azure.health.deidentification.models.OperationType;
@@ -28,11 +28,12 @@ public final class GetADeIdentificationJobTests extends DeidentificationClientTe
         Assertions.assertNotNull(response);
         // verify property "name"
         Assertions.assertEquals("documents_smith_1", response.getName());
+        // verify property "operation"
+        Assertions.assertEquals(OperationType.REDACT, response.getOperation());
         // verify property "sourceLocation"
         SourceStorageLocation responseSourceLocation = response.getSourceLocation();
         Assertions.assertNotNull(responseSourceLocation);
-        Assertions.assertEquals(
-            "https://blobtest.blob.core.windows.net/container?sp=r&st=2024-01-24T18:11:10Z&se=2024-01-25T02:11:10Z&spr=https&sv=2022-11-02&sr=c&sig=signature%3D",
+        Assertions.assertEquals("https://blobtest.blob.core.windows.net/container",
             responseSourceLocation.getLocation());
         Assertions.assertEquals("/documents", responseSourceLocation.getPrefix());
         List<String> responseSourceLocationExtensions = responseSourceLocation.getExtensions();
@@ -40,16 +41,15 @@ public final class GetADeIdentificationJobTests extends DeidentificationClientTe
         // verify property "targetLocation"
         TargetStorageLocation responseTargetLocation = response.getTargetLocation();
         Assertions.assertNotNull(responseTargetLocation);
-        Assertions.assertEquals(
-            "https://blobtest.blob.core.windows.net/container?sp=r&st=2024-01-24T18:11:10Z&se=2024-01-25T02:11:10Z&spr=https&sv=2022-11-02&sr=c&sig=signature%3D",
+        Assertions.assertEquals("https://blobtest.blob.core.windows.net/container",
             responseTargetLocation.getLocation());
         Assertions.assertEquals("/documents", responseTargetLocation.getPrefix());
-        // verify property "operation"
-        Assertions.assertEquals(OperationType.REDACT, response.getOperation());
-        // verify property "dataType"
-        Assertions.assertEquals(DocumentDataType.PLAINTEXT, response.getDataType());
-        // verify property "redactionFormat"
-        Assertions.assertEquals("[{type}]", response.getRedactionFormat());
+        Assertions.assertEquals(true, responseTargetLocation.isOverwrite());
+        // verify property "customizations"
+        JobCustomizationOptions responseCustomizations = response.getCustomizations();
+        Assertions.assertNotNull(responseCustomizations);
+        Assertions.assertEquals("[{type}]", responseCustomizations.getRedactionFormat());
+        Assertions.assertEquals("en-US", responseCustomizations.getSurrogateLocale());
         // verify property "status"
         Assertions.assertEquals(JobStatus.SUCCEEDED, response.getStatus());
         // verify property "lastUpdatedAt"

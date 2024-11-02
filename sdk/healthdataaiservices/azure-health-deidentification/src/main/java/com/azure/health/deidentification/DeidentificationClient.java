@@ -51,6 +51,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -61,10 +62,12 @@ public final class DeidentificationClient {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -118,6 +121,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -128,10 +132,12 @@ public final class DeidentificationClient {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -165,6 +171,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -175,10 +182,12 @@ public final class DeidentificationClient {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -217,9 +226,9 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateJob(String name, BinaryData resource,
+    public SyncPoller<BinaryData, BinaryData> beginDeidentifyDocuments(String name, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateJob(name, resource, requestOptions);
+        return this.serviceClient.beginDeidentifyDocuments(name, resource, requestOptions);
     }
 
     /**
@@ -240,6 +249,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -250,10 +260,12 @@ public final class DeidentificationClient {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -313,7 +325,7 @@ public final class DeidentificationClient {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -363,6 +375,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -373,10 +386,12 @@ public final class DeidentificationClient {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -447,9 +462,10 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     inputText: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -474,8 +490,6 @@ public final class DeidentificationClient {
      *                 confidenceScore: Double (Optional)
      *             }
      *         ]
-     *         path: String (Optional)
-     *         etag: String (Optional)
      *     }
      * }
      * }
@@ -491,8 +505,8 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deidentifyWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.deidentifyWithResponse(body, requestOptions);
+    public Response<BinaryData> deidentifyTextWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.deidentifyTextWithResponse(body, requestOptions);
     }
 
     /**
@@ -536,11 +550,11 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DeidentificationJob, DeidentificationJob> beginCreateJob(String name,
+    public SyncPoller<DeidentificationJob, DeidentificationJob> beginDeidentifyDocuments(String name,
         DeidentificationJob resource) {
-        // Generated convenience method for beginCreateJobWithModel
+        // Generated convenience method for beginDeidentifyDocumentsWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateJobWithModel(name, BinaryData.fromObject(resource), requestOptions);
+        return serviceClient.beginDeidentifyDocumentsWithModel(name, BinaryData.fromObject(resource), requestOptions);
     }
 
     /**
@@ -704,10 +718,10 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeidentificationResult deidentify(DeidentificationContent body) {
-        // Generated convenience method for deidentifyWithResponse
+    public DeidentificationResult deidentifyText(DeidentificationContent body) {
+        // Generated convenience method for deidentifyTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deidentifyWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
+        return deidentifyTextWithResponse(BinaryData.fromObject(body), requestOptions).getValue()
             .toObject(DeidentificationResult.class);
     }
 }

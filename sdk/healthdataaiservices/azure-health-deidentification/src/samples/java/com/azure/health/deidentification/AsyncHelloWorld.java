@@ -7,10 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.util.Configuration;
-import com.azure.health.deidentification.models.DeidentificationContent;
-import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.OperationType;
+import com.azure.health.deidentification.models.*;
 
 public class AsyncHelloWorld {
     public static void main(String[] args) {
@@ -24,10 +21,9 @@ public class AsyncHelloWorld {
         String inputText = "Hello, my name is John Smith.";
 
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.SURROGATE);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+        // TODO: set operation to surrogate
 
-        DeidentificationResult result = deidentificationClient.deidentify(content).block();
+        DeidentificationResult result = deidentificationClient.deidentifyText(content).block();
         System.out.println("Deidentified output: " + (result != null ? result.getOutputText() : null));
         // Deidentified output: Hello, my name is Krishna Doe.
 

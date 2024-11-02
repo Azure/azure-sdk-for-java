@@ -4,10 +4,9 @@
 
 package com.azure.health.deidentification.generated;
 
+import com.azure.health.deidentification.models.CustomizationOptions;
 import com.azure.health.deidentification.models.DeidentificationContent;
 import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.OperationType;
 import com.azure.health.deidentification.models.PhiCategory;
 import com.azure.health.deidentification.models.PhiEntity;
 import com.azure.health.deidentification.models.PhiTaggerResult;
@@ -24,9 +23,8 @@ public final class DeIdentifyTextTests extends DeidentificationClientTestBase {
     public void testDeIdentifyTextTests() {
         // method invocation
         DeidentificationResult response = deidentificationClient
-            .deidentify(new DeidentificationContent("Hello my name is John Smith.").setOperation(OperationType.REDACT)
-                .setDataType(DocumentDataType.PLAINTEXT)
-                .setRedactionFormat("[{type}]"));
+            .deidentifyText(new DeidentificationContent("Hello my name is John Smith.").setCustomizations(
+                new CustomizationOptions().setRedactionFormat("[{type}]").setSurrogateLocale("en-US")));
 
         // response assertion
         Assertions.assertNotNull(response);
@@ -51,6 +49,5 @@ public final class DeIdentifyTextTests extends DeidentificationClientTestBase {
         Assertions.assertEquals(10, responseTaggerResultEntitiesFirstItemLength.getCodePoint());
         Assertions.assertEquals("John Smith", responseTaggerResultEntitiesFirstItem.getText());
         Assertions.assertEquals(0.83D, responseTaggerResultEntitiesFirstItem.getConfidenceScore());
-        Assertions.assertEquals("0x000000000000000", responseTaggerResult.getEtag());
     }
 }

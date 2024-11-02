@@ -11,9 +11,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum DeidServicesServiceVersion implements ServiceVersion {
     /**
-     * Enum value 2024-07-12-preview.
+     * Enum value 2024-11-15.
      */
-    V2024_07_12_PREVIEW("2024-07-12-preview");
+    V2024_11_15("2024-11-15");
 
     private final String version;
 
@@ -35,6 +35,6 @@ public enum DeidServicesServiceVersion implements ServiceVersion {
      * @return The latest {@link DeidServicesServiceVersion}.
      */
     public static DeidServicesServiceVersion getLatest() {
-        return V2024_07_12_PREVIEW;
+        return V2024_11_15;
     }
 }

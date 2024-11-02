@@ -191,7 +191,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createJob(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> deidentifyDocuments(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
@@ -202,7 +202,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> createJobSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> deidentifyDocumentsSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") BinaryData resource, RequestOptions requestOptions, Context context);
@@ -293,7 +293,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> deidentify(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> deidentifyText(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
@@ -304,7 +304,7 @@ public final class DeidentificationClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> deidentifySync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> deidentifyTextSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") BinaryData body,
             RequestOptions requestOptions, Context context);
@@ -360,6 +360,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -370,10 +371,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -428,6 +431,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -438,10 +442,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -496,6 +502,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -506,10 +513,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -543,6 +552,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -553,10 +563,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -595,11 +607,11 @@ public final class DeidentificationClientImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createJobWithResponseAsync(String name, BinaryData resource,
+    private Mono<Response<BinaryData>> deidentifyDocumentsWithResponseAsync(String name, BinaryData resource,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createJob(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deidentifyDocuments(this.getEndpoint(),
             this.getServiceVersion().getVersion(), name, contentType, accept, resource, requestOptions, context));
     }
 
@@ -613,6 +625,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -623,10 +636,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -660,6 +675,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -670,10 +686,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -711,12 +729,12 @@ public final class DeidentificationClientImpl {
      * @return a job containing a batch of documents to de-identify along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Response<BinaryData> createJobWithResponse(String name, BinaryData resource,
+    private Response<BinaryData> deidentifyDocumentsWithResponse(String name, BinaryData resource,
         RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createJobSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name, contentType,
-            accept, resource, requestOptions, Context.NONE);
+        return service.deidentifyDocumentsSync(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
+            contentType, accept, resource, requestOptions, Context.NONE);
     }
 
     /**
@@ -729,6 +747,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -739,10 +758,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -776,6 +797,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -786,10 +808,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -827,10 +851,10 @@ public final class DeidentificationClientImpl {
      * @return the {@link PollerFlux} for polling of a job containing a batch of documents to de-identify.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateJobAsync(String name, BinaryData resource,
+    public PollerFlux<BinaryData, BinaryData> beginDeidentifyDocumentsAsync(String name, BinaryData resource,
         RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createJobWithResponseAsync(name, resource, requestOptions),
+            () -> this.deidentifyDocumentsWithResponseAsync(name, resource, requestOptions),
             new com.azure.health.deidentification.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
@@ -851,6 +875,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -861,10 +886,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -898,6 +925,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -908,10 +936,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -949,10 +979,10 @@ public final class DeidentificationClientImpl {
      * @return the {@link SyncPoller} for polling of a job containing a batch of documents to de-identify.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginCreateJob(String name, BinaryData resource,
+    public SyncPoller<BinaryData, BinaryData> beginDeidentifyDocuments(String name, BinaryData resource,
         RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createJobWithResponse(name, resource, requestOptions),
+            () -> this.deidentifyDocumentsWithResponse(name, resource, requestOptions),
             new com.azure.health.deidentification.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
@@ -973,6 +1003,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -983,10 +1014,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -1020,6 +1053,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1030,10 +1064,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -1071,10 +1107,10 @@ public final class DeidentificationClientImpl {
      * @return the {@link PollerFlux} for polling of a job containing a batch of documents to de-identify.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DeidentificationJob, DeidentificationJob> beginCreateJobWithModelAsync(String name,
+    public PollerFlux<DeidentificationJob, DeidentificationJob> beginDeidentifyDocumentsWithModelAsync(String name,
         BinaryData resource, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
-            () -> this.createJobWithResponseAsync(name, resource, requestOptions),
+            () -> this.deidentifyDocumentsWithResponseAsync(name, resource, requestOptions),
             new com.azure.health.deidentification.implementation.OperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
@@ -1096,6 +1132,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1106,10 +1143,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -1143,6 +1182,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1153,10 +1193,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -1194,10 +1236,10 @@ public final class DeidentificationClientImpl {
      * @return the {@link SyncPoller} for polling of a job containing a batch of documents to de-identify.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DeidentificationJob, DeidentificationJob> beginCreateJobWithModel(String name,
+    public SyncPoller<DeidentificationJob, DeidentificationJob> beginDeidentifyDocumentsWithModel(String name,
         BinaryData resource, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            () -> this.createJobWithResponse(name, resource, requestOptions),
+            () -> this.deidentifyDocumentsWithResponse(name, resource, requestOptions),
             new com.azure.health.deidentification.implementation.SyncOperationLocationPollingStrategy<>(
                 new PollingStrategyOptions(this.getHttpPipeline())
                     .setEndpoint("https://{endpoint}".replace("{endpoint}", this.getEndpoint()))
@@ -1227,6 +1269,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1237,10 +1280,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -1304,6 +1349,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1314,10 +1360,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -1399,6 +1447,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1409,10 +1458,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -1474,6 +1525,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1484,10 +1536,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -1570,7 +1624,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -1630,7 +1684,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -1707,7 +1761,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -1764,7 +1818,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -1837,6 +1891,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1847,10 +1902,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -1909,6 +1966,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -1919,10 +1977,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -2015,9 +2075,10 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     inputText: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -2042,8 +2103,6 @@ public final class DeidentificationClientImpl {
      *                 confidenceScore: Double (Optional)
      *             }
      *         ]
-     *         path: String (Optional)
-     *         etag: String (Optional)
      *     }
      * }
      * }
@@ -2059,10 +2118,10 @@ public final class DeidentificationClientImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deidentifyWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deidentifyTextWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.deidentify(this.getEndpoint(),
+        return FluxUtil.withContext(context -> service.deidentifyText(this.getEndpoint(),
             this.getServiceVersion().getVersion(), contentType, accept, body, requestOptions, context));
     }
 
@@ -2076,9 +2135,10 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     inputText: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -2103,8 +2163,6 @@ public final class DeidentificationClientImpl {
      *                 confidenceScore: Double (Optional)
      *             }
      *         ]
-     *         path: String (Optional)
-     *         etag: String (Optional)
      *     }
      * }
      * }
@@ -2119,11 +2177,11 @@ public final class DeidentificationClientImpl {
      * @return response body for de-identification operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deidentifyWithResponse(BinaryData body, RequestOptions requestOptions) {
+    public Response<BinaryData> deidentifyTextWithResponse(BinaryData body, RequestOptions requestOptions) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.deidentifySync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, accept,
-            body, requestOptions, Context.NONE);
+        return service.deidentifyTextSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+            accept, body, requestOptions, Context.NONE);
     }
 
     /**
@@ -2136,6 +2194,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -2146,10 +2205,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -2206,6 +2267,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -2216,10 +2278,12 @@ public final class DeidentificationClientImpl {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -2275,7 +2339,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -2327,7 +2391,7 @@ public final class DeidentificationClientImpl {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)

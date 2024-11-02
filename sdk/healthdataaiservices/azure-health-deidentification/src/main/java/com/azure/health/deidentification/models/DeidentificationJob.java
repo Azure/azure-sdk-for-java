@@ -27,6 +27,12 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     private String name;
 
     /*
+     * Operation to perform on the input documents.
+     */
+    @Generated
+    private OperationType operation;
+
+    /*
      * Storage location to perform the operation on.
      */
     @Generated
@@ -39,22 +45,10 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     private final TargetStorageLocation targetLocation;
 
     /*
-     * Operation to perform on the input documents.
+     * Customization parameters to override default service behaviors.
      */
     @Generated
-    private OperationType operation;
-
-    /*
-     * Data type of the input documents.
-     */
-    @Generated
-    private DocumentDataType dataType;
-
-    /*
-     * Format of the redacted output. Only valid when Operation is Redact.
-     */
-    @Generated
-    private String redactionFormat;
+    private JobCustomizationOptions customizations;
 
     /*
      * Current status of a job.
@@ -119,26 +113,6 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     }
 
     /**
-     * Get the sourceLocation property: Storage location to perform the operation on.
-     * 
-     * @return the sourceLocation value.
-     */
-    @Generated
-    public SourceStorageLocation getSourceLocation() {
-        return this.sourceLocation;
-    }
-
-    /**
-     * Get the targetLocation property: Target location to store output of operation.
-     * 
-     * @return the targetLocation value.
-     */
-    @Generated
-    public TargetStorageLocation getTargetLocation() {
-        return this.targetLocation;
-    }
-
-    /**
      * Get the operation property: Operation to perform on the input documents.
      * 
      * @return the operation value.
@@ -161,46 +135,44 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     }
 
     /**
-     * Get the dataType property: Data type of the input documents.
+     * Get the sourceLocation property: Storage location to perform the operation on.
      * 
-     * @return the dataType value.
+     * @return the sourceLocation value.
      */
     @Generated
-    public DocumentDataType getDataType() {
-        return this.dataType;
+    public SourceStorageLocation getSourceLocation() {
+        return this.sourceLocation;
     }
 
     /**
-     * Set the dataType property: Data type of the input documents.
+     * Get the targetLocation property: Target location to store output of operation.
      * 
-     * @param dataType the dataType value to set.
+     * @return the targetLocation value.
+     */
+    @Generated
+    public TargetStorageLocation getTargetLocation() {
+        return this.targetLocation;
+    }
+
+    /**
+     * Get the customizations property: Customization parameters to override default service behaviors.
+     * 
+     * @return the customizations value.
+     */
+    @Generated
+    public JobCustomizationOptions getCustomizations() {
+        return this.customizations;
+    }
+
+    /**
+     * Set the customizations property: Customization parameters to override default service behaviors.
+     * 
+     * @param customizations the customizations value to set.
      * @return the DeidentificationJob object itself.
      */
     @Generated
-    public DeidentificationJob setDataType(DocumentDataType dataType) {
-        this.dataType = dataType;
-        return this;
-    }
-
-    /**
-     * Get the redactionFormat property: Format of the redacted output. Only valid when Operation is Redact.
-     * 
-     * @return the redactionFormat value.
-     */
-    @Generated
-    public String getRedactionFormat() {
-        return this.redactionFormat;
-    }
-
-    /**
-     * Set the redactionFormat property: Format of the redacted output. Only valid when Operation is Redact.
-     * 
-     * @param redactionFormat the redactionFormat value to set.
-     * @return the DeidentificationJob object itself.
-     */
-    @Generated
-    public DeidentificationJob setRedactionFormat(String redactionFormat) {
-        this.redactionFormat = redactionFormat;
+    public DeidentificationJob setCustomizations(JobCustomizationOptions customizations) {
+        this.customizations = customizations;
         return this;
     }
 
@@ -278,8 +250,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
         jsonWriter.writeJsonField("sourceLocation", this.sourceLocation);
         jsonWriter.writeJsonField("targetLocation", this.targetLocation);
         jsonWriter.writeStringField("operation", this.operation == null ? null : this.operation.toString());
-        jsonWriter.writeStringField("dataType", this.dataType == null ? null : this.dataType.toString());
-        jsonWriter.writeStringField("redactionFormat", this.redactionFormat);
+        jsonWriter.writeJsonField("customizations", this.customizations);
         return jsonWriter.writeEndObject();
     }
 
@@ -302,8 +273,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             OffsetDateTime lastUpdatedAt = null;
             OffsetDateTime createdAt = null;
             OperationType operation = null;
-            DocumentDataType dataType = null;
-            String redactionFormat = null;
+            JobCustomizationOptions customizations = null;
             ResponseError error = null;
             OffsetDateTime startedAt = null;
             JobSummary summary = null;
@@ -327,10 +297,8 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("operation".equals(fieldName)) {
                     operation = OperationType.fromString(reader.getString());
-                } else if ("dataType".equals(fieldName)) {
-                    dataType = DocumentDataType.fromString(reader.getString());
-                } else if ("redactionFormat".equals(fieldName)) {
-                    redactionFormat = reader.getString();
+                } else if ("customizations".equals(fieldName)) {
+                    customizations = JobCustomizationOptions.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
                     error = ResponseError.fromJson(reader);
                 } else if ("startedAt".equals(fieldName)) {
@@ -349,8 +317,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             deserializedDeidentificationJob.lastUpdatedAt = lastUpdatedAt;
             deserializedDeidentificationJob.createdAt = createdAt;
             deserializedDeidentificationJob.operation = operation;
-            deserializedDeidentificationJob.dataType = dataType;
-            deserializedDeidentificationJob.redactionFormat = redactionFormat;
+            deserializedDeidentificationJob.customizations = customizations;
             deserializedDeidentificationJob.error = error;
             deserializedDeidentificationJob.startedAt = startedAt;
             deserializedDeidentificationJob.summary = summary;

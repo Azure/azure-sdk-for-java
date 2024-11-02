@@ -57,6 +57,7 @@ public final class DeidentificationAsyncClient {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -67,10 +68,12 @@ public final class DeidentificationAsyncClient {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -124,6 +127,7 @@ public final class DeidentificationAsyncClient {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -134,10 +138,12 @@ public final class DeidentificationAsyncClient {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -171,6 +177,7 @@ public final class DeidentificationAsyncClient {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -181,10 +188,12 @@ public final class DeidentificationAsyncClient {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -223,9 +232,9 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginCreateJob(String name, BinaryData resource,
+    public PollerFlux<BinaryData, BinaryData> beginDeidentifyDocuments(String name, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginCreateJobAsync(name, resource, requestOptions);
+        return this.serviceClient.beginDeidentifyDocumentsAsync(name, resource, requestOptions);
     }
 
     /**
@@ -246,6 +255,7 @@ public final class DeidentificationAsyncClient {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -256,10 +266,12 @@ public final class DeidentificationAsyncClient {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -319,7 +331,7 @@ public final class DeidentificationAsyncClient {
      * {
      *     id: String (Required)
      *     input (Required): {
-     *         path: String (Required)
+     *         location: String (Required)
      *         etag: String (Required)
      *     }
      *     output (Optional): (recursive schema, see output above)
@@ -369,6 +381,7 @@ public final class DeidentificationAsyncClient {
      * {@code
      * {
      *     name: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     sourceLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
@@ -379,10 +392,12 @@ public final class DeidentificationAsyncClient {
      *     targetLocation (Required): {
      *         location: String (Required)
      *         prefix: String (Required)
+     *         overwrite: Boolean (Optional)
      *     }
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      *     status: String(NotStarted/Running/Succeeded/PartialFailed/Failed/Canceled) (Required)
      *     error (Optional): {
      *         code: String (Required)
@@ -454,9 +469,10 @@ public final class DeidentificationAsyncClient {
      * {@code
      * {
      *     inputText: String (Required)
-     *     operation: String(Redact/Surrogate/Tag) (Optional)
-     *     dataType: String(Plaintext) (Optional)
-     *     redactionFormat: String (Optional)
+     *     customizations (Optional): {
+     *         redactionFormat: String (Optional)
+     *         surrogateLocale: String (Optional)
+     *     }
      * }
      * }
      * </pre>
@@ -481,8 +497,6 @@ public final class DeidentificationAsyncClient {
      *                 confidenceScore: Double (Optional)
      *             }
      *         ]
-     *         path: String (Optional)
-     *         etag: String (Optional)
      *     }
      * }
      * }
@@ -499,8 +513,8 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deidentifyWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.deidentifyWithResponseAsync(body, requestOptions);
+    public Mono<Response<BinaryData>> deidentifyTextWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.deidentifyTextWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -545,11 +559,12 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DeidentificationJob, DeidentificationJob> beginCreateJob(String name,
+    public PollerFlux<DeidentificationJob, DeidentificationJob> beginDeidentifyDocuments(String name,
         DeidentificationJob resource) {
-        // Generated convenience method for beginCreateJobWithModel
+        // Generated convenience method for beginDeidentifyDocumentsWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateJobWithModelAsync(name, BinaryData.fromObject(resource), requestOptions);
+        return serviceClient.beginDeidentifyDocumentsWithModelAsync(name, BinaryData.fromObject(resource),
+            requestOptions);
     }
 
     /**
@@ -761,10 +776,10 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeidentificationResult> deidentify(DeidentificationContent body) {
-        // Generated convenience method for deidentifyWithResponse
+    public Mono<DeidentificationResult> deidentifyText(DeidentificationContent body) {
+        // Generated convenience method for deidentifyTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deidentifyWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
+        return deidentifyTextWithResponse(BinaryData.fromObject(body), requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DeidentificationResult.class));
     }
 }

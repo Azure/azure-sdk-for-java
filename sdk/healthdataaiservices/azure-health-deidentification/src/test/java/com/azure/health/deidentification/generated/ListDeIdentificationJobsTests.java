@@ -6,7 +6,7 @@ package com.azure.health.deidentification.generated;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.health.deidentification.models.DeidentificationJob;
-import com.azure.health.deidentification.models.DocumentDataType;
+import com.azure.health.deidentification.models.JobCustomizationOptions;
 import com.azure.health.deidentification.models.JobStatus;
 import com.azure.health.deidentification.models.JobSummary;
 import com.azure.health.deidentification.models.OperationType;
@@ -32,11 +32,12 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
         Assertions.assertNotNull(firstItem);
         // verify property "name"
         Assertions.assertEquals("documents_smith_1", firstItem.getName());
+        // verify property "operation"
+        Assertions.assertEquals(OperationType.REDACT, firstItem.getOperation());
         // verify property "sourceLocation"
         SourceStorageLocation firstItemSourceLocation = firstItem.getSourceLocation();
         Assertions.assertNotNull(firstItemSourceLocation);
-        Assertions.assertEquals(
-            "https://blobtest.blob.core.windows.net/container?sp=r&st=2024-01-24T18:11:10Z&se=2024-01-25T02:11:10Z&spr=https&sv=2022-11-02&sr=c&sig=signature%3D",
+        Assertions.assertEquals("https://blobtest.blob.core.windows.net/container",
             firstItemSourceLocation.getLocation());
         Assertions.assertEquals("/documents", firstItemSourceLocation.getPrefix());
         List<String> firstItemSourceLocationExtensions = firstItemSourceLocation.getExtensions();
@@ -44,16 +45,15 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
         // verify property "targetLocation"
         TargetStorageLocation firstItemTargetLocation = firstItem.getTargetLocation();
         Assertions.assertNotNull(firstItemTargetLocation);
-        Assertions.assertEquals(
-            "https://blobtest.blob.core.windows.net/container?sp=r&st=2024-01-24T18:11:10Z&se=2024-01-25T02:11:10Z&spr=https&sv=2022-11-02&sr=c&sig=signature%3D",
+        Assertions.assertEquals("https://blobtest.blob.core.windows.net/container",
             firstItemTargetLocation.getLocation());
         Assertions.assertEquals("/documents", firstItemTargetLocation.getPrefix());
-        // verify property "operation"
-        Assertions.assertEquals(OperationType.REDACT, firstItem.getOperation());
-        // verify property "dataType"
-        Assertions.assertEquals(DocumentDataType.PLAINTEXT, firstItem.getDataType());
-        // verify property "redactionFormat"
-        Assertions.assertEquals("[{type}]", firstItem.getRedactionFormat());
+        Assertions.assertEquals(true, firstItemTargetLocation.isOverwrite());
+        // verify property "customizations"
+        JobCustomizationOptions firstItemCustomizations = firstItem.getCustomizations();
+        Assertions.assertNotNull(firstItemCustomizations);
+        Assertions.assertEquals("[{type}]", firstItemCustomizations.getRedactionFormat());
+        Assertions.assertEquals("en-US", firstItemCustomizations.getSurrogateLocale());
         // verify property "status"
         Assertions.assertEquals(JobStatus.SUCCEEDED, firstItem.getStatus());
         // verify property "lastUpdatedAt"

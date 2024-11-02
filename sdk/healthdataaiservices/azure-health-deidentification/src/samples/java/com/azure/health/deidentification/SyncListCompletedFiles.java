@@ -41,7 +41,6 @@ public class SyncListCompletedFiles {
 
         DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
         job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
 
         DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
             .waitForCompletion()

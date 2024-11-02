@@ -50,9 +50,8 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
 
-        DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
+        DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .waitUntil(LongRunningOperationStatus.NOT_STARTED)
             .getValue();
 
@@ -63,7 +62,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         assertNull(result.getStartedAt());
         assertEquals(JobStatus.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
-        assertNull(result.getRedactionFormat());
+        assertNull(result.getCustomizations().getRedactionFormat());
         assertNull(result.getSummary());
         assertEquals(inputPrefix, result.getSourceLocation().getPrefix());
         assertTrue(result.getSourceLocation().getLocation().contains("blob.core.windows.net"));
@@ -87,9 +86,8 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
 
-        DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
+        DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .waitUntil(LongRunningOperationStatus.NOT_STARTED)
             .getValue();
 
@@ -106,7 +104,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
                 assertNull(currentJob.getStartedAt());
                 assertEquals(JobStatus.NOT_STARTED, currentJob.getStatus());
                 assertNull(currentJob.getError());
-                assertNull(currentJob.getRedactionFormat());
+                assertNull(currentJob.getCustomizations().getRedactionFormat());
                 assertNull(currentJob.getSummary());
                 assertEquals(inputPrefix, currentJob.getSourceLocation().getPrefix());
                 assertTrue(currentJob.getSourceLocation().getLocation().contains("blob.core.windows.net"));
@@ -135,10 +133,9 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
 
         SyncPoller<DeidentificationJob, DeidentificationJob> poller
-            = setPlaybackSyncPollerPollInterval(deidentificationClient.beginCreateJob(jobName, job));
+            = setPlaybackSyncPollerPollInterval(deidentificationClient.beginDeidentifyDocuments(jobName, job));
         DeidentificationJob result = poller.waitForCompletion().getValue();
         assertEquals(JobStatus.SUCCEEDED, result.getStatus());
 
@@ -148,7 +145,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         while (iterator.hasNext()) {
             DocumentDetails currentReport = iterator.next();
             assertEquals(currentReport.getStatus(), OperationState.SUCCEEDED);
-            assertTrue(currentReport.getOutput().getPath().startsWith(OUTPUT_FOLDER));
+            assertTrue(currentReport.getOutput().getLocation().startsWith(OUTPUT_FOLDER));
             assertEquals(currentReport.getId().length(), 36);
             results++;
         }
@@ -171,9 +168,8 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
 
-        DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
+        DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .waitUntil(LongRunningOperationStatus.NOT_STARTED)
             .getValue();
         assertEquals(JobStatus.NOT_STARTED, result.getStatus());
@@ -204,9 +200,8 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         DeidentificationJob job
             = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, OUTPUT_FOLDER));
         job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
 
-        assertThrows(HttpResponseException.class, () -> deidentificationClient.beginCreateJob(jobName, job)
+        assertThrows(HttpResponseException.class, () -> deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .waitUntil(LongRunningOperationStatus.NOT_STARTED));
 
     }
