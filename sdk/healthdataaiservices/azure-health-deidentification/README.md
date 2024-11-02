@@ -129,7 +129,7 @@ List the files which are completed by a job.
 PagedIterable<DocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
 
 for (DocumentDetails currentFile : reports) {
-    System.out.println(currentFile.getId() + " - " + currentFile.getOutput().getPath());
+    System.out.println(currentFile.getId() + " - " + currentFile.getOutput().getLocation());
     // c45dcd5e-e3ce-4ff2-80b6-a8bbeb47f878 - _output/MyJob-1719954393623/example_patient_1/visit_summary.txt
     // e55a1aa2-8eba-4515-b070-1fd3d005008b - _output/MyJob-1719954393623/example_patient_1/doctor_dictation.txt
 }

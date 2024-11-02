@@ -10,6 +10,7 @@ import java.util.Collection;
 
 /**
  * Enum of supported Data Types.
+ *  TODO - delete this class?
  */
 public final class DocumentDataType extends ExpandableStringEnum<DocumentDataType> {
     /**
@@ -20,7 +21,7 @@ public final class DocumentDataType extends ExpandableStringEnum<DocumentDataTyp
 
     /**
      * Creates a new instance of DocumentDataType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
@@ -30,7 +31,7 @@ public final class DocumentDataType extends ExpandableStringEnum<DocumentDataTyp
 
     /**
      * Creates or finds a DocumentDataType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DocumentDataType.
      */
@@ -41,7 +42,7 @@ public final class DocumentDataType extends ExpandableStringEnum<DocumentDataTyp
 
     /**
      * Gets known DocumentDataType values.
-     * 
+     *
      * @return known DocumentDataType values.
      */
     @Generated

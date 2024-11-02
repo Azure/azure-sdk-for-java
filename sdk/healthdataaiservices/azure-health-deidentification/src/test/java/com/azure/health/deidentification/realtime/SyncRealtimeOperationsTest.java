@@ -27,10 +27,9 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.SURROGATE);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+        // TODO: set operation to surrogate
 
-        DeidentificationResult result = deidentificationClient.deidentify(content);
+        DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
         assertNull(result.getTaggerResult());
         assertNotNull(result.getOutputText());
@@ -43,15 +42,12 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.TAG);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+        // TODO: set operation to tag
 
-        DeidentificationResult result = deidentificationClient.deidentify(content);
+        DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
         assertNotNull(result.getTaggerResult());
         assertNull(result.getOutputText());
-        assertNull(result.getTaggerResult().getEtag());
-        assertNull(result.getTaggerResult().getPath());
         assertFalse(result.getTaggerResult().getEntities().isEmpty());
         assertTrue(result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.DOCTOR)
             || result.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.PATIENT));

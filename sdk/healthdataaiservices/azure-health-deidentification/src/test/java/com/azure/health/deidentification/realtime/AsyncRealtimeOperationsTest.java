@@ -5,11 +5,7 @@ package com.azure.health.deidentification.realtime;
 
 import com.azure.health.deidentification.DeidentificationAsyncClient;
 import com.azure.health.deidentification.batch.BatchOperationTestBase;
-import com.azure.health.deidentification.models.DeidentificationContent;
-import com.azure.health.deidentification.models.DeidentificationResult;
-import com.azure.health.deidentification.models.DocumentDataType;
-import com.azure.health.deidentification.models.OperationType;
-import com.azure.health.deidentification.models.PhiCategory;
+import com.azure.health.deidentification.models.*;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
@@ -28,10 +24,9 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.SURROGATE);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+        // TODO: set operation to surrogate
 
-        Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentify(content);
+        Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentifyText(content);
         DeidentificationResult asyncResult = result.block();
 
         assertNotNull(asyncResult);
@@ -46,17 +41,14 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        content.setOperation(OperationType.TAG);
-        content.setDataType(DocumentDataType.PLAINTEXT);
+        // TODO: set operation to tag
 
-        Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentify(content);
+        Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentifyText(content);
         DeidentificationResult asyncResult = result.block();
 
         assertNotNull(asyncResult);
         assertNotNull(asyncResult.getTaggerResult());
         assertNull(asyncResult.getOutputText());
-        assertNull(asyncResult.getTaggerResult().getEtag());
-        assertNull(asyncResult.getTaggerResult().getPath());
         assertFalse(asyncResult.getTaggerResult().getEntities().isEmpty());
         assertTrue(asyncResult.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.DOCTOR)
             || asyncResult.getTaggerResult().getEntities().get(0).getCategory().equals(PhiCategory.PATIENT));

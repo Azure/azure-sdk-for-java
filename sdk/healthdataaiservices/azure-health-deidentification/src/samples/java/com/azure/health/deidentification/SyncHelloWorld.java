@@ -23,7 +23,7 @@ public class SyncHelloWorld {
 
         DeidentificationContent content = new DeidentificationContent(inputText);
 
-        DeidentificationResult result = deidentificationClient.deidentify(content);
+        DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
         System.out.println("Deidentified output: " + result.getOutputText());
         // Deidentified output: Hello, my name is Harley Billiard.
