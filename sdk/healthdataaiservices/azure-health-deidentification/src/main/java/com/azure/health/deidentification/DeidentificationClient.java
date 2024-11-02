@@ -462,6 +462,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     inputText: String (Required)
+     *     operation: String(Redact/Surrogate/Tag) (Optional)
      *     customizations (Optional): {
      *         redactionFormat: String (Optional)
      *         surrogateLocale: String (Optional)

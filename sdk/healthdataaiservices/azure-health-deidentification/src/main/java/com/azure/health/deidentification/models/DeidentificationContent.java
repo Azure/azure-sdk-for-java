@@ -24,6 +24,12 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     private final String inputText;
 
     /*
+     * Operation to perform on the input documents.
+     */
+    @Generated
+    private OperationType operation;
+
+    /*
      * Customization parameters to override default service behaviors.
      */
     @Generated
@@ -47,6 +53,28 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     @Generated
     public String getInputText() {
         return this.inputText;
+    }
+
+    /**
+     * Get the operation property: Operation to perform on the input documents.
+     * 
+     * @return the operation value.
+     */
+    @Generated
+    public OperationType getOperation() {
+        return this.operation;
+    }
+
+    /**
+     * Set the operation property: Operation to perform on the input documents.
+     * 
+     * @param operation the operation value to set.
+     * @return the DeidentificationContent object itself.
+     */
+    @Generated
+    public DeidentificationContent setOperation(OperationType operation) {
+        this.operation = operation;
+        return this;
     }
 
     /**
@@ -79,6 +107,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("inputText", this.inputText);
+        jsonWriter.writeStringField("operation", this.operation == null ? null : this.operation.toString());
         jsonWriter.writeJsonField("customizations", this.customizations);
         return jsonWriter.writeEndObject();
     }
@@ -96,6 +125,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
     public static DeidentificationContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String inputText = null;
+            OperationType operation = null;
             CustomizationOptions customizations = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -103,6 +133,8 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
 
                 if ("inputText".equals(fieldName)) {
                     inputText = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    operation = OperationType.fromString(reader.getString());
                 } else if ("customizations".equals(fieldName)) {
                     customizations = CustomizationOptions.fromJson(reader);
                 } else {
@@ -110,6 +142,7 @@ public final class DeidentificationContent implements JsonSerializable<Deidentif
                 }
             }
             DeidentificationContent deserializedDeidentificationContent = new DeidentificationContent(inputText);
+            deserializedDeidentificationContent.operation = operation;
             deserializedDeidentificationContent.customizations = customizations;
 
             return deserializedDeidentificationContent;
