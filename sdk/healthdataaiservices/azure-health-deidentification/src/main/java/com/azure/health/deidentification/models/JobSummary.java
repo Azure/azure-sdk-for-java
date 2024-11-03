@@ -21,25 +21,25 @@ public final class JobSummary implements JsonSerializable<JobSummary> {
      * Number of documents that have completed.
      */
     @Generated
-    private final int successful;
+    private final int successfulCount;
 
     /*
      * Number of documents that have failed.
      */
     @Generated
-    private final int failed;
+    private final int failedCount;
 
     /*
      * Number of documents that have been canceled.
      */
     @Generated
-    private final int canceled;
+    private final int canceledCount;
 
     /*
      * Number of documents total.
      */
     @Generated
-    private final int total;
+    private final int totalCount;
 
     /*
      * Number of bytes processed.
@@ -50,59 +50,59 @@ public final class JobSummary implements JsonSerializable<JobSummary> {
     /**
      * Creates an instance of JobSummary class.
      * 
-     * @param successful the successful value to set.
-     * @param failed the failed value to set.
-     * @param canceled the canceled value to set.
-     * @param total the total value to set.
+     * @param successfulCount the successfulCount value to set.
+     * @param failedCount the failedCount value to set.
+     * @param canceledCount the canceledCount value to set.
+     * @param totalCount the totalCount value to set.
      * @param bytesProcessed the bytesProcessed value to set.
      */
     @Generated
-    private JobSummary(int successful, int failed, int canceled, int total, long bytesProcessed) {
-        this.successful = successful;
-        this.failed = failed;
-        this.canceled = canceled;
-        this.total = total;
+    private JobSummary(int successfulCount, int failedCount, int canceledCount, int totalCount, long bytesProcessed) {
+        this.successfulCount = successfulCount;
+        this.failedCount = failedCount;
+        this.canceledCount = canceledCount;
+        this.totalCount = totalCount;
         this.bytesProcessed = bytesProcessed;
     }
 
     /**
-     * Get the successful property: Number of documents that have completed.
+     * Get the successfulCount property: Number of documents that have completed.
      * 
-     * @return the successful value.
+     * @return the successfulCount value.
      */
     @Generated
-    public int getSuccessful() {
-        return this.successful;
+    public int getSuccessfulCount() {
+        return this.successfulCount;
     }
 
     /**
-     * Get the failed property: Number of documents that have failed.
+     * Get the failedCount property: Number of documents that have failed.
      * 
-     * @return the failed value.
+     * @return the failedCount value.
      */
     @Generated
-    public int getFailed() {
-        return this.failed;
+    public int getFailedCount() {
+        return this.failedCount;
     }
 
     /**
-     * Get the canceled property: Number of documents that have been canceled.
+     * Get the canceledCount property: Number of documents that have been canceled.
      * 
-     * @return the canceled value.
+     * @return the canceledCount value.
      */
     @Generated
-    public int getCanceled() {
-        return this.canceled;
+    public int getCanceledCount() {
+        return this.canceledCount;
     }
 
     /**
-     * Get the total property: Number of documents total.
+     * Get the totalCount property: Number of documents total.
      * 
-     * @return the total value.
+     * @return the totalCount value.
      */
     @Generated
-    public int getTotal() {
-        return this.total;
+    public int getTotalCount() {
+        return this.totalCount;
     }
 
     /**
@@ -122,10 +122,10 @@ public final class JobSummary implements JsonSerializable<JobSummary> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeIntField("successful", this.successful);
-        jsonWriter.writeIntField("failed", this.failed);
-        jsonWriter.writeIntField("canceled", this.canceled);
-        jsonWriter.writeIntField("total", this.total);
+        jsonWriter.writeIntField("successful", this.successfulCount);
+        jsonWriter.writeIntField("failed", this.failedCount);
+        jsonWriter.writeIntField("canceled", this.canceledCount);
+        jsonWriter.writeIntField("total", this.totalCount);
         jsonWriter.writeLongField("bytesProcessed", this.bytesProcessed);
         return jsonWriter.writeEndObject();
     }
@@ -142,30 +142,30 @@ public final class JobSummary implements JsonSerializable<JobSummary> {
     @Generated
     public static JobSummary fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            int successful = 0;
-            int failed = 0;
-            int canceled = 0;
-            int total = 0;
+            int successfulCount = 0;
+            int failedCount = 0;
+            int canceledCount = 0;
+            int totalCount = 0;
             long bytesProcessed = 0L;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("successful".equals(fieldName)) {
-                    successful = reader.getInt();
+                    successfulCount = reader.getInt();
                 } else if ("failed".equals(fieldName)) {
-                    failed = reader.getInt();
+                    failedCount = reader.getInt();
                 } else if ("canceled".equals(fieldName)) {
-                    canceled = reader.getInt();
+                    canceledCount = reader.getInt();
                 } else if ("total".equals(fieldName)) {
-                    total = reader.getInt();
+                    totalCount = reader.getInt();
                 } else if ("bytesProcessed".equals(fieldName)) {
                     bytesProcessed = reader.getLong();
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new JobSummary(successful, failed, canceled, total, bytesProcessed);
+            return new JobSummary(successfulCount, failedCount, canceledCount, totalCount, bytesProcessed);
         });
     }
 }

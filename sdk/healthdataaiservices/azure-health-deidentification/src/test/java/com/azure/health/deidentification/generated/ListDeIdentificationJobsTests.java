@@ -65,10 +65,10 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
         // verify property "summary"
         JobSummary firstItemSummary = firstItem.getSummary();
         Assertions.assertNotNull(firstItemSummary);
-        Assertions.assertEquals(10, firstItemSummary.getSuccessful());
-        Assertions.assertEquals(0, firstItemSummary.getFailed());
-        Assertions.assertEquals(0, firstItemSummary.getCanceled());
-        Assertions.assertEquals(10, firstItemSummary.getTotal());
+        Assertions.assertEquals(10, firstItemSummary.getSuccessfulCount());
+        Assertions.assertEquals(0, firstItemSummary.getFailedCount());
+        Assertions.assertEquals(0, firstItemSummary.getCanceledCount());
+        Assertions.assertEquals(10, firstItemSummary.getTotalCount());
         Assertions.assertEquals(4096L, firstItemSummary.getBytesProcessed());
     }
 }

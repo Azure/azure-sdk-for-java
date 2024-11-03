@@ -145,7 +145,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         while (iterator.hasNext()) {
             DocumentDetails currentReport = iterator.next();
             assertEquals(currentReport.getStatus(), OperationState.SUCCEEDED);
-            System.out.println("doc location is " + currentReport.getOutput().getLocation()); // todo fix
+            System.out.println("doc location is " + currentReport.getOutput().getLocation()); // TODO fix - this is null
             System.out.println(OUTPUT_FOLDER);
             assertTrue(currentReport.getOutput().getLocation().startsWith(OUTPUT_FOLDER));
             assertEquals(currentReport.getId().length(), 36);

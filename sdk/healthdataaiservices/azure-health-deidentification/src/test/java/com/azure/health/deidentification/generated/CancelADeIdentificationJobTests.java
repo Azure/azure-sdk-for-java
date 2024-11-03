@@ -61,10 +61,10 @@ public final class CancelADeIdentificationJobTests extends DeidentificationClien
         // verify property "summary"
         JobSummary responseSummary = response.getSummary();
         Assertions.assertNotNull(responseSummary);
-        Assertions.assertEquals(10, responseSummary.getSuccessful());
-        Assertions.assertEquals(0, responseSummary.getFailed());
-        Assertions.assertEquals(2, responseSummary.getCanceled());
-        Assertions.assertEquals(12, responseSummary.getTotal());
+        Assertions.assertEquals(10, responseSummary.getSuccessfulCount());
+        Assertions.assertEquals(0, responseSummary.getFailedCount());
+        Assertions.assertEquals(2, responseSummary.getCanceledCount());
+        Assertions.assertEquals(12, responseSummary.getTotalCount());
         Assertions.assertEquals(4096L, responseSummary.getBytesProcessed());
     }
 }

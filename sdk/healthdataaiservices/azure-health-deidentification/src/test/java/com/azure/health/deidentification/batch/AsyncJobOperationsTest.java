@@ -27,7 +27,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
     @Test
     void testCreateJobReturnsExpected() {
         deidentificationAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
-        System.out.println("Test Mode!!!!!: " + getTestMode());
+        System.out.println("Test Mode!!!!!: " + getTestMode()); // TODO remove
         String jobName = getTestMode() == TestMode.LIVE ? getJobName() : "recorded006r";
 
         String inputPrefix = "example_patient_1";
@@ -55,7 +55,12 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         assertEquals(JobStatus.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
         assertNull(result.getCustomizations());
-        assertNull(result.getSummary());
+        if (result.getSummary() != null) {
+            System.out.println("!!!total count is " + result.getSummary().getTotalCount());
+            System.out.println("!!!success count is " + result.getSummary().getSuccessfulCount());
+            System.out.println("!!!status is " + result.getStatus());
+        }
+        assertNull(result.getSummary()); // TODO fix - flaky due to race condition?
         assertEquals(inputPrefix, result.getSourceLocation().getPrefix());
         assertTrue(result.getSourceLocation().getLocation().contains("blob.core.windows.net"));
         assertEquals(OUTPUT_FOLDER, result.getTargetLocation().getPrefix());
@@ -165,7 +170,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         deidentificationAsyncClient.deleteJob(jobName).block();
 
-        assertThrows(ResourceNotFoundException.class, () -> {
+        assertThrows(ResourceNotFoundException.class, () -> { // todo fix
             deidentificationAsyncClient.getJob(jobName).block();
         });
     }
