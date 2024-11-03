@@ -13,7 +13,7 @@ public enum DeidentificationServiceVersion implements ServiceVersion {
     /**
      * Enum value 2024-11-15.
      */
-    V2024_11_15("2024-11-15");
+    V2024_11_15("2024-07-12-preview");
 
     private final String version;
 
@@ -31,7 +31,7 @@ public enum DeidentificationServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     * 
+     *
      * @return The latest {@link DeidentificationServiceVersion}.
      */
     public static DeidentificationServiceVersion getLatest() {
