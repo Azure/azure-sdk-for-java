@@ -25,6 +25,12 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
     private String id;
 
     /*
+     * The name of a job.
+     */
+    @Generated
+    private final String jobName;
+
+    /*
      * Location for the input.
      */
     @Generated
@@ -51,11 +57,13 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
     /**
      * Creates an instance of DocumentDetails class.
      * 
+     * @param jobName the jobName value to set.
      * @param input the input value to set.
      * @param status the status value to set.
      */
     @Generated
-    private DocumentDetails(DocumentLocation input, OperationState status) {
+    private DocumentDetails(String jobName, DocumentLocation input, OperationState status) {
+        this.jobName = jobName;
         this.input = input;
         this.status = status;
     }
@@ -68,6 +76,16 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
     @Generated
     public String getId() {
         return this.id;
+    }
+
+    /**
+     * Get the jobName property: The name of a job.
+     * 
+     * @return the jobName value.
+     */
+    @Generated
+    public String getJobName() {
+        return this.jobName;
     }
 
     /**
@@ -117,6 +135,7 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.jobName);
         jsonWriter.writeJsonField("input", this.input);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeJsonField("output", this.output);
@@ -137,6 +156,7 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
     public static DocumentDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
+            String jobName = null;
             DocumentLocation input = null;
             OperationState status = null;
             DocumentLocation output = null;
@@ -147,6 +167,8 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
 
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    jobName = reader.getString();
                 } else if ("input".equals(fieldName)) {
                     input = DocumentLocation.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
@@ -159,7 +181,7 @@ public final class DocumentDetails implements JsonSerializable<DocumentDetails> 
                     reader.skipChildren();
                 }
             }
-            DocumentDetails deserializedDocumentDetails = new DocumentDetails(input, status);
+            DocumentDetails deserializedDocumentDetails = new DocumentDetails(jobName, input, status);
             deserializedDocumentDetails.id = id;
             deserializedDocumentDetails.output = output;
             deserializedDocumentDetails.error = error;

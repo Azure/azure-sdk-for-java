@@ -1623,6 +1623,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     id: String (Required)
+     *     name: String (Required)
      *     input (Required): {
      *         location: String (Required)
      *         etag: String (Required)
@@ -1683,6 +1684,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     id: String (Required)
+     *     name: String (Required)
      *     input (Required): {
      *         location: String (Required)
      *         etag: String (Required)
@@ -1760,6 +1762,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     id: String (Required)
+     *     name: String (Required)
      *     input (Required): {
      *         location: String (Required)
      *         etag: String (Required)
@@ -1817,6 +1820,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     id: String (Required)
+     *     name: String (Required)
      *     input (Required): {
      *         location: String (Required)
      *         etag: String (Required)
@@ -2340,6 +2344,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     id: String (Required)
+     *     name: String (Required)
      *     input (Required): {
      *         location: String (Required)
      *         etag: String (Required)
@@ -2392,6 +2397,7 @@ public final class DeidentificationClientImpl {
      * {@code
      * {
      *     id: String (Required)
+     *     name: String (Required)
      *     input (Required): {
      *         location: String (Required)
      *         etag: String (Required)

@@ -330,6 +330,7 @@ public final class DeidentificationAsyncClient {
      * {@code
      * {
      *     id: String (Required)
+     *     name: String (Required)
      *     input (Required): {
      *         location: String (Required)
      *         etag: String (Required)
