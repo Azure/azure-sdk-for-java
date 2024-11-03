@@ -26,8 +26,8 @@ public final class CancelADeIdentificationJobTests extends DeidentificationClien
 
         // response assertion
         Assertions.assertNotNull(response);
-        // verify property "jobName"
-        Assertions.assertEquals("documents_smith_1", response.getJobName());
+        // verify property "name"
+        Assertions.assertEquals("documents_smith_1", response.getName());
         // verify property "operation"
         Assertions.assertEquals(OperationType.REDACT, response.getOperation());
         // verify property "sourceLocation"

@@ -95,7 +95,7 @@ public final class DeidentificationClient {
      * }
      * </pre>
      * 
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -107,8 +107,8 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getJobWithResponse(String jobName, RequestOptions requestOptions) {
-        return this.serviceClient.getJobWithResponse(jobName, requestOptions);
+    public Response<BinaryData> getJobWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.getJobWithResponse(name, requestOptions);
     }
 
     /**
@@ -215,7 +215,7 @@ public final class DeidentificationClient {
      * }
      * </pre>
      * 
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -226,9 +226,9 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginDeidentifyDocuments(String jobName, BinaryData resource,
+    public SyncPoller<BinaryData, BinaryData> beginDeidentifyDocuments(String name, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginDeidentifyDocuments(jobName, resource, requestOptions);
+        return this.serviceClient.beginDeidentifyDocuments(name, resource, requestOptions);
     }
 
     /**
@@ -324,6 +324,7 @@ public final class DeidentificationClient {
      * {@code
      * {
      *     id: String (Required)
+     *     name: String (Required)
      *     input (Required): {
      *         location: String (Required)
      *         etag: String (Required)
@@ -346,7 +347,7 @@ public final class DeidentificationClient {
      * }
      * </pre>
      * 
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -356,8 +357,8 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions) {
-        return this.serviceClient.listJobDocuments(jobName, requestOptions);
+    public PagedIterable<BinaryData> listJobDocuments(String name, RequestOptions requestOptions) {
+        return this.serviceClient.listJobDocuments(name, requestOptions);
     }
 
     /**
@@ -419,7 +420,7 @@ public final class DeidentificationClient {
      * }
      * </pre>
      * 
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -429,8 +430,8 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> cancelJobWithResponse(String jobName, RequestOptions requestOptions) {
-        return this.serviceClient.cancelJobWithResponse(jobName, requestOptions);
+    public Response<BinaryData> cancelJobWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.cancelJobWithResponse(name, requestOptions);
     }
 
     /**
@@ -438,7 +439,7 @@ public final class DeidentificationClient {
      * 
      * Removes the record of the job from the service. Does not delete any documents.
      * 
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -448,8 +449,8 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteJobWithResponse(String jobName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteJobWithResponse(jobName, requestOptions);
+    public Response<Void> deleteJobWithResponse(String name, RequestOptions requestOptions) {
+        return this.serviceClient.deleteJobWithResponse(name, requestOptions);
     }
 
     /**
@@ -515,7 +516,7 @@ public final class DeidentificationClient {
      * 
      * Resource read operation template.
      * 
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -528,10 +529,10 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeidentificationJob getJob(String jobName) {
+    public DeidentificationJob getJob(String name) {
         // Generated convenience method for getJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getJobWithResponse(jobName, requestOptions).getValue().toObject(DeidentificationJob.class);
+        return getJobWithResponse(name, requestOptions).getValue().toObject(DeidentificationJob.class);
     }
 
     /**
@@ -539,7 +540,7 @@ public final class DeidentificationClient {
      * 
      * Long-running resource create or replace operation template.
      * 
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @param resource The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -551,12 +552,11 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DeidentificationJob, DeidentificationJob> beginDeidentifyDocuments(String jobName,
+    public SyncPoller<DeidentificationJob, DeidentificationJob> beginDeidentifyDocuments(String name,
         DeidentificationJob resource) {
         // Generated convenience method for beginDeidentifyDocumentsWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginDeidentifyDocumentsWithModel(jobName, BinaryData.fromObject(resource),
-            requestOptions);
+        return serviceClient.beginDeidentifyDocumentsWithModel(name, BinaryData.fromObject(resource), requestOptions);
     }
 
     /**
@@ -611,7 +611,7 @@ public final class DeidentificationClient {
      * 
      * Resource list operation template.
      * 
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @param continuationToken Token to continue a previous query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -623,13 +623,13 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DocumentDetails> listJobDocuments(String jobName, String continuationToken) {
+    public PagedIterable<DocumentDetails> listJobDocuments(String name, String continuationToken) {
         // Generated convenience method for listJobDocuments
         RequestOptions requestOptions = new RequestOptions();
         if (continuationToken != null) {
             requestOptions.addQueryParam("continuationToken", continuationToken, false);
         }
-        return serviceClient.listJobDocuments(jobName, requestOptions)
+        return serviceClient.listJobDocuments(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentDetails.class));
     }
 
@@ -638,7 +638,7 @@ public final class DeidentificationClient {
      * 
      * Resource list operation template.
      * 
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -649,10 +649,10 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DocumentDetails> listJobDocuments(String jobName) {
+    public PagedIterable<DocumentDetails> listJobDocuments(String name) {
         // Generated convenience method for listJobDocuments
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.listJobDocuments(jobName, requestOptions)
+        return serviceClient.listJobDocuments(name, requestOptions)
             .mapPage(bodyItemValue -> bodyItemValue.toObject(DocumentDetails.class));
     }
 
@@ -666,7 +666,7 @@ public final class DeidentificationClient {
      * 
      * If the job is already complete, this will have no effect.
      * 
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -677,10 +677,10 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeidentificationJob cancelJob(String jobName) {
+    public DeidentificationJob cancelJob(String name) {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelJobWithResponse(jobName, requestOptions).getValue().toObject(DeidentificationJob.class);
+        return cancelJobWithResponse(name, requestOptions).getValue().toObject(DeidentificationJob.class);
     }
 
     /**
@@ -688,7 +688,7 @@ public final class DeidentificationClient {
      * 
      * Removes the record of the job from the service. Does not delete any documents.
      * 
-     * @param jobName The name of a job.
+     * @param name The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -698,10 +698,10 @@ public final class DeidentificationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteJob(String jobName) {
+    public void deleteJob(String name) {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        deleteJobWithResponse(jobName, requestOptions).getValue();
+        deleteJobWithResponse(name, requestOptions).getValue();
     }
 
     /**
