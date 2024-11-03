@@ -24,7 +24,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * The name of a job.
      */
     @Generated
-    private String name;
+    private String jobName;
 
     /*
      * Operation to perform on the input documents.
@@ -103,13 +103,13 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     }
 
     /**
-     * Get the name property: The name of a job.
+     * Get the jobName property: The name of a job.
      * 
-     * @return the name value.
+     * @return the jobName value.
      */
     @Generated
-    public String getName() {
-        return this.name;
+    public String getJobName() {
+        return this.jobName;
     }
 
     /**
@@ -266,7 +266,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     @Generated
     public static DeidentificationJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String name = null;
+            String jobName = null;
             SourceStorageLocation sourceLocation = null;
             TargetStorageLocation targetLocation = null;
             JobStatus status = null;
@@ -282,7 +282,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    jobName = reader.getString();
                 } else if ("sourceLocation".equals(fieldName)) {
                     sourceLocation = SourceStorageLocation.fromJson(reader);
                 } else if ("targetLocation".equals(fieldName)) {
@@ -312,7 +312,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             }
             DeidentificationJob deserializedDeidentificationJob
                 = new DeidentificationJob(sourceLocation, targetLocation);
-            deserializedDeidentificationJob.name = name;
+            deserializedDeidentificationJob.jobName = jobName;
             deserializedDeidentificationJob.status = status;
             deserializedDeidentificationJob.lastUpdatedAt = lastUpdatedAt;
             deserializedDeidentificationJob.createdAt = createdAt;

@@ -30,8 +30,8 @@ public final class ListDeIdentificationJobsTests extends DeidentificationClientT
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         DeidentificationJob firstItem = response.iterator().next();
         Assertions.assertNotNull(firstItem);
-        // verify property "name"
-        Assertions.assertEquals("documents_smith_1", firstItem.getName());
+        // verify property "jobName"
+        Assertions.assertEquals("documents_smith_1", firstItem.getJobName());
         // verify property "operation"
         Assertions.assertEquals(OperationType.REDACT, firstItem.getOperation());
         // verify property "sourceLocation"
