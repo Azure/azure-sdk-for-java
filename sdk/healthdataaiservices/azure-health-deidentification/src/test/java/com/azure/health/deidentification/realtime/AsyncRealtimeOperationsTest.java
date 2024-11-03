@@ -24,7 +24,7 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        // TODO: set operation to surrogate
+        content.setOperation(OperationType.SURROGATE);
 
         Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentifyText(content);
         DeidentificationResult asyncResult = result.block();
@@ -41,7 +41,7 @@ class AsyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidServicesAsyncClient = getDeidServicesClientBuilder().buildAsyncClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        // TODO: set operation to tag
+        content.setOperation(OperationType.TAG);
 
         Mono<DeidentificationResult> result = deidServicesAsyncClient.deidentifyText(content);
         DeidentificationResult asyncResult = result.block();

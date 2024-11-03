@@ -62,7 +62,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         assertNull(result.getStartedAt());
         assertEquals(JobStatus.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
-        assertNull(result.getCustomizations().getRedactionFormat());
+        assertNull(result.getCustomizations());
         assertNull(result.getSummary());
         assertEquals(inputPrefix, result.getSourceLocation().getPrefix());
         assertTrue(result.getSourceLocation().getLocation().contains("blob.core.windows.net"));
@@ -104,7 +104,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
                 assertNull(currentJob.getStartedAt());
                 assertEquals(JobStatus.NOT_STARTED, currentJob.getStatus());
                 assertNull(currentJob.getError());
-                assertNull(currentJob.getCustomizations().getRedactionFormat());
+                assertNull(currentJob.getCustomizations());
                 assertNull(currentJob.getSummary());
                 assertEquals(inputPrefix, currentJob.getSourceLocation().getPrefix());
                 assertTrue(currentJob.getSourceLocation().getLocation().contains("blob.core.windows.net"));
@@ -145,6 +145,8 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         while (iterator.hasNext()) {
             DocumentDetails currentReport = iterator.next();
             assertEquals(currentReport.getStatus(), OperationState.SUCCEEDED);
+            System.out.println("doc location is " + currentReport.getOutput().getLocation()); // todo fix
+            System.out.println(OUTPUT_FOLDER);
             assertTrue(currentReport.getOutput().getLocation().startsWith(OUTPUT_FOLDER));
             assertEquals(currentReport.getId().length(), 36);
             results++;

@@ -54,7 +54,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         assertNull(result.getStartedAt());
         assertEquals(JobStatus.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
-        assertNull(result.getCustomizations().getRedactionFormat());
+        assertNull(result.getCustomizations());
         assertNull(result.getSummary());
         assertEquals(inputPrefix, result.getSourceLocation().getPrefix());
         assertTrue(result.getSourceLocation().getLocation().contains("blob.core.windows.net"));
@@ -94,7 +94,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
                 assertNull(item.getStartedAt());
                 assertEquals(JobStatus.NOT_STARTED, item.getStatus());
                 assertNull(item.getError());
-                assertNull(item.getCustomizations().getRedactionFormat());
+                assertNull(item.getCustomizations());
                 assertNull(item.getSummary());
                 assertEquals(inputPrefix, item.getSourceLocation().getPrefix());
                 assertTrue(item.getSourceLocation().getLocation().contains("blob.core.windows.net"));

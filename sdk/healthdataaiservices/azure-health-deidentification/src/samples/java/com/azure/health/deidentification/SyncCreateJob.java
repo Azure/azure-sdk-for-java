@@ -33,11 +33,10 @@ public class SyncCreateJob {
 
         DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
         job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
 
         // END: com.azure.health.deidentification.sync.createjob.create
         // BEGIN: com.azure.health.deidentification.sync.createjob.process
-        DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
+        DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .waitForCompletion()
             .getValue();
         System.out.println(jobName + " - " + result.getStatus());

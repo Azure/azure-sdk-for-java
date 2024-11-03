@@ -43,9 +43,8 @@ public class AsyncListCompletedFiles {
 
         DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
         job.setOperation(OperationType.SURROGATE);
-        job.setDataType(DocumentDataType.PLAINTEXT);
 
-        DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
+        DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .getSyncPoller()
             .waitForCompletion()
             .getValue();
@@ -54,7 +53,7 @@ public class AsyncListCompletedFiles {
         reports.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
             .flatMap(page -> Flux.fromIterable(page.getElements())) // Converts each page into a Flux<T> of its items
             .subscribe(item -> {
-                System.out.println(item.getId() + " - " + item.getOutput().getPath());
+                System.out.println(item.getId() + " - " + item.getOutput().getLocation());
             });
 
         // END: com.azure.health.deidentification.async.listcompoletedfiles

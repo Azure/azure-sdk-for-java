@@ -27,7 +27,7 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        // TODO: set operation to surrogate
+        content.setOperation(OperationType.SURROGATE);
 
         DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
@@ -42,7 +42,7 @@ class SyncRealtimeOperationsTest extends BatchOperationTestBase {
         deidentificationClient = getDeidServicesClientBuilder().buildClient();
         String inputText = "Hello, my name is John Smith.";
         DeidentificationContent content = new DeidentificationContent(inputText);
-        // TODO: set operation to tag
+        content.setOperation(OperationType.TAG);
 
         DeidentificationResult result = deidentificationClient.deidentifyText(content);
 

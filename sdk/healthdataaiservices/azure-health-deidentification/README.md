@@ -76,7 +76,7 @@ String inputText = "Hello, my name is John Smith.";
 
 DeidentificationContent content = new DeidentificationContent(inputText);
 
-DeidentificationResult result = deidentificationClient.deidentify(content);
+DeidentificationResult result = deidentificationClient.deidentifyText(content);
 
 System.out.println("Deidentified output: " + result.getOutputText());
 // Deidentified output: Hello, my name is Harley Billiard.
@@ -94,7 +94,6 @@ SourceStorageLocation sourceStorageLocation = new SourceStorageLocation(storageL
 
 DeidentificationJob job = new DeidentificationJob(sourceStorageLocation, new TargetStorageLocation(storageLocation, outputFolder));
 job.setOperation(OperationType.SURROGATE);
-job.setDataType(DocumentDataType.PLAINTEXT);
 
 ```
 ### Process Deidentification Job
@@ -102,7 +101,7 @@ job.setDataType(DocumentDataType.PLAINTEXT);
 Create and poll job until it is completed.
 
 ```java com.azure.health.deidentification.sync.createjob.process
-DeidentificationJob result = deidentificationClient.beginCreateJob(jobName, job)
+DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
     .waitForCompletion()
     .getValue();
 System.out.println(jobName + " - " + result.getStatus());
