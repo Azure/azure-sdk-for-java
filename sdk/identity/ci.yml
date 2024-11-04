@@ -79,8 +79,8 @@ extends:
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
           EnvVars:
-            AZURE_TENANT_ID: $(IDENTITY_TENANT_ID)
-            AZURE_CLIENT_ID: $(IDENTITY_CLIENT_ID)
+            AZ_TENANT_ID: $(IDENTITY_TENANT_ID)
+            AZ_CLIENT_ID: $(IDENTITY_CLIENT_ID)
           CloudConfig:
             Public:
               SubscriptionConfigurations:
