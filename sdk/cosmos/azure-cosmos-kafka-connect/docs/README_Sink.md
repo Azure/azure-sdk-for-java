@@ -16,9 +16,9 @@ The connector polls data from Kafka to write to container(s) in the database bas
 
 ### Prerequisites
 
-- It is recommended to start with the Confluent Platform (recommended to use this [setup](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/Confluent_Platform_Setup.md) as this gives you a complete environment to work with. 
+- It is recommended to start with the Confluent Platform (recommended to use this [setup](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/Confluent_Platform_Setup.md) as this gives you a complete environment to work with. 
   - If you do not wish to use Confluent Platform, then you need to install and configure Zookeper, Apache Kafka, Kafka Connect, yourself. You will also need to install and configure the  Cosmos DB connectors manually.
-- Cosmos DB Instance ([setup guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/CosmosDB_Setup.md)
+- Cosmos DB Instance ([setup guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/CosmosDB_Setup.md)
 - Bash shell
   - Will not work in Cloud Shell or WSL1
 - Java 11+ ([download](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html))
@@ -91,7 +91,7 @@ Create the Cosmos DB Sink Connector in Kafka Connect
 
 The following JSON body defines the config for the Cosmos DB Sink Connector.
 
-> Note: You will need to fill out the values for `azure.cosmos.account.endpoint` and `azure.cosmos.account.key`, which you should have saved from the [Cosmos DB setup guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/CosmosDB_Setup.md).
+> Note: You will need to fill out the values for `azure.cosmos.account.endpoint` and `azure.cosmos.account.key`, which you should have saved from the [Cosmos DB setup guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/CosmosDB_Setup.md).
 
 Refer to the [sink properties](#sink-configuration-properties) section for more information on each of these configuration properties.
 
@@ -161,14 +161,14 @@ Alternatively, use the Connect REST API.
 curl -X DELETE http://localhost:8083/connectors/cosmosdb-sink-connector
 ```
 
-To delete the created Azure Cosmos DB service and its resource group using Azure CLI, refer to these [steps](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/CosmosDB_Setup.md#cleanup).
+To delete the created Azure Cosmos DB service and its resource group using Azure CLI, refer to these [steps](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/CosmosDB_Setup.md#cleanup).
 
 ## Sink configuration properties
 
 The following settings are used to configure the Cosmos DB Kafka Sink Connector. These configuration values determine which Kafka topics data is consumed, which Cosmos DB containers data is written into and formats to serialize the data. For an example configuration file with the default values, refer to [this config](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/src/docker/resources/sink.example.json).
 
-- [Generic Configs For Sink And Source]<!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/doc/configuration-reference.md#generic-configurations)-->
-- [Configs only for Sink]<!--(https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/doc/configuration-reference.md#sink-connector-configurations)-->
+- [Generic Configs For Sink And Source](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/configuration-reference.md#generic-configurations)
+- [Configs only for Sink](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/configuration-reference.md#sink-connector-configurations)
 
 Data will always be written to the Cosmos DB as JSON without any schema.
 
@@ -249,7 +249,7 @@ Refer to the [InsertUUID repository](https://github.com/confluentinc/kafka-conne
 
 Using both the `InsertField` and `Cast` SMTs, you can add specify the TTL on each item created in Cosmos DB.
 
-> Note: You will need to enable TTL on the Cosmos DB container to enable TTL at an item level. Refer to the [Cosmos DB setup guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/dev/CosmosDB_Setup.md) or the [Cosmos DB docs](https://learn.microsoft.com/azure/cosmos-db/nosql/how-to-time-to-live?tabs=dotnet-sdk-v3#enable-time-to-live-on-a-container-using-azure-portal) for more information on setting the TTL.
+> Note: You will need to enable TTL on the Cosmos DB container to enable TTL at an item level. Refer to the [Cosmos DB setup guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-kafka-connect/docs/CosmosDB_Setup.md) or the [Cosmos DB docs](https://learn.microsoft.com/azure/cosmos-db/nosql/how-to-time-to-live?tabs=dotnet-sdk-v3#enable-time-to-live-on-a-container-using-azure-portal) for more information on setting the TTL.
 
 Inside your Sink connector config, add the following properties to set the TTL (in seconds). In this following example, the TTL is set to 100 seconds.
 
