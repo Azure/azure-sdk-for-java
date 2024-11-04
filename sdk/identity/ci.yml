@@ -78,9 +78,10 @@ extends:
           CalledFromClient: true
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
-#          EnvVars:
-#            AZ_TENANT_ID: $(IDENTITY_TENANT_ID)
-#            AZ_CLIENT_ID: $(IDENTITY_CLIENT_ID)
+          EnvVars:
+            AZ_TENANT_ID: $(IDENTITY_TENANT_ID)
+            AZ_CLIENT_ID: $(IDENTITY_CLIENT_ID)
+            ARM_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
           CloudConfig:
             Public:
               SubscriptionConfigurations:
