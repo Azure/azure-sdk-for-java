@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ContainerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ContainerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"containerStatus\":\"Offline\",\"dataFormat\":\"PageBlob\",\"refreshDetails\":{\"inProgressRefreshJobId\":\"dsjnka\",\"lastCompletedRefreshJobTimeInUTC\":\"2021-05-13T01:39:31Z\",\"errorManifestFile\":\"iiswacffgdkzze\",\"lastJob\":\"fvhqc\"},\"createdDateTime\":\"2021-02-08T02:11:50Z\"}")
-                .toObject(ContainerProperties.class);
-        Assertions.assertEquals(AzureContainerDataFormat.PAGE_BLOB, model.dataFormat());
+        ContainerProperties model = BinaryData.fromString(
+            "{\"containerStatus\":\"Updating\",\"dataFormat\":\"AzureFile\",\"refreshDetails\":{\"inProgressRefreshJobId\":\"ihleos\",\"lastCompletedRefreshJobTimeInUTC\":\"2021-11-21T17:53:40Z\",\"errorManifestFile\":\"rmslyzrpzbchckqq\",\"lastJob\":\"ioxiysuiizyn\"},\"createdDateTime\":\"2021-11-05T22:15:28Z\"}")
+            .toObject(ContainerProperties.class);
+        Assertions.assertEquals(AzureContainerDataFormat.AZURE_FILE, model.dataFormat());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContainerProperties model = new ContainerProperties().withDataFormat(AzureContainerDataFormat.PAGE_BLOB);
+        ContainerProperties model = new ContainerProperties().withDataFormat(AzureContainerDataFormat.AZURE_FILE);
         model = BinaryData.fromObject(model).toObject(ContainerProperties.class);
-        Assertions.assertEquals(AzureContainerDataFormat.PAGE_BLOB, model.dataFormat());
+        Assertions.assertEquals(AzureContainerDataFormat.AZURE_FILE, model.dataFormat());
     }
 }

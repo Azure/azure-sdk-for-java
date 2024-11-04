@@ -5,35 +5,114 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Base type for all TrackDescriptor types, which define the metadata and selection for tracks that should be processed
  * by a Job.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata.type",
-    defaultImpl = TrackDescriptor.class)
-@JsonTypeName("TrackDescriptor")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Media.AudioTrackDescriptor", value = AudioTrackDescriptor.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.VideoTrackDescriptor", value = VideoTrackDescriptor.class)
-})
 @Immutable
-public class TrackDescriptor {
-    /** Creates an instance of TrackDescriptor class. */
+public class TrackDescriptor implements JsonSerializable<TrackDescriptor> {
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "TrackDescriptor";
+
+    /**
+     * Creates an instance of TrackDescriptor class.
+     */
     public TrackDescriptor() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrackDescriptor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrackDescriptor if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TrackDescriptor.
+     */
+    public static TrackDescriptor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.Media.AudioTrackDescriptor".equals(discriminatorValue)) {
+                    return AudioTrackDescriptor.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("#Microsoft.Media.SelectAudioTrackByAttribute".equals(discriminatorValue)) {
+                    return SelectAudioTrackByAttribute.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.SelectAudioTrackById".equals(discriminatorValue)) {
+                    return SelectAudioTrackById.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.VideoTrackDescriptor".equals(discriminatorValue)) {
+                    return VideoTrackDescriptor.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("#Microsoft.Media.SelectVideoTrackByAttribute".equals(discriminatorValue)) {
+                    return SelectVideoTrackByAttribute.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.SelectVideoTrackById".equals(discriminatorValue)) {
+                    return SelectVideoTrackById.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static TrackDescriptor fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrackDescriptor deserializedTrackDescriptor = new TrackDescriptor();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedTrackDescriptor.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrackDescriptor;
+        });
     }
 }

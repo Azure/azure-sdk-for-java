@@ -5,7 +5,7 @@
 package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Collection;
 
 /** Defines values for RecordingChannelInternal. */
@@ -17,12 +17,21 @@ public final class RecordingChannelInternal extends ExpandableStringEnum<Recordi
     public static final RecordingChannelInternal UNMIXED = fromString("unmixed");
 
     /**
+     * Creates an instance of {@link RecordingChannelInternal} with no string value.
+     *
+     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link RecordingChannelInternal}
+     * instead.
+     */
+    @Deprecated
+    public RecordingChannelInternal() {
+    }
+
+    /**
      * Creates or finds a RecordingChannelInternal from its string representation.
      *
      * @param name a name to look for.
      * @return the corresponding RecordingChannelInternal.
      */
-    @JsonCreator
     public static RecordingChannelInternal fromString(String name) {
         return fromString(name, RecordingChannelInternal.class);
     }

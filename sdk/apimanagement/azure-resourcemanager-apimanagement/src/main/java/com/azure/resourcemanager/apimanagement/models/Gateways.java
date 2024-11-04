@@ -40,8 +40,8 @@ public interface Gateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Gateway list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<GatewayContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<GatewayContract> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Gateway specified by its identifier.
@@ -56,8 +56,8 @@ public interface Gateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the Gateway specified by its identifier.
      */
-    GatewaysGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, Context context);
+    GatewaysGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the Gateway specified by its identifier.
@@ -85,8 +85,8 @@ public interface Gateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the Gateway specified by its identifier.
      */
-    Response<GatewayContract> getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, Context context);
+    Response<GatewayContract> getWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        Context context);
 
     /**
      * Gets the details of the Gateway specified by its identifier.
@@ -117,8 +117,8 @@ public interface Gateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String gatewayId, String ifMatch,
+        Context context);
 
     /**
      * Deletes specific Gateway.
@@ -148,8 +148,8 @@ public interface Gateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return gateway authentication keys.
      */
-    Response<GatewayKeysContract> listKeysWithResponse(
-        String resourceGroupName, String serviceName, String gatewayId, Context context);
+    Response<GatewayKeysContract> listKeysWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        Context context);
 
     /**
      * Retrieves gateway keys.
@@ -179,12 +179,8 @@ public interface Gateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> regenerateKeyWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        GatewayKeyRegenerationRequestContract parameters,
-        Context context);
+    Response<Void> regenerateKeyWithResponse(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayKeyRegenerationRequestContract parameters, Context context);
 
     /**
      * Regenerates specified gateway key invalidating any tokens created with it.
@@ -198,10 +194,7 @@ public interface Gateways {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void regenerateKey(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
+    void regenerateKey(String resourceGroupName, String serviceName, String gatewayId,
         GatewayKeyRegenerationRequestContract parameters);
 
     /**
@@ -218,12 +211,8 @@ public interface Gateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Shared Access Authorization Token for the gateway along with {@link Response}.
      */
-    Response<GatewayTokenContract> generateTokenWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayId,
-        GatewayTokenRequestContract parameters,
-        Context context);
+    Response<GatewayTokenContract> generateTokenWithResponse(String resourceGroupName, String serviceName,
+        String gatewayId, GatewayTokenRequestContract parameters, Context context);
 
     /**
      * Gets the Shared Access Authorization Token for the gateway.
@@ -238,8 +227,8 @@ public interface Gateways {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Shared Access Authorization Token for the gateway.
      */
-    GatewayTokenContract generateToken(
-        String resourceGroupName, String serviceName, String gatewayId, GatewayTokenRequestContract parameters);
+    GatewayTokenContract generateToken(String resourceGroupName, String serviceName, String gatewayId,
+        GatewayTokenRequestContract parameters);
 
     /**
      * Gets the details of the Gateway specified by its identifier.

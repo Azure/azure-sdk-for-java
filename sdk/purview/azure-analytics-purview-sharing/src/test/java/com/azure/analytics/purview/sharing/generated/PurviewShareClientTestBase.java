@@ -4,24 +4,25 @@
 
 package com.azure.analytics.purview.sharing.generated;
 
+// The Java test files under 'generated' package are generated for your reference.
+// If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
+// See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
+
 import com.azure.analytics.purview.sharing.ReceivedSharesClient;
 import com.azure.analytics.purview.sharing.ReceivedSharesClientBuilder;
 import com.azure.analytics.purview.sharing.SentSharesClient;
 import com.azure.analytics.purview.sharing.SentSharesClientBuilder;
 import com.azure.analytics.purview.sharing.ShareResourcesClient;
 import com.azure.analytics.purview.sharing.ShareResourcesClientBuilder;
-import com.azure.core.credential.AccessToken;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.time.OffsetDateTime;
-import reactor.core.publisher.Mono;
 
-class PurviewShareClientTestBase extends TestBase {
+class PurviewShareClientTestBase extends TestProxyTestBase {
     protected ReceivedSharesClient receivedSharesClient;
 
     protected SentSharesClient sentSharesClient;
@@ -30,58 +31,47 @@ class PurviewShareClientTestBase extends TestBase {
 
     @Override
     protected void beforeTest() {
-        ReceivedSharesClientBuilder receivedSharesClientbuilder =
-                new ReceivedSharesClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        ReceivedSharesClientBuilder receivedSharesClientbuilder = new ReceivedSharesClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            receivedSharesClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            receivedSharesClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
-            receivedSharesClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            receivedSharesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             receivedSharesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         receivedSharesClient = receivedSharesClientbuilder.buildClient();
 
-        SentSharesClientBuilder sentSharesClientbuilder =
-                new SentSharesClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        SentSharesClientBuilder sentSharesClientbuilder
+            = new SentSharesClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            sentSharesClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            sentSharesClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
-            sentSharesClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            sentSharesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             sentSharesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         sentSharesClient = sentSharesClientbuilder.buildClient();
 
-        ShareResourcesClientBuilder shareResourcesClientbuilder =
-                new ShareResourcesClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        ShareResourcesClientBuilder shareResourcesClientbuilder = new ShareResourcesClientBuilder()
+            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            shareResourcesClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            shareResourcesClientbuilder.credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
-            shareResourcesClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            shareResourcesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             shareResourcesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         shareResourcesClient = shareResourcesClientbuilder.buildClient();
+
     }
 }

@@ -5,29 +5,43 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.streamanalytics.fluent.models.CustomClrSerializationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * Describes how data from an input is serialized or how data is serialized when written to an output in custom format.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("CustomClr")
 @Fluent
 public final class CustomClrSerialization extends Serialization {
+    /*
+     * Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
+     */
+    private EventSerializationType type = EventSerializationType.CUSTOM_CLR;
+
     /*
      * The properties that are associated with the CustomClr serialization type. Required on PUT (CreateOrReplace)
      * requests.
      */
-    @JsonProperty(value = "properties")
     private CustomClrSerializationProperties innerProperties;
 
     /**
      * Creates an instance of CustomClrSerialization class.
      */
     public CustomClrSerialization() {
+    }
+
+    /**
+     * Get the type property: Indicates the type of serialization that the input or output uses. Required on PUT
+     * (CreateOrReplace) requests.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public EventSerializationType type() {
+        return this.type;
     }
 
     /**
@@ -93,9 +107,48 @@ public final class CustomClrSerialization extends Serialization {
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomClrSerialization from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomClrSerialization if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomClrSerialization.
+     */
+    public static CustomClrSerialization fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomClrSerialization deserializedCustomClrSerialization = new CustomClrSerialization();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedCustomClrSerialization.type = EventSerializationType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCustomClrSerialization.innerProperties
+                        = CustomClrSerializationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomClrSerialization;
+        });
     }
 }

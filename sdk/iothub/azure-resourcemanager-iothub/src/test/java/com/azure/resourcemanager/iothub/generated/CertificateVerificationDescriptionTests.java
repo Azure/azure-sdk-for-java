@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CertificateVerificationDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateVerificationDescription model =
-            BinaryData.fromString("{\"certificate\":\"chea\"}").toObject(CertificateVerificationDescription.class);
+        CertificateVerificationDescription model
+            = BinaryData.fromString("{\"certificate\":\"chea\"}").toObject(CertificateVerificationDescription.class);
         Assertions.assertEquals("chea", model.certificate());
     }
 

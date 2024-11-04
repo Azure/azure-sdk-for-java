@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.automation.fluent.models.TypeFieldInner;
 
-/** An instance of this class provides access to all the operations defined in ObjectDataTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ObjectDataTypesClient.
+ */
 public interface ObjectDataTypesClient {
     /**
      * Retrieve a list of fields of a given type identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -25,12 +27,12 @@ public interface ObjectDataTypesClient {
      * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TypeFieldInner> listFieldsByModuleAndType(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName);
+    PagedIterable<TypeFieldInner> listFieldsByModuleAndType(String resourceGroupName, String automationAccountName,
+        String moduleName, String typeName);
 
     /**
      * Retrieve a list of fields of a given type identified by module name.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param moduleName The name of module.
@@ -42,12 +44,12 @@ public interface ObjectDataTypesClient {
      * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TypeFieldInner> listFieldsByModuleAndType(
-        String resourceGroupName, String automationAccountName, String moduleName, String typeName, Context context);
+    PagedIterable<TypeFieldInner> listFieldsByModuleAndType(String resourceGroupName, String automationAccountName,
+        String moduleName, String typeName, Context context);
 
     /**
      * Retrieve a list of fields of a given type across all accessible modules.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param typeName The name of type.
@@ -57,12 +59,12 @@ public interface ObjectDataTypesClient {
      * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TypeFieldInner> listFieldsByType(
-        String resourceGroupName, String automationAccountName, String typeName);
+    PagedIterable<TypeFieldInner> listFieldsByType(String resourceGroupName, String automationAccountName,
+        String typeName);
 
     /**
      * Retrieve a list of fields of a given type across all accessible modules.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param automationAccountName The name of the automation account.
      * @param typeName The name of type.
@@ -73,6 +75,6 @@ public interface ObjectDataTypesClient {
      * @return the response model for the list fields operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TypeFieldInner> listFieldsByType(
-        String resourceGroupName, String automationAccountName, String typeName, Context context);
+    PagedIterable<TypeFieldInner> listFieldsByType(String resourceGroupName, String automationAccountName,
+        String typeName, Context context);
 }

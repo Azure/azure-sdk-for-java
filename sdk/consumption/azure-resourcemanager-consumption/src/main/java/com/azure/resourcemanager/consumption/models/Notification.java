@@ -6,75 +6,72 @@ package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-/** The notification associated with a budget. */
+/**
+ * The notification associated with a budget.
+ */
 @Fluent
-public final class Notification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Notification.class);
-
+public final class Notification implements JsonSerializable<Notification> {
     /*
      * The notification is enabled or not.
      */
-    @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
      * The comparison operator.
      */
-    @JsonProperty(value = "operator", required = true)
     private OperatorType operator;
 
     /*
-     * Threshold value associated with a notification. Notification is sent
-     * when the cost exceeded the threshold. It is always percent and has to be
-     * between 0 and 1000.
+     * Threshold value associated with a notification. Notification is sent when the cost exceeded the threshold. It is
+     * always percent and has to be between 0 and 1000.
      */
-    @JsonProperty(value = "threshold", required = true)
     private BigDecimal threshold;
 
     /*
-     * Email addresses to send the budget notification to when the threshold is
-     * exceeded. Must have at least one contact email or contact group
-     * specified at the Subscription or Resource Group scopes. All other scopes
-     * must have at least one contact email specified.
+     * Email addresses to send the budget notification to when the threshold is exceeded. Must have at least one contact
+     * email or contact group specified at the Subscription or Resource Group scopes. All other scopes must have at
+     * least one contact email specified.
      */
-    @JsonProperty(value = "contactEmails", required = true)
     private List<String> contactEmails;
 
     /*
-     * Contact roles to send the budget notification to when the threshold is
-     * exceeded.
+     * Contact roles to send the budget notification to when the threshold is exceeded.
      */
-    @JsonProperty(value = "contactRoles")
     private List<String> contactRoles;
 
     /*
-     * Action groups to send the budget notification to when the threshold is
-     * exceeded. Must be provided as a fully qualified Azure resource id. Only
-     * supported at Subscription or Resource Group scopes.
+     * Action groups to send the budget notification to when the threshold is exceeded. Must be provided as a fully
+     * qualified Azure resource id. Only supported at Subscription or Resource Group scopes.
      */
-    @JsonProperty(value = "contactGroups")
     private List<String> contactGroups;
 
     /*
      * The type of threshold
      */
-    @JsonProperty(value = "thresholdType")
     private ThresholdType thresholdType;
 
     /*
      * Language in which the recipient will receive the notification
      */
-    @JsonProperty(value = "locale")
     private CultureCode locale;
 
     /**
+     * Creates an instance of Notification class.
+     */
+    public Notification() {
+    }
+
+    /**
      * Get the enabled property: The notification is enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -83,7 +80,7 @@ public final class Notification {
 
     /**
      * Set the enabled property: The notification is enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the Notification object itself.
      */
@@ -94,7 +91,7 @@ public final class Notification {
 
     /**
      * Get the operator property: The comparison operator.
-     *
+     * 
      * @return the operator value.
      */
     public OperatorType operator() {
@@ -103,7 +100,7 @@ public final class Notification {
 
     /**
      * Set the operator property: The comparison operator.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the Notification object itself.
      */
@@ -115,7 +112,7 @@ public final class Notification {
     /**
      * Get the threshold property: Threshold value associated with a notification. Notification is sent when the cost
      * exceeded the threshold. It is always percent and has to be between 0 and 1000.
-     *
+     * 
      * @return the threshold value.
      */
     public BigDecimal threshold() {
@@ -125,7 +122,7 @@ public final class Notification {
     /**
      * Set the threshold property: Threshold value associated with a notification. Notification is sent when the cost
      * exceeded the threshold. It is always percent and has to be between 0 and 1000.
-     *
+     * 
      * @param threshold the threshold value to set.
      * @return the Notification object itself.
      */
@@ -138,7 +135,7 @@ public final class Notification {
      * Get the contactEmails property: Email addresses to send the budget notification to when the threshold is
      * exceeded. Must have at least one contact email or contact group specified at the Subscription or Resource Group
      * scopes. All other scopes must have at least one contact email specified.
-     *
+     * 
      * @return the contactEmails value.
      */
     public List<String> contactEmails() {
@@ -149,7 +146,7 @@ public final class Notification {
      * Set the contactEmails property: Email addresses to send the budget notification to when the threshold is
      * exceeded. Must have at least one contact email or contact group specified at the Subscription or Resource Group
      * scopes. All other scopes must have at least one contact email specified.
-     *
+     * 
      * @param contactEmails the contactEmails value to set.
      * @return the Notification object itself.
      */
@@ -160,7 +157,7 @@ public final class Notification {
 
     /**
      * Get the contactRoles property: Contact roles to send the budget notification to when the threshold is exceeded.
-     *
+     * 
      * @return the contactRoles value.
      */
     public List<String> contactRoles() {
@@ -169,7 +166,7 @@ public final class Notification {
 
     /**
      * Set the contactRoles property: Contact roles to send the budget notification to when the threshold is exceeded.
-     *
+     * 
      * @param contactRoles the contactRoles value to set.
      * @return the Notification object itself.
      */
@@ -181,7 +178,7 @@ public final class Notification {
     /**
      * Get the contactGroups property: Action groups to send the budget notification to when the threshold is exceeded.
      * Must be provided as a fully qualified Azure resource id. Only supported at Subscription or Resource Group scopes.
-     *
+     * 
      * @return the contactGroups value.
      */
     public List<String> contactGroups() {
@@ -191,7 +188,7 @@ public final class Notification {
     /**
      * Set the contactGroups property: Action groups to send the budget notification to when the threshold is exceeded.
      * Must be provided as a fully qualified Azure resource id. Only supported at Subscription or Resource Group scopes.
-     *
+     * 
      * @param contactGroups the contactGroups value to set.
      * @return the Notification object itself.
      */
@@ -202,7 +199,7 @@ public final class Notification {
 
     /**
      * Get the thresholdType property: The type of threshold.
-     *
+     * 
      * @return the thresholdType value.
      */
     public ThresholdType thresholdType() {
@@ -211,7 +208,7 @@ public final class Notification {
 
     /**
      * Set the thresholdType property: The type of threshold.
-     *
+     * 
      * @param thresholdType the thresholdType value to set.
      * @return the Notification object itself.
      */
@@ -222,7 +219,7 @@ public final class Notification {
 
     /**
      * Get the locale property: Language in which the recipient will receive the notification.
-     *
+     * 
      * @return the locale value.
      */
     public CultureCode locale() {
@@ -231,7 +228,7 @@ public final class Notification {
 
     /**
      * Set the locale property: Language in which the recipient will receive the notification.
-     *
+     * 
      * @param locale the locale value to set.
      * @return the Notification object itself.
      */
@@ -242,24 +239,87 @@ public final class Notification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operator() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property operator in model Notification"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property operator in model Notification"));
         }
         if (threshold() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property threshold in model Notification"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property threshold in model Notification"));
         }
         if (contactEmails() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property contactEmails in model Notification"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property contactEmails in model Notification"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Notification.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("operator", this.operator == null ? null : this.operator.toString());
+        jsonWriter.writeNumberField("threshold", this.threshold);
+        jsonWriter.writeArrayField("contactEmails", this.contactEmails,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("contactRoles", this.contactRoles, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("contactGroups", this.contactGroups,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("thresholdType", this.thresholdType == null ? null : this.thresholdType.toString());
+        jsonWriter.writeStringField("locale", this.locale == null ? null : this.locale.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Notification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Notification if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Notification.
+     */
+    public static Notification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Notification deserializedNotification = new Notification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedNotification.enabled = reader.getBoolean();
+                } else if ("operator".equals(fieldName)) {
+                    deserializedNotification.operator = OperatorType.fromString(reader.getString());
+                } else if ("threshold".equals(fieldName)) {
+                    deserializedNotification.threshold
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else if ("contactEmails".equals(fieldName)) {
+                    List<String> contactEmails = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNotification.contactEmails = contactEmails;
+                } else if ("contactRoles".equals(fieldName)) {
+                    List<String> contactRoles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNotification.contactRoles = contactRoles;
+                } else if ("contactGroups".equals(fieldName)) {
+                    List<String> contactGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNotification.contactGroups = contactGroups;
+                } else if ("thresholdType".equals(fieldName)) {
+                    deserializedNotification.thresholdType = ThresholdType.fromString(reader.getString());
+                } else if ("locale".equals(fieldName)) {
+                    deserializedNotification.locale = CultureCode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotification;
+        });
     }
 }

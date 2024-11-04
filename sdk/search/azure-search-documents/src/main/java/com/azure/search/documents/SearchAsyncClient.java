@@ -319,8 +319,8 @@ public final class SearchAsyncClient {
     /**
      * Package private constructor to be used by {@link SearchClientBuilder}
      */
-    SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion,
-        HttpPipeline httpPipeline, JsonSerializer serializer, SearchIndexClientImpl restClient) {
+    SearchAsyncClient(String endpoint, String indexName, SearchServiceVersion serviceVersion, HttpPipeline httpPipeline,
+        JsonSerializer serializer, SearchIndexClientImpl restClient) {
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.serviceVersion = serviceVersion;
@@ -902,8 +902,8 @@ public final class SearchAsyncClient {
             return restClient.getDocuments()
                 .getWithResponseAsync(key, selectedFields, null, context)
                 .onErrorMap(Utility::exceptionMapper)
-                .map(res -> new SimpleResponse<>(res, serializer.deserializeFromBytes(
-                    serializer.serializeToBytes(res.getValue()), createInstance(modelClass))));
+                .map(res -> new SimpleResponse<>(res, serializer
+                    .deserializeFromBytes(serializer.serializeToBytes(res.getValue()), createInstance(modelClass))));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1081,8 +1081,8 @@ public final class SearchAsyncClient {
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponse = new SearchFirstPageResponseWrapper();
-        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(context ->
-            search(request, continuationToken, firstPageResponse, context));
+        Function<String, Mono<SearchPagedResponse>> func = continuationToken -> withContext(
+            context -> search(request, continuationToken, firstPageResponse, context));
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
@@ -1091,8 +1091,8 @@ public final class SearchAsyncClient {
         // The firstPageResponse shared among all functional calls below.
         // Do not initial new instance directly in func call.
         final SearchFirstPageResponseWrapper firstPageResponseWrapper = new SearchFirstPageResponseWrapper();
-        Function<String, Mono<SearchPagedResponse>> func = continuationToken ->
-            search(request, continuationToken, firstPageResponseWrapper, context);
+        Function<String, Mono<SearchPagedResponse>> func
+            = continuationToken -> search(request, continuationToken, firstPageResponseWrapper, context);
         return new SearchPagedFlux(() -> func.apply(null), func);
     }
 
@@ -1105,16 +1105,17 @@ public final class SearchAsyncClient {
             ? request
             : SearchContinuationToken.deserializeToken(serviceVersion.getVersion(), continuationToken);
 
-        return restClient.getDocuments().searchPostWithResponseAsync(requestToUse, null, context)
+        return restClient.getDocuments()
+            .searchPostWithResponseAsync(requestToUse, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
                 SearchDocumentsResult result = response.getValue();
 
-                SearchPagedResponse page = new SearchPagedResponse(
-                    new SimpleResponse<>(response, getSearchResults(result, serializer)),
-                    createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                    result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
-                    result.getSemanticPartialResponseType());
+                SearchPagedResponse page
+                    = new SearchPagedResponse(new SimpleResponse<>(response, getSearchResults(result, serializer)),
+                        createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
+                        result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
+                        result.getSemanticPartialResponseType());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -1123,7 +1124,8 @@ public final class SearchAsyncClient {
     }
 
     static List<SearchResult> getSearchResults(SearchDocumentsResult result, JsonSerializer jsonSerializer) {
-        return result.getResults().stream()
+        return result.getResults()
+            .stream()
             .map(searchResult -> SearchResultConverter.map(searchResult, jsonSerializer))
             .collect(Collectors.toList());
     }
@@ -1192,14 +1194,15 @@ public final class SearchAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public SuggestPagedFlux suggest(String searchText, String suggesterName, SuggestOptions suggestOptions) {
-        SuggestRequest suggestRequest = createSuggestRequest(searchText, suggesterName,
-            Utility.ensureSuggestOptions(suggestOptions));
+        SuggestRequest suggestRequest
+            = createSuggestRequest(searchText, suggesterName, Utility.ensureSuggestOptions(suggestOptions));
 
         return new SuggestPagedFlux(() -> withContext(context -> suggest(suggestRequest, context)));
     }
 
     private Mono<SuggestPagedResponse> suggest(SuggestRequest suggestRequest, Context context) {
-        return restClient.getDocuments().suggestPostWithResponseAsync(suggestRequest, null, context)
+        return restClient.getDocuments()
+            .suggestPostWithResponseAsync(suggestRequest, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> {
                 SuggestDocumentsResult result = response.getValue();
@@ -1210,7 +1213,8 @@ public final class SearchAsyncClient {
     }
 
     static List<SuggestResult> getSuggestResults(SuggestDocumentsResult result, JsonSerializer serializer) {
-        return result.getResults().stream()
+        return result.getResults()
+            .stream()
             .map(suggestResult -> SuggestResultConverter.map(suggestResult, serializer))
             .collect(Collectors.toList());
     }
@@ -1275,7 +1279,8 @@ public final class SearchAsyncClient {
     }
 
     private Mono<AutocompletePagedResponse> autocomplete(AutocompleteRequest request, Context context) {
-        return restClient.getDocuments().autocompletePostWithResponseAsync(request, null, context)
+        return restClient.getDocuments()
+            .autocompletePostWithResponseAsync(request, null, context)
             .onErrorMap(MappingUtils::exceptionMapper)
             .map(response -> new AutocompletePagedResponse(new SimpleResponse<>(response, response.getValue())));
     }
@@ -1319,7 +1324,8 @@ public final class SearchAsyncClient {
 
         SemanticSearchOptions semanticSearchOptions = options.getSemanticSearchOptions();
         if (semanticSearchOptions != null) {
-            Integer waitInMillis = semanticSearchOptions.getMaxWaitDuration() == null ? null
+            Integer waitInMillis = semanticSearchOptions.getMaxWaitDuration() == null
+                ? null
                 : (int) semanticSearchOptions.getMaxWaitDuration().toMillis();
             request.setSemanticConfiguration(semanticSearchOptions.getSemanticConfigurationName())
                 .setSemanticErrorHandling(semanticSearchOptions.getErrorMode())
@@ -1334,7 +1340,6 @@ public final class SearchAsyncClient {
             request.setVectorFilterMode(vectorSearchOptions.getFilterMode())
                 .setVectorQueries(vectorSearchOptions.getQueries());
         }
-
 
         return request;
     }
@@ -1392,8 +1397,7 @@ public final class SearchAsyncClient {
      * @param options suggest options
      * @return SuggestRequest
      */
-    static SuggestRequest createSuggestRequest(String searchText, String suggesterName,
-        SuggestOptions options) {
+    static SuggestRequest createSuggestRequest(String searchText, String suggesterName, SuggestOptions options) {
         SuggestRequest request = new SuggestRequest(searchText, suggesterName);
 
         if (options == null) {
@@ -1447,9 +1451,7 @@ public final class SearchAsyncClient {
 
     static <T> IndexDocumentsBatch<T> buildIndexBatch(Iterable<T> documents, IndexActionType actionType) {
         List<IndexAction<T>> actions = new ArrayList<>();
-        documents.forEach(d -> actions.add(new IndexAction<T>()
-            .setActionType(actionType)
-            .setDocument(d)));
+        documents.forEach(d -> actions.add(new IndexAction<T>().setActionType(actionType).setDocument(d)));
 
         return new IndexDocumentsBatch<T>().addActions(actions);
     }

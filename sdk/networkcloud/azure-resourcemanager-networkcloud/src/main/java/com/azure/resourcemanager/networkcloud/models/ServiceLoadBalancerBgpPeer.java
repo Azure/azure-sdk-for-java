@@ -288,15 +288,12 @@ public final class ServiceLoadBalancerBgpPeer {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ServiceLoadBalancerBgpPeer"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ServiceLoadBalancerBgpPeer"));
         }
         if (peerAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property peerAddress in model ServiceLoadBalancerBgpPeer"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property peerAddress in model ServiceLoadBalancerBgpPeer"));
         }
     }
 

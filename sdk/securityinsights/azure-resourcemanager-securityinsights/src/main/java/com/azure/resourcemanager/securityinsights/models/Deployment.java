@@ -5,45 +5,54 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Description about a deployment. */
+/**
+ * Description about a deployment.
+ */
 @Fluent
-public final class Deployment {
+public final class Deployment implements JsonSerializable<Deployment> {
     /*
      * Deployment identifier.
      */
-    @JsonProperty(value = "deploymentId")
     private String deploymentId;
 
     /*
      * Current status of the deployment.
      */
-    @JsonProperty(value = "deploymentState")
     private DeploymentState deploymentState;
 
     /*
      * The outcome of the deployment.
      */
-    @JsonProperty(value = "deploymentResult")
     private DeploymentResult deploymentResult;
 
     /*
      * The time when the deployment finished.
      */
-    @JsonProperty(value = "deploymentTime")
     private OffsetDateTime deploymentTime;
 
     /*
      * Url to access repository action logs.
      */
-    @JsonProperty(value = "deploymentLogsUrl")
     private String deploymentLogsUrl;
 
     /**
+     * Creates an instance of Deployment class.
+     */
+    public Deployment() {
+    }
+
+    /**
      * Get the deploymentId property: Deployment identifier.
-     *
+     * 
      * @return the deploymentId value.
      */
     public String deploymentId() {
@@ -52,7 +61,7 @@ public final class Deployment {
 
     /**
      * Set the deploymentId property: Deployment identifier.
-     *
+     * 
      * @param deploymentId the deploymentId value to set.
      * @return the Deployment object itself.
      */
@@ -63,7 +72,7 @@ public final class Deployment {
 
     /**
      * Get the deploymentState property: Current status of the deployment.
-     *
+     * 
      * @return the deploymentState value.
      */
     public DeploymentState deploymentState() {
@@ -72,7 +81,7 @@ public final class Deployment {
 
     /**
      * Set the deploymentState property: Current status of the deployment.
-     *
+     * 
      * @param deploymentState the deploymentState value to set.
      * @return the Deployment object itself.
      */
@@ -83,7 +92,7 @@ public final class Deployment {
 
     /**
      * Get the deploymentResult property: The outcome of the deployment.
-     *
+     * 
      * @return the deploymentResult value.
      */
     public DeploymentResult deploymentResult() {
@@ -92,7 +101,7 @@ public final class Deployment {
 
     /**
      * Set the deploymentResult property: The outcome of the deployment.
-     *
+     * 
      * @param deploymentResult the deploymentResult value to set.
      * @return the Deployment object itself.
      */
@@ -103,7 +112,7 @@ public final class Deployment {
 
     /**
      * Get the deploymentTime property: The time when the deployment finished.
-     *
+     * 
      * @return the deploymentTime value.
      */
     public OffsetDateTime deploymentTime() {
@@ -112,7 +121,7 @@ public final class Deployment {
 
     /**
      * Set the deploymentTime property: The time when the deployment finished.
-     *
+     * 
      * @param deploymentTime the deploymentTime value to set.
      * @return the Deployment object itself.
      */
@@ -123,7 +132,7 @@ public final class Deployment {
 
     /**
      * Get the deploymentLogsUrl property: Url to access repository action logs.
-     *
+     * 
      * @return the deploymentLogsUrl value.
      */
     public String deploymentLogsUrl() {
@@ -132,7 +141,7 @@ public final class Deployment {
 
     /**
      * Set the deploymentLogsUrl property: Url to access repository action logs.
-     *
+     * 
      * @param deploymentLogsUrl the deploymentLogsUrl value to set.
      * @return the Deployment object itself.
      */
@@ -143,9 +152,61 @@ public final class Deployment {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deploymentId", this.deploymentId);
+        jsonWriter.writeStringField("deploymentState",
+            this.deploymentState == null ? null : this.deploymentState.toString());
+        jsonWriter.writeStringField("deploymentResult",
+            this.deploymentResult == null ? null : this.deploymentResult.toString());
+        jsonWriter.writeStringField("deploymentTime",
+            this.deploymentTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deploymentTime));
+        jsonWriter.writeStringField("deploymentLogsUrl", this.deploymentLogsUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Deployment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Deployment if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Deployment.
+     */
+    public static Deployment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Deployment deserializedDeployment = new Deployment();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deploymentId".equals(fieldName)) {
+                    deserializedDeployment.deploymentId = reader.getString();
+                } else if ("deploymentState".equals(fieldName)) {
+                    deserializedDeployment.deploymentState = DeploymentState.fromString(reader.getString());
+                } else if ("deploymentResult".equals(fieldName)) {
+                    deserializedDeployment.deploymentResult = DeploymentResult.fromString(reader.getString());
+                } else if ("deploymentTime".equals(fieldName)) {
+                    deserializedDeployment.deploymentTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deploymentLogsUrl".equals(fieldName)) {
+                    deserializedDeployment.deploymentLogsUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeployment;
+        });
     }
 }

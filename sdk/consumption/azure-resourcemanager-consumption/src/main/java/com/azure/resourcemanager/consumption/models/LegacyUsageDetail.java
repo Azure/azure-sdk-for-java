@@ -4,34 +4,78 @@
 
 package com.azure.resourcemanager.consumption.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.consumption.fluent.models.LegacyUsageDetailProperties;
 import com.azure.resourcemanager.consumption.fluent.models.UsageDetailInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import java.util.UUID;
 
-/** Legacy usage detail. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("legacy")
-@Fluent
+/**
+ * Legacy usage detail.
+ */
+@Immutable
 public final class LegacyUsageDetail extends UsageDetailInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyUsageDetail.class);
+    /*
+     * Specifies the kind of usage details.
+     */
+    private UsageDetailsKind kind = UsageDetailsKind.LEGACY;
 
     /*
      * Properties for legacy usage details
      */
-    @JsonProperty(value = "properties", required = true)
     private LegacyUsageDetailProperties innerProperties = new LegacyUsageDetailProperties();
+
+    /*
+     * Resource tags.
+     */
+    private Map<String, String> tags;
+
+    /*
+     * The etag for the resource.
+     */
+    private String etag;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of LegacyUsageDetail class.
+     */
+    public LegacyUsageDetail() {
+    }
+
+    /**
+     * Get the kind property: Specifies the kind of usage details.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public UsageDetailsKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: Properties for legacy usage details.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LegacyUsageDetailProperties innerProperties() {
@@ -39,8 +83,58 @@ public final class LegacyUsageDetail extends UsageDetailInner {
     }
 
     /**
+     * Get the tags property: Resource tags.
+     * 
+     * @return the tags value.
+     */
+    @Override
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Get the etag property: The etag for the resource.
+     * 
+     * @return the etag value.
+     */
+    @Override
+    public String etag() {
+        return this.etag;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the billingAccountId property: Billing Account identifier.
-     *
+     * 
      * @return the billingAccountId value.
      */
     public String billingAccountId() {
@@ -49,7 +143,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the billingAccountName property: Billing Account Name.
-     *
+     * 
      * @return the billingAccountName value.
      */
     public String billingAccountName() {
@@ -58,7 +152,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the billingPeriodStartDate property: The billing period start date.
-     *
+     * 
      * @return the billingPeriodStartDate value.
      */
     public OffsetDateTime billingPeriodStartDate() {
@@ -67,7 +161,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the billingPeriodEndDate property: The billing period end date.
-     *
+     * 
      * @return the billingPeriodEndDate value.
      */
     public OffsetDateTime billingPeriodEndDate() {
@@ -76,7 +170,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the billingProfileId property: Billing Profile identifier.
-     *
+     * 
      * @return the billingProfileId value.
      */
     public String billingProfileId() {
@@ -85,7 +179,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the billingProfileName property: Billing Profile Name.
-     *
+     * 
      * @return the billingProfileName value.
      */
     public String billingProfileName() {
@@ -94,7 +188,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the accountOwnerId property: Account Owner Id.
-     *
+     * 
      * @return the accountOwnerId value.
      */
     public String accountOwnerId() {
@@ -103,7 +197,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the accountName property: Account Name.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -112,7 +206,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the subscriptionId property: Subscription guid.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -121,7 +215,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the subscriptionName property: Subscription name.
-     *
+     * 
      * @return the subscriptionName value.
      */
     public String subscriptionName() {
@@ -130,7 +224,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the date property: Date for the usage record.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime date() {
@@ -139,7 +233,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the product property: Product name for the consumed service or purchase. Not available for Marketplace.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -149,7 +243,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
     /**
      * Get the partNumber property: Part Number of the service used. Can be used to join with the price sheet. Not
      * available for marketplace.
-     *
+     * 
      * @return the partNumber value.
      */
     public String partNumber() {
@@ -160,7 +254,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
      * Get the meterId property: The meter id (GUID). Not available for marketplace. For reserved instance this
      * represents the primary meter for which the reservation was purchased. For the actual VM Size for which the
      * reservation is purchased see productOrderName.
-     *
+     * 
      * @return the meterId value.
      */
     public UUID meterId() {
@@ -170,7 +264,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
     /**
      * Get the meterDetails property: The details about the meter. By default this is not populated, unless it's
      * specified in $expand.
-     *
+     * 
      * @return the meterDetails value.
      */
     public MeterDetailsResponse meterDetails() {
@@ -179,7 +273,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the quantity property: The usage quantity.
-     *
+     * 
      * @return the quantity value.
      */
     public BigDecimal quantity() {
@@ -188,7 +282,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the effectivePrice property: Effective Price that's charged for the usage.
-     *
+     * 
      * @return the effectivePrice value.
      */
     public BigDecimal effectivePrice() {
@@ -197,7 +291,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the cost property: The amount of cost before tax.
-     *
+     * 
      * @return the cost value.
      */
     public BigDecimal cost() {
@@ -206,7 +300,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the unitPrice property: Unit Price is the price applicable to you. (your EA or other contract price).
-     *
+     * 
      * @return the unitPrice value.
      */
     public BigDecimal unitPrice() {
@@ -215,7 +309,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the billingCurrency property: Billing Currency.
-     *
+     * 
      * @return the billingCurrency value.
      */
     public String billingCurrency() {
@@ -224,7 +318,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the resourceLocation property: Resource Location.
-     *
+     * 
      * @return the resourceLocation value.
      */
     public String resourceLocation() {
@@ -234,7 +328,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
     /**
      * Get the consumedService property: Consumed service name. Name of the azure resource provider that emits the usage
      * or was purchased. This value is not provided for marketplace usage.
-     *
+     * 
      * @return the consumedService value.
      */
     public String consumedService() {
@@ -243,7 +337,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the resourceId property: Unique identifier of the Azure Resource Manager usage detail resource.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -252,7 +346,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the resourceName property: Resource Name.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -261,7 +355,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the serviceInfo1 property: Service-specific metadata.
-     *
+     * 
      * @return the serviceInfo1 value.
      */
     public String serviceInfo1() {
@@ -270,7 +364,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the serviceInfo2 property: Legacy field with optional service-specific metadata.
-     *
+     * 
      * @return the serviceInfo2 value.
      */
     public String serviceInfo2() {
@@ -281,7 +375,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
      * Get the additionalInfo property: Additional details of this usage item. By default this is not populated, unless
      * it's specified in $expand. Use this field to get usage line item specific details such as the actual VM Size
      * (ServiceType) or the ratio in which the reservation discount is applied.
-     *
+     * 
      * @return the additionalInfo value.
      */
     public String additionalInfo() {
@@ -290,7 +384,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the invoiceSection property: Invoice Section Name.
-     *
+     * 
      * @return the invoiceSection value.
      */
     public String invoiceSection() {
@@ -300,7 +394,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
     /**
      * Get the costCenter property: The cost center of this department if it is a department and a cost center is
      * provided.
-     *
+     * 
      * @return the costCenter value.
      */
     public String costCenter() {
@@ -309,7 +403,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the resourceGroup property: Resource Group Name.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -319,7 +413,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
     /**
      * Get the reservationId property: ARM resource id of the reservation. Only applies to records relevant to
      * reservations.
-     *
+     * 
      * @return the reservationId value.
      */
     public String reservationId() {
@@ -329,7 +423,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
     /**
      * Get the reservationName property: User provided display name of the reservation. Last known name for a particular
      * day is populated in the daily data. Only applies to records relevant to reservations.
-     *
+     * 
      * @return the reservationName value.
      */
     public String reservationName() {
@@ -338,7 +432,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the productOrderId property: Product Order Id. For reservations this is the Reservation Order ID.
-     *
+     * 
      * @return the productOrderId value.
      */
     public String productOrderId() {
@@ -347,7 +441,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the productOrderName property: Product Order Name. For reservations this is the SKU that was purchased.
-     *
+     * 
      * @return the productOrderName value.
      */
     public String productOrderName() {
@@ -356,7 +450,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the offerId property: Offer Id. Ex: MS-AZR-0017P, MS-AZR-0148P.
-     *
+     * 
      * @return the offerId value.
      */
     public String offerId() {
@@ -365,7 +459,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the isAzureCreditEligible property: Is Azure Credit Eligible.
-     *
+     * 
      * @return the isAzureCreditEligible value.
      */
     public Boolean isAzureCreditEligible() {
@@ -375,7 +469,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
     /**
      * Get the term property: Term (in months). 1 month for monthly recurring purchase. 12 months for a 1 year
      * reservation. 36 months for a 3 year reservation.
-     *
+     * 
      * @return the term value.
      */
     public String term() {
@@ -384,7 +478,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the publisherName property: Publisher Name.
-     *
+     * 
      * @return the publisherName value.
      */
     public String publisherName() {
@@ -393,7 +487,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the publisherType property: Publisher Type.
-     *
+     * 
      * @return the publisherType value.
      */
     public String publisherType() {
@@ -402,7 +496,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the planName property: Plan Name.
-     *
+     * 
      * @return the planName value.
      */
     public String planName() {
@@ -412,7 +506,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
     /**
      * Get the chargeType property: Indicates a charge represents credits, usage, a Marketplace purchase, a reservation
      * fee, or a refund.
-     *
+     * 
      * @return the chargeType value.
      */
     public String chargeType() {
@@ -423,7 +517,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
      * Get the frequency property: Indicates how frequently this charge will occur. OneTime for purchases which only
      * happen once, Monthly for fees which recur every month, and UsageBased for charges based on how much a service is
      * used.
-     *
+     * 
      * @return the frequency value.
      */
     public String frequency() {
@@ -432,7 +526,7 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Get the payGPrice property: Retail price for the resource.
-     *
+     * 
      * @return the payGPrice value.
      */
     public BigDecimal payGPrice() {
@@ -440,8 +534,26 @@ public final class LegacyUsageDetail extends UsageDetailInner {
     }
 
     /**
+     * Get the benefitId property: Unique identifier for the applicable benefit.
+     * 
+     * @return the benefitId value.
+     */
+    public String benefitId() {
+        return this.innerProperties() == null ? null : this.innerProperties().benefitId();
+    }
+
+    /**
+     * Get the benefitName property: Name of the applicable benefit.
+     * 
+     * @return the benefitName value.
+     */
+    public String benefitName() {
+        return this.innerProperties() == null ? null : this.innerProperties().benefitName();
+    }
+
+    /**
      * Get the pricingModel property: Identifier that indicates how the meter is priced.
-     *
+     * 
      * @return the pricingModel value.
      */
     public PricingModelType pricingModel() {
@@ -450,19 +562,70 @@ public final class LegacyUsageDetail extends UsageDetailInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LegacyUsageDetail"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model LegacyUsageDetail"));
         } else {
             innerProperties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LegacyUsageDetail.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LegacyUsageDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LegacyUsageDetail if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LegacyUsageDetail.
+     */
+    public static LegacyUsageDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LegacyUsageDetail deserializedLegacyUsageDetail = new LegacyUsageDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLegacyUsageDetail.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLegacyUsageDetail.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLegacyUsageDetail.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedLegacyUsageDetail.etag = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedLegacyUsageDetail.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLegacyUsageDetail.innerProperties = LegacyUsageDetailProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedLegacyUsageDetail.kind = UsageDetailsKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLegacyUsageDetail;
+        });
     }
 }

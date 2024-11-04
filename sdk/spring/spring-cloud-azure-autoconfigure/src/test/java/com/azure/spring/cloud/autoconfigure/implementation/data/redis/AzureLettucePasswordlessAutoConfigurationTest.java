@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.implementation.data.redis;
 
 import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.data.redis.lettuce.AzureRedisCredentials;
+import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
 import io.lettuce.core.RedisCredentials;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -18,6 +19,8 @@ class AzureLettucePasswordlessAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withBean(AzureGlobalProperties.class, () -> new AzureGlobalProperties())
+        .withBean("springTokenCredentialProviderContextProvider", SpringTokenCredentialProviderContextProvider.class,
+            SpringTokenCredentialProviderContextProvider::new)
         .withConfiguration(AutoConfigurations.of(AzureLettucePasswordlessAutoConfiguration.class));
 
     @Test

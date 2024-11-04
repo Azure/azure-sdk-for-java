@@ -7,25 +7,27 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityGetInsightsResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of EntityGetInsightsResponse. */
+/**
+ * An immutable client-side representation of EntityGetInsightsResponse.
+ */
 public interface EntityGetInsightsResponse {
     /**
      * Gets the metadata property: The metadata from the get insights operation results.
-     *
+     * 
      * @return the metadata value.
      */
     GetInsightsResultsMetadata metadata();
 
     /**
      * Gets the value property: The insights result values.
-     *
+     * 
      * @return the value value.
      */
     List<EntityInsightItem> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.EntityGetInsightsResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     EntityGetInsightsResponseInner innerModel();

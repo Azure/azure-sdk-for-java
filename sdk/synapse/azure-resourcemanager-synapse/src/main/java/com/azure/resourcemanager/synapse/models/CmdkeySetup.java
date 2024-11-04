@@ -6,29 +6,46 @@ package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.fluent.models.CmdkeySetupTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** The custom setup of running cmdkey commands. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("CmdkeySetup")
+/**
+ * The custom setup of running cmdkey commands.
+ */
 @Fluent
 public final class CmdkeySetup extends CustomSetupBase {
     /*
+     * The type of custom setup.
+     */
+    private String type = "CmdkeySetup";
+
+    /*
      * Cmdkey command custom setup type properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private CmdkeySetupTypeProperties innerTypeProperties = new CmdkeySetupTypeProperties();
 
-    /** Creates an instance of CmdkeySetup class. */
+    /**
+     * Creates an instance of CmdkeySetup class.
+     */
     public CmdkeySetup() {
     }
 
     /**
+     * Get the type property: The type of custom setup.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Cmdkey command custom setup type properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private CmdkeySetupTypeProperties innerTypeProperties() {
@@ -37,7 +54,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Get the targetName property: The server name of data source access.
-     *
+     * 
      * @return the targetName value.
      */
     public Object targetName() {
@@ -46,7 +63,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Set the targetName property: The server name of data source access.
-     *
+     * 
      * @param targetName the targetName value to set.
      * @return the CmdkeySetup object itself.
      */
@@ -60,7 +77,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Get the username property: The user name of data source access.
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -69,7 +86,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Set the username property: The user name of data source access.
-     *
+     * 
      * @param username the username value to set.
      * @return the CmdkeySetup object itself.
      */
@@ -83,7 +100,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Get the password property: The password of data source access.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -92,7 +109,7 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Set the password property: The password of data source access.
-     *
+     * 
      * @param password the password value to set.
      * @return the CmdkeySetup object itself.
      */
@@ -106,15 +123,14 @@ public final class CmdkeySetup extends CustomSetupBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property innerTypeProperties in model CmdkeySetup"));
         } else {
             innerTypeProperties().validate();
@@ -122,4 +138,44 @@ public final class CmdkeySetup extends CustomSetupBase {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CmdkeySetup.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CmdkeySetup from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CmdkeySetup if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CmdkeySetup.
+     */
+    public static CmdkeySetup fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CmdkeySetup deserializedCmdkeySetup = new CmdkeySetup();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("typeProperties".equals(fieldName)) {
+                    deserializedCmdkeySetup.innerTypeProperties = CmdkeySetupTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedCmdkeySetup.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCmdkeySetup;
+        });
+    }
 }

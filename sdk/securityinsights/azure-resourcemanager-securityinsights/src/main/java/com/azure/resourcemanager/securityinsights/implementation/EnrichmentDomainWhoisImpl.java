@@ -14,8 +14,7 @@ public final class EnrichmentDomainWhoisImpl implements EnrichmentDomainWhois {
 
     private final com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager;
 
-    EnrichmentDomainWhoisImpl(
-        EnrichmentDomainWhoisInner innerObject,
+    EnrichmentDomainWhoisImpl(EnrichmentDomainWhoisInner innerObject,
         com.azure.resourcemanager.securityinsights.SecurityInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

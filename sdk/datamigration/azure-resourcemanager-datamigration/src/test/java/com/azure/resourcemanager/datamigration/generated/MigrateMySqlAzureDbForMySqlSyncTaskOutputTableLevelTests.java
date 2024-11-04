@@ -10,17 +10,15 @@ import com.azure.resourcemanager.datamigration.models.MigrateMySqlAzureDbForMySq
 public final class MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"TableLevelOutput\",\"tableName\":\"fz\",\"databaseName\":\"hxx\",\"cdcInsertCounter\":\"yq\",\"cdcUpdateCounter\":\"zfeqztppri\",\"cdcDeleteCounter\":\"xorjaltolmncwsob\",\"fullLoadEstFinishTime\":\"2021-10-25T14:21:24Z\",\"fullLoadStartedOn\":\"2021-01-20T05:20:34Z\",\"fullLoadEndedOn\":\"2021-04-27T14:01:33Z\",\"fullLoadTotalRows\":1537965460429529227,\"state\":\"CANCELED\",\"totalChangesApplied\":7976075497308020496,\"dataErrorsCounter\":3846405596035643939,\"lastModifiedTime\":\"2021-10-01T17:33:32Z\",\"id\":\"lsbjjcanvxbv\"}")
-                .toObject(MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.class);
+        MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel model = BinaryData.fromString(
+            "{\"resultType\":\"TableLevelOutput\",\"tableName\":\"fmtdaaygdvwvgp\",\"databaseName\":\"hgwxrtfudx\",\"cdcInsertCounter\":\"xg\",\"cdcUpdateCounter\":\"agvrvmnpkuk\",\"cdcDeleteCounter\":\"i\",\"fullLoadEstFinishTime\":\"2021-07-31T16:11:39Z\",\"fullLoadStartedOn\":\"2021-06-12T22:02:25Z\",\"fullLoadEndedOn\":\"2021-03-06T12:44:58Z\",\"fullLoadTotalRows\":5283233927495017901,\"state\":\"FULL_LOAD\",\"totalChangesApplied\":7729076180734759194,\"dataErrorsCounter\":6240929679987561692,\"lastModifiedTime\":\"2021-06-29T07:51:14Z\",\"id\":\"kfoqreyfkzikfj\"}")
+            .toObject(MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel model =
-            new MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel();
+        MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel model
+            = new MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel();
         model = BinaryData.fromObject(model).toObject(MigrateMySqlAzureDbForMySqlSyncTaskOutputTableLevel.class);
     }
 }

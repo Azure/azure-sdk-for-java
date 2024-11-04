@@ -31,37 +31,27 @@ public final class SapCentralInstancesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"instanceNo\":\"ogfnzjvusf\",\"subnet\":\"dmozu\",\"messageServerProperties\":{\"msPort\":7577578253018507167,\"internalMsPort\":4531739800208315375,\"httpPort\":2038378510011319534,\"httpsPort\":866081564724906036,\"hostname\":\"nbtgkbugrjqctoj\",\"ipAddress\":\"isofieypefojyqd\",\"health\":\"Unknown\"},\"enqueueServerProperties\":{\"hostname\":\"cp\",\"ipAddress\":\"wkhihihlhzdsqt\",\"port\":85207592738444256,\"health\":\"Unknown\"},\"gatewayServerProperties\":{\"port\":7805991014076189664,\"health\":\"Degraded\"},\"enqueueReplicationServerProperties\":{\"ersVersion\":\"EnqueueReplicator1\",\"instanceNo\":\"cact\",\"hostname\":\"wotey\",\"kernelVersion\":\"cluqovekqvgqo\",\"kernelPatch\":\"ifzmpjwyivqi\",\"ipAddress\":\"xcvhrfs\",\"health\":\"Degraded\"},\"kernelVersion\":\"grttikteusqczk\",\"kernelPatch\":\"klxubyja\",\"loadBalancerDetails\":{\"id\":\"mfblcqcuubg\"},\"vmDetails\":[],\"status\":\"Offline\",\"health\":\"Degraded\",\"provisioningState\":\"Failed\",\"errors\":{}},\"location\":\"wgdsl\",\"tags\":{\"xiutcx\":\"hhrmooizqsey\",\"etoge\":\"pzhyr\"},\"id\":\"joxslhvnhla\",\"name\":\"rqnkkzjcjbtr\",\"type\":\"aehvvibrxjjstoq\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"instanceNo\":\"ogfnzjvusf\",\"subnet\":\"dmozu\",\"messageServerProperties\":{\"msPort\":7577578253018507167,\"internalMsPort\":4531739800208315375,\"httpPort\":2038378510011319534,\"httpsPort\":866081564724906036,\"hostname\":\"nbtgkbugrjqctoj\",\"ipAddress\":\"isofieypefojyqd\",\"health\":\"Unknown\"},\"enqueueServerProperties\":{\"hostname\":\"cp\",\"ipAddress\":\"wkhihihlhzdsqt\",\"port\":85207592738444256,\"health\":\"Unknown\"},\"gatewayServerProperties\":{\"port\":7805991014076189664,\"health\":\"Degraded\"},\"enqueueReplicationServerProperties\":{\"ersVersion\":\"EnqueueReplicator1\",\"instanceNo\":\"cact\",\"hostname\":\"wotey\",\"kernelVersion\":\"cluqovekqvgqo\",\"kernelPatch\":\"ifzmpjwyivqi\",\"ipAddress\":\"xcvhrfs\",\"health\":\"Degraded\"},\"kernelVersion\":\"grttikteusqczk\",\"kernelPatch\":\"klxubyja\",\"loadBalancerDetails\":{\"id\":\"mfblcqcuubg\"},\"vmDetails\":[],\"status\":\"Offline\",\"health\":\"Degraded\",\"provisioningState\":\"Failed\",\"errors\":{}},\"location\":\"wgdsl\",\"tags\":{\"xiutcx\":\"hhrmooizqsey\",\"etoge\":\"pzhyr\"},\"id\":\"joxslhvnhla\",\"name\":\"rqnkkzjcjbtr\",\"type\":\"aehvvibrxjjstoq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        WorkloadsManager manager =
-            WorkloadsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        WorkloadsManager manager = WorkloadsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SapCentralServerInstance> response =
-            manager.sapCentralInstances().list("yr", "giagtcojo", com.azure.core.util.Context.NONE);
+        PagedIterable<SapCentralServerInstance> response
+            = manager.sapCentralInstances().list("yr", "giagtcojo", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("wgdsl", response.iterator().next().location());
         Assertions.assertEquals("hhrmooizqsey", response.iterator().next().tags().get("xiutcx"));

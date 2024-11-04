@@ -6,43 +6,39 @@ package com.azure.resourcemanager.dynatrace.generated;
 
 import com.azure.resourcemanager.dynatrace.models.SsoDetailsRequest;
 
-/** Samples for Monitors GetSsoDetails. */
+/**
+ * Samples for Monitors GetSsoDetails.
+ */
 public final class MonitorsGetSsoDetailsSamples {
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetSSODetails_MaximumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_GetSSODetails_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetSSODetails_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
-    public static void monitorsGetSSODetailsMaximumSetGen(
-        com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager
-            .monitors()
-            .getSsoDetailsWithResponse(
-                "myResourceGroup",
-                "myMonitor",
-                new SsoDetailsRequest().withUserPrincipal("alice@microsoft.com"),
-                com.azure.core.util.Context.NONE);
+    public static void
+        monitorsGetSSODetailsMaximumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
+        manager.monitors()
+            .getSsoDetailsWithResponse("myResourceGroup", "myMonitor",
+                new SsoDetailsRequest().withUserPrincipal("alice@microsoft.com"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/Monitors_GetSSODetails_MinimumSet_Gen.json
+     * x-ms-original-file: specification/dynatrace/resource-manager/Dynatrace.Observability/stable/2023-04-27/examples/
+     * Monitors_GetSSODetails_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetSSODetails_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to DynatraceManager.
      */
-    public static void monitorsGetSSODetailsMinimumSetGen(
-        com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
-        manager
-            .monitors()
-            .getSsoDetailsWithResponse(
-                "myResourceGroup",
-                "myMonitor",
-                new SsoDetailsRequest().withUserPrincipal("alice@microsoft.com"),
-                com.azure.core.util.Context.NONE);
+    public static void
+        monitorsGetSSODetailsMinimumSetGen(com.azure.resourcemanager.dynatrace.DynatraceManager manager) {
+        manager.monitors()
+            .getSsoDetailsWithResponse("myResourceGroup", "myMonitor",
+                new SsoDetailsRequest().withUserPrincipal("alice@microsoft.com"), com.azure.core.util.Context.NONE);
     }
 }

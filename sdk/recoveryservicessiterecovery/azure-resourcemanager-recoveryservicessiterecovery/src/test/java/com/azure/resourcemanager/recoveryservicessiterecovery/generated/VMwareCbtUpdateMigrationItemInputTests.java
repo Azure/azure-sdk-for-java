@@ -51,34 +51,54 @@ public final class VMwareCbtUpdateMigrationItemInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtUpdateMigrationItemInput model = new VMwareCbtUpdateMigrationItemInput()
-            .withTargetVmName("igcfddofxnf").withTargetVmSize("jyyrqaedw").withTargetResourceGroupId("ocytjgoeayokrw")
-            .withTargetAvailabilitySetId("ihwpadhedbfobd").withTargetAvailabilityZone("vothmkhjaoz")
-            .withTargetProximityPlacementGroupId("wfcn").withTargetBootDiagnosticsStorageAccountId("bpoelhscmyhrhjv")
-            .withTargetNetworkId("fqbokndwp").withTestNetworkId("qwojoev")
-            .withVmNics(Arrays.asList(
-                new VMwareCbtNicInput().withNicId("fytdxmly").withIsPrimaryNic("zlyvapbkrbuog")
-                    .withTargetSubnetName("dltlcu").withTargetStaticIpAddress("izij")
-                    .withIsSelectedForMigration("ylzeohlpsftq").withTargetNicName("vmhvbvvcpwtqs")
-                    .withTestSubnetName("pnhmzy").withTestStaticIpAddress("fetev"),
-                new VMwareCbtNicInput().withNicId("ntfknwacycsyo").withIsPrimaryNic("ctkhfh")
-                    .withTargetSubnetName("atvcsxr").withTargetStaticIpAddress("nmizhv")
-                    .withIsSelectedForMigration("hqqwcubl").withTargetNicName("hk").withTestSubnetName("obzgott")
-                    .withTestStaticIpAddress("sadzighmmtb"),
-                new VMwareCbtNicInput().withNicId("dvucfvvra").withIsPrimaryNic("beurdeewl")
-                    .withTargetSubnetName("xpcbwkdwjyjizn").withTargetStaticIpAddress("roo")
-                    .withIsSelectedForMigration("ftaspmcr").withTargetNicName("huf").withTestSubnetName("n")
-                    .withTestStaticIpAddress("hminuwqxungrobgw")))
-            .withVmDisks(Arrays.asList(
-                new VMwareCbtUpdateDiskInput().withDiskId("xjwdylwxmvzjow").withTargetDiskName("geerclbl")
-                    .withIsOSDisk("hpwachyeu"),
-                new VMwareCbtUpdateDiskInput().withDiskId("jwmvwryvdi").withTargetDiskName("ii")
-                    .withIsOSDisk("pruccwme")))
-            .withLicenseType(LicenseType.NOT_SPECIFIED).withSqlServerLicenseType(SqlServerLicenseType.NOT_SPECIFIED)
-            .withPerformAutoResync("trtexegwm")
-            .withTargetVmTags(mapOf("loqkajwjuri", "ywiwhvycfjncind", "anhz", "rsbcl", "zkz", "knjxizbaxdy"))
-            .withTargetDiskTags(mapOf("wacyyjmlxppdndzk", "e", "cizeqqfopvnopm", "evuiiuiibfkcjytq"))
-            .withTargetNicTags(mapOf("zyfbkmvldzmxojz", "sfhoxqlyo"));
+        VMwareCbtUpdateMigrationItemInput model
+            = new VMwareCbtUpdateMigrationItemInput().withTargetVmName("igcfddofxnf")
+                .withTargetVmSize("jyyrqaedw")
+                .withTargetResourceGroupId("ocytjgoeayokrw")
+                .withTargetAvailabilitySetId("ihwpadhedbfobd")
+                .withTargetAvailabilityZone("vothmkhjaoz")
+                .withTargetProximityPlacementGroupId("wfcn")
+                .withTargetBootDiagnosticsStorageAccountId("bpoelhscmyhrhjv")
+                .withTargetNetworkId("fqbokndwp")
+                .withTestNetworkId("qwojoev")
+                .withVmNics(Arrays.asList(
+                    new VMwareCbtNicInput().withNicId("fytdxmly")
+                        .withIsPrimaryNic("zlyvapbkrbuog")
+                        .withTargetSubnetName("dltlcu")
+                        .withTargetStaticIpAddress("izij")
+                        .withIsSelectedForMigration("ylzeohlpsftq")
+                        .withTargetNicName("vmhvbvvcpwtqs")
+                        .withTestSubnetName("pnhmzy")
+                        .withTestStaticIpAddress("fetev"),
+                    new VMwareCbtNicInput().withNicId("ntfknwacycsyo")
+                        .withIsPrimaryNic("ctkhfh")
+                        .withTargetSubnetName("atvcsxr")
+                        .withTargetStaticIpAddress("nmizhv")
+                        .withIsSelectedForMigration("hqqwcubl")
+                        .withTargetNicName("hk")
+                        .withTestSubnetName("obzgott")
+                        .withTestStaticIpAddress("sadzighmmtb"),
+                    new VMwareCbtNicInput().withNicId("dvucfvvra")
+                        .withIsPrimaryNic("beurdeewl")
+                        .withTargetSubnetName("xpcbwkdwjyjizn")
+                        .withTargetStaticIpAddress("roo")
+                        .withIsSelectedForMigration("ftaspmcr")
+                        .withTargetNicName("huf")
+                        .withTestSubnetName("n")
+                        .withTestStaticIpAddress("hminuwqxungrobgw")))
+                .withVmDisks(Arrays.asList(
+                    new VMwareCbtUpdateDiskInput().withDiskId("xjwdylwxmvzjow")
+                        .withTargetDiskName("geerclbl")
+                        .withIsOSDisk("hpwachyeu"),
+                    new VMwareCbtUpdateDiskInput().withDiskId("jwmvwryvdi")
+                        .withTargetDiskName("ii")
+                        .withIsOSDisk("pruccwme")))
+                .withLicenseType(LicenseType.NOT_SPECIFIED)
+                .withSqlServerLicenseType(SqlServerLicenseType.NOT_SPECIFIED)
+                .withPerformAutoResync("trtexegwm")
+                .withTargetVmTags(mapOf("loqkajwjuri", "ywiwhvycfjncind", "anhz", "rsbcl", "zkz", "knjxizbaxdy"))
+                .withTargetDiskTags(mapOf("wacyyjmlxppdndzk", "e", "cizeqqfopvnopm", "evuiiuiibfkcjytq"))
+                .withTargetNicTags(mapOf("zyfbkmvldzmxojz", "sfhoxqlyo"));
         model = BinaryData.fromObject(model).toObject(VMwareCbtUpdateMigrationItemInput.class);
         Assertions.assertEquals("igcfddofxnf", model.targetVmName());
         Assertions.assertEquals("jyyrqaedw", model.targetVmSize());

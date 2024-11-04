@@ -5,38 +5,111 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Base type for all Presets, which define the recipe or instructions on how the input media files should be processed.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "@odata.type",
-    defaultImpl = Preset.class)
-@JsonTypeName("Preset")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "#Microsoft.Media.FaceDetectorPreset", value = FaceDetectorPreset.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.AudioAnalyzerPreset", value = AudioAnalyzerPreset.class),
-    @JsonSubTypes.Type(
-        name = "#Microsoft.Media.BuiltInStandardEncoderPreset",
-        value = BuiltInStandardEncoderPreset.class),
-    @JsonSubTypes.Type(name = "#Microsoft.Media.StandardEncoderPreset", value = StandardEncoderPreset.class)
-})
 @Immutable
-public class Preset {
-    /** Creates an instance of Preset class. */
+public class Preset implements JsonSerializable<Preset> {
+    /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "Preset";
+
+    /**
+     * Creates an instance of Preset class.
+     */
     public Preset() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Preset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Preset if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Preset.
+     */
+    public static Preset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("@odata.type".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("#Microsoft.Media.FaceDetectorPreset".equals(discriminatorValue)) {
+                    return FaceDetectorPreset.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.AudioAnalyzerPreset".equals(discriminatorValue)) {
+                    return AudioAnalyzerPreset.fromJsonKnownDiscriminator(readerToUse.reset());
+                } else if ("#Microsoft.Media.VideoAnalyzerPreset".equals(discriminatorValue)) {
+                    return VideoAnalyzerPreset.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.BuiltInStandardEncoderPreset".equals(discriminatorValue)) {
+                    return BuiltInStandardEncoderPreset.fromJson(readerToUse.reset());
+                } else if ("#Microsoft.Media.StandardEncoderPreset".equals(discriminatorValue)) {
+                    return StandardEncoderPreset.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static Preset fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Preset deserializedPreset = new Preset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("@odata.type".equals(fieldName)) {
+                    deserializedPreset.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPreset;
+        });
     }
 }

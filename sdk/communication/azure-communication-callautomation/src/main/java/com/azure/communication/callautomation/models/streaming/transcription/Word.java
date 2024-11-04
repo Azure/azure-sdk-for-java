@@ -48,11 +48,11 @@ public class Word implements JsonSerializable<Word> {
         return offset;
     }
 
-      /**
-     * Get the duration property.
-     *
-     * @return the duration value.
-     */
+    /**
+    * Get the duration property.
+    *
+    * @return the duration value.
+    */
     public long getDuration() {
         return duration;
     }

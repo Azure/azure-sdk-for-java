@@ -10,13 +10,10 @@ import com.azure.resourcemanager.recoveryservicesdatareplication.models.CheckNam
 public final class CheckNameAvailabilityResponseModelImpl implements CheckNameAvailabilityResponseModel {
     private CheckNameAvailabilityResponseModelInner innerObject;
 
-    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-        serviceManager;
+    private final com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager;
 
-    CheckNameAvailabilityResponseModelImpl(
-        CheckNameAvailabilityResponseModelInner innerObject,
-        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager
-            serviceManager) {
+    CheckNameAvailabilityResponseModelImpl(CheckNameAvailabilityResponseModelInner innerObject,
+        com.azure.resourcemanager.recoveryservicesdatareplication.RecoveryServicesDataReplicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

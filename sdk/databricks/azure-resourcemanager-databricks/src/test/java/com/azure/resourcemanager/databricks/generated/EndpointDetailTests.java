@@ -11,29 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class EndpointDetailTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EndpointDetail model =
-            BinaryData
-                .fromString(
-                    "{\"ipAddress\":\"vxodpu\",\"port\":1447641859,\"latency\":97.60419370044511,\"isAccessible\":true}")
-                .toObject(EndpointDetail.class);
-        Assertions.assertEquals("vxodpu", model.ipAddress());
-        Assertions.assertEquals(1447641859, model.port());
-        Assertions.assertEquals(97.60419370044511D, model.latency());
+        EndpointDetail model = BinaryData.fromString(
+            "{\"ipAddress\":\"gnzscxaqwo\",\"port\":1004687873,\"latency\":96.31729302894911,\"isAccessible\":true}")
+            .toObject(EndpointDetail.class);
+        Assertions.assertEquals("gnzscxaqwo", model.ipAddress());
+        Assertions.assertEquals(1004687873, model.port());
+        Assertions.assertEquals(96.31729302894911D, model.latency());
         Assertions.assertEquals(true, model.isAccessible());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointDetail model =
-            new EndpointDetail()
-                .withIpAddress("vxodpu")
-                .withPort(1447641859)
-                .withLatency(97.60419370044511D)
-                .withIsAccessible(true);
+        EndpointDetail model = new EndpointDetail().withIpAddress("gnzscxaqwo")
+            .withPort(1004687873)
+            .withLatency(96.31729302894911D)
+            .withIsAccessible(true);
         model = BinaryData.fromObject(model).toObject(EndpointDetail.class);
-        Assertions.assertEquals("vxodpu", model.ipAddress());
-        Assertions.assertEquals(1447641859, model.port());
-        Assertions.assertEquals(97.60419370044511D, model.latency());
+        Assertions.assertEquals("gnzscxaqwo", model.ipAddress());
+        Assertions.assertEquals(1004687873, model.port());
+        Assertions.assertEquals(96.31729302894911D, model.latency());
         Assertions.assertEquals(true, model.isAccessible());
     }
 }

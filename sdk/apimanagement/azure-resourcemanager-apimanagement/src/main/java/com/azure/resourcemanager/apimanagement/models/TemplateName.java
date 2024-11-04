@@ -11,15 +11,15 @@ import java.util.Collection;
 /** Defines values for TemplateName. */
 public final class TemplateName extends ExpandableStringEnum<TemplateName> {
     /** Static value applicationApprovedNotificationMessage for TemplateName. */
-    public static final TemplateName APPLICATION_APPROVED_NOTIFICATION_MESSAGE =
-        fromString("applicationApprovedNotificationMessage");
+    public static final TemplateName APPLICATION_APPROVED_NOTIFICATION_MESSAGE
+        = fromString("applicationApprovedNotificationMessage");
 
     /** Static value accountClosedDeveloper for TemplateName. */
     public static final TemplateName ACCOUNT_CLOSED_DEVELOPER = fromString("accountClosedDeveloper");
 
     /** Static value quotaLimitApproachingDeveloperNotificationMessage for TemplateName. */
-    public static final TemplateName QUOTA_LIMIT_APPROACHING_DEVELOPER_NOTIFICATION_MESSAGE =
-        fromString("quotaLimitApproachingDeveloperNotificationMessage");
+    public static final TemplateName QUOTA_LIMIT_APPROACHING_DEVELOPER_NOTIFICATION_MESSAGE
+        = fromString("quotaLimitApproachingDeveloperNotificationMessage");
 
     /** Static value newDeveloperNotificationMessage for TemplateName. */
     public static final TemplateName NEW_DEVELOPER_NOTIFICATION_MESSAGE = fromString("newDeveloperNotificationMessage");
@@ -40,23 +40,23 @@ public final class TemplateName extends ExpandableStringEnum<TemplateName> {
     public static final TemplateName NEW_ISSUE_NOTIFICATION_MESSAGE = fromString("newIssueNotificationMessage");
 
     /** Static value purchaseDeveloperNotificationMessage for TemplateName. */
-    public static final TemplateName PURCHASE_DEVELOPER_NOTIFICATION_MESSAGE =
-        fromString("purchaseDeveloperNotificationMessage");
+    public static final TemplateName PURCHASE_DEVELOPER_NOTIFICATION_MESSAGE
+        = fromString("purchaseDeveloperNotificationMessage");
 
     /** Static value passwordResetIdentityDefault for TemplateName. */
     public static final TemplateName PASSWORD_RESET_IDENTITY_DEFAULT = fromString("passwordResetIdentityDefault");
 
     /** Static value passwordResetByAdminNotificationMessage for TemplateName. */
-    public static final TemplateName PASSWORD_RESET_BY_ADMIN_NOTIFICATION_MESSAGE =
-        fromString("passwordResetByAdminNotificationMessage");
+    public static final TemplateName PASSWORD_RESET_BY_ADMIN_NOTIFICATION_MESSAGE
+        = fromString("passwordResetByAdminNotificationMessage");
 
     /** Static value rejectDeveloperNotificationMessage for TemplateName. */
-    public static final TemplateName REJECT_DEVELOPER_NOTIFICATION_MESSAGE =
-        fromString("rejectDeveloperNotificationMessage");
+    public static final TemplateName REJECT_DEVELOPER_NOTIFICATION_MESSAGE
+        = fromString("rejectDeveloperNotificationMessage");
 
     /** Static value requestDeveloperNotificationMessage for TemplateName. */
-    public static final TemplateName REQUEST_DEVELOPER_NOTIFICATION_MESSAGE =
-        fromString("requestDeveloperNotificationMessage");
+    public static final TemplateName REQUEST_DEVELOPER_NOTIFICATION_MESSAGE
+        = fromString("requestDeveloperNotificationMessage");
 
     /**
      * Creates a new instance of TemplateName value.

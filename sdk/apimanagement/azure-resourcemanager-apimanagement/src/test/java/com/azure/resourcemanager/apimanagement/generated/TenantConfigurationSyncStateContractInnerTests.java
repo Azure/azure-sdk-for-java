@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TenantConfigurationSyncStateContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TenantConfigurationSyncStateContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"branch\":\"bfj\",\"commitId\":\"qzucfzluczdquur\",\"isExport\":false,\"isSynced\":true,\"isGitEnabled\":false,\"syncDate\":\"2021-04-12T14:43:43Z\",\"configurationChangeDate\":\"2021-05-22T17:17:14Z\",\"lastOperationId\":\"prnquj\"},\"id\":\"wzcqygg\",\"name\":\"nwsvhbngqiwye\",\"type\":\"tobdrrpnre\"}")
-                .toObject(TenantConfigurationSyncStateContractInner.class);
+        TenantConfigurationSyncStateContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"branch\":\"bfj\",\"commitId\":\"qzucfzluczdquur\",\"isExport\":false,\"isSynced\":true,\"isGitEnabled\":false,\"syncDate\":\"2021-04-12T14:43:43Z\",\"configurationChangeDate\":\"2021-05-22T17:17:14Z\",\"lastOperationId\":\"prnquj\"},\"id\":\"wzcqygg\",\"name\":\"nwsvhbngqiwye\",\"type\":\"tobdrrpnre\"}")
+            .toObject(TenantConfigurationSyncStateContractInner.class);
         Assertions.assertEquals("bfj", model.branch());
         Assertions.assertEquals("qzucfzluczdquur", model.commitId());
         Assertions.assertEquals(false, model.isExport());
@@ -29,9 +27,8 @@ public final class TenantConfigurationSyncStateContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TenantConfigurationSyncStateContractInner model =
-            new TenantConfigurationSyncStateContractInner()
-                .withBranch("bfj")
+        TenantConfigurationSyncStateContractInner model
+            = new TenantConfigurationSyncStateContractInner().withBranch("bfj")
                 .withCommitId("qzucfzluczdquur")
                 .withIsExport(false)
                 .withIsSynced(true)

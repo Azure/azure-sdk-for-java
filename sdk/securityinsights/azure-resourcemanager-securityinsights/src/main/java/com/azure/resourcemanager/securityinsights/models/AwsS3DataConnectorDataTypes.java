@@ -6,20 +6,31 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The available data types for Amazon Web Services S3 data connector. */
+/**
+ * The available data types for Amazon Web Services S3 data connector.
+ */
 @Fluent
-public final class AwsS3DataConnectorDataTypes {
+public final class AwsS3DataConnectorDataTypes implements JsonSerializable<AwsS3DataConnectorDataTypes> {
     /*
      * Logs data type.
      */
-    @JsonProperty(value = "logs", required = true)
     private AwsS3DataConnectorDataTypesLogs logs;
 
     /**
+     * Creates an instance of AwsS3DataConnectorDataTypes class.
+     */
+    public AwsS3DataConnectorDataTypes() {
+    }
+
+    /**
      * Get the logs property: Logs data type.
-     *
+     * 
      * @return the logs value.
      */
     public AwsS3DataConnectorDataTypesLogs logs() {
@@ -28,7 +39,7 @@ public final class AwsS3DataConnectorDataTypes {
 
     /**
      * Set the logs property: Logs data type.
-     *
+     * 
      * @param logs the logs value to set.
      * @return the AwsS3DataConnectorDataTypes object itself.
      */
@@ -39,19 +50,55 @@ public final class AwsS3DataConnectorDataTypes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (logs() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property logs in model AwsS3DataConnectorDataTypes"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property logs in model AwsS3DataConnectorDataTypes"));
         } else {
             logs().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AwsS3DataConnectorDataTypes.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("logs", this.logs);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AwsS3DataConnectorDataTypes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AwsS3DataConnectorDataTypes if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AwsS3DataConnectorDataTypes.
+     */
+    public static AwsS3DataConnectorDataTypes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AwsS3DataConnectorDataTypes deserializedAwsS3DataConnectorDataTypes = new AwsS3DataConnectorDataTypes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logs".equals(fieldName)) {
+                    deserializedAwsS3DataConnectorDataTypes.logs = AwsS3DataConnectorDataTypesLogs.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAwsS3DataConnectorDataTypes;
+        });
+    }
 }

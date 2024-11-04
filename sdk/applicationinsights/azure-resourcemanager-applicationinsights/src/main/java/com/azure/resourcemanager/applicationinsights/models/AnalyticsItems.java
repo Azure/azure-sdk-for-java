@@ -29,13 +29,8 @@ public interface AnalyticsItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Analytics Items defined within an Application Insights component along with {@link Response}.
      */
-    Response<List<ApplicationInsightsComponentAnalyticsItem>> listWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ItemScope scope,
-        ItemTypeParameter type,
-        Boolean includeContent,
+    Response<List<ApplicationInsightsComponentAnalyticsItem>> listWithResponse(String resourceGroupName,
+        String resourceName, ItemScopePath scopePath, ItemScope scope, ItemTypeParameter type, Boolean includeContent,
         Context context);
 
     /**
@@ -50,8 +45,8 @@ public interface AnalyticsItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Analytics Items defined within an Application Insights component.
      */
-    List<ApplicationInsightsComponentAnalyticsItem> list(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath);
+    List<ApplicationInsightsComponentAnalyticsItem> list(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath);
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
@@ -68,13 +63,8 @@ public interface AnalyticsItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Analytics Items defined within an Application Insights component along with {@link Response}.
      */
-    Response<ApplicationInsightsComponentAnalyticsItem> getWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        String id,
-        String name,
-        Context context);
+    Response<ApplicationInsightsComponentAnalyticsItem> getWithResponse(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath, String id, String name, Context context);
 
     /**
      * Gets a specific Analytics Items defined within an Application Insights component.
@@ -88,8 +78,8 @@ public interface AnalyticsItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific Analytics Items defined within an Application Insights component.
      */
-    ApplicationInsightsComponentAnalyticsItem get(
-        String resourceGroupName, String resourceName, ItemScopePath scopePath);
+    ApplicationInsightsComponentAnalyticsItem get(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath);
 
     /**
      * Adds or Updates a specific Analytics Item within an Application Insights component.
@@ -109,12 +99,8 @@ public interface AnalyticsItems {
      * @return properties that define an Analytics item that is associated to an Application Insights component along
      *     with {@link Response}.
      */
-    Response<ApplicationInsightsComponentAnalyticsItem> putWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties,
-        Boolean overrideItem,
+    Response<ApplicationInsightsComponentAnalyticsItem> putWithResponse(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath, ApplicationInsightsComponentAnalyticsItemInner itemProperties, Boolean overrideItem,
         Context context);
 
     /**
@@ -131,11 +117,8 @@ public interface AnalyticsItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an Analytics item that is associated to an Application Insights component.
      */
-    ApplicationInsightsComponentAnalyticsItem put(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        ApplicationInsightsComponentAnalyticsItemInner itemProperties);
+    ApplicationInsightsComponentAnalyticsItem put(String resourceGroupName, String resourceName,
+        ItemScopePath scopePath, ApplicationInsightsComponentAnalyticsItemInner itemProperties);
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.
@@ -152,13 +135,8 @@ public interface AnalyticsItems {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        ItemScopePath scopePath,
-        String id,
-        String name,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, ItemScopePath scopePath, String id,
+        String name, Context context);
 
     /**
      * Deletes a specific Analytics Items defined within an Application Insights component.

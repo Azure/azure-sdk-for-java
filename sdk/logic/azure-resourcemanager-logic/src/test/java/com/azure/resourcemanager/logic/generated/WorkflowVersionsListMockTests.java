@@ -6,69 +6,43 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
+import com.azure.resourcemanager.logic.models.ParameterType;
 import com.azure.resourcemanager.logic.models.WorkflowState;
 import com.azure.resourcemanager.logic.models.WorkflowVersion;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkflowVersionsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Created\",\"createdTime\":\"2021-01-26T20:34:54Z\",\"changedTime\":\"2021-05-10T23:21:19Z\",\"state\":\"Disabled\",\"version\":\"qsv\",\"accessEndpoint\":\"ocpp\",\"endpointsConfiguration\":{\"workflow\":{\"outgoingIpAddresses\":[{},{},{}],\"accessEndpointIpAddresses\":[{},{},{}]},\"connector\":{\"outgoingIpAddresses\":[{}],\"accessEndpointIpAddresses\":[{},{}]}},\"accessControl\":{\"triggers\":{\"allowedCallerIpAddresses\":[{},{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"siritpqqpynrlnou\":{},\"evizzcjnfy\":{}}}},\"contents\":{\"allowedCallerIpAddresses\":[{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"n\":{},\"qnumpna\":{}}}},\"actions\":{\"allowedCallerIpAddresses\":[{},{},{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"eafpvbsl\":{}}}},\"workflowManagement\":{\"allowedCallerIpAddresses\":[{}],\"openAuthenticationPolicies\":{\"policies\":{\"hnbofe\":{},\"cctppbgzfmuyl\":{},\"kbvvw\":{},\"ftrqsobu\":{}}}}},\"sku\":{\"name\":\"Shared\",\"plan\":{\"id\":\"jdxlbsnskc\",\"name\":\"fxtknywx\",\"type\":\"e\"}},\"integrationAccount\":{\"id\":\"ccbvchozkmi\",\"name\":\"xdnugbisfnbtqd\",\"type\":\"w\"},\"definition\":\"datadroi\",\"parameters\":{\"gxnlaurviyntcbl\":{\"type\":\"SecureObject\",\"value\":\"datakisyhnfqnekpxddd\",\"metadata\":\"datahfgdjahn\",\"description\":\"ktkhlqdxjdolobtz\"},\"znrjws\":{\"type\":\"Int\",\"value\":\"dataqtfbjkbfktelbl\",\"metadata\":\"datangrkjbdaxttoe\",\"description\":\"ohipijfywmmqz\"}}},\"location\":\"cktcwgnkxjd\",\"tags\":{\"waiabfntrmkeawmf\":\"iundzawotpiakle\",\"wd\":\"udcgdljbn\",\"giuzbpgskgpws\":\"fn\",\"nvxpz\":\"xh\"},\"id\":\"tiktgmdlwefsti\",\"name\":\"emakgzcmbgwllnm\",\"type\":\"dflckumjjpx\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"createdTime\":\"2021-11-22T02:24:35Z\",\"changedTime\":\"2020-12-23T03:00:17Z\",\"state\":\"Disabled\",\"version\":\"fwbeqrkuorh\",\"accessEndpoint\":\"sruqnmdvha\",\"endpointsConfiguration\":{},\"accessControl\":{},\"sku\":{\"name\":\"NotSpecified\"},\"integrationAccount\":{\"id\":\"zwxiytx\",\"name\":\"gukvlbpkt\",\"type\":\"styoua\"},\"definition\":\"dataewres\",\"parameters\":{}},\"location\":\"weg\",\"tags\":{\"gijiitnspxlzd\":\"teyxeyguq\",\"ufanray\":\"sygrijwa\",\"dgrhydkygywezs\":\"fueqfrojs\"},\"id\":\"iecafygzmxi\",\"name\":\"qv\",\"type\":\"smaklixqcahy\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<WorkflowVersion> response
+            = manager.workflowVersions().list("ruwqbe", "dzruuscbs", 1166087847, com.azure.core.util.Context.NONE);
 
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<WorkflowVersion> response =
-            manager
-                .workflowVersions()
-                .list("saeuzanhsfnhsenw", "hpzfngqj", 290667189, com.azure.core.util.Context.NONE);
-
-        Assertions.assertEquals("weg", response.iterator().next().location());
-        Assertions.assertEquals("teyxeyguq", response.iterator().next().tags().get("gijiitnspxlzd"));
+        Assertions.assertEquals("cktcwgnkxjd", response.iterator().next().location());
+        Assertions.assertEquals("iundzawotpiakle", response.iterator().next().tags().get("waiabfntrmkeawmf"));
         Assertions.assertEquals(WorkflowState.DISABLED, response.iterator().next().state());
-        Assertions.assertEquals("zwxiytx", response.iterator().next().integrationAccount().id());
+        Assertions.assertEquals("ccbvchozkmi", response.iterator().next().integrationAccount().id());
+        Assertions.assertEquals(ParameterType.SECURE_OBJECT,
+            response.iterator().next().parameters().get("gxnlaurviyntcbl").type());
+        Assertions.assertEquals("ktkhlqdxjdolobtz",
+            response.iterator().next().parameters().get("gxnlaurviyntcbl").description());
     }
 }

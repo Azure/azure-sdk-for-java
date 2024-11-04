@@ -6,24 +6,31 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The delivery information associated with a export. */
+/**
+ * The delivery information associated with a export.
+ */
 @Fluent
-public final class ExportDeliveryInfo {
+public final class ExportDeliveryInfo implements JsonSerializable<ExportDeliveryInfo> {
     /*
      * Has destination for the export being delivered.
      */
-    @JsonProperty(value = "destination", required = true)
     private ExportDeliveryDestination destination;
 
-    /** Creates an instance of ExportDeliveryInfo class. */
+    /**
+     * Creates an instance of ExportDeliveryInfo class.
+     */
     public ExportDeliveryInfo() {
     }
 
     /**
      * Get the destination property: Has destination for the export being delivered.
-     *
+     * 
      * @return the destination value.
      */
     public ExportDeliveryDestination destination() {
@@ -32,7 +39,7 @@ public final class ExportDeliveryInfo {
 
     /**
      * Set the destination property: Has destination for the export being delivered.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the ExportDeliveryInfo object itself.
      */
@@ -43,18 +50,54 @@ public final class ExportDeliveryInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (destination() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property destination in model ExportDeliveryInfo"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property destination in model ExportDeliveryInfo"));
         } else {
             destination().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExportDeliveryInfo.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("destination", this.destination);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportDeliveryInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportDeliveryInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExportDeliveryInfo.
+     */
+    public static ExportDeliveryInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportDeliveryInfo deserializedExportDeliveryInfo = new ExportDeliveryInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("destination".equals(fieldName)) {
+                    deserializedExportDeliveryInfo.destination = ExportDeliveryDestination.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportDeliveryInfo;
+        });
+    }
 }

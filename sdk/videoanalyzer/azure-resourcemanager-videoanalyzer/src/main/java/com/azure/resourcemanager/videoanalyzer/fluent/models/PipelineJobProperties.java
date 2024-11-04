@@ -163,10 +163,8 @@ public final class PipelineJobProperties {
      */
     public void validate() {
         if (topologyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property topologyName in model PipelineJobProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property topologyName in model PipelineJobProperties"));
         }
         if (error() != null) {
             error().validate();

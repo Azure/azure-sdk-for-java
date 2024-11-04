@@ -6,39 +6,48 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the response from the external server. */
+/**
+ * Describes the response from the external server.
+ */
 @Fluent
-public final class CodelessConnectorPollingResponseProperties {
+public final class CodelessConnectorPollingResponseProperties
+    implements JsonSerializable<CodelessConnectorPollingResponseProperties> {
     /*
      * Describes the path we should extract the data in the response
      */
-    @JsonProperty(value = "eventsJsonPaths", required = true)
     private List<String> eventsJsonPaths;
 
     /*
      * Describes the path we should extract the status code in the response
      */
-    @JsonProperty(value = "successStatusJsonPath")
     private String successStatusJsonPath;
 
     /*
      * Describes the path we should extract the status value in the response
      */
-    @JsonProperty(value = "successStatusValue")
     private String successStatusValue;
 
     /*
      * Describes if the data in the response is Gzip
      */
-    @JsonProperty(value = "isGzipCompressed")
     private Boolean isGzipCompressed;
 
     /**
+     * Creates an instance of CodelessConnectorPollingResponseProperties class.
+     */
+    public CodelessConnectorPollingResponseProperties() {
+    }
+
+    /**
      * Get the eventsJsonPaths property: Describes the path we should extract the data in the response.
-     *
+     * 
      * @return the eventsJsonPaths value.
      */
     public List<String> eventsJsonPaths() {
@@ -47,7 +56,7 @@ public final class CodelessConnectorPollingResponseProperties {
 
     /**
      * Set the eventsJsonPaths property: Describes the path we should extract the data in the response.
-     *
+     * 
      * @param eventsJsonPaths the eventsJsonPaths value to set.
      * @return the CodelessConnectorPollingResponseProperties object itself.
      */
@@ -58,7 +67,7 @@ public final class CodelessConnectorPollingResponseProperties {
 
     /**
      * Get the successStatusJsonPath property: Describes the path we should extract the status code in the response.
-     *
+     * 
      * @return the successStatusJsonPath value.
      */
     public String successStatusJsonPath() {
@@ -67,7 +76,7 @@ public final class CodelessConnectorPollingResponseProperties {
 
     /**
      * Set the successStatusJsonPath property: Describes the path we should extract the status code in the response.
-     *
+     * 
      * @param successStatusJsonPath the successStatusJsonPath value to set.
      * @return the CodelessConnectorPollingResponseProperties object itself.
      */
@@ -78,7 +87,7 @@ public final class CodelessConnectorPollingResponseProperties {
 
     /**
      * Get the successStatusValue property: Describes the path we should extract the status value in the response.
-     *
+     * 
      * @return the successStatusValue value.
      */
     public String successStatusValue() {
@@ -87,7 +96,7 @@ public final class CodelessConnectorPollingResponseProperties {
 
     /**
      * Set the successStatusValue property: Describes the path we should extract the status value in the response.
-     *
+     * 
      * @param successStatusValue the successStatusValue value to set.
      * @return the CodelessConnectorPollingResponseProperties object itself.
      */
@@ -98,7 +107,7 @@ public final class CodelessConnectorPollingResponseProperties {
 
     /**
      * Get the isGzipCompressed property: Describes if the data in the response is Gzip.
-     *
+     * 
      * @return the isGzipCompressed value.
      */
     public Boolean isGzipCompressed() {
@@ -107,7 +116,7 @@ public final class CodelessConnectorPollingResponseProperties {
 
     /**
      * Set the isGzipCompressed property: Describes if the data in the response is Gzip.
-     *
+     * 
      * @param isGzipCompressed the isGzipCompressed value to set.
      * @return the CodelessConnectorPollingResponseProperties object itself.
      */
@@ -118,18 +127,66 @@ public final class CodelessConnectorPollingResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (eventsJsonPaths() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventsJsonPaths in model"
-                            + " CodelessConnectorPollingResponseProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property eventsJsonPaths in model CodelessConnectorPollingResponseProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CodelessConnectorPollingResponseProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("eventsJsonPaths", this.eventsJsonPaths,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("successStatusJsonPath", this.successStatusJsonPath);
+        jsonWriter.writeStringField("successStatusValue", this.successStatusValue);
+        jsonWriter.writeBooleanField("isGzipCompressed", this.isGzipCompressed);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CodelessConnectorPollingResponseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CodelessConnectorPollingResponseProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CodelessConnectorPollingResponseProperties.
+     */
+    public static CodelessConnectorPollingResponseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CodelessConnectorPollingResponseProperties deserializedCodelessConnectorPollingResponseProperties
+                = new CodelessConnectorPollingResponseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventsJsonPaths".equals(fieldName)) {
+                    List<String> eventsJsonPaths = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCodelessConnectorPollingResponseProperties.eventsJsonPaths = eventsJsonPaths;
+                } else if ("successStatusJsonPath".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingResponseProperties.successStatusJsonPath = reader.getString();
+                } else if ("successStatusValue".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingResponseProperties.successStatusValue = reader.getString();
+                } else if ("isGzipCompressed".equals(fieldName)) {
+                    deserializedCodelessConnectorPollingResponseProperties.isGzipCompressed
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCodelessConnectorPollingResponseProperties;
+        });
+    }
 }

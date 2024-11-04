@@ -44,8 +44,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @param client the instance of the service client containing this operation class.
      */
     RecoveryPointsClientImpl(DataReplicationMgmtClientImpl client) {
-        this.service =
-            RestProxy.create(RecoveryPointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RecoveryPointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,46 +56,34 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataReplicationMgmtC")
     public interface RecoveryPointsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecoveryPointModelInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RecoveryPointModelInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("protectedItemName") String protectedItemName,
-            @PathParam("recoveryPointName") String recoveryPointName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("recoveryPointName") String recoveryPointName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}/recoveryPoints")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationVaults/{vaultName}/protectedItems/{protectedItemName}/recoveryPoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecoveryPointModelCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<RecoveryPointModelCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("protectedItemName") String protectedItemName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoveryPointModelCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -114,19 +102,15 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecoveryPointModelInner>> getWithResponseAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, String recoveryPointName) {
+    private Mono<Response<RecoveryPointModelInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, String recoveryPointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -146,18 +130,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            protectedItemName,
-                            recoveryPointName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    vaultName, protectedItemName, recoveryPointName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -178,23 +152,15 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecoveryPointModelInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        String recoveryPointName,
-        Context context) {
+    private Mono<Response<RecoveryPointModelInner>> getWithResponseAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, String recoveryPointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -213,17 +179,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                protectedItemName,
-                recoveryPointName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+            protectedItemName, recoveryPointName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -241,8 +198,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the details of the recovery point of a protected item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RecoveryPointModelInner> getAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, String recoveryPointName) {
+    private Mono<RecoveryPointModelInner> getAsync(String resourceGroupName, String vaultName, String protectedItemName,
+        String recoveryPointName) {
         return getWithResponseAsync(resourceGroupName, vaultName, protectedItemName, recoveryPointName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -263,12 +220,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the details of the recovery point of a protected item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RecoveryPointModelInner> getWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String protectedItemName,
-        String recoveryPointName,
-        Context context) {
+    public Response<RecoveryPointModelInner> getWithResponse(String resourceGroupName, String vaultName,
+        String protectedItemName, String recoveryPointName, Context context) {
         return getWithResponseAsync(resourceGroupName, vaultName, protectedItemName, recoveryPointName, context)
             .block();
     }
@@ -288,8 +241,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the details of the recovery point of a protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RecoveryPointModelInner get(
-        String resourceGroupName, String vaultName, String protectedItemName, String recoveryPointName) {
+    public RecoveryPointModelInner get(String resourceGroupName, String vaultName, String protectedItemName,
+        String recoveryPointName) {
         return getWithResponse(resourceGroupName, vaultName, protectedItemName, recoveryPointName, Context.NONE)
             .getValue();
     }
@@ -309,19 +262,15 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecoveryPointModelInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    private Mono<PagedResponse<RecoveryPointModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
+        String protectedItemName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -336,27 +285,10 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            protectedItemName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<RecoveryPointModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, protectedItemName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<RecoveryPointModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -376,19 +308,15 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecoveryPointModelInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context) {
+    private Mono<PagedResponse<RecoveryPointModelInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -404,24 +332,10 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                protectedItemName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, vaultName,
+                protectedItemName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -438,10 +352,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the list of recovery points of the given protected item as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecoveryPointModelInner> listAsync(
-        String resourceGroupName, String vaultName, String protectedItemName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName, protectedItemName),
+    private PagedFlux<RecoveryPointModelInner> listAsync(String resourceGroupName, String vaultName,
+        String protectedItemName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName, protectedItemName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -460,10 +373,9 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the list of recovery points of the given protected item as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecoveryPointModelInner> listAsync(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, vaultName, protectedItemName, context),
+    private PagedFlux<RecoveryPointModelInner> listAsync(String resourceGroupName, String vaultName,
+        String protectedItemName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, vaultName, protectedItemName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -481,8 +393,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the list of recovery points of the given protected item as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoveryPointModelInner> list(
-        String resourceGroupName, String vaultName, String protectedItemName) {
+    public PagedIterable<RecoveryPointModelInner> list(String resourceGroupName, String vaultName,
+        String protectedItemName) {
         return new PagedIterable<>(listAsync(resourceGroupName, vaultName, protectedItemName));
     }
 
@@ -501,8 +413,8 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @return the list of recovery points of the given protected item as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoveryPointModelInner> list(
-        String resourceGroupName, String vaultName, String protectedItemName, Context context) {
+    public PagedIterable<RecoveryPointModelInner> list(String resourceGroupName, String vaultName,
+        String protectedItemName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, vaultName, protectedItemName, context));
     }
 
@@ -523,23 +435,13 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RecoveryPointModelInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RecoveryPointModelInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -561,23 +463,13 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

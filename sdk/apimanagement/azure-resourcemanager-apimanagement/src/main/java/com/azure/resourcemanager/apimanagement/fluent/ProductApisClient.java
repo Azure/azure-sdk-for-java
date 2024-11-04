@@ -49,14 +49,8 @@ public interface ProductApisClient {
      * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiContractInner> listByProduct(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String filter,
-        Integer top,
-        Integer skip,
-        Context context);
+    PagedIterable<ApiContractInner> listByProduct(String resourceGroupName, String serviceName, String productId,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Checks that API entity specified by identifier is associated with the Product entity.
@@ -73,8 +67,8 @@ public interface ProductApisClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> checkEntityExistsWithResponse(
-        String resourceGroupName, String serviceName, String productId, String apiId, Context context);
+    Response<Void> checkEntityExistsWithResponse(String resourceGroupName, String serviceName, String productId,
+        String apiId, Context context);
 
     /**
      * Checks that API entity specified by identifier is associated with the Product entity.
@@ -106,8 +100,8 @@ public interface ProductApisClient {
      * @return aPI details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApiContractInner> createOrUpdateWithResponse(
-        String resourceGroupName, String serviceName, String productId, String apiId, Context context);
+    Response<ApiContractInner> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String productId, String apiId, Context context);
 
     /**
      * Adds an API to the specified product.
@@ -140,8 +134,8 @@ public interface ProductApisClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String productId, String apiId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId, String apiId,
+        Context context);
 
     /**
      * Deletes the specified API from the specified product.

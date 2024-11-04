@@ -5,30 +5,35 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * Managed Identity Sql Control Settings
- *
- * <p>Sql Control Settings for workspace managed identity.
+ * 
+ * Sql Control Settings for workspace managed identity.
  */
 @Fluent
-public final class ManagedIdentitySqlControlSettingsModelProperties {
+public final class ManagedIdentitySqlControlSettingsModelProperties
+    implements JsonSerializable<ManagedIdentitySqlControlSettingsModelProperties> {
     /*
      * Grant sql control to managed identity
      */
-    @JsonProperty(value = "grantSqlControlToManagedIdentity")
-    private ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
-        grantSqlControlToManagedIdentity;
+    private ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity;
 
-    /** Creates an instance of ManagedIdentitySqlControlSettingsModelProperties class. */
+    /**
+     * Creates an instance of ManagedIdentitySqlControlSettingsModelProperties class.
+     */
     public ManagedIdentitySqlControlSettingsModelProperties() {
     }
 
     /**
      * Get the grantSqlControlToManagedIdentity property: Grant sql control to managed identity.
-     *
+     * 
      * @return the grantSqlControlToManagedIdentity value.
      */
     public ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
@@ -38,25 +43,63 @@ public final class ManagedIdentitySqlControlSettingsModelProperties {
 
     /**
      * Set the grantSqlControlToManagedIdentity property: Grant sql control to managed identity.
-     *
+     * 
      * @param grantSqlControlToManagedIdentity the grantSqlControlToManagedIdentity value to set.
      * @return the ManagedIdentitySqlControlSettingsModelProperties object itself.
      */
     public ManagedIdentitySqlControlSettingsModelProperties withGrantSqlControlToManagedIdentity(
-        ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
-            grantSqlControlToManagedIdentity) {
+        ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity grantSqlControlToManagedIdentity) {
         this.grantSqlControlToManagedIdentity = grantSqlControlToManagedIdentity;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (grantSqlControlToManagedIdentity() != null) {
             grantSqlControlToManagedIdentity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("grantSqlControlToManagedIdentity", this.grantSqlControlToManagedIdentity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIdentitySqlControlSettingsModelProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIdentitySqlControlSettingsModelProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIdentitySqlControlSettingsModelProperties.
+     */
+    public static ManagedIdentitySqlControlSettingsModelProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIdentitySqlControlSettingsModelProperties deserializedManagedIdentitySqlControlSettingsModelProperties
+                = new ManagedIdentitySqlControlSettingsModelProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("grantSqlControlToManagedIdentity".equals(fieldName)) {
+                    deserializedManagedIdentitySqlControlSettingsModelProperties.grantSqlControlToManagedIdentity
+                        = ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity
+                            .fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIdentitySqlControlSettingsModelProperties;
+        });
     }
 }

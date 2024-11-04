@@ -37,32 +37,32 @@ public final class ManageWebAppWithAuthentication {
      */
     public static boolean runSample(AzureResourceManager azureResourceManager) {
         // New resources
-        final String suffix         = ".azurewebsites.net";
-        final String app1Name       = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
-        final String app2Name       = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
-        final String app3Name       = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
-        final String app4Name       = Utils.randomResourceName(azureResourceManager, "webapp4-", 20);
-        final String app1Url        = app1Name + suffix;
-        final String app2Url        = app2Name + suffix;
-        final String app3Url        = app3Name + suffix;
-        final String app4Url        = app4Name + suffix;
-        final String rgName         = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
+        final String suffix = ".azurewebsites.net";
+        final String app1Name = Utils.randomResourceName(azureResourceManager, "webapp1-", 20);
+        final String app2Name = Utils.randomResourceName(azureResourceManager, "webapp2-", 20);
+        final String app3Name = Utils.randomResourceName(azureResourceManager, "webapp3-", 20);
+        final String app4Name = Utils.randomResourceName(azureResourceManager, "webapp4-", 20);
+        final String app1Url = app1Name + suffix;
+        final String app2Url = app2Name + suffix;
+        final String app3Url = app3Name + suffix;
+        final String app4Url = app4Name + suffix;
+        final String rgName = Utils.randomResourceName(azureResourceManager, "rg1NEMV_", 24);
 
         try {
-
 
             //============================================================
             // Create a web app with a new app service plan
 
             System.out.println("Creating web app " + app1Name + " in resource group " + rgName + "...");
 
-            WebApp app1 = azureResourceManager.webApps().define(app1Name)
-                    .withRegion(Region.US_WEST)
-                    .withNewResourceGroup(rgName)
-                    .withNewWindowsPlan(PricingTier.STANDARD_S1)
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
-                    .create();
+            WebApp app1 = azureResourceManager.webApps()
+                .define(app1Name)
+                .withRegion(Region.US_WEST)
+                .withNewResourceGroup(rgName)
+                .withNewWindowsPlan(PricingTier.STANDARD_S1)
+                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+                .create();
 
             System.out.println("Created web app " + app1.name());
             Utils.print(app1);
@@ -80,11 +80,11 @@ public final class ManageWebAppWithAuthentication {
             System.out.println("Updating web app " + app1Name + " to use active directory login...");
 
             app1.update()
-                    .defineAuthentication()
-                        .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.AZURE_ACTIVE_DIRECTORY)
-                        .withActiveDirectory(applicationId, "https://sts.windows.net/" + tenantId)
-                        .attach()
-                    .apply();
+                .defineAuthentication()
+                .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.AZURE_ACTIVE_DIRECTORY)
+                .withActiveDirectory(applicationId, "https://sts.windows.net/" + tenantId)
+                .attach()
+                .apply();
 
             System.out.println("Added active directory login to " + app1.name());
             Utils.print(app1);
@@ -94,12 +94,13 @@ public final class ManageWebAppWithAuthentication {
 
             System.out.println("Creating another web app " + app2Name + " in resource group " + rgName + "...");
             AppServicePlan plan = azureResourceManager.appServicePlans().getById(app1.appServicePlanId());
-            WebApp app2 = azureResourceManager.webApps().define(app2Name)
-                    .withExistingWindowsPlan(plan)
-                    .withExistingResourceGroup(rgName)
-                    .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
-                    .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
-                    .create();
+            WebApp app2 = azureResourceManager.webApps()
+                .define(app2Name)
+                .withExistingWindowsPlan(plan)
+                .withExistingResourceGroup(rgName)
+                .withJavaVersion(JavaVersion.JAVA_8_NEWEST)
+                .withWebContainer(WebContainer.TOMCAT_8_0_NEWEST)
+                .create();
 
             System.out.println("Created web app " + app2.name());
             Utils.print(app2);
@@ -116,11 +117,11 @@ public final class ManageWebAppWithAuthentication {
             System.out.println("Updating web app " + app2Name + " to use Facebook login...");
 
             app2.update()
-                    .defineAuthentication()
-                        .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.FACEBOOK)
-                        .withFacebook(fbAppId, fbAppSecret)
-                        .attach()
-                    .apply();
+                .defineAuthentication()
+                .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.FACEBOOK)
+                .withFacebook(fbAppId, fbAppSecret)
+                .attach()
+                .apply();
 
             System.out.println("Added Facebook login to " + app2.name());
             Utils.print(app2);
@@ -129,14 +130,15 @@ public final class ManageWebAppWithAuthentication {
             // Create a 3rd web app with a public GitHub repo in Azure-Samples
 
             System.out.println("Creating another web app " + app3Name + "...");
-            WebApp app3 = azureResourceManager.webApps().define(app3Name)
-                    .withExistingWindowsPlan(plan)
-                    .withNewResourceGroup(rgName)
-                    .defineSourceControl()
-                        .withPublicGitRepository("https://github.com/Azure-Samples/app-service-web-dotnet-get-started")
-                        .withBranch("master")
-                        .attach()
-                    .create();
+            WebApp app3 = azureResourceManager.webApps()
+                .define(app3Name)
+                .withExistingWindowsPlan(plan)
+                .withNewResourceGroup(rgName)
+                .defineSourceControl()
+                .withPublicGitRepository("https://github.com/Azure-Samples/app-service-web-dotnet-get-started")
+                .withBranch("master")
+                .attach()
+                .create();
 
             System.out.println("Created web app " + app3.name());
             Utils.print(app3);
@@ -153,11 +155,11 @@ public final class ManageWebAppWithAuthentication {
             System.out.println("Updating web app " + app3Name + " to use Google login...");
 
             app3.update()
-                    .defineAuthentication()
-                        .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.GOOGLE)
-                        .withGoogle(gClientId, gClientSecret)
-                        .attach()
-                    .apply();
+                .defineAuthentication()
+                .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.GOOGLE)
+                .withGoogle(gClientId, gClientSecret)
+                .attach()
+                .apply();
 
             System.out.println("Added Google login to " + app3.name());
             Utils.print(app3);
@@ -167,10 +169,10 @@ public final class ManageWebAppWithAuthentication {
 
             System.out.println("Creating another web app " + app4Name + "...");
             WebApp app4 = azureResourceManager.webApps()
-                    .define(app4Name)
-                    .withExistingWindowsPlan(plan)
-                    .withExistingResourceGroup(rgName)
-                    .create();
+                .define(app4Name)
+                .withExistingWindowsPlan(plan)
+                .withExistingResourceGroup(rgName)
+                .create();
 
             System.out.println("Created web app " + app4.name());
             Utils.print(app4);
@@ -187,11 +189,11 @@ public final class ManageWebAppWithAuthentication {
             System.out.println("Updating web app " + app3Name + " to use Microsoft login...");
 
             app4.update()
-                    .defineAuthentication()
-                        .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.MICROSOFT_ACCOUNT)
-                        .withMicrosoft(clientId, clientSecret)
-                        .attach()
-                    .apply();
+                .defineAuthentication()
+                .withDefaultAuthenticationProvider(BuiltInAuthenticationProvider.MICROSOFT_ACCOUNT)
+                .withMicrosoft(clientId, clientSecret)
+                .attach()
+                .apply();
 
             System.out.println("Added Microsoft login to " + app4.name());
             Utils.print(app4);
@@ -209,6 +211,7 @@ public final class ManageWebAppWithAuthentication {
             }
         }
     }
+
     /**
      * Main entry point.
      * @param args the parameters
@@ -224,8 +227,7 @@ public final class ManageWebAppWithAuthentication {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

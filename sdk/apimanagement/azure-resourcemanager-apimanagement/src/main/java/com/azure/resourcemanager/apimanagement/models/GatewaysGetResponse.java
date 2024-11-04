@@ -20,11 +20,7 @@ public final class GatewaysGetResponse extends ResponseBase<GatewaysGetHeaders, 
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public GatewaysGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        GatewayContractInner value,
+    public GatewaysGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders, GatewayContractInner value,
         GatewaysGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }

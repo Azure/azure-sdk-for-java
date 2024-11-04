@@ -24,25 +24,13 @@ import java.util.List;
  * Implementation for Queue.
  */
 class QueueImpl
-    extends IndependentChildResourceImpl<
-        Queue,
-        ServiceBusNamespaceImpl,
-        SBQueueInner,
-        QueueImpl,
-        ServiceBusManager>
-    implements
-        Queue,
-        Queue.Definition,
-        Queue.Update  {
+    extends IndependentChildResourceImpl<Queue, ServiceBusNamespaceImpl, SBQueueInner, QueueImpl, ServiceBusManager>
+    implements Queue, Queue.Definition, Queue.Update {
     private List<Creatable<QueueAuthorizationRule>> rulesToCreate;
     private List<String> rulesToDelete;
 
-    QueueImpl(String resourceGroupName,
-              String namespaceName,
-              String name,
-              Region region,
-              SBQueueInner inner,
-              ServiceBusManager manager) {
+    QueueImpl(String resourceGroupName, String namespaceName, String name, Region region, SBQueueInner inner,
+        ServiceBusManager manager) {
         super(name, inner, manager);
         this.withExistingParentResource(resourceGroupName, namespaceName);
         initChildrenOperationsCache();
@@ -147,8 +135,7 @@ class QueueImpl
 
     @Override
     public long activeMessageCount() {
-        if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().activeMessageCount() == null) {
+        if (this.innerModel().countDetails() == null || this.innerModel().countDetails().activeMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().activeMessageCount());
@@ -157,7 +144,7 @@ class QueueImpl
     @Override
     public long deadLetterMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().deadLetterMessageCount() == null) {
+            || this.innerModel().countDetails().deadLetterMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().deadLetterMessageCount());
@@ -166,7 +153,7 @@ class QueueImpl
     @Override
     public long scheduledMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().scheduledMessageCount() == null) {
+            || this.innerModel().countDetails().scheduledMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().scheduledMessageCount());
@@ -175,7 +162,7 @@ class QueueImpl
     @Override
     public long transferDeadLetterMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().transferDeadLetterMessageCount() == null) {
+            || this.innerModel().countDetails().transferDeadLetterMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().transferDeadLetterMessageCount());
@@ -184,7 +171,7 @@ class QueueImpl
     @Override
     public long transferMessageCount() {
         if (this.innerModel().countDetails() == null
-                || this.innerModel().countDetails().transferMessageCount() == null) {
+            || this.innerModel().countDetails().transferMessageCount() == null) {
             return 0;
         }
         return ResourceManagerUtils.toPrimitiveLong(this.innerModel().countDetails().transferMessageCount());
@@ -197,11 +184,8 @@ class QueueImpl
 
     @Override
     public QueueAuthorizationRulesImpl authorizationRules() {
-        return new QueueAuthorizationRulesImpl(this.resourceGroupName(),
-                this.parentName,
-                this.name(),
-                this.region(),
-                manager());
+        return new QueueAuthorizationRulesImpl(this.resourceGroupName(), this.parentName, this.name(), this.region(),
+            manager());
     }
 
     @Override
@@ -338,20 +322,19 @@ class QueueImpl
 
     @Override
     protected Mono<SBQueueInner> getInnerAsync() {
-        return this.manager().serviceClient().getQueues()
-                .getAsync(this.resourceGroupName(),
-                        this.parentName,
-                        this.name());
+        return this.manager()
+            .serviceClient()
+            .getQueues()
+            .getAsync(this.resourceGroupName(), this.parentName, this.name());
     }
 
     @Override
     protected Mono<Queue> createChildResourceAsync() {
 
-        Mono<SBQueueInner> createTask = this.manager().serviceClient().getQueues()
-            .createOrUpdateAsync(this.resourceGroupName(),
-                this.parentName,
-                this.name(),
-                this.innerModel())
+        Mono<SBQueueInner> createTask = this.manager()
+            .serviceClient()
+            .getQueues()
+            .createOrUpdateAsync(this.resourceGroupName(), this.parentName, this.name(), this.innerModel())
             .map(inner -> {
                 setInner(inner);
                 return inner;
@@ -377,7 +360,6 @@ class QueueImpl
         if (this.rulesToDelete.size() > 0) {
             rulesDeleteStream = this.authorizationRules().deleteByNameAsync(this.rulesToDelete);
         }
-        return Flux.mergeDelayError(32, rulesCreateStream,
-                rulesDeleteStream);
+        return Flux.mergeDelayError(32, rulesCreateStream, rulesDeleteStream);
     }
 }

@@ -54,7 +54,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to VMwareCloudSimpleManager. Description of the new service. */
+/**
+ * Entry point to VMwareCloudSimpleManager.
+ * Description of the new service.
+ */
 public final class VMwareCloudSimpleManager {
     private Operations operations;
 
@@ -83,18 +86,16 @@ public final class VMwareCloudSimpleManager {
     private VMwareCloudSimpleManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new VMwareCloudSimpleBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new VMwareCloudSimpleBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of VMwareCloudSimple service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the VMwareCloudSimple service API instance.
@@ -107,7 +108,7 @@ public final class VMwareCloudSimpleManager {
 
     /**
      * Creates an instance of VMwareCloudSimple service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the VMwareCloudSimple service API instance.
@@ -120,14 +121,16 @@ public final class VMwareCloudSimpleManager {
 
     /**
      * Gets a Configurable instance that can be used to create VMwareCloudSimpleManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new VMwareCloudSimpleManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -199,8 +202,8 @@ public final class VMwareCloudSimpleManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -217,8 +220,8 @@ public final class VMwareCloudSimpleManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -238,15 +241,13 @@ public final class VMwareCloudSimpleManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.vmwarecloudsimple")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -271,38 +272,28 @@ public final class VMwareCloudSimpleManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new VMwareCloudSimpleManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -314,7 +305,7 @@ public final class VMwareCloudSimpleManager {
 
     /**
      * Gets the resource collection API of DedicatedCloudNodes. It manages DedicatedCloudNode.
-     *
+     * 
      * @return Resource collection API of DedicatedCloudNodes.
      */
     public DedicatedCloudNodes dedicatedCloudNodes() {
@@ -326,20 +317,20 @@ public final class VMwareCloudSimpleManager {
 
     /**
      * Gets the resource collection API of DedicatedCloudServices. It manages DedicatedCloudService.
-     *
+     * 
      * @return Resource collection API of DedicatedCloudServices.
      */
     public DedicatedCloudServices dedicatedCloudServices() {
         if (this.dedicatedCloudServices == null) {
-            this.dedicatedCloudServices =
-                new DedicatedCloudServicesImpl(clientObject.getDedicatedCloudServices(), this);
+            this.dedicatedCloudServices
+                = new DedicatedCloudServicesImpl(clientObject.getDedicatedCloudServices(), this);
         }
         return dedicatedCloudServices;
     }
 
     /**
      * Gets the resource collection API of SkusAvailabilities.
-     *
+     * 
      * @return Resource collection API of SkusAvailabilities.
      */
     public SkusAvailabilities skusAvailabilities() {
@@ -351,7 +342,7 @@ public final class VMwareCloudSimpleManager {
 
     /**
      * Gets the resource collection API of PrivateClouds.
-     *
+     * 
      * @return Resource collection API of PrivateClouds.
      */
     public PrivateClouds privateClouds() {
@@ -363,7 +354,7 @@ public final class VMwareCloudSimpleManager {
 
     /**
      * Gets the resource collection API of CustomizationPolicies.
-     *
+     * 
      * @return Resource collection API of CustomizationPolicies.
      */
     public CustomizationPolicies customizationPolicies() {
@@ -375,7 +366,7 @@ public final class VMwareCloudSimpleManager {
 
     /**
      * Gets the resource collection API of ResourcePools.
-     *
+     * 
      * @return Resource collection API of ResourcePools.
      */
     public ResourcePools resourcePools() {
@@ -387,20 +378,20 @@ public final class VMwareCloudSimpleManager {
 
     /**
      * Gets the resource collection API of VirtualMachineTemplates.
-     *
+     * 
      * @return Resource collection API of VirtualMachineTemplates.
      */
     public VirtualMachineTemplates virtualMachineTemplates() {
         if (this.virtualMachineTemplates == null) {
-            this.virtualMachineTemplates =
-                new VirtualMachineTemplatesImpl(clientObject.getVirtualMachineTemplates(), this);
+            this.virtualMachineTemplates
+                = new VirtualMachineTemplatesImpl(clientObject.getVirtualMachineTemplates(), this);
         }
         return virtualMachineTemplates;
     }
 
     /**
      * Gets the resource collection API of VirtualNetworks.
-     *
+     * 
      * @return Resource collection API of VirtualNetworks.
      */
     public VirtualNetworks virtualNetworks() {
@@ -412,7 +403,7 @@ public final class VMwareCloudSimpleManager {
 
     /**
      * Gets the resource collection API of Usages.
-     *
+     * 
      * @return Resource collection API of Usages.
      */
     public Usages usages() {
@@ -424,7 +415,7 @@ public final class VMwareCloudSimpleManager {
 
     /**
      * Gets the resource collection API of VirtualMachines. It manages VirtualMachine.
-     *
+     * 
      * @return Resource collection API of VirtualMachines.
      */
     public VirtualMachines virtualMachines() {
@@ -435,8 +426,10 @@ public final class VMwareCloudSimpleManager {
     }
 
     /**
-     * @return Wrapped service client VMwareCloudSimple providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets wrapped service client VMwareCloudSimple providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client VMwareCloudSimple.
      */
     public VMwareCloudSimple serviceClient() {
         return this.clientObject;

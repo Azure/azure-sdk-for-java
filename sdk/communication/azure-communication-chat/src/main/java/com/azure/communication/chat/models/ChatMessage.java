@@ -345,7 +345,8 @@ public final class ChatMessage implements JsonSerializable<ChatMessage> {
                         message.setCreatedOn(OffsetDateTime.parse(value));
                     }
                 } else if ("senderCommunicationIdentifier".equals(fieldName)) {
-                    final CommunicationIdentifierModel identifier = reader.readObject(CommunicationIdentifierModel::fromJson);
+                    final CommunicationIdentifierModel identifier
+                        = reader.readObject(CommunicationIdentifierModel::fromJson);
                     message.setSender(CommunicationIdentifierConverter.convert(identifier));
                 } else if ("deletedOn".equals(fieldName)) {
                     final String value = reader.getString();

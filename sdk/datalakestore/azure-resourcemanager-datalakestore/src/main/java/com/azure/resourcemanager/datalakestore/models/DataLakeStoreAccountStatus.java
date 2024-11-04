@@ -4,45 +4,68 @@
 
 package com.azure.resourcemanager.datalakestore.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The provisioning status of the Data Lake Store account. */
+/**
+ * The provisioning status of the Data Lake Store account.
+ */
 public enum DataLakeStoreAccountStatus {
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Creating. */
+    /**
+     * Enum value Creating.
+     */
     CREATING("Creating"),
 
-    /** Enum value Running. */
+    /**
+     * Enum value Running.
+     */
     RUNNING("Running"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Patching. */
+    /**
+     * Enum value Patching.
+     */
     PATCHING("Patching"),
 
-    /** Enum value Suspending. */
+    /**
+     * Enum value Suspending.
+     */
     SUSPENDING("Suspending"),
 
-    /** Enum value Resuming. */
+    /**
+     * Enum value Resuming.
+     */
     RESUMING("Resuming"),
 
-    /** Enum value Deleting. */
+    /**
+     * Enum value Deleting.
+     */
     DELETING("Deleting"),
 
-    /** Enum value Deleted. */
+    /**
+     * Enum value Deleted.
+     */
     DELETED("Deleted"),
 
-    /** Enum value Undeleting. */
+    /**
+     * Enum value Undeleting.
+     */
     UNDELETING("Undeleting"),
 
-    /** Enum value Canceled. */
+    /**
+     * Enum value Canceled.
+     */
     CANCELED("Canceled");
 
-    /** The actual serialized value for a DataLakeStoreAccountStatus instance. */
+    /**
+     * The actual serialized value for a DataLakeStoreAccountStatus instance.
+     */
     private final String value;
 
     DataLakeStoreAccountStatus(String value) {
@@ -51,11 +74,10 @@ public enum DataLakeStoreAccountStatus {
 
     /**
      * Parses a serialized value to a DataLakeStoreAccountStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DataLakeStoreAccountStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static DataLakeStoreAccountStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -69,8 +91,9 @@ public enum DataLakeStoreAccountStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

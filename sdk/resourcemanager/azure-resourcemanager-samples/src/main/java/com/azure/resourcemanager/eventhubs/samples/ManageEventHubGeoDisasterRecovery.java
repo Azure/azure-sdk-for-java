@@ -50,9 +50,8 @@ public class ManageEventHubGeoDisasterRecovery {
             //============================================================
             // Create resource group for the namespaces and recovery pairings
             //
-            ResourceGroup resourceGroup = azureResourceManager.resourceGroups().define(rgName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
-                .create();
+            ResourceGroup resourceGroup
+                = azureResourceManager.resourceGroups().define(rgName).withRegion(Region.US_SOUTH_CENTRAL).create();
 
             System.out.println("Creating primary event hub namespace " + primaryNamespaceName);
 
@@ -118,7 +117,8 @@ public class ManageEventHubGeoDisasterRecovery {
 
             System.out.println("Retrieving the event hubs in secondary namespace");
 
-            EventHub eventHubInSecondaryNamespace = azureResourceManager.eventHubs().getByName(rgName, secondaryNamespaceName, eventHubName);
+            EventHub eventHubInSecondaryNamespace
+                = azureResourceManager.eventHubs().getByName(rgName, secondaryNamespaceName, eventHubName);
 
             System.out.println("Retrieved the event hubs in secondary namespace");
             Utils.print(eventHubInSecondaryNamespace);
@@ -176,8 +176,7 @@ public class ManageEventHubGeoDisasterRecovery {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

@@ -63,10 +63,9 @@ public final class HttpPipelineProvider {
      * @param httpClient the http client
      * @return the http pipeline
      */
-    public static HttpPipeline buildHttpPipeline(
-        TokenCredential credential, AzureProfile profile, String[] scopes, HttpLogOptions httpLogOptions,
-        Configuration configuration, RetryPolicy retryPolicy, List<HttpPipelinePolicy> additionalPolicies,
-        HttpClient httpClient) {
+    public static HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile, String[] scopes,
+        HttpLogOptions httpLogOptions, Configuration configuration, RetryPolicy retryPolicy,
+        List<HttpPipelinePolicy> additionalPolicies, HttpClient httpClient) {
 
         if (retryPolicy == null) {
             retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
@@ -78,12 +77,9 @@ public final class HttpPipelineProvider {
         policies.add(new RequestIdPolicy());
         policies.add(new ReturnRequestIdHeaderPolicy(ReturnRequestIdHeaderPolicy.Option.COPY_CLIENT_REQUEST_ID));
         if (!CoreUtils.isNullOrEmpty(additionalPolicies)) {
-            policies.addAll(
-                additionalPolicies
-                    .stream()
-                    .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                    .collect(Collectors.toList())
-            );
+            policies.addAll(additionalPolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
         }
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
@@ -93,17 +89,13 @@ public final class HttpPipelineProvider {
         }
         policies.add(new ProviderRegistrationPolicy());
         if (!CoreUtils.isNullOrEmpty(additionalPolicies)) {
-            policies.addAll(
-                additionalPolicies
-                    .stream()
-                    .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                    .collect(Collectors.toList())
-            );
+            policies.addAll(additionalPolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
         }
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .build();
     }

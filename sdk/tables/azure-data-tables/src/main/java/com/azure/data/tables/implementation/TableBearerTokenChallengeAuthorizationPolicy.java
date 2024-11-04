@@ -4,6 +4,7 @@ package com.azure.data.tables.implementation;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
@@ -27,10 +28,9 @@ import java.util.Map;
  */
 public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAuthenticationPolicy {
     private static final String BEARER_TOKEN_PREFIX = "Bearer ";
-    private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
-    private String[] scopes;
+    private final String[] scopes;
     private volatile String tenantId;
-    private boolean enableTenantDiscovery;
+    private final boolean enableTenantDiscovery;
 
     /**
      * Creates a {@link TableBearerTokenChallengeAuthorizationPolicy}.
@@ -38,7 +38,7 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
      * @param credential The token credential to authenticate the request.
      */
     public TableBearerTokenChallengeAuthorizationPolicy(TokenCredential credential, boolean enableTenantDiscovery,
-                                                        String... scopes) {
+        String... scopes) {
         super(credential, scopes);
         this.scopes = scopes;
         this.enableTenantDiscovery = enableTenantDiscovery;
@@ -48,9 +48,8 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
     public Mono<Void> authorizeRequest(HttpPipelineCallContext context) {
         return Mono.defer(() -> {
             if (this.tenantId != null || !enableTenantDiscovery) {
-                TokenRequestContext tokenRequestContext = new TokenRequestContext()
-                    .addScopes(this.scopes)
-                    .setTenantId(this.tenantId);
+                TokenRequestContext tokenRequestContext
+                    = new TokenRequestContext().addScopes(this.scopes).setTenantId(this.tenantId);
 
                 return setAuthorizationHeader(context, tokenRequestContext);
             }
@@ -62,8 +61,8 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
     @Override
     public Mono<Boolean> authorizeRequestOnChallenge(HttpPipelineCallContext context, HttpResponse response) {
         return Mono.defer(() -> {
-            Map<String, String> challengeAttributes =
-                extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+            Map<String, String> challengeAttributes = extractChallengeAttributes(
+                response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
 
             String authorizationUriString = challengeAttributes.get("authorization_uri");
             final URI authorizationUri;
@@ -77,21 +76,18 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
 
             this.tenantId = authorizationUri.getPath().split("/")[1];
 
-            TokenRequestContext tokenRequestContext = new TokenRequestContext()
-                .addScopes(this.scopes)
-                .setTenantId(this.tenantId);
+            TokenRequestContext tokenRequestContext
+                = new TokenRequestContext().addScopes(this.scopes).setTenantId(this.tenantId);
 
-            return setAuthorizationHeader(context, tokenRequestContext)
-                .then(Mono.just(true));
+            return setAuthorizationHeader(context, tokenRequestContext).then(Mono.just(true));
         });
     }
 
     @Override
     public void authorizeRequestSync(HttpPipelineCallContext context) {
         if (this.tenantId != null || !enableTenantDiscovery) {
-            TokenRequestContext tokenRequestContext = new TokenRequestContext()
-                .addScopes(this.scopes)
-                .setTenantId(this.tenantId);
+            TokenRequestContext tokenRequestContext
+                = new TokenRequestContext().addScopes(this.scopes).setTenantId(this.tenantId);
 
             setAuthorizationHeaderSync(context, tokenRequestContext);
         }
@@ -100,8 +96,8 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
 
     @Override
     public boolean authorizeRequestOnChallengeSync(HttpPipelineCallContext context, HttpResponse response) {
-        Map<String, String> challengeAttributes =
-            extractChallengeAttributes(response.getHeaderValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+        Map<String, String> challengeAttributes
+            = extractChallengeAttributes(response.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
 
         String authorizationUriString = challengeAttributes.get("authorization_uri");
         final URI authorizationUri;
@@ -115,9 +111,8 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
 
         this.tenantId = authorizationUri.getPath().split("/")[1];
 
-        TokenRequestContext tokenRequestContext = new TokenRequestContext()
-            .addScopes(this.scopes)
-            .setTenantId(this.tenantId);
+        TokenRequestContext tokenRequestContext
+            = new TokenRequestContext().addScopes(this.scopes).setTenantId(this.tenantId);
 
         setAuthorizationHeaderSync(context, tokenRequestContext);
         return true;
@@ -132,13 +127,13 @@ public class TableBearerTokenChallengeAuthorizationPolicy extends BearerTokenAut
      * @return A challenge attributes map.
      */
     private static Map<String, String> extractChallengeAttributes(String authenticateHeader,
-                                                                  String authChallengePrefix) {
+        String authChallengePrefix) {
         if (!isBearerChallenge(authenticateHeader, authChallengePrefix)) {
             return Collections.emptyMap();
         }
 
-        authenticateHeader =
-            authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
+        authenticateHeader
+            = authenticateHeader.toLowerCase(Locale.ROOT).replace(authChallengePrefix.toLowerCase(Locale.ROOT), "");
 
         String[] attributes = authenticateHeader.split(" ");
         Map<String, String> attributeMap = new HashMap<>();

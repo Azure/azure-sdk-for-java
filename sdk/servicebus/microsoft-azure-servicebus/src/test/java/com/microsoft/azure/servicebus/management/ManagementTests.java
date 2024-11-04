@@ -538,13 +538,13 @@ public class ManagementTests extends TestBase {
         this.managementClientAsync.deleteQueueAsync(destinationName);
         this.managementClientAsync.deleteQueueAsync(dlqDestinationName);
     }
-    
+
     @Test
     public void subscriptionForwardToCreationTest() throws ServiceBusException, InterruptedException {
         String sourceName = UUID.randomUUID().toString().substring(0, 8);
         String destinationName = UUID.randomUUID().toString().substring(0, 8);
         String subscriptionName = "subscription1";
-        
+
         TopicDescription destinationTopicDesc = new TopicDescription(destinationName);
         Utils.completeFuture(this.managementClientAsync.createTopicAsync(destinationTopicDesc));
         SubscriptionDescription subDesc = new SubscriptionDescription(destinationName, subscriptionName);
@@ -595,7 +595,7 @@ public class ManagementTests extends TestBase {
         Assert.assertNotNull(nsInfo);
         Assert.assertTrue(nsInfo.getNamespaceType() == NamespaceType.ServiceBus || nsInfo.getNamespaceType() == NamespaceType.Mixed);
     }
-    
+
     @Test
     public void unknownQueueDescriptionElementsTest() throws Exception {
     	String queueDescriptionXml = "<entry xmlns=\"http://www.w3.org/2005/Atom\">" +
@@ -627,10 +627,10 @@ public class ManagementTests extends TestBase {
                 "</QueueDescription>" +
                 "</content>" +
                 "</entry>";
-    	
+
     	QueueDescription queueDesc = QueueDescriptionSerializer.parseFromContent(queueDescriptionXml);
     	String serializedXml = QueueDescriptionSerializer.serialize(queueDesc);
-    	
+
     	// Compare xml nodes
     	Document expectedDoc = loadXmlFromString(queueDescriptionXml);
     	Element expectedElement = (Element) expectedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "QueueDescription").item(0);
@@ -638,7 +638,7 @@ public class ManagementTests extends TestBase {
     	Element serializedElement = (Element) serializedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "QueueDescription").item(0);
     	Assert.assertTrue("QueueDescrition parsing and serialization combo didn't work as expected", elementEquals(expectedElement, serializedElement));
     }
-    
+
     @Test
     public void unknownSubscriptionDescriptionElementsTest() throws Exception {
     	String subscriptionDescriptionXml = "<entry xmlns=\"http://www.w3.org/2005/Atom\">" +
@@ -664,10 +664,10 @@ public class ManagementTests extends TestBase {
                 "</SubscriptionDescription>" +
                 "</content>" +
                 "</entry>";
-    	
+
     	SubscriptionDescription queueDesc = SubscriptionDescriptionSerializer.parseFromContent("abcd", subscriptionDescriptionXml);
     	String serializedXml = SubscriptionDescriptionSerializer.serialize(queueDesc);
-    	
+
     	// Compare xml nodes
     	Document expectedDoc = loadXmlFromString(subscriptionDescriptionXml);
     	Element expectedElement = (Element) expectedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionDescription").item(0);
@@ -675,14 +675,14 @@ public class ManagementTests extends TestBase {
     	Element serializedElement = (Element) serializedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SubscriptionDescription").item(0);
     	Assert.assertTrue("SubscriptionDescrition parsing and serialization combo didn't work as expected", elementEquals(expectedElement, serializedElement));
     }
-    
+
     @Test
     public void unknownTopicDescriptionElementsTest() throws Exception {
     	String topicDescriptionXml = "<entry xmlns=\"http://www.w3.org/2005/Atom\">" +
                 "<title xmlns=\"http://www.w3.org/2005/Atom\">testqueue1</title>" +
                 "<content xmlns=\"http://www.w3.org/2005/Atom\">" +
                 "<TopicDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\">" +
-                "<DefaultMessageTimeToLive>PT1H</DefaultMessageTimeToLive>" +                
+                "<DefaultMessageTimeToLive>PT1H</DefaultMessageTimeToLive>" +
                 "<MaxSizeInMegabytes>1024</MaxSizeInMegabytes>" +
                 "<RequiresDuplicateDetection>true</RequiresDuplicateDetection>" +
                 "<DuplicateDetectionHistoryTimeWindow>PT2M</DuplicateDetectionHistoryTimeWindow>" +
@@ -704,10 +704,10 @@ public class ManagementTests extends TestBase {
                 "</TopicDescription>" +
                 "</content>" +
                 "</entry>";
-    	
+
     	TopicDescription topicDesc = TopicDescriptionSerializer.parseFromContent(topicDescriptionXml);
     	String serializedXml = TopicDescriptionSerializer.serialize(topicDesc);
-    	
+
     	// Compare xml nodes
     	Document expectedDoc = loadXmlFromString(topicDescriptionXml);
     	Element expectedElement = (Element) expectedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription").item(0);
@@ -715,59 +715,59 @@ public class ManagementTests extends TestBase {
     	Element serializedElement = (Element) serializedDoc.getElementsByTagNameNS("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "TopicDescription").item(0);
     	Assert.assertTrue("TopicDescrition parsing and serialization combo didn't work as expected", elementEquals(expectedElement, serializedElement));
     }
-    
-    private static Document loadXmlFromString(String xml) throws Exception {    	
+
+    private static Document loadXmlFromString(String xml) throws Exception {
             DocumentBuilderFactory dbf = SerializerUtil.getDocumentBuilderFactory();
             dbf.setIgnoringComments(true);
             dbf.setIgnoringElementContentWhitespace(true);
             dbf.setNamespaceAware(true);
             DocumentBuilder db = dbf.newDocumentBuilder();
-            Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));            
+            Document dom = db.parse(new ByteArrayInputStream(xml.getBytes("utf-8")));
             dom.normalize();
             return dom;
     }
-    
+
     // Basic comparison just sufficient for our test
-    private static boolean elementEquals(Node first, Node second) {    	
+    private static boolean elementEquals(Node first, Node second) {
     	if (!first.getLocalName().equals(second.getLocalName()))
     	{
     		return false;
     	}
-    	
+
     	NamedNodeMap firstAttributes = first.getAttributes();
     	NamedNodeMap secondAttributes = second.getAttributes();
     	if (firstAttributes != null && secondAttributes != null) {
     		if (firstAttributes.getLength() != secondAttributes.getLength()) {
     			return false;
     		}
-    		
+
     		for (int i = 0; i < firstAttributes.getLength(); i++) {
     			Attr firstAttr = (Attr) firstAttributes.item(i);
     			Attr secondAttr = (Attr) secondAttributes.getNamedItem(firstAttr.getName());
     			if (secondAttr == null) {
     				return false;
     			}
-    			
+
     			if (!firstAttr.getValue().equals(secondAttr.getValue())) {
     				return false;
     			}
     		}
     	}
-    	
+
     	NodeList firstChildren = first.getChildNodes();
     	NodeList secondChildren = second.getChildNodes();
     	if (firstChildren.getLength() != secondChildren.getLength()) {
     		return  false;
     	}
-    	
+
     	for (int i = 0; i < firstChildren.getLength(); i++) {
     		Node childFirst = firstChildren.item(i);
     		Node childSecond = secondChildren.item(i);
-    		
+
     		if (childFirst.getNodeType() != childSecond.getNodeType()) {
     			return false;
     		}
-    		
+
     		if (childFirst.getNodeType() == Node.TEXT_NODE) {
     			if (!textEquals((Text)childFirst, (Text)childSecond)) {
     				return false;
@@ -778,19 +778,19 @@ public class ManagementTests extends TestBase {
     				return false;
     			}
     		}
-    			
+
     	}
-    	
+
     	return true;
     }
-    
+
     private static boolean textEquals(Text first, Text second) {
     	if (first == null ^ second == null)
     	{
     		return false;
     	}
-    	
+
     	return first.getNodeValue().equals(second.getNodeValue());
     }
-    
+
 }

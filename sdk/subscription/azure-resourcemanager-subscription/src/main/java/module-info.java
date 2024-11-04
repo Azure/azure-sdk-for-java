@@ -10,10 +10,6 @@ module com.azure.resourcemanager.subscription {
     exports com.azure.resourcemanager.subscription.fluent.models;
     exports com.azure.resourcemanager.subscription.models;
 
-    opens com.azure.resourcemanager.subscription.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.subscription.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.subscription.fluent.models to com.azure.core;
+    opens com.azure.resourcemanager.subscription.models to com.azure.core;
 }

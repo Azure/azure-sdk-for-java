@@ -16,7 +16,9 @@ import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.Objects;
 
-/** The deleted certificate item containing metadata about the deleted certificate. */
+/**
+ * The deleted certificate item containing metadata about the deleted certificate.
+ */
 @Fluent
 public final class DeletedCertificateItem extends CertificateItem {
     /*
@@ -34,13 +36,16 @@ public final class DeletedCertificateItem extends CertificateItem {
      */
     private Long deletedDate;
 
-    /** Creates an instance of DeletedCertificateItem class. */
-    public DeletedCertificateItem() {}
+    /**
+     * Creates an instance of DeletedCertificateItem class.
+     */
+    public DeletedCertificateItem() {
+    }
 
     /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted
      * certificate.
-     *
+     * 
      * @return the recoveryId value.
      */
     public String getRecoveryId() {
@@ -50,7 +55,7 @@ public final class DeletedCertificateItem extends CertificateItem {
     /**
      * Set the recoveryId property: The url of the recovery object, used to identify and recover the deleted
      * certificate.
-     *
+     * 
      * @param recoveryId the recoveryId value to set.
      * @return the DeletedCertificateItem object itself.
      */
@@ -61,7 +66,7 @@ public final class DeletedCertificateItem extends CertificateItem {
 
     /**
      * Get the scheduledPurgeDate property: The time when the certificate is scheduled to be purged, in UTC.
-     *
+     * 
      * @return the scheduledPurgeDate value.
      */
     public OffsetDateTime getScheduledPurgeDate() {
@@ -73,7 +78,7 @@ public final class DeletedCertificateItem extends CertificateItem {
 
     /**
      * Get the deletedDate property: The time when the certificate was deleted, in UTC.
-     *
+     * 
      * @return the deletedDate value.
      */
     public OffsetDateTime getDeletedDate() {
@@ -83,34 +88,45 @@ public final class DeletedCertificateItem extends CertificateItem {
         return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.deletedDate), ZoneOffset.UTC);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedCertificateItem setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedCertificateItem setAttributes(CertificateAttributes attributes) {
         super.setAttributes(attributes);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedCertificateItem setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeletedCertificateItem setX509Thumbprint(byte[] x509Thumbprint) {
         super.setX509Thumbprint(x509Thumbprint);
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -126,46 +142,44 @@ public final class DeletedCertificateItem extends CertificateItem {
 
     /**
      * Reads an instance of DeletedCertificateItem from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of DeletedCertificateItem if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the DeletedCertificateItem.
      */
     public static DeletedCertificateItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    DeletedCertificateItem deserializedDeletedCertificateItem = new DeletedCertificateItem();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            DeletedCertificateItem deserializedDeletedCertificateItem = new DeletedCertificateItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("id".equals(fieldName)) {
-                            deserializedDeletedCertificateItem.setId(reader.getString());
-                        } else if ("attributes".equals(fieldName)) {
-                            deserializedDeletedCertificateItem.setAttributes(CertificateAttributes.fromJson(reader));
-                        } else if ("tags".equals(fieldName)) {
-                            Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
-                            deserializedDeletedCertificateItem.setTags(tags);
-                        } else if ("x5t".equals(fieldName)) {
-                            Base64Url x509Thumbprint =
-                                    reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
-                            if (x509Thumbprint != null) {
-                                deserializedDeletedCertificateItem.setX509Thumbprint(x509Thumbprint.decodedBytes());
-                            }
-                        } else if ("recoveryId".equals(fieldName)) {
-                            deserializedDeletedCertificateItem.recoveryId = reader.getString();
-                        } else if ("scheduledPurgeDate".equals(fieldName)) {
-                            deserializedDeletedCertificateItem.scheduledPurgeDate =
-                                    reader.getNullable(JsonReader::getLong);
-                        } else if ("deletedDate".equals(fieldName)) {
-                            deserializedDeletedCertificateItem.deletedDate = reader.getNullable(JsonReader::getLong);
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("id".equals(fieldName)) {
+                    deserializedDeletedCertificateItem.setId(reader.getString());
+                } else if ("attributes".equals(fieldName)) {
+                    deserializedDeletedCertificateItem.setAttributes(CertificateAttributes.fromJson(reader));
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeletedCertificateItem.setTags(tags);
+                } else if ("x5t".equals(fieldName)) {
+                    Base64Url x509ThumbprintHolder
+                        = reader.getNullable(nonNullReader -> new Base64Url(nonNullReader.getString()));
+                    if (x509ThumbprintHolder != null) {
+                        deserializedDeletedCertificateItem.setX509Thumbprint(x509ThumbprintHolder.decodedBytes());
                     }
+                } else if ("recoveryId".equals(fieldName)) {
+                    deserializedDeletedCertificateItem.recoveryId = reader.getString();
+                } else if ("scheduledPurgeDate".equals(fieldName)) {
+                    deserializedDeletedCertificateItem.scheduledPurgeDate = reader.getNullable(JsonReader::getLong);
+                } else if ("deletedDate".equals(fieldName)) {
+                    deserializedDeletedCertificateItem.deletedDate = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedDeletedCertificateItem;
-                });
+            return deserializedDeletedCertificateItem;
+        });
     }
 }

@@ -24,56 +24,52 @@ import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.elastic.fluent.DetachAndDeleteTrafficFiltersClient;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DetachAndDeleteTrafficFiltersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DetachAndDeleteTrafficFiltersClient.
+ */
 public final class DetachAndDeleteTrafficFiltersClientImpl implements DetachAndDeleteTrafficFiltersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DetachAndDeleteTrafficFiltersService service;
 
-    /** The service client containing this operation class. */
-    private final MicrosoftElasticImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final ElasticManagementClientImpl client;
 
     /**
      * Initializes an instance of DetachAndDeleteTrafficFiltersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    DetachAndDeleteTrafficFiltersClientImpl(MicrosoftElasticImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    DetachAndDeleteTrafficFiltersService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+    DetachAndDeleteTrafficFiltersClientImpl(ElasticManagementClientImpl client) {
+        this.service = RestProxy.create(DetachAndDeleteTrafficFiltersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for MicrosoftElasticDetachAndDeleteTrafficFilters to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for ElasticManagementClientDetachAndDeleteTrafficFilters to be used by
+     * the proxy service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MicrosoftElasticDeta")
+    @ServiceInterface(name = "ElasticManagementCli")
     public interface DetachAndDeleteTrafficFiltersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/detachAndDeleteTrafficFilter")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Elastic/monitors/{monitorName}/detachAndDeleteTrafficFilter")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @QueryParam("rulesetId") String rulesetId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @QueryParam("rulesetId") String rulesetId, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Detach and Delete traffic filter from the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -82,19 +78,15 @@ public final class DetachAndDeleteTrafficFiltersClientImpl implements DetachAndD
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, String rulesetId) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String monitorName,
+        String rulesetId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -105,25 +97,15 @@ public final class DetachAndDeleteTrafficFiltersClientImpl implements DetachAndD
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            rulesetId,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, monitorName, rulesetId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Detach and Delete traffic filter from the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
@@ -133,19 +115,15 @@ public final class DetachAndDeleteTrafficFiltersClientImpl implements DetachAndD
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, String rulesetId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String monitorName, String rulesetId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -156,22 +134,14 @@ public final class DetachAndDeleteTrafficFiltersClientImpl implements DetachAndD
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                rulesetId,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, monitorName, rulesetId, accept, context);
     }
 
     /**
      * Detach and Delete traffic filter from the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -186,8 +156,8 @@ public final class DetachAndDeleteTrafficFiltersClientImpl implements DetachAndD
 
     /**
      * Detach and Delete traffic filter from the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param rulesetId Ruleset Id of the filter.
      * @param context The context to associate with this operation.
@@ -197,15 +167,15 @@ public final class DetachAndDeleteTrafficFiltersClientImpl implements DetachAndD
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String monitorName, String rulesetId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String monitorName, String rulesetId,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, monitorName, rulesetId, context).block();
     }
 
     /**
      * Detach and Delete traffic filter from the given deployment.
-     *
-     * @param resourceGroupName The name of the resource group to which the Elastic resource belongs.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

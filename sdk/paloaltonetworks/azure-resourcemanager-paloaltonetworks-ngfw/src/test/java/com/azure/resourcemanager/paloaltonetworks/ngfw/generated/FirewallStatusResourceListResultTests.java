@@ -21,8 +21,9 @@ public final class FirewallStatusResourceListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FirewallStatusResourceListResult model = new FirewallStatusResourceListResult()
-            .withValue(Arrays.asList(new FirewallStatusResourceInner())).withNextLink("immbcx");
+        FirewallStatusResourceListResult model
+            = new FirewallStatusResourceListResult().withValue(Arrays.asList(new FirewallStatusResourceInner()))
+                .withNextLink("immbcx");
         model = BinaryData.fromObject(model).toObject(FirewallStatusResourceListResult.class);
         Assertions.assertEquals("immbcx", model.nextLink());
     }

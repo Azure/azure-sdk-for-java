@@ -33,8 +33,7 @@ public final class KeyValueElement implements JsonSerializable<KeyValueElement> 
     private List<Float> boundingBox;
 
     /*
-     * When includeTextDetails is set to true, a list of references to the text elements constituting this key or
-     * value.
+     * When includeTextDetails is set to true, a list of references to the text elements constituting this key or value.
      */
     private List<String> elements;
 
@@ -126,6 +125,9 @@ public final class KeyValueElement implements JsonSerializable<KeyValueElement> 
         return this;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();

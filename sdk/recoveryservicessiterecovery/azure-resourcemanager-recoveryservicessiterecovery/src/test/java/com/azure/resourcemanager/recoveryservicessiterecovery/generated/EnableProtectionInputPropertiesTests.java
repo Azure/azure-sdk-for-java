@@ -22,7 +22,8 @@ public final class EnableProtectionInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnableProtectionInputProperties model = new EnableProtectionInputProperties().withPolicyId("rey")
-            .withProtectableItemId("zi").withProviderSpecificDetails(new EnableProtectionProviderSpecificInput());
+            .withProtectableItemId("zi")
+            .withProviderSpecificDetails(new EnableProtectionProviderSpecificInput());
         model = BinaryData.fromObject(model).toObject(EnableProtectionInputProperties.class);
         Assertions.assertEquals("rey", model.policyId());
         Assertions.assertEquals("zi", model.protectableItemId());

@@ -36,15 +36,16 @@ public final class DeploymentsImpl implements Deployments {
 
     public PagedIterable<Deployment> listByDeviceGroup(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String filter, Integer top, Integer skip, Integer maxpagesize, Context context) {
-        PagedIterable<DeploymentInner> inner = this.serviceClient().listByDeviceGroup(resourceGroupName, catalogName,
-            productName, deviceGroupName, filter, top, skip, maxpagesize, context);
+        PagedIterable<DeploymentInner> inner = this.serviceClient()
+            .listByDeviceGroup(resourceGroupName, catalogName, productName, deviceGroupName, filter, top, skip,
+                maxpagesize, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new DeploymentImpl(inner1, this.manager()));
     }
 
     public Response<Deployment> getWithResponse(String resourceGroupName, String catalogName, String productName,
         String deviceGroupName, String deploymentName, Context context) {
-        Response<DeploymentInner> inner = this.serviceClient().getWithResponse(resourceGroupName, catalogName,
-            productName, deviceGroupName, deploymentName, context);
+        Response<DeploymentInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DeploymentImpl(inner.getValue(), this.manager()));
@@ -71,8 +72,8 @@ public final class DeploymentsImpl implements Deployments {
 
     public void delete(String resourceGroupName, String catalogName, String productName, String deviceGroupName,
         String deploymentName, Context context) {
-        this.serviceClient().delete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName,
-            context);
+        this.serviceClient()
+            .delete(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context);
     }
 
     public Deployment getById(String id) {

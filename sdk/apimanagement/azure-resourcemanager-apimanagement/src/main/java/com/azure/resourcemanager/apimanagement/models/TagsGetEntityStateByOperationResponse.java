@@ -20,12 +20,8 @@ public final class TagsGetEntityStateByOperationResponse
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public TagsGetEntityStateByOperationResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        Void value,
-        TagsGetEntityStateByOperationHeaders headers) {
+    public TagsGetEntityStateByOperationResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        Void value, TagsGetEntityStateByOperationHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 }

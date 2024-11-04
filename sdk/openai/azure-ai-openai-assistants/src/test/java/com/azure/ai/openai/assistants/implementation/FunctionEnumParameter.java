@@ -24,7 +24,7 @@ public class FunctionEnumParameter implements JsonSerializable<FunctionEnumParam
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", "string");
-        jsonWriter.writeArrayField("enum",  this.enumValues, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("enum", this.enumValues, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 

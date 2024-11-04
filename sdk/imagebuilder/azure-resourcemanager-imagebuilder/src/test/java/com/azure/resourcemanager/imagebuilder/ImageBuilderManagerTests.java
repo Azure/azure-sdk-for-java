@@ -9,7 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class ImageBuilderManagerTests extends TestBase {
+public class ImageBuilderManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
     private static final Region REGION = Region.US_EAST;
     private String resourceGroupName = "rg" + randomPadding();
@@ -47,18 +47,15 @@ public class ImageBuilderManagerTests extends TestBase {
         final TokenCredential credential = new AzurePowerShellCredentialBuilder().build();
         final AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
 
-        imageBuilderManager = ImageBuilderManager
-            .configure()
+        imageBuilderManager = ImageBuilderManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        msiManager = MsiManager
-            .configure()
+        msiManager = MsiManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile);
 
-        resourceManager = ResourceManager
-            .configure()
+        resourceManager = ResourceManager.configure()
             .withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
             .withDefaultSubscription();
@@ -69,10 +66,7 @@ public class ImageBuilderManagerTests extends TestBase {
         if (testEnv) {
             resourceGroupName = testResourceGroup;
         } else {
-            resourceManager.resourceGroups()
-                .define(resourceGroupName)
-                .withRegion(REGION)
-                .create();
+            resourceManager.resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -93,7 +87,8 @@ public class ImageBuilderManagerTests extends TestBase {
             String templateName = "template" + randomPadding;
             String imageName = "image" + randomPadding;
             String identityName = "identity" + randomPadding;
-            String imageId = resourceManager.resourceGroups().getByName(resourceGroupName).id() + "/providers/Microsoft.Compute/images/" + imageName;
+            String imageId = resourceManager.resourceGroups().getByName(resourceGroupName).id()
+                + "/providers/Microsoft.Compute/images/" + imageName;
 
             identity = msiManager.identities()
                 .define(identityName)
@@ -108,31 +103,28 @@ public class ImageBuilderManagerTests extends TestBase {
                 .define(templateName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
-                .withIdentity(
-                    new ImageTemplateIdentity()
-                        .withType(ResourceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(userAssignedIdentities))
-                .withDistribute(Arrays.asList(
-                    new ImageTemplateManagedImageDistributor()
-                        .withImageId(imageId)
-                        .withLocation(REGION.name())
-                        .withRunOutputName("runOutputManagedImage")
-                    )
-                )
+                .withIdentity(new ImageTemplateIdentity().withType(ResourceIdentityType.USER_ASSIGNED)
+                    .withUserAssignedIdentities(userAssignedIdentities))
+                .withDistribute(Arrays.asList(new ImageTemplateManagedImageDistributor().withImageId(imageId)
+                    .withLocation(REGION.name())
+                    .withRunOutputName("runOutputManagedImage")))
                 .withVmProfile(new ImageTemplateVmProfile().withVmSize("Standard_DS1_v2").withOsDiskSizeGB(32))
-                .withSource(
-                    new ImageTemplatePlatformImageSource()
-                        .withPublisher("canonical")
-                        .withOffer("0001-com-ubuntu-server-focal")
-                        .withSku("20_04-lts-gen2")
-                        .withVersion("latest"))
+                .withSource(new ImageTemplatePlatformImageSource().withPublisher("canonical")
+                    .withOffer("0001-com-ubuntu-server-focal")
+                    .withSku("20_04-lts-gen2")
+                    .withVersion("latest"))
                 .withBuildTimeoutInMinutes(0)
                 .create();
-            // @embedEnd
+            // @embedmeEnd
             imageTemplate.refresh();
             Assertions.assertEquals(imageTemplate.name(), templateName);
-            Assertions.assertEquals(imageTemplate.name(), imageBuilderManager.virtualMachineImageTemplates().getById(imageTemplate.id()).name());
-            Assertions.assertTrue(imageBuilderManager.virtualMachineImageTemplates().listByResourceGroup(resourceGroupName).stream().findAny().isPresent());
+            Assertions.assertEquals(imageTemplate.name(),
+                imageBuilderManager.virtualMachineImageTemplates().getById(imageTemplate.id()).name());
+            Assertions.assertTrue(imageBuilderManager.virtualMachineImageTemplates()
+                .listByResourceGroup(resourceGroupName)
+                .stream()
+                .findAny()
+                .isPresent());
         } finally {
             if (imageTemplate != null) {
                 imageBuilderManager.virtualMachineImageTemplates().deleteById(imageTemplate.id());

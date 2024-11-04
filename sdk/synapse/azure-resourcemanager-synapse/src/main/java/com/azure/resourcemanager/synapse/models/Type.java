@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.synapse.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The type of resource, for instance Microsoft.Synapse/workspaces/kustoPools/databases. */
+/**
+ * The type of resource, for instance Microsoft.Synapse/workspaces/kustoPools/databases.
+ */
 public enum Type {
-    /** Enum value Microsoft.Synapse/workspaces/kustoPools/databases. */
+    /**
+     * Enum value Microsoft.Synapse/workspaces/kustoPools/databases.
+     */
     MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_DATABASES("Microsoft.Synapse/workspaces/kustoPools/databases"),
 
-    /** Enum value Microsoft.Synapse/workspaces/kustoPools/attachedDatabaseConfigurations. */
+    /**
+     * Enum value Microsoft.Synapse/workspaces/kustoPools/attachedDatabaseConfigurations.
+     */
     MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_ATTACHED_DATABASE_CONFIGURATIONS(
         "Microsoft.Synapse/workspaces/kustoPools/attachedDatabaseConfigurations");
 
-    /** The actual serialized value for a Type instance. */
+    /**
+     * The actual serialized value for a Type instance.
+     */
     private final String value;
 
     Type(String value) {
@@ -25,11 +30,10 @@ public enum Type {
 
     /**
      * Parses a serialized value to a Type instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Type object, or null if unable to parse.
      */
-    @JsonCreator
     public static Type fromString(String value) {
         if (value == null) {
             return null;
@@ -43,8 +47,9 @@ public enum Type {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

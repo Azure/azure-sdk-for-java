@@ -136,20 +136,16 @@ public final class CustomImageImpl implements CustomImage, CustomImage.Definitio
     }
 
     public CustomImage create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomImages()
-                .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomImages()
+            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public CustomImage create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomImages()
-                .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomImages()
+            .createOrUpdate(resourceGroupName, labName, name, this.innerModel(), context);
         return this;
     }
 
@@ -165,27 +161,23 @@ public final class CustomImageImpl implements CustomImage, CustomImage.Definitio
     }
 
     public CustomImage apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomImages()
-                .updateWithResponse(resourceGroupName, labName, name, updateCustomImage, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomImages()
+            .updateWithResponse(resourceGroupName, labName, name, updateCustomImage, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomImage apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomImages()
-                .updateWithResponse(resourceGroupName, labName, name, updateCustomImage, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomImages()
+            .updateWithResponse(resourceGroupName, labName, name, updateCustomImage, context)
+            .getValue();
         return this;
     }
 
-    CustomImageImpl(
-        CustomImageInner innerObject, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    CustomImageImpl(CustomImageInner innerObject,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -195,23 +187,19 @@ public final class CustomImageImpl implements CustomImage, CustomImage.Definitio
 
     public CustomImage refresh() {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomImages()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomImages()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomImage refresh(Context context) {
         String localExpand = null;
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomImages()
-                .getWithResponse(resourceGroupName, labName, name, localExpand, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomImages()
+            .getWithResponse(resourceGroupName, labName, name, localExpand, context)
+            .getValue();
         return this;
     }
 

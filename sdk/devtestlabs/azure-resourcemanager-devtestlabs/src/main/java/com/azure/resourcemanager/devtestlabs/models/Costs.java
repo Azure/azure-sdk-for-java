@@ -22,8 +22,8 @@ public interface Costs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cost along with {@link Response}.
      */
-    Response<LabCost> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
+    Response<LabCost> getWithResponse(String resourceGroupName, String labName, String name, String expand,
+        Context context);
 
     /**
      * Get cost.

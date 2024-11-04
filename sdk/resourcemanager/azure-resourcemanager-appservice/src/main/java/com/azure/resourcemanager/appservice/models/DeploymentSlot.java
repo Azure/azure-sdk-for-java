@@ -17,12 +17,8 @@ import reactor.core.publisher.Mono;
 /** An immutable client-side representation of an Azure Web App deployment slot. */
 @Fluent
 public interface DeploymentSlot
-    extends IndependentChildResource<AppServiceManager, SiteInner>,
-        WebDeploymentSlotBasic,
-        SupportsOneDeploy,
-        DeploymentSlotBase<DeploymentSlot>,
-        Updatable<DeploymentSlotBase.Update<DeploymentSlot>>,
-        HasParent<WebApp> {
+    extends IndependentChildResource<AppServiceManager, SiteInner>, WebDeploymentSlotBasic, SupportsOneDeploy,
+    DeploymentSlotBase<DeploymentSlot>, Updatable<DeploymentSlotBase.Update<DeploymentSlot>>, HasParent<WebApp> {
 
     /**
      * Deploys a WAR file onto the Azure specialized Tomcat on this web app.

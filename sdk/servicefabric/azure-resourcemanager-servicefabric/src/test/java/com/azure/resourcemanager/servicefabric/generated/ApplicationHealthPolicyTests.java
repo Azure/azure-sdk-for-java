@@ -24,15 +24,14 @@ public final class ApplicationHealthPolicyTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationHealthPolicy model
-            = new ApplicationHealthPolicy()
-                .withDefaultServiceTypeHealthPolicy(
-                    new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(186594005))
-                .withServiceTypeHealthPolicies(
-                    mapOf("bkzgcwrwclx", new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(2049117618),
-                        "ljdousk", new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(562899344),
-                        "kocrcjdkwtnhx", new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(874345897),
-                        "biksq", new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1299495603)));
+        ApplicationHealthPolicy model = new ApplicationHealthPolicy()
+            .withDefaultServiceTypeHealthPolicy(
+                new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(186594005))
+            .withServiceTypeHealthPolicies(
+                mapOf("bkzgcwrwclx", new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(2049117618),
+                    "ljdousk", new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(562899344),
+                    "kocrcjdkwtnhx", new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(874345897), "biksq",
+                    new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1299495603)));
         model = BinaryData.fromObject(model).toObject(ApplicationHealthPolicy.class);
         Assertions.assertEquals(186594005, model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
         Assertions.assertEquals(2049117618,

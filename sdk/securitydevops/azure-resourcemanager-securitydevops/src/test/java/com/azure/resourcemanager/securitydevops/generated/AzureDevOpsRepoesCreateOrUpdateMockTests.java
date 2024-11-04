@@ -35,54 +35,38 @@ public final class AzureDevOpsRepoesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"repoId\":\"nmmqhgyxzkon\",\"repoUrl\":\"uko\",\"orgName\":\"yaxuconuqszfkb\",\"projectName\":\"pewr\",\"visibility\":\"mwvvjektcxsenhw\",\"actionableRemediation\":{\"state\":\"Enabled\",\"severityLevels\":[],\"categories\":[]}},\"id\":\"wvlqdqgb\",\"name\":\"qylihkaetckt\",\"type\":\"fcivfsnkym\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"repoId\":\"nmmqhgyxzkon\",\"repoUrl\":\"uko\",\"orgName\":\"yaxuconuqszfkb\",\"projectName\":\"pewr\",\"visibility\":\"mwvvjektcxsenhw\",\"actionableRemediation\":{\"state\":\"Enabled\",\"severityLevels\":[],\"categories\":[]}},\"id\":\"wvlqdqgb\",\"name\":\"qylihkaetckt\",\"type\":\"fcivfsnkym\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityDevOpsManager manager =
-            SecurityDevOpsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityDevOpsManager manager = SecurityDevOpsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AzureDevOpsRepo response =
-            manager
-                .azureDevOpsRepoes()
-                .define("bkh")
-                .withExistingProject("mrbpizcdrqj", "dpydn", "yhxdeoejzicwi", "sjttgzfbish")
-                .withProperties(
-                    new AzureDevOpsRepoProperties()
-                        .withProvisioningState(ProvisioningState.CANCELED)
-                        .withRepoId("eamdp")
-                        .withRepoUrl("g")
-                        .withOrgName("pbuxwgipwhon")
-                        .withProjectName("kgshwa")
-                        .withVisibility("ixzbinjeputtmryw")
-                        .withActionableRemediation(
-                            new ActionableRemediation()
-                                .withState(ActionableRemediationState.NONE)
-                                .withSeverityLevels(Arrays.asList())
-                                .withCategories(Arrays.asList())))
-                .create();
+        AzureDevOpsRepo response = manager.azureDevOpsRepoes()
+            .define("bkh")
+            .withExistingProject("mrbpizcdrqj", "dpydn", "yhxdeoejzicwi", "sjttgzfbish")
+            .withProperties(new AzureDevOpsRepoProperties().withProvisioningState(ProvisioningState.CANCELED)
+                .withRepoId("eamdp")
+                .withRepoUrl("g")
+                .withOrgName("pbuxwgipwhon")
+                .withProjectName("kgshwa")
+                .withVisibility("ixzbinjeputtmryw")
+                .withActionableRemediation(new ActionableRemediation().withState(ActionableRemediationState.NONE)
+                    .withSeverityLevels(Arrays.asList())
+                    .withCategories(Arrays.asList())))
+            .create();
 
         Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.properties().provisioningState());
         Assertions.assertEquals("nmmqhgyxzkon", response.properties().repoId());
@@ -90,7 +74,7 @@ public final class AzureDevOpsRepoesCreateOrUpdateMockTests {
         Assertions.assertEquals("yaxuconuqszfkb", response.properties().orgName());
         Assertions.assertEquals("pewr", response.properties().projectName());
         Assertions.assertEquals("mwvvjektcxsenhw", response.properties().visibility());
-        Assertions
-            .assertEquals(ActionableRemediationState.ENABLED, response.properties().actionableRemediation().state());
+        Assertions.assertEquals(ActionableRemediationState.ENABLED,
+            response.properties().actionableRemediation().state());
     }
 }

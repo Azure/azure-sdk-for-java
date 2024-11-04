@@ -38,60 +38,44 @@ public final class GlobalSchedulesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"ehuxiqhzlraym\",\"weeklyRecurrence\":{\"weekdays\":[\"skihmxrfd\",\"ajrednwyyshtuw\",\"mevuafpwzy\",\"frkgwltxeq\"],\"time\":\"xgzdyimsfayorp\"},\"dailyRecurrence\":{\"time\":\"kj\"},\"hourlyRecurrence\":{\"minute\":535821892},\"timeZoneId\":\"abnsmj\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":441004284,\"webhookUrl\":\"ekqsykvwjtqpkev\",\"emailRecipient\":\"ltjcrspxk\",\"notificationLocale\":\"r\"},\"createdDate\":\"2021-01-04T13:01:46Z\",\"targetResourceId\":\"gxannnoytzposewx\",\"provisioningState\":\"pxvkqma\",\"uniqueIdentifier\":\"xvpif\"},\"location\":\"f\",\"tags\":{\"eidszlfytoi\":\"yzyzeyuu\",\"hoynk\":\"hgygvfltgvd\",\"nn\":\"xwetwkdrcyrucpc\"},\"id\":\"zdqumoe\",\"name\":\"odnaienhqhskndn\",\"type\":\"lqkaadlknwf\"}";
+        String responseStr
+            = "{\"properties\":{\"status\":\"Enabled\",\"taskType\":\"ehuxiqhzlraym\",\"weeklyRecurrence\":{\"weekdays\":[\"skihmxrfd\",\"ajrednwyyshtuw\",\"mevuafpwzy\",\"frkgwltxeq\"],\"time\":\"xgzdyimsfayorp\"},\"dailyRecurrence\":{\"time\":\"kj\"},\"hourlyRecurrence\":{\"minute\":535821892},\"timeZoneId\":\"abnsmj\",\"notificationSettings\":{\"status\":\"Disabled\",\"timeInMinutes\":441004284,\"webhookUrl\":\"ekqsykvwjtqpkev\",\"emailRecipient\":\"ltjcrspxk\",\"notificationLocale\":\"r\"},\"createdDate\":\"2021-01-04T13:01:46Z\",\"targetResourceId\":\"gxannnoytzposewx\",\"provisioningState\":\"pxvkqma\",\"uniqueIdentifier\":\"xvpif\"},\"location\":\"f\",\"tags\":{\"eidszlfytoi\":\"yzyzeyuu\",\"hoynk\":\"hgygvfltgvd\",\"nn\":\"xwetwkdrcyrucpc\"},\"id\":\"zdqumoe\",\"name\":\"odnaienhqhskndn\",\"type\":\"lqkaadlknwf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DevTestLabsManager manager =
-            DevTestLabsManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DevTestLabsManager manager = DevTestLabsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Schedule response =
-            manager
-                .globalSchedules()
-                .define("jb")
-                .withRegion("w")
-                .withExistingResourceGroup("r")
-                .withTags(mapOf("p", "sxwwhnhjtf"))
-                .withStatus(EnableStatus.DISABLED)
-                .withTaskType("aoqaqbzgyhfwwv")
-                .withWeeklyRecurrence(
-                    new WeekDetails()
-                        .withWeekdays(Arrays.asList("wbqamteuliy", "lpkcvmwfauxxep"))
-                        .withTime("wbormcqmi"))
-                .withDailyRecurrence(new DayDetails().withTime("jqpkzfbo"))
-                .withHourlyRecurrence(new HourDetails().withMinute(1008531310))
-                .withTimeZoneId("smyqwixvcpwnkwyw")
-                .withNotificationSettings(
-                    new NotificationSettings()
-                        .withStatus(EnableStatus.DISABLED)
-                        .withTimeInMinutes(2034082492)
-                        .withWebhookUrl("ckduoiqtamtyvskn")
-                        .withEmailRecipient("wzawnvsbcfhzagxn")
-                        .withNotificationLocale("ycvdimw"))
-                .withTargetResourceId("gzgy")
-                .create();
+        Schedule response = manager.globalSchedules()
+            .define("jb")
+            .withRegion("w")
+            .withExistingResourceGroup("r")
+            .withTags(mapOf("p", "sxwwhnhjtf"))
+            .withStatus(EnableStatus.DISABLED)
+            .withTaskType("aoqaqbzgyhfwwv")
+            .withWeeklyRecurrence(
+                new WeekDetails().withWeekdays(Arrays.asList("wbqamteuliy", "lpkcvmwfauxxep")).withTime("wbormcqmi"))
+            .withDailyRecurrence(new DayDetails().withTime("jqpkzfbo"))
+            .withHourlyRecurrence(new HourDetails().withMinute(1008531310))
+            .withTimeZoneId("smyqwixvcpwnkwyw")
+            .withNotificationSettings(new NotificationSettings().withStatus(EnableStatus.DISABLED)
+                .withTimeInMinutes(2034082492)
+                .withWebhookUrl("ckduoiqtamtyvskn")
+                .withEmailRecipient("wzawnvsbcfhzagxn")
+                .withNotificationLocale("ycvdimw"))
+            .withTargetResourceId("gzgy")
+            .create();
 
         Assertions.assertEquals("f", response.location());
         Assertions.assertEquals("yzyzeyuu", response.tags().get("eidszlfytoi"));

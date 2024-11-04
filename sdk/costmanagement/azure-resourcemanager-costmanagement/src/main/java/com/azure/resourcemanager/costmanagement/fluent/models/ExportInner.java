@@ -5,37 +5,90 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.CostManagementProxyResource;
 import com.azure.resourcemanager.costmanagement.models.ExportDefinition;
 import com.azure.resourcemanager.costmanagement.models.ExportDeliveryInfo;
 import com.azure.resourcemanager.costmanagement.models.ExportSchedule;
 import com.azure.resourcemanager.costmanagement.models.FormatType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** An export resource. */
+/**
+ * An export resource.
+ */
 @Fluent
 public final class ExportInner extends CostManagementProxyResource {
     /*
      * The properties of the export.
      */
-    @JsonProperty(value = "properties")
     private ExportProperties innerProperties;
 
-    /** Creates an instance of ExportInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ExportInner class.
+     */
     public ExportInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the export.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExportProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExportInner withEtag(String etag) {
         super.withEtag(etag);
@@ -44,7 +97,7 @@ public final class ExportInner extends CostManagementProxyResource {
 
     /**
      * Get the schedule property: Has schedule information for the export.
-     *
+     * 
      * @return the schedule value.
      */
     public ExportSchedule schedule() {
@@ -53,7 +106,7 @@ public final class ExportInner extends CostManagementProxyResource {
 
     /**
      * Set the schedule property: Has schedule information for the export.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the ExportInner object itself.
      */
@@ -67,7 +120,7 @@ public final class ExportInner extends CostManagementProxyResource {
 
     /**
      * Get the format property: The format of the export being delivered. Currently only 'Csv' is supported.
-     *
+     * 
      * @return the format value.
      */
     public FormatType format() {
@@ -76,7 +129,7 @@ public final class ExportInner extends CostManagementProxyResource {
 
     /**
      * Set the format property: The format of the export being delivered. Currently only 'Csv' is supported.
-     *
+     * 
      * @param format the format value to set.
      * @return the ExportInner object itself.
      */
@@ -90,7 +143,7 @@ public final class ExportInner extends CostManagementProxyResource {
 
     /**
      * Get the deliveryInfo property: Has delivery information for the export.
-     *
+     * 
      * @return the deliveryInfo value.
      */
     public ExportDeliveryInfo deliveryInfo() {
@@ -99,7 +152,7 @@ public final class ExportInner extends CostManagementProxyResource {
 
     /**
      * Set the deliveryInfo property: Has delivery information for the export.
-     *
+     * 
      * @param deliveryInfo the deliveryInfo value to set.
      * @return the ExportInner object itself.
      */
@@ -113,7 +166,7 @@ public final class ExportInner extends CostManagementProxyResource {
 
     /**
      * Get the definition property: Has the definition for the export.
-     *
+     * 
      * @return the definition value.
      */
     public ExportDefinition definition() {
@@ -122,7 +175,7 @@ public final class ExportInner extends CostManagementProxyResource {
 
     /**
      * Set the definition property: Has the definition for the export.
-     *
+     * 
      * @param definition the definition value to set.
      * @return the ExportInner object itself.
      */
@@ -136,7 +189,7 @@ public final class ExportInner extends CostManagementProxyResource {
 
     /**
      * Get the runHistory property: If requested, has the most recent run history for the export.
-     *
+     * 
      * @return the runHistory value.
      */
     public ExportExecutionListResultInner runHistory() {
@@ -145,7 +198,7 @@ public final class ExportInner extends CostManagementProxyResource {
 
     /**
      * Set the runHistory property: If requested, has the most recent run history for the export.
-     *
+     * 
      * @param runHistory the runHistory value to set.
      * @return the ExportInner object itself.
      */
@@ -161,7 +214,7 @@ public final class ExportInner extends CostManagementProxyResource {
      * Get the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
      * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
      * Agreement commerce scopes.
-     *
+     * 
      * @return the partitionData value.
      */
     public Boolean partitionData() {
@@ -172,7 +225,7 @@ public final class ExportInner extends CostManagementProxyResource {
      * Set the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
      * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
      * Agreement commerce scopes.
-     *
+     * 
      * @param partitionData the partitionData value to set.
      * @return the ExportInner object itself.
      */
@@ -187,7 +240,7 @@ public final class ExportInner extends CostManagementProxyResource {
     /**
      * Get the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next run
      * time.
-     *
+     * 
      * @return the nextRunTimeEstimate value.
      */
     public OffsetDateTime nextRunTimeEstimate() {
@@ -196,14 +249,59 @@ public final class ExportInner extends CostManagementProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("eTag", etag());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExportInner.
+     */
+    public static ExportInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportInner deserializedExportInner = new ExportInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExportInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedExportInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedExportInner.type = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedExportInner.withEtag(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExportInner.innerProperties = ExportProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportInner;
+        });
     }
 }

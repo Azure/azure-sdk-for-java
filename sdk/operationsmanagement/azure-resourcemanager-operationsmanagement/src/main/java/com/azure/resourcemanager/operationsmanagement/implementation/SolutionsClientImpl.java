@@ -36,22 +36,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SolutionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SolutionsClient.
+ */
 public final class SolutionsClientImpl implements SolutionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SolutionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationsManagementClientImpl client;
 
     /**
      * Initializes an instance of SolutionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SolutionsClientImpl(OperationsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(SolutionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SolutionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,99 +68,67 @@ public final class SolutionsClientImpl implements SolutionsClient {
     @Host("{$host}")
     @ServiceInterface(name = "OperationsManagement")
     public interface SolutionsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/Microsoft.OperationsManagement/solutions/{solutionName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationsManagement/solutions/{solutionName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("solutionName") String solutionName,
-            @BodyParam("application/json") SolutionInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("solutionName") String solutionName, @BodyParam("application/json") SolutionInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/Microsoft.OperationsManagement/solutions/{solutionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationsManagement/solutions/{solutionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("solutionName") String solutionName,
-            @BodyParam("application/json") SolutionPatch parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("solutionName") String solutionName, @BodyParam("application/json") SolutionPatch parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/Microsoft.OperationsManagement/solutions/{solutionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationsManagement/solutions/{solutionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("solutionName") String solutionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("solutionName") String solutionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/Microsoft.OperationsManagement/solutions/{solutionName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationsManagement/solutions/{solutionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SolutionInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SolutionInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("solutionName") String solutionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("solutionName") String solutionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers"
-                + "/Microsoft.OperationsManagement/solutions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationsManagement/solutions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SolutionPropertiesListInner>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SolutionPropertiesListInner>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.OperationsManagement/solutions")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SolutionPropertiesListInner>> listBySubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SolutionPropertiesListInner>> listBySubscription(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -164,19 +138,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String solutionName, SolutionInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String solutionName, SolutionInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -192,26 +162,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            solutionName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), solutionName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -222,19 +182,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String solutionName, SolutionInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String solutionName, SolutionInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -250,23 +206,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                solutionName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), solutionName, parameters, accept, context);
     }
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -276,25 +224,19 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the {@link PollerFlux} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String solutionName, SolutionInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, solutionName, parameters);
-        return this
-            .client
-            .<SolutionInner, SolutionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SolutionInner.class,
-                SolutionInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String solutionName, SolutionInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, solutionName, parameters);
+        return this.client.<SolutionInner, SolutionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SolutionInner.class, SolutionInner.class, this.client.getContext());
     }
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -305,22 +247,20 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the {@link PollerFlux} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String solutionName, SolutionInner parameters, Context context) {
+    private PollerFlux<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String solutionName, SolutionInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, solutionName, parameters, context);
-        return this
-            .client
-            .<SolutionInner, SolutionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SolutionInner.class, SolutionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, solutionName, parameters, context);
+        return this.client.<SolutionInner, SolutionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SolutionInner.class, SolutionInner.class, context);
     }
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -330,16 +270,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the {@link SyncPoller} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdate(
-        String resourceGroupName, String solutionName, SolutionInner parameters) {
+    public SyncPoller<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdate(String resourceGroupName,
+        String solutionName, SolutionInner parameters) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, solutionName, parameters).getSyncPoller();
     }
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -350,16 +290,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the {@link SyncPoller} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdate(
-        String resourceGroupName, String solutionName, SolutionInner parameters, Context context) {
+    public SyncPoller<PollResult<SolutionInner>, SolutionInner> beginCreateOrUpdate(String resourceGroupName,
+        String solutionName, SolutionInner parameters, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, solutionName, parameters, context).getSyncPoller();
     }
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -369,18 +309,17 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SolutionInner> createOrUpdateAsync(
-        String resourceGroupName, String solutionName, SolutionInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, solutionName, parameters)
-            .last()
+    private Mono<SolutionInner> createOrUpdateAsync(String resourceGroupName, String solutionName,
+        SolutionInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, solutionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -391,18 +330,17 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SolutionInner> createOrUpdateAsync(
-        String resourceGroupName, String solutionName, SolutionInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, solutionName, parameters, context)
-            .last()
+    private Mono<SolutionInner> createOrUpdateAsync(String resourceGroupName, String solutionName,
+        SolutionInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, solutionName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -418,9 +356,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Create/Update Solution.
-     *
-     * <p>Creates or updates the Solution.
-     *
+     * 
+     * Creates or updates the Solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to create OMS Solution.
@@ -431,16 +369,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SolutionInner createOrUpdate(
-        String resourceGroupName, String solutionName, SolutionInner parameters, Context context) {
+    public SolutionInner createOrUpdate(String resourceGroupName, String solutionName, SolutionInner parameters,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, solutionName, parameters, context).block();
     }
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -450,19 +388,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String solutionName, SolutionPatch parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String solutionName,
+        SolutionPatch parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -478,26 +412,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            solutionName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), solutionName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -508,19 +432,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String solutionName, SolutionPatch parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String solutionName,
+        SolutionPatch parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -536,23 +456,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                solutionName,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), solutionName, parameters, accept, context);
     }
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -562,24 +474,18 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the {@link PollerFlux} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SolutionInner>, SolutionInner> beginUpdateAsync(
-        String resourceGroupName, String solutionName, SolutionPatch parameters) {
+    private PollerFlux<PollResult<SolutionInner>, SolutionInner> beginUpdateAsync(String resourceGroupName,
+        String solutionName, SolutionPatch parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, solutionName, parameters);
-        return this
-            .client
-            .<SolutionInner, SolutionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SolutionInner.class,
-                SolutionInner.class,
-                this.client.getContext());
+        return this.client.<SolutionInner, SolutionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SolutionInner.class, SolutionInner.class, this.client.getContext());
     }
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -590,22 +496,20 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the {@link PollerFlux} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SolutionInner>, SolutionInner> beginUpdateAsync(
-        String resourceGroupName, String solutionName, SolutionPatch parameters, Context context) {
+    private PollerFlux<PollResult<SolutionInner>, SolutionInner> beginUpdateAsync(String resourceGroupName,
+        String solutionName, SolutionPatch parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, solutionName, parameters, context);
-        return this
-            .client
-            .<SolutionInner, SolutionInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SolutionInner.class, SolutionInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, solutionName, parameters, context);
+        return this.client.<SolutionInner, SolutionInner>getLroResult(mono, this.client.getHttpPipeline(),
+            SolutionInner.class, SolutionInner.class, context);
     }
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -615,16 +519,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the {@link SyncPoller} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(
-        String resourceGroupName, String solutionName, SolutionPatch parameters) {
+    public SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(String resourceGroupName,
+        String solutionName, SolutionPatch parameters) {
         return this.beginUpdateAsync(resourceGroupName, solutionName, parameters).getSyncPoller();
     }
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -635,16 +539,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the {@link SyncPoller} for polling of the container for solution.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(
-        String resourceGroupName, String solutionName, SolutionPatch parameters, Context context) {
+    public SyncPoller<PollResult<SolutionInner>, SolutionInner> beginUpdate(String resourceGroupName,
+        String solutionName, SolutionPatch parameters, Context context) {
         return this.beginUpdateAsync(resourceGroupName, solutionName, parameters, context).getSyncPoller();
     }
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -655,16 +559,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SolutionInner> updateAsync(String resourceGroupName, String solutionName, SolutionPatch parameters) {
-        return beginUpdateAsync(resourceGroupName, solutionName, parameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, solutionName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -675,18 +578,17 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SolutionInner> updateAsync(
-        String resourceGroupName, String solutionName, SolutionPatch parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, solutionName, parameters, context)
-            .last()
+    private Mono<SolutionInner> updateAsync(String resourceGroupName, String solutionName, SolutionPatch parameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, solutionName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -702,9 +604,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Patch a Solution.
-     *
-     * <p>Patch a Solution. Only updating tags supported.
-     *
+     * 
+     * Patch a Solution. Only updating tags supported.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param parameters The parameters required to patch a Solution.
@@ -715,16 +617,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SolutionInner update(
-        String resourceGroupName, String solutionName, SolutionPatch parameters, Context context) {
+    public SolutionInner update(String resourceGroupName, String solutionName, SolutionPatch parameters,
+        Context context) {
         return updateAsync(resourceGroupName, solutionName, parameters, context).block();
     }
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -735,16 +637,12 @@ public final class SolutionsClientImpl implements SolutionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String solutionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -755,25 +653,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            solutionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, solutionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
@@ -783,19 +672,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String solutionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String solutionName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -806,22 +691,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                solutionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            solutionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -832,17 +710,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String solutionName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, solutionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
@@ -852,20 +728,19 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String solutionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String solutionName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, solutionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -880,9 +755,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
@@ -892,16 +767,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String solutionName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String solutionName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, solutionName, context).getSyncPoller();
     }
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -916,9 +791,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
@@ -929,16 +804,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String solutionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, solutionName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, solutionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -952,9 +826,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Deletes the solution
-     *
-     * <p>Deletes the solution in the subscription.
-     *
+     * 
+     * Deletes the solution in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
@@ -969,9 +843,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Retrieve solution.
-     *
-     * <p>Retrieves the user solution.
-     *
+     * 
+     * Retrieves the user solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -980,19 +854,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SolutionInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String solutionName) {
+    private Mono<Response<SolutionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String solutionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1004,24 +874,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            solutionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, solutionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve solution.
-     *
-     * <p>Retrieves the user solution.
-     *
+     * 
+     * Retrieves the user solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
@@ -1031,19 +893,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SolutionInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String solutionName, Context context) {
+    private Mono<Response<SolutionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String solutionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1054,22 +912,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                solutionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            solutionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieve solution.
-     *
-     * <p>Retrieves the user solution.
-     *
+     * 
+     * Retrieves the user solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1085,9 +936,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Retrieve solution.
-     *
-     * <p>Retrieves the user solution.
-     *
+     * 
+     * Retrieves the user solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @param context The context to associate with this operation.
@@ -1097,16 +948,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SolutionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String solutionName, Context context) {
+    public Response<SolutionInner> getByResourceGroupWithResponse(String resourceGroupName, String solutionName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, solutionName, context).block();
     }
 
     /**
      * Retrieve solution.
-     *
-     * <p>Retrieves the user solution.
-     *
+     * 
+     * Retrieves the user solution.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param solutionName User Solution Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1121,9 +972,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1133,16 +984,12 @@ public final class SolutionsClientImpl implements SolutionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SolutionPropertiesListInner>> listByResourceGroupWithResponseAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1150,24 +997,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1176,19 +1015,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the list of solution response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SolutionPropertiesListInner>> listByResourceGroupWithResponseAsync(
-        String resourceGroupName, Context context) {
+    private Mono<Response<SolutionPropertiesListInner>> listByResourceGroupWithResponseAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1196,21 +1031,15 @@ public final class SolutionsClientImpl implements SolutionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1224,9 +1053,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1235,16 +1064,16 @@ public final class SolutionsClientImpl implements SolutionsClient {
      * @return the list of solution response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SolutionPropertiesListInner> listByResourceGroupWithResponse(
-        String resourceGroupName, Context context) {
+    public Response<SolutionPropertiesListInner> listByResourceGroupWithResponse(String resourceGroupName,
+        Context context) {
         return listByResourceGroupWithResponseAsync(resourceGroupName, context).block();
     }
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1258,9 +1087,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of solution response along with {@link Response} on successful completion of {@link Mono}.
@@ -1268,36 +1097,25 @@ public final class SolutionsClientImpl implements SolutionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SolutionPropertiesListInner>> listBySubscriptionWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscription(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listBySubscription(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1307,33 +1125,24 @@ public final class SolutionsClientImpl implements SolutionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SolutionPropertiesListInner>> listBySubscriptionWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscription(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listBySubscription(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of solution response on successful completion of {@link Mono}.
@@ -1345,9 +1154,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1361,9 +1170,9 @@ public final class SolutionsClientImpl implements SolutionsClient {
 
     /**
      * Retrieves the solution list for the subscription
-     *
-     * <p>Retrieves the solution list. It will retrieve both first party and third party solutions.
-     *
+     * 
+     * Retrieves the solution list. It will retrieve both first party and third party solutions.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of solution response.

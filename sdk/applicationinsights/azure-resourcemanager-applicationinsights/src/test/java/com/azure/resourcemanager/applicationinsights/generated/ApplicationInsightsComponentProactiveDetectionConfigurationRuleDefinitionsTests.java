@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions model =
-            BinaryData
-                .fromString(
-                    "{\"Name\":\"nmoc\",\"DisplayName\":\"ysh\",\"Description\":\"zafb\",\"HelpUrl\":\"j\",\"IsHidden\":true,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":false}")
-                .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.class);
+        ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions model = BinaryData.fromString(
+            "{\"Name\":\"nmoc\",\"DisplayName\":\"ysh\",\"Description\":\"zafb\",\"HelpUrl\":\"j\",\"IsHidden\":true,\"IsEnabledByDefault\":false,\"IsInPreview\":false,\"SupportsEmailNotifications\":false}")
+            .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.class);
         Assertions.assertEquals("nmoc", model.name());
         Assertions.assertEquals("ysh", model.displayName());
         Assertions.assertEquals("zafb", model.description());
@@ -28,9 +26,8 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions model =
-            new ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions()
-                .withName("nmoc")
+        ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions model
+            = new ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions().withName("nmoc")
                 .withDisplayName("ysh")
                 .withDescription("zafb")
                 .withHelpUrl("j")
@@ -38,10 +35,8 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
                 .withIsEnabledByDefault(false)
                 .withIsInPreview(false)
                 .withSupportsEmailNotifications(false);
-        model =
-            BinaryData
-                .fromObject(model)
-                .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.class);
+        model = BinaryData.fromObject(model)
+            .toObject(ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions.class);
         Assertions.assertEquals("nmoc", model.name());
         Assertions.assertEquals("ysh", model.displayName());
         Assertions.assertEquals("zafb", model.description());

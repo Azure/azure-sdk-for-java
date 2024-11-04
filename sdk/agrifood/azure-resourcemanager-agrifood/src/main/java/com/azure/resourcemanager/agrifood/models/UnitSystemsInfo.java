@@ -71,14 +71,12 @@ public final class UnitSystemsInfo {
      */
     public void validate() {
         if (key() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property key in model UnitSystemsInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property key in model UnitSystemsInfo"));
         }
         if (values() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property values in model UnitSystemsInfo"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property values in model UnitSystemsInfo"));
         }
     }
 

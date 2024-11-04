@@ -29,23 +29,28 @@ import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAs
 import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementAssociationPropertiesListInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ManagementAssociationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ManagementAssociationsClient.
+ */
 public final class ManagementAssociationsClientImpl implements ManagementAssociationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ManagementAssociationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final OperationsManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagementAssociationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ManagementAssociationsClientImpl(OperationsManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ManagementAssociationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ManagementAssociationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,157 +61,111 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
     @Host("{$host}")
     @ServiceInterface(name = "OperationsManagement")
     public interface ManagementAssociationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.OperationsManagement/ManagementAssociations")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementAssociationPropertiesListInner>> listBySubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ManagementAssociationPropertiesListInner>> listBySubscription(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.OperationsManagement/ManagementAssociations"
-                + "/{managementAssociationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.OperationsManagement/ManagementAssociations/{managementAssociationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementAssociationInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagementAssociationInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("providerName") String providerName,
-            @PathParam("resourceType") String resourceType,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("providerName") String providerName, @PathParam("resourceType") String resourceType,
             @PathParam("resourceName") String resourceName,
             @PathParam("managementAssociationName") String managementAssociationName,
-            @BodyParam("application/json") ManagementAssociationInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ManagementAssociationInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.OperationsManagement/ManagementAssociations"
-                + "/{managementAssociationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.OperationsManagement/ManagementAssociations/{managementAssociationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("providerName") String providerName,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("providerName") String providerName,
+            @PathParam("resourceType") String resourceType, @PathParam("resourceName") String resourceName,
             @PathParam("managementAssociationName") String managementAssociationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}"
-                + "/{resourceName}/providers/Microsoft.OperationsManagement/ManagementAssociations"
-                + "/{managementAssociationName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{providerName}/{resourceType}/{resourceName}/providers/Microsoft.OperationsManagement/ManagementAssociations/{managementAssociationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagementAssociationInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ManagementAssociationInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("providerName") String providerName,
-            @PathParam("resourceType") String resourceType,
-            @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("providerName") String providerName,
+            @PathParam("resourceType") String resourceType, @PathParam("resourceName") String resourceName,
             @PathParam("managementAssociationName") String managementAssociationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieves the ManagementAssociations list for the subscription
-     *
-     * <p>Retrieves the ManagementAssociations list.
-     *
+     * 
+     * Retrieves the ManagementAssociations list.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ManagementAssociation response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the list of ManagementAssociation response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementAssociationPropertiesListInner>> listBySubscriptionWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscription(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listBySubscription(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the ManagementAssociations list for the subscription
-     *
-     * <p>Retrieves the ManagementAssociations list.
-     *
+     * 
+     * Retrieves the ManagementAssociations list.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ManagementAssociation response along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the list of ManagementAssociation response along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementAssociationPropertiesListInner>> listBySubscriptionWithResponseAsync(
-        Context context) {
+    private Mono<Response<ManagementAssociationPropertiesListInner>>
+        listBySubscriptionWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscription(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listBySubscription(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieves the ManagementAssociations list for the subscription
-     *
-     * <p>Retrieves the ManagementAssociations list.
-     *
+     * 
+     * Retrieves the ManagementAssociations list.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ManagementAssociation response on successful completion of {@link Mono}.
@@ -218,9 +177,9 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
 
     /**
      * Retrieves the ManagementAssociations list for the subscription
-     *
-     * <p>Retrieves the ManagementAssociations list.
-     *
+     * 
+     * Retrieves the ManagementAssociations list.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -234,9 +193,9 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
 
     /**
      * Retrieves the ManagementAssociations list for the subscription
-     *
-     * <p>Retrieves the ManagementAssociations list.
-     *
+     * 
+     * Retrieves the ManagementAssociations list.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ManagementAssociation response.
@@ -248,9 +207,9 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
 
     /**
      * Create/Update ManagementAssociation.
-     *
-     * <p>Creates or updates the ManagementAssociation.
-     *
+     * 
+     * Creates or updates the ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -263,24 +222,16 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementAssociationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
+    private Mono<Response<ManagementAssociationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String providerName, String resourceType, String resourceName, String managementAssociationName,
         ManagementAssociationInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -296,10 +247,8 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (managementAssociationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementAssociationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementAssociationName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -308,29 +257,17 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            providerName,
-                            resourceType,
-                            resourceName,
-                            managementAssociationName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), providerName, resourceType, resourceName,
+                managementAssociationName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create/Update ManagementAssociation.
-     *
-     * <p>Creates or updates the ManagementAssociation.
-     *
+     * 
+     * Creates or updates the ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -344,25 +281,16 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementAssociationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        ManagementAssociationInner parameters,
-        Context context) {
+    private Mono<Response<ManagementAssociationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String providerName, String resourceType, String resourceName, String managementAssociationName,
+        ManagementAssociationInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -378,10 +306,8 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (managementAssociationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementAssociationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementAssociationName is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -390,26 +316,16 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                providerName,
-                resourceType,
-                resourceName,
-                managementAssociationName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), providerName, resourceType, resourceName, managementAssociationName,
+            parameters, accept, context);
     }
 
     /**
      * Create/Update ManagementAssociation.
-     *
-     * <p>Creates or updates the ManagementAssociation.
-     *
+     * 
+     * Creates or updates the ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -422,23 +338,18 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the container for solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagementAssociationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
+    private Mono<ManagementAssociationInner> createOrUpdateAsync(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String managementAssociationName,
         ManagementAssociationInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+        return createOrUpdateWithResponseAsync(resourceGroupName, providerName, resourceType, resourceName,
+            managementAssociationName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create/Update ManagementAssociation.
-     *
-     * <p>Creates or updates the ManagementAssociation.
-     *
+     * 
+     * Creates or updates the ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -452,30 +363,18 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementAssociationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        ManagementAssociationInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                providerName,
-                resourceType,
-                resourceName,
-                managementAssociationName,
-                parameters,
-                context)
-            .block();
+    public Response<ManagementAssociationInner> createOrUpdateWithResponse(String resourceGroupName,
+        String providerName, String resourceType, String resourceName, String managementAssociationName,
+        ManagementAssociationInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, providerName, resourceType, resourceName,
+            managementAssociationName, parameters, context).block();
     }
 
     /**
      * Create/Update ManagementAssociation.
-     *
-     * <p>Creates or updates the ManagementAssociation.
-     *
+     * 
+     * Creates or updates the ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -488,29 +387,17 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementAssociationInner createOrUpdate(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        ManagementAssociationInner parameters) {
-        return createOrUpdateWithResponse(
-                resourceGroupName,
-                providerName,
-                resourceType,
-                resourceName,
-                managementAssociationName,
-                parameters,
-                Context.NONE)
-            .getValue();
+    public ManagementAssociationInner createOrUpdate(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName, ManagementAssociationInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, providerName, resourceType, resourceName,
+            managementAssociationName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Deletes the ManagementAssociation
-     *
-     * <p>Deletes the ManagementAssociation in the subscription.
-     *
+     * 
+     * Deletes the ManagementAssociation in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -522,23 +409,15 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String managementAssociationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -554,35 +433,22 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (managementAssociationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementAssociationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementAssociationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            providerName,
-                            resourceType,
-                            resourceName,
-                            managementAssociationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, providerName, resourceType, resourceName, managementAssociationName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the ManagementAssociation
-     *
-     * <p>Deletes the ManagementAssociation in the subscription.
-     *
+     * 
+     * Deletes the ManagementAssociation in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -595,24 +461,15 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String managementAssociationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -628,32 +485,21 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (managementAssociationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementAssociationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementAssociationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                providerName,
-                resourceType,
-                resourceName,
-                managementAssociationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            providerName, resourceType, resourceName, managementAssociationName, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Deletes the ManagementAssociation
-     *
-     * <p>Deletes the ManagementAssociation in the subscription.
-     *
+     * 
+     * Deletes the ManagementAssociation in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -665,22 +511,17 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName) {
-        return deleteWithResponseAsync(
-                resourceGroupName, providerName, resourceType, resourceName, managementAssociationName)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> deleteAsync(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName) {
+        return deleteWithResponseAsync(resourceGroupName, providerName, resourceType, resourceName,
+            managementAssociationName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the ManagementAssociation
-     *
-     * <p>Deletes the ManagementAssociation in the subscription.
-     *
+     * 
+     * Deletes the ManagementAssociation in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -693,23 +534,17 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        Context context) {
-        return deleteWithResponseAsync(
-                resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, context)
-            .block();
+    public Response<Void> deleteWithResponse(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, providerName, resourceType, resourceName,
+            managementAssociationName, context).block();
     }
 
     /**
      * Deletes the ManagementAssociation
-     *
-     * <p>Deletes the ManagementAssociation in the subscription.
-     *
+     * 
+     * Deletes the ManagementAssociation in the subscription.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -720,21 +555,17 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
+    public void delete(String resourceGroupName, String providerName, String resourceType, String resourceName,
         String managementAssociationName) {
-        deleteWithResponse(
-            resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, Context.NONE);
+        deleteWithResponse(resourceGroupName, providerName, resourceType, resourceName, managementAssociationName,
+            Context.NONE);
     }
 
     /**
      * Retrieve ManagementAssociation.
-     *
-     * <p>Retrieves the user ManagementAssociation.
-     *
+     * 
+     * Retrieves the user ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -746,23 +577,15 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementAssociationInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName) {
+    private Mono<Response<ManagementAssociationInner>> getWithResponseAsync(String resourceGroupName,
+        String providerName, String resourceType, String resourceName, String managementAssociationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -778,35 +601,22 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (managementAssociationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementAssociationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementAssociationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            providerName,
-                            resourceType,
-                            resourceName,
-                            managementAssociationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, providerName, resourceType, resourceName, managementAssociationName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve ManagementAssociation.
-     *
-     * <p>Retrieves the user ManagementAssociation.
-     *
+     * 
+     * Retrieves the user ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -819,24 +629,16 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the container for solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagementAssociationInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
+    private Mono<Response<ManagementAssociationInner>> getWithResponseAsync(String resourceGroupName,
+        String providerName, String resourceType, String resourceName, String managementAssociationName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -852,32 +654,20 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (managementAssociationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter managementAssociationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter managementAssociationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                providerName,
-                resourceType,
-                resourceName,
-                managementAssociationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, providerName,
+            resourceType, resourceName, managementAssociationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Retrieve ManagementAssociation.
-     *
-     * <p>Retrieves the user ManagementAssociation.
-     *
+     * 
+     * Retrieves the user ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -889,22 +679,17 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the container for solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagementAssociationInner> getAsync(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName) {
-        return getWithResponseAsync(
-                resourceGroupName, providerName, resourceType, resourceName, managementAssociationName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<ManagementAssociationInner> getAsync(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String managementAssociationName) {
+        return getWithResponseAsync(resourceGroupName, providerName, resourceType, resourceName,
+            managementAssociationName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieve ManagementAssociation.
-     *
-     * <p>Retrieves the user ManagementAssociation.
-     *
+     * 
+     * Retrieves the user ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -917,23 +702,17 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the container for solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagementAssociationInner> getWithResponse(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, context)
-            .block();
+    public Response<ManagementAssociationInner> getWithResponse(String resourceGroupName, String providerName,
+        String resourceType, String resourceName, String managementAssociationName, Context context) {
+        return getWithResponseAsync(resourceGroupName, providerName, resourceType, resourceName,
+            managementAssociationName, context).block();
     }
 
     /**
      * Retrieve ManagementAssociation.
-     *
-     * <p>Retrieves the user ManagementAssociation.
-     *
+     * 
+     * Retrieves the user ManagementAssociation.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param providerName Provider name for the parent resource.
      * @param resourceType Resource type for the parent resource.
@@ -945,14 +724,9 @@ public final class ManagementAssociationsClientImpl implements ManagementAssocia
      * @return the container for solution.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagementAssociationInner get(
-        String resourceGroupName,
-        String providerName,
-        String resourceType,
-        String resourceName,
-        String managementAssociationName) {
-        return getWithResponse(
-                resourceGroupName, providerName, resourceType, resourceName, managementAssociationName, Context.NONE)
-            .getValue();
+    public ManagementAssociationInner get(String resourceGroupName, String providerName, String resourceType,
+        String resourceName, String managementAssociationName) {
+        return getWithResponse(resourceGroupName, providerName, resourceType, resourceName, managementAssociationName,
+            Context.NONE).getValue();
     }
 }

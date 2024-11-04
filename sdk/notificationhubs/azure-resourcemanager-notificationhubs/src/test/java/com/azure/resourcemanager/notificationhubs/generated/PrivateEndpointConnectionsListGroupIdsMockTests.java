@@ -44,12 +44,13 @@ public final class PrivateEndpointConnectionsListGroupIdsMockTests {
             return Mono.just(httpResponse);
         }));
 
-        NotificationHubsManager manager = NotificationHubsManager.configure().withHttpClient(httpClient).authenticate(
-            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-            new AzureProfile("", "", AzureEnvironment.AZURE));
+        NotificationHubsManager manager = NotificationHubsManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateLinkResource> response = manager.privateEndpointConnections().listGroupIds("dhtmdvypgikd",
-            "szywkbirryu", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateLinkResource> response = manager.privateEndpointConnections()
+            .listGroupIds("dhtmdvypgikd", "szywkbirryu", com.azure.core.util.Context.NONE);
 
     }
 }

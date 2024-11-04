@@ -50,8 +50,8 @@ public class ResponseConstructorsCacheBenchMark {
         ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
 
         for (ResponseConstructorsCacheBenchMarkTestData.Input input : inputs) {
-            Class<? extends Response<?>> responseClass = (Class<? extends Response<?>>) TypeUtil.getRawClass(
-                input.getReturnType());
+            Class<? extends Response<?>> responseClass
+                = (Class<? extends Response<?>>) TypeUtil.getRawClass(input.getReturnType());
             // Step1: Locate Constructor using Reflection.
             ReflectiveInvoker reflectiveInvoker = defaultCache.get(responseClass);
             // Step2: Invoke Constructor using Reflection.
@@ -67,11 +67,11 @@ public class ResponseConstructorsCacheBenchMark {
         ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
 
         for (ResponseConstructorsCacheBenchMarkTestData.Input input : inputs) {
-            Class<? extends Response<?>> responseClass = (Class<? extends Response<?>>) TypeUtil.getRawClass(
-                input.getReturnType());
+            Class<? extends Response<?>> responseClass
+                = (Class<? extends Response<?>>) TypeUtil.getRawClass(input.getReturnType());
             // Step1: Locate Constructor using LambdaMetaFactory.
-            ResponseConstructorsCacheLambdaMetaFactory.ResponseConstructor constructor = lambdaMetaCache.get(
-                responseClass);
+            ResponseConstructorsCacheLambdaMetaFactory.ResponseConstructor constructor
+                = lambdaMetaCache.get(responseClass);
 
             if (constructor == null) {
                 throw new IllegalStateException("Response constructor with expected parameters not found.");
@@ -90,8 +90,8 @@ public class ResponseConstructorsCacheBenchMark {
         ResponseConstructorsCacheBenchMarkTestData.Input[] inputs = testData.inputs();
 
         for (ResponseConstructorsCacheBenchMarkTestData.Input input : inputs) {
-            Class<? extends Response<?>> responseClass = (Class<? extends Response<?>>) TypeUtil.getRawClass(
-                input.getReturnType());
+            Class<? extends Response<?>> responseClass
+                = (Class<? extends Response<?>>) TypeUtil.getRawClass(input.getReturnType());
             // Step1: Locate Constructor using Reflection.
             Constructor<? extends Response<?>> constructor = reflectionNoCache.get(responseClass);
 

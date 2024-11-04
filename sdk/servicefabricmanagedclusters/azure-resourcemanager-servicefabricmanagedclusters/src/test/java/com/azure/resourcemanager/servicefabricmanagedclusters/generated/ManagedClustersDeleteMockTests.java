@@ -27,7 +27,7 @@ public final class ManagedClustersDeleteMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.managedClusters().delete("nqnm", "jng", com.azure.core.util.Context.NONE);
+        manager.managedClusters().delete("abtqwpwyawbzasqb", "clj", com.azure.core.util.Context.NONE);
 
     }
 }

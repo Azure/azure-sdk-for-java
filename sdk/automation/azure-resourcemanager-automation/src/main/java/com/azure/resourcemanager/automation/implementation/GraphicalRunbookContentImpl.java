@@ -13,8 +13,7 @@ public final class GraphicalRunbookContentImpl implements GraphicalRunbookConten
 
     private final com.azure.resourcemanager.automation.AutomationManager serviceManager;
 
-    GraphicalRunbookContentImpl(
-        GraphicalRunbookContentInner innerObject,
+    GraphicalRunbookContentImpl(GraphicalRunbookContentInner innerObject,
         com.azure.resourcemanager.automation.AutomationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-/** Samples for Accounts ListModels. */
+/**
+ * Samples for Accounts ListModels.
+ */
 public final class AccountsListModelsSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/ListAccountModels.json
+     * x-ms-original-file:
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/
+     * ListAccountModels.json
      */
     /**
      * Sample code: List AccountModels.
-     *
+     * 
      * @param manager Entry point to CognitiveServicesManager.
      */
     public static void listAccountModels(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {

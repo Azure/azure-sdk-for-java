@@ -37,7 +37,7 @@ import java.util.Map;
 
 class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
-    private static final String[] DISABLE_SANITIZER_LIST = {"AZSDK3430", "AZSDK2030"};
+    private static final String[] DISABLE_SANITIZER_LIST = { "AZSDK3430", "AZSDK2030" };
     private boolean sanitizersRemoved = false;
 
     @Override
@@ -50,9 +50,9 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
     }
 
     DocumentTranslationClient getDTClient(String endpoint, String key) {
-        DocumentTranslationClientBuilder documentTranslationClientbuilder = new DocumentTranslationClientBuilder()
-            .endpoint(endpoint)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DocumentTranslationClientBuilder documentTranslationClientbuilder
+            = new DocumentTranslationClientBuilder().endpoint(endpoint)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (interceptorManager.isPlaybackMode()) {
             documentTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -75,9 +75,9 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
     }
 
     private SingleDocumentTranslationClient getSDTClient(String endpoint, String key) {
-        SingleDocumentTranslationClientBuilder singleDocumentTranslationClientbuilder = new SingleDocumentTranslationClientBuilder()
-            .endpoint(endpoint)
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        SingleDocumentTranslationClientBuilder singleDocumentTranslationClientbuilder
+            = new SingleDocumentTranslationClientBuilder().endpoint(endpoint)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (interceptorManager.isPlaybackMode()) {
             singleDocumentTranslationClientbuilder.httpClient(interceptorManager.getPlaybackClient());
@@ -118,8 +118,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
     BlobContainerClient getBlobContainerClient(String containerName) {
         String endpoint = String.format("https://%s.blob.core.windows.net", getStorageName());
-        BlobContainerClientBuilder blobContainerClientBuilder = new BlobContainerClientBuilder()
-            .endpoint(endpoint)
+        BlobContainerClientBuilder blobContainerClientBuilder = new BlobContainerClientBuilder().endpoint(endpoint)
             .containerName(containerName)
             .credential(getIdentityTestCredential(interceptorManager));
 
@@ -162,22 +161,20 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
     String createSourceContainer(List<TestDocument> documents) {
         String containerName = testResourceNamer.randomName("source", 10);
-        BlobContainerClient blobContainerClient = createContainer(containerName, documents);        
-        String containerUrl = blobContainerClient.getBlobContainerUrl();
-        return containerUrl;
+        BlobContainerClient blobContainerClient = createContainer(containerName, documents);
+        return blobContainerClient.getBlobContainerUrl();
     }
 
     String createTargetContainer(List<TestDocument> documents) {
         String containerName = testResourceNamer.randomName("target", 10);
-        BlobContainerClient blobContainerClient = createContainer(containerName, documents);        
-        String containerUrl = blobContainerClient.getBlobContainerUrl();
-        return containerUrl;
+        BlobContainerClient blobContainerClient = createContainer(containerName, documents);
+        return blobContainerClient.getBlobContainerUrl();
     }
 
     Map<String, String> createTargetContainerWithClient(List<TestDocument> documents) {
 
         String containerName = testResourceNamer.randomName("target", 10);
-        BlobContainerClient blobContainerClient = createContainer(containerName, documents);        
+        BlobContainerClient blobContainerClient = createContainer(containerName, documents);
         String containerUrl = blobContainerClient.getBlobContainerUrl();
 
         Map<String, String> containerValues = new HashMap<>();
@@ -193,8 +190,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         documents.add(document);
         BlobContainerClient blobContainerClient = createContainer(containerName, documents);
         String containerUrl = blobContainerClient.getBlobContainerUrl();
-        String sasUri = containerUrl + "/" + document.getName();
-        return sasUri;
+        return containerUrl + "/" + document.getName();
     }
 
     BlobContainerClient createContainer(String containerName, List<TestDocument> documents) {
@@ -215,14 +211,13 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         for (TestDocument document : documents) {
             InputStream stream = new ByteArrayInputStream(document.getContent().getBytes());
             BlobClient blobClient = blobContainerClient.getBlobClient(document.getName());
-            blobClient.upload(stream);
+            blobClient.upload(stream, true);
         }
     }
 
     String downloadDocumentStream(String targetContainerName, String blobName) {
         String endpoint = String.format("https://%s.blob.core.windows.net", getStorageName());
-        BlobClientBuilder blobClientBuilder = new BlobClientBuilder()
-            .endpoint(endpoint)
+        BlobClientBuilder blobClientBuilder = new BlobClientBuilder().endpoint(endpoint)
             .containerName(targetContainerName)
             .credential(getIdentityTestCredential(interceptorManager))
             .blobName(blobName);
@@ -241,8 +236,7 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
         InputStream blobIS = blobClient.openInputStream();
         try {
-            String content = readInputStreamToString(blobIS);
-            return content;
+            return readInputStreamToString(blobIS);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -268,11 +262,10 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
 
         Configuration config = Configuration.getGlobalConfiguration();
 
-        ChainedTokenCredentialBuilder builder = new ChainedTokenCredentialBuilder()
-                .addLast(new EnvironmentCredentialBuilder().build())
+        ChainedTokenCredentialBuilder builder
+            = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
                 .addLast(new AzureCliCredentialBuilder().build())
                 .addLast(new AzureDeveloperCliCredentialBuilder().build());
-
 
         String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
         String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -280,12 +273,12 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
 
         if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
-                && !CoreUtils.isNullOrEmpty(clientId)
-                && !CoreUtils.isNullOrEmpty(tenantId)
-                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+            && !CoreUtils.isNullOrEmpty(clientId)
+            && !CoreUtils.isNullOrEmpty(tenantId)
+            && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
 
-            AzurePipelinesCredential azurePipelinesCredential = new AzurePipelinesCredentialBuilder()
-                    .systemAccessToken(systemAccessToken)
+            AzurePipelinesCredential azurePipelinesCredential
+                = new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
                     .clientId(clientId)
                     .tenantId(tenantId)
                     .serviceConnectionId(serviceConnectionId)
@@ -295,7 +288,6 @@ class DocumentTranslationClientTestBase extends TestProxyTestBase {
         }
 
         builder.addLast(new AzurePowerShellCredentialBuilder().build());
-
 
         return builder.build();
     }

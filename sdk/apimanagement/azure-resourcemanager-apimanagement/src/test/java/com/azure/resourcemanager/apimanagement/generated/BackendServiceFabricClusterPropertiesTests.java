@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BackendServiceFabricClusterPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackendServiceFabricClusterProperties model =
-            BinaryData
-                .fromString(
-                    "{\"clientCertificateId\":\"exyionofninbd\",\"clientCertificatethumbprint\":\"s\",\"maxPartitionResolutionRetries\":1883901064,\"managementEndpoints\":[\"qrs\",\"pcbbprtugav\",\"zbcyksiv\",\"fogdrtbfcm\"],\"serverCertificateThumbprints\":[\"tsjcwjjxs\",\"mb\"],\"serverX509Names\":[{\"name\":\"fdxkecifhocjxwkl\",\"issuerCertificateThumbprint\":\"zrvtx\"},{\"name\":\"mufun\",\"issuerCertificateThumbprint\":\"px\"},{\"name\":\"ir\",\"issuerCertificateThumbprint\":\"yngjgvrquvpygglp\"},{\"name\":\"rdcueljtiahx\",\"issuerCertificateThumbprint\":\"q\"}]}")
-                .toObject(BackendServiceFabricClusterProperties.class);
+        BackendServiceFabricClusterProperties model = BinaryData.fromString(
+            "{\"clientCertificateId\":\"exyionofninbd\",\"clientCertificatethumbprint\":\"s\",\"maxPartitionResolutionRetries\":1883901064,\"managementEndpoints\":[\"qrs\",\"pcbbprtugav\",\"zbcyksiv\",\"fogdrtbfcm\"],\"serverCertificateThumbprints\":[\"tsjcwjjxs\",\"mb\"],\"serverX509Names\":[{\"name\":\"fdxkecifhocjxwkl\",\"issuerCertificateThumbprint\":\"zrvtx\"},{\"name\":\"mufun\",\"issuerCertificateThumbprint\":\"px\"},{\"name\":\"ir\",\"issuerCertificateThumbprint\":\"yngjgvrquvpygglp\"},{\"name\":\"rdcueljtiahx\",\"issuerCertificateThumbprint\":\"q\"}]}")
+            .toObject(BackendServiceFabricClusterProperties.class);
         Assertions.assertEquals("exyionofninbd", model.clientCertificateId());
         Assertions.assertEquals("s", model.clientCertificatethumbprint());
         Assertions.assertEquals(1883901064, model.maxPartitionResolutionRetries());
@@ -29,24 +27,17 @@ public final class BackendServiceFabricClusterPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackendServiceFabricClusterProperties model =
-            new BackendServiceFabricClusterProperties()
-                .withClientCertificateId("exyionofninbd")
+        BackendServiceFabricClusterProperties model
+            = new BackendServiceFabricClusterProperties().withClientCertificateId("exyionofninbd")
                 .withClientCertificatethumbprint("s")
                 .withMaxPartitionResolutionRetries(1883901064)
                 .withManagementEndpoints(Arrays.asList("qrs", "pcbbprtugav", "zbcyksiv", "fogdrtbfcm"))
                 .withServerCertificateThumbprints(Arrays.asList("tsjcwjjxs", "mb"))
-                .withServerX509Names(
-                    Arrays
-                        .asList(
-                            new X509CertificateName()
-                                .withName("fdxkecifhocjxwkl")
-                                .withIssuerCertificateThumbprint("zrvtx"),
-                            new X509CertificateName().withName("mufun").withIssuerCertificateThumbprint("px"),
-                            new X509CertificateName()
-                                .withName("ir")
-                                .withIssuerCertificateThumbprint("yngjgvrquvpygglp"),
-                            new X509CertificateName().withName("rdcueljtiahx").withIssuerCertificateThumbprint("q")));
+                .withServerX509Names(Arrays.asList(
+                    new X509CertificateName().withName("fdxkecifhocjxwkl").withIssuerCertificateThumbprint("zrvtx"),
+                    new X509CertificateName().withName("mufun").withIssuerCertificateThumbprint("px"),
+                    new X509CertificateName().withName("ir").withIssuerCertificateThumbprint("yngjgvrquvpygglp"),
+                    new X509CertificateName().withName("rdcueljtiahx").withIssuerCertificateThumbprint("q")));
         model = BinaryData.fromObject(model).toObject(BackendServiceFabricClusterProperties.class);
         Assertions.assertEquals("exyionofninbd", model.clientCertificateId());
         Assertions.assertEquals("s", model.clientCertificatethumbprint());

@@ -22,11 +22,8 @@ public interface AttachedDatabaseConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request along with {@link Response}.
      */
-    Response<CheckNameResult> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
-        Context context);
+    Response<CheckNameResult> checkNameAvailabilityWithResponse(String resourceGroupName, String clusterName,
+        AttachedDatabaseConfigurationsCheckNameRequest resourceName, Context context);
 
     /**
      * Checks that the attached database configuration resource name is valid and is not already in use.
@@ -39,8 +36,8 @@ public interface AttachedDatabaseConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result returned from a check name availability request.
      */
-    CheckNameResult checkNameAvailability(
-        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName);
+    CheckNameResult checkNameAvailability(String resourceGroupName, String clusterName,
+        AttachedDatabaseConfigurationsCheckNameRequest resourceName);
 
     /**
      * Returns the list of attached database configurations of the given Kusto cluster.
@@ -67,8 +64,8 @@ public interface AttachedDatabaseConfigurations {
      * @return the list attached database configurations operation response as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<AttachedDatabaseConfiguration> listByCluster(
-        String resourceGroupName, String clusterName, Context context);
+    PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName,
+        Context context);
 
     /**
      * Returns an attached database configuration.
@@ -82,8 +79,8 @@ public interface AttachedDatabaseConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration along with {@link Response}.
      */
-    Response<AttachedDatabaseConfiguration> getWithResponse(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context);
+    Response<AttachedDatabaseConfiguration> getWithResponse(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName, Context context);
 
     /**
      * Returns an attached database configuration.
@@ -96,8 +93,8 @@ public interface AttachedDatabaseConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing an attached database configuration.
      */
-    AttachedDatabaseConfiguration get(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName);
+    AttachedDatabaseConfiguration get(String resourceGroupName, String clusterName,
+        String attachedDatabaseConfigurationName);
 
     /**
      * Deletes the attached database configuration with the given name.
@@ -122,8 +119,8 @@ public interface AttachedDatabaseConfigurations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName, Context context);
+    void delete(String resourceGroupName, String clusterName, String attachedDatabaseConfigurationName,
+        Context context);
 
     /**
      * Returns an attached database configuration.

@@ -7,28 +7,45 @@ package com.azure.resourcemanager.mediaservices.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies a certificate for token validation. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
-@JsonTypeName("#Microsoft.Media.ContentKeyPolicyX509CertificateTokenKey")
+/**
+ * Specifies a certificate for token validation.
+ */
 @Fluent
 public final class ContentKeyPolicyX509CertificateTokenKey extends ContentKeyPolicyRestrictionTokenKey {
     /*
+     * The discriminator for derived types.
+     */
+    private String odataType = "#Microsoft.Media.ContentKeyPolicyX509CertificateTokenKey";
+
+    /*
      * The raw data field of a certificate in PKCS 12 format (X509Certificate2 in .NET)
      */
-    @JsonProperty(value = "rawBody", required = true)
     private byte[] rawBody;
 
-    /** Creates an instance of ContentKeyPolicyX509CertificateTokenKey class. */
+    /**
+     * Creates an instance of ContentKeyPolicyX509CertificateTokenKey class.
+     */
     public ContentKeyPolicyX509CertificateTokenKey() {
     }
 
     /**
+     * Get the odataType property: The discriminator for derived types.
+     * 
+     * @return the odataType value.
+     */
+    @Override
+    public String odataType() {
+        return this.odataType;
+    }
+
+    /**
      * Get the rawBody property: The raw data field of a certificate in PKCS 12 format (X509Certificate2 in .NET).
-     *
+     * 
      * @return the rawBody value.
      */
     public byte[] rawBody() {
@@ -37,7 +54,7 @@ public final class ContentKeyPolicyX509CertificateTokenKey extends ContentKeyPol
 
     /**
      * Set the rawBody property: The raw data field of a certificate in PKCS 12 format (X509Certificate2 in .NET).
-     *
+     * 
      * @param rawBody the rawBody value to set.
      * @return the ContentKeyPolicyX509CertificateTokenKey object itself.
      */
@@ -48,19 +65,58 @@ public final class ContentKeyPolicyX509CertificateTokenKey extends ContentKeyPol
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (rawBody() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property rawBody in model ContentKeyPolicyX509CertificateTokenKey"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property rawBody in model ContentKeyPolicyX509CertificateTokenKey"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ContentKeyPolicyX509CertificateTokenKey.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBinaryField("rawBody", this.rawBody);
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContentKeyPolicyX509CertificateTokenKey from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContentKeyPolicyX509CertificateTokenKey if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContentKeyPolicyX509CertificateTokenKey.
+     */
+    public static ContentKeyPolicyX509CertificateTokenKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContentKeyPolicyX509CertificateTokenKey deserializedContentKeyPolicyX509CertificateTokenKey
+                = new ContentKeyPolicyX509CertificateTokenKey();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rawBody".equals(fieldName)) {
+                    deserializedContentKeyPolicyX509CertificateTokenKey.rawBody = reader.getBinary();
+                } else if ("@odata.type".equals(fieldName)) {
+                    deserializedContentKeyPolicyX509CertificateTokenKey.odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContentKeyPolicyX509CertificateTokenKey;
+        });
+    }
 }

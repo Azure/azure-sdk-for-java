@@ -46,8 +46,8 @@ public interface WorkbookTemplates {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single workbook template by its resourceName along with {@link Response}.
      */
-    Response<WorkbookTemplate> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<WorkbookTemplate> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get a single workbook template by its resourceName.

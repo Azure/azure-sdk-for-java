@@ -345,8 +345,8 @@ public class ApiManagementServiceBaseProperties {
      * @param hostnameConfigurations the hostnameConfigurations value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
-    public ApiManagementServiceBaseProperties withHostnameConfigurations(
-        List<HostnameConfiguration> hostnameConfigurations) {
+    public ApiManagementServiceBaseProperties
+        withHostnameConfigurations(List<HostnameConfiguration> hostnameConfigurations) {
         this.hostnameConfigurations = hostnameConfigurations;
         return this;
     }
@@ -435,8 +435,8 @@ public class ApiManagementServiceBaseProperties {
      * @param virtualNetworkConfiguration the virtualNetworkConfiguration value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
-    public ApiManagementServiceBaseProperties withVirtualNetworkConfiguration(
-        VirtualNetworkConfiguration virtualNetworkConfiguration) {
+    public ApiManagementServiceBaseProperties
+        withVirtualNetworkConfiguration(VirtualNetworkConfiguration virtualNetworkConfiguration) {
         this.virtualNetworkConfiguration = virtualNetworkConfiguration;
         return this;
     }
@@ -706,8 +706,8 @@ public class ApiManagementServiceBaseProperties {
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the ApiManagementServiceBaseProperties object itself.
      */
-    public ApiManagementServiceBaseProperties withPrivateEndpointConnections(
-        List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
+    public ApiManagementServiceBaseProperties
+        withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }

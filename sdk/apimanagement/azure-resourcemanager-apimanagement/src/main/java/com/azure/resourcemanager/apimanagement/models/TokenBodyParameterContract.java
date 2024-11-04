@@ -74,15 +74,12 @@ public final class TokenBodyParameterContract {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model TokenBodyParameterContract"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model TokenBodyParameterContract"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model TokenBodyParameterContract"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model TokenBodyParameterContract"));
         }
     }
 

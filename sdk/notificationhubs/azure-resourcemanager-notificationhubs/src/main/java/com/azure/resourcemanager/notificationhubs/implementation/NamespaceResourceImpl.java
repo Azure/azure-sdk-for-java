@@ -136,9 +136,9 @@ public final class NamespaceResourceImpl
     public List<PrivateEndpointConnectionResource> privateEndpointConnections() {
         List<PrivateEndpointConnectionResourceInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections.unmodifiableList(
-                inner.stream().map(inner1 -> new PrivateEndpointConnectionResourceImpl(inner1, this.manager()))
-                    .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionResourceImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -180,14 +180,16 @@ public final class NamespaceResourceImpl
     }
 
     public NamespaceResource create() {
-        this.innerObject = serviceManager.serviceClient().getNamespaces().createOrUpdate(resourceGroupName,
-            namespaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .createOrUpdate(resourceGroupName, namespaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public NamespaceResource create(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNamespaces().createOrUpdate(resourceGroupName,
-            namespaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .createOrUpdate(resourceGroupName, namespaceName, this.innerModel(), context);
         return this;
     }
 
@@ -204,14 +206,18 @@ public final class NamespaceResourceImpl
     }
 
     public NamespaceResource apply() {
-        this.innerObject = serviceManager.serviceClient().getNamespaces()
-            .updateWithResponse(resourceGroupName, namespaceName, updateParameters, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .updateWithResponse(resourceGroupName, namespaceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NamespaceResource apply(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNamespaces()
-            .updateWithResponse(resourceGroupName, namespaceName, updateParameters, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .updateWithResponse(resourceGroupName, namespaceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
@@ -224,14 +230,18 @@ public final class NamespaceResourceImpl
     }
 
     public NamespaceResource refresh() {
-        this.innerObject = serviceManager.serviceClient().getNamespaces()
-            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NamespaceResource refresh(Context context) {
-        this.innerObject = serviceManager.serviceClient().getNamespaces()
-            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, context).getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, context)
+            .getValue();
         return this;
     }
 

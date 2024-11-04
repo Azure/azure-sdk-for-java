@@ -108,11 +108,8 @@ public interface TagDescriptionContract {
          * The stage of the TagDescriptionContract definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithDescription,
-                DefinitionStages.WithExternalDocsUrl,
-                DefinitionStages.WithExternalDocsDescription,
-                DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithDescription, DefinitionStages.WithExternalDocsUrl,
+            DefinitionStages.WithExternalDocsDescription, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -185,11 +182,8 @@ public interface TagDescriptionContract {
     TagDescriptionContract.Update update();
 
     /** The template for TagDescriptionContract update. */
-    interface Update
-        extends UpdateStages.WithDescription,
-            UpdateStages.WithExternalDocsUrl,
-            UpdateStages.WithExternalDocsDescription,
-            UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithDescription, UpdateStages.WithExternalDocsUrl,
+        UpdateStages.WithExternalDocsDescription, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *

@@ -40,8 +40,8 @@ public interface DigitalTwinsEndpointsClient {
      * @return digitalTwinsInstance Endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DigitalTwinsEndpointResourceInner> list(
-        String resourceGroupName, String resourceName, Context context);
+    PagedIterable<DigitalTwinsEndpointResourceInner> list(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get DigitalTwinsInstances Endpoint.
@@ -56,8 +56,8 @@ public interface DigitalTwinsEndpointsClient {
      * @return digitalTwinsInstances Endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DigitalTwinsEndpointResourceInner> getWithResponse(
-        String resourceGroupName, String resourceName, String endpointName, Context context);
+    Response<DigitalTwinsEndpointResourceInner> getWithResponse(String resourceGroupName, String resourceName,
+        String endpointName, Context context);
 
     /**
      * Get DigitalTwinsInstances Endpoint.
@@ -87,9 +87,7 @@ public interface DigitalTwinsEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String endpointName,
+        String resourceGroupName, String resourceName, String endpointName,
         DigitalTwinsEndpointResourceInner endpointDescription);
 
     /**
@@ -107,11 +105,8 @@ public interface DigitalTwinsEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String endpointName,
-        DigitalTwinsEndpointResourceInner endpointDescription,
-        Context context);
+        String resourceGroupName, String resourceName, String endpointName,
+        DigitalTwinsEndpointResourceInner endpointDescription, Context context);
 
     /**
      * Create or update DigitalTwinsInstance endpoint.
@@ -126,10 +121,7 @@ public interface DigitalTwinsEndpointsClient {
      * @return digitalTwinsInstance endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DigitalTwinsEndpointResourceInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String endpointName,
+    DigitalTwinsEndpointResourceInner createOrUpdate(String resourceGroupName, String resourceName, String endpointName,
         DigitalTwinsEndpointResourceInner endpointDescription);
 
     /**
@@ -146,12 +138,8 @@ public interface DigitalTwinsEndpointsClient {
      * @return digitalTwinsInstance endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DigitalTwinsEndpointResourceInner createOrUpdate(
-        String resourceGroupName,
-        String resourceName,
-        String endpointName,
-        DigitalTwinsEndpointResourceInner endpointDescription,
-        Context context);
+    DigitalTwinsEndpointResourceInner createOrUpdate(String resourceGroupName, String resourceName, String endpointName,
+        DigitalTwinsEndpointResourceInner endpointDescription, Context context);
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
@@ -165,8 +153,8 @@ public interface DigitalTwinsEndpointsClient {
      * @return the {@link SyncPoller} for polling of digitalTwinsInstance endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginDelete(
-        String resourceGroupName, String resourceName, String endpointName);
+    SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner>
+        beginDelete(String resourceGroupName, String resourceName, String endpointName);
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
@@ -181,8 +169,8 @@ public interface DigitalTwinsEndpointsClient {
      * @return the {@link SyncPoller} for polling of digitalTwinsInstance endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner> beginDelete(
-        String resourceGroupName, String resourceName, String endpointName, Context context);
+    SyncPoller<PollResult<DigitalTwinsEndpointResourceInner>, DigitalTwinsEndpointResourceInner>
+        beginDelete(String resourceGroupName, String resourceName, String endpointName, Context context);
 
     /**
      * Delete a DigitalTwinsInstance endpoint.
@@ -211,6 +199,6 @@ public interface DigitalTwinsEndpointsClient {
      * @return digitalTwinsInstance endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DigitalTwinsEndpointResourceInner delete(
-        String resourceGroupName, String resourceName, String endpointName, Context context);
+    DigitalTwinsEndpointResourceInner delete(String resourceGroupName, String resourceName, String endpointName,
+        Context context);
 }

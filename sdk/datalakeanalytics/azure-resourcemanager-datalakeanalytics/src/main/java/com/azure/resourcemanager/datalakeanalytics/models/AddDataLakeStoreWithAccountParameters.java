@@ -6,31 +6,38 @@ package com.azure.resourcemanager.datalakeanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.AddDataLakeStoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The parameters used to add a new Data Lake Store account while creating a new Data Lake Analytics account. */
+/**
+ * The parameters used to add a new Data Lake Store account while creating a new Data Lake Analytics account.
+ */
 @Fluent
-public final class AddDataLakeStoreWithAccountParameters {
+public final class AddDataLakeStoreWithAccountParameters
+    implements JsonSerializable<AddDataLakeStoreWithAccountParameters> {
     /*
      * The unique name of the Data Lake Store account to add.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The Data Lake Store account properties to use when adding a new Data Lake Store account.
      */
-    @JsonProperty(value = "properties")
     private AddDataLakeStoreProperties innerProperties;
 
-    /** Creates an instance of AddDataLakeStoreWithAccountParameters class. */
+    /**
+     * Creates an instance of AddDataLakeStoreWithAccountParameters class.
+     */
     public AddDataLakeStoreWithAccountParameters() {
     }
 
     /**
      * Get the name property: The unique name of the Data Lake Store account to add.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +46,7 @@ public final class AddDataLakeStoreWithAccountParameters {
 
     /**
      * Set the name property: The unique name of the Data Lake Store account to add.
-     *
+     * 
      * @param name the name value to set.
      * @return the AddDataLakeStoreWithAccountParameters object itself.
      */
@@ -51,7 +58,7 @@ public final class AddDataLakeStoreWithAccountParameters {
     /**
      * Get the innerProperties property: The Data Lake Store account properties to use when adding a new Data Lake Store
      * account.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AddDataLakeStoreProperties innerProperties() {
@@ -60,7 +67,7 @@ public final class AddDataLakeStoreWithAccountParameters {
 
     /**
      * Get the suffix property: The optional suffix for the Data Lake Store account.
-     *
+     * 
      * @return the suffix value.
      */
     public String suffix() {
@@ -69,7 +76,7 @@ public final class AddDataLakeStoreWithAccountParameters {
 
     /**
      * Set the suffix property: The optional suffix for the Data Lake Store account.
-     *
+     * 
      * @param suffix the suffix value to set.
      * @return the AddDataLakeStoreWithAccountParameters object itself.
      */
@@ -83,15 +90,14 @@ public final class AddDataLakeStoreWithAccountParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model AddDataLakeStoreWithAccountParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model AddDataLakeStoreWithAccountParameters"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -99,4 +105,46 @@ public final class AddDataLakeStoreWithAccountParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AddDataLakeStoreWithAccountParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AddDataLakeStoreWithAccountParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AddDataLakeStoreWithAccountParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AddDataLakeStoreWithAccountParameters.
+     */
+    public static AddDataLakeStoreWithAccountParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AddDataLakeStoreWithAccountParameters deserializedAddDataLakeStoreWithAccountParameters
+                = new AddDataLakeStoreWithAccountParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAddDataLakeStoreWithAccountParameters.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAddDataLakeStoreWithAccountParameters.innerProperties
+                        = AddDataLakeStoreProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAddDataLakeStoreWithAccountParameters;
+        });
+    }
 }

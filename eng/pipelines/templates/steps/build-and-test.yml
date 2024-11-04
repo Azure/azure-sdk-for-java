@@ -44,7 +44,7 @@ parameters:
 
 steps:
   - task: Maven@4
-    ${{ if ne(parameters.VersionOverride, '') }}:
+    ${{ if eq(parameters.TestVersionSupport, 'true') }}:
       displayName: '${{ parameters.VersionOverride }} - Build for non-From Source run'
     ${{ else }}:
       displayName: 'Build for non-From Source run'
@@ -97,7 +97,7 @@ steps:
 
     - task: AzurePowerShell@5
       condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-      ${{ if ne(parameters.VersionOverride, '') }}:
+      ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         displayName: '${{ parameters.VersionOverride }} - Run tests (Federated Auth)'
       ${{ else }}:
         displayName: 'Run tests (Federated Auth)'
@@ -122,7 +122,7 @@ steps:
   - ${{ else }}:
     - task: Maven@4
       condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-      ${{ if ne(parameters.VersionOverride, '') }}:
+      ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         displayName: '${{ parameters.VersionOverride }} - Run tests'
       ${{ else }}:
         displayName: 'Run tests'
@@ -233,7 +233,7 @@ steps:
       env: ${{ parameters.TestEnvVars }}
       condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - ${{ if ne(parameters.VersionOverride, '') }}:
+  - ${{ if eq(parameters.TestVersionSupport, 'true') }}:
     - template: /eng/pipelines/templates/steps/retain-test-logs.yml
       parameters:
         TestLogsArtifactName: 'test-logs-vo-${{ parameters.VersionOverride }}'
@@ -252,18 +252,12 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
       searchFolder: '$(System.DefaultWorkingDirectory)/sdk'
       mergeTestResults: true
-      ${{ if ne(parameters.VersionOverride, '') }}:
+      ${{ if eq(parameters.TestVersionSupport, 'true') }}:
         testRunTitle: '$(Agent.JobName)_vo_${{ parameters.VersionOverride }}_attempt_$(System.JobAttempt)'
       ${{ else }}:
         testRunTitle: '$(Agent.JobName)_attempt_$(System.JobAttempt)'
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
-
-  # Dotnet core sdk task 7.0.x. This is a prerequisite for PublishCodeCoverageResults@2
-  - task: UseDotNet@2
-    displayName: 'Use .NET Core sdk 7.0.x'
-    inputs:
-      version: 7.0.x
 
   # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
   # Code coverage reporting is set up only for Track 2 modules.

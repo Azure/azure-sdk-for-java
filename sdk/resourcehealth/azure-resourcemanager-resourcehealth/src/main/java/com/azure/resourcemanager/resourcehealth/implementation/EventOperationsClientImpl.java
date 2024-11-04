@@ -40,8 +40,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @param client the instance of the service client containing this operation class.
      */
     EventOperationsClientImpl(MicrosoftResourceHealthImpl client) {
-        this.service =
-            RestProxy.create(EventOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EventOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,56 +52,41 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftResourceHea")
     public interface EventOperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventInner>> getBySubscriptionIdAndTrackingId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("queryStartTime") String queryStartTime,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("eventTrackingId") String eventTrackingId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<EventInner>> getBySubscriptionIdAndTrackingId(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("queryStartTime") String queryStartTime, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("eventTrackingId") String eventTrackingId, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/fetchEventDetails")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/fetchEventDetails")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventInner>> fetchDetailsBySubscriptionIdAndTrackingId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("eventTrackingId") String eventTrackingId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<EventInner>> fetchDetailsBySubscriptionIdAndTrackingId(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("eventTrackingId") String eventTrackingId, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.ResourceHealth/events/{eventTrackingId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventInner>> getByTenantIdAndTrackingId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("queryStartTime") String queryStartTime,
-            @PathParam("eventTrackingId") String eventTrackingId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EventInner>> getByTenantIdAndTrackingId(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @QueryParam("$filter") String filter,
+            @QueryParam("queryStartTime") String queryStartTime, @PathParam("eventTrackingId") String eventTrackingId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/fetchEventDetails")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventInner>> fetchDetailsByTenantIdAndTrackingId(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("eventTrackingId") String eventTrackingId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EventInner>> fetchDetailsByTenantIdAndTrackingId(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("eventTrackingId") String eventTrackingId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -118,19 +103,15 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @return service health event along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventInner>> getBySubscriptionIdAndTrackingIdWithResponseAsync(
-        String eventTrackingId, String filter, String queryStartTime) {
+    private Mono<Response<EventInner>> getBySubscriptionIdAndTrackingIdWithResponseAsync(String eventTrackingId,
+        String filter, String queryStartTime) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -138,18 +119,9 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getBySubscriptionIdAndTrackingId(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            filter,
-                            queryStartTime,
-                            this.client.getSubscriptionId(),
-                            eventTrackingId,
-                            accept,
-                            context))
+            .withContext(context -> service.getBySubscriptionIdAndTrackingId(this.client.getEndpoint(),
+                this.client.getApiVersion(), filter, queryStartTime, this.client.getSubscriptionId(), eventTrackingId,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -168,19 +140,15 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @return service health event along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventInner>> getBySubscriptionIdAndTrackingIdWithResponseAsync(
-        String eventTrackingId, String filter, String queryStartTime, Context context) {
+    private Mono<Response<EventInner>> getBySubscriptionIdAndTrackingIdWithResponseAsync(String eventTrackingId,
+        String filter, String queryStartTime, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -188,16 +156,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getBySubscriptionIdAndTrackingId(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                filter,
-                queryStartTime,
-                this.client.getSubscriptionId(),
-                eventTrackingId,
-                accept,
-                context);
+        return service.getBySubscriptionIdAndTrackingId(this.client.getEndpoint(), this.client.getApiVersion(), filter,
+            queryStartTime, this.client.getSubscriptionId(), eventTrackingId, accept, context);
     }
 
     /**
@@ -232,8 +192,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @return service health event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventInner> getBySubscriptionIdAndTrackingIdWithResponse(
-        String eventTrackingId, String filter, String queryStartTime, Context context) {
+    public Response<EventInner> getBySubscriptionIdAndTrackingIdWithResponse(String eventTrackingId, String filter,
+        String queryStartTime, Context context) {
         return getBySubscriptionIdAndTrackingIdWithResponseAsync(eventTrackingId, filter, queryStartTime, context)
             .block();
     }
@@ -266,19 +226,15 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @return service health event along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventInner>> fetchDetailsBySubscriptionIdAndTrackingIdWithResponseAsync(
-        String eventTrackingId) {
+    private Mono<Response<EventInner>>
+        fetchDetailsBySubscriptionIdAndTrackingIdWithResponseAsync(String eventTrackingId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -286,16 +242,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .fetchDetailsBySubscriptionIdAndTrackingId(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            eventTrackingId,
-                            accept,
-                            context))
+            .withContext(context -> service.fetchDetailsBySubscriptionIdAndTrackingId(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), eventTrackingId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -311,19 +259,15 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @return service health event along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventInner>> fetchDetailsBySubscriptionIdAndTrackingIdWithResponseAsync(
-        String eventTrackingId, Context context) {
+    private Mono<Response<EventInner>>
+        fetchDetailsBySubscriptionIdAndTrackingIdWithResponseAsync(String eventTrackingId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -331,14 +275,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .fetchDetailsBySubscriptionIdAndTrackingId(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                eventTrackingId,
-                accept,
-                context);
+        return service.fetchDetailsBySubscriptionIdAndTrackingId(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), eventTrackingId, accept, context);
     }
 
     /**
@@ -369,8 +307,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @return service health event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventInner> fetchDetailsBySubscriptionIdAndTrackingIdWithResponse(
-        String eventTrackingId, Context context) {
+    public Response<EventInner> fetchDetailsBySubscriptionIdAndTrackingIdWithResponse(String eventTrackingId,
+        Context context) {
         return fetchDetailsBySubscriptionIdAndTrackingIdWithResponseAsync(eventTrackingId, context).block();
     }
 
@@ -403,13 +341,11 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @return service health event along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventInner>> getByTenantIdAndTrackingIdWithResponseAsync(
-        String eventTrackingId, String filter, String queryStartTime) {
+    private Mono<Response<EventInner>> getByTenantIdAndTrackingIdWithResponseAsync(String eventTrackingId,
+        String filter, String queryStartTime) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -417,17 +353,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByTenantIdAndTrackingId(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            filter,
-                            queryStartTime,
-                            eventTrackingId,
-                            accept,
-                            context))
+            .withContext(context -> service.getByTenantIdAndTrackingId(this.client.getEndpoint(),
+                this.client.getApiVersion(), filter, queryStartTime, eventTrackingId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -446,13 +373,11 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @return service health event along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventInner>> getByTenantIdAndTrackingIdWithResponseAsync(
-        String eventTrackingId, String filter, String queryStartTime, Context context) {
+    private Mono<Response<EventInner>> getByTenantIdAndTrackingIdWithResponseAsync(String eventTrackingId,
+        String filter, String queryStartTime, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -460,15 +385,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByTenantIdAndTrackingId(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                filter,
-                queryStartTime,
-                eventTrackingId,
-                accept,
-                context);
+        return service.getByTenantIdAndTrackingId(this.client.getEndpoint(), this.client.getApiVersion(), filter,
+            queryStartTime, eventTrackingId, accept, context);
     }
 
     /**
@@ -503,8 +421,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @return service health event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventInner> getByTenantIdAndTrackingIdWithResponse(
-        String eventTrackingId, String filter, String queryStartTime, Context context) {
+    public Response<EventInner> getByTenantIdAndTrackingIdWithResponse(String eventTrackingId, String filter,
+        String queryStartTime, Context context) {
         return getByTenantIdAndTrackingIdWithResponseAsync(eventTrackingId, filter, queryStartTime, context).block();
     }
 
@@ -537,10 +455,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<EventInner>> fetchDetailsByTenantIdAndTrackingIdWithResponseAsync(String eventTrackingId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -548,11 +464,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .fetchDetailsByTenantIdAndTrackingId(
-                            this.client.getEndpoint(), this.client.getApiVersion(), eventTrackingId, accept, context))
+            .withContext(context -> service.fetchDetailsByTenantIdAndTrackingId(this.client.getEndpoint(),
+                this.client.getApiVersion(), eventTrackingId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -568,13 +481,11 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @return service health event along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventInner>> fetchDetailsByTenantIdAndTrackingIdWithResponseAsync(
-        String eventTrackingId, Context context) {
+    private Mono<Response<EventInner>> fetchDetailsByTenantIdAndTrackingIdWithResponseAsync(String eventTrackingId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -582,9 +493,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .fetchDetailsByTenantIdAndTrackingId(
-                this.client.getEndpoint(), this.client.getApiVersion(), eventTrackingId, accept, context);
+        return service.fetchDetailsByTenantIdAndTrackingId(this.client.getEndpoint(), this.client.getApiVersion(),
+            eventTrackingId, accept, context);
     }
 
     /**
@@ -615,8 +525,8 @@ public final class EventOperationsClientImpl implements EventOperationsClient {
      * @return service health event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventInner> fetchDetailsByTenantIdAndTrackingIdWithResponse(
-        String eventTrackingId, Context context) {
+    public Response<EventInner> fetchDetailsByTenantIdAndTrackingIdWithResponse(String eventTrackingId,
+        Context context) {
         return fetchDetailsByTenantIdAndTrackingIdWithResponseAsync(eventTrackingId, context).block();
     }
 

@@ -46,8 +46,8 @@ public interface AuthorizationProvidersClient {
      * @return paged Authorization Provider list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AuthorizationProviderContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<AuthorizationProviderContractInner> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context);
 
     /**
      * Gets the details of the authorization provider specified by its identifier.
@@ -62,8 +62,8 @@ public interface AuthorizationProvidersClient {
      * @return the details of the authorization provider specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationProvidersGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String authorizationProviderId, Context context);
+    AuthorizationProvidersGetResponse getWithResponse(String resourceGroupName, String serviceName,
+        String authorizationProviderId, Context context);
 
     /**
      * Gets the details of the authorization provider specified by its identifier.
@@ -77,8 +77,8 @@ public interface AuthorizationProvidersClient {
      * @return the details of the authorization provider specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationProviderContractInner get(
-        String resourceGroupName, String serviceName, String authorizationProviderId);
+    AuthorizationProviderContractInner get(String resourceGroupName, String serviceName,
+        String authorizationProviderId);
 
     /**
      * Creates or updates authorization provider.
@@ -95,13 +95,9 @@ public interface AuthorizationProvidersClient {
      * @return authorization Provider contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationProvidersCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        AuthorizationProviderContractInner parameters,
-        String ifMatch,
-        Context context);
+    AuthorizationProvidersCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName,
+        String serviceName, String authorizationProviderId, AuthorizationProviderContractInner parameters,
+        String ifMatch, Context context);
 
     /**
      * Creates or updates authorization provider.
@@ -116,11 +112,8 @@ public interface AuthorizationProvidersClient {
      * @return authorization Provider contract.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationProviderContractInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String authorizationProviderId,
-        AuthorizationProviderContractInner parameters);
+    AuthorizationProviderContractInner createOrUpdate(String resourceGroupName, String serviceName,
+        String authorizationProviderId, AuthorizationProviderContractInner parameters);
 
     /**
      * Deletes specific authorization provider from the API Management service instance.
@@ -137,8 +130,8 @@ public interface AuthorizationProvidersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String authorizationProviderId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String authorizationProviderId,
+        String ifMatch, Context context);
 
     /**
      * Deletes specific authorization provider from the API Management service instance.

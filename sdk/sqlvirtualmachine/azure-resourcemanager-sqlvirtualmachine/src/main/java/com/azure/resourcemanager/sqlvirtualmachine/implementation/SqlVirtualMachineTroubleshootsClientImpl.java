@@ -31,26 +31,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SqlVirtualMachineTroubleshootsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlVirtualMachineTroubleshootsClient.
+ */
 public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtualMachineTroubleshootsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SqlVirtualMachineTroubleshootsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlVirtualMachineManagementClientImpl client;
 
     /**
      * Initializes an instance of SqlVirtualMachineTroubleshootsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SqlVirtualMachineTroubleshootsClientImpl(SqlVirtualMachineManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SqlVirtualMachineTroubleshootsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(SqlVirtualMachineTroubleshootsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,43 +63,37 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
     @Host("{$host}")
     @ServiceInterface(name = "SqlVirtualMachineMan")
     public interface SqlVirtualMachineTroubleshootsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/troubleshoot")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/{sqlVirtualMachineName}/troubleshoot")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> troubleshoot(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> troubleshoot(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("sqlVirtualMachineName") String sqlVirtualMachineName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") SqlVmTroubleshootingInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SqlVmTroubleshootingInner parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details required for SQL VM troubleshooting along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> troubleshootWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> troubleshootWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -108,10 +104,8 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -121,25 +115,16 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .troubleshoot(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            sqlVirtualMachineName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.troubleshoot(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+                    this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.
@@ -147,16 +132,14 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details required for SQL VM troubleshooting along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> troubleshootWithResponseAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> troubleshootWithResponseAsync(String resourceGroupName,
+        String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -167,10 +150,8 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
                 .error(new IllegalArgumentException("Parameter sqlVirtualMachineName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -179,23 +160,15 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .troubleshoot(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                sqlVirtualMachineName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.troubleshoot(this.client.getEndpoint(), resourceGroupName, sqlVirtualMachineName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,23 +179,18 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SqlVmTroubleshootingInner>, SqlVmTroubleshootingInner> beginTroubleshootAsync(
         String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            troubleshootWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters);
-        return this
-            .client
-            .<SqlVmTroubleshootingInner, SqlVmTroubleshootingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlVmTroubleshootingInner.class,
-                SqlVmTroubleshootingInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = troubleshootWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters);
+        return this.client.<SqlVmTroubleshootingInner, SqlVmTroubleshootingInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlVmTroubleshootingInner.class, SqlVmTroubleshootingInner.class,
+            this.client.getContext());
     }
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.
@@ -235,23 +203,17 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
     private PollerFlux<PollResult<SqlVmTroubleshootingInner>, SqlVmTroubleshootingInner> beginTroubleshootAsync(
         String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            troubleshootWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters, context);
-        return this
-            .client
-            .<SqlVmTroubleshootingInner, SqlVmTroubleshootingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SqlVmTroubleshootingInner.class,
-                SqlVmTroubleshootingInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = troubleshootWithResponseAsync(resourceGroupName, sqlVirtualMachineName, parameters, context);
+        return this.client.<SqlVmTroubleshootingInner, SqlVmTroubleshootingInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SqlVmTroubleshootingInner.class, SqlVmTroubleshootingInner.class, context);
     }
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -267,9 +229,9 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.
@@ -281,16 +243,15 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SqlVmTroubleshootingInner>, SqlVmTroubleshootingInner> beginTroubleshoot(
         String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
-        return this
-            .beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters, context)
+        return this.beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,18 +260,17 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      * @return details required for SQL VM troubleshooting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlVmTroubleshootingInner> troubleshootAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters) {
-        return beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters)
-            .last()
+    private Mono<SqlVmTroubleshootingInner> troubleshootAsync(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters) {
+        return beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.
@@ -320,18 +280,17 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      * @return details required for SQL VM troubleshooting on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SqlVmTroubleshootingInner> troubleshootAsync(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
-        return beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters, context)
-            .last()
+    private Mono<SqlVmTroubleshootingInner> troubleshootAsync(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters, Context context) {
+        return beginTroubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -340,16 +299,16 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      * @return details required for SQL VM troubleshooting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlVmTroubleshootingInner troubleshoot(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters) {
+    public SqlVmTroubleshootingInner troubleshoot(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters) {
         return troubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters).block();
     }
 
     /**
      * Starts SQL virtual machine troubleshooting.
-     *
+     * 
      * @param resourceGroupName Name of the resource group that contains the resource. You can obtain this value from
-     *     the Azure Resource Manager API or the portal.
+     * the Azure Resource Manager API or the portal.
      * @param sqlVirtualMachineName Name of the SQL virtual machine.
      * @param parameters The SQL virtual machine troubleshooting entity.
      * @param context The context to associate with this operation.
@@ -359,8 +318,8 @@ public final class SqlVirtualMachineTroubleshootsClientImpl implements SqlVirtua
      * @return details required for SQL VM troubleshooting.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlVmTroubleshootingInner troubleshoot(
-        String resourceGroupName, String sqlVirtualMachineName, SqlVmTroubleshootingInner parameters, Context context) {
+    public SqlVmTroubleshootingInner troubleshoot(String resourceGroupName, String sqlVirtualMachineName,
+        SqlVmTroubleshootingInner parameters, Context context) {
         return troubleshootAsync(resourceGroupName, sqlVirtualMachineName, parameters, context).block();
     }
 }

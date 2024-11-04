@@ -6,95 +6,114 @@ package com.azure.resourcemanager.logic.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.logic.LogicManager;
 import com.azure.resourcemanager.logic.models.FlowAccessControlConfiguration;
+import com.azure.resourcemanager.logic.models.FlowAccessControlConfigurationPolicy;
+import com.azure.resourcemanager.logic.models.FlowEndpoints;
 import com.azure.resourcemanager.logic.models.FlowEndpointsConfiguration;
+import com.azure.resourcemanager.logic.models.IpAddress;
+import com.azure.resourcemanager.logic.models.IpAddressRange;
 import com.azure.resourcemanager.logic.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.logic.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.logic.models.OpenAuthenticationAccessPolicies;
+import com.azure.resourcemanager.logic.models.OpenAuthenticationAccessPolicy;
+import com.azure.resourcemanager.logic.models.ParameterType;
 import com.azure.resourcemanager.logic.models.ResourceReference;
+import com.azure.resourcemanager.logic.models.UserAssignedIdentity;
 import com.azure.resourcemanager.logic.models.Workflow;
+import com.azure.resourcemanager.logic.models.WorkflowParameter;
 import com.azure.resourcemanager.logic.models.WorkflowState;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WorkflowsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Created\",\"createdTime\":\"2021-10-13T00:04:30Z\",\"changedTime\":\"2021-03-27T08:55:50Z\",\"state\":\"Suspended\",\"version\":\"wbsa\",\"accessEndpoint\":\"stnziv\",\"endpointsConfiguration\":{\"workflow\":{\"outgoingIpAddresses\":[{}],\"accessEndpointIpAddresses\":[{},{},{},{}]},\"connector\":{\"outgoingIpAddresses\":[{},{},{}],\"accessEndpointIpAddresses\":[{},{}]}},\"accessControl\":{\"triggers\":{\"allowedCallerIpAddresses\":[{},{},{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"jh\":{}}}},\"contents\":{\"allowedCallerIpAddresses\":[{},{},{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"cgmcthjgbrxmxqsk\":{},\"mtajjfmkwqpgbti\":{}}}},\"actions\":{\"allowedCallerIpAddresses\":[{},{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"cmjiibtvwa\":{},\"hawoptiqfu\":{}}}},\"workflowManagement\":{\"allowedCallerIpAddresses\":[{},{},{},{}],\"openAuthenticationPolicies\":{\"policies\":{\"xsmapd\":{},\"mmwylrv\":{}}}}},\"sku\":{\"name\":\"Free\",\"plan\":{\"id\":\"puxhkuemcbt\",\"name\":\"tnrc\",\"type\":\"vhyqexujlleweegv\"}},\"integrationAccount\":{\"id\":\"ythycd\",\"name\":\"cpf\",\"type\":\"mgfwxthrcmg\"},\"integrationServiceEnvironment\":{\"id\":\"gosclhjgckkbn\",\"name\":\"enyehmwzgf\",\"type\":\"keolorosahgcchz\"},\"definition\":\"datapkhfh\",\"parameters\":{\"vaxuvazzptldaax\":{\"type\":\"Int\",\"value\":\"datayfkini\",\"metadata\":\"datajffpuuykyvbpne\",\"description\":\"lctnnsjcufi\"},\"ntoiviuerrieho\":{\"type\":\"SecureObject\",\"value\":\"databnqyewinlenht\",\"metadata\":\"datae\",\"description\":\"vnedcclpb\"},\"iwjjqps\":{\"type\":\"Bool\",\"value\":\"datacayydtnllkyi\",\"metadata\":\"datatxvxgrftid\",\"description\":\"otvhivvoczsrypfv\"},\"ydldavozmibtk\":{\"type\":\"Float\",\"value\":\"dataeygmqnuyu\",\"metadata\":\"datahnnekh\",\"description\":\"lbcucwfcbugtcc\"}}},\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"f85644b7-bb27-4c6b-a3f9-2ea7fa3bcc47\",\"principalId\":\"14afec9e-4f7c-445e-9502-3a99bb46a36b\",\"userAssignedIdentities\":{\"zr\":{\"principalId\":\"rrank\",\"clientId\":\"wtnrrohlkgzczjw\"},\"jnmychtvp\":{\"principalId\":\"rkwyldttggcpqmkp\",\"clientId\":\"enaah\"},\"bv\":{\"principalId\":\"r\",\"clientId\":\"tw\"},\"s\":{\"principalId\":\"qhpphjimo\",\"clientId\":\"qpqkpn\"}}},\"location\":\"aizx\",\"tags\":{\"xotyjgx\":\"js\"},\"id\":\"gfejiu\",\"name\":\"ldsftm\",\"type\":\"lcdqvunvnggqacf\"}";
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Updating\",\"createdTime\":\"2021-07-25T12:16:40Z\",\"changedTime\":\"2021-07-23T09:34:44Z\",\"state\":\"Suspended\",\"version\":\"artr\",\"accessEndpoint\":\"nlp\",\"endpointsConfiguration\":{},\"accessControl\":{},\"sku\":{\"name\":\"Premium\"},\"integrationAccount\":{\"id\":\"reuykbbmnwagl\",\"name\":\"xoe\",\"type\":\"nqlnfwmyymvqd\"},\"integrationServiceEnvironment\":{\"id\":\"hfckdvezcrcssbz\",\"name\":\"dubbnqfblhkale\",\"type\":\"avawugiqj\"},\"definition\":\"dataogqgdminict\",\"parameters\":{}},\"identity\":{\"type\":\"SystemAssigned\",\"tenantId\":\"9082117c-3d51-49bb-b759-115e86657f15\",\"principalId\":\"df5680be-b357-412d-b941-5aaaadd8ff17\",\"userAssignedIdentities\":{}},\"location\":\"spnbonhpcz\",\"tags\":{\"xqcsehch\":\"ktpv\"},\"id\":\"hufmpq\",\"name\":\"mqyjgy\",\"type\":\"zulo\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        LogicManager manager = LogicManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Workflow response = manager.workflows()
+            .define("ssyzwtzdyzufgnns")
+            .withRegion("o")
+            .withExistingResourceGroup("cffbsnlv")
+            .withTags(mapOf("vpvxcqjgwtias", "jcrwwdte", "nszsehoegvwb", "bpcmvxxxhbry"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("gowfqrykikhf", new UserAssignedIdentity(), "fyo",
+                    new UserAssignedIdentity(), "bi", new UserAssignedIdentity())))
+            .withState(WorkflowState.DISABLED)
+            .withEndpointsConfiguration(new FlowEndpointsConfiguration()
+                .withWorkflow(new FlowEndpoints().withOutgoingIpAddresses(Arrays.asList(new IpAddress()))
+                    .withAccessEndpointIpAddresses(
+                        Arrays.asList(new IpAddress(), new IpAddress(), new IpAddress(), new IpAddress())))
+                .withConnector(new FlowEndpoints()
+                    .withOutgoingIpAddresses(Arrays.asList(new IpAddress(), new IpAddress(), new IpAddress()))
+                    .withAccessEndpointIpAddresses(Arrays.asList(new IpAddress()))))
+            .withAccessControl(new FlowAccessControlConfiguration()
+                .withTriggers(new FlowAccessControlConfigurationPolicy()
+                    .withAllowedCallerIpAddresses(
+                        Arrays.asList(new IpAddressRange(), new IpAddressRange(), new IpAddressRange()))
+                    .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies().withPolicies(mapOf("ei",
+                        new OpenAuthenticationAccessPolicy(), "sioonnfjgrtkeg", new OpenAuthenticationAccessPolicy(),
+                        "tvwffvbvuxpyveav", new OpenAuthenticationAccessPolicy()))))
+                .withContents(new FlowAccessControlConfigurationPolicy()
+                    .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange(), new IpAddressRange()))
+                    .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()
+                        .withPolicies(mapOf("ksdjkanizdcjx", new OpenAuthenticationAccessPolicy(), "zpmwxvfrmvtwwb",
+                            new OpenAuthenticationAccessPolicy(), "hivfosbrqeywhlq",
+                            new OpenAuthenticationAccessPolicy(), "dh", new OpenAuthenticationAccessPolicy()))))
+                .withActions(new FlowAccessControlConfigurationPolicy()
+                    .withAllowedCallerIpAddresses(Arrays.asList(new IpAddressRange()))
+                    .withOpenAuthenticationPolicies(
+                        new OpenAuthenticationAccessPolicies().withPolicies(mapOf("cawmhbqjll",
+                            new OpenAuthenticationAccessPolicy(), "z", new OpenAuthenticationAccessPolicy()))))
+                .withWorkflowManagement(new FlowAccessControlConfigurationPolicy()
+                    .withAllowedCallerIpAddresses(
+                        Arrays.asList(new IpAddressRange(), new IpAddressRange(), new IpAddressRange()))
+                    .withOpenAuthenticationPolicies(new OpenAuthenticationAccessPolicies()
+                        .withPolicies(mapOf("kud", new OpenAuthenticationAccessPolicy(), "oumgvwbytzheqvzw",
+                            new OpenAuthenticationAccessPolicy(), "mmw", new OpenAuthenticationAccessPolicy())))))
+            .withIntegrationAccount(new ResourceReference().withId("zdukamt"))
+            .withIntegrationServiceEnvironment(new ResourceReference().withId("wgkozl"))
+            .withDefinition("datasu")
+            .withParameters(mapOf("etgmmf",
+                new WorkflowParameter().withType(ParameterType.BOOL)
+                    .withValue("databq")
+                    .withMetadata("dataxkuyyrcqsyq")
+                    .withDescription("gje"),
+                "ygfgchlcbtxc",
+                new WorkflowParameter().withType(ParameterType.STRING)
+                    .withValue("dataoep")
+                    .withMetadata("datayeupkpyzaenar")
+                    .withDescription("rlqiykh")))
+            .create();
 
-        LogicManager manager =
-            LogicManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        Workflow response =
-            manager
-                .workflows()
-                .define("vcnrly")
-                .withRegion("fgvaknokzwj")
-                .withExistingResourceGroup("foanniyopetx")
-                .withTags(mapOf("ixymmpujivyql", "ltixldzyyfytpq"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf()))
-                .withState(WorkflowState.COMPLETED)
-                .withEndpointsConfiguration(new FlowEndpointsConfiguration())
-                .withAccessControl(new FlowAccessControlConfiguration())
-                .withIntegrationAccount(new ResourceReference().withId("vbrzcdb"))
-                .withIntegrationServiceEnvironment(new ResourceReference().withId("mk"))
-                .withDefinition("datacd")
-                .withParameters(mapOf())
-                .create();
-
-        Assertions.assertEquals("spnbonhpcz", response.location());
-        Assertions.assertEquals("ktpv", response.tags().get("xqcsehch"));
+        Assertions.assertEquals("aizx", response.location());
+        Assertions.assertEquals("js", response.tags().get("xotyjgx"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
         Assertions.assertEquals(WorkflowState.SUSPENDED, response.state());
-        Assertions.assertEquals("reuykbbmnwagl", response.integrationAccount().id());
-        Assertions.assertEquals("hfckdvezcrcssbz", response.integrationServiceEnvironment().id());
+        Assertions.assertEquals("ythycd", response.integrationAccount().id());
+        Assertions.assertEquals("gosclhjgckkbn", response.integrationServiceEnvironment().id());
+        Assertions.assertEquals(ParameterType.INT, response.parameters().get("vaxuvazzptldaax").type());
+        Assertions.assertEquals("lctnnsjcufi", response.parameters().get("vaxuvazzptldaax").description());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

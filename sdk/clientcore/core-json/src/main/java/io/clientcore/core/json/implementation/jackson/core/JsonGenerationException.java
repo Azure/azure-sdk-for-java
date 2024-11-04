@@ -13,9 +13,7 @@ import io.clientcore.core.json.implementation.jackson.core.exc.StreamWriteExcept
  * to output  content in wrong context (non-matching end-array or end-object,
  * for example).
  */
-public class JsonGenerationException
-    extends StreamWriteException
-{
+public class JsonGenerationException extends StreamWriteException {
     private final static long serialVersionUID = 123; // eclipse complains otherwise
 
     @Deprecated // since 2.7
@@ -68,5 +66,7 @@ public class JsonGenerationException
 
     // NOTE: overloaded in 2.13 just to retain binary compatibility with 2.12 (remove from 3.0)
     @Override
-    public JsonGenerator getProcessor() { return _processor; }
+    public JsonGenerator getProcessor() {
+        return _processor;
+    }
 }

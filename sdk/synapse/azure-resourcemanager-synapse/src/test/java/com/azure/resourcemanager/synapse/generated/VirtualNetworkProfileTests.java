@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkProfile model =
-            BinaryData.fromString("{\"computeSubnetId\":\"jyihsasbhudypo\"}").toObject(VirtualNetworkProfile.class);
-        Assertions.assertEquals("jyihsasbhudypo", model.computeSubnetId());
+        VirtualNetworkProfile model
+            = BinaryData.fromString("{\"computeSubnetId\":\"prtujwsawdd\"}").toObject(VirtualNetworkProfile.class);
+        Assertions.assertEquals("prtujwsawdd", model.computeSubnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkProfile model = new VirtualNetworkProfile().withComputeSubnetId("jyihsasbhudypo");
+        VirtualNetworkProfile model = new VirtualNetworkProfile().withComputeSubnetId("prtujwsawdd");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkProfile.class);
-        Assertions.assertEquals("jyihsasbhudypo", model.computeSubnetId());
+        Assertions.assertEquals("prtujwsawdd", model.computeSubnetId());
     }
 }

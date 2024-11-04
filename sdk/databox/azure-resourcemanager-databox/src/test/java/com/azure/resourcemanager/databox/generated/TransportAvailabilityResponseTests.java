@@ -10,10 +10,8 @@ import com.azure.resourcemanager.databox.models.TransportAvailabilityResponse;
 public final class TransportAvailabilityResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TransportAvailabilityResponse model =
-            BinaryData
-                .fromString(
-                    "{\"transportAvailabilityDetails\":[{\"shipmentType\":\"MicrosoftManaged\"},{\"shipmentType\":\"CustomerManaged\"},{\"shipmentType\":\"MicrosoftManaged\"},{\"shipmentType\":\"CustomerManaged\"}]}")
+        TransportAvailabilityResponse model
+            = BinaryData.fromString("{\"transportAvailabilityDetails\":[{\"shipmentType\":\"MicrosoftManaged\"}]}")
                 .toObject(TransportAvailabilityResponse.class);
     }
 

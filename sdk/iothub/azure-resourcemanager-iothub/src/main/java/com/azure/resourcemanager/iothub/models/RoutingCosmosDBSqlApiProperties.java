@@ -367,31 +367,23 @@ public final class RoutingCosmosDBSqlApiProperties {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model RoutingCosmosDBSqlApiProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property name in model RoutingCosmosDBSqlApiProperties"));
         }
         if (endpointUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endpointUri in model RoutingCosmosDBSqlApiProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property endpointUri in model RoutingCosmosDBSqlApiProperties"));
         }
         if (identity() != null) {
             identity().validate();
         }
         if (databaseName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseName in model RoutingCosmosDBSqlApiProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property databaseName in model RoutingCosmosDBSqlApiProperties"));
         }
         if (containerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property containerName in model RoutingCosmosDBSqlApiProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property containerName in model RoutingCosmosDBSqlApiProperties"));
         }
     }
 

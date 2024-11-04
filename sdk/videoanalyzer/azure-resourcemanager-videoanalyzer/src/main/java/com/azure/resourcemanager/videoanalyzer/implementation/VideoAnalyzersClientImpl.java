@@ -50,8 +50,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @param client the instance of the service client containing this operation class.
      */
     VideoAnalyzersClientImpl(VideoAnalyzerManagementClientImpl client) {
-        this.service =
-            RestProxy.create(VideoAnalyzersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(VideoAnalyzersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,92 +62,65 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
     @Host("{$host}")
     @ServiceInterface(name = "VideoAnalyzerManagem")
     private interface VideoAnalyzersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoAnalyzerCollectionInner>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VideoAnalyzerCollectionInner>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoAnalyzerInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VideoAnalyzerInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VideoAnalyzerInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VideoAnalyzerInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
-                + "/videoAnalyzers/{accountName}")
-        @ExpectedResponses({202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media"
+            + "/videoAnalyzers/{accountName}")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VideoAnalyzerUpdate parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") VideoAnalyzerUpdate parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Media/videoAnalyzers")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VideoAnalyzerCollectionInner>> listBySubscription(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<VideoAnalyzerCollectionInner>> listBySubscription(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -162,16 +135,12 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerCollectionInner>> listWithResponseAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -179,16 +148,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -203,19 +164,15 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return a collection of VideoAnalyzer items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoAnalyzerCollectionInner>> listWithResponseAsync(
-        String resourceGroupName, Context context) {
+    private Mono<Response<VideoAnalyzerCollectionInner>> listWithResponseAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -223,14 +180,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -288,19 +239,15 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoAnalyzerInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<Response<VideoAnalyzerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -312,16 +259,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -338,19 +277,15 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VideoAnalyzerInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<VideoAnalyzerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -361,15 +296,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -415,8 +343,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the details of the specified Video Analyzer account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VideoAnalyzerInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
+    public Response<VideoAnalyzerInner> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
     }
 
@@ -432,19 +360,15 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the Video Analyzer account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, VideoAnalyzerInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -460,18 +384,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -488,19 +402,15 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the Video Analyzer account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, VideoAnalyzerInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -516,16 +426,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -540,18 +442,12 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the {@link PollerFlux} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters);
-        return this
-            .client
-            .<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VideoAnalyzerInner.class,
-                VideoAnalyzerInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String accountName, VideoAnalyzerInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters);
+        return this.client.<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VideoAnalyzerInner.class, VideoAnalyzerInner.class, this.client.getContext());
     }
 
     /**
@@ -570,12 +466,10 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
     private PollerFlux<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters, context);
-        return this
-            .client
-            .<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VideoAnalyzerInner.class, VideoAnalyzerInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, accountName, parameters, context);
+        return this.client.<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VideoAnalyzerInner.class, VideoAnalyzerInner.class, context);
     }
 
     /**
@@ -590,8 +484,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters) {
+    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, VideoAnalyzerInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
     }
 
@@ -608,8 +502,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context) {
+    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginCreateOrUpdate(String resourceGroupName,
+        String accountName, VideoAnalyzerInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
     }
 
@@ -625,10 +519,9 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the Video Analyzer account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VideoAnalyzerInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters)
-            .last()
+    private Mono<VideoAnalyzerInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        VideoAnalyzerInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -645,10 +538,9 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the Video Analyzer account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VideoAnalyzerInner> createOrUpdateAsync(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters, context)
-            .last()
+    private Mono<VideoAnalyzerInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        VideoAnalyzerInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -664,8 +556,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VideoAnalyzerInner createOrUpdate(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters) {
+    public VideoAnalyzerInner createOrUpdate(String resourceGroupName, String accountName,
+        VideoAnalyzerInner parameters) {
         return createOrUpdateAsync(resourceGroupName, accountName, parameters).block();
     }
 
@@ -682,8 +574,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VideoAnalyzerInner createOrUpdate(
-        String resourceGroupName, String accountName, VideoAnalyzerInner parameters, Context context) {
+    public VideoAnalyzerInner createOrUpdate(String resourceGroupName, String accountName,
+        VideoAnalyzerInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
@@ -700,16 +592,12 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -720,17 +608,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -746,19 +625,15 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -769,15 +644,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -837,19 +705,15 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the Video Analyzer account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        VideoAnalyzerUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -865,18 +729,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -893,19 +747,15 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the Video Analyzer account along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        VideoAnalyzerUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -921,16 +771,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -945,17 +787,11 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the {@link PollerFlux} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters) {
+    private PollerFlux<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, VideoAnalyzerUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, parameters);
-        return this
-            .client
-            .<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                VideoAnalyzerInner.class,
-                VideoAnalyzerInner.class,
-                this.client.getContext());
+        return this.client.<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VideoAnalyzerInner.class, VideoAnalyzerInner.class, this.client.getContext());
     }
 
     /**
@@ -971,15 +807,13 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the {@link PollerFlux} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdateAsync(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context) {
+    private PollerFlux<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, VideoAnalyzerUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, parameters, context);
-        return this
-            .client
-            .<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(
-                mono, this.client.getHttpPipeline(), VideoAnalyzerInner.class, VideoAnalyzerInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, parameters, context);
+        return this.client.<VideoAnalyzerInner, VideoAnalyzerInner>getLroResult(mono, this.client.getHttpPipeline(),
+            VideoAnalyzerInner.class, VideoAnalyzerInner.class, context);
     }
 
     /**
@@ -994,8 +828,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters) {
+    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(String resourceGroupName,
+        String accountName, VideoAnalyzerUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
     }
 
@@ -1012,8 +846,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the {@link SyncPoller} for polling of the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context) {
+    public SyncPoller<PollResult<VideoAnalyzerInner>, VideoAnalyzerInner> beginUpdate(String resourceGroupName,
+        String accountName, VideoAnalyzerUpdate parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
     }
 
@@ -1029,10 +863,9 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the Video Analyzer account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VideoAnalyzerInner> updateAsync(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, accountName, parameters)
-            .last()
+    private Mono<VideoAnalyzerInner> updateAsync(String resourceGroupName, String accountName,
+        VideoAnalyzerUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, accountName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1049,10 +882,9 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the Video Analyzer account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VideoAnalyzerInner> updateAsync(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, parameters, context)
-            .last()
+    private Mono<VideoAnalyzerInner> updateAsync(String resourceGroupName, String accountName,
+        VideoAnalyzerUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1085,8 +917,8 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
      * @return the Video Analyzer account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VideoAnalyzerInner update(
-        String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters, Context context) {
+    public VideoAnalyzerInner update(String resourceGroupName, String accountName, VideoAnalyzerUpdate parameters,
+        Context context) {
         return updateAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
@@ -1100,28 +932,17 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerCollectionInner>> listBySubscriptionWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscription(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.listBySubscription(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1137,26 +958,17 @@ public final class VideoAnalyzersClientImpl implements VideoAnalyzersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VideoAnalyzerCollectionInner>> listBySubscriptionWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscription(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listBySubscription(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**

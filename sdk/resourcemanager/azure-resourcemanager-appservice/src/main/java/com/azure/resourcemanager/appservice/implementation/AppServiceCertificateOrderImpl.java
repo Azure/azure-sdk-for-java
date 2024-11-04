@@ -24,9 +24,8 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 
 /** The implementation for {@link AppServicePlan}. */
-class AppServiceCertificateOrderImpl
-    extends GroupableResourceImpl<
-        AppServiceCertificateOrder, AppServiceCertificateOrderInner, AppServiceCertificateOrderImpl, AppServiceManager>
+class AppServiceCertificateOrderImpl extends
+    GroupableResourceImpl<AppServiceCertificateOrder, AppServiceCertificateOrderInner, AppServiceCertificateOrderImpl, AppServiceManager>
     implements AppServiceCertificateOrder, AppServiceCertificateOrder.Definition, AppServiceCertificateOrder.Update {
 
     private WebAppBase domainVerifyWebApp;
@@ -40,8 +39,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     protected Mono<AppServiceCertificateOrderInner> getInnerAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
             .getByResourceGroupAsync(resourceGroupName(), name());
@@ -54,8 +52,7 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public Mono<AppServiceCertificateKeyVaultBinding> getKeyVaultBindingAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
             .listCertificatesAsync(resourceGroupName(), name())
@@ -156,14 +153,12 @@ class AppServiceCertificateOrderImpl
         certInner.withLocation(vault.regionName());
         certInner.withKeyVaultId(vault.id());
         certInner.withKeyVaultSecretName(certificateName);
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
             .createOrUpdateCertificateAsync(resourceGroupName(), name(), certificateName, certInner)
-            .map(
-                appServiceCertificateInner ->
-                    new AppServiceCertificateKeyVaultBindingImpl(appServiceCertificateInner, this));
+            .map(appServiceCertificateInner -> new AppServiceCertificateKeyVaultBindingImpl(appServiceCertificateInner,
+                this));
     }
 
     @Override
@@ -192,29 +187,22 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public Mono<AppServiceCertificateOrder> createResourceAsync() {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
             .createOrUpdateAsync(resourceGroupName(), name(), innerModel())
             .map(innerToFluentMap(this))
-            .then(
-                Mono
-                    .defer(
-                        () -> {
-                            if (domainVerifyWebApp != null) {
-                                return domainVerifyWebApp.verifyDomainOwnershipAsync(name(), domainVerificationToken());
-                            } else if (domainVerifyDomain != null) {
-                                return domainVerifyDomain.verifyDomainOwnershipAsync(name(), domainVerificationToken());
-                            } else {
-                                return Mono
-                                    .error(
-                                        new IllegalArgumentException(
-                                            "Please specify a non-null web app or domain to verify the domain"
-                                                + " ownership for hostname "
-                                                + distinguishedName()));
-                            }
-                        }))
+            .then(Mono.defer(() -> {
+                if (domainVerifyWebApp != null) {
+                    return domainVerifyWebApp.verifyDomainOwnershipAsync(name(), domainVerificationToken());
+                } else if (domainVerifyDomain != null) {
+                    return domainVerifyDomain.verifyDomainOwnershipAsync(name(), domainVerificationToken());
+                } else {
+                    return Mono.error(
+                        new IllegalArgumentException("Please specify a non-null web app or domain to verify the domain"
+                            + " ownership for hostname " + distinguishedName()));
+                }
+            }))
             .then(bindingVault.flatMap(vault -> createKeyVaultBindingAsync(name(), vault)))
             .then(Mono.just(this));
     }
@@ -245,22 +233,20 @@ class AppServiceCertificateOrderImpl
 
     @Override
     public AppServiceCertificateOrderImpl withNewKeyVault(String vaultName, Region region) {
-        this.bindingVault =
-            myManager
-                .keyVaultManager()
-                .vaults()
-                .define(vaultName)
-                .withRegion(region)
-                .withExistingResourceGroup(resourceGroupName())
-                .defineAccessPolicy()
-                .forServicePrincipal("f3c21649-0979-4721-ac85-b0216b2cf413")
-                .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.SET, SecretPermissions.DELETE)
-                .attach()
-                .defineAccessPolicy()
-                .forServicePrincipal("abfa0a7c-a6b6-4736-8310-5855508787cd")
-                .allowSecretPermissions(SecretPermissions.GET)
-                .attach()
-                .createAsync();
+        this.bindingVault = myManager.keyVaultManager()
+            .vaults()
+            .define(vaultName)
+            .withRegion(region)
+            .withExistingResourceGroup(resourceGroupName())
+            .defineAccessPolicy()
+            .forServicePrincipal("f3c21649-0979-4721-ac85-b0216b2cf413")
+            .allowSecretPermissions(SecretPermissions.GET, SecretPermissions.SET, SecretPermissions.DELETE)
+            .attach()
+            .defineAccessPolicy()
+            .forServicePrincipal("abfa0a7c-a6b6-4736-8310-5855508787cd")
+            .allowSecretPermissions(SecretPermissions.GET)
+            .attach()
+            .createAsync();
         return this;
     }
 }

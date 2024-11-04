@@ -46,8 +46,8 @@ public interface GitHubConnectors {
      *     /subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.SecurityDevOps/gitHubConnectors along with {@link
      *     Response}.
      */
-    Response<GitHubConnector> getByResourceGroupWithResponse(
-        String resourceGroupName, String gitHubConnectorName, Context context);
+    Response<GitHubConnector> getByResourceGroupWithResponse(String resourceGroupName, String gitHubConnectorName,
+        Context context);
 
     /**
      * Returns a monitored GitHub Connector resource for a given ID.

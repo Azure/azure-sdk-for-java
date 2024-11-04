@@ -36,24 +36,24 @@ import reactor.core.publisher.Mono;
  */
 public final class GenerateDetailedCostReportOperationResultsClientImpl
     implements GenerateDetailedCostReportOperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GenerateDetailedCostReportOperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CostManagementClientImpl client;
 
     /**
      * Initializes an instance of GenerateDetailedCostReportOperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GenerateDetailedCostReportOperationResultsClientImpl(CostManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    GenerateDetailedCostReportOperationResultsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(GenerateDetailedCostReportOperationResultsService.class,
+            client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -64,39 +64,33 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "CostManagementClient")
     public interface GenerateDetailedCostReportOperationResultsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.CostManagement/operationResults/{operationId}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("operationId") String operationId,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> get(@HostParam("$host") String endpoint,
+            @PathParam("operationId") String operationId, @PathParam(value = "scope", encoded = true) String scope,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the specified operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of the specified operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getWithResponseAsync(String operationId, String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
@@ -106,40 +100,30 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            operationId,
-                            scope,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), operationId, scope,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the specified operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of the specified operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> getWithResponseAsync(String operationId, String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
@@ -155,38 +139,33 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of the result of the specified operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    private
+        PollerFlux<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginGetAsync(String operationId, String scope) {
         Mono<Response<Flux<ByteBuffer>>> mono = getWithResponseAsync(operationId, scope);
-        return this
-            .client
-            .<GenerateDetailedCostReportOperationResultInner, GenerateDetailedCostReportOperationResultInner>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    GenerateDetailedCostReportOperationResultInner.class,
-                    GenerateDetailedCostReportOperationResultInner.class,
-                    this.client.getContext());
+        return this.client
+            .<GenerateDetailedCostReportOperationResultInner, GenerateDetailedCostReportOperationResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GenerateDetailedCostReportOperationResultInner.class,
+                GenerateDetailedCostReportOperationResultInner.class, this.client.getContext());
     }
 
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -194,37 +173,32 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
      * @return the {@link PollerFlux} for polling of the result of the specified operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    private
+        PollerFlux<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginGetAsync(String operationId, String scope, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = getWithResponseAsync(operationId, scope, context);
-        return this
-            .client
-            .<GenerateDetailedCostReportOperationResultInner, GenerateDetailedCostReportOperationResultInner>
-                getLroResult(
-                    mono,
-                    this.client.getHttpPipeline(),
-                    GenerateDetailedCostReportOperationResultInner.class,
-                    GenerateDetailedCostReportOperationResultInner.class,
-                    context);
+        return this.client
+            .<GenerateDetailedCostReportOperationResultInner, GenerateDetailedCostReportOperationResultInner>getLroResult(
+                mono, this.client.getHttpPipeline(), GenerateDetailedCostReportOperationResultInner.class,
+                GenerateDetailedCostReportOperationResultInner.class, context);
     }
 
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of the result of the specified operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    public
+        SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginGet(String operationId, String scope) {
         return this.beginGetAsync(operationId, scope).getSyncPoller();
     }
@@ -232,10 +206,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -243,8 +217,8 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
      * @return the {@link SyncPoller} for polling of the result of the specified operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
+    public
+        SyncPoller<PollResult<GenerateDetailedCostReportOperationResultInner>, GenerateDetailedCostReportOperationResultInner>
         beginGet(String operationId, String scope, Context context) {
         return this.beginGetAsync(operationId, scope, context).getSyncPoller();
     }
@@ -252,10 +226,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -269,10 +243,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -280,18 +254,18 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
      * @return the result of the specified operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GenerateDetailedCostReportOperationResultInner> getAsync(
-        String operationId, String scope, Context context) {
+    private Mono<GenerateDetailedCostReportOperationResultInner> getAsync(String operationId, String scope,
+        Context context) {
         return beginGetAsync(operationId, scope, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -305,10 +279,10 @@ public final class GenerateDetailedCostReportOperationResultsClientImpl
     /**
      * Gets the result of the specified operation. The link with this operationId is provided as a response header of
      * the initial request.
-     *
+     * 
      * @param operationId The target operation Id.
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
-     *     details, see https://aka.ms/costmgmt/scopes.
+     * details, see https://aka.ms/costmgmt/scopes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

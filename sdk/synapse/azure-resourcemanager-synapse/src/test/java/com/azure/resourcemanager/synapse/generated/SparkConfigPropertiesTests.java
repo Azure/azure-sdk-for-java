@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class SparkConfigPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SparkConfigProperties model =
-            BinaryData
-                .fromString(
-                    "{\"time\":\"2021-10-16T17:09:06Z\",\"content\":\"tmzlbiojlv\",\"filename\":\"rbbpneqvcwwyy\",\"configurationType\":\"Artifact\"}")
-                .toObject(SparkConfigProperties.class);
-        Assertions.assertEquals("tmzlbiojlv", model.content());
-        Assertions.assertEquals("rbbpneqvcwwyy", model.filename());
+        SparkConfigProperties model = BinaryData.fromString(
+            "{\"time\":\"2021-05-30T20:22:49Z\",\"content\":\"jlrigjkskyrioovz\",\"filename\":\"sxwaabzm\",\"configurationType\":\"Artifact\"}")
+            .toObject(SparkConfigProperties.class);
+        Assertions.assertEquals("jlrigjkskyrioovz", model.content());
+        Assertions.assertEquals("sxwaabzm", model.filename());
         Assertions.assertEquals(ConfigurationType.ARTIFACT, model.configurationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SparkConfigProperties model =
-            new SparkConfigProperties()
-                .withContent("tmzlbiojlv")
-                .withFilename("rbbpneqvcwwyy")
-                .withConfigurationType(ConfigurationType.ARTIFACT);
+        SparkConfigProperties model = new SparkConfigProperties().withContent("jlrigjkskyrioovz")
+            .withFilename("sxwaabzm")
+            .withConfigurationType(ConfigurationType.ARTIFACT);
         model = BinaryData.fromObject(model).toObject(SparkConfigProperties.class);
-        Assertions.assertEquals("tmzlbiojlv", model.content());
-        Assertions.assertEquals("rbbpneqvcwwyy", model.filename());
+        Assertions.assertEquals("jlrigjkskyrioovz", model.content());
+        Assertions.assertEquals("sxwaabzm", model.filename());
         Assertions.assertEquals(ConfigurationType.ARTIFACT, model.configurationType());
     }
 }

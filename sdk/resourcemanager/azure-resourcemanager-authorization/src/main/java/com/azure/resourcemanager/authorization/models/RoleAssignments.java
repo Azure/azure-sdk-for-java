@@ -17,11 +17,8 @@ import reactor.core.publisher.Mono;
 /** Entry point to role assignment management API. */
 @Fluent
 public interface RoleAssignments
-    extends SupportsGettingById<RoleAssignment>,
-        SupportsCreating<RoleAssignment.DefinitionStages.Blank>,
-        SupportsBatchCreation<RoleAssignment>,
-        SupportsDeletingById,
-        HasManager<AuthorizationManager> {
+    extends SupportsGettingById<RoleAssignment>, SupportsCreating<RoleAssignment.DefinitionStages.Blank>,
+    SupportsBatchCreation<RoleAssignment>, SupportsDeletingById, HasManager<AuthorizationManager> {
     /**
      * Gets the information about a role assignment based on scope and name.
      *
@@ -71,7 +68,6 @@ public interface RoleAssignments
      * @return a list of role assignments
      */
     PagedIterable<RoleAssignment> listByServicePrincipal(ServicePrincipal servicePrincipal);
-
 
     /**
      * List role assignments for a service principal.

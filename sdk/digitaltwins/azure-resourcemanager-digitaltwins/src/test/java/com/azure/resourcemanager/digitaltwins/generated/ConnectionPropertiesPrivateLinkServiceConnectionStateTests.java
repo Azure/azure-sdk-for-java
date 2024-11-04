@@ -12,10 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ConnectionPropertiesPrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConnectionPropertiesPrivateLinkServiceConnectionState model =
-            BinaryData
-                .fromString("{\"status\":\"Rejected\",\"description\":\"slwejdpvw\",\"actionsRequired\":\"oqpsoa\"}")
-                .toObject(ConnectionPropertiesPrivateLinkServiceConnectionState.class);
+        ConnectionPropertiesPrivateLinkServiceConnectionState model = BinaryData
+            .fromString("{\"status\":\"Rejected\",\"description\":\"slwejdpvw\",\"actionsRequired\":\"oqpsoa\"}")
+            .toObject(ConnectionPropertiesPrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateLinkServiceConnectionStatus.REJECTED, model.status());
         Assertions.assertEquals("slwejdpvw", model.description());
         Assertions.assertEquals("oqpsoa", model.actionsRequired());
@@ -23,8 +22,8 @@ public final class ConnectionPropertiesPrivateLinkServiceConnectionStateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectionPropertiesPrivateLinkServiceConnectionState model =
-            new ConnectionPropertiesPrivateLinkServiceConnectionState()
+        ConnectionPropertiesPrivateLinkServiceConnectionState model
+            = new ConnectionPropertiesPrivateLinkServiceConnectionState()
                 .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
                 .withDescription("slwejdpvw")
                 .withActionsRequired("oqpsoa");

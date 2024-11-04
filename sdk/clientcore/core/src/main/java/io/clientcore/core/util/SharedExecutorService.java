@@ -62,7 +62,7 @@ public final class SharedExecutorService implements ExecutorService {
     static {
         THREAD_POOL_SIZE
             = getConfig("clientcore.sdk.shared.threadpool.maxpoolsize", "CLIENTCORE_SDK_SHARED_THREADPOOL_MAXPOOLSIZE",
-            Integer::parseInt, 10 * Runtime.getRuntime().availableProcessors());
+                Integer::parseInt, 10 * Runtime.getRuntime().availableProcessors());
 
         THREAD_POOL_KEEP_ALIVE_MILLIS = getConfig("clientcore.sdk.shared.threadpool.keepalivemillis",
             "CLIENTCORE_SDK_SHARED_THREADPOOL_KEEPALIVEMILLIS", Integer::parseInt, 60_000);

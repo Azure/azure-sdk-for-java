@@ -14,7 +14,8 @@ import java.util.UUID;
 /** The properties of an server Administrator. */
 @Fluent
 public final class ServerAdministratorProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerAdministratorProperties.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ServerAdministratorProperties.class);
 
     /*
      * The type of administrator.
@@ -127,28 +128,20 @@ public final class ServerAdministratorProperties {
      */
     public void validate() {
         if (administratorType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property administratorType in model ServerAdministratorProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property administratorType in model ServerAdministratorProperties"));
         }
         if (login() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property login in model ServerAdministratorProperties"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property login in model ServerAdministratorProperties"));
         }
         if (sid() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sid in model ServerAdministratorProperties"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sid in model ServerAdministratorProperties"));
         }
         if (tenantId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tenantId in model ServerAdministratorProperties"));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property tenantId in model ServerAdministratorProperties"));
         }
     }
 }

@@ -188,8 +188,8 @@ public final class ApiUpdateContract {
      * @param subscriptionKeyParameterNames the subscriptionKeyParameterNames value to set.
      * @return the ApiUpdateContract object itself.
      */
-    public ApiUpdateContract withSubscriptionKeyParameterNames(
-        SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
+    public ApiUpdateContract
+        withSubscriptionKeyParameterNames(SubscriptionKeyParameterNamesContract subscriptionKeyParameterNames) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApiContractUpdateProperties();
         }

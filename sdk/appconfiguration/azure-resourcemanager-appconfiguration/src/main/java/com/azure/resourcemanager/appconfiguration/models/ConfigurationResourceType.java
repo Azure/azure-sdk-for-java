@@ -11,8 +11,8 @@ import java.util.Collection;
 /** The resource type to check for name availability. */
 public final class ConfigurationResourceType extends ExpandableStringEnum<ConfigurationResourceType> {
     /** Static value Microsoft.AppConfiguration/configurationStores for ConfigurationResourceType. */
-    public static final ConfigurationResourceType MICROSOFT_APP_CONFIGURATION_CONFIGURATION_STORES =
-        fromString("Microsoft.AppConfiguration/configurationStores");
+    public static final ConfigurationResourceType MICROSOFT_APP_CONFIGURATION_CONFIGURATION_STORES
+        = fromString("Microsoft.AppConfiguration/configurationStores");
 
     /**
      * Creates a new instance of ConfigurationResourceType value.

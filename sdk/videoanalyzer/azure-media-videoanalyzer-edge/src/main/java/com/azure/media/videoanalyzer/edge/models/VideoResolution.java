@@ -5,26 +5,36 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The Video resolution. */
+/**
+ * The Video resolution.
+ */
 @Fluent
-public final class VideoResolution {
+public final class VideoResolution implements JsonSerializable<VideoResolution> {
     /*
      * The number of columns of the Video image.
      */
-    @JsonProperty(value = "width")
     private Float width;
 
     /*
      * The number of lines of the Video image.
      */
-    @JsonProperty(value = "height")
     private Float height;
 
     /**
+     * Creates an instance of VideoResolution class.
+     */
+    public VideoResolution() {
+    }
+
+    /**
      * Get the width property: The number of columns of the Video image.
-     *
+     * 
      * @return the width value.
      */
     public Float getWidth() {
@@ -33,7 +43,7 @@ public final class VideoResolution {
 
     /**
      * Set the width property: The number of columns of the Video image.
-     *
+     * 
      * @param width the width value to set.
      * @return the VideoResolution object itself.
      */
@@ -44,7 +54,7 @@ public final class VideoResolution {
 
     /**
      * Get the height property: The number of lines of the Video image.
-     *
+     * 
      * @return the height value.
      */
     public Float getHeight() {
@@ -53,12 +63,51 @@ public final class VideoResolution {
 
     /**
      * Set the height property: The number of lines of the Video image.
-     *
+     * 
      * @param height the height value to set.
      * @return the VideoResolution object itself.
      */
     public VideoResolution setHeight(Float height) {
         this.height = height;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("width", this.width);
+        jsonWriter.writeNumberField("height", this.height);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VideoResolution from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VideoResolution if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VideoResolution.
+     */
+    public static VideoResolution fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VideoResolution deserializedVideoResolution = new VideoResolution();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("width".equals(fieldName)) {
+                    deserializedVideoResolution.width = reader.getNullable(JsonReader::getFloat);
+                } else if ("height".equals(fieldName)) {
+                    deserializedVideoResolution.height = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVideoResolution;
+        });
     }
 }

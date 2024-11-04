@@ -40,8 +40,7 @@ public class InternalBlobChangefeedEvent implements BlobChangefeedEvent {
      * @param metadataVersion The metadata version.
      */
     public InternalBlobChangefeedEvent(String topic, String subject, BlobChangefeedEventType eventType,
-        OffsetDateTime eventTime, String id, BlobChangefeedEventData data,
-        Long dataVersion, String metadataVersion) {
+        OffsetDateTime eventTime, String id, BlobChangefeedEventData data, Long dataVersion, String metadataVersion) {
         this.topic = topic;
         this.subject = subject;
         this.eventType = eventType;
@@ -76,20 +75,20 @@ public class InternalBlobChangefeedEvent implements BlobChangefeedEvent {
         Object dataVersion = r.get("dataVersion");
         Object metadataVersion = r.get("metadataVersion");
 
-        return new InternalBlobChangefeedEvent(
-            ChangefeedTypeValidator.nullOr("topic", topic, String.class),
+        return new InternalBlobChangefeedEvent(ChangefeedTypeValidator.nullOr("topic", topic, String.class),
             ChangefeedTypeValidator.nullOr("subject", subject, String.class),
-            ChangefeedTypeValidator.isNull(eventType) ? null
-                : BlobChangefeedEventType.fromString(
-                ChangefeedTypeValidator.nullOr("eventType", eventType, String.class)),
-            ChangefeedTypeValidator.isNull(eventTime) ? null
-                : OffsetDateTime.parse(Objects.requireNonNull(
-                    ChangefeedTypeValidator.nullOr("eventTime", eventTime, String.class))),
+            ChangefeedTypeValidator.isNull(eventType)
+                ? null
+                : BlobChangefeedEventType
+                    .fromString(ChangefeedTypeValidator.nullOr("eventType", eventType, String.class)),
+            ChangefeedTypeValidator.isNull(eventTime)
+                ? null
+                : OffsetDateTime.parse(
+                    Objects.requireNonNull(ChangefeedTypeValidator.nullOr("eventTime", eventTime, String.class))),
             ChangefeedTypeValidator.nullOr("id", id, String.class),
             ChangefeedTypeValidator.isNull(data) ? null : InternalBlobChangefeedEventData.fromRecord(data),
             ChangefeedTypeValidator.nullOr("dataVersion", dataVersion, Long.class),
-            ChangefeedTypeValidator.nullOr("metadataVersion", metadataVersion, String.class)
-        );
+            ChangefeedTypeValidator.nullOr("metadataVersion", metadataVersion, String.class));
     }
 
     @Override
@@ -158,15 +157,8 @@ public class InternalBlobChangefeedEvent implements BlobChangefeedEvent {
 
     @Override
     public String toString() {
-        return "BlobChangefeedEvent{"
-            + "topic='" + topic + '\''
-            + ", subject='" + subject + '\''
-            + ", eventType=" + eventType
-            + ", eventTime=" + eventTime
-            + ", id='" + id + '\''
-            + ", data=" + data
-            + ", dataVersion=" + dataVersion
-            + ", metadataVersion='" + metadataVersion + '\''
-            + '}';
+        return "BlobChangefeedEvent{" + "topic='" + topic + '\'' + ", subject='" + subject + '\'' + ", eventType="
+            + eventType + ", eventTime=" + eventTime + ", id='" + id + '\'' + ", data=" + data + ", dataVersion="
+            + dataVersion + ", metadataVersion='" + metadataVersion + '\'' + '}';
     }
 }

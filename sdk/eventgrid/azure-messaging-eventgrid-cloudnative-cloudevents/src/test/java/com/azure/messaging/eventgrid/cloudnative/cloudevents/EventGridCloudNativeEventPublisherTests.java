@@ -57,7 +57,6 @@ public class EventGridCloudNativeEventPublisherTests extends TestProxyTestBase {
     protected void beforeTest() {
         builder = new EventGridPublisherClientBuilder();
 
-
         if (interceptorManager.isLiveMode()) {
             builder.credential(new AzurePowerShellCredentialBuilder().build());
         } else if (interceptorManager.isRecordMode()) {
@@ -69,8 +68,7 @@ public class EventGridCloudNativeEventPublisherTests extends TestProxyTestBase {
         if (interceptorManager.isPlaybackMode()) {
             builder.httpClient(interceptorManager.getPlaybackClient());
         } else if (interceptorManager.isRecordMode()) {
-            builder.addPolicy(interceptorManager.getRecordPolicy())
-                .retryPolicy(new RetryPolicy());
+            builder.addPolicy(interceptorManager.getRecordPolicy()).retryPolicy(new RetryPolicy());
         }
 
         builder.endpoint(getEndpoint(CLOUD_ENDPOINT));
@@ -79,19 +77,18 @@ public class EventGridCloudNativeEventPublisherTests extends TestProxyTestBase {
 
     @Test
     public void publishEventGridEventsToTopic() {
-        EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> egClientAsync =
-            builder.buildCloudEventPublisherAsyncClient();
-        EventGridPublisherClient<com.azure.core.models.CloudEvent> egClient =
-            builder.buildCloudEventPublisherClient();
+        EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> egClientAsync
+            = builder.buildCloudEventPublisherAsyncClient();
+        EventGridPublisherClient<com.azure.core.models.CloudEvent> egClient = builder.buildCloudEventPublisherClient();
         // Single Event
         CloudEvent cloudEvent = CloudEventBuilder.v1()
-                                    .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8))
-                                    .withId(testResourceNamer.randomUuid())
-                                    .withTime(testResourceNamer.now())
-                                    .withType("User.Created.Text")
-                                    .withSource(URI.create("http://localHost"))
-                                    .withDataContentType("application/json")
-                                    .build();
+            .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8))
+            .withId(testResourceNamer.randomUuid())
+            .withTime(testResourceNamer.now())
+            .withType("User.Created.Text")
+            .withSource(URI.create("http://localHost"))
+            .withDataContentType("application/json")
+            .build();
         // Multiple Events
         final List<CloudEvent> cloudEvents = new ArrayList<>();
         cloudEvents.add(cloudEvent);
@@ -116,22 +113,20 @@ public class EventGridCloudNativeEventPublisherTests extends TestProxyTestBase {
         // something like the following to integrate with the cloud native cloud events:
         builder.endpoint(getEndpoint("AZURE_EVENTGRID_CLOUDEVENT_DOMAIN_ENDPOINT"));
 
-        EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> egClientAsync =
-            builder.buildCloudEventPublisherAsyncClient();
-        EventGridPublisherClient<com.azure.core.models.CloudEvent> egClient =
-            builder.buildCloudEventPublisherClient();
+        EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> egClientAsync
+            = builder.buildCloudEventPublisherAsyncClient();
+        EventGridPublisherClient<com.azure.core.models.CloudEvent> egClient = builder.buildCloudEventPublisherClient();
 
-        CloudEvent cloudEvent =
-            CloudEventBuilder.v1()
-                .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8)) // Replace it
-                .withId(testResourceNamer.randomUuid())
-                .withTime(testResourceNamer.now())
-                .withType("User.Created.Text") // Replace it
-                // Replace it. Event Grid does not allow absolute URIs as the domain topic.
-                // For example, use the Event Grid Domain resource name as the relative path.
-                .withSource(URI.create(EVENT_GRID_DOMAIN_RESOURCE_NAME))
-                .withDataContentType("application/json") // Replace it
-                .build();
+        CloudEvent cloudEvent = CloudEventBuilder.v1()
+            .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8)) // Replace it
+            .withId(testResourceNamer.randomUuid())
+            .withTime(testResourceNamer.now())
+            .withType("User.Created.Text") // Replace it
+            // Replace it. Event Grid does not allow absolute URIs as the domain topic.
+            // For example, use the Event Grid Domain resource name as the relative path.
+            .withSource(URI.create(EVENT_GRID_DOMAIN_RESOURCE_NAME))
+            .withDataContentType("application/json") // Replace it
+            .build();
 
         // Prepare multiple native cloud events input
         final List<CloudEvent> cloudEvents = new ArrayList<>();
@@ -152,18 +147,17 @@ public class EventGridCloudNativeEventPublisherTests extends TestProxyTestBase {
 
     @Test
     public void publishEventGridEventsWithoutContentType() {
-        EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> egClientAsync =
-            builder.buildCloudEventPublisherAsyncClient();
-        EventGridPublisherClient<com.azure.core.models.CloudEvent> egClient =
-            builder.buildCloudEventPublisherClient();
+        EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> egClientAsync
+            = builder.buildCloudEventPublisherAsyncClient();
+        EventGridPublisherClient<com.azure.core.models.CloudEvent> egClient = builder.buildCloudEventPublisherClient();
         // Single Event
         CloudEvent cloudEvent = CloudEventBuilder.v1()
-                               .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8))
-                               .withId(testResourceNamer.randomUuid())
-                               .withTime(testResourceNamer.now())
-                               .withType("User.Created.Text")
-                               .withSource(URI.create("http://localHost"))
-                               .build();
+            .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8))
+            .withId(testResourceNamer.randomUuid())
+            .withTime(testResourceNamer.now())
+            .withType("User.Created.Text")
+            .withSource(URI.create("http://localHost"))
+            .build();
         // Multiple Events
         final List<CloudEvent> cloudEvents = new ArrayList<>();
         cloudEvents.add(cloudEvent);

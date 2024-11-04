@@ -10,11 +10,9 @@ import com.azure.resourcemanager.datamigration.models.MigrateSqlServerSqlMITaskO
 public final class MigrateSqlServerSqlMITaskOutputMigrationLevelTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrateSqlServerSqlMITaskOutputMigrationLevel model =
-            BinaryData
-                .fromString(
-                    "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-08-07T03:00:22Z\",\"endedOn\":\"2021-06-28T19:52:41Z\",\"status\":\"Stopped\",\"state\":\"None\",\"agentJobs\":\"qhycavodggxdbees\",\"logins\":\"eknlra\",\"message\":\"aawiuagydwqfb\",\"serverRoleResults\":\"yr\",\"orphanedUsersInfo\":[{\"name\":\"gtcojocqwo\",\"databaseName\":\"nzjvusfzldm\"},{\"name\":\"uxylfsbtkadpy\",\"databaseName\":\"wn\"}],\"databases\":\"gkbugrjqct\",\"sourceServerVersion\":\"cmisofie\",\"sourceServerBrandVersion\":\"efojyqdhcupl\",\"targetServerVersion\":\"lcwkhihihlhz\",\"targetServerBrandVersion\":\"qtz\",\"exceptionsAndWarnings\":[{\"message\":\"nowc\",\"actionableMessage\":\"fgmvecactxmwo\",\"filePath\":\"yowc\",\"lineNumber\":\"qovekqvgqou\",\"hResult\":490492385,\"stackTrace\":\"mpjw\"},{\"message\":\"vqikfxcvhrfsphu\",\"actionableMessage\":\"rttikteusqc\",\"filePath\":\"vyklxuby\",\"lineNumber\":\"ff\",\"hResult\":1173878912,\"stackTrace\":\"lcqcuubgqibrt\"},{\"message\":\"metttwgd\",\"actionableMessage\":\"qxihhrmooi\",\"filePath\":\"seypxiutcxapz\",\"lineNumber\":\"rpetogebjoxsl\",\"hResult\":555122455,\"stackTrace\":\"labrqnkkzjcjbtr\"}],\"id\":\"ehvvib\"}")
-                .toObject(MigrateSqlServerSqlMITaskOutputMigrationLevel.class);
+        MigrateSqlServerSqlMITaskOutputMigrationLevel model = BinaryData.fromString(
+            "{\"resultType\":\"MigrationLevelOutput\",\"startedOn\":\"2021-02-12T11:58:55Z\",\"endedOn\":\"2021-06-09T19:27:45Z\",\"status\":\"Running\",\"state\":\"Stopped\",\"agentJobs\":\"ijouwivkxoyzunb\",\"logins\":\"xrtikvcpwpgclr\",\"message\":\"vtsoxf\",\"serverRoleResults\":\"enxpmyyefr\",\"orphanedUsersInfo\":[{\"name\":\"nqqs\",\"databaseName\":\"waoqvmmb\"},{\"name\":\"qfr\",\"databaseName\":\"lkzmegnitgvkxl\"},{\"name\":\"qdrfegcealzxwhc\",\"databaseName\":\"symoyq\"},{\"name\":\"wigdi\",\"databaseName\":\"kbxgom\"}],\"databases\":\"juwasqvdaeyyguxa\",\"sourceServerVersion\":\"sqzhzbezkg\",\"sourceServerBrandVersion\":\"sidxasicdd\",\"targetServerVersion\":\"vjskgfmoc\",\"targetServerBrandVersion\":\"hpqgatjeaahhvj\",\"exceptionsAndWarnings\":[{\"message\":\"kzyb\",\"actionableMessage\":\"jid\",\"filePath\":\"syxkyxvxevblb\",\"lineNumber\":\"dnlj\",\"hResult\":1767709112,\"stackTrace\":\"uaulxunsm\"}],\"id\":\"nkppxynen\"}")
+            .toObject(MigrateSqlServerSqlMITaskOutputMigrationLevel.class);
     }
 
     @org.junit.jupiter.api.Test

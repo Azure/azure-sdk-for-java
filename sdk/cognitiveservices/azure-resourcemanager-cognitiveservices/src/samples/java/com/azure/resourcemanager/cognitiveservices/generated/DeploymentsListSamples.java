@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-/** Samples for Deployments List. */
+/**
+ * Samples for Deployments List.
+ */
 public final class DeploymentsListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/ListDeployments.json
+     * x-ms-original-file:
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2023-05-01/examples/
+     * ListDeployments.json
      */
     /**
      * Sample code: ListDeployments.
-     *
+     * 
      * @param manager Entry point to CognitiveServicesManager.
      */
     public static void listDeployments(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {

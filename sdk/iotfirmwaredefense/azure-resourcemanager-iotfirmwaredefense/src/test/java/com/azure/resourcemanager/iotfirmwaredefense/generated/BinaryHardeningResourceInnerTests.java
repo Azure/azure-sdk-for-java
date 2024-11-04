@@ -30,8 +30,16 @@ public final class BinaryHardeningResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BinaryHardeningResourceInner model = new BinaryHardeningResourceInner().withBinaryHardeningId("bpzvgn")
-            .withArchitecture("kohdbiha").withFilePath("fhfcb").withClassProperty("s").withRunpath("ithxqhabifpi")
-            .withRpath("wczbys").withNx(true).withPie(false).withRelro(true).withCanary(true).withStripped(true);
+            .withArchitecture("kohdbiha")
+            .withFilePath("fhfcb")
+            .withClassProperty("s")
+            .withRunpath("ithxqhabifpi")
+            .withRpath("wczbys")
+            .withNx(true)
+            .withPie(false)
+            .withRelro(true)
+            .withCanary(true)
+            .withStripped(true);
         model = BinaryData.fromObject(model).toObject(BinaryHardeningResourceInner.class);
         Assertions.assertEquals("bpzvgn", model.binaryHardeningId());
         Assertions.assertEquals("kohdbiha", model.architecture());

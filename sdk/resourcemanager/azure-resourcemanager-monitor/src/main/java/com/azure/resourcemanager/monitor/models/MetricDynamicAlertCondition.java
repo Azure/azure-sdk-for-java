@@ -123,10 +123,8 @@ public interface MetricDynamicAlertCondition extends HasInnerModel<DynamicMetric
              * @param alertSensitivity the extent of deviation required to trigger an alert.
              * @return the next stage of metric alert condition definition.
              */
-            WithFailingPeriods<ParentT> withCondition(
-                MetricAlertRuleTimeAggregation timeAggregation,
-                DynamicThresholdOperator condition,
-                DynamicThresholdSensitivity alertSensitivity);
+            WithFailingPeriods<ParentT> withCondition(MetricAlertRuleTimeAggregation timeAggregation,
+                DynamicThresholdOperator condition, DynamicThresholdSensitivity alertSensitivity);
         }
 
         /**
@@ -222,10 +220,8 @@ public interface MetricDynamicAlertCondition extends HasInnerModel<DynamicMetric
              * @param alertSensitivity the extent of deviation required to trigger an alert.
              * @return the next stage of metric alert condition definition.
              */
-            WithFailingPeriods<ParentT> withCondition(
-                MetricAlertRuleTimeAggregation timeAggregation,
-                DynamicThresholdOperator condition,
-                DynamicThresholdSensitivity alertSensitivity);
+            WithFailingPeriods<ParentT> withCondition(MetricAlertRuleTimeAggregation timeAggregation,
+                DynamicThresholdOperator condition, DynamicThresholdSensitivity alertSensitivity);
         }
 
         /**
@@ -287,9 +283,7 @@ public interface MetricDynamicAlertCondition extends HasInnerModel<DynamicMetric
          * @param sensitivity the threshold sensitivity that activates the alert.
          * @return the next stage of metric alert condition definition.
          */
-        UpdateStages withCondition(
-            MetricAlertRuleTimeAggregation timeAggregation,
-            DynamicThresholdOperator condition,
+        UpdateStages withCondition(MetricAlertRuleTimeAggregation timeAggregation, DynamicThresholdOperator condition,
             DynamicThresholdSensitivity sensitivity);
 
         /**

@@ -24,8 +24,7 @@ import io.clientcore.core.json.implementation.jackson.core.util.Separators;
  * state corruption.
  * Stateless implementations need not do this; but those are less common.
  */
-public interface PrettyPrinter
-{
+public interface PrettyPrinter {
     /**
      * @since 2.9
      */
@@ -226,4 +225,3 @@ public interface PrettyPrinter
      */
     void beforeObjectEntries(JsonGenerator gen) throws IOException;
 }
-

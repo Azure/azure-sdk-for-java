@@ -5,42 +5,40 @@
 package com.azure.media.videoanalyzer.edge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Information that enables communication between the IoT Hub and the IoT device - allowing this edge module to act as a
  * transparent gateway between the two.
  */
 @Fluent
-public final class IotHubDeviceConnection {
+public final class IotHubDeviceConnection implements JsonSerializable<IotHubDeviceConnection> {
     /*
-     * The name of the IoT device configured and managed in IoT Hub.
-     * (case-sensitive)
+     * The name of the IoT device configured and managed in IoT Hub. (case-sensitive)
      */
-    @JsonProperty(value = "deviceId", required = true)
-    private String deviceId;
+    private final String deviceId;
 
     /*
-     * IoT device connection credentials. Currently IoT device symmetric key
-     * credentials are supported.
+     * IoT device connection credentials. Currently IoT device symmetric key credentials are supported.
      */
-    @JsonProperty(value = "credentials")
     private CredentialsBase credentials;
 
     /**
      * Creates an instance of IotHubDeviceConnection class.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      */
-    @JsonCreator
-    public IotHubDeviceConnection(@JsonProperty(value = "deviceId", required = true) String deviceId) {
+    public IotHubDeviceConnection(String deviceId) {
         this.deviceId = deviceId;
     }
 
     /**
      * Get the deviceId property: The name of the IoT device configured and managed in IoT Hub. (case-sensitive).
-     *
+     * 
      * @return the deviceId value.
      */
     public String getDeviceId() {
@@ -50,7 +48,7 @@ public final class IotHubDeviceConnection {
     /**
      * Get the credentials property: IoT device connection credentials. Currently IoT device symmetric key credentials
      * are supported.
-     *
+     * 
      * @return the credentials value.
      */
     public CredentialsBase getCredentials() {
@@ -60,12 +58,60 @@ public final class IotHubDeviceConnection {
     /**
      * Set the credentials property: IoT device connection credentials. Currently IoT device symmetric key credentials
      * are supported.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the IotHubDeviceConnection object itself.
      */
     public IotHubDeviceConnection setCredentials(CredentialsBase credentials) {
         this.credentials = credentials;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceId", this.deviceId);
+        jsonWriter.writeJsonField("credentials", this.credentials);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotHubDeviceConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotHubDeviceConnection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IotHubDeviceConnection.
+     */
+    public static IotHubDeviceConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean deviceIdFound = false;
+            String deviceId = null;
+            CredentialsBase credentials = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deviceId = reader.getString();
+                    deviceIdFound = true;
+                } else if ("credentials".equals(fieldName)) {
+                    credentials = CredentialsBase.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (deviceIdFound) {
+                IotHubDeviceConnection deserializedIotHubDeviceConnection = new IotHubDeviceConnection(deviceId);
+                deserializedIotHubDeviceConnection.credentials = credentials;
+
+                return deserializedIotHubDeviceConnection;
+            }
+            throw new IllegalStateException("Missing required property: deviceId");
+        });
     }
 }

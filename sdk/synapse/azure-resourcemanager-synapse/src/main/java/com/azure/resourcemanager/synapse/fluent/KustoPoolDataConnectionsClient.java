@@ -17,11 +17,13 @@ import com.azure.resourcemanager.synapse.fluent.models.DataConnectionValidationI
 import com.azure.resourcemanager.synapse.fluent.models.DataConnectionValidationListResultInner;
 import com.azure.resourcemanager.synapse.models.DataConnectionCheckNameRequest;
 
-/** An instance of this class provides access to all the operations defined in KustoPoolDataConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KustoPoolDataConnectionsClient.
+ */
 public interface KustoPoolDataConnectionsClient {
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -34,17 +36,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return the result returned from a check name availability request along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName,
-        Context context);
+    Response<CheckNameResultInner> checkNameAvailabilityWithResponse(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DataConnectionCheckNameRequest dataConnectionName, Context context);
 
     /**
      * Checks that the data connection name is valid and is not already in use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -56,16 +53,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return the result returned from a check name availability request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameResultInner checkNameAvailability(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionCheckNameRequest dataConnectionName);
+    CheckNameResultInner checkNameAvailability(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, DataConnectionCheckNameRequest dataConnectionName);
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -78,16 +71,12 @@ public interface KustoPoolDataConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataConnectionValidationListResultInner>, DataConnectionValidationListResultInner>
-        beginDataConnectionValidation(
-            String resourceGroupName,
-            String workspaceName,
-            String kustoPoolName,
-            String databaseName,
-            DataConnectionValidationInner parameters);
+        beginDataConnectionValidation(String resourceGroupName, String workspaceName, String kustoPoolName,
+            String databaseName, DataConnectionValidationInner parameters);
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -101,17 +90,12 @@ public interface KustoPoolDataConnectionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DataConnectionValidationListResultInner>, DataConnectionValidationListResultInner>
-        beginDataConnectionValidation(
-            String resourceGroupName,
-            String workspaceName,
-            String kustoPoolName,
-            String databaseName,
-            DataConnectionValidationInner parameters,
-            Context context);
+        beginDataConnectionValidation(String resourceGroupName, String workspaceName, String kustoPoolName,
+            String databaseName, DataConnectionValidationInner parameters, Context context);
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -123,16 +107,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return the list Kusto data connection validation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataConnectionValidationListResultInner dataConnectionValidation(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionValidationInner parameters);
+    DataConnectionValidationListResultInner dataConnectionValidation(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DataConnectionValidationInner parameters);
 
     /**
      * Checks that the data connection parameters are valid.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -145,17 +125,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return the list Kusto data connection validation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataConnectionValidationListResultInner dataConnectionValidation(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        DataConnectionValidationInner parameters,
-        Context context);
+    DataConnectionValidationListResultInner dataConnectionValidation(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, DataConnectionValidationInner parameters, Context context);
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -166,12 +141,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return the list Kusto data connections operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataConnectionInner> listByDatabase(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName);
+    PagedIterable<DataConnectionInner> listByDatabase(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName);
 
     /**
      * Returns the list of data connections of the given Kusto pool database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -183,12 +158,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return the list Kusto data connections operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataConnectionInner> listByDatabase(
-        String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName, Context context);
+    PagedIterable<DataConnectionInner> listByDatabase(String resourceGroupName, String workspaceName,
+        String kustoPoolName, String databaseName, Context context);
 
     /**
      * Returns a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -201,17 +176,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return class representing a data connection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataConnectionInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        Context context);
+    Response<DataConnectionInner> getWithResponse(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, Context context);
 
     /**
      * Returns a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -223,16 +193,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return class representing a data connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataConnectionInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
+    DataConnectionInner get(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
         String dataConnectionName);
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -245,17 +211,13 @@ public interface KustoPoolDataConnectionsClient {
      * @return the {@link SyncPoller} for polling of class representing a data connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
+    SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, String dataConnectionName,
         DataConnectionInner parameters);
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -269,18 +231,13 @@ public interface KustoPoolDataConnectionsClient {
      * @return the {@link SyncPoller} for polling of class representing a data connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context);
+    SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, String dataConnectionName,
+        DataConnectionInner parameters, Context context);
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -293,17 +250,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return class representing a data connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters);
+    DataConnectionInner createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters);
 
     /**
      * Creates or updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -317,18 +269,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return class representing a data connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context);
+    DataConnectionInner createOrUpdate(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters, Context context);
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -341,17 +287,13 @@ public interface KustoPoolDataConnectionsClient {
      * @return the {@link SyncPoller} for polling of class representing a data connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
+    SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, String dataConnectionName,
         DataConnectionInner parameters);
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -365,18 +307,13 @@ public interface KustoPoolDataConnectionsClient {
      * @return the {@link SyncPoller} for polling of class representing a data connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context);
+    SyncPoller<PollResult<DataConnectionInner>, DataConnectionInner> beginUpdate(String resourceGroupName,
+        String workspaceName, String kustoPoolName, String databaseName, String dataConnectionName,
+        DataConnectionInner parameters, Context context);
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -389,17 +326,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return class representing a data connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataConnectionInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters);
+    DataConnectionInner update(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters);
 
     /**
      * Updates a data connection.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -413,18 +345,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return class representing a data connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataConnectionInner update(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        DataConnectionInner parameters,
-        Context context);
+    DataConnectionInner update(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, DataConnectionInner parameters, Context context);
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -436,16 +362,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName);
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -458,17 +380,12 @@ public interface KustoPoolDataConnectionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String kustoPoolName,
+        String databaseName, String dataConnectionName, Context context);
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -479,16 +396,12 @@ public interface KustoPoolDataConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
+    void delete(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
         String dataConnectionName);
 
     /**
      * Deletes the data connection with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param kustoPoolName The name of the Kusto pool.
@@ -500,11 +413,6 @@ public interface KustoPoolDataConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String kustoPoolName,
-        String databaseName,
-        String dataConnectionName,
-        Context context);
+    void delete(String resourceGroupName, String workspaceName, String kustoPoolName, String databaseName,
+        String dataConnectionName, Context context);
 }

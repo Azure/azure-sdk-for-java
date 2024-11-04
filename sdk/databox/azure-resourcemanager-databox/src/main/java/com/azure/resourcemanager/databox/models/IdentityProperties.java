@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Managed identity properties. */
+/**
+ * Managed identity properties.
+ */
 @Fluent
-public final class IdentityProperties {
+public final class IdentityProperties implements JsonSerializable<IdentityProperties> {
     /*
      * Managed service identity type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * User assigned identity properties.
      */
-    @JsonProperty(value = "userAssigned")
     private UserAssignedProperties userAssigned;
 
-    /** Creates an instance of IdentityProperties class. */
+    /**
+     * Creates an instance of IdentityProperties class.
+     */
     public IdentityProperties() {
     }
 
     /**
      * Get the type property: Managed service identity type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -37,7 +43,7 @@ public final class IdentityProperties {
 
     /**
      * Set the type property: Managed service identity type.
-     *
+     * 
      * @param type the type value to set.
      * @return the IdentityProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class IdentityProperties {
 
     /**
      * Get the userAssigned property: User assigned identity properties.
-     *
+     * 
      * @return the userAssigned value.
      */
     public UserAssignedProperties userAssigned() {
@@ -57,7 +63,7 @@ public final class IdentityProperties {
 
     /**
      * Set the userAssigned property: User assigned identity properties.
-     *
+     * 
      * @param userAssigned the userAssigned value to set.
      * @return the IdentityProperties object itself.
      */
@@ -68,12 +74,51 @@ public final class IdentityProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssigned() != null) {
             userAssigned().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("userAssigned", this.userAssigned);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdentityProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdentityProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdentityProperties.
+     */
+    public static IdentityProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdentityProperties deserializedIdentityProperties = new IdentityProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedIdentityProperties.type = reader.getString();
+                } else if ("userAssigned".equals(fieldName)) {
+                    deserializedIdentityProperties.userAssigned = UserAssignedProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdentityProperties;
+        });
     }
 }

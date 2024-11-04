@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class CoreSummaryTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CoreSummary model =
-            BinaryData
-                .fromString("{\"status\":\"lkrm\",\"numberOfDocuments\":7402715102127154231}")
-                .toObject(CoreSummary.class);
+        CoreSummary model = BinaryData.fromString("{\"status\":\"lkrm\",\"numberOfDocuments\":7402715102127154231}")
+            .toObject(CoreSummary.class);
         Assertions.assertEquals("lkrm", model.status());
         Assertions.assertEquals(7402715102127154231L, model.numberOfDocuments());
     }

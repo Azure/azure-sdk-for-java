@@ -5,33 +5,43 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes threat granular marking model entity. */
+/**
+ * Describes threat granular marking model entity.
+ */
 @Fluent
-public final class ThreatIntelligenceGranularMarkingModel {
+public final class ThreatIntelligenceGranularMarkingModel
+    implements JsonSerializable<ThreatIntelligenceGranularMarkingModel> {
     /*
      * Language granular marking model
      */
-    @JsonProperty(value = "language")
     private String language;
 
     /*
      * marking reference granular marking model
      */
-    @JsonProperty(value = "markingRef")
     private Integer markingRef;
 
     /*
      * granular marking model selectors
      */
-    @JsonProperty(value = "selectors")
     private List<String> selectors;
 
     /**
+     * Creates an instance of ThreatIntelligenceGranularMarkingModel class.
+     */
+    public ThreatIntelligenceGranularMarkingModel() {
+    }
+
+    /**
      * Get the language property: Language granular marking model.
-     *
+     * 
      * @return the language value.
      */
     public String language() {
@@ -40,7 +50,7 @@ public final class ThreatIntelligenceGranularMarkingModel {
 
     /**
      * Set the language property: Language granular marking model.
-     *
+     * 
      * @param language the language value to set.
      * @return the ThreatIntelligenceGranularMarkingModel object itself.
      */
@@ -51,7 +61,7 @@ public final class ThreatIntelligenceGranularMarkingModel {
 
     /**
      * Get the markingRef property: marking reference granular marking model.
-     *
+     * 
      * @return the markingRef value.
      */
     public Integer markingRef() {
@@ -60,7 +70,7 @@ public final class ThreatIntelligenceGranularMarkingModel {
 
     /**
      * Set the markingRef property: marking reference granular marking model.
-     *
+     * 
      * @param markingRef the markingRef value to set.
      * @return the ThreatIntelligenceGranularMarkingModel object itself.
      */
@@ -71,7 +81,7 @@ public final class ThreatIntelligenceGranularMarkingModel {
 
     /**
      * Get the selectors property: granular marking model selectors.
-     *
+     * 
      * @return the selectors value.
      */
     public List<String> selectors() {
@@ -80,7 +90,7 @@ public final class ThreatIntelligenceGranularMarkingModel {
 
     /**
      * Set the selectors property: granular marking model selectors.
-     *
+     * 
      * @param selectors the selectors value to set.
      * @return the ThreatIntelligenceGranularMarkingModel object itself.
      */
@@ -91,9 +101,54 @@ public final class ThreatIntelligenceGranularMarkingModel {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("language", this.language);
+        jsonWriter.writeNumberField("markingRef", this.markingRef);
+        jsonWriter.writeArrayField("selectors", this.selectors, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThreatIntelligenceGranularMarkingModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThreatIntelligenceGranularMarkingModel if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ThreatIntelligenceGranularMarkingModel.
+     */
+    public static ThreatIntelligenceGranularMarkingModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThreatIntelligenceGranularMarkingModel deserializedThreatIntelligenceGranularMarkingModel
+                = new ThreatIntelligenceGranularMarkingModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("language".equals(fieldName)) {
+                    deserializedThreatIntelligenceGranularMarkingModel.language = reader.getString();
+                } else if ("markingRef".equals(fieldName)) {
+                    deserializedThreatIntelligenceGranularMarkingModel.markingRef
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("selectors".equals(fieldName)) {
+                    List<String> selectors = reader.readArray(reader1 -> reader1.getString());
+                    deserializedThreatIntelligenceGranularMarkingModel.selectors = selectors;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThreatIntelligenceGranularMarkingModel;
+        });
     }
 }

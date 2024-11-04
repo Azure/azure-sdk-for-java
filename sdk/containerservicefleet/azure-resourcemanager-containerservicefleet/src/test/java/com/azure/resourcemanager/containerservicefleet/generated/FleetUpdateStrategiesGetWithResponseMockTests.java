@@ -21,7 +21,7 @@ public final class FleetUpdateStrategiesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"strategy\":{\"stages\":[{\"name\":\"frao\",\"groups\":[{\"name\":\"oowtlmngu\"},{\"name\":\"aw\"}],\"afterStageWaitInSeconds\":1823569828},{\"name\":\"dsyuuximerqfob\",\"groups\":[{\"name\":\"nkbykutwpfhp\"},{\"name\":\"gmhrskdsnfdsdoak\"},{\"name\":\"tdlmkkzevd\"},{\"name\":\"hewpusdsttwv\"}],\"afterStageWaitInSeconds\":221713689},{\"name\":\"bbejdcngqqm\",\"groups\":[{\"name\":\"ufgmjzrwrdg\"},{\"name\":\"twaenuuzko\"}],\"afterStageWaitInSeconds\":1642651298}]}},\"eTag\":\"nrfdw\",\"id\":\"uhhziuiefozbhdm\",\"name\":\"mlmz\",\"type\":\"hoftr\"}";
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"strategy\":{\"stages\":[{\"name\":\"zqogse\",\"groups\":[{\"name\":\"vfdnwnwmewzsyyce\"},{\"name\":\"zsoibjudpfrxtr\"},{\"name\":\"hzv\"}],\"afterStageWaitInSeconds\":1946200201},{\"name\":\"dwkqbrq\",\"groups\":[{\"name\":\"axhexiilivp\"}],\"afterStageWaitInSeconds\":1539937555},{\"name\":\"irqtdqoa\",\"groups\":[{\"name\":\"uzf\"}],\"afterStageWaitInSeconds\":1294640448}]}},\"eTag\":\"yfxrx\",\"id\":\"eptra\",\"name\":\"xje\",\"type\":\"wlwnwxuqlcv\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,11 +31,11 @@ public final class FleetUpdateStrategiesGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         FleetUpdateStrategy response = manager.fleetUpdateStrategies()
-            .getWithResponse("khazxkhnzbonlwn", "oegokdwbwh", "szzcmrvexztv", com.azure.core.util.Context.NONE)
+            .getWithResponse("cqqudf", "byxbaaabjy", "ayffim", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("frao", response.strategy().stages().get(0).name());
-        Assertions.assertEquals("oowtlmngu", response.strategy().stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1823569828, response.strategy().stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("zqogse", response.strategy().stages().get(0).name());
+        Assertions.assertEquals("vfdnwnwmewzsyyce", response.strategy().stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(1946200201, response.strategy().stages().get(0).afterStageWaitInSeconds());
     }
 }

@@ -11,11 +11,9 @@ import com.azure.resourcemanager.mediaservices.models.TrackBase;
 public final class AssetTrackInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssetTrackInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"InProgress\"},\"id\":\"hjjdhtldwkyzxuut\",\"name\":\"ncwscwsvlxoto\",\"type\":\"twrupqsxvnm\"}")
-                .toObject(AssetTrackInner.class);
+        AssetTrackInner model = BinaryData.fromString(
+            "{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"InProgress\"},\"id\":\"z\",\"name\":\"nsikvmkqzeqqkdl\",\"type\":\"fzxmhhvhgureodkw\"}")
+            .toObject(AssetTrackInner.class);
     }
 
     @org.junit.jupiter.api.Test

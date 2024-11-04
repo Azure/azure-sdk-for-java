@@ -22,10 +22,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
     private final SqlServerManager sqlServerManager;
     private final ResourceId resourceId;
 
-    protected ReplicationLinkImpl(
-        String resourceGroupName,
-        String sqlServerName,
-        ReplicationLinkInner innerObject,
+    protected ReplicationLinkImpl(String resourceGroupName, String sqlServerName, ReplicationLinkInner innerObject,
         SqlServerManager sqlServerManager) {
         super(innerObject);
         this.resourceGroupName = resourceGroupName;
@@ -36,9 +33,7 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
 
     @Override
     protected Mono<ReplicationLinkInner> getInnerAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getReplicationLinks()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
@@ -105,27 +100,21 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
 
     @Override
     public void delete() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getReplicationLinks()
             .delete(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
 
     @Override
     public void failover() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getReplicationLinks()
             .failover(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
 
     @Override
     public Mono<Void> failoverAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getReplicationLinks()
             .failoverAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name())
             .then();
@@ -133,18 +122,14 @@ class ReplicationLinkImpl extends RefreshableWrapperImpl<ReplicationLinkInner, R
 
     @Override
     public void forceFailoverAllowDataLoss() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getReplicationLinks()
             .failoverAllowDataLoss(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name());
     }
 
     @Override
     public Mono<Void> forceFailoverAllowDataLossAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getReplicationLinks()
             .failoverAllowDataLossAsync(this.resourceGroupName, this.sqlServerName, this.databaseName(), this.name())
             .then();

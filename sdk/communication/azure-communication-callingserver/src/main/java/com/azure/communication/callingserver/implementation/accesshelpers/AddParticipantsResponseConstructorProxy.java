@@ -12,7 +12,8 @@ import com.azure.communication.callingserver.models.AddParticipantsResult;
 public final class AddParticipantsResponseConstructorProxy {
     private static AddParticipantsResponseConstructorAccessor accessor;
 
-    private AddParticipantsResponseConstructorProxy() { }
+    private AddParticipantsResponseConstructorProxy() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of a {@link AddParticipantsResponseConstructorAccessor}

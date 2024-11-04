@@ -27,6 +27,7 @@ public interface DisasterRecoveryPairingAuthorizationRule
      * @return an observable that emits a single entity containing access keys (primary and secondary)
      */
     Mono<DisasterRecoveryPairingAuthorizationKey> getKeysAsync();
+
     /**
      * @return entity containing access keys (primary and secondary)
      */

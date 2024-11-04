@@ -7,11 +7,13 @@ package com.azure.resourcemanager.azurestack.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DeploymentLicenses. */
+/**
+ * Resource collection API of DeploymentLicenses.
+ */
 public interface DeploymentLicenses {
     /**
      * Creates a license that can be used to deploy an Azure Stack device.
-     *
+     * 
      * @param deploymentLicenseRequest Request body for creating a deployment license.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -19,12 +21,12 @@ public interface DeploymentLicenses {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a license that can be used to deploy an Azure Stack device along with {@link Response}.
      */
-    Response<DeploymentLicenseResponse> createWithResponse(
-        DeploymentLicenseRequest deploymentLicenseRequest, Context context);
+    Response<DeploymentLicenseResponse> createWithResponse(DeploymentLicenseRequest deploymentLicenseRequest,
+        Context context);
 
     /**
      * Creates a license that can be used to deploy an Azure Stack device.
-     *
+     * 
      * @param deploymentLicenseRequest Request body for creating a deployment license.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

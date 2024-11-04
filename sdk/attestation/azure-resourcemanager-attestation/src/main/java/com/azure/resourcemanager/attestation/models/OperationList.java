@@ -8,25 +8,27 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.attestation.fluent.models.OperationListInner;
 import java.util.List;
 
-/** An immutable client-side representation of OperationList. */
+/**
+ * An immutable client-side representation of OperationList.
+ */
 public interface OperationList {
     /**
      * Gets the systemData property: The system metadata relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the value property: List of supported operations.
-     *
+     * 
      * @return the value value.
      */
     List<OperationsDefinition> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.attestation.fluent.models.OperationListInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationListInner innerModel();

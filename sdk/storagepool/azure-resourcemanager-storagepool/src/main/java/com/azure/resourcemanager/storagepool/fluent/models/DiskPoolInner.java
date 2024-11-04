@@ -7,54 +7,71 @@ package com.azure.resourcemanager.storagepool.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagepool.models.Disk;
 import com.azure.resourcemanager.storagepool.models.OperationalStatus;
 import com.azure.resourcemanager.storagepool.models.ProvisioningStates;
 import com.azure.resourcemanager.storagepool.models.SystemMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Response for Disk Pool request. */
+/**
+ * Response for Disk Pool request.
+ */
 @Fluent
 public final class DiskPoolInner extends Resource {
     /*
      * Determines the SKU of the Disk pool
      */
-    @JsonProperty(value = "sku")
     private Sku innerSku;
 
     /*
      * Properties of Disk Pool.
      */
-    @JsonProperty(value = "properties", required = true)
     private DiskPoolProperties innerProperties = new DiskPoolProperties();
 
     /*
      * Azure resource id. Indicates if this resource is managed by another Azure resource.
      */
-    @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String managedBy;
 
     /*
      * List of Azure resource ids that manage this resource.
      */
-    @JsonProperty(value = "managedByExtended", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> managedByExtended;
 
     /*
      * Resource metadata required by ARM RPC
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemMetadata systemData;
 
-    /** Creates an instance of DiskPoolInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DiskPoolInner class.
+     */
     public DiskPoolInner() {
     }
 
     /**
      * Get the innerSku property: Determines the SKU of the Disk pool.
-     *
+     * 
      * @return the innerSku value.
      */
     private Sku innerSku() {
@@ -63,7 +80,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of Disk Pool.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiskPoolProperties innerProperties() {
@@ -72,7 +89,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the managedBy property: Azure resource id. Indicates if this resource is managed by another Azure resource.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -81,7 +98,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the managedByExtended property: List of Azure resource ids that manage this resource.
-     *
+     * 
      * @return the managedByExtended value.
      */
     public List<String> managedByExtended() {
@@ -90,21 +107,55 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the systemData property: Resource metadata required by ARM RPC.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemMetadata systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DiskPoolInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DiskPoolInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -113,7 +164,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the name property: Sku name.
-     *
+     * 
      * @return the name value.
      */
     public String nameSkuName() {
@@ -122,7 +173,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Set the name property: Sku name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DiskPoolInner object itself.
      */
@@ -136,7 +187,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the tier property: Sku tier.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -145,7 +196,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Set the tier property: Sku tier.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the DiskPoolInner object itself.
      */
@@ -159,7 +210,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -168,7 +219,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the availabilityZones property: Logical zone for Disk Pool resource; example: ["1"].
-     *
+     * 
      * @return the availabilityZones value.
      */
     public List<String> availabilityZones() {
@@ -177,7 +228,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Set the availabilityZones property: Logical zone for Disk Pool resource; example: ["1"].
-     *
+     * 
      * @param availabilityZones the availabilityZones value to set.
      * @return the DiskPoolInner object itself.
      */
@@ -191,7 +242,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the status property: Operational status of the Disk Pool.
-     *
+     * 
      * @return the status value.
      */
     public OperationalStatus status() {
@@ -200,7 +251,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Set the status property: Operational status of the Disk Pool.
-     *
+     * 
      * @param status the status value to set.
      * @return the DiskPoolInner object itself.
      */
@@ -214,7 +265,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the disks property: List of Azure Managed Disks to attach to a Disk Pool.
-     *
+     * 
      * @return the disks value.
      */
     public List<Disk> disks() {
@@ -223,7 +274,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Set the disks property: List of Azure Managed Disks to attach to a Disk Pool.
-     *
+     * 
      * @param disks the disks value to set.
      * @return the DiskPoolInner object itself.
      */
@@ -237,7 +288,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the subnetId property: Azure Resource ID of a Subnet for the Disk Pool.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -246,7 +297,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Set the subnetId property: Azure Resource ID of a Subnet for the Disk Pool.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the DiskPoolInner object itself.
      */
@@ -260,7 +311,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Get the additionalCapabilities property: List of additional capabilities for Disk Pool.
-     *
+     * 
      * @return the additionalCapabilities value.
      */
     public List<String> additionalCapabilities() {
@@ -269,7 +320,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Set the additionalCapabilities property: List of additional capabilities for Disk Pool.
-     *
+     * 
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the DiskPoolInner object itself.
      */
@@ -283,7 +334,7 @@ public final class DiskPoolInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -291,9 +342,8 @@ public final class DiskPoolInner extends Resource {
             innerSku().validate();
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model DiskPoolInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model DiskPoolInner"));
         } else {
             innerProperties().validate();
         }
@@ -303,4 +353,64 @@ public final class DiskPoolInner extends Resource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DiskPoolInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.innerSku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskPoolInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskPoolInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiskPoolInner.
+     */
+    public static DiskPoolInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskPoolInner deserializedDiskPoolInner = new DiskPoolInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDiskPoolInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDiskPoolInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDiskPoolInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDiskPoolInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDiskPoolInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDiskPoolInner.innerProperties = DiskPoolProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDiskPoolInner.innerSku = Sku.fromJson(reader);
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedDiskPoolInner.managedBy = reader.getString();
+                } else if ("managedByExtended".equals(fieldName)) {
+                    List<String> managedByExtended = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDiskPoolInner.managedByExtended = managedByExtended;
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDiskPoolInner.systemData = SystemMetadata.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskPoolInner;
+        });
+    }
 }

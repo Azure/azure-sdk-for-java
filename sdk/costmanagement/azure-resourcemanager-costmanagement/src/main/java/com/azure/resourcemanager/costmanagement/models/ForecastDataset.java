@@ -6,47 +6,49 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The definition of data present in the forecast. */
+/**
+ * The definition of data present in the forecast.
+ */
 @Fluent
-public final class ForecastDataset {
+public final class ForecastDataset implements JsonSerializable<ForecastDataset> {
     /*
      * The granularity of rows in the forecast.
      */
-    @JsonProperty(value = "granularity")
     private GranularityType granularity;
 
     /*
      * Has configuration information for the data in the export. The configuration will be ignored if aggregation and
      * grouping are provided.
      */
-    @JsonProperty(value = "configuration")
     private ForecastDatasetConfiguration configuration;
 
     /*
      * Dictionary of aggregation expression to use in the forecast. The key of each item in the dictionary is the alias
      * for the aggregated column. forecast can have up to 2 aggregation clauses.
      */
-    @JsonProperty(value = "aggregation", required = true)
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ForecastAggregation> aggregation;
 
     /*
      * Has filter expression to use in the forecast.
      */
-    @JsonProperty(value = "filter")
     private ForecastFilter filter;
 
-    /** Creates an instance of ForecastDataset class. */
+    /**
+     * Creates an instance of ForecastDataset class.
+     */
     public ForecastDataset() {
     }
 
     /**
      * Get the granularity property: The granularity of rows in the forecast.
-     *
+     * 
      * @return the granularity value.
      */
     public GranularityType granularity() {
@@ -55,7 +57,7 @@ public final class ForecastDataset {
 
     /**
      * Set the granularity property: The granularity of rows in the forecast.
-     *
+     * 
      * @param granularity the granularity value to set.
      * @return the ForecastDataset object itself.
      */
@@ -67,7 +69,7 @@ public final class ForecastDataset {
     /**
      * Get the configuration property: Has configuration information for the data in the export. The configuration will
      * be ignored if aggregation and grouping are provided.
-     *
+     * 
      * @return the configuration value.
      */
     public ForecastDatasetConfiguration configuration() {
@@ -77,7 +79,7 @@ public final class ForecastDataset {
     /**
      * Set the configuration property: Has configuration information for the data in the export. The configuration will
      * be ignored if aggregation and grouping are provided.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the ForecastDataset object itself.
      */
@@ -89,7 +91,7 @@ public final class ForecastDataset {
     /**
      * Get the aggregation property: Dictionary of aggregation expression to use in the forecast. The key of each item
      * in the dictionary is the alias for the aggregated column. forecast can have up to 2 aggregation clauses.
-     *
+     * 
      * @return the aggregation value.
      */
     public Map<String, ForecastAggregation> aggregation() {
@@ -99,7 +101,7 @@ public final class ForecastDataset {
     /**
      * Set the aggregation property: Dictionary of aggregation expression to use in the forecast. The key of each item
      * in the dictionary is the alias for the aggregated column. forecast can have up to 2 aggregation clauses.
-     *
+     * 
      * @param aggregation the aggregation value to set.
      * @return the ForecastDataset object itself.
      */
@@ -110,7 +112,7 @@ public final class ForecastDataset {
 
     /**
      * Get the filter property: Has filter expression to use in the forecast.
-     *
+     * 
      * @return the filter value.
      */
     public ForecastFilter filter() {
@@ -119,7 +121,7 @@ public final class ForecastDataset {
 
     /**
      * Set the filter property: Has filter expression to use in the forecast.
-     *
+     * 
      * @param filter the filter value to set.
      * @return the ForecastDataset object itself.
      */
@@ -130,7 +132,7 @@ public final class ForecastDataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -138,18 +140,14 @@ public final class ForecastDataset {
             configuration().validate();
         }
         if (aggregation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property aggregation in model ForecastDataset"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property aggregation in model ForecastDataset"));
         } else {
-            aggregation()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            aggregation().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (filter() != null) {
             filter().validate();
@@ -157,4 +155,52 @@ public final class ForecastDataset {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ForecastDataset.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("aggregation", this.aggregation, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("granularity", this.granularity == null ? null : this.granularity.toString());
+        jsonWriter.writeJsonField("configuration", this.configuration);
+        jsonWriter.writeJsonField("filter", this.filter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForecastDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForecastDataset if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ForecastDataset.
+     */
+    public static ForecastDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForecastDataset deserializedForecastDataset = new ForecastDataset();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("aggregation".equals(fieldName)) {
+                    Map<String, ForecastAggregation> aggregation
+                        = reader.readMap(reader1 -> ForecastAggregation.fromJson(reader1));
+                    deserializedForecastDataset.aggregation = aggregation;
+                } else if ("granularity".equals(fieldName)) {
+                    deserializedForecastDataset.granularity = GranularityType.fromString(reader.getString());
+                } else if ("configuration".equals(fieldName)) {
+                    deserializedForecastDataset.configuration = ForecastDatasetConfiguration.fromJson(reader);
+                } else if ("filter".equals(fieldName)) {
+                    deserializedForecastDataset.filter = ForecastFilter.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedForecastDataset;
+        });
+    }
 }

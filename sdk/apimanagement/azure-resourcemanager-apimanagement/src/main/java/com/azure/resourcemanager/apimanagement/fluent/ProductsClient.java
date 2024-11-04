@@ -56,15 +56,8 @@ public interface ProductsClient {
      * @return paged Products list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ProductContractInner> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean expandGroups,
-        String tags,
-        Context context);
+    PagedIterable<ProductContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean expandGroups, String tags, Context context);
 
     /**
      * Gets the entity state (Etag) version of the product specified by its identifier.
@@ -79,8 +72,8 @@ public interface ProductsClient {
      * @return the entity state (Etag) version of the product specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
+    ProductsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String productId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the product specified by its identifier.
@@ -108,8 +101,8 @@ public interface ProductsClient {
      * @return the details of the product specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String productId, Context context);
+    ProductsGetResponse getWithResponse(String resourceGroupName, String serviceName, String productId,
+        Context context);
 
     /**
      * Gets the details of the product specified by its identifier.
@@ -140,13 +133,8 @@ public interface ProductsClient {
      * @return product details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        ProductContractInner parameters,
-        String ifMatch,
-        Context context);
+    ProductsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String productId, ProductContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or Updates a product.
@@ -161,8 +149,8 @@ public interface ProductsClient {
      * @return product details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String productId, ProductContractInner parameters);
+    ProductContractInner createOrUpdate(String resourceGroupName, String serviceName, String productId,
+        ProductContractInner parameters);
 
     /**
      * Update existing product details.
@@ -180,13 +168,8 @@ public interface ProductsClient {
      * @return product details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String ifMatch,
-        ProductUpdateParameters parameters,
-        Context context);
+    ProductsUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String productId,
+        String ifMatch, ProductUpdateParameters parameters, Context context);
 
     /**
      * Update existing product details.
@@ -203,11 +186,7 @@ public interface ProductsClient {
      * @return product details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProductContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String ifMatch,
+    ProductContractInner update(String resourceGroupName, String serviceName, String productId, String ifMatch,
         ProductUpdateParameters parameters);
 
     /**
@@ -226,13 +205,8 @@ public interface ProductsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String productId,
-        String ifMatch,
-        Boolean deleteSubscriptions,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String productId, String ifMatch,
+        Boolean deleteSubscriptions, Context context);
 
     /**
      * Delete product.
@@ -284,12 +258,6 @@ public interface ProductsClient {
      * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TagResourceContractInner> listByTags(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean includeNotTaggedProducts,
-        Context context);
+    PagedIterable<TagResourceContractInner> listByTags(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Boolean includeNotTaggedProducts, Context context);
 }

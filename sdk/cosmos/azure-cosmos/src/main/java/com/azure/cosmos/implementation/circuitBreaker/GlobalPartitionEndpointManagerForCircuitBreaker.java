@@ -77,14 +77,21 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
         checkNotNull(request, "Argument 'request' cannot be null!");
         checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
-        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+        PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker;
+        PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
 
-        checkNotNull(request.requestContext.resolvedPartitionKeyRange, "Argument 'request.requestContext.resolvedPartitionKeyRange' cannot be null!");
+        // in scenarios where partition is splitting or invalid partition then resolvedPartitionKeyRange could be set to null
+        // no reason to circuit break a partition key range which is effectively won't be used in the future
+        if (resolvedPartitionKeyRangeForCircuitBreaker != null && resolvedPartitionKeyRange == null) {
+            return;
+        }
+
+        checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
 
         String collectionResourceId = request.getResourceId();
         checkNotNull(collectionResourceId, "Argument 'collectionResourceId' cannot be null!");
 
-        PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, collectionResourceId);
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(resolvedPartitionKeyRangeForCircuitBreaker, collectionResourceId);
 
         AtomicBoolean isFailoverPossible = new AtomicBoolean(true);
         AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
@@ -126,8 +133,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
                     "as all regions will be Unavailable in that case, will remove health status tracking for this partition!",
                 this.globalEndpointManager.getRegionName(
                     failedLocation, request.isReadOnlyRequest() ? OperationType.Read : OperationType.Create),
-                partitionKeyRange.getMinInclusive(),
-                partitionKeyRange.getMaxExclusive(),
+                resolvedPartitionKeyRangeForCircuitBreaker.getMinInclusive(),
+                resolvedPartitionKeyRangeForCircuitBreaker.getMaxExclusive(),
                 collectionResourceId);
         }
 
@@ -140,13 +147,20 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements AutoClos
         checkNotNull(request, "Argument 'request' cannot be null!");
         checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
 
-        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+        PartitionKeyRange resolvedPartitionKeyRangeForCircuitBreaker = request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker;
+        PartitionKeyRange resolvedPartitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
 
-        checkNotNull(request.requestContext.resolvedPartitionKeyRange, "Argument 'request.requestContext.resolvedPartitionKeyRange' cannot be null!");
+        // in scenarios where partition is splitting or invalid partition then resolvedPartitionKeyRange could be set to null
+        // no reason to circuit break a partition key range which is effectively won't be used in the future
+        if (resolvedPartitionKeyRangeForCircuitBreaker != null && resolvedPartitionKeyRange == null) {
+            return;
+        }
+
+        checkNotNull(request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker, "Argument 'request.requestContext.resolvedPartitionKeyRangeForCircuitBreaker' cannot be null!");
 
         String resourceId = request.getResourceId();
 
-        PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(partitionKeyRange, resourceId);
+        PartitionKeyRangeWrapper partitionKeyRangeWrapper = new PartitionKeyRangeWrapper(resolvedPartitionKeyRangeForCircuitBreaker, resourceId);
         URI succeededLocation = request.requestContext.locationEndpointToRoute;
 
         String collectionLink = getCollectionLink(request);

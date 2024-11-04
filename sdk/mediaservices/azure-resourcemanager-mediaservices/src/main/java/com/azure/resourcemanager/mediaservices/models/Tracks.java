@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Tracks. */
+/**
+ * Resource collection API of Tracks.
+ */
 public interface Tracks {
     /**
      * List Tracks in the Asset
-     *
-     * <p>Lists the Tracks in the asset.
-     *
+     * 
+     * Lists the Tracks in the asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -27,9 +29,9 @@ public interface Tracks {
 
     /**
      * List Tracks in the Asset
-     *
-     * <p>Lists the Tracks in the asset.
-     *
+     * 
+     * Lists the Tracks in the asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -43,9 +45,9 @@ public interface Tracks {
 
     /**
      * Get a Track
-     *
-     * <p>Get the details of a Track in the Asset.
-     *
+     * 
+     * Get the details of a Track in the Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -56,14 +58,14 @@ public interface Tracks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a Track in the Asset along with {@link Response}.
      */
-    Response<AssetTrack> getWithResponse(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
+    Response<AssetTrack> getWithResponse(String resourceGroupName, String accountName, String assetName,
+        String trackName, Context context);
 
     /**
      * Get a Track
-     *
-     * <p>Get the details of a Track in the Asset.
-     *
+     * 
+     * Get the details of a Track in the Asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -77,9 +79,9 @@ public interface Tracks {
 
     /**
      * Delete a Track
-     *
-     * <p>Deletes a Track in the asset.
-     *
+     * 
+     * Deletes a Track in the asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -92,9 +94,9 @@ public interface Tracks {
 
     /**
      * Delete a Track
-     *
-     * <p>Deletes a Track in the asset.
-     *
+     * 
+     * Deletes a Track in the asset.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -108,12 +110,12 @@ public interface Tracks {
 
     /**
      * Update the track data
-     *
-     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
-     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
-     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
-     * be reflected immediately. CDN cache may also need to be purged if applicable.
-     *
+     * 
+     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
+     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
+     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
+     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -126,12 +128,12 @@ public interface Tracks {
 
     /**
      * Update the track data
-     *
-     * <p>Update the track data. Call this API after any changes are made to the track data stored in the asset
-     * container. For example, you have modified the WebVTT captions file in the Azure blob storage container for the
-     * asset, viewers will not see the new version of the captions unless this API is called. Note, the changes may not
-     * be reflected immediately. CDN cache may also need to be purged if applicable.
-     *
+     * 
+     * Update the track data. Call this API after any changes are made to the track data stored in the asset container.
+     * For example, you have modified the WebVTT captions file in the Azure blob storage container for the asset,
+     * viewers will not see the new version of the captions unless this API is called. Note, the changes may not be
+     * reflected immediately. CDN cache may also need to be purged if applicable.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param assetName The Asset name.
@@ -141,14 +143,14 @@ public interface Tracks {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void updateTrackData(
-        String resourceGroupName, String accountName, String assetName, String trackName, Context context);
+    void updateTrackData(String resourceGroupName, String accountName, String assetName, String trackName,
+        Context context);
 
     /**
      * Get a Track
-     *
-     * <p>Get the details of a Track in the Asset.
-     *
+     * 
+     * Get the details of a Track in the Asset.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,9 +161,9 @@ public interface Tracks {
 
     /**
      * Get a Track
-     *
-     * <p>Get the details of a Track in the Asset.
-     *
+     * 
+     * Get the details of a Track in the Asset.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,9 +175,9 @@ public interface Tracks {
 
     /**
      * Delete a Track
-     *
-     * <p>Deletes a Track in the asset.
-     *
+     * 
+     * Deletes a Track in the asset.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,9 +187,9 @@ public interface Tracks {
 
     /**
      * Delete a Track
-     *
-     * <p>Deletes a Track in the asset.
-     *
+     * 
+     * Deletes a Track in the asset.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,7 +200,7 @@ public interface Tracks {
 
     /**
      * Begins definition for a new AssetTrack resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new AssetTrack definition.
      */

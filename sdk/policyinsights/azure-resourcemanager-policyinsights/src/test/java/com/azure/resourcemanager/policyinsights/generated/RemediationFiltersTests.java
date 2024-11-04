@@ -8,22 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.policyinsights.models.RemediationFilters;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RemediationFiltersTests {
-    @Test
-    public void testDeserialize() {
-        RemediationFilters model =
-            BinaryData
-                .fromString("{\"locations\":[\"qw\",\"bmdg\",\"bjf\",\"dgmb\"]}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        RemediationFilters model
+            = BinaryData.fromString("{\"locations\":[\"zafb\",\"jjgpb\",\"oq\",\"jmkljavbqidtqajz\"]}")
                 .toObject(RemediationFilters.class);
-        Assertions.assertEquals("qw", model.locations().get(0));
+        Assertions.assertEquals("zafb", model.locations().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        RemediationFilters model = new RemediationFilters().withLocations(Arrays.asList("qw", "bmdg", "bjf", "dgmb"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        RemediationFilters model
+            = new RemediationFilters().withLocations(Arrays.asList("zafb", "jjgpb", "oq", "jmkljavbqidtqajz"));
         model = BinaryData.fromObject(model).toObject(RemediationFilters.class);
-        Assertions.assertEquals("qw", model.locations().get(0));
+        Assertions.assertEquals("zafb", model.locations().get(0));
     }
 }

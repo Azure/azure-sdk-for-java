@@ -395,13 +395,11 @@ public final class ApiManagementManager {
     private ApiManagementManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new ApiManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new ApiManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
@@ -529,8 +527,8 @@ public final class ApiManagementManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -550,15 +548,13 @@ public final class ApiManagementManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.apimanagement")
                 .append("/")
                 .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -583,31 +579,21 @@ public final class ApiManagementManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new ApiManagementManager(httpPipeline, profile, defaultPollInterval);
         }
     }
@@ -703,8 +689,8 @@ public final class ApiManagementManager {
      */
     public GraphQLApiResolverPolicies graphQLApiResolverPolicies() {
         if (this.graphQLApiResolverPolicies == null) {
-            this.graphQLApiResolverPolicies =
-                new GraphQLApiResolverPoliciesImpl(clientObject.getGraphQLApiResolverPolicies(), this);
+            this.graphQLApiResolverPolicies
+                = new GraphQLApiResolverPoliciesImpl(clientObject.getGraphQLApiResolverPolicies(), this);
         }
         return graphQLApiResolverPolicies;
     }
@@ -884,8 +870,8 @@ public final class ApiManagementManager {
      */
     public AuthorizationProviders authorizationProviders() {
         if (this.authorizationProviders == null) {
-            this.authorizationProviders =
-                new AuthorizationProvidersImpl(clientObject.getAuthorizationProviders(), this);
+            this.authorizationProviders
+                = new AuthorizationProvidersImpl(clientObject.getAuthorizationProviders(), this);
         }
         return authorizationProviders;
     }
@@ -909,8 +895,8 @@ public final class ApiManagementManager {
      */
     public AuthorizationLoginLinks authorizationLoginLinks() {
         if (this.authorizationLoginLinks == null) {
-            this.authorizationLoginLinks =
-                new AuthorizationLoginLinksImpl(clientObject.getAuthorizationLoginLinks(), this);
+            this.authorizationLoginLinks
+                = new AuthorizationLoginLinksImpl(clientObject.getAuthorizationLoginLinks(), this);
         }
         return authorizationLoginLinks;
     }
@@ -922,8 +908,8 @@ public final class ApiManagementManager {
      */
     public AuthorizationAccessPolicies authorizationAccessPolicies() {
         if (this.authorizationAccessPolicies == null) {
-            this.authorizationAccessPolicies =
-                new AuthorizationAccessPoliciesImpl(clientObject.getAuthorizationAccessPolicies(), this);
+            this.authorizationAccessPolicies
+                = new AuthorizationAccessPoliciesImpl(clientObject.getAuthorizationAccessPolicies(), this);
         }
         return authorizationAccessPolicies;
     }
@@ -1019,8 +1005,8 @@ public final class ApiManagementManager {
      */
     public ApiManagementOperations apiManagementOperations() {
         if (this.apiManagementOperations == null) {
-            this.apiManagementOperations =
-                new ApiManagementOperationsImpl(clientObject.getApiManagementOperations(), this);
+            this.apiManagementOperations
+                = new ApiManagementOperationsImpl(clientObject.getApiManagementOperations(), this);
         }
         return apiManagementOperations;
     }
@@ -1032,8 +1018,8 @@ public final class ApiManagementManager {
      */
     public ApiManagementServiceSkus apiManagementServiceSkus() {
         if (this.apiManagementServiceSkus == null) {
-            this.apiManagementServiceSkus =
-                new ApiManagementServiceSkusImpl(clientObject.getApiManagementServiceSkus(), this);
+            this.apiManagementServiceSkus
+                = new ApiManagementServiceSkusImpl(clientObject.getApiManagementServiceSkus(), this);
         }
         return apiManagementServiceSkus;
     }
@@ -1094,8 +1080,8 @@ public final class ApiManagementManager {
      */
     public GatewayHostnameConfigurations gatewayHostnameConfigurations() {
         if (this.gatewayHostnameConfigurations == null) {
-            this.gatewayHostnameConfigurations =
-                new GatewayHostnameConfigurationsImpl(clientObject.getGatewayHostnameConfigurations(), this);
+            this.gatewayHostnameConfigurations
+                = new GatewayHostnameConfigurationsImpl(clientObject.getGatewayHostnameConfigurations(), this);
         }
         return gatewayHostnameConfigurations;
     }
@@ -1120,8 +1106,8 @@ public final class ApiManagementManager {
      */
     public GatewayCertificateAuthorities gatewayCertificateAuthorities() {
         if (this.gatewayCertificateAuthorities == null) {
-            this.gatewayCertificateAuthorities =
-                new GatewayCertificateAuthoritiesImpl(clientObject.getGatewayCertificateAuthorities(), this);
+            this.gatewayCertificateAuthorities
+                = new GatewayCertificateAuthoritiesImpl(clientObject.getGatewayCertificateAuthorities(), this);
         }
         return gatewayCertificateAuthorities;
     }
@@ -1229,8 +1215,8 @@ public final class ApiManagementManager {
      */
     public NotificationRecipientUsers notificationRecipientUsers() {
         if (this.notificationRecipientUsers == null) {
-            this.notificationRecipientUsers =
-                new NotificationRecipientUsersImpl(clientObject.getNotificationRecipientUsers(), this);
+            this.notificationRecipientUsers
+                = new NotificationRecipientUsersImpl(clientObject.getNotificationRecipientUsers(), this);
         }
         return notificationRecipientUsers;
     }
@@ -1242,8 +1228,8 @@ public final class ApiManagementManager {
      */
     public NotificationRecipientEmails notificationRecipientEmails() {
         if (this.notificationRecipientEmails == null) {
-            this.notificationRecipientEmails =
-                new NotificationRecipientEmailsImpl(clientObject.getNotificationRecipientEmails(), this);
+            this.notificationRecipientEmails
+                = new NotificationRecipientEmailsImpl(clientObject.getNotificationRecipientEmails(), this);
         }
         return notificationRecipientEmails;
     }
@@ -1255,8 +1241,8 @@ public final class ApiManagementManager {
      */
     public OpenIdConnectProviders openIdConnectProviders() {
         if (this.openIdConnectProviders == null) {
-            this.openIdConnectProviders =
-                new OpenIdConnectProvidersImpl(clientObject.getOpenIdConnectProviders(), this);
+            this.openIdConnectProviders
+                = new OpenIdConnectProvidersImpl(clientObject.getOpenIdConnectProviders(), this);
         }
         return openIdConnectProviders;
     }
@@ -1268,9 +1254,8 @@ public final class ApiManagementManager {
      */
     public OutboundNetworkDependenciesEndpoints outboundNetworkDependenciesEndpoints() {
         if (this.outboundNetworkDependenciesEndpoints == null) {
-            this.outboundNetworkDependenciesEndpoints =
-                new OutboundNetworkDependenciesEndpointsImpl(
-                    clientObject.getOutboundNetworkDependenciesEndpoints(), this);
+            this.outboundNetworkDependenciesEndpoints = new OutboundNetworkDependenciesEndpointsImpl(
+                clientObject.getOutboundNetworkDependenciesEndpoints(), this);
         }
         return outboundNetworkDependenciesEndpoints;
     }
@@ -1390,8 +1375,8 @@ public final class ApiManagementManager {
      */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections =
-                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
     }
@@ -1475,8 +1460,8 @@ public final class ApiManagementManager {
      */
     public ProductWikisOperations productWikisOperations() {
         if (this.productWikisOperations == null) {
-            this.productWikisOperations =
-                new ProductWikisOperationsImpl(clientObject.getProductWikisOperations(), this);
+            this.productWikisOperations
+                = new ProductWikisOperationsImpl(clientObject.getProductWikisOperations(), this);
         }
         return productWikisOperations;
     }
@@ -1680,8 +1665,8 @@ public final class ApiManagementManager {
      */
     public UserConfirmationPasswords userConfirmationPasswords() {
         if (this.userConfirmationPasswords == null) {
-            this.userConfirmationPasswords =
-                new UserConfirmationPasswordsImpl(clientObject.getUserConfirmationPasswords(), this);
+            this.userConfirmationPasswords
+                = new UserConfirmationPasswordsImpl(clientObject.getUserConfirmationPasswords(), this);
         }
         return userConfirmationPasswords;
     }

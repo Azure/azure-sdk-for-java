@@ -4,7 +4,6 @@ package com.azure.data.tables.implementation;
 
 import com.azure.core.util.Base64Util;
 
-
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -39,8 +38,8 @@ public enum EntityDataModelType {
      * <strong>Edm.DateTime</strong> Represents date and time with values ranging from 12:00:00 midnight, January 1,
      * 1753 A.D. through 11:59:59 P.M, December 9999 A.D.
      */
-    DATE_TIME("Edm.DateTime", s ->
-        DateTimeFormatter.ISO_DATE_TIME.parseBest(s, OffsetDateTime::from, LocalDateTime::from),
+    DATE_TIME("Edm.DateTime",
+        s -> DateTimeFormatter.ISO_DATE_TIME.parseBest(s, OffsetDateTime::from, LocalDateTime::from),
         OffsetDateTime.class, ZonedDateTime.class, Instant.class, LocalDateTime.class, LocalDate.class, Date.class),
 
     /**

@@ -56,76 +56,70 @@ public class CallAutomationUnitTestBase {
     static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
 
-    static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION = new MediaStreamingOptions(
-        "https://websocket.url.com",
-        MediaStreamingTransport.WEBSOCKET,
-        MediaStreamingContent.AUDIO,
-        MediaStreamingAudioChannel.MIXED
-    );
+    static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION
+        = new MediaStreamingOptions("https://websocket.url.com", MediaStreamingTransport.WEBSOCKET,
+            MediaStreamingContent.AUDIO, MediaStreamingAudioChannel.MIXED);
 
-    static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION = new TranscriptionOptions(
-        "https://websocket.url.com",
-        TranscriptionTransportType.WEBSOCKET,
-        "en-US",
-        true
-    );
+    static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION
+        = new TranscriptionOptions("https://websocket.url.com", TranscriptionTransportType.WEBSOCKET, "en-US", true);
 
     public static String generateDownloadResult(String content) {
         return content;
     }
 
     public static String generateCallProperties(String callConnectionId, String serverCallId, String callerId,
-                                                String callerDisplayName, String targetId, String connectionState,
-                                                String subject, String callbackUri, String mediaSubscriptionId, String dataSubscriptionId) {
-        CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
-            .setCallConnectionId(callConnectionId)
-            .setServerCallId(serverCallId)
-            .setCallbackUri(callbackUri)
-            .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
-            .setMediaSubscriptionId(mediaSubscriptionId)
-            .setDataSubscriptionId(dataSubscriptionId)
-            .setSourceDisplayName(callerDisplayName)
-            .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))
-            );
+        String callerDisplayName, String targetId, String connectionState, String subject, String callbackUri,
+        String mediaSubscriptionId, String dataSubscriptionId) {
+        CallConnectionPropertiesInternal result
+            = new CallConnectionPropertiesInternal().setCallConnectionId(callConnectionId)
+                .setServerCallId(serverCallId)
+                .setCallbackUri(callbackUri)
+                .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
+                .setMediaSubscriptionId(mediaSubscriptionId)
+                .setDataSubscriptionId(dataSubscriptionId)
+                .setSourceDisplayName(callerDisplayName)
+                .setTargets(
+                    new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId))));
 
         return serializeObject(result);
     }
 
     public static String generateGetParticipantResponse(String callerId, boolean isMuted, boolean isHold) {
-        CallParticipantInternal callParticipant = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted, isHold);
+        CallParticipantInternal callParticipant
+            = ModelGenerator.generateAcsCallParticipantInternal(callerId, isMuted, isHold);
         return serializeObject(callParticipant);
     }
 
     public static String generateListParticipantsResponse() {
-        GetParticipantsResponseInternal getParticipantsResponseInternal = new GetParticipantsResponseInternal()
-            .setValue(new ArrayList<>(Arrays.asList(
-                ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false, false),
-                ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true, true))))
-            .setNextLink("");
+        GetParticipantsResponseInternal getParticipantsResponseInternal
+            = new GetParticipantsResponseInternal()
+                .setValue(new ArrayList<>(
+                    Arrays.asList(ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false, false),
+                        ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true, true))))
+                .setNextLink("");
 
         return serializeObject(getParticipantsResponseInternal);
     }
 
     public static String generateAddParticipantsResponse() {
-        AddParticipantResponseInternal addParticipantsResponseInternal = new AddParticipantResponseInternal()
-            .setOperationContext(CALL_OPERATION_CONTEXT)
-            .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false));
+        AddParticipantResponseInternal addParticipantsResponseInternal
+            = new AddParticipantResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)
+                .setParticipant(ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, false, false));
 
         return serializeObject(addParticipantsResponseInternal);
     }
 
     public static String generateDialogStateResponse() {
-        DialogStateResponse dialogStateResponse = new DialogStateResponse()
-            .setDialogId(DIALOG_ID);
+        DialogStateResponse dialogStateResponse = new DialogStateResponse().setDialogId(DIALOG_ID);
 
         return serializeObject(dialogStateResponse);
     }
 
-    public static CallAutomationAsyncClient getCallAutomationAsyncClient(ArrayList<SimpleEntry<String, Integer>> responses) {
+    public static CallAutomationAsyncClient
+        getCallAutomationAsyncClient(ArrayList<SimpleEntry<String, Integer>> responses) {
         HttpClient mockHttpClient = new MockHttpClient(responses);
 
-        return new CallAutomationClientBuilder()
-            .httpClient(mockHttpClient)
+        return new CallAutomationClientBuilder().httpClient(mockHttpClient)
             .connectionString(MOCK_CONNECTION_STRING)
             .buildAsyncClient();
     }
@@ -133,18 +127,16 @@ public class CallAutomationUnitTestBase {
     public static CallAutomationClient getCallAutomationClient(ArrayList<SimpleEntry<String, Integer>> responses) {
         HttpClient mockHttpClient = new MockHttpClient(responses);
 
-        return new CallAutomationClientBuilder()
-            .httpClient(mockHttpClient)
+        return new CallAutomationClientBuilder().httpClient(mockHttpClient)
             .connectionString(MOCK_CONNECTION_STRING)
             .buildClient();
     }
 
-    public static CallAutomationClient getCallAutomationClientWithSourceIdentity(CommunicationUserIdentifier sourceIdentifier,
-            ArrayList<SimpleEntry<String, Integer>> responses) {
+    public static CallAutomationClient getCallAutomationClientWithSourceIdentity(
+        CommunicationUserIdentifier sourceIdentifier, ArrayList<SimpleEntry<String, Integer>> responses) {
         HttpClient mockHttpClient = new MockHttpClient(responses);
 
-        return new CallAutomationClientBuilder()
-            .httpClient(mockHttpClient)
+        return new CallAutomationClientBuilder().httpClient(mockHttpClient)
             .connectionString(MOCK_CONNECTION_STRING)
             .sourceIdentity(sourceIdentifier)
             .buildClient();
@@ -201,7 +193,7 @@ public class CallAutomationUnitTestBase {
 
     static String serializeObject(JsonSerializable<?> o) {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-             JsonWriter writer = JsonProviders.createWriter(outputStream)) {
+            JsonWriter writer = JsonProviders.createWriter(outputStream)) {
             o.toJson(writer);
             writer.flush();
             return outputStream.toString();

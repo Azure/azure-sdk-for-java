@@ -39,13 +39,9 @@ public interface FarmBeatsExtensionsClient {
      * @return list of farmBeats extension as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FarmBeatsExtensionInner> list(
-        List<String> farmBeatsExtensionIds,
-        List<String> farmBeatsExtensionNames,
-        List<String> extensionCategories,
-        List<String> publisherIds,
-        Integer maxPageSize,
-        Context context);
+    PagedIterable<FarmBeatsExtensionInner> list(List<String> farmBeatsExtensionIds,
+        List<String> farmBeatsExtensionNames, List<String> extensionCategories, List<String> publisherIds,
+        Integer maxPageSize, Context context);
 
     /**
      * Get farmBeats extension.

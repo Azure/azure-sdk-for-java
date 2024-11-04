@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestack.fluent.models.CustomerSubscriptionInner;
 
-/** An instance of this class provides access to all the operations defined in CustomerSubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CustomerSubscriptionsClient.
+ */
 public interface CustomerSubscriptionsClient {
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface CustomerSubscriptionsClient {
 
     /**
      * Returns a list of products.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param context The context to associate with this operation.
@@ -42,7 +44,7 @@ public interface CustomerSubscriptionsClient {
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -53,12 +55,12 @@ public interface CustomerSubscriptionsClient {
      * @return customer subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomerSubscriptionInner> getWithResponse(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context);
+    Response<CustomerSubscriptionInner> getWithResponse(String resourceGroup, String registrationName,
+        String customerSubscriptionName, Context context);
 
     /**
      * Returns the specified product.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -72,7 +74,7 @@ public interface CustomerSubscriptionsClient {
 
     /**
      * Deletes a customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -83,12 +85,12 @@ public interface CustomerSubscriptionsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroup, String registrationName, String customerSubscriptionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroup, String registrationName, String customerSubscriptionName,
+        Context context);
 
     /**
      * Deletes a customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -101,7 +103,7 @@ public interface CustomerSubscriptionsClient {
 
     /**
      * Creates a new customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -113,16 +115,12 @@ public interface CustomerSubscriptionsClient {
      * @return customer subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CustomerSubscriptionInner> createWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String customerSubscriptionName,
-        CustomerSubscriptionInner customerCreationParameters,
-        Context context);
+    Response<CustomerSubscriptionInner> createWithResponse(String resourceGroup, String registrationName,
+        String customerSubscriptionName, CustomerSubscriptionInner customerCreationParameters, Context context);
 
     /**
      * Creates a new customer subscription under a registration.
-     *
+     * 
      * @param resourceGroup Name of the resource group.
      * @param registrationName Name of the Azure Stack registration.
      * @param customerSubscriptionName Name of the product.
@@ -133,9 +131,6 @@ public interface CustomerSubscriptionsClient {
      * @return customer subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomerSubscriptionInner create(
-        String resourceGroup,
-        String registrationName,
-        String customerSubscriptionName,
+    CustomerSubscriptionInner create(String resourceGroup, String registrationName, String customerSubscriptionName,
         CustomerSubscriptionInner customerCreationParameters);
 }

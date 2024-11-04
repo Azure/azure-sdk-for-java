@@ -11,7 +11,7 @@ public final class ExtensionValueListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExtensionValueListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"version\":\"uoujmkcjhwqy\",\"extensionType\":\"r\",\"publisher\":\"n\"},\"id\":\"ewgdrjervn\",\"name\":\"enq\",\"type\":\"eh\"},{\"properties\":{\"version\":\"oygmift\",\"extensionType\":\"zdnds\",\"publisher\":\"nayqi\"},\"id\":\"nduhavhqlkthum\",\"name\":\"qolbgyc\",\"type\":\"uie\"},{\"properties\":{\"version\":\"ccymvaolpsslql\",\"extensionType\":\"mdnbbglzpswiy\",\"publisher\":\"cwyhzdxssa\"},\"id\":\"zmnvdfznudaod\",\"name\":\"xzb\",\"type\":\"cblylpstdbhhxsr\"}]}")
+            "{\"value\":[{\"properties\":{\"version\":\"ebmnzbtbhjpglk\",\"extensionType\":\"ohdneuel\",\"publisher\":\"hsd\"},\"id\":\"t\",\"name\":\"zfikd\",\"type\":\"wwquuvxzxclvithh\"}]}")
             .toObject(ExtensionValueListResult.class);
     }
 

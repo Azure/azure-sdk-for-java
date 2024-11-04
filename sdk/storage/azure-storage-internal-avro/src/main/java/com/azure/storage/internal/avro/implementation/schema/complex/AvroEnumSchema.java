@@ -40,10 +40,7 @@ public class AvroEnumSchema extends AvroCompositeSchema {
     public void pushToStack() {
         this.state.pushToStack(this);
         /* Read the index, call onIndex. */
-        AvroIntegerSchema indexSchema = new AvroIntegerSchema(
-            this.state,
-            this::onIndex
-        );
+        AvroIntegerSchema indexSchema = new AvroIntegerSchema(this.state, this::onIndex);
         indexSchema.pushToStack();
     }
 

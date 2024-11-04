@@ -46,8 +46,8 @@ public final class CustomerManagedKeyEncryption {
      * @param keyEncryptionKeyIdentity the keyEncryptionKeyIdentity value to set.
      * @return the CustomerManagedKeyEncryption object itself.
      */
-    public CustomerManagedKeyEncryption withKeyEncryptionKeyIdentity(
-        CustomerManagedKeyEncryptionKeyIdentity keyEncryptionKeyIdentity) {
+    public CustomerManagedKeyEncryption
+        withKeyEncryptionKeyIdentity(CustomerManagedKeyEncryptionKeyIdentity keyEncryptionKeyIdentity) {
         this.keyEncryptionKeyIdentity = keyEncryptionKeyIdentity;
         return this;
     }

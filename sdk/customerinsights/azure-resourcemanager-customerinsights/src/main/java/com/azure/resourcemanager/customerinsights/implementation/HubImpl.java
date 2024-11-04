@@ -92,22 +92,18 @@ public final class HubImpl implements Hub, Hub.Definition, Hub.Update {
     }
 
     public Hub create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHubs()
-                .createOrUpdateWithResponse(resourceGroupName, hubName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHubs()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Hub create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHubs()
-                .createOrUpdateWithResponse(resourceGroupName, hubName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHubs()
+            .createOrUpdateWithResponse(resourceGroupName, hubName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -122,49 +118,41 @@ public final class HubImpl implements Hub, Hub.Definition, Hub.Update {
     }
 
     public Hub apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHubs()
-                .updateWithResponse(resourceGroupName, hubName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHubs()
+            .updateWithResponse(resourceGroupName, hubName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Hub apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHubs()
-                .updateWithResponse(resourceGroupName, hubName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHubs()
+            .updateWithResponse(resourceGroupName, hubName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
     HubImpl(HubInner innerObject, com.azure.resourcemanager.customerinsights.CustomerInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.hubName = Utils.getValueFromIdByName(innerObject.id(), "hubs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.hubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "hubs");
     }
 
     public Hub refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHubs()
-                .getByResourceGroupWithResponse(resourceGroupName, hubName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHubs()
+            .getByResourceGroupWithResponse(resourceGroupName, hubName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Hub refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getHubs()
-                .getByResourceGroupWithResponse(resourceGroupName, hubName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getHubs()
+            .getByResourceGroupWithResponse(resourceGroupName, hubName, context)
+            .getValue();
         return this;
     }
 

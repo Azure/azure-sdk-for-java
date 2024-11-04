@@ -13,7 +13,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ClientSecretCredentialTest extends IdentityTestBase {
@@ -22,8 +21,7 @@ public class ClientSecretCredentialTest extends IdentityTestBase {
     private ClientSecretCredential credential;
 
     private void initializeClient(HttpClient httpClient) {
-        credential = new ClientSecretCredentialBuilder()
-            .clientId(isPlaybackMode() ? "Dummy-Id" : getClientId())
+        credential = new ClientSecretCredentialBuilder().clientId(isPlaybackMode() ? "Dummy-Id" : getClientId())
             .tenantId(isPlaybackMode() ? "Dummy-Id" : getTenantId())
             .clientSecret(isPlaybackMode() ? "Dummy-Secret" : getClientSecret())
             .pipeline(super.getHttpPipeline(httpClient))
@@ -38,7 +36,8 @@ public class ClientSecretCredentialTest extends IdentityTestBase {
         initializeClient(httpClient);
 
         // act
-        AccessToken actual = credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default"));
+        AccessToken actual
+            = credential.getTokenSync(new TokenRequestContext().addScopes("https://vault.azure.net/.default"));
 
         // assert
         assertNotNull(actual);
@@ -52,7 +51,8 @@ public class ClientSecretCredentialTest extends IdentityTestBase {
     public void getTokenAsync(HttpClient httpClient) {
         // arrange
         initializeClient(httpClient);
-        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
+        StepVerifier
+            .create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
             .expectNextMatches(accessToken -> accessToken.getToken() != null && accessToken.getExpiresAt() != null)
             .verifyComplete();
     }

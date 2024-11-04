@@ -181,16 +181,12 @@ public final class HyperVToAzStackHciDiskInput {
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskId in model HyperVToAzStackHciDiskInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property diskId in model HyperVToAzStackHciDiskInput"));
         }
         if (diskFileFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property diskFileFormat in model HyperVToAzStackHciDiskInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property diskFileFormat in model HyperVToAzStackHciDiskInput"));
         }
     }
 

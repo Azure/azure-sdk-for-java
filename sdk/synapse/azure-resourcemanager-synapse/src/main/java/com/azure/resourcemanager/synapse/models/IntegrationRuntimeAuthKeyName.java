@@ -5,20 +5,25 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The name of the authentication key to regenerate. */
+/**
+ * The name of the authentication key to regenerate.
+ */
 public final class IntegrationRuntimeAuthKeyName extends ExpandableStringEnum<IntegrationRuntimeAuthKeyName> {
-    /** Static value authKey1 for IntegrationRuntimeAuthKeyName. */
+    /**
+     * Static value authKey1 for IntegrationRuntimeAuthKeyName.
+     */
     public static final IntegrationRuntimeAuthKeyName AUTH_KEY1 = fromString("authKey1");
 
-    /** Static value authKey2 for IntegrationRuntimeAuthKeyName. */
+    /**
+     * Static value authKey2 for IntegrationRuntimeAuthKeyName.
+     */
     public static final IntegrationRuntimeAuthKeyName AUTH_KEY2 = fromString("authKey2");
 
     /**
      * Creates a new instance of IntegrationRuntimeAuthKeyName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,18 +32,17 @@ public final class IntegrationRuntimeAuthKeyName extends ExpandableStringEnum<In
 
     /**
      * Creates or finds a IntegrationRuntimeAuthKeyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeAuthKeyName.
      */
-    @JsonCreator
     public static IntegrationRuntimeAuthKeyName fromString(String name) {
         return fromString(name, IntegrationRuntimeAuthKeyName.class);
     }
 
     /**
      * Gets known IntegrationRuntimeAuthKeyName values.
-     *
+     * 
      * @return known IntegrationRuntimeAuthKeyName values.
      */
     public static Collection<IntegrationRuntimeAuthKeyName> values() {

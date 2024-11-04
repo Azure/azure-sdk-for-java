@@ -13,9 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationArtifactTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationArtifact model =
-            BinaryData
-                .fromString("{\"name\":\"NotSpecified\",\"uri\":\"appd\",\"type\":\"Custom\"}")
+        ApplicationArtifact model
+            = BinaryData.fromString("{\"name\":\"NotSpecified\",\"uri\":\"appd\",\"type\":\"Custom\"}")
                 .toObject(ApplicationArtifact.class);
         Assertions.assertEquals(ApplicationArtifactName.NOT_SPECIFIED, model.name());
         Assertions.assertEquals("appd", model.uri());
@@ -24,11 +23,9 @@ public final class ApplicationArtifactTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationArtifact model =
-            new ApplicationArtifact()
-                .withName(ApplicationArtifactName.NOT_SPECIFIED)
-                .withUri("appd")
-                .withType(ApplicationArtifactType.CUSTOM);
+        ApplicationArtifact model = new ApplicationArtifact().withName(ApplicationArtifactName.NOT_SPECIFIED)
+            .withUri("appd")
+            .withType(ApplicationArtifactType.CUSTOM);
         model = BinaryData.fromObject(model).toObject(ApplicationArtifact.class);
         Assertions.assertEquals(ApplicationArtifactName.NOT_SPECIFIED, model.name());
         Assertions.assertEquals("appd", model.uri());

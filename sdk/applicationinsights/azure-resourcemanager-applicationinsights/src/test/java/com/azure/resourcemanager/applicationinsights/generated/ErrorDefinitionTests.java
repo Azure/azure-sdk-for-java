@@ -10,8 +10,8 @@ import com.azure.resourcemanager.applicationinsights.models.ErrorDefinition;
 public final class ErrorDefinitionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ErrorDefinition model =
-            BinaryData.fromString("{\"innererror\":\"dataocmbqfqvmkcxoza\"}").toObject(ErrorDefinition.class);
+        ErrorDefinition model
+            = BinaryData.fromString("{\"innererror\":\"dataocmbqfqvmkcxoza\"}").toObject(ErrorDefinition.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LogRulesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogRules model =
-            BinaryData
-                .fromString(
-                    "{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendResourceLogs\":false,\"filteringTags\":[{\"name\":\"aodsfcpkv\",\"value\":\"dpuozmyz\",\"action\":\"Exclude\"},{\"name\":\"fuaxbe\",\"value\":\"iu\",\"action\":\"Include\"}]}")
-                .toObject(LogRules.class);
+        LogRules model = BinaryData.fromString(
+            "{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendResourceLogs\":false,\"filteringTags\":[{\"name\":\"aodsfcpkv\",\"value\":\"dpuozmyz\",\"action\":\"Exclude\"},{\"name\":\"fuaxbe\",\"value\":\"iu\",\"action\":\"Include\"}]}")
+            .toObject(LogRules.class);
         Assertions.assertEquals(false, model.sendAadLogs());
         Assertions.assertEquals(true, model.sendSubscriptionLogs());
         Assertions.assertEquals(false, model.sendResourceLogs());
@@ -29,19 +27,12 @@ public final class LogRulesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogRules model =
-            new LogRules()
-                .withSendAadLogs(false)
-                .withSendSubscriptionLogs(true)
-                .withSendResourceLogs(false)
-                .withFilteringTags(
-                    Arrays
-                        .asList(
-                            new FilteringTag()
-                                .withName("aodsfcpkv")
-                                .withValue("dpuozmyz")
-                                .withAction(TagAction.EXCLUDE),
-                            new FilteringTag().withName("fuaxbe").withValue("iu").withAction(TagAction.INCLUDE)));
+        LogRules model = new LogRules().withSendAadLogs(false)
+            .withSendSubscriptionLogs(true)
+            .withSendResourceLogs(false)
+            .withFilteringTags(Arrays.asList(
+                new FilteringTag().withName("aodsfcpkv").withValue("dpuozmyz").withAction(TagAction.EXCLUDE),
+                new FilteringTag().withName("fuaxbe").withValue("iu").withAction(TagAction.INCLUDE)));
         model = BinaryData.fromObject(model).toObject(LogRules.class);
         Assertions.assertEquals(false, model.sendAadLogs());
         Assertions.assertEquals(true, model.sendSubscriptionLogs());

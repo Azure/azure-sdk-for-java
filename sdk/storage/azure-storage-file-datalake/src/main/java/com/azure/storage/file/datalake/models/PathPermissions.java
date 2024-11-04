@@ -15,10 +15,10 @@ import java.util.Objects;
  */
 public class PathPermissions {
 
-    private static final String PATH_PERMISSIONS_OCTAL_FORMAT_ERROR = "String cannot be null and must be four "
-        + "characters (first bit--sticky bit--must be set to 0 for umask).";
-    private static final String PATH_PERMISSIONS_SYMBOLIC_FORMAT_ERROR = "Invalid format. The only character that may "
-        + "validly follow the permissions string is '+'.";
+    private static final String PATH_PERMISSIONS_OCTAL_FORMAT_ERROR
+        = "String cannot be null and must be four " + "characters (first bit--sticky bit--must be set to 0 for umask).";
+    private static final String PATH_PERMISSIONS_SYMBOLIC_FORMAT_ERROR
+        = "Invalid format. The only character that may " + "validly follow the permissions string is '+'.";
 
     /**
      * Permissions for the owner.

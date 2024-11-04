@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IssueContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IssueContractInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"title\":\"eysfaqegplw\",\"description\":\"ysh\",\"userId\":\"ddkvbxgkqu\",\"createdDate\":\"2021-03-15T20:21:34Z\",\"state\":\"removed\",\"apiId\":\"dacarvvlfnty\"},\"id\":\"tpo\",\"name\":\"wenaz\",\"type\":\"r\"}")
-                .toObject(IssueContractInner.class);
+        IssueContractInner model = BinaryData.fromString(
+            "{\"properties\":{\"title\":\"eysfaqegplw\",\"description\":\"ysh\",\"userId\":\"ddkvbxgkqu\",\"createdDate\":\"2021-03-15T20:21:34Z\",\"state\":\"removed\",\"apiId\":\"dacarvvlfnty\"},\"id\":\"tpo\",\"name\":\"wenaz\",\"type\":\"r\"}")
+            .toObject(IssueContractInner.class);
         Assertions.assertEquals("eysfaqegplw", model.title());
         Assertions.assertEquals("ysh", model.description());
         Assertions.assertEquals("ddkvbxgkqu", model.userId());
@@ -28,14 +26,12 @@ public final class IssueContractInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueContractInner model =
-            new IssueContractInner()
-                .withTitle("eysfaqegplw")
-                .withDescription("ysh")
-                .withUserId("ddkvbxgkqu")
-                .withCreatedDate(OffsetDateTime.parse("2021-03-15T20:21:34Z"))
-                .withState(State.REMOVED)
-                .withApiId("dacarvvlfnty");
+        IssueContractInner model = new IssueContractInner().withTitle("eysfaqegplw")
+            .withDescription("ysh")
+            .withUserId("ddkvbxgkqu")
+            .withCreatedDate(OffsetDateTime.parse("2021-03-15T20:21:34Z"))
+            .withState(State.REMOVED)
+            .withApiId("dacarvvlfnty");
         model = BinaryData.fromObject(model).toObject(IssueContractInner.class);
         Assertions.assertEquals("eysfaqegplw", model.title());
         Assertions.assertEquals("ysh", model.description());

@@ -74,16 +74,12 @@ public final class LinkedOperationRule {
      */
     public void validate() {
         if (linkedOperation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property linkedOperation in model LinkedOperationRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property linkedOperation in model LinkedOperationRule"));
         }
         if (linkedAction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property linkedAction in model LinkedOperationRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property linkedAction in model LinkedOperationRule"));
         }
     }
 

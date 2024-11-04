@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.consumption.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.math.BigDecimal;
 
-/** The amount plus currency . */
+/**
+ * The amount plus currency .
+ */
 @Immutable
-public class Amount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Amount.class);
-
+public class Amount implements JsonSerializable<Amount> {
     /*
      * Amount currency.
      */
-    @JsonProperty(value = "currency", access = JsonProperty.Access.WRITE_ONLY)
     private String currency;
 
     /*
      * Amount.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private BigDecimal value;
 
     /**
+     * Creates an instance of Amount class.
+     */
+    public Amount() {
+    }
+
+    /**
      * Get the currency property: Amount currency.
-     *
+     * 
      * @return the currency value.
      */
     public String currency() {
@@ -37,8 +43,19 @@ public class Amount {
     }
 
     /**
+     * Set the currency property: Amount currency.
+     * 
+     * @param currency the currency value to set.
+     * @return the Amount object itself.
+     */
+    Amount withCurrency(String currency) {
+        this.currency = currency;
+        return this;
+    }
+
+    /**
      * Get the value property: Amount.
-     *
+     * 
      * @return the value value.
      */
     public BigDecimal value() {
@@ -46,10 +63,59 @@ public class Amount {
     }
 
     /**
+     * Set the value property: Amount.
+     * 
+     * @param value the value value to set.
+     * @return the Amount object itself.
+     */
+    Amount withValue(BigDecimal value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Amount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Amount if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Amount.
+     */
+    public static Amount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Amount deserializedAmount = new Amount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currency".equals(fieldName)) {
+                    deserializedAmount.currency = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedAmount.value
+                        = reader.getNullable(nonNullReader -> new BigDecimal(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmount;
+        });
     }
 }

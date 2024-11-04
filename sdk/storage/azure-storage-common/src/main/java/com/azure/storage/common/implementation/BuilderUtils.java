@@ -14,14 +14,14 @@ import com.azure.storage.common.policy.RequestRetryPolicy;
  * RESERVED FOR INTERNAL USE.
  */
 public final class BuilderUtils {
-    private BuilderUtils() { }
+    private BuilderUtils() {
+    }
 
-    public static RequestRetryPolicy createRetryPolicy(
-        RequestRetryOptions retryOptions, RetryOptions coreRetryOptions, ClientLogger logger) {
+    public static RequestRetryPolicy createRetryPolicy(RequestRetryOptions retryOptions, RetryOptions coreRetryOptions,
+        ClientLogger logger) {
         if (retryOptions != null && coreRetryOptions != null) {
-            throw logger.logExceptionAsWarning(
-                new IllegalStateException(
-                    "'retryOptions(RequestRetryOptions)' and 'retryOptions(RetryOptions)' cannot both be set"));
+            throw logger.logExceptionAsWarning(new IllegalStateException(
+                "'retryOptions(RequestRetryOptions)' and 'retryOptions(RetryOptions)' cannot both be set"));
         }
         if (coreRetryOptions != null) {
             retryOptions = RequestRetryOptions.fromRetryOptions(coreRetryOptions, null, null);

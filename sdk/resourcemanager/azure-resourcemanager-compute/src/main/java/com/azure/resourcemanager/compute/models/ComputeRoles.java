@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.compute.models;
 
-
 /** Defines values for ComputeRoles. */
 public enum ComputeRoles {
     /** Enum value PaaS. */

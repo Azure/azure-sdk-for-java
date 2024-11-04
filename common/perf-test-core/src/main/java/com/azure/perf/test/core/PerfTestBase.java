@@ -69,6 +69,7 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
     public Runnable runAllAsyncWithVirtualThread(long endNanoTime) {
         throw new UnsupportedOperationException("runAllAsyncWithVirtualThread is not supported.");
     }
+
     /**
      * Runs before cleanup stage.
      *

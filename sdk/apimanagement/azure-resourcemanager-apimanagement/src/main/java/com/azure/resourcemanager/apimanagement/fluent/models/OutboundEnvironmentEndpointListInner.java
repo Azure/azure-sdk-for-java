@@ -65,10 +65,8 @@ public final class OutboundEnvironmentEndpointListInner {
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model OutboundEnvironmentEndpointListInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model OutboundEnvironmentEndpointListInner"));
         } else {
             value().forEach(e -> e.validate());
         }

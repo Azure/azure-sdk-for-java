@@ -14,139 +14,466 @@ import org.junit.jupiter.api.Assertions;
 public final class ForecastFilterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ForecastFilter model =
-            BinaryData
-                .fromString(
-                    "{\"and\":[{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"wfudwpzntxhdzhl\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"bh\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"xsbkyvpyca\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"bpzkafkuwbc\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"hseyvju\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"slhs\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"ofmxagkvtmelmqkr\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"vljua\",\"operator\":\"In\",\"values\":[]}}],\"or\":[{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"duala\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"pvfadmwsrcr\",\"operator\":\"In\",\"values\":[]}},{\"and\":[],\"or\":[],\"dimensions\":{\"name\":\"mzlfmisgwb\",\"operator\":\"In\",\"values\":[]},\"tags\":{\"name\":\"e\",\"operator\":\"In\",\"values\":[]}}],\"dimensions\":{\"name\":\"wkz\",\"operator\":\"In\",\"values\":[\"io\",\"rqhakauha\",\"hsfwxosowzxcug\"]},\"tags\":{\"name\":\"jooxdjebw\",\"operator\":\"In\",\"values\":[\"wwfvov\",\"vmeueci\",\"yhz\"]}}")
-                .toObject(ForecastFilter.class);
-        Assertions.assertEquals("wfudwpzntxhdzhl", model.and().get(0).dimensions().name());
+        ForecastFilter model = BinaryData.fromString(
+            "{\"and\":[{\"and\":[{\"and\":[{},{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"kx\",\"operator\":\"In\",\"values\":[\"hvbbxuripltfnh\",\"baxk\",\"xywr\"]},\"tags\":{\"name\":\"pyklyhpluodpvru\",\"operator\":\"In\",\"values\":[\"gzibthostgktstv\"]}},{\"and\":[{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"edqbc\",\"operator\":\"In\",\"values\":[\"lhpl\"]},\"tags\":{\"name\":\"qkdlw\",\"operator\":\"In\",\"values\":[\"bum\",\"kxtrq\"]}},{\"and\":[{},{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"btx\",\"operator\":\"In\",\"values\":[\"fwsrtawcoezbrhu\",\"skh\"]},\"tags\":{\"name\":\"ygo\",\"operator\":\"In\",\"values\":[\"kqfqjbvl\",\"orfmluiqt\",\"zf\"]}},{\"and\":[{},{},{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"qybaryeua\",\"operator\":\"In\",\"values\":[\"qabqgzslesjcb\"]},\"tags\":{\"name\":\"rnntiewdjcv\",\"operator\":\"In\",\"values\":[\"wr\",\"ehwagoh\",\"uffkmrqemvvh\"]}}],\"or\":[{\"and\":[{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"tac\",\"operator\":\"In\",\"values\":[\"jvewzcjznmwcp\"]},\"tags\":{\"name\":\"uaadraufactkahzo\",\"operator\":\"In\",\"values\":[\"j\",\"iuxxpshneekulfg\",\"lqubkwdlen\"]}},{\"and\":[{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"jbazpjuohminy\",\"operator\":\"In\",\"values\":[\"orwmduvwpklv\",\"w\",\"ygdxpgpqchis\",\"epn\"]},\"tags\":{\"name\":\"jcrxgibbdaxcon\",\"operator\":\"In\",\"values\":[\"auorsukokw\",\"qplhlvnu\"]}},{\"and\":[{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"phwzsoldweyuqdu\",\"operator\":\"In\",\"values\":[\"nnrwrbiork\",\"alywjhhgdn\"]},\"tags\":{\"name\":\"msi\",\"operator\":\"In\",\"values\":[\"miloxggdufiqndie\"]}},{\"and\":[{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"chvcyyysfgdo\",\"operator\":\"In\",\"values\":[\"biipuip\",\"oqonma\",\"jeknizshq\",\"cimpevfg\"]},\"tags\":{\"name\":\"lrri\",\"operator\":\"In\",\"values\":[\"wdxsm\",\"ccwr\"]}}],\"dimensions\":{\"name\":\"scjfnyns\",\"operator\":\"In\",\"values\":[\"jizdvoqyt\"]},\"tags\":{\"name\":\"yo\",\"operator\":\"In\",\"values\":[\"lgy\",\"vutpthjoxo\",\"smsks\"]}},{\"and\":[{\"and\":[{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"jxkcgxxlxsff\",\"operator\":\"In\",\"values\":[\"izqzdwlvwlyou\",\"fgfb\"]},\"tags\":{\"name\":\"ubdyhgk\",\"operator\":\"In\",\"values\":[\"nsgowzfttst\"]}}],\"or\":[{\"and\":[{},{},{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"actxtgzukxitm\",\"operator\":\"In\",\"values\":[\"gqqqxh\"]},\"tags\":{\"name\":\"xrxc\",\"operator\":\"In\",\"values\":[\"isavok\",\"dzf\"]}},{\"and\":[{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"l\",\"operator\":\"In\",\"values\":[\"ttbaj\",\"katnwxyi\"]},\"tags\":{\"name\":\"id\",\"operator\":\"In\",\"values\":[\"fku\",\"s\",\"xkdmligo\",\"ibrxkp\"]}}],\"dimensions\":{\"name\":\"oaz\",\"operator\":\"In\",\"values\":[\"ocbgoorbteoyb\"]},\"tags\":{\"name\":\"jxakv\",\"operator\":\"In\",\"values\":[\"slordilmyww\",\"kgkxn\",\"edabgyvudtjue\"]}}],\"or\":[{\"and\":[{\"and\":[{},{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"c\",\"operator\":\"In\",\"values\":[\"ccybvp\",\"yakk\"]},\"tags\":{\"name\":\"zp\",\"operator\":\"In\",\"values\":[\"jplmagstcy\",\"hpfkyrkdbdgi\"]}},{\"and\":[{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"nwqjnoba\",\"operator\":\"In\",\"values\":[\"ddviacegfnmntfpm\"]},\"tags\":{\"name\":\"emfnczdwvvbal\",\"operator\":\"In\",\"values\":[\"lchpodbzevwrdn\"]}},{\"and\":[{}],\"or\":[{}],\"dimensions\":{\"name\":\"sjcswsmystuluqyp\",\"operator\":\"In\",\"values\":[\"lerchpq\",\"mfpjbabw\",\"dfc\",\"sspuunnoxyhkx\"]},\"tags\":{\"name\":\"ddrihpf\",\"operator\":\"In\",\"values\":[\"caaewdao\",\"djvlpj\",\"xkzb\",\"msgeivsiykzk\"]}},{\"and\":[{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"onbzoggculapzwy\",\"operator\":\"In\",\"values\":[\"ogtqxepnylbf\",\"ajlyjtlvofqzhv\",\"cib\",\"fmo\"]},\"tags\":{\"name\":\"xrkjpvdw\",\"operator\":\"In\",\"values\":[\"wiivwzjbhyzsx\",\"rkambt\",\"negvmnvuqe\",\"vldspa\"]}}],\"or\":[{\"and\":[{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"flvestmjlxrrilo\",\"operator\":\"In\",\"values\":[\"eewchpxlktw\",\"uziycsl\",\"vu\"]},\"tags\":{\"name\":\"ztcktyh\",\"operator\":\"In\",\"values\":[\"edcg\",\"ulwm\",\"rqzz\"]}},{\"and\":[{},{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"lydzgk\",\"operator\":\"In\",\"values\":[\"eevt\",\"epr\"]},\"tags\":{\"name\":\"t\",\"operator\":\"In\",\"values\":[\"tpzdmovzvfvaawzq\"]}},{\"and\":[{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"ur\",\"operator\":\"In\",\"values\":[\"aecxndtic\",\"kpvzmlq\",\"mldgxobfirc\"]},\"tags\":{\"name\":\"pkc\",\"operator\":\"In\",\"values\":[\"zriykhy\",\"wf\"]}},{\"and\":[{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"qvkjlmxho\",\"operator\":\"In\",\"values\":[\"nhdwdigumbnra\",\"uzzptjazysdz\",\"ezwwv\"]},\"tags\":{\"name\":\"qyuvvfonkp\",\"operator\":\"In\",\"values\":[\"yik\",\"y\"]}}],\"dimensions\":{\"name\":\"uyav\",\"operator\":\"In\",\"values\":[\"mncsttijfybvp\"]},\"tags\":{\"name\":\"krsgsgb\",\"operator\":\"In\",\"values\":[\"zq\",\"njdgkynscliq\",\"zvhxnk\",\"mtk\"]}},{\"and\":[{\"and\":[{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"dxzxhi\",\"operator\":\"In\",\"values\":[\"bbc\",\"vqagtltdhlf\"]},\"tags\":{\"name\":\"ojpykvgtrdc\",\"operator\":\"In\",\"values\":[\"mzzs\",\"ymbrnysuxmpraf\",\"g\"]}},{\"and\":[{},{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"vdff\",\"operator\":\"In\",\"values\":[\"fqroudas\"]},\"tags\":{\"name\":\"vehhrvkbunzozu\",\"operator\":\"In\",\"values\":[\"xg\",\"moy\",\"cdyuibhmfdnbzyd\",\"f\"]}}],\"or\":[{\"and\":[{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"isrvhm\",\"operator\":\"In\",\"values\":[\"ffukiscvw\"]},\"tags\":{\"name\":\"hwplefaxvx\",\"operator\":\"In\",\"values\":[\"btgn\",\"nzeyqxtjj\"]}},{\"and\":[{},{},{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"ycavodggxdbees\",\"operator\":\"In\",\"values\":[\"knlrariaawiuagy\",\"wqfbylyrfgiagt\"]},\"tags\":{\"name\":\"jocqwogfnzjvusf\",\"operator\":\"In\",\"values\":[\"mozuxylfsb\",\"kadpysown\"]}},{\"and\":[{},{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"grjqctojcmi\",\"operator\":\"In\",\"values\":[\"ieypef\",\"jy\",\"dh\",\"u\"]},\"tags\":{\"name\":\"cp\",\"operator\":\"In\",\"values\":[\"khihihlhzds\",\"tzbsrgnowcjhf\",\"mvec\",\"ctxmwoteyowcluq\"]}},{\"and\":[{},{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"gqouwifzmpj\",\"operator\":\"In\",\"values\":[\"vqikfxcvhrfsphu\",\"grttikteusqczk\",\"yklxubyjaffmmfbl\"]},\"tags\":{\"name\":\"cuubgq\",\"operator\":\"In\",\"values\":[\"talmett\",\"wgdsl\"]}}],\"dimensions\":{\"name\":\"ihhrmo\",\"operator\":\"In\",\"values\":[\"qseypxiutcxa\"]},\"tags\":{\"name\":\"hyrpetogebjoxs\",\"operator\":\"In\",\"values\":[\"nhl\"]}},{\"and\":[{\"and\":[{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"jcjbt\",\"operator\":\"In\",\"values\":[\"ehvvib\",\"xjjs\",\"oqbeitpkxzt\",\"oobklftidgfcwq\"]},\"tags\":{\"name\":\"imaq\",\"operator\":\"In\",\"values\":[\"em\",\"yhohujswtwkozzwc\"]}},{\"and\":[{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"pfajnjwltlwtjj\",\"operator\":\"In\",\"values\":[\"talhsnvkcdmxzr\",\"oaimlnw\",\"aaomylweazu\",\"cse\"]},\"tags\":{\"name\":\"wwnpj\",\"operator\":\"In\",\"values\":[\"zswpchwa\"]}},{\"and\":[{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"nfepgf\",\"operator\":\"In\",\"values\":[\"twly\",\"gncxykxhdj\",\"limmbcxf\"]},\"tags\":{\"name\":\"cporxvxcjz\",\"operator\":\"In\",\"values\":[\"zxfpxtgqsc\",\"avft\"]}}],\"or\":[{\"and\":[{}],\"or\":[{},{},{},{}],\"dimensions\":{\"name\":\"mtggu\",\"operator\":\"In\",\"values\":[\"jrajcivm\"]},\"tags\":{\"name\":\"hfcf\",\"operator\":\"In\",\"values\":[\"xgkn\",\"uvyinzqodfvpgs\"]}},{\"and\":[{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"bpfgzdj\",\"operator\":\"In\",\"values\":[\"zflbqvg\",\"qvlgafcqusrdvetn\"]},\"tags\":{\"name\":\"dtutnwldu\",\"operator\":\"In\",\"values\":[\"uzhyrmewipmvekdx\",\"kuqgsjjxundxgket\"]}},{\"and\":[{},{}],\"or\":[{},{},{}],\"dimensions\":{\"name\":\"hfjmhvv\",\"operator\":\"In\",\"values\":[\"gpmuneqsxvmhfbuz\",\"yihsasbhudypohyu\"]},\"tags\":{\"name\":\"slynsqyrpfoo\",\"operator\":\"In\",\"values\":[\"ttymsjny\",\"qdnfwqzdz\"]}},{\"and\":[{},{}],\"or\":[{},{}],\"dimensions\":{\"name\":\"hnfhqlyvijouwi\",\"operator\":\"In\",\"values\":[\"oyzunbixxr\",\"ikvcpwp\",\"clrcivtsox\"]},\"tags\":{\"name\":\"kenx\",\"operator\":\"In\",\"values\":[\"yefrpmpdnqqska\",\"ao\",\"vmm\",\"npqfrtqlkzmeg\"]}}],\"dimensions\":{\"name\":\"tgvkxlzyqd\",\"operator\":\"In\",\"values\":[\"gcealzxwh\"]},\"tags\":{\"name\":\"nsymoyqhlwigd\",\"operator\":\"In\",\"values\":[\"kbxgom\",\"ajuwas\",\"vdaeyyguxakjsq\"]}}],\"dimensions\":{\"name\":\"zbezkgimsidxasic\",\"operator\":\"In\",\"values\":[\"vvjskgfmocwahp\",\"gat\",\"eaahhvjhhn\"]},\"tags\":{\"name\":\"zybbj\",\"operator\":\"In\",\"values\":[\"jks\"]}}")
+            .toObject(ForecastFilter.class);
+        Assertions.assertEquals("kx", model.and().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("hvbbxuripltfnh", model.and().get(0).and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("pyklyhpluodpvru", model.and().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("gzibthostgktstv", model.and().get(0).and().get(0).tags().values().get(0));
+        Assertions.assertEquals("tac", model.and().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("jvewzcjznmwcp", model.and().get(0).or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("uaadraufactkahzo", model.and().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("j", model.and().get(0).or().get(0).tags().values().get(0));
+        Assertions.assertEquals("scjfnyns", model.and().get(0).dimensions().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).dimensions().operator());
-        Assertions.assertEquals("bh", model.and().get(0).tags().name());
+        Assertions.assertEquals("jizdvoqyt", model.and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("yo", model.and().get(0).tags().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).tags().operator());
-        Assertions.assertEquals("duala", model.or().get(0).dimensions().name());
+        Assertions.assertEquals("lgy", model.and().get(0).tags().values().get(0));
+        Assertions.assertEquals("c", model.or().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("ccybvp", model.or().get(0).and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("zp", model.or().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("jplmagstcy", model.or().get(0).and().get(0).tags().values().get(0));
+        Assertions.assertEquals("flvestmjlxrrilo", model.or().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("eewchpxlktw", model.or().get(0).or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("ztcktyh", model.or().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("edcg", model.or().get(0).or().get(0).tags().values().get(0));
+        Assertions.assertEquals("uyav", model.or().get(0).dimensions().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).dimensions().operator());
-        Assertions.assertEquals("pvfadmwsrcr", model.or().get(0).tags().name());
+        Assertions.assertEquals("mncsttijfybvp", model.or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("krsgsgb", model.or().get(0).tags().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).tags().operator());
-        Assertions.assertEquals("wkz", model.dimensions().name());
+        Assertions.assertEquals("zq", model.or().get(0).tags().values().get(0));
+        Assertions.assertEquals("zbezkgimsidxasic", model.dimensions().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.dimensions().operator());
-        Assertions.assertEquals("io", model.dimensions().values().get(0));
-        Assertions.assertEquals("jooxdjebw", model.tags().name());
+        Assertions.assertEquals("vvjskgfmocwahp", model.dimensions().values().get(0));
+        Assertions.assertEquals("zybbj", model.tags().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.tags().operator());
-        Assertions.assertEquals("wwfvov", model.tags().values().get(0));
+        Assertions.assertEquals("jks", model.tags().values().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ForecastFilter model =
-            new ForecastFilter()
-                .withAnd(
-                    Arrays
-                        .asList(
-                            new ForecastFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new ForecastComparisonExpression()
-                                        .withName("wfudwpzntxhdzhl")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new ForecastComparisonExpression()
-                                        .withName("bh")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList())),
-                            new ForecastFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new ForecastComparisonExpression()
-                                        .withName("xsbkyvpyca")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new ForecastComparisonExpression()
-                                        .withName("bpzkafkuwbc")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList())),
-                            new ForecastFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new ForecastComparisonExpression()
-                                        .withName("hseyvju")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new ForecastComparisonExpression()
-                                        .withName("slhs")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList())),
-                            new ForecastFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new ForecastComparisonExpression()
-                                        .withName("ofmxagkvtmelmqkr")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new ForecastComparisonExpression()
-                                        .withName("vljua")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList()))))
-                .withOr(
-                    Arrays
-                        .asList(
-                            new ForecastFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new ForecastComparisonExpression()
-                                        .withName("duala")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new ForecastComparisonExpression()
-                                        .withName("pvfadmwsrcr")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList())),
-                            new ForecastFilter()
-                                .withAnd(Arrays.asList())
-                                .withOr(Arrays.asList())
-                                .withDimensions(
-                                    new ForecastComparisonExpression()
-                                        .withName("mzlfmisgwb")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList()))
-                                .withTags(
-                                    new ForecastComparisonExpression()
-                                        .withName("e")
-                                        .withOperator(ForecastOperatorType.IN)
-                                        .withValues(Arrays.asList()))))
-                .withDimensions(
-                    new ForecastComparisonExpression()
-                        .withName("wkz")
+        ForecastFilter model = new ForecastFilter()
+            .withAnd(Arrays.asList(
+                new ForecastFilter()
+                    .withAnd(Arrays.asList(
+                        new ForecastFilter()
+                            .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter(),
+                                new ForecastFilter()))
+                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                            .withDimensions(new ForecastComparisonExpression().withName("kx")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("hvbbxuripltfnh", "baxk", "xywr")))
+                            .withTags(new ForecastComparisonExpression().withName("pyklyhpluodpvru")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("gzibthostgktstv"))),
+                        new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter(),
+                                new ForecastFilter()))
+                            .withDimensions(new ForecastComparisonExpression().withName("edqbc")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("lhpl")))
+                            .withTags(new ForecastComparisonExpression().withName("qkdlw")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("bum", "kxtrq"))),
+                        new ForecastFilter()
+                            .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter(),
+                                new ForecastFilter()))
+                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter(),
+                                new ForecastFilter()))
+                            .withDimensions(new ForecastComparisonExpression().withName("btx")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("fwsrtawcoezbrhu", "skh")))
+                            .withTags(new ForecastComparisonExpression().withName("ygo")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("kqfqjbvl", "orfmluiqt", "zf"))),
+                        new ForecastFilter()
+                            .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter(),
+                                new ForecastFilter()))
+                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                            .withDimensions(new ForecastComparisonExpression().withName("qybaryeua")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("qabqgzslesjcb")))
+                            .withTags(new ForecastComparisonExpression().withName("rnntiewdjcv")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("wr", "ehwagoh", "uffkmrqemvvh")))))
+                    .withOr(Arrays.asList(
+                        new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter(),
+                                new ForecastFilter()))
+                            .withDimensions(new ForecastComparisonExpression().withName("tac")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("jvewzcjznmwcp")))
+                            .withTags(new ForecastComparisonExpression().withName("uaadraufactkahzo")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("j", "iuxxpshneekulfg", "lqubkwdlen"))),
+                        new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                            .withDimensions(new ForecastComparisonExpression().withName("jbazpjuohminy")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("orwmduvwpklv", "w", "ygdxpgpqchis", "epn")))
+                            .withTags(new ForecastComparisonExpression().withName("jcrxgibbdaxcon")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("auorsukokw", "qplhlvnu"))),
+                        new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                            .withDimensions(new ForecastComparisonExpression().withName("phwzsoldweyuqdu")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("nnrwrbiork", "alywjhhgdn")))
+                            .withTags(new ForecastComparisonExpression().withName("msi")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("miloxggdufiqndie"))),
+                        new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter()))
+                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                            .withDimensions(new ForecastComparisonExpression().withName("chvcyyysfgdo")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("biipuip", "oqonma", "jeknizshq", "cimpevfg")))
+                            .withTags(new ForecastComparisonExpression().withName("lrri")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("wdxsm", "ccwr")))))
+                    .withDimensions(new ForecastComparisonExpression().withName("scjfnyns")
                         .withOperator(ForecastOperatorType.IN)
-                        .withValues(Arrays.asList("io", "rqhakauha", "hsfwxosowzxcug")))
-                .withTags(
-                    new ForecastComparisonExpression()
-                        .withName("jooxdjebw")
+                        .withValues(Arrays.asList("jizdvoqyt")))
+                    .withTags(new ForecastComparisonExpression().withName("yo")
                         .withOperator(ForecastOperatorType.IN)
-                        .withValues(Arrays.asList("wwfvov", "vmeueci", "yhz")));
+                        .withValues(Arrays.asList("lgy", "vutpthjoxo", "smsks"))),
+                new ForecastFilter()
+                    .withAnd(Arrays.asList(new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter()))
+                        .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                        .withDimensions(new ForecastComparisonExpression().withName("jxkcgxxlxsff")
+                            .withOperator(ForecastOperatorType.IN)
+                            .withValues(Arrays.asList("izqzdwlvwlyou", "fgfb")))
+                        .withTags(new ForecastComparisonExpression().withName("ubdyhgk")
+                            .withOperator(ForecastOperatorType.IN)
+                            .withValues(Arrays.asList("nsgowzfttst")))))
+                    .withOr(Arrays.asList(
+                        new ForecastFilter()
+                            .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter(),
+                                new ForecastFilter()))
+                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                            .withDimensions(new ForecastComparisonExpression().withName("actxtgzukxitm")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("gqqqxh")))
+                            .withTags(new ForecastComparisonExpression().withName("xrxc")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("isavok", "dzf"))),
+                        new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter()))
+                            .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                            .withDimensions(new ForecastComparisonExpression().withName("l")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("ttbaj", "katnwxyi")))
+                            .withTags(new ForecastComparisonExpression().withName("id")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("fku", "s", "xkdmligo", "ibrxkp")))))
+                    .withDimensions(new ForecastComparisonExpression().withName("oaz")
+                        .withOperator(ForecastOperatorType.IN)
+                        .withValues(Arrays.asList("ocbgoorbteoyb")))
+                    .withTags(new ForecastComparisonExpression().withName("jxakv")
+                        .withOperator(ForecastOperatorType.IN)
+                        .withValues(Arrays.asList("slordilmyww", "kgkxn", "edabgyvudtjue")))))
+            .withOr(
+                Arrays
+                    .asList(
+                        new ForecastFilter()
+                            .withAnd(
+                                Arrays.asList(
+                                    new ForecastFilter()
+                                        .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                            new ForecastFilter()))
+                                        .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                        .withDimensions(new ForecastComparisonExpression().withName("c")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("ccybvp", "yakk")))
+                                        .withTags(new ForecastComparisonExpression().withName("zp")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("jplmagstcy", "hpfkyrkdbdgi"))),
+                                    new ForecastFilter()
+                                        .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                        .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                            new ForecastFilter(), new ForecastFilter()))
+                                        .withDimensions(new ForecastComparisonExpression().withName("nwqjnoba")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("ddviacegfnmntfpm")))
+                                        .withTags(new ForecastComparisonExpression().withName("emfnczdwvvbal")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("lchpodbzevwrdn"))),
+                                    new ForecastFilter()
+                                        .withAnd(Arrays.asList(new ForecastFilter()))
+                                        .withOr(Arrays.asList(new ForecastFilter()))
+                                        .withDimensions(new ForecastComparisonExpression().withName("sjcswsmystuluqyp")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("lerchpq", "mfpjbabw", "dfc", "sspuunnoxyhkx")))
+                                        .withTags(new ForecastComparisonExpression()
+                                            .withName("ddrihpf")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("caaewdao", "djvlpj", "xkzb", "msgeivsiykzk"))),
+                                    new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter()))
+                                        .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                            new ForecastFilter(), new ForecastFilter()))
+                                        .withDimensions(new ForecastComparisonExpression().withName("onbzoggculapzwy")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("ogtqxepnylbf", "ajlyjtlvofqzhv", "cib", "fmo")))
+                                        .withTags(new ForecastComparisonExpression().withName("xrkjpvdw")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(
+                                                Arrays.asList("wiivwzjbhyzsx", "rkambt", "negvmnvuqe", "vldspa")))))
+                            .withOr(Arrays.asList(
+                                new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                    .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("flvestmjlxrrilo")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("eewchpxlktw", "uziycsl", "vu")))
+                                    .withTags(new ForecastComparisonExpression()
+                                        .withName("ztcktyh")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("edcg", "ulwm", "rqzz"))),
+                                new ForecastFilter()
+                                    .withAnd(
+                                        Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                                    .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("lydzgk")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("eevt", "epr")))
+                                    .withTags(new ForecastComparisonExpression().withName("t")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("tpzdmovzvfvaawzq"))),
+                                new ForecastFilter()
+                                    .withAnd(Arrays.asList(new ForecastFilter()))
+                                    .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                        new ForecastFilter(), new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("ur")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("aecxndtic", "kpvzmlq", "mldgxobfirc")))
+                                    .withTags(new ForecastComparisonExpression()
+                                        .withName("pkc")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("zriykhy", "wf"))),
+                                new ForecastFilter()
+                                    .withAnd(
+                                        Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                                    .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                        new ForecastFilter(), new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("qvkjlmxho")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("nhdwdigumbnra", "uzzptjazysdz", "ezwwv")))
+                                    .withTags(new ForecastComparisonExpression().withName("qyuvvfonkp")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("yik", "y")))))
+                            .withDimensions(new ForecastComparisonExpression()
+                                .withName("uyav")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("mncsttijfybvp")))
+                            .withTags(new ForecastComparisonExpression().withName("krsgsgb")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("zq", "njdgkynscliq", "zvhxnk", "mtk"))),
+                        new ForecastFilter()
+                            .withAnd(Arrays.asList(
+                                new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                    .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                        new ForecastFilter(), new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("dxzxhi")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("bbc", "vqagtltdhlf")))
+                                    .withTags(new ForecastComparisonExpression().withName("ojpykvgtrdc")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("mzzs", "ymbrnysuxmpraf", "g"))),
+                                new ForecastFilter()
+                                    .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                        new ForecastFilter(), new ForecastFilter()))
+                                    .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                        new ForecastFilter(), new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("vdff")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("fqroudas")))
+                                    .withTags(new ForecastComparisonExpression().withName("vehhrvkbunzozu")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("xg", "moy", "cdyuibhmfdnbzyd", "f")))))
+                            .withOr(
+                                Arrays.asList(
+                                    new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter()))
+                                        .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                            new ForecastFilter()))
+                                        .withDimensions(new ForecastComparisonExpression().withName("isrvhm")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("ffukiscvw")))
+                                        .withTags(new ForecastComparisonExpression()
+                                            .withName("hwplefaxvx")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("btgn", "nzeyqxtjj"))),
+                                    new ForecastFilter()
+                                        .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                            new ForecastFilter()))
+                                        .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                            new ForecastFilter(), new ForecastFilter()))
+                                        .withDimensions(new ForecastComparisonExpression().withName("ycavodggxdbees")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("knlrariaawiuagy", "wqfbylyrfgiagt")))
+                                        .withTags(new ForecastComparisonExpression()
+                                            .withName("jocqwogfnzjvusf")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("mozuxylfsb", "kadpysown"))),
+                                    new ForecastFilter()
+                                        .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                            new ForecastFilter()))
+                                        .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                        .withDimensions(new ForecastComparisonExpression().withName("grjqctojcmi")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("ieypef", "jy", "dh", "u")))
+                                        .withTags(new ForecastComparisonExpression()
+                                            .withName("cp")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("khihihlhzds", "tzbsrgnowcjhf", "mvec",
+                                                "ctxmwoteyowcluq"))),
+                                    new ForecastFilter()
+                                        .withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                            new ForecastFilter()))
+                                        .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                        .withDimensions(
+                                            new ForecastComparisonExpression().withName("gqouwifzmpj")
+                                                .withOperator(ForecastOperatorType.IN)
+                                                .withValues(Arrays.asList("vqikfxcvhrfsphu", "grttikteusqczk",
+                                                    "yklxubyjaffmmfbl")))
+                                        .withTags(new ForecastComparisonExpression().withName("cuubgq")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("talmett", "wgdsl")))))
+                            .withDimensions(new ForecastComparisonExpression().withName("ihhrmo")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("qseypxiutcxa")))
+                            .withTags(new ForecastComparisonExpression().withName("hyrpetogebjoxs")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("nhl"))),
+                        new ForecastFilter()
+                            .withAnd(Arrays.asList(new ForecastFilter()
+                                .withAnd(Arrays.asList(new ForecastFilter()))
+                                .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                                .withDimensions(new ForecastComparisonExpression().withName("jcjbt")
+                                    .withOperator(ForecastOperatorType.IN)
+                                    .withValues(Arrays.asList("ehvvib", "xjjs", "oqbeitpkxzt", "oobklftidgfcwq")))
+                                .withTags(new ForecastComparisonExpression().withName("imaq")
+                                    .withOperator(ForecastOperatorType.IN)
+                                    .withValues(Arrays.asList("em", "yhohujswtwkozzwc"))),
+                                new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter()))
+                                    .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(),
+                                        new ForecastFilter(), new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("pfajnjwltlwtjj")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("talhsnvkcdmxzr", "oaimlnw", "aaomylweazu", "cse")))
+                                    .withTags(
+                                        new ForecastComparisonExpression().withName("wwnpj")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("zswpchwa"))),
+                                new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                    .withOr(
+                                        Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("nfepgf")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("twly", "gncxykxhdj", "limmbcxf")))
+                                    .withTags(new ForecastComparisonExpression()
+                                        .withName("cporxvxcjz")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("zxfpxtgqsc", "avft")))))
+                            .withOr(Arrays.asList(new ForecastFilter()
+                                .withAnd(Arrays.asList(new ForecastFilter()))
+                                .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter(),
+                                    new ForecastFilter()))
+                                .withDimensions(new ForecastComparisonExpression().withName("mtggu")
+                                    .withOperator(ForecastOperatorType.IN)
+                                    .withValues(Arrays.asList("jrajcivm")))
+                                .withTags(new ForecastComparisonExpression()
+                                    .withName("hfcf")
+                                    .withOperator(ForecastOperatorType.IN)
+                                    .withValues(Arrays.asList("xgkn", "uvyinzqodfvpgs"))),
+                                new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter()))
+                                    .withOr(
+                                        Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("bpfgzdj")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("zflbqvg", "qvlgafcqusrdvetn")))
+                                    .withTags(
+                                        new ForecastComparisonExpression().withName("dtutnwldu")
+                                            .withOperator(ForecastOperatorType.IN)
+                                            .withValues(Arrays.asList("uzhyrmewipmvekdx", "kuqgsjjxundxgket"))),
+                                new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                    .withOr(
+                                        Arrays.asList(new ForecastFilter(), new ForecastFilter(), new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("hfjmhvv")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("gpmuneqsxvmhfbuz", "yihsasbhudypohyu")))
+                                    .withTags(new ForecastComparisonExpression().withName("slynsqyrpfoo")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("ttymsjny", "qdnfwqzdz"))),
+                                new ForecastFilter().withAnd(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                    .withOr(Arrays.asList(new ForecastFilter(), new ForecastFilter()))
+                                    .withDimensions(new ForecastComparisonExpression().withName("hnfhqlyvijouwi")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("oyzunbixxr", "ikvcpwp", "clrcivtsox")))
+                                    .withTags(new ForecastComparisonExpression().withName("kenx")
+                                        .withOperator(ForecastOperatorType.IN)
+                                        .withValues(Arrays.asList("yefrpmpdnqqska", "ao", "vmm", "npqfrtqlkzmeg")))))
+                            .withDimensions(new ForecastComparisonExpression().withName("tgvkxlzyqd")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("gcealzxwh")))
+                            .withTags(new ForecastComparisonExpression().withName("nsymoyqhlwigd")
+                                .withOperator(ForecastOperatorType.IN)
+                                .withValues(Arrays.asList("kbxgom", "ajuwas", "vdaeyyguxakjsq")))))
+            .withDimensions(new ForecastComparisonExpression().withName("zbezkgimsidxasic")
+                .withOperator(ForecastOperatorType.IN)
+                .withValues(Arrays.asList("vvjskgfmocwahp", "gat", "eaahhvjhhn")))
+            .withTags(new ForecastComparisonExpression().withName("zybbj")
+                .withOperator(ForecastOperatorType.IN)
+                .withValues(Arrays.asList("jks")));
         model = BinaryData.fromObject(model).toObject(ForecastFilter.class);
-        Assertions.assertEquals("wfudwpzntxhdzhl", model.and().get(0).dimensions().name());
+        Assertions.assertEquals("kx", model.and().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("hvbbxuripltfnh", model.and().get(0).and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("pyklyhpluodpvru", model.and().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("gzibthostgktstv", model.and().get(0).and().get(0).tags().values().get(0));
+        Assertions.assertEquals("tac", model.and().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("jvewzcjznmwcp", model.and().get(0).or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("uaadraufactkahzo", model.and().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("j", model.and().get(0).or().get(0).tags().values().get(0));
+        Assertions.assertEquals("scjfnyns", model.and().get(0).dimensions().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).dimensions().operator());
-        Assertions.assertEquals("bh", model.and().get(0).tags().name());
+        Assertions.assertEquals("jizdvoqyt", model.and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("yo", model.and().get(0).tags().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.and().get(0).tags().operator());
-        Assertions.assertEquals("duala", model.or().get(0).dimensions().name());
+        Assertions.assertEquals("lgy", model.and().get(0).tags().values().get(0));
+        Assertions.assertEquals("c", model.or().get(0).and().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).and().get(0).dimensions().operator());
+        Assertions.assertEquals("ccybvp", model.or().get(0).and().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("zp", model.or().get(0).and().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).and().get(0).tags().operator());
+        Assertions.assertEquals("jplmagstcy", model.or().get(0).and().get(0).tags().values().get(0));
+        Assertions.assertEquals("flvestmjlxrrilo", model.or().get(0).or().get(0).dimensions().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).or().get(0).dimensions().operator());
+        Assertions.assertEquals("eewchpxlktw", model.or().get(0).or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("ztcktyh", model.or().get(0).or().get(0).tags().name());
+        Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).or().get(0).tags().operator());
+        Assertions.assertEquals("edcg", model.or().get(0).or().get(0).tags().values().get(0));
+        Assertions.assertEquals("uyav", model.or().get(0).dimensions().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).dimensions().operator());
-        Assertions.assertEquals("pvfadmwsrcr", model.or().get(0).tags().name());
+        Assertions.assertEquals("mncsttijfybvp", model.or().get(0).dimensions().values().get(0));
+        Assertions.assertEquals("krsgsgb", model.or().get(0).tags().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.or().get(0).tags().operator());
-        Assertions.assertEquals("wkz", model.dimensions().name());
+        Assertions.assertEquals("zq", model.or().get(0).tags().values().get(0));
+        Assertions.assertEquals("zbezkgimsidxasic", model.dimensions().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.dimensions().operator());
-        Assertions.assertEquals("io", model.dimensions().values().get(0));
-        Assertions.assertEquals("jooxdjebw", model.tags().name());
+        Assertions.assertEquals("vvjskgfmocwahp", model.dimensions().values().get(0));
+        Assertions.assertEquals("zybbj", model.tags().name());
         Assertions.assertEquals(ForecastOperatorType.IN, model.tags().operator());
-        Assertions.assertEquals("wwfvov", model.tags().values().get(0));
+        Assertions.assertEquals("jks", model.tags().values().get(0));
     }
 }

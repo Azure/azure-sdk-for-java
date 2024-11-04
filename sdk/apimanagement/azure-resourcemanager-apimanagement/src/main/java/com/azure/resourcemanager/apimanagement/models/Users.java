@@ -44,14 +44,8 @@ public interface Users {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged Users list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<UserContract> listByService(
-        String resourceGroupName,
-        String serviceName,
-        String filter,
-        Integer top,
-        Integer skip,
-        Boolean expandGroups,
-        Context context);
+    PagedIterable<UserContract> listByService(String resourceGroupName, String serviceName, String filter, Integer top,
+        Integer skip, Boolean expandGroups, Context context);
 
     /**
      * Gets the entity state (Etag) version of the user specified by its identifier.
@@ -65,8 +59,8 @@ public interface Users {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the entity state (Etag) version of the user specified by its identifier.
      */
-    UsersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String userId, Context context);
+    UsersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName, String userId,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the user specified by its identifier.
@@ -92,8 +86,8 @@ public interface Users {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the user specified by its identifier.
      */
-    Response<UserContract> getWithResponse(
-        String resourceGroupName, String serviceName, String userId, Context context);
+    Response<UserContract> getWithResponse(String resourceGroupName, String serviceName, String userId,
+        Context context);
 
     /**
      * Gets the details of the user specified by its identifier.
@@ -126,15 +120,8 @@ public interface Users {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String userId,
-        String ifMatch,
-        Boolean deleteSubscriptions,
-        Boolean notify,
-        AppType appType,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String userId, String ifMatch,
+        Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context);
 
     /**
      * Deletes specific user.
@@ -163,8 +150,8 @@ public interface Users {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return generate SSO Url operations response details along with {@link Response}.
      */
-    Response<GenerateSsoUrlResult> generateSsoUrlWithResponse(
-        String resourceGroupName, String serviceName, String userId, Context context);
+    Response<GenerateSsoUrlResult> generateSsoUrlWithResponse(String resourceGroupName, String serviceName,
+        String userId, Context context);
 
     /**
      * Retrieves a redirection URL containing an authentication token for signing a given user into the developer
@@ -193,8 +180,8 @@ public interface Users {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Shared Access Authorization Token for the User along with {@link Response}.
      */
-    Response<UserTokenResult> getSharedAccessTokenWithResponse(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters, Context context);
+    Response<UserTokenResult> getSharedAccessTokenWithResponse(String resourceGroupName, String serviceName,
+        String userId, UserTokenParameters parameters, Context context);
 
     /**
      * Gets the Shared Access Authorization Token for the User.
@@ -208,8 +195,8 @@ public interface Users {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Shared Access Authorization Token for the User.
      */
-    UserTokenResult getSharedAccessToken(
-        String resourceGroupName, String serviceName, String userId, UserTokenParameters parameters);
+    UserTokenResult getSharedAccessToken(String resourceGroupName, String serviceName, String userId,
+        UserTokenParameters parameters);
 
     /**
      * Gets the details of the user specified by its identifier.
@@ -260,8 +247,8 @@ public interface Users {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(
-        String id, String ifMatch, Boolean deleteSubscriptions, Boolean notify, AppType appType, Context context);
+    Response<Void> deleteByIdWithResponse(String id, String ifMatch, Boolean deleteSubscriptions, Boolean notify,
+        AppType appType, Context context);
 
     /**
      * Begins definition for a new UserContract resource.

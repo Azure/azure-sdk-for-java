@@ -6,26 +6,36 @@ package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Credentials for a user on a lab VM. */
+/**
+ * Credentials for a user on a lab VM.
+ */
 @Fluent
-public final class Credentials {
+public final class Credentials implements JsonSerializable<Credentials> {
     /*
      * The username to use when signing in to lab VMs.
      */
-    @JsonProperty(value = "username", required = true)
     private String username;
 
     /*
      * The password for the user. This is required for the TemplateVM createOption.
      */
-    @JsonProperty(value = "password")
     private String password;
 
     /**
+     * Creates an instance of Credentials class.
+     */
+    public Credentials() {
+    }
+
+    /**
      * Get the username property: The username to use when signing in to lab VMs.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -34,7 +44,7 @@ public final class Credentials {
 
     /**
      * Set the username property: The username to use when signing in to lab VMs.
-     *
+     * 
      * @param username the username value to set.
      * @return the Credentials object itself.
      */
@@ -45,7 +55,7 @@ public final class Credentials {
 
     /**
      * Get the password property: The password for the user. This is required for the TemplateVM createOption.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -54,7 +64,7 @@ public final class Credentials {
 
     /**
      * Set the password property: The password for the user. This is required for the TemplateVM createOption.
-     *
+     * 
      * @param password the password value to set.
      * @return the Credentials object itself.
      */
@@ -65,16 +75,55 @@ public final class Credentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property username in model Credentials"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property username in model Credentials"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Credentials.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("username", this.username);
+        jsonWriter.writeStringField("password", this.password);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Credentials from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Credentials if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Credentials.
+     */
+    public static Credentials fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Credentials deserializedCredentials = new Credentials();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("username".equals(fieldName)) {
+                    deserializedCredentials.username = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedCredentials.password = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCredentials;
+        });
+    }
 }

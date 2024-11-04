@@ -14,7 +14,7 @@ public final class TrafficIncidentViewportOptions {
     private GeoBoundingBox overviewbox;
     private Integer overviewzoom;
     private Boolean copyright;
-    
+
     /**
      * TrafficIncidentViewportOptions constructor
      */
@@ -28,7 +28,8 @@ public final class TrafficIncidentViewportOptions {
      * @param overviewBox Bounding box of the overview map in EPSG900913 projection.
      * @param overviewZoom Zoom level of the overview map. If there is no mini map, use the same zoom level as boundingZoom.
      */
-    public TrafficIncidentViewportOptions(GeoBoundingBox boundingBox, int boundingZoom, GeoBoundingBox overviewBox, int overviewZoom) {
+    public TrafficIncidentViewportOptions(GeoBoundingBox boundingBox, int boundingZoom, GeoBoundingBox overviewBox,
+        int overviewZoom) {
         this.boundingbox = boundingBox;
         this.boundingzoom = boundingZoom;
         this.overviewbox = overviewBox;

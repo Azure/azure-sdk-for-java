@@ -43,8 +43,8 @@ public interface Annotations {
      * @return the list of annotations for a component for given time range as paginated response with {@link
      *     PagedIterable}.
      */
-    PagedIterable<Annotation> list(
-        String resourceGroupName, String resourceName, String start, String end, Context context);
+    PagedIterable<Annotation> list(String resourceGroupName, String resourceName, String start, String end,
+        Context context);
 
     /**
      * Create an Annotation of an Application Insights component.
@@ -60,8 +60,8 @@ public interface Annotations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return array of Annotation along with {@link Response}.
      */
-    Response<List<Annotation>> createWithResponse(
-        String resourceGroupName, String resourceName, AnnotationInner annotationProperties, Context context);
+    Response<List<Annotation>> createWithResponse(String resourceGroupName, String resourceName,
+        AnnotationInner annotationProperties, Context context);
 
     /**
      * Create an Annotation of an Application Insights component.
@@ -90,8 +90,8 @@ public interface Annotations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String resourceName, String annotationId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, String annotationId,
+        Context context);
 
     /**
      * Delete an Annotation of an Application Insights component.
@@ -118,8 +118,8 @@ public interface Annotations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the annotation for given id along with {@link Response}.
      */
-    Response<List<Annotation>> getWithResponse(
-        String resourceGroupName, String resourceName, String annotationId, Context context);
+    Response<List<Annotation>> getWithResponse(String resourceGroupName, String resourceName, String annotationId,
+        Context context);
 
     /**
      * Get the annotation for given id.

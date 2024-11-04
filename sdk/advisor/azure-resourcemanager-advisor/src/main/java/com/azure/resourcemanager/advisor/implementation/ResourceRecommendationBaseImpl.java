@@ -21,8 +21,8 @@ public final class ResourceRecommendationBaseImpl implements ResourceRecommendat
 
     private final com.azure.resourcemanager.advisor.AdvisorManager serviceManager;
 
-    ResourceRecommendationBaseImpl(
-        ResourceRecommendationBaseInner innerObject, com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
+    ResourceRecommendationBaseImpl(ResourceRecommendationBaseInner innerObject,
+        com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

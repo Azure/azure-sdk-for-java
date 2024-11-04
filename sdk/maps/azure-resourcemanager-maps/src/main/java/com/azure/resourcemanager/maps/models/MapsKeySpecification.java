@@ -48,9 +48,8 @@ public final class MapsKeySpecification {
      */
     public void validate() {
         if (keyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyType in model MapsKeySpecification"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyType in model MapsKeySpecification"));
         }
     }
 

@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class AvailableContactsSpacecraftTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableContactsSpacecraft model =
-            BinaryData.fromString("{\"id\":\"bqe\"}").toObject(AvailableContactsSpacecraft.class);
-        Assertions.assertEquals("bqe", model.id());
+        AvailableContactsSpacecraft model
+            = BinaryData.fromString("{\"id\":\"qrimzinpv\"}").toObject(AvailableContactsSpacecraft.class);
+        Assertions.assertEquals("qrimzinpv", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvailableContactsSpacecraft model = new AvailableContactsSpacecraft().withId("bqe");
+        AvailableContactsSpacecraft model = new AvailableContactsSpacecraft().withId("qrimzinpv");
         model = BinaryData.fromObject(model).toObject(AvailableContactsSpacecraft.class);
-        Assertions.assertEquals("bqe", model.id());
+        Assertions.assertEquals("qrimzinpv", model.id());
     }
 }

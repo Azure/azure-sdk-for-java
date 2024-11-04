@@ -47,5 +47,6 @@ final class MockedChangefeedResources {
             "sequencer");
     }
 
-    private MockedChangefeedResources() { }
+    private MockedChangefeedResources() {
+    }
 }

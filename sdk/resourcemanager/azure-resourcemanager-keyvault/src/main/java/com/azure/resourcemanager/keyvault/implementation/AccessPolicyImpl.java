@@ -22,10 +22,8 @@ import java.util.UUID;
 
 /** Implementation for AccessPolicy and its parent interfaces. */
 class AccessPolicyImpl extends ChildResourceImpl<AccessPolicyEntry, VaultImpl, Vault>
-    implements AccessPolicy,
-        AccessPolicy.Definition<Vault.DefinitionStages.WithCreate>,
-        AccessPolicy.UpdateDefinition<Vault.Update>,
-        AccessPolicy.Update {
+    implements AccessPolicy, AccessPolicy.Definition<Vault.DefinitionStages.WithCreate>,
+    AccessPolicy.UpdateDefinition<Vault.Update>, AccessPolicy.Update {
     private String userPrincipalName;
     private String servicePrincipalName;
 

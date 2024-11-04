@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.storagepool.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Capability a resource SKU has. */
+/**
+ * Capability a resource SKU has.
+ */
 @Immutable
-public final class ResourceSkuCapability {
+public final class ResourceSkuCapability implements JsonSerializable<ResourceSkuCapability> {
     /*
      * Capability name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Capability value
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
-    /** Creates an instance of ResourceSkuCapability class. */
+    /**
+     * Creates an instance of ResourceSkuCapability class.
+     */
     public ResourceSkuCapability() {
     }
 
     /**
      * Get the name property: Capability name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class ResourceSkuCapability {
 
     /**
      * Get the value property: Capability value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -46,9 +52,46 @@ public final class ResourceSkuCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceSkuCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceSkuCapability if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceSkuCapability.
+     */
+    public static ResourceSkuCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceSkuCapability deserializedResourceSkuCapability = new ResourceSkuCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedResourceSkuCapability.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedResourceSkuCapability.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceSkuCapability;
+        });
     }
 }

@@ -18,8 +18,8 @@ public final class PolicyStateImpl implements PolicyState {
 
     private final com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager;
 
-    PolicyStateImpl(
-        PolicyStateInner innerObject, com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
+    PolicyStateImpl(PolicyStateInner innerObject,
+        com.azure.resourcemanager.policyinsights.PolicyInsightsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

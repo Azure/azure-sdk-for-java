@@ -10,7 +10,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.io.IOException;
 import java.util.Map;
 
@@ -82,7 +81,6 @@ public final class DevCenterEnvironment implements JsonSerializable<DevCenterEnv
      * @param catalogName the catalogName value to set.
      * @param environmentDefinitionName the environmentDefinitionName value to set.
      */
-    @JsonCreator
     public DevCenterEnvironment(String environmentName, String environmentTypeName, String catalogName,
         String environmentDefinitionName) {
         this.name = environmentName;

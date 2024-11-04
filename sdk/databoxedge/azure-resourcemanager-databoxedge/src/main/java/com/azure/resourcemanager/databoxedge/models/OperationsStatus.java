@@ -7,11 +7,13 @@ package com.azure.resourcemanager.databoxedge.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of OperationsStatus. */
+/**
+ * Resource collection API of OperationsStatus.
+ */
 public interface OperationsStatus {
     /**
      * Gets the details of a specified job on a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The job name.
      * @param resourceGroupName The resource group name.
@@ -25,7 +27,7 @@ public interface OperationsStatus {
 
     /**
      * Gets the details of a specified job on a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The job name.
      * @param resourceGroupName The resource group name.

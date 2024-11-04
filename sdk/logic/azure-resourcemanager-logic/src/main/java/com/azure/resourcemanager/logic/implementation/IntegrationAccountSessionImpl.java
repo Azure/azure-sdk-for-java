@@ -81,32 +81,28 @@ public final class IntegrationAccountSessionImpl
 
     private String sessionName;
 
-    public IntegrationAccountSessionImpl withExistingIntegrationAccount(
-        String resourceGroupName, String integrationAccountName) {
+    public IntegrationAccountSessionImpl withExistingIntegrationAccount(String resourceGroupName,
+        String integrationAccountName) {
         this.resourceGroupName = resourceGroupName;
         this.integrationAccountName = integrationAccountName;
         return this;
     }
 
     public IntegrationAccountSession create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSessions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, sessionName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSessions()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, sessionName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountSession create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSessions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, sessionName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSessions()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, sessionName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
@@ -121,53 +117,46 @@ public final class IntegrationAccountSessionImpl
     }
 
     public IntegrationAccountSession apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSessions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, sessionName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSessions()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, sessionName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountSession apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSessions()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, integrationAccountName, sessionName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSessions()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, sessionName, this.innerModel(),
+                context)
+            .getValue();
         return this;
     }
 
-    IntegrationAccountSessionImpl(
-        IntegrationAccountSessionInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    IntegrationAccountSessionImpl(IntegrationAccountSessionInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.integrationAccountName = Utils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
-        this.sessionName = Utils.getValueFromIdByName(innerObject.id(), "sessions");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.integrationAccountName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
+        this.sessionName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "sessions");
     }
 
     public IntegrationAccountSession refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSessions()
-                .getWithResponse(resourceGroupName, integrationAccountName, sessionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSessions()
+            .getWithResponse(resourceGroupName, integrationAccountName, sessionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccountSession refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccountSessions()
-                .getWithResponse(resourceGroupName, integrationAccountName, sessionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccountSessions()
+            .getWithResponse(resourceGroupName, integrationAccountName, sessionName, context)
+            .getValue();
         return this;
     }
 

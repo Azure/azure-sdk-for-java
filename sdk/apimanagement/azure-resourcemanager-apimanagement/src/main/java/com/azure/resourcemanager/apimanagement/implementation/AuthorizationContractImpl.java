@@ -82,8 +82,8 @@ public final class AuthorizationContractImpl
 
     private String updateIfMatch;
 
-    public AuthorizationContractImpl withExistingAuthorizationProvider(
-        String resourceGroupName, String serviceName, String authorizationProviderId) {
+    public AuthorizationContractImpl withExistingAuthorizationProvider(String resourceGroupName, String serviceName,
+        String authorizationProviderId) {
         this.resourceGroupName = resourceGroupName;
         this.serviceName = serviceName;
         this.authorizationProviderId = authorizationProviderId;
@@ -91,41 +91,25 @@ public final class AuthorizationContractImpl
     }
 
     public AuthorizationContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    this.innerModel(),
-                    createIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                this.innerModel(), createIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    this.innerModel(),
-                    createIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                this.innerModel(), createIfMatch, context)
+            .getValue();
         return this;
     }
 
-    AuthorizationContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    AuthorizationContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new AuthorizationContractInner();
         this.serviceManager = serviceManager;
         this.authorizationId = name;
@@ -138,41 +122,24 @@ public final class AuthorizationContractImpl
     }
 
     public AuthorizationContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                this.innerModel(), updateIfMatch, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizations()
-                .createOrUpdateWithResponse(
-                    resourceGroupName,
-                    serviceName,
-                    authorizationProviderId,
-                    authorizationId,
-                    this.innerModel(),
-                    updateIfMatch,
-                    context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizations()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                this.innerModel(), updateIfMatch, context)
+            .getValue();
         return this;
     }
 
-    AuthorizationContractImpl(
-        AuthorizationContractInner innerObject,
+    AuthorizationContractImpl(AuthorizationContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -183,36 +150,30 @@ public final class AuthorizationContractImpl
     }
 
     public AuthorizationContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizations()
-                .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizations()
+            .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizations()
-                .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizations()
+            .getWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId, context)
+            .getValue();
         return this;
     }
 
-    public AuthorizationsConfirmConsentCodeResponse confirmConsentCodeWithResponse(
-        AuthorizationConfirmConsentCodeRequestContract parameters, Context context) {
-        return serviceManager
-            .authorizations()
-            .confirmConsentCodeWithResponse(
-                resourceGroupName, serviceName, authorizationProviderId, authorizationId, parameters, context);
+    public AuthorizationsConfirmConsentCodeResponse
+        confirmConsentCodeWithResponse(AuthorizationConfirmConsentCodeRequestContract parameters, Context context) {
+        return serviceManager.authorizations()
+            .confirmConsentCodeWithResponse(resourceGroupName, serviceName, authorizationProviderId, authorizationId,
+                parameters, context);
     }
 
     public void confirmConsentCode(AuthorizationConfirmConsentCodeRequestContract parameters) {
-        serviceManager
-            .authorizations()
+        serviceManager.authorizations()
             .confirmConsentCode(resourceGroupName, serviceName, authorizationProviderId, authorizationId, parameters);
     }
 

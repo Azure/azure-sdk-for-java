@@ -20,12 +20,8 @@ import java.util.Map;
 
 /** An immutable client-side representation of an Azure gallery image version. */
 @Fluent
-public interface GalleryImageVersion
-    extends HasInnerModel<GalleryImageVersionInner>,
-        Indexable,
-        Refreshable<GalleryImageVersion>,
-        Updatable<GalleryImageVersion.Update>,
-        HasManager<ComputeManager> {
+public interface GalleryImageVersion extends HasInnerModel<GalleryImageVersionInner>, Indexable,
+    Refreshable<GalleryImageVersion>, Updatable<GalleryImageVersion.Update>, HasManager<ComputeManager> {
     /** @return the ARM id of the image version. */
     String id();
 
@@ -66,12 +62,8 @@ public interface GalleryImageVersion
     String type();
 
     /** The entirety of the gallery image version definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithImage,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithSource,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithImage, DefinitionStages.WithLocation,
+        DefinitionStages.WithSource, DefinitionStages.WithCreate {
     }
 
     /** Grouping of gallery image version definition stages. */
@@ -129,6 +121,22 @@ public interface GalleryImageVersion
              * @return the next definition stage
              */
             WithCreate withSourceCustomImage(VirtualMachineCustomImage customImage);
+
+            /**
+             * Specifies that the provided virtual machine needs to be used as source of the image version.
+             *
+             * @param vmId resource ID of the virtual machine
+             * @return the next definition stage
+             */
+            WithCreate withSourceVirtualMachine(String vmId);
+
+            /**
+             * Specifies that the provided virtual machine needs to be used as source of the image version.
+             *
+             * @param virtualMachine virtual machine instance
+             * @return the next definition stage
+             */
+            WithCreate withSourceVirtualMachine(VirtualMachine virtualMachine);
         }
 
         /**
@@ -193,21 +201,14 @@ public interface GalleryImageVersion
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<GalleryImageVersion>,
-                DefinitionStages.WithAvailableRegion,
-                DefinitionStages.WithEndOfLifeDate,
-                DefinitionStages.WithExcludeFromLatest,
-                DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<GalleryImageVersion>, DefinitionStages.WithAvailableRegion,
+            DefinitionStages.WithEndOfLifeDate, DefinitionStages.WithExcludeFromLatest, DefinitionStages.WithTags {
         }
     }
+
     /** The template for a gallery image version update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<GalleryImageVersion>,
-            UpdateStages.WithAvailableRegion,
-            UpdateStages.WithEndOfLifeDate,
-            UpdateStages.WithExcludeFromLatest,
-            UpdateStages.WithTags {
+    interface Update extends Appliable<GalleryImageVersion>, UpdateStages.WithAvailableRegion,
+        UpdateStages.WithEndOfLifeDate, UpdateStages.WithExcludeFromLatest, UpdateStages.WithTags {
     }
 
     /** Grouping of gallery image version update stages. */

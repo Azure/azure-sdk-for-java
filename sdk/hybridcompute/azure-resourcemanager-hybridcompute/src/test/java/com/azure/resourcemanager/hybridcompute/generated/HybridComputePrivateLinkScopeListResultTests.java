@@ -18,42 +18,39 @@ public final class HybridComputePrivateLinkScopeListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HybridComputePrivateLinkScopeListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"uximerqfobw\",\"privateLinkScopeId\":\"nkbykutwpfhp\",\"privateEndpointConnections\":[{\"id\":\"r\",\"name\":\"dsnfdsdoakgtdl\",\"type\":\"kzevdlhewpusds\",\"properties\":{}}]},\"location\":\"vogvbbejdcngqqmo\",\"tags\":{\"aenuuz\":\"fgmjzrwrdgrt\",\"yuhhziu\":\"opbminrfdw\",\"l\":\"efozbhdms\"},\"id\":\"zqhof\",\"name\":\"rmaequ\",\"type\":\"ah\"},{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"faoqzpiyylhal\",\"privateLinkScopeId\":\"whccs\",\"privateEndpointConnections\":[{\"id\":\"ivwitqscywugg\",\"name\":\"luhczbw\",\"type\":\"hairsbrgzdwms\",\"properties\":{}},{\"id\":\"pqwd\",\"name\":\"gicccnxqhuex\",\"type\":\"ttlstvlzywemhz\",\"properties\":{}}]},\"location\":\"sdtclusiypbs\",\"tags\":{\"sl\":\"tg\",\"sx\":\"eadcygqukyhejhz\"},\"id\":\"fpel\",\"name\":\"lppvksrpq\",\"type\":\"ujzra\"},{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"wrft\",\"privateLinkScopeId\":\"iby\",\"privateEndpointConnections\":[{\"id\":\"bhshfwpracstwity\",\"name\":\"evxccedcp\",\"type\":\"dyodnwzxltj\",\"properties\":{}}]},\"location\":\"hlt\",\"tags\":{\"xqi\":\"cxnavv\"},\"id\":\"y\",\"name\":\"unyowxwl\",\"type\":\"djrkvfgbvfvpd\"},{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"izsjqlhkrr\",\"privateLinkScopeId\":\"deibqip\",\"privateEndpointConnections\":[{\"id\":\"vxndz\",\"name\":\"krefajpjo\",\"type\":\"kqnyh\",\"properties\":{}},{\"id\":\"j\",\"name\":\"ivfxzsjabibsyst\",\"type\":\"fsdjpvkvp\",\"properties\":{}},{\"id\":\"bkzbzkd\",\"name\":\"cjabudurgkakmo\",\"type\":\"hjjklff\",\"properties\":{}},{\"id\":\"uwqlgzrfzeey\",\"name\":\"izikayuhq\",\"type\":\"jbsybbqw\",\"properties\":{}}]},\"location\":\"ldgmfpgvmpip\",\"tags\":{\"wbdsr\":\"thaqfxssmwu\"},\"id\":\"zpdrhneu\",\"name\":\"owqkdwytisi\",\"type\":\"ircgpikpz\"}],\"nextLink\":\"ejzanlfz\"}")
+            "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"lvmbmpaxmodfvuef\",\"privateLinkScopeId\":\"sbpfvmwyhr\",\"privateEndpointConnections\":[{\"id\":\"ft\",\"name\":\"kcpwiy\",\"type\":\"qtmnubexkpzk\",\"properties\":{}},{\"id\":\"ndjmquxvyp\",\"name\":\"gkopkwhojvpajqgx\",\"type\":\"mocmbqfqvmk\",\"properties\":{}}]},\"location\":\"zapvhelx\",\"tags\":{\"dd\":\"lya\",\"rjxgciqib\":\"kcbcue\",\"sdqrhzoymibmrq\":\"hos\",\"dtmhrkwofyyvoqa\":\"ibahwflus\"},\"id\":\"piexpbtgiw\",\"name\":\"wo\",\"type\":\"nwashrtd\"},{\"properties\":{\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"xwbpokulpiuj\",\"privateLinkScopeId\":\"asipqiio\",\"privateEndpointConnections\":[{\"id\":\"erpqlpqwcciuqg\",\"name\":\"butauvfb\",\"type\":\"uwhhmhykojoxafn\",\"properties\":{}},{\"id\":\"pichkoymkcdy\",\"name\":\"pkkpw\",\"type\":\"eqnovvqfovl\",\"properties\":{}},{\"id\":\"wsuwsyr\",\"name\":\"dsytgadgvr\",\"type\":\"aeneqnzarrwl\",\"properties\":{}}]},\"location\":\"ijfqkacewiipfp\",\"tags\":{\"uvksgplsaknynfsy\":\"ibwwiftohqkv\"},\"id\":\"ljphuopxodl\",\"name\":\"iyntorzihle\",\"type\":\"sjswsrms\"},{\"properties\":{\"publicNetworkAccess\":\"SecuredByPerimeter\",\"provisioningState\":\"zbchckqqzqioxiy\",\"privateLinkScopeId\":\"iizynkedyatrwyh\",\"privateEndpointConnections\":[{\"id\":\"zyh\",\"name\":\"tsmypyynpcdp\",\"type\":\"nzgmwznmabik\",\"properties\":{}},{\"id\":\"rgjhxb\",\"name\":\"tlwwrlk\",\"type\":\"tncvokot\",\"properties\":{}},{\"id\":\"d\",\"name\":\"gsyocogj\",\"type\":\"dtbnnha\",\"properties\":{}}]},\"location\":\"crkvcikhnv\",\"tags\":{\"gxk\":\"qgxqquezikyw\"},\"id\":\"lla\",\"name\":\"melwuipiccjz\",\"type\":\"z\"}],\"nextLink\":\"gvvcnayrhyr\"}")
             .toObject(HybridComputePrivateLinkScopeListResult.class);
-        Assertions.assertEquals("vogvbbejdcngqqmo", model.value().get(0).location());
-        Assertions.assertEquals("fgmjzrwrdgrt", model.value().get(0).tags().get("aenuuz"));
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED,
+        Assertions.assertEquals("zapvhelx", model.value().get(0).location());
+        Assertions.assertEquals("lya", model.value().get(0).tags().get("dd"));
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER,
             model.value().get(0).properties().publicNetworkAccess());
-        Assertions.assertEquals("ejzanlfz", model.nextLink());
+        Assertions.assertEquals("gvvcnayrhyr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HybridComputePrivateLinkScopeListResult model = new HybridComputePrivateLinkScopeListResult()
             .withValue(Arrays.asList(
-                new HybridComputePrivateLinkScopeInner().withLocation("vogvbbejdcngqqmo")
-                    .withTags(mapOf("aenuuz", "fgmjzrwrdgrt", "yuhhziu", "opbminrfdw", "l", "efozbhdms"))
+                new HybridComputePrivateLinkScopeInner().withLocation("zapvhelx")
+                    .withTags(mapOf("dd", "lya", "rjxgciqib", "kcbcue", "sdqrhzoymibmrq", "hos", "dtmhrkwofyyvoqa",
+                        "ibahwflus"))
+                    .withProperties(new HybridComputePrivateLinkScopeProperties()
+                        .withPublicNetworkAccess(PublicNetworkAccessType.SECURED_BY_PERIMETER)),
+                new HybridComputePrivateLinkScopeInner().withLocation("ijfqkacewiipfp")
+                    .withTags(mapOf("uvksgplsaknynfsy", "ibwwiftohqkv"))
                     .withProperties(new HybridComputePrivateLinkScopeProperties()
                         .withPublicNetworkAccess(PublicNetworkAccessType.ENABLED)),
-                new HybridComputePrivateLinkScopeInner().withLocation("sdtclusiypbs")
-                    .withTags(mapOf("sl", "tg", "sx", "eadcygqukyhejhz"))
-                    .withProperties(new HybridComputePrivateLinkScopeProperties()
-                        .withPublicNetworkAccess(PublicNetworkAccessType.ENABLED)),
-                new HybridComputePrivateLinkScopeInner().withLocation("hlt")
-                    .withTags(mapOf("xqi", "cxnavv"))
-                    .withProperties(new HybridComputePrivateLinkScopeProperties()
-                        .withPublicNetworkAccess(PublicNetworkAccessType.ENABLED)),
-                new HybridComputePrivateLinkScopeInner().withLocation("ldgmfpgvmpip")
-                    .withTags(mapOf("wbdsr", "thaqfxssmwu"))
+                new HybridComputePrivateLinkScopeInner().withLocation("crkvcikhnv")
+                    .withTags(mapOf("gxk", "qgxqquezikyw"))
                     .withProperties(new HybridComputePrivateLinkScopeProperties()
                         .withPublicNetworkAccess(PublicNetworkAccessType.SECURED_BY_PERIMETER))))
-            .withNextLink("ejzanlfz");
+            .withNextLink("gvvcnayrhyr");
         model = BinaryData.fromObject(model).toObject(HybridComputePrivateLinkScopeListResult.class);
-        Assertions.assertEquals("vogvbbejdcngqqmo", model.value().get(0).location());
-        Assertions.assertEquals("fgmjzrwrdgrt", model.value().get(0).tags().get("aenuuz"));
-        Assertions.assertEquals(PublicNetworkAccessType.ENABLED,
+        Assertions.assertEquals("zapvhelx", model.value().get(0).location());
+        Assertions.assertEquals("lya", model.value().get(0).tags().get("dd"));
+        Assertions.assertEquals(PublicNetworkAccessType.SECURED_BY_PERIMETER,
             model.value().get(0).properties().publicNetworkAccess());
-        Assertions.assertEquals("ejzanlfz", model.nextLink());
+        Assertions.assertEquals("gvvcnayrhyr", model.nextLink());
     }
 
     // Use "Map.of" if available

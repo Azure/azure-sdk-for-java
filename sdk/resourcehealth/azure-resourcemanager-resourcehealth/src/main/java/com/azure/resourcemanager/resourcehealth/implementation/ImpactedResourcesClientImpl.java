@@ -44,8 +44,8 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      * @param client the instance of the service client containing this operation class.
      */
     ImpactedResourcesClientImpl(MicrosoftResourceHealthImpl client) {
-        this.service =
-            RestProxy.create(ImpactedResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ImpactedResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,77 +56,56 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftResourceHea")
     public interface ImpactedResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventImpactedResourceListResult>> listBySubscriptionIdAndEventId(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("eventTrackingId") String eventTrackingId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("eventTrackingId") String eventTrackingId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources/{impactedResourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources/{impactedResourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventImpactedResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("eventTrackingId") String eventTrackingId,
+        Mono<Response<EventImpactedResourceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("eventTrackingId") String eventTrackingId,
             @PathParam("impactedResourceName") String impactedResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventImpactedResourceListResult>> listByTenantIdAndEventId(
-            @HostParam("$host") String endpoint,
-            @PathParam("eventTrackingId") String eventTrackingId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<EventImpactedResourceListResult>> listByTenantIdAndEventId(@HostParam("$host") String endpoint,
+            @PathParam("eventTrackingId") String eventTrackingId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/Microsoft.ResourceHealth/events/{eventTrackingId}/impactedResources/{impactedResourceName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventImpactedResourceInner>> getByTenantId(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventImpactedResourceInner>> getByTenantId(@HostParam("$host") String endpoint,
             @PathParam("eventTrackingId") String eventTrackingId,
             @PathParam("impactedResourceName") String impactedResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventImpactedResourceListResult>> listBySubscriptionIdAndEventIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventImpactedResourceListResult>> listByTenantIdAndEventIdNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -142,19 +121,15 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listBySubscriptionIdAndEventIdSinglePageAsync(
-        String eventTrackingId, String filter) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listBySubscriptionIdAndEventIdSinglePageAsync(String eventTrackingId, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -162,26 +137,10 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listBySubscriptionIdAndEventId(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            eventTrackingId,
-                            this.client.getApiVersion(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<EventImpactedResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listBySubscriptionIdAndEventId(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), eventTrackingId, this.client.getApiVersion(), filter, accept, context))
+            .<PagedResponse<EventImpactedResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -199,19 +158,15 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listBySubscriptionIdAndEventIdSinglePageAsync(
-        String eventTrackingId, String filter, Context context) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listBySubscriptionIdAndEventIdSinglePageAsync(String eventTrackingId, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -220,23 +175,10 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listBySubscriptionIdAndEventId(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                eventTrackingId,
-                this.client.getApiVersion(),
-                filter,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listBySubscriptionIdAndEventId(this.client.getEndpoint(), this.client.getSubscriptionId(), eventTrackingId,
+                this.client.getApiVersion(), filter, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -251,10 +193,9 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventImpactedResourceInner> listBySubscriptionIdAndEventIdAsync(
-        String eventTrackingId, String filter) {
-        return new PagedFlux<>(
-            () -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter),
+    private PagedFlux<EventImpactedResourceInner> listBySubscriptionIdAndEventIdAsync(String eventTrackingId,
+        String filter) {
+        return new PagedFlux<>(() -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter),
             nextLink -> listBySubscriptionIdAndEventIdNextSinglePageAsync(nextLink));
     }
 
@@ -270,8 +211,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventImpactedResourceInner> listBySubscriptionIdAndEventIdAsync(String eventTrackingId) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter),
+        return new PagedFlux<>(() -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter),
             nextLink -> listBySubscriptionIdAndEventIdNextSinglePageAsync(nextLink));
     }
 
@@ -288,10 +228,9 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventImpactedResourceInner> listBySubscriptionIdAndEventIdAsync(
-        String eventTrackingId, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter, context),
+    private PagedFlux<EventImpactedResourceInner> listBySubscriptionIdAndEventIdAsync(String eventTrackingId,
+        String filter, Context context) {
+        return new PagedFlux<>(() -> listBySubscriptionIdAndEventIdSinglePageAsync(eventTrackingId, filter, context),
             nextLink -> listBySubscriptionIdAndEventIdNextSinglePageAsync(nextLink, context));
     }
 
@@ -323,8 +262,8 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(
-        String eventTrackingId, String filter, Context context) {
+    public PagedIterable<EventImpactedResourceInner> listBySubscriptionIdAndEventId(String eventTrackingId,
+        String filter, Context context) {
         return new PagedIterable<>(listBySubscriptionIdAndEventIdAsync(eventTrackingId, filter, context));
     }
 
@@ -340,19 +279,15 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventImpactedResourceInner>> getWithResponseAsync(
-        String eventTrackingId, String impactedResourceName) {
+    private Mono<Response<EventImpactedResourceInner>> getWithResponseAsync(String eventTrackingId,
+        String impactedResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -364,17 +299,8 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            eventTrackingId,
-                            impactedResourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                eventTrackingId, impactedResourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -391,19 +317,15 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventImpactedResourceInner>> getWithResponseAsync(
-        String eventTrackingId, String impactedResourceName, Context context) {
+    private Mono<Response<EventImpactedResourceInner>> getWithResponseAsync(String eventTrackingId,
+        String impactedResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -415,15 +337,8 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                eventTrackingId,
-                impactedResourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), eventTrackingId,
+            impactedResourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -454,8 +369,8 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      * @return the specific impacted resource in the subscription by an event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventImpactedResourceInner> getWithResponse(
-        String eventTrackingId, String impactedResourceName, Context context) {
+    public Response<EventImpactedResourceInner> getWithResponse(String eventTrackingId, String impactedResourceName,
+        Context context) {
         return getWithResponseAsync(eventTrackingId, impactedResourceName, context).block();
     }
 
@@ -487,13 +402,11 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listByTenantIdAndEventIdSinglePageAsync(
-        String eventTrackingId, String filter) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listByTenantIdAndEventIdSinglePageAsync(String eventTrackingId, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -501,25 +414,10 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByTenantIdAndEventId(
-                            this.client.getEndpoint(),
-                            eventTrackingId,
-                            this.client.getApiVersion(),
-                            filter,
-                            accept,
-                            context))
-            .<PagedResponse<EventImpactedResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByTenantIdAndEventId(this.client.getEndpoint(), eventTrackingId,
+                this.client.getApiVersion(), filter, accept, context))
+            .<PagedResponse<EventImpactedResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -537,13 +435,11 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listByTenantIdAndEventIdSinglePageAsync(
-        String eventTrackingId, String filter, Context context) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listByTenantIdAndEventIdSinglePageAsync(String eventTrackingId, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -552,17 +448,10 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByTenantIdAndEventId(
-                this.client.getEndpoint(), eventTrackingId, this.client.getApiVersion(), filter, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByTenantIdAndEventId(this.client.getEndpoint(), eventTrackingId, this.client.getApiVersion(), filter,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -578,8 +467,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventImpactedResourceInner> listByTenantIdAndEventIdAsync(String eventTrackingId, String filter) {
-        return new PagedFlux<>(
-            () -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter),
+        return new PagedFlux<>(() -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter),
             nextLink -> listByTenantIdAndEventIdNextSinglePageAsync(nextLink));
     }
 
@@ -595,8 +483,7 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventImpactedResourceInner> listByTenantIdAndEventIdAsync(String eventTrackingId) {
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter),
+        return new PagedFlux<>(() -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter),
             nextLink -> listByTenantIdAndEventIdNextSinglePageAsync(nextLink));
     }
 
@@ -613,10 +500,9 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventImpactedResourceInner> listByTenantIdAndEventIdAsync(
-        String eventTrackingId, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter, context),
+    private PagedFlux<EventImpactedResourceInner> listByTenantIdAndEventIdAsync(String eventTrackingId, String filter,
+        Context context) {
+        return new PagedFlux<>(() -> listByTenantIdAndEventIdSinglePageAsync(eventTrackingId, filter, context),
             nextLink -> listByTenantIdAndEventIdNextSinglePageAsync(nextLink, context));
     }
 
@@ -648,8 +534,8 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      * @return the List of eventImpactedResources operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(
-        String eventTrackingId, String filter, Context context) {
+    public PagedIterable<EventImpactedResourceInner> listByTenantIdAndEventId(String eventTrackingId, String filter,
+        Context context) {
         return new PagedIterable<>(listByTenantIdAndEventIdAsync(eventTrackingId, filter, context));
     }
 
@@ -665,13 +551,11 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventImpactedResourceInner>> getByTenantIdWithResponseAsync(
-        String eventTrackingId, String impactedResourceName) {
+    private Mono<Response<EventImpactedResourceInner>> getByTenantIdWithResponseAsync(String eventTrackingId,
+        String impactedResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -683,16 +567,8 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByTenantId(
-                            this.client.getEndpoint(),
-                            eventTrackingId,
-                            impactedResourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByTenantId(this.client.getEndpoint(), eventTrackingId,
+                impactedResourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -709,13 +585,11 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventImpactedResourceInner>> getByTenantIdWithResponseAsync(
-        String eventTrackingId, String impactedResourceName, Context context) {
+    private Mono<Response<EventImpactedResourceInner>> getByTenantIdWithResponseAsync(String eventTrackingId,
+        String impactedResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (eventTrackingId == null) {
             return Mono
@@ -727,14 +601,8 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByTenantId(
-                this.client.getEndpoint(),
-                eventTrackingId,
-                impactedResourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByTenantId(this.client.getEndpoint(), eventTrackingId, impactedResourceName,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -765,8 +633,8 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      * @return the specific impacted resource in the tenant by an event along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventImpactedResourceInner> getByTenantIdWithResponse(
-        String eventTrackingId, String impactedResourceName, Context context) {
+    public Response<EventImpactedResourceInner> getByTenantIdWithResponse(String eventTrackingId,
+        String impactedResourceName, Context context) {
         return getByTenantIdWithResponseAsync(eventTrackingId, impactedResourceName, context).block();
     }
 
@@ -797,31 +665,20 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listBySubscriptionIdAndEventIdNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listBySubscriptionIdAndEventIdNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listBySubscriptionIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventImpactedResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(
+            context -> service.listBySubscriptionIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<EventImpactedResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -838,30 +695,20 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listBySubscriptionIdAndEventIdNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listBySubscriptionIdAndEventIdNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -876,30 +723,21 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listByTenantIdAndEventIdNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<EventImpactedResourceInner>>
+        listByTenantIdAndEventIdNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByTenantIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventImpactedResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventImpactedResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -916,29 +754,19 @@ public final class ImpactedResourcesClientImpl implements ImpactedResourcesClien
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventImpactedResourceInner>> listByTenantIdAndEventIdNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventImpactedResourceInner>> listByTenantIdAndEventIdNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByTenantIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByTenantIdAndEventIdNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

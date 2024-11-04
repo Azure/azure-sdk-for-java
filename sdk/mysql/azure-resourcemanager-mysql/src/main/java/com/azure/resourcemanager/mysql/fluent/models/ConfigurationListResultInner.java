@@ -13,7 +13,8 @@ import java.util.List;
 /** A list of server configurations. */
 @Fluent
 public final class ConfigurationListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationListResultInner.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(ConfigurationListResultInner.class);
 
     /*
      * The list of server configurations.

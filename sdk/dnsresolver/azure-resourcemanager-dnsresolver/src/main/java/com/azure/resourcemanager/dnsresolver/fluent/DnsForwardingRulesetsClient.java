@@ -15,18 +15,16 @@ import com.azure.resourcemanager.dnsresolver.fluent.models.DnsForwardingRulesetI
 import com.azure.resourcemanager.dnsresolver.fluent.models.VirtualNetworkDnsForwardingRulesetInner;
 import com.azure.resourcemanager.dnsresolver.models.DnsForwardingRulesetPatch;
 
-/** An instance of this class provides access to all the operations defined in DnsForwardingRulesetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DnsForwardingRulesetsClient.
+ */
 public interface DnsForwardingRulesetsClient {
     /**
      * Creates or updates a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -34,128 +32,18 @@ public interface DnsForwardingRulesetsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        DnsForwardingRulesetInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
-
-    /**
-     * Creates or updates a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS forwarding ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        DnsForwardingRulesetInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
-
-    /**
-     * Creates or updates a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS forwarding ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DnsForwardingRulesetInner createOrUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        DnsForwardingRulesetInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
-
-    /**
-     * Creates or updates a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS forwarding ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DnsForwardingRulesetInner createOrUpdate(
         String resourceGroupName, String dnsForwardingRulesetName, DnsForwardingRulesetInner parameters);
 
     /**
      * Creates or updates a DNS forwarding ruleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
-     *     resource. Other values will be ignored.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS forwarding ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DnsForwardingRulesetInner createOrUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        DnsForwardingRulesetInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
-
-    /**
-     * Updates a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a DNS forwarding ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        DnsForwardingRulesetPatch parameters,
-        String ifMatch);
-
-    /**
-     * Updates a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -163,56 +51,35 @@ public interface DnsForwardingRulesetsClient {
      * @return the {@link SyncPoller} for polling of describes a DNS forwarding ruleset.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginUpdate(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        DnsForwardingRulesetPatch parameters,
-        String ifMatch,
-        Context context);
+    SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginCreateOrUpdate(
+        String resourceGroupName, String dnsForwardingRulesetName, DnsForwardingRulesetInner parameters, String ifMatch,
+        String ifNoneMatch, Context context);
 
     /**
-     * Updates a DNS forwarding ruleset.
-     *
+     * Creates or updates a DNS forwarding ruleset.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a DNS forwarding ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DnsForwardingRulesetInner update(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        DnsForwardingRulesetPatch parameters,
-        String ifMatch);
+    DnsForwardingRulesetInner createOrUpdate(String resourceGroupName, String dnsForwardingRulesetName,
+        DnsForwardingRulesetInner parameters);
 
     /**
-     * Updates a DNS forwarding ruleset.
-     *
+     * Creates or updates a DNS forwarding ruleset.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the Update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a DNS forwarding ruleset.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DnsForwardingRulesetInner update(
-        String resourceGroupName, String dnsForwardingRulesetName, DnsForwardingRulesetPatch parameters);
-
-    /**
-     * Updates a DNS forwarding ruleset.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param parameters Parameters supplied to the Update operation.
+     * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @param ifNoneMatch Set to '*' to allow a new resource to be created, but to prevent updating an existing
+     * resource. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -220,38 +87,97 @@ public interface DnsForwardingRulesetsClient {
      * @return describes a DNS forwarding ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DnsForwardingRulesetInner update(
-        String resourceGroupName,
-        String dnsForwardingRulesetName,
-        DnsForwardingRulesetPatch parameters,
-        String ifMatch,
-        Context context);
+    DnsForwardingRulesetInner createOrUpdate(String resourceGroupName, String dnsForwardingRulesetName,
+        DnsForwardingRulesetInner parameters, String ifMatch, String ifNoneMatch, Context context);
+
+    /**
+     * Updates a DNS forwarding ruleset.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param parameters Parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes a DNS forwarding ruleset.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginUpdate(String resourceGroupName,
+        String dnsForwardingRulesetName, DnsForwardingRulesetPatch parameters);
+
+    /**
+     * Updates a DNS forwarding ruleset.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param parameters Parameters supplied to the Update operation.
+     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of describes a DNS forwarding ruleset.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DnsForwardingRulesetInner>, DnsForwardingRulesetInner> beginUpdate(String resourceGroupName,
+        String dnsForwardingRulesetName, DnsForwardingRulesetPatch parameters, String ifMatch, Context context);
+
+    /**
+     * Updates a DNS forwarding ruleset.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param parameters Parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS forwarding ruleset.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DnsForwardingRulesetInner update(String resourceGroupName, String dnsForwardingRulesetName,
+        DnsForwardingRulesetPatch parameters);
+
+    /**
+     * Updates a DNS forwarding ruleset.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param parameters Parameters supplied to the Update operation.
+     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a DNS forwarding ruleset.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DnsForwardingRulesetInner update(String resourceGroupName, String dnsForwardingRulesetName,
+        DnsForwardingRulesetPatch parameters, String ifMatch, Context context);
 
     /**
      * Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the
      * ruleset will be deleted.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dnsForwardingRulesetName, String ifMatch);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName);
 
     /**
      * Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the
      * ruleset will be deleted.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -259,28 +185,13 @@ public interface DnsForwardingRulesetsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dnsForwardingRulesetName, String ifMatch, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dnsForwardingRulesetName,
+        String ifMatch, Context context);
 
     /**
      * Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the
      * ruleset will be deleted.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String dnsForwardingRulesetName, String ifMatch);
-
-    /**
-     * Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the
-     * ruleset will be deleted.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,11 +204,11 @@ public interface DnsForwardingRulesetsClient {
     /**
      * Deletes a DNS forwarding ruleset. WARNING: This operation cannot be undone. All forwarding rules within the
      * ruleset will be deleted.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @param ifMatch ETag of the resource. Omit this value to always overwrite the current resource. Specify the
-     *     last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -308,7 +219,22 @@ public interface DnsForwardingRulesetsClient {
 
     /**
      * Gets a DNS forwarding ruleset properties.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a DNS forwarding ruleset properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DnsForwardingRulesetInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String dnsForwardingRulesetName, Context context);
+
+    /**
+     * Gets a DNS forwarding ruleset properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,92 +246,77 @@ public interface DnsForwardingRulesetsClient {
     DnsForwardingRulesetInner getByResourceGroup(String resourceGroupName, String dnsForwardingRulesetName);
 
     /**
-     * Gets a DNS forwarding ruleset properties.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param dnsForwardingRulesetName The name of the DNS forwarding ruleset.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DNS forwarding ruleset properties along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DnsForwardingRulesetInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String dnsForwardingRulesetName, Context context);
-
-    /**
      * Lists DNS forwarding rulesets within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS forwarding rulesets as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS forwarding rulesets as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DnsForwardingRulesetInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists DNS forwarding rulesets within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS forwarding rulesets as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS forwarding rulesets as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DnsForwardingRulesetInner> listByResourceGroup(
-        String resourceGroupName, Integer top, Context context);
+    PagedIterable<DnsForwardingRulesetInner> listByResourceGroup(String resourceGroupName, Integer top,
+        Context context);
 
     /**
      * Lists DNS forwarding rulesets in all resource groups of a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS forwarding rulesets as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS forwarding rulesets as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DnsForwardingRulesetInner> list();
 
     /**
      * Lists DNS forwarding rulesets in all resource groups of a subscription.
-     *
+     * 
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an enumeration operation on DNS forwarding rulesets as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response to an enumeration operation on DNS forwarding rulesets as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DnsForwardingRulesetInner> list(Integer top, Context context);
 
     /**
      * Lists DNS forwarding ruleset resource IDs attached to a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on Virtual Network DNS Forwarding Ruleset as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualNetworkDnsForwardingRulesetInner> listByVirtualNetwork(
-        String resourceGroupName, String virtualNetworkName);
+    PagedIterable<VirtualNetworkDnsForwardingRulesetInner> listByVirtualNetwork(String resourceGroupName,
+        String virtualNetworkName);
 
     /**
      * Lists DNS forwarding ruleset resource IDs attached to a virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The maximum number of results to return. If not specified, returns up to 100 results.
@@ -414,9 +325,9 @@ public interface DnsForwardingRulesetsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an enumeration operation on Virtual Network DNS Forwarding Ruleset as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualNetworkDnsForwardingRulesetInner> listByVirtualNetwork(
-        String resourceGroupName, String virtualNetworkName, Integer top, Context context);
+    PagedIterable<VirtualNetworkDnsForwardingRulesetInner> listByVirtualNetwork(String resourceGroupName,
+        String virtualNetworkName, Integer top, Context context);
 }

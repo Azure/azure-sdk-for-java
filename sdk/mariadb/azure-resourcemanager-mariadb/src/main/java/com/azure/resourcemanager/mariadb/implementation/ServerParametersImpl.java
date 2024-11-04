@@ -18,16 +18,16 @@ public final class ServerParametersImpl implements ServerParameters {
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    public ServerParametersImpl(
-        ServerParametersClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    public ServerParametersImpl(ServerParametersClient innerClient,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public ConfigurationListResult listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value) {
-        ConfigurationListResultInner inner =
-            this.serviceClient().listUpdateConfigurations(resourceGroupName, serverName, value);
+    public ConfigurationListResult listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value) {
+        ConfigurationListResultInner inner
+            = this.serviceClient().listUpdateConfigurations(resourceGroupName, serverName, value);
         if (inner != null) {
             return new ConfigurationListResultImpl(inner, this.manager());
         } else {
@@ -35,10 +35,10 @@ public final class ServerParametersImpl implements ServerParameters {
         }
     }
 
-    public ConfigurationListResult listUpdateConfigurations(
-        String resourceGroupName, String serverName, ConfigurationListResultInner value, Context context) {
-        ConfigurationListResultInner inner =
-            this.serviceClient().listUpdateConfigurations(resourceGroupName, serverName, value, context);
+    public ConfigurationListResult listUpdateConfigurations(String resourceGroupName, String serverName,
+        ConfigurationListResultInner value, Context context) {
+        ConfigurationListResultInner inner
+            = this.serviceClient().listUpdateConfigurations(resourceGroupName, serverName, value, context);
         if (inner != null) {
             return new ConfigurationListResultImpl(inner, this.manager());
         } else {

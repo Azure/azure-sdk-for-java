@@ -23,8 +23,7 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
     static String systemAccessToken = Configuration.getGlobalConfiguration().get("SYSTEM_ACCESSTOKEN");
 
     private static AzurePipelinesCredential getCredential() {
-        return new AzurePipelinesCredentialBuilder()
-            .clientId(clientId)
+        return new AzurePipelinesCredentialBuilder().clientId(clientId)
             .tenantId(tenantId)
             .serviceConnectionId(serviceConnectionId)
             .systemAccessToken(systemAccessToken)
@@ -32,8 +31,7 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
     }
 
     private static AzurePipelinesCredential getInvalidCredential() {
-        return new AzurePipelinesCredentialBuilder()
-            .clientId(clientId)
+        return new AzurePipelinesCredentialBuilder().clientId(clientId)
             .tenantId(tenantId)
             .serviceConnectionId(serviceConnectionId)
             .systemAccessToken("InvalidToken")
@@ -45,7 +43,8 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
         // Arrange
         AzurePipelinesCredential credential = getCredential();
         // Act & Assert
-        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
+        StepVerifier
+            .create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
             .assertNext(accessToken -> {
                 assertNotNull(accessToken.getToken());
                 assertNotNull(accessToken.getExpiresAt());
@@ -65,18 +64,20 @@ public class AzurePipelinesCredentialTest extends TestProxyTestBase {
     @Test
     public void noRedirectOnFailure() {
         AzurePipelinesCredential credential = getInvalidCredential();
-        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
-            .expectErrorMatches(throwable ->
-                ((ClientAuthenticationException) throwable).getResponse().getStatusCode() == 401
-            ).verify();
+        StepVerifier
+            .create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
+            .expectErrorMatches(
+                throwable -> ((ClientAuthenticationException) throwable).getResponse().getStatusCode() == 401)
+            .verify();
     }
 
     @Test
     public void validateHeadersInException() {
         AzurePipelinesCredential credential = getInvalidCredential();
-        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
-            .expectErrorMatches(throwable ->
-                throwable.getMessage().contains("x-vss-e2eid") && throwable.getMessage().contains("x-msedge-ref")
-            ).verify();
+        StepVerifier
+            .create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
+            .expectErrorMatches(throwable -> throwable.getMessage().contains("x-vss-e2eid")
+                && throwable.getMessage().contains("x-msedge-ref"))
+            .verify();
     }
 }

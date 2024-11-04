@@ -5,44 +5,49 @@
 package com.azure.resourcemanager.managementgroups.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.managementgroups.models.DescendantParentGroupInfo;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The generic properties of subscription under a management group. */
+/**
+ * The generic properties of subscription under a management group.
+ */
 @Fluent
-public final class SubscriptionUnderManagementGroupProperties {
+public final class SubscriptionUnderManagementGroupProperties
+    implements JsonSerializable<SubscriptionUnderManagementGroupProperties> {
     /*
      * The AAD Tenant ID associated with the subscription. For example, 00000000-0000-0000-0000-000000000000
      */
-    @JsonProperty(value = "tenant")
     private String tenant;
 
     /*
      * The friendly name of the subscription.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * The ID of the parent management group.
      */
-    @JsonProperty(value = "parent")
     private DescendantParentGroupInfo parent;
 
     /*
      * The state of the subscription.
      */
-    @JsonProperty(value = "state")
     private String state;
 
-    /** Creates an instance of SubscriptionUnderManagementGroupProperties class. */
+    /**
+     * Creates an instance of SubscriptionUnderManagementGroupProperties class.
+     */
     public SubscriptionUnderManagementGroupProperties() {
     }
 
     /**
      * Get the tenant property: The AAD Tenant ID associated with the subscription. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @return the tenant value.
      */
     public String tenant() {
@@ -52,7 +57,7 @@ public final class SubscriptionUnderManagementGroupProperties {
     /**
      * Set the tenant property: The AAD Tenant ID associated with the subscription. For example,
      * 00000000-0000-0000-0000-000000000000.
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the SubscriptionUnderManagementGroupProperties object itself.
      */
@@ -63,7 +68,7 @@ public final class SubscriptionUnderManagementGroupProperties {
 
     /**
      * Get the displayName property: The friendly name of the subscription.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -72,7 +77,7 @@ public final class SubscriptionUnderManagementGroupProperties {
 
     /**
      * Set the displayName property: The friendly name of the subscription.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SubscriptionUnderManagementGroupProperties object itself.
      */
@@ -83,7 +88,7 @@ public final class SubscriptionUnderManagementGroupProperties {
 
     /**
      * Get the parent property: The ID of the parent management group.
-     *
+     * 
      * @return the parent value.
      */
     public DescendantParentGroupInfo parent() {
@@ -92,7 +97,7 @@ public final class SubscriptionUnderManagementGroupProperties {
 
     /**
      * Set the parent property: The ID of the parent management group.
-     *
+     * 
      * @param parent the parent value to set.
      * @return the SubscriptionUnderManagementGroupProperties object itself.
      */
@@ -103,7 +108,7 @@ public final class SubscriptionUnderManagementGroupProperties {
 
     /**
      * Get the state property: The state of the subscription.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -112,7 +117,7 @@ public final class SubscriptionUnderManagementGroupProperties {
 
     /**
      * Set the state property: The state of the subscription.
-     *
+     * 
      * @param state the state value to set.
      * @return the SubscriptionUnderManagementGroupProperties object itself.
      */
@@ -123,12 +128,59 @@ public final class SubscriptionUnderManagementGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (parent() != null) {
             parent().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tenant", this.tenant);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeJsonField("parent", this.parent);
+        jsonWriter.writeStringField("state", this.state);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionUnderManagementGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionUnderManagementGroupProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionUnderManagementGroupProperties.
+     */
+    public static SubscriptionUnderManagementGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionUnderManagementGroupProperties deserializedSubscriptionUnderManagementGroupProperties
+                = new SubscriptionUnderManagementGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenant".equals(fieldName)) {
+                    deserializedSubscriptionUnderManagementGroupProperties.tenant = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSubscriptionUnderManagementGroupProperties.displayName = reader.getString();
+                } else if ("parent".equals(fieldName)) {
+                    deserializedSubscriptionUnderManagementGroupProperties.parent
+                        = DescendantParentGroupInfo.fromJson(reader);
+                } else if ("state".equals(fieldName)) {
+                    deserializedSubscriptionUnderManagementGroupProperties.state = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionUnderManagementGroupProperties;
+        });
     }
 }

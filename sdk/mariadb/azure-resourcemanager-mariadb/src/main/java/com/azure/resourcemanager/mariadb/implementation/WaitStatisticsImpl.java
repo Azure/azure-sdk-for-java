@@ -22,21 +22,18 @@ public final class WaitStatisticsImpl implements WaitStatistics {
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    public WaitStatisticsImpl(
-        WaitStatisticsClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    public WaitStatisticsImpl(WaitStatisticsClient innerClient,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<WaitStatistic> getWithResponse(
-        String resourceGroupName, String serverName, String waitStatisticsId, Context context) {
-        Response<WaitStatisticInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, waitStatisticsId, context);
+    public Response<WaitStatistic> getWithResponse(String resourceGroupName, String serverName, String waitStatisticsId,
+        Context context) {
+        Response<WaitStatisticInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, waitStatisticsId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WaitStatisticImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,18 +49,18 @@ public final class WaitStatisticsImpl implements WaitStatistics {
         }
     }
 
-    public PagedIterable<WaitStatistic> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters) {
-        PagedIterable<WaitStatisticInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
-        return Utils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
+    public PagedIterable<WaitStatistic> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters) {
+        PagedIterable<WaitStatisticInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, parameters);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WaitStatistic> listByServer(
-        String resourceGroupName, String serverName, WaitStatisticsInput parameters, Context context) {
-        PagedIterable<WaitStatisticInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
-        return Utils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
+    public PagedIterable<WaitStatistic> listByServer(String resourceGroupName, String serverName,
+        WaitStatisticsInput parameters, Context context) {
+        PagedIterable<WaitStatisticInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, parameters, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WaitStatisticImpl(inner1, this.manager()));
     }
 
     private WaitStatisticsClient serviceClient() {

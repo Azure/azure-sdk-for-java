@@ -224,33 +224,24 @@ public final class ConnectivityStatusContract {
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ConnectivityStatusContract"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model ConnectivityStatusContract"));
         }
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model ConnectivityStatusContract"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property status in model ConnectivityStatusContract"));
         }
         if (lastUpdated() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property lastUpdated in model ConnectivityStatusContract"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property lastUpdated in model ConnectivityStatusContract"));
         }
         if (lastStatusChange() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property lastStatusChange in model ConnectivityStatusContract"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property lastStatusChange in model ConnectivityStatusContract"));
         }
         if (resourceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceType in model ConnectivityStatusContract"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resourceType in model ConnectivityStatusContract"));
         }
     }
 

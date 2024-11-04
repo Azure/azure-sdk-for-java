@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountSessionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The list of integration account sessions. */
+/**
+ * The list of integration account sessions.
+ */
 @Fluent
-public final class IntegrationAccountSessionListResult {
+public final class IntegrationAccountSessionListResult
+    implements JsonSerializable<IntegrationAccountSessionListResult> {
     /*
      * The list of integration account sessions.
      */
-    @JsonProperty(value = "value")
     private List<IntegrationAccountSessionInner> value;
 
     /*
      * The URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of IntegrationAccountSessionListResult class. */
+    /**
+     * Creates an instance of IntegrationAccountSessionListResult class.
+     */
     public IntegrationAccountSessionListResult() {
     }
 
     /**
      * Get the value property: The list of integration account sessions.
-     *
+     * 
      * @return the value value.
      */
     public List<IntegrationAccountSessionInner> value() {
@@ -39,7 +46,7 @@ public final class IntegrationAccountSessionListResult {
 
     /**
      * Set the value property: The list of integration account sessions.
-     *
+     * 
      * @param value the value value to set.
      * @return the IntegrationAccountSessionListResult object itself.
      */
@@ -50,7 +57,7 @@ public final class IntegrationAccountSessionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +66,7 @@ public final class IntegrationAccountSessionListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the IntegrationAccountSessionListResult object itself.
      */
@@ -70,12 +77,54 @@ public final class IntegrationAccountSessionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountSessionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountSessionListResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IntegrationAccountSessionListResult.
+     */
+    public static IntegrationAccountSessionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountSessionListResult deserializedIntegrationAccountSessionListResult
+                = new IntegrationAccountSessionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<IntegrationAccountSessionInner> value
+                        = reader.readArray(reader1 -> IntegrationAccountSessionInner.fromJson(reader1));
+                    deserializedIntegrationAccountSessionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedIntegrationAccountSessionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountSessionListResult;
+        });
     }
 }

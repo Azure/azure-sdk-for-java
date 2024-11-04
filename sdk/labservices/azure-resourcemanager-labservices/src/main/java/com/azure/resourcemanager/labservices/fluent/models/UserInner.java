@@ -8,31 +8,55 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.labservices.models.InvitationState;
 import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.RegistrationState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** User of a lab that can register for and use virtual machines within the lab. */
+/**
+ * User of a lab that can register for and use virtual machines within the lab.
+ */
 @Fluent
 public final class UserInner extends ProxyResource {
     /*
      * Metadata pertaining to creation and last modification of the user resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * User resource properties
      */
-    @JsonProperty(value = "properties", required = true)
     private UserProperties innerProperties = new UserProperties();
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of UserInner class.
+     */
+    public UserInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the user resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -41,7 +65,7 @@ public final class UserInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: User resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UserProperties innerProperties() {
@@ -49,8 +73,38 @@ public final class UserInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the provisioningState property: Current provisioning state of the user resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -59,7 +113,7 @@ public final class UserInner extends ProxyResource {
 
     /**
      * Get the displayName property: Display name of the user, for example user's full name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -68,7 +122,7 @@ public final class UserInner extends ProxyResource {
 
     /**
      * Get the email property: Email address of the user.
-     *
+     * 
      * @return the email value.
      */
     public String email() {
@@ -77,7 +131,7 @@ public final class UserInner extends ProxyResource {
 
     /**
      * Set the email property: Email address of the user.
-     *
+     * 
      * @param email the email value to set.
      * @return the UserInner object itself.
      */
@@ -91,7 +145,7 @@ public final class UserInner extends ProxyResource {
 
     /**
      * Get the registrationState property: State of the user's registration within the lab.
-     *
+     * 
      * @return the registrationState value.
      */
     public RegistrationState registrationState() {
@@ -100,7 +154,7 @@ public final class UserInner extends ProxyResource {
 
     /**
      * Get the invitationState property: State of the invitation message for the user.
-     *
+     * 
      * @return the invitationState value.
      */
     public InvitationState invitationState() {
@@ -109,7 +163,7 @@ public final class UserInner extends ProxyResource {
 
     /**
      * Get the invitationSent property: Date and time when the invitation message was sent to the user.
-     *
+     * 
      * @return the invitationSent value.
      */
     public OffsetDateTime invitationSent() {
@@ -118,7 +172,7 @@ public final class UserInner extends ProxyResource {
 
     /**
      * Get the totalUsage property: How long the user has used their virtual machines in this lab.
-     *
+     * 
      * @return the totalUsage value.
      */
     public Duration totalUsage() {
@@ -128,7 +182,7 @@ public final class UserInner extends ProxyResource {
     /**
      * Get the additionalUsageQuota property: The amount of usage quota time the user gets in addition to the lab usage
      * quota.
-     *
+     * 
      * @return the additionalUsageQuota value.
      */
     public Duration additionalUsageQuota() {
@@ -138,7 +192,7 @@ public final class UserInner extends ProxyResource {
     /**
      * Set the additionalUsageQuota property: The amount of usage quota time the user gets in addition to the lab usage
      * quota.
-     *
+     * 
      * @param additionalUsageQuota the additionalUsageQuota value to set.
      * @return the UserInner object itself.
      */
@@ -152,18 +206,62 @@ public final class UserInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model UserInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model UserInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserInner.
+     */
+    public static UserInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserInner deserializedUserInner = new UserInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedUserInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUserInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedUserInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUserInner.innerProperties = UserProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedUserInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserInner;
+        });
+    }
 }

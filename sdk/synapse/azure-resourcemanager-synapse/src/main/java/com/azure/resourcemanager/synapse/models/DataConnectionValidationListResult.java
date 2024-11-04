@@ -7,18 +7,20 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.resourcemanager.synapse.fluent.models.DataConnectionValidationListResultInner;
 import java.util.List;
 
-/** An immutable client-side representation of DataConnectionValidationListResult. */
+/**
+ * An immutable client-side representation of DataConnectionValidationListResult.
+ */
 public interface DataConnectionValidationListResult {
     /**
      * Gets the value property: The list of Kusto data connection validation errors.
-     *
+     * 
      * @return the value value.
      */
     List<DataConnectionValidationResult> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.DataConnectionValidationListResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     DataConnectionValidationListResultInner innerModel();

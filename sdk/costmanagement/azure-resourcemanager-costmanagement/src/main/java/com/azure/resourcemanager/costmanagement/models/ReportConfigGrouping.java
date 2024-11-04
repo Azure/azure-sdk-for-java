@@ -6,30 +6,36 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The group by expression to be used in the report. */
+/**
+ * The group by expression to be used in the report.
+ */
 @Fluent
-public final class ReportConfigGrouping {
+public final class ReportConfigGrouping implements JsonSerializable<ReportConfigGrouping> {
     /*
      * Has type of the column to group.
      */
-    @JsonProperty(value = "type", required = true)
     private QueryColumnType type;
 
     /*
      * The name of the column to group. This version supports subscription lowest possible grain.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of ReportConfigGrouping class. */
+    /**
+     * Creates an instance of ReportConfigGrouping class.
+     */
     public ReportConfigGrouping() {
     }
 
     /**
      * Get the type property: Has type of the column to group.
-     *
+     * 
      * @return the type value.
      */
     public QueryColumnType type() {
@@ -38,7 +44,7 @@ public final class ReportConfigGrouping {
 
     /**
      * Set the type property: Has type of the column to group.
-     *
+     * 
      * @param type the type value to set.
      * @return the ReportConfigGrouping object itself.
      */
@@ -49,7 +55,7 @@ public final class ReportConfigGrouping {
 
     /**
      * Get the name property: The name of the column to group. This version supports subscription lowest possible grain.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +64,7 @@ public final class ReportConfigGrouping {
 
     /**
      * Set the name property: The name of the column to group. This version supports subscription lowest possible grain.
-     *
+     * 
      * @param name the name value to set.
      * @return the ReportConfigGrouping object itself.
      */
@@ -69,21 +75,59 @@ public final class ReportConfigGrouping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ReportConfigGrouping"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ReportConfigGrouping"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ReportConfigGrouping"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ReportConfigGrouping"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ReportConfigGrouping.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReportConfigGrouping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReportConfigGrouping if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReportConfigGrouping.
+     */
+    public static ReportConfigGrouping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReportConfigGrouping deserializedReportConfigGrouping = new ReportConfigGrouping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedReportConfigGrouping.type = QueryColumnType.fromString(reader.getString());
+                } else if ("name".equals(fieldName)) {
+                    deserializedReportConfigGrouping.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReportConfigGrouping;
+        });
+    }
 }

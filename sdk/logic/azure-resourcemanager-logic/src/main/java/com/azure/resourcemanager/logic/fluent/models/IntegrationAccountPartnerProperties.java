@@ -5,52 +5,57 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.PartnerContent;
 import com.azure.resourcemanager.logic.models.PartnerType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The integration account partner properties. */
+/**
+ * The integration account partner properties.
+ */
 @Fluent
-public final class IntegrationAccountPartnerProperties {
+public final class IntegrationAccountPartnerProperties
+    implements JsonSerializable<IntegrationAccountPartnerProperties> {
     /*
      * The partner type.
      */
-    @JsonProperty(value = "partnerType", required = true)
     private PartnerType partnerType;
 
     /*
      * The created time.
      */
-    @JsonProperty(value = "createdTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdTime;
 
     /*
      * The changed time.
      */
-    @JsonProperty(value = "changedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime changedTime;
 
     /*
      * The metadata.
      */
-    @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
      * The partner content.
      */
-    @JsonProperty(value = "content", required = true)
     private PartnerContent content;
 
-    /** Creates an instance of IntegrationAccountPartnerProperties class. */
+    /**
+     * Creates an instance of IntegrationAccountPartnerProperties class.
+     */
     public IntegrationAccountPartnerProperties() {
     }
 
     /**
      * Get the partnerType property: The partner type.
-     *
+     * 
      * @return the partnerType value.
      */
     public PartnerType partnerType() {
@@ -59,7 +64,7 @@ public final class IntegrationAccountPartnerProperties {
 
     /**
      * Set the partnerType property: The partner type.
-     *
+     * 
      * @param partnerType the partnerType value to set.
      * @return the IntegrationAccountPartnerProperties object itself.
      */
@@ -70,7 +75,7 @@ public final class IntegrationAccountPartnerProperties {
 
     /**
      * Get the createdTime property: The created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -79,7 +84,7 @@ public final class IntegrationAccountPartnerProperties {
 
     /**
      * Get the changedTime property: The changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -88,7 +93,7 @@ public final class IntegrationAccountPartnerProperties {
 
     /**
      * Get the metadata property: The metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -97,7 +102,7 @@ public final class IntegrationAccountPartnerProperties {
 
     /**
      * Set the metadata property: The metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the IntegrationAccountPartnerProperties object itself.
      */
@@ -108,7 +113,7 @@ public final class IntegrationAccountPartnerProperties {
 
     /**
      * Get the content property: The partner content.
-     *
+     * 
      * @return the content value.
      */
     public PartnerContent content() {
@@ -117,7 +122,7 @@ public final class IntegrationAccountPartnerProperties {
 
     /**
      * Set the content property: The partner content.
-     *
+     * 
      * @param content the content value to set.
      * @return the IntegrationAccountPartnerProperties object itself.
      */
@@ -128,25 +133,74 @@ public final class IntegrationAccountPartnerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (partnerType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property partnerType in model IntegrationAccountPartnerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property partnerType in model IntegrationAccountPartnerProperties"));
         }
         if (content() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property content in model IntegrationAccountPartnerProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property content in model IntegrationAccountPartnerProperties"));
         } else {
             content().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountPartnerProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("partnerType", this.partnerType == null ? null : this.partnerType.toString());
+        jsonWriter.writeJsonField("content", this.content);
+        jsonWriter.writeUntypedField("metadata", this.metadata);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountPartnerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountPartnerProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationAccountPartnerProperties.
+     */
+    public static IntegrationAccountPartnerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountPartnerProperties deserializedIntegrationAccountPartnerProperties
+                = new IntegrationAccountPartnerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partnerType".equals(fieldName)) {
+                    deserializedIntegrationAccountPartnerProperties.partnerType
+                        = PartnerType.fromString(reader.getString());
+                } else if ("content".equals(fieldName)) {
+                    deserializedIntegrationAccountPartnerProperties.content = PartnerContent.fromJson(reader);
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedIntegrationAccountPartnerProperties.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("changedTime".equals(fieldName)) {
+                    deserializedIntegrationAccountPartnerProperties.changedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("metadata".equals(fieldName)) {
+                    deserializedIntegrationAccountPartnerProperties.metadata = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountPartnerProperties;
+        });
+    }
 }

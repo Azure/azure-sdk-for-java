@@ -33,45 +33,30 @@ public final class RoutePoliciesUpdateAdministrativeStateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"configurationState\":\"ErrorProvisioning\",\"successfulDevices\":[\"ffc\",\"tkprxypxtipkd\",\"ebafiq\",\"omev\"],\"failedDevices\":[\"amdvnc\"]}";
+        String responseStr
+            = "{\"configurationState\":\"ErrorProvisioning\",\"successfulDevices\":[\"ffc\",\"tkprxypxtipkd\",\"ebafiq\",\"omev\"],\"failedDevices\":[\"amdvnc\"]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CommonPostActionResponseForDeviceUpdate response =
-            manager
-                .routePolicies()
-                .updateAdministrativeState(
-                    "ouxkia",
-                    "pgugrjxxdl",
-                    new UpdateAdministrativeState()
-                        .withResourceIds(Arrays.asList("mwn"))
-                        .withState(EnableDisableState.DISABLE),
-                    com.azure.core.util.Context.NONE);
+        CommonPostActionResponseForDeviceUpdate response = manager.routePolicies()
+            .updateAdministrativeState("ouxkia", "pgugrjxxdl",
+                new UpdateAdministrativeState().withResourceIds(Arrays.asList("mwn"))
+                    .withState(EnableDisableState.DISABLE),
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ffc", response.successfulDevices().get(0));
         Assertions.assertEquals("amdvnc", response.failedDevices().get(0));

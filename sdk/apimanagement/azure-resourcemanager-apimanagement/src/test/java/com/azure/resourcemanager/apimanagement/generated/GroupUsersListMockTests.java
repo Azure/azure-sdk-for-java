@@ -32,52 +32,34 @@ public final class GroupUsersListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"firstName\":\"ie\",\"lastName\":\"xhju\",\"email\":\"dalnjjhrgkjjpcpi\",\"registrationDate\":\"2021-10-08T09:05:05Z\",\"groups\":[{\"displayName\":\"vtajfj\",\"description\":\"oidneku\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"anaqvengnp\"},{\"displayName\":\"elr\",\"description\":\"nb\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"xfbagegjtjltcki\"},{\"displayName\":\"xggfagijx\",\"description\":\"boefnhxh\",\"builtIn\":false,\"type\":\"custom\",\"externalId\":\"nvzsodmokrqd\"}],\"state\":\"pending\",\"note\":\"qyjkotyp\",\"identities\":[{\"provider\":\"yzzl\",\"id\":\"jhzppdb\"},{\"provider\":\"mcxbofprsm\",\"id\":\"apesbfz\"},{\"provider\":\"ejrwwsfvt\",\"id\":\"qxtmbl\"},{\"provider\":\"cleuovel\",\"id\":\"prbxjtezujtou\"}]},\"id\":\"odexwmvssrjciexu\",\"name\":\"emt\",\"type\":\"tgebym\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"firstName\":\"ie\",\"lastName\":\"xhju\",\"email\":\"dalnjjhrgkjjpcpi\",\"registrationDate\":\"2021-10-08T09:05:05Z\",\"groups\":[{\"displayName\":\"vtajfj\",\"description\":\"oidneku\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"anaqvengnp\"},{\"displayName\":\"elr\",\"description\":\"nb\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"xfbagegjtjltcki\"},{\"displayName\":\"xggfagijx\",\"description\":\"boefnhxh\",\"builtIn\":false,\"type\":\"custom\",\"externalId\":\"nvzsodmokrqd\"}],\"state\":\"pending\",\"note\":\"qyjkotyp\",\"identities\":[{\"provider\":\"yzzl\",\"id\":\"jhzppdb\"},{\"provider\":\"mcxbofprsm\",\"id\":\"apesbfz\"},{\"provider\":\"ejrwwsfvt\",\"id\":\"qxtmbl\"},{\"provider\":\"cleuovel\",\"id\":\"prbxjtezujtou\"}]},\"id\":\"odexwmvssrjciexu\",\"name\":\"emt\",\"type\":\"tgebym\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiManagementManager manager =
-            ApiManagementManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiManagementManager manager = ApiManagementManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<UserContract> response =
-            manager
-                .groupUsers()
-                .list(
-                    "izmpnxghamrpla",
-                    "chqotmmxlmxejwyv",
-                    "z",
-                    "jwvtuekbbypqsm",
-                    639032115,
-                    996756501,
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<UserContract> response = manager.groupUsers()
+            .list("izmpnxghamrpla", "chqotmmxlmxejwyv", "z", "jwvtuekbbypqsm", 639032115, 996756501,
+                com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("ie", response.iterator().next().firstName());
         Assertions.assertEquals("xhju", response.iterator().next().lastName());
         Assertions.assertEquals("dalnjjhrgkjjpcpi", response.iterator().next().email());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2021-10-08T09:05:05Z"), response.iterator().next().registrationDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-08T09:05:05Z"),
+            response.iterator().next().registrationDate());
         Assertions.assertEquals(UserState.PENDING, response.iterator().next().state());
         Assertions.assertEquals("qyjkotyp", response.iterator().next().note());
         Assertions.assertEquals("yzzl", response.iterator().next().identities().get(0).provider());

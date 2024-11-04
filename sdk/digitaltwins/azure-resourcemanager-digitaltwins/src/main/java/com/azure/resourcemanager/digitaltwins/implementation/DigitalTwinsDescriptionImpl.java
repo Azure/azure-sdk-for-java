@@ -80,12 +80,9 @@ public final class DigitalTwinsDescriptionImpl
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -127,25 +124,21 @@ public final class DigitalTwinsDescriptionImpl
     }
 
     public DigitalTwinsDescription create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwins()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwins()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DigitalTwinsDescription create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwins()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwins()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
-    DigitalTwinsDescriptionImpl(
-        String name, com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
+    DigitalTwinsDescriptionImpl(String name,
+        com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = new DigitalTwinsDescriptionInner();
         this.serviceManager = serviceManager;
         this.resourceName = name;
@@ -157,25 +150,20 @@ public final class DigitalTwinsDescriptionImpl
     }
 
     public DigitalTwinsDescription apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwins()
-                .update(resourceGroupName, resourceName, updateDigitalTwinsPatchDescription, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwins()
+            .update(resourceGroupName, resourceName, updateDigitalTwinsPatchDescription, Context.NONE);
         return this;
     }
 
     public DigitalTwinsDescription apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwins()
-                .update(resourceGroupName, resourceName, updateDigitalTwinsPatchDescription, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwins()
+            .update(resourceGroupName, resourceName, updateDigitalTwinsPatchDescription, context);
         return this;
     }
 
-    DigitalTwinsDescriptionImpl(
-        DigitalTwinsDescriptionInner innerObject,
+    DigitalTwinsDescriptionImpl(DigitalTwinsDescriptionInner innerObject,
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -184,22 +172,18 @@ public final class DigitalTwinsDescriptionImpl
     }
 
     public DigitalTwinsDescription refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwins()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwins()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public DigitalTwinsDescription refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDigitalTwins()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDigitalTwins()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 
@@ -233,8 +217,8 @@ public final class DigitalTwinsDescriptionImpl
         }
     }
 
-    public DigitalTwinsDescriptionImpl withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public DigitalTwinsDescriptionImpl
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.innerModel().withPrivateEndpointConnections(privateEndpointConnections);
         return this;
     }

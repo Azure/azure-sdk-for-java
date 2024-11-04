@@ -75,9 +75,7 @@ public final class ServiceBusPublishSubscribeBasic {
 
             System.out.println("Creating topic " + topicName + " in namespace " + namespaceName + "...");
 
-            Topic topic = serviceBusNamespace.topics().define(topicName)
-                .withSizeInMB(2048)
-                .create();
+            Topic topic = serviceBusNamespace.topics().define(topicName).withSizeInMB(2048).create();
 
             System.out.println("Created second queue in namespace");
 
@@ -87,10 +85,7 @@ public final class ServiceBusPublishSubscribeBasic {
             // Get and update topic with new size and a subscription
             System.out.println("Updating topic " + topicName + " with new size and a subscription...");
             topic = serviceBusNamespace.topics().getByName(topicName);
-            topic = topic.update()
-                .withNewSubscription(subscription1Name)
-                .withSizeInMB(3072)
-                .apply();
+            topic = topic.update().withNewSubscription(subscription1Name).withSizeInMB(3072).apply();
 
             System.out.println("Updated topic to change its size in MB along with a subscription");
 
@@ -101,7 +96,8 @@ public final class ServiceBusPublishSubscribeBasic {
             //============================================================
             // Create a subscription
             System.out.println("Adding second subscription" + subscription2Name + " to topic " + topicName + "...");
-            ServiceBusSubscription secondSubscription = topic.subscriptions().define(subscription2Name).withDeleteOnIdleDurationInMinutes(10).create();
+            ServiceBusSubscription secondSubscription
+                = topic.subscriptions().define(subscription2Name).withDeleteOnIdleDurationInMinutes(10).create();
             System.out.println("Added second subscription" + subscription2Name + " to topic " + topicName + "...");
 
             Utils.print(secondSubscription);
@@ -129,11 +125,12 @@ public final class ServiceBusPublishSubscribeBasic {
             //=============================================================
             // Get connection string for default authorization rule of namespace
 
-            PagedIterable<NamespaceAuthorizationRule> namespaceAuthorizationRules = serviceBusNamespace.authorizationRules().list();
-            System.out.println("Number of authorization rule for namespace :" + Utils.getSize(namespaceAuthorizationRules));
+            PagedIterable<NamespaceAuthorizationRule> namespaceAuthorizationRules
+                = serviceBusNamespace.authorizationRules().list();
+            System.out
+                .println("Number of authorization rule for namespace :" + Utils.getSize(namespaceAuthorizationRules));
 
-
-            for (NamespaceAuthorizationRule namespaceAuthorizationRule: namespaceAuthorizationRules) {
+            for (NamespaceAuthorizationRule namespaceAuthorizationRule : namespaceAuthorizationRules) {
                 Utils.print(namespaceAuthorizationRule);
             }
 
@@ -147,21 +144,23 @@ public final class ServiceBusPublishSubscribeBasic {
 
             //=============================================================
             // Send a message to topic.
-            ServiceBusSenderClient sender = new ServiceBusClientBuilder()
-                .connectionString(keys.primaryConnectionString())
-                .sender()
-                .topicName(topicName)
-                .buildClient();
+            ServiceBusSenderClient sender
+                = new ServiceBusClientBuilder().connectionString(keys.primaryConnectionString())
+                    .sender()
+                    .topicName(topicName)
+                    .buildClient();
             sender.sendMessage(new ServiceBusMessage("Hello World").setMessageId("1"));
             sender.close();
 
             //=============================================================
             // Delete a queue and namespace
-            System.out.println("Deleting subscription " + subscription1Name + " in topic " + topicName + " via update flow...");
+            System.out.println(
+                "Deleting subscription " + subscription1Name + " in topic " + topicName + " via update flow...");
             topic = topic.update().withoutSubscription(subscription1Name).apply();
             System.out.println("Deleted subscription " + subscription1Name + "...");
 
-            System.out.println("Number of subscriptions in the topic after deleting first subscription: " + topic.subscriptionCount());
+            System.out.println(
+                "Number of subscriptions in the topic after deleting first subscription: " + topic.subscriptionCount());
 
             System.out.println("Deleting namespace " + namespaceName + "...");
             // This will delete the namespace and queue within it.
@@ -194,8 +193,7 @@ public final class ServiceBusPublishSubscribeBasic {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

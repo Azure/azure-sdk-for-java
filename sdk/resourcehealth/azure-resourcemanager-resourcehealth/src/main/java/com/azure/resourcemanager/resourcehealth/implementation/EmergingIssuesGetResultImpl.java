@@ -18,8 +18,7 @@ public final class EmergingIssuesGetResultImpl implements EmergingIssuesGetResul
 
     private final com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager;
 
-    EmergingIssuesGetResultImpl(
-        EmergingIssuesGetResultInner innerObject,
+    EmergingIssuesGetResultImpl(EmergingIssuesGetResultInner innerObject,
         com.azure.resourcemanager.resourcehealth.ResourceHealthManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

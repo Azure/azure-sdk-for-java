@@ -53,8 +53,10 @@ public final class ResourceNotificationsOperationalDetails
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceEventTime", this.resourceEventTime == null ? null
-            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resourceEventTime));
+        jsonWriter.writeStringField("resourceEventTime",
+            this.resourceEventTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resourceEventTime));
         return jsonWriter.writeEndObject();
     }
 

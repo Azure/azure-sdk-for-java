@@ -126,19 +126,16 @@ public final class LoggingRule {
      */
     public void validate() {
         if (action() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property action in model LoggingRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property action in model LoggingRule"));
         }
         if (direction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property direction in model LoggingRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property direction in model LoggingRule"));
         }
         if (detailLevel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property detailLevel in model LoggingRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property detailLevel in model LoggingRule"));
         }
         if (hiddenPropertyPaths() != null) {
             hiddenPropertyPaths().validate();

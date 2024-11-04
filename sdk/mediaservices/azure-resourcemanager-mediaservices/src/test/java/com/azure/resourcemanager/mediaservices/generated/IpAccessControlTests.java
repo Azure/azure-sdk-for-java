@@ -13,34 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class IpAccessControlTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IpAccessControl model =
-            BinaryData
-                .fromString(
-                    "{\"allow\":[{\"name\":\"vksgplsaknynfsy\",\"address\":\"jphuopxodlqi\",\"subnetPrefixLength\":1587464346},{\"name\":\"rz\",\"address\":\"leosjswsrms\",\"subnetPrefixLength\":1326847440}]}")
-                .toObject(IpAccessControl.class);
-        Assertions.assertEquals("vksgplsaknynfsy", model.allow().get(0).name());
-        Assertions.assertEquals("jphuopxodlqi", model.allow().get(0).address());
-        Assertions.assertEquals(1587464346, model.allow().get(0).subnetPrefixLength());
+        IpAccessControl model = BinaryData.fromString(
+            "{\"allow\":[{\"name\":\"vwxqibyqunyo\",\"address\":\"wlmdjrkv\",\"subnetPrefixLength\":185014481},{\"name\":\"fvpdbo\",\"address\":\"cizsjqlhkrribdei\",\"subnetPrefixLength\":1262026177}]}")
+            .toObject(IpAccessControl.class);
+        Assertions.assertEquals("vwxqibyqunyo", model.allow().get(0).name());
+        Assertions.assertEquals("wlmdjrkv", model.allow().get(0).address());
+        Assertions.assertEquals(185014481, model.allow().get(0).subnetPrefixLength());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IpAccessControl model =
-            new IpAccessControl()
-                .withAllow(
-                    Arrays
-                        .asList(
-                            new IpRange()
-                                .withName("vksgplsaknynfsy")
-                                .withAddress("jphuopxodlqi")
-                                .withSubnetPrefixLength(1587464346),
-                            new IpRange()
-                                .withName("rz")
-                                .withAddress("leosjswsrms")
-                                .withSubnetPrefixLength(1326847440)));
+        IpAccessControl model = new IpAccessControl().withAllow(Arrays.asList(
+            new IpRange().withName("vwxqibyqunyo").withAddress("wlmdjrkv").withSubnetPrefixLength(185014481),
+            new IpRange().withName("fvpdbo").withAddress("cizsjqlhkrribdei").withSubnetPrefixLength(1262026177)));
         model = BinaryData.fromObject(model).toObject(IpAccessControl.class);
-        Assertions.assertEquals("vksgplsaknynfsy", model.allow().get(0).name());
-        Assertions.assertEquals("jphuopxodlqi", model.allow().get(0).address());
-        Assertions.assertEquals(1587464346, model.allow().get(0).subnetPrefixLength());
+        Assertions.assertEquals("vwxqibyqunyo", model.allow().get(0).name());
+        Assertions.assertEquals("wlmdjrkv", model.allow().get(0).address());
+        Assertions.assertEquals(185014481, model.allow().get(0).subnetPrefixLength());
     }
 }

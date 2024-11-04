@@ -10,10 +10,8 @@ import com.azure.resourcemanager.datalakestore.models.UsageName;
 public final class UsageNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageName model =
-            BinaryData
-                .fromString("{\"value\":\"mjmvxieduugidyjr\",\"localizedValue\":\"byao\"}")
-                .toObject(UsageName.class);
+        UsageName model
+            = BinaryData.fromString("{\"value\":\"pheoflokeyy\",\"localizedValue\":\"nj\"}").toObject(UsageName.class);
     }
 
     @org.junit.jupiter.api.Test

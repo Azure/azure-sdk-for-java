@@ -31,40 +31,28 @@ public final class NetworkRacksGetByResourceGroupWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"vrexitpzri\",\"networkDevices\":[\"sc\",\"ujywwumbusnaw\",\"ncljkh\"],\"provisioningState\":\"Accepted\",\"annotation\":\"uahokiclrmmudv\"},\"location\":\"t\",\"tags\":{\"ysmzgbogdj\":\"idkwznwttlizd\"},\"id\":\"uybcp\",\"name\":\"dvuotkvkbpmk\",\"type\":\"pbnkcwauylkbdsk\"}";
+        String responseStr
+            = "{\"properties\":{\"networkRackType\":\"Aggregate\",\"networkFabricId\":\"vrexitpzri\",\"networkDevices\":[\"sc\",\"ujywwumbusnaw\",\"ncljkh\"],\"provisioningState\":\"Accepted\",\"annotation\":\"uahokiclrmmudv\"},\"location\":\"t\",\"tags\":{\"ysmzgbogdj\":\"idkwznwttlizd\"},\"id\":\"uybcp\",\"name\":\"dvuotkvkbpmk\",\"type\":\"pbnkcwauylkbdsk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ManagedNetworkFabricManager manager =
-            ManagedNetworkFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ManagedNetworkFabricManager manager = ManagedNetworkFabricManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NetworkRack response =
-            manager
-                .networkRacks()
-                .getByResourceGroupWithResponse("wcxxccf", "fvoz", com.azure.core.util.Context.NONE)
-                .getValue();
+        NetworkRack response = manager.networkRacks()
+            .getByResourceGroupWithResponse("wcxxccf", "fvoz", com.azure.core.util.Context.NONE)
+            .getValue();
 
         Assertions.assertEquals("t", response.location());
         Assertions.assertEquals("idkwznwttlizd", response.tags().get("ysmzgbogdj"));

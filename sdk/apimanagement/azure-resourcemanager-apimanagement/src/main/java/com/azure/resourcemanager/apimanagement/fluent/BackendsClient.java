@@ -51,8 +51,8 @@ public interface BackendsClient {
      * @return paged Backend list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BackendContractInner> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context);
+    PagedIterable<BackendContractInner> listByService(String resourceGroupName, String serviceName, String filter,
+        Integer top, Integer skip, Context context);
 
     /**
      * Gets the entity state (Etag) version of the backend specified by its identifier.
@@ -67,8 +67,8 @@ public interface BackendsClient {
      * @return the entity state (Etag) version of the backend specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String backendId, Context context);
+    BackendsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        String backendId, Context context);
 
     /**
      * Gets the entity state (Etag) version of the backend specified by its identifier.
@@ -96,8 +96,8 @@ public interface BackendsClient {
      * @return the details of the backend specified by its identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendsGetResponse getWithResponse(
-        String resourceGroupName, String serviceName, String backendId, Context context);
+    BackendsGetResponse getWithResponse(String resourceGroupName, String serviceName, String backendId,
+        Context context);
 
     /**
      * Gets the details of the backend specified by its identifier.
@@ -128,13 +128,8 @@ public interface BackendsClient {
      * @return backend details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendsCreateOrUpdateResponse createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String backendId,
-        BackendContractInner parameters,
-        String ifMatch,
-        Context context);
+    BackendsCreateOrUpdateResponse createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        String backendId, BackendContractInner parameters, String ifMatch, Context context);
 
     /**
      * Creates or Updates a backend.
@@ -149,8 +144,8 @@ public interface BackendsClient {
      * @return backend details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendContractInner createOrUpdate(
-        String resourceGroupName, String serviceName, String backendId, BackendContractInner parameters);
+    BackendContractInner createOrUpdate(String resourceGroupName, String serviceName, String backendId,
+        BackendContractInner parameters);
 
     /**
      * Updates an existing backend.
@@ -168,13 +163,8 @@ public interface BackendsClient {
      * @return backend details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendsUpdateResponse updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String backendId,
-        String ifMatch,
-        BackendUpdateParameters parameters,
-        Context context);
+    BackendsUpdateResponse updateWithResponse(String resourceGroupName, String serviceName, String backendId,
+        String ifMatch, BackendUpdateParameters parameters, Context context);
 
     /**
      * Updates an existing backend.
@@ -191,11 +181,7 @@ public interface BackendsClient {
      * @return backend details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendContractInner update(
-        String resourceGroupName,
-        String serviceName,
-        String backendId,
-        String ifMatch,
+    BackendContractInner update(String resourceGroupName, String serviceName, String backendId, String ifMatch,
         BackendUpdateParameters parameters);
 
     /**
@@ -213,8 +199,8 @@ public interface BackendsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String backendId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String backendId, String ifMatch,
+        Context context);
 
     /**
      * Deletes the specified backend.
@@ -246,12 +232,8 @@ public interface BackendsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> reconnectWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String backendId,
-        BackendReconnectContract parameters,
-        Context context);
+    Response<Void> reconnectWithResponse(String resourceGroupName, String serviceName, String backendId,
+        BackendReconnectContract parameters, Context context);
 
     /**
      * Notifies the API Management gateway to create a new connection to the backend after the specified timeout. If no

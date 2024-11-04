@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UsageAggregationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UsageAggregationInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"git\",\"name\":\"qhabifpikxwcz\",\"type\":\"scnpqxuhivy\",\"properties\":{\"subscriptionId\":\"f6de8516-24e1-45ed-82b6-e06fea31b82a\",\"meterId\":\"b\",\"usageStartTime\":\"2021-06-19T13:57:47Z\",\"usageEndTime\":\"2021-06-14T11:48:10Z\",\"quantity\":69.25819,\"unit\":\"mjgr\",\"meterName\":\"wvukx\",\"meterCategory\":\"udccsnhsjc\",\"meterSubCategory\":\"ejhkry\",\"meterRegion\":\"napczwlokjy\",\"infoFields\":{\"project\":\"kvnipjoxz\"},\"instanceData\":\"chgejspodm\"}}")
-                .toObject(UsageAggregationInner.class);
+        UsageAggregationInner model = BinaryData.fromString(
+            "{\"id\":\"git\",\"name\":\"qhabifpikxwcz\",\"type\":\"scnpqxuhivy\",\"properties\":{\"subscriptionId\":\"f6de8516-24e1-45ed-82b6-e06fea31b82a\",\"meterId\":\"b\",\"usageStartTime\":\"2021-06-19T13:57:47Z\",\"usageEndTime\":\"2021-06-14T11:48:10Z\",\"quantity\":69.25819,\"unit\":\"mjgr\",\"meterName\":\"wvukx\",\"meterCategory\":\"udccsnhsjc\",\"meterSubCategory\":\"ejhkry\",\"meterRegion\":\"napczwlokjy\",\"infoFields\":{\"project\":\"kvnipjoxz\"},\"instanceData\":\"chgejspodm\"}}")
+            .toObject(UsageAggregationInner.class);
         Assertions.assertEquals("git", model.id());
         Assertions.assertEquals("qhabifpikxwcz", model.name());
         Assertions.assertEquals("scnpqxuhivy", model.type());
@@ -38,23 +36,21 @@ public final class UsageAggregationInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UsageAggregationInner model =
-            new UsageAggregationInner()
-                .withId("git")
-                .withName("qhabifpikxwcz")
-                .withType("scnpqxuhivy")
-                .withSubscriptionId(UUID.fromString("f6de8516-24e1-45ed-82b6-e06fea31b82a"))
-                .withMeterId("b")
-                .withUsageStartTime(OffsetDateTime.parse("2021-06-19T13:57:47Z"))
-                .withUsageEndTime(OffsetDateTime.parse("2021-06-14T11:48:10Z"))
-                .withQuantity(69.25819F)
-                .withUnit("mjgr")
-                .withMeterName("wvukx")
-                .withMeterCategory("udccsnhsjc")
-                .withMeterSubCategory("ejhkry")
-                .withMeterRegion("napczwlokjy")
-                .withInfoFields(new InfoField().withProject("kvnipjoxz"))
-                .withInstanceData("chgejspodm");
+        UsageAggregationInner model = new UsageAggregationInner().withId("git")
+            .withName("qhabifpikxwcz")
+            .withType("scnpqxuhivy")
+            .withSubscriptionId(UUID.fromString("f6de8516-24e1-45ed-82b6-e06fea31b82a"))
+            .withMeterId("b")
+            .withUsageStartTime(OffsetDateTime.parse("2021-06-19T13:57:47Z"))
+            .withUsageEndTime(OffsetDateTime.parse("2021-06-14T11:48:10Z"))
+            .withQuantity(69.25819F)
+            .withUnit("mjgr")
+            .withMeterName("wvukx")
+            .withMeterCategory("udccsnhsjc")
+            .withMeterSubCategory("ejhkry")
+            .withMeterRegion("napczwlokjy")
+            .withInfoFields(new InfoField().withProject("kvnipjoxz"))
+            .withInstanceData("chgejspodm");
         model = BinaryData.fromObject(model).toObject(UsageAggregationInner.class);
         Assertions.assertEquals("git", model.id());
         Assertions.assertEquals("qhabifpikxwcz", model.name());

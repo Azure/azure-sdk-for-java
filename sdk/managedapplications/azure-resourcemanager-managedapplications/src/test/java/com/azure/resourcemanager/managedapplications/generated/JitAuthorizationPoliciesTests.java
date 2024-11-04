@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class JitAuthorizationPoliciesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JitAuthorizationPolicies model =
-            BinaryData
-                .fromString("{\"principalId\":\"nvowgujju\",\"roleDefinitionId\":\"wdkcglhsl\"}")
+        JitAuthorizationPolicies model
+            = BinaryData.fromString("{\"principalId\":\"nvowgujju\",\"roleDefinitionId\":\"wdkcglhsl\"}")
                 .toObject(JitAuthorizationPolicies.class);
         Assertions.assertEquals("nvowgujju", model.principalId());
         Assertions.assertEquals("wdkcglhsl", model.roleDefinitionId());
@@ -21,8 +20,8 @@ public final class JitAuthorizationPoliciesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JitAuthorizationPolicies model =
-            new JitAuthorizationPolicies().withPrincipalId("nvowgujju").withRoleDefinitionId("wdkcglhsl");
+        JitAuthorizationPolicies model
+            = new JitAuthorizationPolicies().withPrincipalId("nvowgujju").withRoleDefinitionId("wdkcglhsl");
         model = BinaryData.fromObject(model).toObject(JitAuthorizationPolicies.class);
         Assertions.assertEquals("nvowgujju", model.principalId());
         Assertions.assertEquals("wdkcglhsl", model.roleDefinitionId());

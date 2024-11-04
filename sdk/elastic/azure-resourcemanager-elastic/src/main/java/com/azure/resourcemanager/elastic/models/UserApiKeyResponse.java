@@ -6,18 +6,20 @@ package com.azure.resourcemanager.elastic.models;
 
 import com.azure.resourcemanager.elastic.fluent.models.UserApiKeyResponseInner;
 
-/** An immutable client-side representation of UserApiKeyResponse. */
+/**
+ * An immutable client-side representation of UserApiKeyResponse.
+ */
 public interface UserApiKeyResponse {
     /**
      * Gets the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     UserApiKeyResponseProperties properties();
 
     /**
      * Gets the inner com.azure.resourcemanager.elastic.fluent.models.UserApiKeyResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     UserApiKeyResponseInner innerModel();

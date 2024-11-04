@@ -90,22 +90,18 @@ public final class VideoEntityImpl implements VideoEntity, VideoEntity.Definitio
     }
 
     public VideoEntity create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideos()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, videoName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVideos()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, videoName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public VideoEntity create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideos()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, videoName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVideos()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, videoName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -120,27 +116,23 @@ public final class VideoEntityImpl implements VideoEntity, VideoEntity.Definitio
     }
 
     public VideoEntity apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideos()
-                .updateWithResponse(resourceGroupName, accountName, videoName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVideos()
+            .updateWithResponse(resourceGroupName, accountName, videoName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public VideoEntity apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideos()
-                .updateWithResponse(resourceGroupName, accountName, videoName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVideos()
+            .updateWithResponse(resourceGroupName, accountName, videoName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    VideoEntityImpl(
-        VideoEntityInner innerObject, com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
+    VideoEntityImpl(VideoEntityInner innerObject,
+        com.azure.resourcemanager.videoanalyzer.VideoAnalyzerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -149,22 +141,18 @@ public final class VideoEntityImpl implements VideoEntity, VideoEntity.Definitio
     }
 
     public VideoEntity refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideos()
-                .getWithResponse(resourceGroupName, accountName, videoName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVideos()
+            .getWithResponse(resourceGroupName, accountName, videoName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public VideoEntity refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVideos()
-                .getWithResponse(resourceGroupName, accountName, videoName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getVideos()
+            .getWithResponse(resourceGroupName, accountName, videoName, context)
+            .getValue();
         return this;
     }
 

@@ -15,8 +15,7 @@ import reactor.core.publisher.Mono;
  * @param <InnerModelT> Azure inner resource class type
  */
 public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
-        extends IndexableRefreshableImpl<FluentModelT>
-        implements HasInnerModel<InnerModelT> {
+    extends IndexableRefreshableImpl<FluentModelT> implements HasInnerModel<InnerModelT> {
 
     private InnerModelT innerObject;
 

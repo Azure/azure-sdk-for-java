@@ -13,8 +13,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ScheduleFragmentTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ScheduleFragment model =
-            BinaryData.fromString("{\"tags\":{\"uqovekqvgqouwif\":\"yowc\"}}").toObject(ScheduleFragment.class);
+        ScheduleFragment model
+            = BinaryData.fromString("{\"tags\":{\"uqovekqvgqouwif\":\"yowc\"}}").toObject(ScheduleFragment.class);
         Assertions.assertEquals("yowc", model.tags().get("uqovekqvgqouwif"));
     }
 

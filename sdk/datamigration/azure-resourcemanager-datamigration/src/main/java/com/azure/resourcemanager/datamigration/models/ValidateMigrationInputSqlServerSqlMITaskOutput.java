@@ -5,67 +5,68 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Output for task that validates migration input for SQL to Azure SQL Managed Instance migrations. */
+/**
+ * Output for task that validates migration input for SQL to Azure SQL Managed Instance migrations.
+ */
 @Fluent
-public final class ValidateMigrationInputSqlServerSqlMITaskOutput {
+public final class ValidateMigrationInputSqlServerSqlMITaskOutput
+    implements JsonSerializable<ValidateMigrationInputSqlServerSqlMITaskOutput> {
     /*
      * Result identifier
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Name of database
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Errors associated with the RestoreDatabaseName
      */
-    @JsonProperty(value = "restoreDatabaseNameErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> restoreDatabaseNameErrors;
 
     /*
      * Errors associated with the BackupFolder path
      */
-    @JsonProperty(value = "backupFolderErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> backupFolderErrors;
 
     /*
      * Errors associated with backup share user name and password credentials
      */
-    @JsonProperty(value = "backupShareCredentialsErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> backupShareCredentialsErrors;
 
     /*
      * Errors associated with the storage account provided.
      */
-    @JsonProperty(value = "backupStorageAccountErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> backupStorageAccountErrors;
 
     /*
      * Errors associated with existing backup files.
      */
-    @JsonProperty(value = "existingBackupErrors", access = JsonProperty.Access.WRITE_ONLY)
     private List<ReportableException> existingBackupErrors;
 
     /*
      * Information about backup files when existing backup mode is used.
      */
-    @JsonProperty(value = "databaseBackupInfo")
     private DatabaseBackupInfo databaseBackupInfo;
 
-    /** Creates an instance of ValidateMigrationInputSqlServerSqlMITaskOutput class. */
+    /**
+     * Creates an instance of ValidateMigrationInputSqlServerSqlMITaskOutput class.
+     */
     public ValidateMigrationInputSqlServerSqlMITaskOutput() {
     }
 
     /**
      * Get the id property: Result identifier.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -74,7 +75,7 @@ public final class ValidateMigrationInputSqlServerSqlMITaskOutput {
 
     /**
      * Get the name property: Name of database.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -83,7 +84,7 @@ public final class ValidateMigrationInputSqlServerSqlMITaskOutput {
 
     /**
      * Get the restoreDatabaseNameErrors property: Errors associated with the RestoreDatabaseName.
-     *
+     * 
      * @return the restoreDatabaseNameErrors value.
      */
     public List<ReportableException> restoreDatabaseNameErrors() {
@@ -92,7 +93,7 @@ public final class ValidateMigrationInputSqlServerSqlMITaskOutput {
 
     /**
      * Get the backupFolderErrors property: Errors associated with the BackupFolder path.
-     *
+     * 
      * @return the backupFolderErrors value.
      */
     public List<ReportableException> backupFolderErrors() {
@@ -102,7 +103,7 @@ public final class ValidateMigrationInputSqlServerSqlMITaskOutput {
     /**
      * Get the backupShareCredentialsErrors property: Errors associated with backup share user name and password
      * credentials.
-     *
+     * 
      * @return the backupShareCredentialsErrors value.
      */
     public List<ReportableException> backupShareCredentialsErrors() {
@@ -111,7 +112,7 @@ public final class ValidateMigrationInputSqlServerSqlMITaskOutput {
 
     /**
      * Get the backupStorageAccountErrors property: Errors associated with the storage account provided.
-     *
+     * 
      * @return the backupStorageAccountErrors value.
      */
     public List<ReportableException> backupStorageAccountErrors() {
@@ -120,7 +121,7 @@ public final class ValidateMigrationInputSqlServerSqlMITaskOutput {
 
     /**
      * Get the existingBackupErrors property: Errors associated with existing backup files.
-     *
+     * 
      * @return the existingBackupErrors value.
      */
     public List<ReportableException> existingBackupErrors() {
@@ -129,7 +130,7 @@ public final class ValidateMigrationInputSqlServerSqlMITaskOutput {
 
     /**
      * Get the databaseBackupInfo property: Information about backup files when existing backup mode is used.
-     *
+     * 
      * @return the databaseBackupInfo value.
      */
     public DatabaseBackupInfo databaseBackupInfo() {
@@ -138,19 +139,19 @@ public final class ValidateMigrationInputSqlServerSqlMITaskOutput {
 
     /**
      * Set the databaseBackupInfo property: Information about backup files when existing backup mode is used.
-     *
+     * 
      * @param databaseBackupInfo the databaseBackupInfo value to set.
      * @return the ValidateMigrationInputSqlServerSqlMITaskOutput object itself.
      */
-    public ValidateMigrationInputSqlServerSqlMITaskOutput withDatabaseBackupInfo(
-        DatabaseBackupInfo databaseBackupInfo) {
+    public ValidateMigrationInputSqlServerSqlMITaskOutput
+        withDatabaseBackupInfo(DatabaseBackupInfo databaseBackupInfo) {
         this.databaseBackupInfo = databaseBackupInfo;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -172,5 +173,71 @@ public final class ValidateMigrationInputSqlServerSqlMITaskOutput {
         if (databaseBackupInfo() != null) {
             databaseBackupInfo().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("databaseBackupInfo", this.databaseBackupInfo);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateMigrationInputSqlServerSqlMITaskOutput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateMigrationInputSqlServerSqlMITaskOutput if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidateMigrationInputSqlServerSqlMITaskOutput.
+     */
+    public static ValidateMigrationInputSqlServerSqlMITaskOutput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateMigrationInputSqlServerSqlMITaskOutput deserializedValidateMigrationInputSqlServerSqlMITaskOutput
+                = new ValidateMigrationInputSqlServerSqlMITaskOutput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedValidateMigrationInputSqlServerSqlMITaskOutput.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedValidateMigrationInputSqlServerSqlMITaskOutput.name = reader.getString();
+                } else if ("restoreDatabaseNameErrors".equals(fieldName)) {
+                    List<ReportableException> restoreDatabaseNameErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedValidateMigrationInputSqlServerSqlMITaskOutput.restoreDatabaseNameErrors
+                        = restoreDatabaseNameErrors;
+                } else if ("backupFolderErrors".equals(fieldName)) {
+                    List<ReportableException> backupFolderErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedValidateMigrationInputSqlServerSqlMITaskOutput.backupFolderErrors = backupFolderErrors;
+                } else if ("backupShareCredentialsErrors".equals(fieldName)) {
+                    List<ReportableException> backupShareCredentialsErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedValidateMigrationInputSqlServerSqlMITaskOutput.backupShareCredentialsErrors
+                        = backupShareCredentialsErrors;
+                } else if ("backupStorageAccountErrors".equals(fieldName)) {
+                    List<ReportableException> backupStorageAccountErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedValidateMigrationInputSqlServerSqlMITaskOutput.backupStorageAccountErrors
+                        = backupStorageAccountErrors;
+                } else if ("existingBackupErrors".equals(fieldName)) {
+                    List<ReportableException> existingBackupErrors
+                        = reader.readArray(reader1 -> ReportableException.fromJson(reader1));
+                    deserializedValidateMigrationInputSqlServerSqlMITaskOutput.existingBackupErrors
+                        = existingBackupErrors;
+                } else if ("databaseBackupInfo".equals(fieldName)) {
+                    deserializedValidateMigrationInputSqlServerSqlMITaskOutput.databaseBackupInfo
+                        = DatabaseBackupInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateMigrationInputSqlServerSqlMITaskOutput;
+        });
     }
 }

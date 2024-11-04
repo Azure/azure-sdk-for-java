@@ -22,7 +22,8 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewAccountClient type. */
 @ServiceClient(builder = CollectionsClientBuilder.class, isAsync = true)
 public final class CollectionsAsyncClient {
-    @Generated private final CollectionsImpl serviceClient;
+    @Generated
+    private final CollectionsImpl serviceClient;
 
     /**
      * Initializes an instance of CollectionsAsyncClient class.
@@ -134,8 +135,8 @@ public final class CollectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponse(
-            String collectionName, BinaryData collection, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponse(String collectionName, BinaryData collection,
+        RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateCollectionWithResponseAsync(collectionName, collection, requestOptions);
     }
 
@@ -268,8 +269,8 @@ public final class CollectionsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCollectionPathWithResponse(
-            String collectionName, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCollectionPathWithResponse(String collectionName,
+        RequestOptions requestOptions) {
         return this.serviceClient.getCollectionPathWithResponseAsync(collectionName, requestOptions);
     }
 }

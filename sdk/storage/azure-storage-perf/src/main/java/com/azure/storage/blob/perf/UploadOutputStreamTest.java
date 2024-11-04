@@ -21,13 +21,11 @@ public class UploadOutputStreamTest extends AbstractUploadTest<BlobPerfStressOpt
     @Override
     public void run() {
         try {
-            BlockBlobOutputStreamOptions blockBlobOutputStreamOptions = new BlockBlobOutputStreamOptions()
-                .setParallelTransferOptions(
-                    new ParallelTransferOptions()
-                        .setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
+            BlockBlobOutputStreamOptions blockBlobOutputStreamOptions
+                = new BlockBlobOutputStreamOptions().setParallelTransferOptions(
+                    new ParallelTransferOptions().setMaxSingleUploadSizeLong(options.getTransferSingleUploadSize())
                         .setBlockSizeLong(options.getTransferBlockSize())
-                        .setMaxConcurrency(options.getTransferConcurrency())
-                );
+                        .setMaxConcurrency(options.getTransferConcurrency()));
             BlobOutputStream blobOutputStream = blockBlobClient.getBlobOutputStream(blockBlobOutputStreamOptions);
             writeBytesToOutputStream(blobOutputStream, options.getSize());
             blobOutputStream.close();

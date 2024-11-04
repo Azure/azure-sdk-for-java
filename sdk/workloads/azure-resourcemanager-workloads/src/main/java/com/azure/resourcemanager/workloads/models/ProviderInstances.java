@@ -59,8 +59,8 @@ public interface ProviderInstances {
      * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
      *     resource name along with {@link Response}.
      */
-    Response<ProviderInstance> getWithResponse(
-        String resourceGroupName, String monitorName, String providerInstanceName, Context context);
+    Response<ProviderInstance> getWithResponse(String resourceGroupName, String monitorName,
+        String providerInstanceName, Context context);
 
     /**
      * Gets properties of a provider instance.
@@ -110,8 +110,8 @@ public interface ProviderInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    OperationStatusResult delete(
-        String resourceGroupName, String monitorName, String providerInstanceName, Context context);
+    OperationStatusResult delete(String resourceGroupName, String monitorName, String providerInstanceName,
+        Context context);
 
     /**
      * Gets properties of a provider instance.

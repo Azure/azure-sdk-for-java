@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /** Credentials to access a container image in a private repository. */
 @Fluent
 public final class PrivateRegistryCredentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateRegistryCredentials.class);
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(PrivateRegistryCredentials.class);
 
     /*
      * User name to login to the repository.
@@ -108,10 +109,8 @@ public final class PrivateRegistryCredentials {
      */
     public void validate() {
         if (username() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model PrivateRegistryCredentials"));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("Missing required property username in model PrivateRegistryCredentials"));
         }
         if (passwordSecretReference() != null) {
             passwordSecretReference().validate();

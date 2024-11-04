@@ -35,8 +35,8 @@ public final class SynchronousReceiverTest {
     private static final String NAMESPACE = "namespace";
     private static final String ENTITY_PATH = "entity-path";
     private static final ClientLogger LOGGER = new ClientLogger(SynchronousReceiverTest.class);
-    private static final ServiceBusReceiverInstrumentation NO_INSTRUMENTATION = new ServiceBusReceiverInstrumentation(null, null,
-        NAMESPACE, ENTITY_PATH, null, ReceiverKind.SYNC_RECEIVER);
+    private static final ServiceBusReceiverInstrumentation NO_INSTRUMENTATION
+        = new ServiceBusReceiverInstrumentation(null, null, NAMESPACE, ENTITY_PATH, null, ReceiverKind.SYNC_RECEIVER);
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
@@ -45,7 +45,7 @@ public final class SynchronousReceiverTest {
     }
 
     @AfterEach
-    void teardown() throws Exception  {
+    void teardown() throws Exception {
         Mockito.framework().clearInlineMock(this);
 
         if (mocksCloseable != null) {
@@ -58,7 +58,8 @@ public final class SynchronousReceiverTest {
         final int maxMessages = 1;
         final Duration maxWaitTime = Duration.ofMillis(500);
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, 0, Duration.ZERO, false);
+        final ReceiverOptions receiverOptions
+            = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, 0, Duration.ZERO, false);
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
         when(asyncClient.isV2()).thenReturn(true);
@@ -79,7 +80,8 @@ public final class SynchronousReceiverTest {
         final int maxMessages = 1;
         final Duration maxWaitTime = Duration.ofMillis(250);
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
-        final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, 0, Duration.ZERO, false);
+        final ReceiverOptions receiverOptions
+            = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, 0, Duration.ZERO, false);
         final TestPublisher<ServiceBusReceivedMessage> upstream = TestPublisher.create();
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
@@ -104,8 +106,10 @@ public final class SynchronousReceiverTest {
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ServiceBusReceivedMessage message0 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
-        final ArgumentCaptor<ServiceBusReceivedMessage> messageCaptor = ArgumentCaptor.forClass(ServiceBusReceivedMessage.class);
-        final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);
+        final ArgumentCaptor<ServiceBusReceivedMessage> messageCaptor
+            = ArgumentCaptor.forClass(ServiceBusReceivedMessage.class);
+        final ReceiverOptions receiverOptions
+            = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);
         final Sinks.Many<ServiceBusReceivedMessage> upstream = Sinks.many().multicast().onBackpressureBuffer();
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
@@ -149,7 +153,8 @@ public final class SynchronousReceiverTest {
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ServiceBusReceivedMessage message0 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
-        final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);
+        final ReceiverOptions receiverOptions
+            = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);
         final Sinks.Many<ServiceBusReceivedMessage> upstream = Sinks.many().multicast().onBackpressureBuffer();
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
@@ -190,14 +195,16 @@ public final class SynchronousReceiverTest {
         final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ServiceBusReceivedMessage message0 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
-        final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);
+        final ReceiverOptions receiverOptions
+            = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);
         final Sinks.Many<ServiceBusReceivedMessage> upstream = Sinks.many().multicast().onBackpressureBuffer();
         final AtomicBoolean upstreamCanceled = new AtomicBoolean(false);
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
         when(asyncClient.isV2()).thenReturn(true);
         when(asyncClient.getInstrumentation()).thenReturn(NO_INSTRUMENTATION);
-        when(asyncClient.nonSessionSyncReceiveV2()).thenReturn(upstream.asFlux().doOnCancel(() -> upstreamCanceled.set(true)));
+        when(asyncClient.nonSessionSyncReceiveV2())
+            .thenReturn(upstream.asFlux().doOnCancel(() -> upstreamCanceled.set(true)));
 
         final SynchronousReceiver receiver = new SynchronousReceiver(LOGGER, asyncClient);
 
