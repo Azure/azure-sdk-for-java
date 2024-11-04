@@ -70,7 +70,10 @@ public class TableClientTest extends TableClientTestBase {
 
     protected void beforeTest() {
         final String tableName = testResourceNamer.randomName("tableName", 20);
-        tableClient = getClientBuilder(tableName, false).buildClient();
+        tableClient = getClientBuilder(tableName, false)
+            .serviceVersion(TableServiceVersion.getLatest())
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS).disableRedactedHeaderLogging(false))
+            .buildClient();
 
         tableClient.createTable();
     }
@@ -1113,6 +1116,7 @@ public class TableClientTest extends TableClientTestBase {
 
     @Test
     public void generateSasTokenWithMinimumParameters() {
+        Assumptions.assumeFalse(usingEntraAuth, "Skipping test for authentication with Microsoft Entra.");
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("r");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_ONLY;
@@ -1130,6 +1134,7 @@ public class TableClientTest extends TableClientTestBase {
 
     @Test
     public void generateSasTokenWithAllParameters() {
+        Assumptions.assumeFalse(usingEntraAuth, "Skipping test for authentication with Microsoft Entra.");
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);
         final TableSasPermission permissions = TableSasPermission.parse("raud");
         final TableSasProtocol protocol = TableSasProtocol.HTTPS_HTTP;

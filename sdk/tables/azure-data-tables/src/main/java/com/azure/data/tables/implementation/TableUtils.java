@@ -22,6 +22,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.time.Duration;
@@ -401,7 +402,18 @@ public final class TableUtils {
         }
     }
 
-    public static String isCosmosEndpoint(String endpoint) {
-        return endpoint;
+    public static boolean isCosmosEndpoint(String endpoint) {
+        try {
+            URI endpointUrl = new URI(endpoint);
+            String host = endpointUrl.getHost();
+            if (host.contains(".cosmos.") || host.contains(".cosmosdb.")) {
+                return true;
+            } else {
+                return false;
+            }
+
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

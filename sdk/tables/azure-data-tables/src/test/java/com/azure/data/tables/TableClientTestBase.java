@@ -14,18 +14,20 @@ public abstract class TableClientTestBase extends TestProxyTestBase {
     protected static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
     protected static final boolean IS_COSMOS_TEST = TestUtils.isCosmosTest();
 
+    protected static boolean usingEntraAuth;
+
     protected HttpPipelinePolicy recordPolicy;
     protected HttpClient playbackClient;
+
 
     protected abstract HttpClient buildAssertingClient(HttpClient httpClient);
 
     protected TableClientBuilder getClientBuilder(String tableName, boolean enableTenantDiscovery) {
-        return TestUtils.isCosmosTest()
-            ? getClientBuilderWithConnectionString(tableName, enableTenantDiscovery)
-            : getClientBuilderUsingEntra(tableName, enableTenantDiscovery);
+       return getClientBuilderUsingEntra(tableName, enableTenantDiscovery);
     }
 
     protected TableClientBuilder getClientBuilderUsingEntra(String tableName, boolean enableTenantDiscovery) {
+        usingEntraAuth = true;
         final TableClientBuilder tableClientBuilder
             = new TableClientBuilder().credential(TestUtils.getTestTokenCredential(interceptorManager))
                 .endpoint(TestUtils.getEndpoint(interceptorManager.isPlaybackMode()));
@@ -38,6 +40,7 @@ public abstract class TableClientTestBase extends TestProxyTestBase {
     }
 
     protected TableClientBuilder getClientBuilderWithConnectionString(String tableName, boolean enableTenantDiscovery) {
+        usingEntraAuth = false;
         final TableClientBuilder tableClientBuilder = new TableClientBuilder()
             .connectionString(TestUtils.getConnectionString(interceptorManager.isPlaybackMode()));
 
