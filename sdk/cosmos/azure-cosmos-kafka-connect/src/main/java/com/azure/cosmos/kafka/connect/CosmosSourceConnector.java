@@ -42,6 +42,7 @@ import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.errors.ConnectException;
+import org.apache.kafka.connect.source.ExactlyOnceSupport;
 import org.apache.kafka.connect.source.SourceConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,6 +79,11 @@ public final class CosmosSourceConnector extends SourceConnector implements Auto
     private MetadataKafkaStorageManager kafkaOffsetStorageReader;
     private IMetadataReader metadataReader;
     private String connectorName;
+
+    @Override
+    public ExactlyOnceSupport exactlyOnceSupport(Map<String, String> connectorConfig) {
+        return ExactlyOnceSupport.SUPPORTED;
+    }
 
     @Override
     public void start(Map<String, String> props) {
