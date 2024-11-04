@@ -7,8 +7,6 @@
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40083](https://github.com/Azure/azure-sdk-for-java/pull/40083).
-* Fixing bug with Spring JPA keywords that don't lead to criteria creation - See [PR 40167](https://github.com/Azure/azure-sdk-for-java/pull/40167).
 * Fixing bug that `java.math.BigInteger` and `java.math.BigDecimal` in models can cause reflection errors on Java 17 - See [PR 40239](https://github.com/Azure/azure-sdk-for-java/pull/40239)
 
 #### Other Changes
