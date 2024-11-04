@@ -1,14 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.openai.realtime.implementation.websocket;
 
 import com.azure.ai.openai.realtime.OpenAIServiceVersion;
-import com.azure.core.credential.KeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaderName;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders;
 
 import java.util.UUID;
-import java.util.function.Supplier;
 
 public class AzureClientEndpointConfiguration  extends ClientEndpointConfiguration {
 

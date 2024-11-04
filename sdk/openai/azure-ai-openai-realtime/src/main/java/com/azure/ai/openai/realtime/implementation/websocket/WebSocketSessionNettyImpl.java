@@ -2,7 +2,6 @@ package com.azure.ai.openai.realtime.implementation.websocket;
 
 import com.azure.ai.openai.realtime.models.ConnectFailedException;
 import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -12,7 +11,6 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpObjectAggregator;

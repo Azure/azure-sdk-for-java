@@ -1,11 +1,7 @@
 package com.azure.ai.openai.realtime.implementation.websocket;
 
-import com.azure.core.credential.KeyCredential;
-import com.azure.core.http.HttpHeaderName;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaders;
-
-import java.util.function.Supplier;
 
 public class NonAzureClientEndpointConfiguration extends ClientEndpointConfiguration {
 
