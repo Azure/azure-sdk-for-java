@@ -1,6 +1,6 @@
 # Release History
 
-## 1.14.1 (2024-11-05)
+## 1.14.1 (2024-11-04)
 
 ### Other Changes
 
