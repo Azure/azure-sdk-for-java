@@ -149,6 +149,7 @@
     "sdk/keyvault/test-resources-jca/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
     "sdk/documentintelligence/azure-ai-documentintelligence/**",
+    "sdk/documentintelligence/test-resources.json",
     "sdk/maps/azure-maps-render/**",
     "sdk/maps/azure-maps-route/**",
     "sdk/monitor/azure-monitor-ingestion/**",
