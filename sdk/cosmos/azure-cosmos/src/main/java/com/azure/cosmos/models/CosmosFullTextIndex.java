@@ -6,23 +6,18 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-
-import java.util.Objects;
 
 /**
  * Represents cosmos full text index of the IndexingPolicy in the Azure Cosmos DB database service.
  */
 public class CosmosFullTextIndex {
-    private JsonSerializable jsonSerializable;
+    private final JsonSerializable jsonSerializable;
 
     /**
      * Constructor
-     * @param path the cosmos full text path.
      */
-    public CosmosFullTextIndex(String path) {
+    public CosmosFullTextIndex() {
         this.jsonSerializable = new JsonSerializable();
-        this.setPath(path);
     }
 
     /**

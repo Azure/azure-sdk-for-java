@@ -15,7 +15,7 @@ import java.util.List;
 public class CosmosFullTextPolicy {
     @JsonProperty(Constants.Properties.DEFAULT_LANGUAGE)
     private String defaultLanguage;
-    @JsonProperty(Constants.Properties.PATHS)
+    @JsonProperty(Constants.Properties.FULL_TEXT_INDEXES)
     private List<CosmosFullTextPath> paths;
     private JsonSerializable jsonSerializable;
 

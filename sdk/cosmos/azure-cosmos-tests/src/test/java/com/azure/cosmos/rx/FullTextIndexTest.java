@@ -21,6 +21,8 @@ import com.azure.cosmos.models.IndexingMode;
 import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Fail.fail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.annotations.AfterClass;
@@ -33,14 +35,16 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
-
 @Ignore("TODO: Ignore these test cases until the public emulator with vector indexes is released.")
 public class FullTextIndexTest extends TestSuiteBase{
     protected static final int TIMEOUT = 30000;
     protected static final int SETUP_TIMEOUT = 20000;
     protected static final int SHUTDOWN_TIMEOUT = 20000;
+    private static final String PATH = "/fts1";
+    private static final String NESTED_PATH = "/fts1/fts2";
+    private static final String LANGUAGE = "en-US";
+    private static final String DEFAULT_LANGUAGE = "en-US";
+
 
     protected static Logger logger = LoggerFactory.getLogger(VectorIndexTest.class.getSimpleName());
     private final ObjectMapper simpleObjectMapper = Utils.getSimpleObjectMapper();
@@ -75,29 +79,7 @@ public class FullTextIndexTest extends TestSuiteBase{
         paths.add("/mypk");
         partitionKeyDef.setPaths(paths);
 
-        CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
-
-        IndexingPolicy indexingPolicy = new IndexingPolicy();
-        indexingPolicy.setIndexingMode(IndexingMode.CONSISTENT);
-        ExcludedPath excludedPath = new ExcludedPath("/*");
-        indexingPolicy.setExcludedPaths(Collections.singletonList(excludedPath));
-
-        IncludedPath includedPath1 = new IncludedPath("/name/?");
-        IncludedPath includedPath2 = new IncludedPath("/description/?");
-        indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
-
-        CosmosFullTextIndex cosmosFullTextIndex = new CosmosFullTextIndex("/fts1");
-        indexingPolicy.setCosmosFullTextIndexes(Arrays.asList(cosmosFullTextIndex));
-
-        CosmosFullTextPath cosmosFullTextPath = new CosmosFullTextPath();
-        cosmosFullTextPath.setPath("/fts1");
-        cosmosFullTextPath.setLanguage("en-US");
-        CosmosFullTextPolicy cosmosFullTextPolicy = new CosmosFullTextPolicy();
-        cosmosFullTextPolicy.setPaths(Arrays.asList(cosmosFullTextPath));
-        cosmosFullTextPolicy.setDefaultLanguage("en-US");
-
-        collectionDefinition.setIndexingPolicy(indexingPolicy);
-        collectionDefinition.setFullTextPolicy(cosmosFullTextPolicy);
+        CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, PATH, DEFAULT_LANGUAGE, LANGUAGE);
 
         database.createContainer(collectionDefinition).block();
         CosmosAsyncContainer createdCollection = database.getContainer(collectionDefinition.getId());
@@ -106,12 +88,139 @@ public class FullTextIndexTest extends TestSuiteBase{
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void shouldCreateFullTextPolicyWithDefaultLanguage() throws Exception {
+    public void shouldCreateFullTextPolicyWithNestedPaths() throws Exception {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
         paths.add("/mypk");
         partitionKeyDef.setPaths(paths);
 
+        CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, NESTED_PATH, DEFAULT_LANGUAGE, LANGUAGE);
+
+        database.createContainer(collectionDefinition).block();
+        CosmosAsyncContainer createdCollection = database.getContainer(collectionDefinition.getId());
+        CosmosContainerProperties collectionProperties = createdCollection.read().block().getProperties();
+        validateCollectionProperties(collectionDefinition, collectionProperties);
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void shouldFailFullTextPolicyWithNullLanguage() throws Exception {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        try {
+            CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, PATH, DEFAULT_LANGUAGE, null);
+            database.createContainer(collectionDefinition).block();
+            fail("");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(400);
+            assertThat(ex.getMessage()).contains("The Full Text Policy contains invalid syntax.");
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void shouldFailFullTextPolicyWithEmptyLanguage() throws Exception {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        try {
+            CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, PATH, DEFAULT_LANGUAGE, "");
+            database.createContainer(collectionDefinition).block();
+            fail("");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(400);
+            assertThat(ex.getMessage()).contains("The Full Text Policy contains an unsupported language . Supported languages are: \\\\\\\"en-US\\\\\\");
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void shouldFailFullTextPolicyWithWrongLanguage() throws Exception {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        try {
+            CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, PATH, DEFAULT_LANGUAGE, "fr-FR");
+            database.createContainer(collectionDefinition).block();
+            fail("");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(400);
+            assertThat(ex.getMessage()).contains("The Full Text Policy contains an unsupported language fr-FR. Supported languages are: \\\\\\\"en-US\\\\\\");
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void shouldFailFullTextPolicyWithNullDefaultLanguage() throws Exception {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        try {
+            CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, PATH, null, LANGUAGE);
+            database.createContainer(collectionDefinition).block();
+            fail("");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(400);
+            assertThat(ex.getMessage()).contains("The Full Text Policy contains invalid syntax.");
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void shouldFailFullTextPolicyWithEmptyDefaultLanguage() throws Exception {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        try {
+            CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, PATH, "", LANGUAGE);
+            database.createContainer(collectionDefinition).block();
+            fail("");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(400);
+            assertThat(ex.getMessage()).contains("The Full Text Policy contains an unsupported language . Supported languages are: \\\\\\\"en-US\\\\\\");
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void shouldFailFullTextPolicyWithWrongDefaultLanguage() throws Exception {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        try {
+            CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, PATH, "fr-FR", LANGUAGE);
+            database.createContainer(collectionDefinition).block();
+            fail("");
+        } catch (CosmosException ex) {
+            assertThat(ex.getStatusCode()).isEqualTo(400);
+            assertThat(ex.getMessage()).contains("The Full Text Policy contains an unsupported language fr-FR. Supported languages are: \\\\\\\"en-US\\\\\\");
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void shouldFailFullTextPolicyWithWrongPath() throws Exception {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        ArrayList<String> paths = new ArrayList<String>();
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        try {
+            CosmosContainerProperties collectionDefinition = getCosmosContainerProperties(partitionKeyDef, "fts1", DEFAULT_LANGUAGE, LANGUAGE);
+            database.createContainer(collectionDefinition).block();
+            fail("");
+        } catch (IllegalArgumentException ex) {
+            assertThat(ex.getMessage()).contains("Path needs to start with '/'");
+        }
+    }
+
+    private static CosmosContainerProperties getCosmosContainerProperties(PartitionKeyDefinition partitionKeyDef, String path, String defaultLanguage, String language) {
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(UUID.randomUUID().toString(), partitionKeyDef);
 
         IndexingPolicy indexingPolicy = new IndexingPolicy();
@@ -123,20 +232,20 @@ public class FullTextIndexTest extends TestSuiteBase{
         IncludedPath includedPath2 = new IncludedPath("/description/?");
         indexingPolicy.setIncludedPaths(ImmutableList.of(includedPath1, includedPath2));
 
-        CosmosFullTextIndex cosmosFullTextIndex = new CosmosFullTextIndex("/fts1");
+        CosmosFullTextIndex cosmosFullTextIndex = new CosmosFullTextIndex();
+        cosmosFullTextIndex.setPath(path);
         indexingPolicy.setCosmosFullTextIndexes(Arrays.asList(cosmosFullTextIndex));
 
+        CosmosFullTextPath cosmosFullTextPath = new CosmosFullTextPath();
+        cosmosFullTextPath.setPath(path);
+        cosmosFullTextPath.setLanguage(language);
         CosmosFullTextPolicy cosmosFullTextPolicy = new CosmosFullTextPolicy();
-        cosmosFullTextPolicy.setPaths(new ArrayList<CosmosFullTextPath>());
-        cosmosFullTextPolicy.setDefaultLanguage("en-US");
+        cosmosFullTextPolicy.setPaths(Arrays.asList(cosmosFullTextPath));
+        cosmosFullTextPolicy.setDefaultLanguage(defaultLanguage);
 
         collectionDefinition.setIndexingPolicy(indexingPolicy);
         collectionDefinition.setFullTextPolicy(cosmosFullTextPolicy);
-
-        database.createContainer(collectionDefinition).block();
-        CosmosAsyncContainer createdCollection = database.getContainer(collectionDefinition.getId());
-        CosmosContainerProperties collectionProperties = createdCollection.read().block().getProperties();
-        validateCollectionProperties(collectionDefinition, collectionProperties);
+        return collectionDefinition;
     }
 
     private void validateCollectionProperties(CosmosContainerProperties collectionDefinition, CosmosContainerProperties collectionProperties) {

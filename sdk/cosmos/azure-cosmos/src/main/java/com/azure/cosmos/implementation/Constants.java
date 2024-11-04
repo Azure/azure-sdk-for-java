@@ -130,6 +130,7 @@ public final class Constants {
         public static final String DEFAULT_LANGUAGE = "defaultLanguage";
         public static final String LANGUAGE = "language";
         public static final String FULL_TEXT_POLICY = "fullTextPolicy";
+        public static final String FULL_TEXT_INDEXES = "fullTextIndexes";
 
 
         // Vector Embedding Policy

@@ -40,11 +40,11 @@ public class CosmosFullTextPath {
      */
     public CosmosFullTextPath setPath(String path) {
         if (StringUtils.isEmpty(path)) {
-            throw new NullPointerException("full text search path is either null or empty");
+            throw new NullPointerException("Full text search path is either null or empty");
         }
 
-        if (path.charAt(0) != '/' || path.lastIndexOf('/') != 0) {
-            throw new IllegalArgumentException("");
+        if (path.charAt(0) != '/') {
+            throw new IllegalArgumentException("Path needs to start with '/'");
         }
 
         this.path = path;
