@@ -74,7 +74,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
 
         String spClientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
         String oidc = configuration.get("AZ_OIDC_TOKEN");
-        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID ");
+        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String aksCluster = configuration.get("IDENTITY_AKS_CLUSTER_NAME");
         String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
@@ -84,7 +84,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         String azPath = runCommand(pathCommand, "az").trim();
         String kubectlPath = runCommand(pathCommand, "kubectl").trim();
 
-        runCommand(azPath, "login", "--federated-token",oidc,  "--service-principal", "-u", spClientId, "--tenant", tenantId);
+        runCommand(azPath, "login", "--federated-token", oidc,  "--service-principal", "-u", spClientId, "--tenant", tenantId);
         runCommand(azPath, "account", "set", "--subscription", subscriptionId);
         runCommand(azPath, "aks", "get-credentials", "--resource-group", resourceGroup, "--name", aksCluster,
             "--overwrite-existing");
@@ -110,7 +110,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
 
         String spClientId = configuration.get("AZURESUBSCRIPTION_CLIENT_ID");
         String oidc = configuration.get("AZ_OIDC_TOKEN");
-        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID ");
+        String tenantId = configuration.get("AZURESUBSCRIPTION_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
         String vmName = configuration.get("IDENTITY_VM_NAME");
@@ -121,7 +121,7 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         String azPath = runCommand(isWindows ? "where" : "which", "az").trim();
         azPath = isWindows ? extractAzCmdPath(azPath) : azPath;
 
-        runCommand(azPath, "login", "--federated-token",oidc,  "--service-principal", "-u", spClientId, "--tenant", tenantId);
+        runCommand(azPath, "login", "--federated-token", oidc,  "--service-principal", "-u", spClientId, "--tenant", tenantId);
         runCommand(azPath, "account", "set", "--subscription", subscriptionId);
 
         String storageKey = runCommand(azPath, "storage", "account", "keys", "list", "--account-name",
