@@ -24,7 +24,7 @@ import java.util.Random;
 
 public class StorageMoverManagerTests extends TestProxyTestBase {
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.create("eastus2euap", "East US 2 EUAP");
+    private static final Region REGION = Region.US_EAST;
     private String resourceGroupName = "rg" + randomPadding();
     private StorageMoverManager storageMoverManager;
     private ResourceManager resourceManager;
