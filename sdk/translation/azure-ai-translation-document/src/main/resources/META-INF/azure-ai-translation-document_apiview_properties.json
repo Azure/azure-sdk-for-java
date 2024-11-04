@@ -34,23 +34,20 @@
     "com.azure.ai.translation.document.implementation.models.SupportedFileFormats": "DocumentTranslation.SupportedFileFormats",
     "com.azure.ai.translation.document.models.DocumentFileDetails": "null",
     "com.azure.ai.translation.document.models.DocumentFilter": "DocumentTranslation.DocumentFilter",
-    "com.azure.ai.translation.document.models.DocumentStatus": "DocumentTranslation.DocumentStatus",
+    "com.azure.ai.translation.document.models.DocumentStatusResult": "DocumentTranslation.DocumentStatus",
     "com.azure.ai.translation.document.models.DocumentTranslateContent": "DocumentTranslation.DocumentTranslateContent",
     "com.azure.ai.translation.document.models.DocumentTranslationInput": "DocumentTranslation.BatchRequest",
     "com.azure.ai.translation.document.models.FileFormat": "DocumentTranslation.FileFormat",
     "com.azure.ai.translation.document.models.FileFormatType": "DocumentTranslation.FileFormatType",
-    "com.azure.ai.translation.document.models.Glossary": "DocumentTranslation.Glossary",
     "com.azure.ai.translation.document.models.GlossaryFileDetails": "null",
-    "com.azure.ai.translation.document.models.InnerTranslationError": "DocumentTranslation.InnerTranslationError",
-    "com.azure.ai.translation.document.models.SourceInput": "DocumentTranslation.SourceInput",
     "com.azure.ai.translation.document.models.StorageInputType": "DocumentTranslation.StorageInputType",
-    "com.azure.ai.translation.document.models.TargetInput": "DocumentTranslation.TargetInput",
     "com.azure.ai.translation.document.models.TranslationBatch": "DocumentTranslation.StartTranslationDetails",
-    "com.azure.ai.translation.document.models.TranslationError": "DocumentTranslation.TranslationError",
-    "com.azure.ai.translation.document.models.TranslationErrorCode": "DocumentTranslation.TranslationErrorCode",
+    "com.azure.ai.translation.document.models.TranslationGlossary": "DocumentTranslation.Glossary",
+    "com.azure.ai.translation.document.models.TranslationSource": "DocumentTranslation.SourceInput",
     "com.azure.ai.translation.document.models.TranslationStatus": "DocumentTranslation.Status",
     "com.azure.ai.translation.document.models.TranslationStatusResult": "DocumentTranslation.TranslationStatus",
     "com.azure.ai.translation.document.models.TranslationStatusSummary": "DocumentTranslation.StatusSummary",
-    "com.azure.ai.translation.document.models.TranslationStorageSource": "DocumentTranslation.StorageSource"
+    "com.azure.ai.translation.document.models.TranslationStorageSource": "DocumentTranslation.StorageSource",
+    "com.azure.ai.translation.document.models.TranslationTarget": "DocumentTranslation.TargetInput"
   }
 }

@@ -4,6 +4,7 @@
 package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.implementation.SingleDocumentTranslationClientImpl;
+import com.azure.ai.translation.document.models.SingleDocumentTranslationAudience;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
@@ -51,12 +52,13 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
     ConfigurationTrait<SingleDocumentTranslationClientBuilder>,
     TokenCredentialTrait<SingleDocumentTranslationClientBuilder>,
     KeyCredentialTrait<SingleDocumentTranslationClientBuilder>, EndpointTrait<SingleDocumentTranslationClientBuilder> {
-
     @Generated
     private static final String SDK_NAME = "name";
 
     @Generated
     private static final String SDK_VERSION = "version";
+
+    private static final String DEFAULT_SCOPE = "/.default";
 
     @Generated
     private static final String[] DEFAULT_SCOPES = new String[] { "https://cognitiveservices.azure.com/.default" };
@@ -67,6 +69,8 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
 
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
+    
+    private SingleDocumentTranslationAudience audience;
 
     /**
      * Create an instance of the SingleDocumentTranslationClientBuilder.
@@ -156,6 +160,19 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
     @Override
     public SingleDocumentTranslationClientBuilder retryOptions(RetryOptions retryOptions) {
         this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Sets the Authentication audience used to authorize requests sent to the service.
+     *
+     * @param audience Token Audience.
+     * @return The updated {@link SingleDocumentTranslationClientBuilder} object.
+     * @throws NullPointerException If {@code audience} is null.
+     */
+    public SingleDocumentTranslationClientBuilder audience(SingleDocumentTranslationAudience audience) {
+        Objects.requireNonNull(audience, "'audience' cannot be null.");
+        this.audience = audience;
         return this;
     }
 
@@ -320,7 +337,11 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
             policies.add(new KeyCredentialPolicy("Ocp-Apim-Subscription-Key", keyCredential));
         }
         if (tokenCredential != null) {
-            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+            SingleDocumentTranslationAudience authAudience = SingleDocumentTranslationAudience.AZURE_PUBLIC_CLOUD;
+            if (this.audience != null) {
+                authAudience = this.audience;
+            }
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, authAudience + DEFAULT_SCOPE));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)

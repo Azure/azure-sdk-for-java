@@ -4,10 +4,10 @@
 package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
-import com.azure.ai.translation.document.models.SourceInput;
-import com.azure.ai.translation.document.models.TargetInput;
+import com.azure.ai.translation.document.models.TranslationSource;
 import com.azure.ai.translation.document.models.TranslationStatus;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
+import com.azure.ai.translation.document.models.TranslationTarget;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.polling.SyncPoller;
@@ -178,7 +178,7 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
         }
         List<TestDocument> testDocuments = createDummyTestDocuments(docsPerJob);
         String sourceUrl = createSourceContainer(testDocuments);
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
 
         // create a translation job
         List<String> translationIds = new ArrayList<>();
@@ -186,8 +186,9 @@ public class TranslationFilterTests extends DocumentTranslationClientTestBase {
             String targetUrl = createTargetContainer(null);
             String targetLanguageCode = "fr";
 
-            TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-            List<TargetInput> targetInputs = new ArrayList<>();
+            TranslationTarget targetInput
+                = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+            List<TranslationTarget> targetInputs = new ArrayList<>();
             targetInputs.add(targetInput);
             DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 

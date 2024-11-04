@@ -4,8 +4,8 @@
 package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
-import com.azure.ai.translation.document.models.SourceInput;
-import com.azure.ai.translation.document.models.TargetInput;
+import com.azure.ai.translation.document.models.TranslationSource;
+import com.azure.ai.translation.document.models.TranslationTarget;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.polling.SyncPoller;
@@ -21,12 +21,12 @@ public class CancelTranslationTests extends DocumentTranslationClientTestBase {
     public void testCancelTranslation() {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         String sourceUrl = createSourceContainer(ONE_TEST_DOCUMENTS);
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
         DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
         SyncPoller<TranslationStatusResult, TranslationStatusResult> poller = setPlaybackSyncPollerPollInterval(

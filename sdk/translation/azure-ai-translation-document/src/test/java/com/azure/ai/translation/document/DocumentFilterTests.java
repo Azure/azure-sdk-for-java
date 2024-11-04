@@ -4,9 +4,9 @@
 package com.azure.ai.translation.document;
 
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
-import com.azure.ai.translation.document.models.DocumentStatus;
-import com.azure.ai.translation.document.models.SourceInput;
-import com.azure.ai.translation.document.models.TargetInput;
+import com.azure.ai.translation.document.models.DocumentStatusResult;
+import com.azure.ai.translation.document.models.TranslationSource;
+import com.azure.ai.translation.document.models.TranslationTarget;
 import com.azure.ai.translation.document.models.TranslationStatus;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
 
@@ -38,9 +38,9 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         List<String> succeededStatusList = Arrays.asList(TranslationStatus.SUCCEEDED.toString());
 
         try {
-            PagedIterable<DocumentStatus> response = getDocumentTranslationClient().listDocumentStatuses(
+            PagedIterable<DocumentStatusResult> response = getDocumentTranslationClient().listDocumentStatuses(
                 translationStatus.getId(), null, null, null, succeededStatusList, null, null, null);
-            for (DocumentStatus d : response) {
+            for (DocumentStatusResult d : response) {
                 String status = d.getStatus().toString();
                 assertTrue(succeededStatusList.contains(status));
             }
@@ -59,9 +59,9 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         TranslationStatusResult translationStatus = createSingleTranslationJob(2);
         List<String> testIds = new ArrayList<>();
         try {
-            PagedIterable<DocumentStatus> response
+            PagedIterable<DocumentStatusResult> response
                 = documentTranslationClient.listDocumentStatuses(translationStatus.getId());
-            for (DocumentStatus d : response) {
+            for (DocumentStatusResult d : response) {
                 testIds.add(d.getId());
             }
         } catch (Exception e) {
@@ -70,9 +70,9 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         }
 
         try {
-            PagedIterable<DocumentStatus> response = getDocumentTranslationClient()
+            PagedIterable<DocumentStatusResult> response = getDocumentTranslationClient()
                 .listDocumentStatuses(translationStatus.getId(), null, null, testIds, null, null, null, null);
-            for (DocumentStatus d : response) {
+            for (DocumentStatusResult d : response) {
                 String id = d.getId();
                 assertTrue(testIds.contains(id));
             }
@@ -92,9 +92,9 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         List<String> testCreatedOnDateTimes = new ArrayList<>();
 
         try {
-            PagedIterable<DocumentStatus> response = documentTranslationClient
+            PagedIterable<DocumentStatusResult> response = documentTranslationClient
                 .listDocumentStatuses(translationStatus.getId(), null, null, null, null, null, null, orderBy);
-            for (DocumentStatus d : response) {
+            for (DocumentStatusResult d : response) {
                 String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
                 testCreatedOnDateTimes.add(createdDateTimeString);
             }
@@ -105,11 +105,11 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         // Asserting that only the last document is returned
         try {
-            PagedIterable<DocumentStatus> response
+            PagedIterable<DocumentStatusResult> response
                 = documentTranslationClient.listDocumentStatuses(translationStatus.getId(), null, null, null, null,
                     getDateTimeOffset(testCreatedOnDateTimes.get(4)), null, null);
             int itemCount = 0;
-            for (DocumentStatus ignored : response) {
+            for (DocumentStatusResult ignored : response) {
                 itemCount += 1;
             }
             assertEquals(1, itemCount);
@@ -120,11 +120,11 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         // Asserting that the last 3 docs are returned
         try {
-            PagedIterable<DocumentStatus> response
+            PagedIterable<DocumentStatusResult> response
                 = documentTranslationClient.listDocumentStatuses(translationStatus.getId(), null, null, null, null,
                     getDateTimeOffset(testCreatedOnDateTimes.get(2)), null, null);
             int itemCount = 0;
-            for (DocumentStatus ignored : response) {
+            for (DocumentStatusResult ignored : response) {
                 itemCount += 1;
             }
             assertEquals(3, itemCount);
@@ -145,9 +145,9 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         List<String> testCreatedOnDateTimes = new ArrayList<>();
 
         try {
-            PagedIterable<DocumentStatus> response = documentTranslationClient
+            PagedIterable<DocumentStatusResult> response = documentTranslationClient
                 .listDocumentStatuses(translationStatus.getId(), null, null, null, null, null, null, orderBy);
-            for (DocumentStatus d : response) {
+            for (DocumentStatusResult d : response) {
                 String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
                 testCreatedOnDateTimes.add(createdDateTimeString);
             }
@@ -158,11 +158,11 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         // Asserting that only the first document is returned
         try {
-            PagedIterable<DocumentStatus> response
+            PagedIterable<DocumentStatusResult> response
                 = documentTranslationClient.listDocumentStatuses(translationStatus.getId(), null, null, null, null,
                     null, getDateTimeOffset(testCreatedOnDateTimes.get(0)), null);
             int itemCount = 0;
-            for (DocumentStatus ignored : response) {
+            for (DocumentStatusResult ignored : response) {
                 itemCount += 1;
             }
             assertEquals(1, itemCount);
@@ -173,11 +173,11 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
 
         // Asserting that the first 4/5 docs are returned
         try {
-            PagedIterable<DocumentStatus> response
+            PagedIterable<DocumentStatusResult> response
                 = documentTranslationClient.listDocumentStatuses(translationStatus.getId(), null, null, null, null,
                     null, getDateTimeOffset(testCreatedOnDateTimes.get(3)), null);
             int itemCount = 0;
-            for (DocumentStatus ignored : response) {
+            for (DocumentStatusResult ignored : response) {
                 itemCount += 1;
             }
             assertEquals(4, itemCount);
@@ -197,10 +197,10 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         List<String> orderBy = Arrays.asList("createdDateTimeUtc desc");
 
         try {
-            PagedIterable<DocumentStatus> response = documentTranslationClient
+            PagedIterable<DocumentStatusResult> response = documentTranslationClient
                 .listDocumentStatuses(translationStatus.getId(), null, null, null, null, null, null, orderBy);
             LocalDateTime timestamp = LocalDateTime.now(ZoneOffset.UTC);
-            for (DocumentStatus d : response) {
+            for (DocumentStatusResult d : response) {
                 String createdDateTimeString = d.getCreatedDateTimeUtc().toString();
                 LocalDateTime createdDateTimeUtc
                     = LocalDateTime.parse(createdDateTimeString, DateTimeFormatter.ISO_DATE_TIME);
@@ -217,12 +217,12 @@ public class DocumentFilterTests extends DocumentTranslationClientTestBase {
         DocumentTranslationClient documentTranslationClient = getDocumentTranslationClient();
         List<TestDocument> testDocs = createDummyTestDocuments(count);
         String sourceUrl = createSourceContainer(testDocs);
-        SourceInput sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null);
+        TranslationSource sourceInput = TestHelper.createSourceInput(sourceUrl, null, null, null, null);
 
         String targetUrl = createTargetContainer(null);
         String targetLanguageCode = "fr";
-        TargetInput targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
-        List<TargetInput> targetInputs = new ArrayList<>();
+        TranslationTarget targetInput = TestHelper.createTargetInput(targetUrl, targetLanguageCode, null, null, null);
+        List<TranslationTarget> targetInputs = new ArrayList<>();
         targetInputs.add(targetInput);
         DocumentTranslationInput batchRequest = new DocumentTranslationInput(sourceInput, targetInputs);
 

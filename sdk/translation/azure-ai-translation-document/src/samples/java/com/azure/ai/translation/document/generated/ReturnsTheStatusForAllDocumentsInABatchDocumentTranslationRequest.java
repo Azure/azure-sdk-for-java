@@ -6,7 +6,7 @@ package com.azure.ai.translation.document.generated;
 
 import com.azure.ai.translation.document.DocumentTranslationClient;
 import com.azure.ai.translation.document.DocumentTranslationClientBuilder;
-import com.azure.ai.translation.document.models.DocumentStatus;
+import com.azure.ai.translation.document.models.DocumentStatusResult;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
@@ -19,7 +19,7 @@ public class ReturnsTheStatusForAllDocumentsInABatchDocumentTranslationRequest {
                 .endpoint("{endpoint}")
                 .buildClient();
         // BEGIN:com.azure.ai.translation.document.generated.listdocumentstatuses.returnsthestatusforalldocumentsinabatchdocumenttranslationrequest
-        PagedIterable<DocumentStatus> response
+        PagedIterable<DocumentStatusResult> response
             = documentTranslationClient.listDocumentStatuses("727BF148-F327-47A0-9481-ABAE6362F11E", 2, 0,
                 Arrays.asList("273622bd-835c-4946-9798-fd8f19f6bbf2", "511b6a66-a6f8-4640-83e1-48c325e9fa29"),
                 Arrays.asList("Succeeded"), OffsetDateTime.parse("2021-03-23T07:03:38.0136316Z"),

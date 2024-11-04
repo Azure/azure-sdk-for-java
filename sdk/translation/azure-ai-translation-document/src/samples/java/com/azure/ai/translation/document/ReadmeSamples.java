@@ -6,7 +6,6 @@ package com.azure.ai.translation.document;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public final class ReadmeSamples {
 

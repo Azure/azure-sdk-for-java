@@ -5,13 +5,12 @@ package com.azure.ai.translation.document;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.ai.translation.document.models.DocumentTranslationInput;
-import com.azure.ai.translation.document.models.Glossary;
-import com.azure.ai.translation.document.models.SourceInput;
+import com.azure.ai.translation.document.models.TranslationGlossary;
+import com.azure.ai.translation.document.models.TranslationSource;
 import com.azure.ai.translation.document.models.TranslationBatch;
 import com.azure.ai.translation.document.models.StorageInputType;
 import com.azure.ai.translation.document.models.TranslationStorageSource;
-import com.azure.ai.translation.document.models.DocumentFilter;
-import com.azure.ai.translation.document.models.TargetInput;
+import com.azure.ai.translation.document.models.TranslationTarget;
 import com.azure.ai.translation.document.models.TranslationStatusResult;
 
 import java.util.Arrays;
@@ -32,32 +31,30 @@ public class StartDocumentTranslation {
             .buildClient();
 
         // BEGIN:startDocumentTranslation
-        SyncPoller < TranslationStatusResult,
-        TranslationStatusResult > response = documentTranslationClient
+        SyncPoller < TranslationStatusResult, TranslationStatusResult > response = documentTranslationClient
             .beginTranslation(
                 new TranslationBatch(Arrays.asList(new DocumentTranslationInput(
-                            new SourceInput("https://myblob.blob.core.windows.net/sourceContainer")
-                            .setFilter(new DocumentFilter()
-                                .setPrefix("pre")
-                                .setSuffix(".txt"))
+                            new TranslationSource("https://myblob.blob.core.windows.net/sourceContainer")
+                            .setPrefix("pre")
+                            .setSuffix(".txt")
                             .setLanguage("en")
                             .setStorageSource(
                                 TranslationStorageSource.AZURE_BLOB),
                             Arrays
                             .asList(
-                                new TargetInput(
+                                new TranslationTarget(
                                     "https://myblob.blob.core.windows.net/destinationContainer1",
                                     "fr")
                                 .setCategory("general")
                                 .setGlossaries(Arrays
-                                    .asList(new Glossary(
+                                    .asList(new TranslationGlossary(
                                             "https://myblob.blob.core.windows.net/myglossary/en_fr_glossary.xlf",
                                             "XLIFF")
                                         .setStorageSource(
                                             TranslationStorageSource.AZURE_BLOB)))
                                 .setStorageSource(
                                     TranslationStorageSource.AZURE_BLOB),
-                                new TargetInput(
+                                new TranslationTarget(
                                     "https://myblob.blob.core.windows.net/destinationContainer2",
                                     "es")
                                 .setCategory("general")
