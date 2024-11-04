@@ -50,6 +50,7 @@ import java.util.Objects;
 public final class DocumentTranslationClientBuilder implements HttpTrait<DocumentTranslationClientBuilder>,
     ConfigurationTrait<DocumentTranslationClientBuilder>, TokenCredentialTrait<DocumentTranslationClientBuilder>,
     KeyCredentialTrait<DocumentTranslationClientBuilder>, EndpointTrait<DocumentTranslationClientBuilder> {
+
     @Generated
     private static final String SDK_NAME = "name";
 
@@ -308,7 +309,6 @@ public final class DocumentTranslationClientBuilder implements HttpTrait<Documen
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;

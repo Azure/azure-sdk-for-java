@@ -18,8 +18,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -84,7 +82,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
                 .setContentType(documentContentType);
 
         } catch (IOException ex) {
-            Logger.getLogger(SingleDocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("An exception occurred while creating documentContent" + ex.getMessage());
         }
         return document;
     }
@@ -116,7 +114,7 @@ public class SingleDocumentTranslationTests extends DocumentTranslationClientTes
                 .setContentType(glossaryContentType);
 
         } catch (IOException ex) {
-            Logger.getLogger(SingleDocumentTranslationTests.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("An exception occurred while getting glossary file details" + ex.getMessage());
         }
         return glossaryFileDetails;
     }

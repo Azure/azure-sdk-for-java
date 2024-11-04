@@ -52,6 +52,7 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
     ConfigurationTrait<SingleDocumentTranslationClientBuilder>,
     TokenCredentialTrait<SingleDocumentTranslationClientBuilder>,
     KeyCredentialTrait<SingleDocumentTranslationClientBuilder>, EndpointTrait<SingleDocumentTranslationClientBuilder> {
+
     @Generated
     private static final String SDK_NAME = "name";
 
@@ -310,7 +311,6 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
         Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
-    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
