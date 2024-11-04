@@ -22,7 +22,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -270,8 +269,6 @@ public abstract class IdentityClientBase {
 
         if (options.getExecutorService() != null) {
             applicationBuilder.executorService(options.getExecutorService());
-        } else {
-            applicationBuilder.executorService(SharedExecutorService.getInstance());
         }
 
         TokenCachePersistenceOptions tokenCachePersistenceOptions = options.getTokenCacheOptions();
@@ -333,8 +330,6 @@ public abstract class IdentityClientBase {
 
         if (options.getExecutorService() != null) {
             builder.executorService(options.getExecutorService());
-        } else {
-            builder.executorService(SharedExecutorService.getInstance());
         }
 
         if (enableCae) {
@@ -451,8 +446,6 @@ public abstract class IdentityClientBase {
 
         if (options.getExecutorService() != null) {
             applicationBuilder.executorService(options.getExecutorService());
-        } else {
-            applicationBuilder.executorService(SharedExecutorService.getInstance());
         }
 
         return applicationBuilder.build();
@@ -490,8 +483,6 @@ public abstract class IdentityClientBase {
 
         if (options.getExecutorService() != null) {
             miBuilder.executorService(options.getExecutorService());
-        } else {
-            miBuilder.executorService(SharedExecutorService.getInstance());
         }
 
         return miBuilder.build();
@@ -533,8 +524,6 @@ public abstract class IdentityClientBase {
 
         if (options.getExecutorService() != null) {
             applicationBuilder.executorService(options.getExecutorService());
-        } else {
-            applicationBuilder.executorService(SharedExecutorService.getInstance());
         }
 
         return applicationBuilder.build();

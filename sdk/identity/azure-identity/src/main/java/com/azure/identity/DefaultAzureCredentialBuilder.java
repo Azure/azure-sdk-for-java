@@ -105,10 +105,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * @param databasePath the path to the KeePass database.
      * @throws IllegalArgumentException if {@code databasePath} is either not specified or is empty.
      * @return An updated instance of this builder with the KeePass database path set as specified.
-     * @deprecated Support for older Azure Toolkit for IntelliJ versions was
-     * <a href="https://aka.ms/azsdk/java/identity/intellij-credential-update">removed in 1.14.0.</a>
      */
-    @Deprecated
     public DefaultAzureCredentialBuilder intelliJKeePassDatabasePath(String databasePath) {
         if (CoreUtils.isNullOrEmpty(databasePath)) {
             throw LOGGER.logExceptionAsError(
