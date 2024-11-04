@@ -69,7 +69,7 @@ public final class SingleDocumentTranslationClientBuilder implements HttpTrait<S
 
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
-    
+
     private SingleDocumentTranslationAudience audience;
 
     /**

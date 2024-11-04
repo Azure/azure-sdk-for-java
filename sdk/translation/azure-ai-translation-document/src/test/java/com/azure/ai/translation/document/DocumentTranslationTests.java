@@ -372,11 +372,11 @@ public class DocumentTranslationTests extends DocumentTranslationClientTestBase 
         assertEquals(0, translationStatus.getSummary().getSuccessCount());
         assertEquals(1, translationStatus.getSummary().getFailedCount());
 
-        ResponseError responseError = poller.poll().getValue().getError();
+        ResponseError responseError = translationStatus.getError();
         String errorCode = responseError.getCode();
         assertEquals("InvalidRequest", errorCode);
         String errorMessage = responseError.getMessage();
-        assertEquals("Cannot access target document location with the current permissions.", errorMessage);
+        assertEquals("The document does not have any translatable text.", errorMessage);
     }
 
     @RecordWithoutRequestBody

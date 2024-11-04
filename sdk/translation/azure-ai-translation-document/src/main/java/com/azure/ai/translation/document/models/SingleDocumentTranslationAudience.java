@@ -22,20 +22,20 @@ public final class SingleDocumentTranslationAudience extends ExpandableStringEnu
     }
 
     /** Static value AZURE_RESOURCE_MANAGER_CHINA for TextTranslationAudience. */
-    public static final SingleDocumentTranslationAudience AZURE_CHINA = fromString(
-            "https://cognitiveservices.azure.cn");
+    public static final SingleDocumentTranslationAudience AZURE_CHINA
+        = fromString("https://cognitiveservices.azure.cn");
 
     /**
      * Static value AZURE_RESOURCE_MANAGER_GOVERNMENT for TextTranslationAudience.
      */
-    public static final SingleDocumentTranslationAudience AZURE_GOVERNMENT = fromString(
-            "https://cognitiveservices.azure.us");
+    public static final SingleDocumentTranslationAudience AZURE_GOVERNMENT
+        = fromString("https://cognitiveservices.azure.us");
 
     /**
      * Static value AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD for TextTranslationAudience.
      */
-    public static final SingleDocumentTranslationAudience AZURE_PUBLIC_CLOUD = fromString(
-            "https://cognitiveservices.azure.com");
+    public static final SingleDocumentTranslationAudience AZURE_PUBLIC_CLOUD
+        = fromString("https://cognitiveservices.azure.com");
 
     /**
      * Creates or finds a TextTranslationAudience from its string representation.
