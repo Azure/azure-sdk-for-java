@@ -3,9 +3,11 @@
 
 package com.azure.ai.openai.realtime;
 
-
+import com.azure.ai.openai.realtime.implementation.EventHandlerCollection;
 import com.azure.ai.openai.realtime.models.RealtimeClientEvent;
 import com.azure.ai.openai.realtime.models.RealtimeServerEvent;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventSessionCreated;
+import com.azure.ai.openai.realtime.models.RealtimeServerEventType;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -19,91 +21,41 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.ai.openai.realtime.implementation.RealtimesImpl;
-import java.util.List;
+import reactor.core.scheduler.Schedulers;
 
-// TODO jpalvarezl: Not sure if this generated code would be usable with a WebSocketClient.
-// Need to evaluate whether we initialize the blocking version of the client with an underlying Async version like in WebPubSub.
+import java.util.List;
+import java.util.function.Consumer;
+
 /**
  * Initializes a new instance of the synchronous OpenAIClient type.
  */
 @ServiceClient(builder = RealtimeClientBuilder.class)
 public final class RealtimeClient {
 
-    @Generated
-    private final RealtimesImpl serviceClient;
+    private final RealtimeAsyncClient asyncClient;
+    private final EventHandlerCollection eventHandlerCollection = new EventHandlerCollection();
 
-    /**
-     * Initializes an instance of RealtimeClient class.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    @Generated
-    RealtimeClient(RealtimesImpl serviceClient) {
-        this.serviceClient = serviceClient;
+
+    RealtimeClient(RealtimeAsyncClient asyncClient) {
+        this.asyncClient = asyncClient;
     }
 
-    /**
-     * Starts a real-time conversation session.
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         type: String(session.update/input_audio_buffer.append/input_audio_buffer.commit/input_audio_buffer.clear/conversation.item.create/conversation.item.delete/conversation.item.truncate/response.create/response.cancel) (Required)
-     *         event_id: String (Optional)
-     *     }
-     * ]
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>{@code
-     * [
-     *      (Required){
-     *         type: String(session.created/session.updated/conversation.created/conversation.item.created/conversation.item.deleted/conversation.item.truncated/response.created/response.done/rate_limits.updated/response.output_item.added/response.output_item.done/response.content_part.added/response.content_part.done/response.audio.delta/response.audio.done/response.audio_transcript.delta/response.audio_transcript.done/response.text.delta/response.text.done/response.function_call_arguments.delta/response.function_call_arguments.done/input_audio_buffer.speech_started/input_audio_buffer.speech_stopped/conversation.item.input_audio_transcription.completed/conversation.item.input_audio_transcription.failed/input_audio_buffer.committed/input_audio_buffer.cleared/error) (Required)
-     *         event_id: String (Required)
-     *     }
-     * ]
-     * }</pre>
-     *
-     * @param requestMessages The requestMessages parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response body along with {@link Response}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> startRealtimeSessionWithResponse(BinaryData requestMessages,
-                                                                 RequestOptions requestOptions) {
-        return this.serviceClient.startRealtimeSessionWithResponse(requestMessages, requestOptions);
+    public synchronized void start() {
+        asyncClient.start(() -> {
+            this.asyncClient.getServerEvents().publishOn(Schedulers.boundedElastic())
+                    .subscribe(event -> eventHandlerCollection.fireEvent(event.getType().toString(), event));
+        }).block();
     }
 
-    /**
-     * Starts a real-time conversation session.
-     *
-     * @param requestMessages The requestMessages parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<RealtimeServerEvent> startRealtimeSession(List<RealtimeClientEvent> requestMessages) {
-        // Generated convenience method for startRealtimeSessionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return startRealtimeSessionWithResponse(BinaryData.fromObject(requestMessages), requestOptions).getValue()
-                .toObject(TYPE_REFERENCE_LIST_REALTIME_SERVER_EVENT);
+    public void sendMessage(RealtimeClientEvent event) {
+        asyncClient.sendMessage(event).block();
     }
 
-    @Generated
-    private static final TypeReference<List<RealtimeServerEvent>> TYPE_REFERENCE_LIST_REALTIME_SERVER_EVENT
-            = new TypeReference<List<RealtimeServerEvent>>() {
-    };
+    public void addOnSessionCreatedEventHandler (Consumer<RealtimeServerEventSessionCreated> onSessionCreatedEventHandler) {
+        eventHandlerCollection.addEventHandler(RealtimeServerEventType.SESSION_CREATED.toString(), onSessionCreatedEventHandler);
+    }
+
+    public void addOnSessionUpdatedEventHandler (Consumer<RealtimeServerEvent> onSessionUpdatedEventHandler) {
+        eventHandlerCollection.addEventHandler(RealtimeServerEventType.SESSION_UPDATED.toString(), onSessionUpdatedEventHandler);
+    }
 }

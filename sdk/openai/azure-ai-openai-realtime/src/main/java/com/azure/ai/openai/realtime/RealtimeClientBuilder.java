@@ -96,6 +96,10 @@ public class RealtimeClientBuilder implements ConfigurationTrait<RealtimeClientB
                 applicationId, getRetryStrategy(), getAuthenticationProvider());
     }
 
+    public RealtimeClient buildClient() {
+        return new RealtimeClient(buildAsyncClient());
+    }
+
     private AuthenticationProvider getAuthenticationProvider() {
         if(useNonAzureOpenAIService()) {
             return new AuthenticationProvider(keyCredential, false);
