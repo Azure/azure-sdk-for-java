@@ -108,9 +108,9 @@ public class LiveManagedIdentityTests extends TestProxyTestBase {
         //Setup Env
         Configuration configuration = Configuration.getGlobalConfiguration().clone();
 
-        String spClientId = configuration.get("AZ_CLIENT_ID");
+        String spClientId = configuration.get("IDENTITY_CLIENT_ID");
         String oidc = configuration.get("ARM_OIDC_TOKEN");
-        String tenantId = configuration.get("AZ_TENANT_ID");
+        String tenantId = configuration.get("IDENTITY_TENANT_ID");
         String resourceGroup = configuration.get("IDENTITY_RESOURCE_GROUP");
         String subscriptionId = configuration.get("IDENTITY_SUBSCRIPTION_ID");
         String vmName = configuration.get("IDENTITY_VM_NAME");
