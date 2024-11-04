@@ -93,7 +93,7 @@ public class DefinitionStageChangeLog extends ChangeLog {
         }
         if (newSize > oldSize) {
             List<String> newStages = IntStream.range(oldSize + 1, newSize + 1).boxed().map(Object::toString).collect(Collectors.toList());
-            breakingChange.addMethodLevelChange(String.format("Stage %s was added", String.join(", ", newStages)));
+            breakingChange.addStageLevelChange(String.format("Required stage %s was added", String.join(", ", newStages)));
         }
     }
 }

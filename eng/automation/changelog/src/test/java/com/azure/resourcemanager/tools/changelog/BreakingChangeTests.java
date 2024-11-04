@@ -14,7 +14,7 @@ public class BreakingChangeTests {
     public void testBreakingChange() {
         BreakingChange breakingChange = BreakingChange.onJavaClass("MyClass");
         breakingChange.setClassLevelChangeType(BreakingChange.Type.REMOVED);
-        Assertions.assertEquals("#### `MyClass` was removed\n", breakingChange.getForChangelog());
+        Assertions.assertEquals("#### `MyClass` was removed\n\n", breakingChange.getForChangelog());
         Assertions.assertEquals("Class `MyClass` was removed.", breakingChange.getItems().iterator().next());
 
         String methodLevelContent = "`sku()` was removed";
@@ -27,6 +27,12 @@ public class BreakingChangeTests {
         Assertions.assertEquals(2, breakingChange.getItems().size());
         Assertions.assertTrue(breakingChange.getForChangelog().contains("#### `MyClass` was modified"));
         Assertions.assertEquals("Method `sku()` was removed in class `MyClass`.", breakingChange.getItems().iterator().next());
+
+        String stageLevelContent = "Required stage 3 was removed";
+        breakingChange.addStageLevelChange(stageLevelContent);
+
+        Assertions.assertEquals(3, breakingChange.getItems().size());
+        Assertions.assertEquals("Required stage 3 was removed in class `MyClass`.", breakingChange.getItems().iterator().next());
     }
 
     @Test
