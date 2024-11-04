@@ -14,6 +14,7 @@ import com.azure.core.test.annotation.LiveOnly;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.resourcemanager.recoveryservices.models.CrossRegionRestore;
 import com.azure.resourcemanager.recoveryservices.models.CrossSubscriptionRestoreSettings;
 import com.azure.resourcemanager.recoveryservices.models.CrossSubscriptionRestoreState;
 import com.azure.resourcemanager.recoveryservices.models.ImmutabilitySettings;
@@ -23,8 +24,10 @@ import com.azure.resourcemanager.recoveryservices.models.RestoreSettings;
 import com.azure.resourcemanager.recoveryservices.models.SecuritySettings;
 import com.azure.resourcemanager.recoveryservices.models.Sku;
 import com.azure.resourcemanager.recoveryservices.models.SkuName;
+import com.azure.resourcemanager.recoveryservices.models.StandardTierStorageRedundancy;
 import com.azure.resourcemanager.recoveryservices.models.Vault;
 import com.azure.resourcemanager.recoveryservices.models.VaultProperties;
+import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesRedundancySettings;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
@@ -86,7 +89,10 @@ public class RecoveryServicesManagerTests extends TestProxyTestBase {
                 .withSku(new Sku().withName(SkuName.RS0).withTier("Standard"))
                 .withProperties(new VaultProperties()
                     .withSecuritySettings(new SecuritySettings()
-                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.UNLOCKED)))
+                        .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.DISABLED)))
+                    .withRedundancySettings(new VaultPropertiesRedundancySettings()
+                        .withStandardTierStorageRedundancy(StandardTierStorageRedundancy.GEO_REDUNDANT)
+                        .withCrossRegionRestore(CrossRegionRestore.DISABLED))
                     .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
                     .withRestoreSettings(new RestoreSettings()
                         .withCrossSubscriptionRestoreSettings(new CrossSubscriptionRestoreSettings()
