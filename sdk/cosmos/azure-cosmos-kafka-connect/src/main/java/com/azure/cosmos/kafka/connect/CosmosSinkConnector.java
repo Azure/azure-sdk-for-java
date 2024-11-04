@@ -208,7 +208,7 @@ public final class CosmosSinkConnector extends SinkConnector implements AutoClos
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         this.stop();
     }
 }
