@@ -47,5 +47,8 @@ public class BreakingChangeTests {
         String changelog = (String) jsonObject.get("changelog");
         Assertions.assertFalse(CoreUtils.isNullOrEmpty(changelog));
         Assertions.assertFalse(breakingChanges.isEmpty());
+        Assertions.assertTrue(breakingChanges.toList().contains("Required stage 3 was added in class `com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase$DefinitionStages`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Method `withProperties(com.azure.resourcemanager.quota.models.QuotaProperties)` was removed in stage 2 in class `com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase$DefinitionStages`."));
+        Assertions.assertTrue(breakingChanges.toList().contains("Method `withProperties(com.azure.resourcemanager.quota.models.QuotaProperties)` was removed in class `com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase$Definition`."));
     }
 }
