@@ -378,9 +378,6 @@ cosmos_io.confluent:kafka-connect-maven-plugin;0.12.0
 # This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
 jacksonavro_org.apache.avro:avro-maven-plugin;1.8.2
 
-# sdk\eventgrid\microsoft-azure-eventgrid\pom.xml
-eventgrid_commons-io:commons-io;2.7
-
 # sdk\keyvault\microsoft-azure-keyvault-extensions\pom.xml
 keyvault_org.mockito:mockito-core;1.10.19
 # sdk\keyvault\microsoft-azure-keyvault-test\pom.xml
